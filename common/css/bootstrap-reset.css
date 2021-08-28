@@ -440,12 +440,8 @@ ul {
 }
 
 .editbutton{
-    background: #418bca;
-    border-color: #418bca;
-    border-radius: 0px;
-    // width: 100px;
     background: #39B27C;
-    // border-color: #39B27C;
+    border-color: #39B27C;
     border-radius: 4px;
     color: #fff;
 }

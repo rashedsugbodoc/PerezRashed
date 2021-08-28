@@ -158,7 +158,7 @@
 
                                                     </td>
                                                     <td class="no-print">
-                                                        <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"> <?php echo lang('view'); ?> </i></a> 
+                                                        <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?> </a> 
                                                         <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                             <a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>" "><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
                                                             <a class="btn btn-danger btn-xs btn_width delete_button" href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
@@ -346,7 +346,7 @@
 
 
 
-            <section class="panel">
+            <section class="panel-body">
                 <aside class="profile-nav">
                     <section class="">
                         <div class="user-heading round">
