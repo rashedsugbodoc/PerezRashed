@@ -666,7 +666,7 @@
 
 
                 <div class="text-center invoice-btn col-md-4 pull-right">
-                    <a class="btn btn-info btn-lg invoice_button" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
+                    <a class="btn btn-info invoice_button" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
                 </div>
 
 

@@ -837,7 +837,7 @@ class Patient extends MX_Controller {
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $doctor_name . '</h4>
-                                                                    <a class="btn btn-info btn-xs detailsbutton" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"> View</i></a>
+                                                                    <a class="btn btn-info btn-xs detailsbutton" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i> View</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1408,7 +1408,7 @@ class Patient extends MX_Controller {
                 $options1 = '<a class="btn btn-info btn-xs" href="' . $document->url . '" download> ' . lang('download') . ' </a>';
             }
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
-                $options2 = '<a class="btn btn-danger btn-xs delete_button" href="patient/deletePatientMaterial?id=' . $document->id . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> X </a>';
+                $options2 = '<a class="btn btn-danger btn-xs delete_button" href="patient/deletePatientMaterial?id=' . $document->id . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> <i class="fa fa-trash"></i> </a>';
             }
 
             if (!empty($document->patient)) {
@@ -1540,7 +1540,7 @@ class Patient extends MX_Controller {
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $doctor_name . '</h4>
-                                                                    <a class="btn btn-info btn-xs detailsbutton" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"> View</i></a>
+                                                                    <a class="btn btn-info btn-xs detailsbutton" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i> View</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1735,7 +1735,7 @@ class Patient extends MX_Controller {
                 $medicinelist = '';
             }
 
-            $option1 = '<a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye">' . lang('view') . '</i></a>';
+            $option1 = '<a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' . lang('view') . '</a>';
             $prescription_case = ' <tr class="">
                                                     <td>' . date('m/d/Y', $prescription->date) . '</td>
                                                     <td>' . $prescription_doctor . '</td>
@@ -1761,7 +1761,7 @@ class Patient extends MX_Controller {
             } else {
                 $lab_doctor = "";
             }
-            $option1 = '<a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-eye">' . lang('report') . '</i></a>';
+            $option1 = '<a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-eye"></i>' . lang('report') . '</a>';
             $lab_class = ' <tr class="">
                                                     <td>' . $lab->id . '</td>
                                                     <td>' . date("m/d/Y", $lab->date) . '</td>
