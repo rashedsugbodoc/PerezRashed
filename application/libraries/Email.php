@@ -29,15 +29,15 @@
  */
 class CI_Email {
 
-	var	$useragent		= "CodeIgniter";
+	var	$useragent		= "SugboDoc Web";
 	var	$mailpath		= "/usr/sbin/sendmail";	// Sendmail path
-	var	$protocol		= "mail";	// mail/sendmail/smtp
-	var	$smtp_host		= "";		// SMTP Server.  Example: mail.earthlink.net
-	var	$smtp_user		= "";		// SMTP Username
-	var	$smtp_pass		= "";		// SMTP Password
-	var	$smtp_port		= "25";		// SMTP Port
-	var	$smtp_timeout	= 5;		// SMTP Timeout in seconds
-	var	$smtp_crypto	= "";		// SMTP Encryption. Can be null, tls or ssl.
+	var	$protocol		= "smtp";	// mail/sendmail/smtp
+	var	$smtp_host		= "smtp.gmail.com";		// SMTP Server.  Example: mail.earthlink.net
+	var	$smtp_user		= "team@sugbodoc.com";		// SMTP Username
+	var	$smtp_pass		= "qrgzoznpfwmvqatg";		// SMTP Password
+	var	$smtp_port		= "587";		// SMTP Port
+	var	$smtp_timeout	= 30;		// SMTP Timeout in seconds
+	var	$smtp_crypto	= "tls";		// SMTP Encryption. Can be null, tls or ssl.
 	var	$wordwrap		= TRUE;		// TRUE/FALSE  Turns word-wrap on/off
 	var	$wrapchars		= "76";		// Number of characters to wrap at.
 	var	$mailtype		= "html";	// text/html  Defines email formatting
@@ -46,8 +46,8 @@ class CI_Email {
 	var $alt_message	= '';		// Alternative message for HTML emails
 	var	$validate		= FALSE;	// TRUE/FALSE.  Enables email validation
 	var	$priority		= "3";		// Default priority (1 - 5)
-	var	$newline		= "\n";		// Default newline. "\r\n" or "\n" (Use "\r\n" to comply with RFC 822)
-	var $crlf			= "\n";		// The RFC 2045 compliant CRLF for quoted-printable is "\r\n".  Apparently some servers,
+	var	$newline		= "\r\n";		// Default newline. "\r\n" or "\n" (Use "\r\n" to comply with RFC 822)
+	var $crlf			= "\r\n";		// The RFC 2045 compliant CRLF for quoted-printable is "\r\n".  Apparently some servers,
 									// even on the receiving end think they need to muck with CRLFs, so using "\n", while
 									// distasteful, is the only thing that seems to work for all environments.
 	var $send_multipart	= TRUE;		// TRUE/FALSE - Yahoo does not like multipart alternative, so this is an override.  Set to FALSE for Yahoo.
