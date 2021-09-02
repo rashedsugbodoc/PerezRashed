@@ -176,7 +176,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-edit"></i> <?php echo lang('edit_operation_report'); ?></h4>
+                <h4 class="modal-title"><?php echo lang('edit_operation_report'); ?></h4>
             </div>
             <div class="modal-body">
                 <form role="form" id="editReportForm" action="report/addReport" class="clearfix" method="post" enctype="multipart/form-data">
