@@ -5,7 +5,7 @@
         <section class="col-md-6">
             <div class="panel panel-primary" id="invoice">
                 <!--<div class="panel-heading navyblue"> INVOICE</div>-->
-                <div class="panel-body" style="font-size: 10px;">
+                <div class="panel-body" style="font-size: 12px;">
                     <div class="row invoice-list">
 
                         <div class="col-md-12 invoice_head clearfix">
@@ -409,7 +409,7 @@
 
             .invoice_head_left h3{
                 color: #2f80bf !important;
-                font-family: cursive;
+                font-family: 'Open Sans', sans-serif;
             }
 
 
@@ -566,7 +566,7 @@
 
 
                         $('#download').click(function () {
-                            var pdf = new jsPDF('p', 'pt', 'letter');
+                            var pdf = new jsPDF('p', 'pt', 'a3');
                             pdf.addHTML($('#invoice'), function () {
                                 pdf.save('invoice_id_<?php echo $payment->id; ?>.pdf');
                             });
