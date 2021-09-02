@@ -546,7 +546,7 @@
 <!--main content end-->
 <!--footer start-->
 
-<script src="common/js/codearistos.min.js"></script>
+<script src="common/js/coderygel.min.js"></script>
 
 
 <!--
@@ -651,7 +651,7 @@ if ($discount_type == 'flat') {
 
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script src="vendor/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
-<script src="common/js/ajaxrequest-codearistos.min.js"></script>
+<script src="common/js/ajaxrequest-coderygel.min.js"></script>
 
 
 

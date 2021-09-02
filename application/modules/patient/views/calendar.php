@@ -279,7 +279,7 @@ if (!empty($doctor_id)) {
 
 
 
-<script src="common/js/codearistos.min.js"></script>
+<script src="common/js/coderygel.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $(".editbutton").click(function (e) {

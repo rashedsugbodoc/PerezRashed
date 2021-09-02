@@ -93,7 +93,7 @@
 
 </style>
 
-<script src="common/js/codearistos.min.js"></script>
+<script src="common/js/coderygel.min.js"></script>
 
 <script>
     $(document).ready(function () {

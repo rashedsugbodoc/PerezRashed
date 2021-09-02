@@ -263,7 +263,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 
 
 
-<script src="common/js/codearistos.min.js"></script>
+<script src="common/js/coderygel.min.js"></script>
 <script type="text/javascript">
                             $(".table").on("click", ".editbutton", function () {
                                 // Get the record's ID via attribute  

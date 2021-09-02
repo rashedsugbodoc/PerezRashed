@@ -975,7 +975,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 </style>
 
 
-<script src="common/js/codearistos.min.js"></script>
+<script src="common/js/coderygel.min.js"></script>
 <script type="text/javascript">
                                                     $(document).ready(function () {
                                                         $(".editbutton").click(function (e) {

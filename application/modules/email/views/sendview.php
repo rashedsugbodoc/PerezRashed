@@ -290,7 +290,7 @@
     </div><!-- /.modal-dialog -->
 </div>
 
-<script src="common/js/codearistos.min.js"></script>
+<script src="common/js/coderygel.min.js"></script>
 <script type="text/javascript">
 
 

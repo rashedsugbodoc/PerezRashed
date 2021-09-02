@@ -132,7 +132,7 @@
 </div>
 <!-- Edit Event Modal-->
 
-<script src="common/js/codearistos.min.js"></script>
+<script src="common/js/coderygel.min.js"></script>
 <script type="text/javascript">
                                     $(document).ready(function () {
                                         $(".editbutton").click(function (e) {
@@ -155,7 +155,7 @@
                                         });
                                     });
 </script>
-<script src="common/js/codearistos.min.js"></script>
+<script src="common/js/coderygel.min.js"></script>
 <script>
                                     $(document).ready(function () {
                                         $('#editable-sample').DataTable({
