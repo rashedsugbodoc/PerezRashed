@@ -805,6 +805,21 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php
                         }
                         ?>
+                        
+                        <?php
+                        if ($this->ion_auth->in_group(array('Receptionist'))) {
+                            ?>
+                            <?php if (in_array('form', $this->modules)) { ?>
+                                <li>
+                                    <a href="form/form1">
+                                        <i class="fas fa-file-medical"></i>
+                                        <span><?php echo lang('assessment_forms'); ?></span>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                            <?php
+                        }
+                        ?>                        
 
                         <?php
                         if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) {
@@ -857,6 +872,21 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) { ?>
+                            <?php if (in_array('form', $this->modules)) { ?>
+                                <li class="sub-menu">
+                                    <a href="javascript:;" >
+                                        <i class="fa fa-flask"></i>
+                                        <span><?php echo lang('forms_reports'); ?></span>
+                                    </a>
+                                    <ul class="sub">
+                                        <li><a  href="form"><i class="fa fa-file-medical"></i><?php echo lang('forms_reports'); ?></a></li>
+                                        <li><a  href="form/addFormView"><i class="fa fa-plus-circle"></i><?php echo lang('add_form_report'); ?></a></li>
+                                        <li><a  href="form/template"><i class="fa fa-plus-circle"></i><?php echo lang('report_templates'); ?></a></li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>
 
 
 
@@ -1226,6 +1256,14 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <a href="lab/myLab" >
                                         <i class="fa fa-file-medical-alt"></i>
                                         <span> <?php echo lang('diagnosis'); ?> <?php echo lang('reports'); ?> </span>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                            <?php if (in_array('form', $this->modules)) { ?>
+                                <li>
+                                    <a href="form/myForm" >
+                                        <i class="fa fa-file-medical-alt"></i>
+                                        <span> <?php echo lang('assessment'); ?> <?php echo lang('forms'); ?> </span>
                                     </a>
                                 </li>
                             <?php } ?>
