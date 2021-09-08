@@ -139,7 +139,7 @@ class Hospital extends MX_Controller {
                     );
                     $this->settings_model->insertSettings($hospital_settings_data);
                     $hospital_blood_bank = array();
-                    $hospital_blood_bank = array('A+' => '0 Bags', 'A-' => '0 Bags', 'B+' => '0 Bags', 'B-' => '0 Bags', 'AB+' => '0 Bags', 'AB-' => '0 Bags', 'O+' => '0 Bags', 'O-' => '0 Bags');
+                    $hospital_blood_bank = array('Not Specified' => '0 Bags', 'A+' => '0 Bags', 'A-' => '0 Bags', 'B+' => '0 Bags', 'B-' => '0 Bags', 'AB+' => '0 Bags', 'AB-' => '0 Bags', 'O+' => '0 Bags', 'O-' => '0 Bags');
                     foreach ($hospital_blood_bank as $key => $value) {
                         $data_bb = array('group' => $key, 'status' => $value, 'hospital_id' => $hospital_user_id);
                         $this->donor_model->insertBloodBank($data_bb);
