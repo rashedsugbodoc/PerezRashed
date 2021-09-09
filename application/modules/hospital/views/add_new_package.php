@@ -198,6 +198,17 @@
                                     ?>> <?php echo lang('financial_activities'); ?>
 
                                     <br>
+                                    <input type='checkbox' value = "form" name="module[]" <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('form', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('forms_reports'); ?>
+
+                                    <br>
                                     <input type='checkbox' value = "pharmacy" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('pharmacy', $modules1)) {
