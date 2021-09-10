@@ -130,7 +130,7 @@ class Patient extends MX_Controller {
         // Validating Address Field   
         $this->form_validation->set_rules('birthdate', 'Birth Date', 'trim|min_length[2]|max_length[500]|xss_clean');
         // Validating Phone Field           
-        $this->form_validation->set_rules('bloodgroup', 'Blood Group', 'trim|min_length[1]|max_length[10]|xss_clean');
+        $this->form_validation->set_rules('bloodgroup', 'Blood Group', 'trim|min_length[1]|max_length[15]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
