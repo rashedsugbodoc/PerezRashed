@@ -148,7 +148,7 @@ class Form extends MX_Controller {
 
     public function addForm() {
         $id = $this->input->post('id');
-
+        $form_name = $this->input->post('form_name');
         $report = $this->input->post('report');
 
         $patient = $this->input->post('patient');
@@ -204,7 +204,8 @@ class Form extends MX_Controller {
         $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
 // Validating Price Field
         $this->form_validation->set_rules('discount', 'Discount', 'trim|min_length[1]|max_length[100]|xss_clean');
-
+// Validating Name Field
+        $this->form_validation->set_rules('name', 'Name', 'trim|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             redirect('form/addFormView');
         } else {
@@ -297,7 +298,7 @@ class Form extends MX_Controller {
 
             if (empty($id)) {
                 $data = array(
-                    // 'category_name' => $category_name,
+                    'name' => $form_name,
                     'report' => $report,
                     'patient' => $patient,
                     'date' => $date,
@@ -318,7 +319,7 @@ class Form extends MX_Controller {
                 redirect($redirect);
             } else {
                 $data = array(
-                    //   'category_name' => $category_name,
+                    'name' => $form_name,
                     'report' => $report,
                     'patient' => $patient,
                     'doctor' => $doctor,
@@ -548,7 +549,7 @@ class Form extends MX_Controller {
         redirect('form/formCategory');
     }
 
-    function invoice() {
+    function formView() {
         $data = array();
         $id = $this->input->get('id');
         $data['settings'] = $this->settings_model->getSettings();
@@ -559,7 +560,7 @@ class Form extends MX_Controller {
         }
 
         $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('invoice', $data);
+        $this->load->view('form_view', $data);
         $this->load->view('home/footer'); // just the footer fi
     }
 
@@ -663,7 +664,7 @@ class Form extends MX_Controller {
                 $options1 = '';
             }
 
-            $options2 = '<a class="btn btn-xs invoicebutton" title="' . lang('form') . '" style="color: #fff;" href="form/invoice?id=' . $form->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
+            $options2 = '<a class="btn btn-xs invoicebutton" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) {
                 $options3 = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="form/delete?id=' . $form->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>' . lang('') . '</a>';
@@ -691,6 +692,7 @@ class Form extends MX_Controller {
             }
             $info[] = array(
                 $form->id,
+                $form->name,
                 $patient_details,
                 $date,
                 $options1 . ' ' . $options2 . ' ' . $options3,
@@ -768,7 +770,7 @@ class Form extends MX_Controller {
             if ($patient_id == $form->patient) {
                 $date = date('d-m-y', $form->date);
 
-                $options2 = '<a class="btn btn-xs invoicebutton" title="' . lang('form') . '" style="color: #fff;" href="form/invoice?id=' . $form->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
+                $options2 = '<a class="btn btn-xs invoicebutton" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
 
                 $doctor_info = $this->doctor_model->getDoctorById($form->doctor);
                 if (!empty($doctor_info)) {

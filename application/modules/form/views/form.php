@@ -4,9 +4,6 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-
-
-
         <section class="col-md-5 no-print">
             <header class="panel-heading no-print">
                 <?php
@@ -250,22 +247,13 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-8 panel">
-                                </div>
-
-
-
                             </div>
-
-
-
-
-
-
-
-
-
+                            <div class="">
+                                <div class="col-md-12 form pad_bot">
+                                    <label for="exampleInputEmail1"><?php echo lang('name'); ?></label>
+                                    <input type="text" class="form-control" name="form_name" value='' placeholder="<?php echo lang('form_report_name'); ?>">
+                                </div>
+                            </div>
                             <div class="col-md-12 form pad_bot">
                                 <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
                                 <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10"><?php
@@ -293,7 +281,6 @@
                             }
                             ?>'>
 
-
                             <div class="col-md-12 form"> 
                                 <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
                             </div>
@@ -302,18 +289,7 @@
                     </div>
                 </div>
             </div>
-
-
-
         </section>
-
-
-
-
-
-
-
-
 
         <section class="col-md-7">
             <header class="panel-heading">
@@ -335,6 +311,7 @@
                         <thead>
                             <tr>
                                 <th><?php echo lang('report_id'); ?></th>
+                                <th><?php echo lang('name'); ?></th>
                                 <th><?php echo lang('patient'); ?></th>
                                 <th><?php echo lang('date'); ?></th>
                                 <th class=""><?php echo lang('options'); ?></th>

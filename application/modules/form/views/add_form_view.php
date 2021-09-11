@@ -244,21 +244,13 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-8 panel">
-                                </div>
-
-
-
                             </div>
-
-
-
-
-
-
-
-
+                            <div class="">
+                                <div class="col-md-12 form pad_bot">
+                                    <label for="exampleInputEmail1"><?php echo lang('name'); ?></label>
+                                    <input type="text" class="form-control" name="form_name" value='' placeholder="<?php echo lang('form_report_name'); ?>">
+                                </div>
+                            </div>
 
                             <div class="col-md-12 form pad_bot">
                                 <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
@@ -540,7 +532,13 @@
                             </h4>
                             <img alt="" src="<?php echo $this->settings_model->getSettings()->logo; ?>" width="200" height="100">
                             <h4 style="font-weight: bold; margin-top: 20px; text-transform: uppercase;">
-                                 <?php echo lang('form_report') ?>
+                                <?php
+                                    if (!empty($form->name)) {
+                                        echo $form->name;
+                                    } else {
+                                        echo lang('form_report');
+                                    }
+                                ?>
                                 <hr style="width: 200px; border-bottom: 1px solid #000; margin-top: 5px; margin-bottom: 5px;">
                             </h4>
                         </div>

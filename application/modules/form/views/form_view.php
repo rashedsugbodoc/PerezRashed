@@ -4,11 +4,6 @@
         <!-- invoice start-->
         <section class="col-md-6">
 
-
-
-
-
-
             <style>
 
                 th{
@@ -104,22 +99,9 @@
                     padding: 5px 10px;
                 }
 
-
-
                 .btn{
                     margin: 10px 10px 10px 0px;
                 }
-
-
-
-
-
-
-
-
-
-
-
 
                 @media print {
 
@@ -154,8 +136,6 @@
 
                     }
 
-
-
                     .wrapper{
                         border: 2px solid #777;
                     }
@@ -170,13 +150,9 @@
 
                     }
 
-
-
                     .table.main{
                         margin-top: -50px;
                     }
-
-
 
                     .control-label{
                         margin-bottom: 0px;
@@ -215,20 +191,9 @@
                     .site-min-height {
                         min-height: 950px;
                     }
-
-
-
-
                 }
 
             </style>
-
-
-
-
-
-
-
 
             <div class="panel panel-primary" id="form">
                 <!--<div class="panel-heading navyblue"> INVOICE</div>-->
@@ -249,14 +214,16 @@
                             </h4>
                             <img alt="" src="<?php echo $this->settings_model->getSettings()->logo; ?>" width="200" height="100">
                             <h4 style="font-weight: bold; margin-top: 20px; text-transform: uppercase;">
-                                <?php echo lang('form_report') ?>
+                                <?php
+                                    if (!empty($form->name)) {
+                                        echo $form->name;
+                                    } else {
+                                        echo lang('form_report');
+                                    }
+                                ?>
                                 <hr style="width: 200px; border-bottom: 1px solid #000; margin-top: 5px; margin-bottom: 5px;">
                             </h4>
                         </div>
-
-
-
-
 
                         <div class="col-md-12">
                             <div class="col-md-6 pull-left row" style="text-align: left;">
@@ -309,8 +276,6 @@
                                         </span>
                                     </p>
                                 </div>
-
-
                             </div>
 
                             <div class="col-md-6 pull-right" style="text-align: left;">
@@ -360,10 +325,7 @@
                             </div>
                         </div>
                         <br>
-
                     </div> 
-
-
                     <div class="col-md-12 panel-body">
                         <?php
                         if (!empty($form->report)) {
@@ -371,18 +333,10 @@
                         }
                         ?>
                     </div>
-
-
                 </div>
             </div>
-
-
-
         </section>
-
-
         <section class="col-md-6">
-
             <div class="col-md-5 no-print" style="margin-top: 20px;">
                 <div class="text-center col-md-12 row">
                     <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>

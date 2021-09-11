@@ -192,31 +192,31 @@ class Form_model extends CI_model {
      function insertTemplate($data) {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
-        $this->db->insert('template', $data2);
+        $this->db->insert('form_template', $data2);
     }
 
     function getTemplate() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
-        $query = $this->db->get('template');
+        $query = $this->db->get('form_template');
         return $query->result();
     }
     
       function updateTemplate($id, $data) {
         $this->db->where('id', $id);
-        $this->db->update('template', $data);
+        $this->db->update('form_template', $data);
     }
     
     function getTemplateById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('template');
+        $query = $this->db->get('form_template');
         return $query->row();
     }
     
      function deletetemplate($id) {
         $this->db->where('id', $id);
-        $this->db->delete('template');
+        $this->db->delete('form_template');
     }
 
 }
