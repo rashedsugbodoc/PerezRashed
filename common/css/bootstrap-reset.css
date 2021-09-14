@@ -8,10 +8,7 @@ a:hover {
 }
 
 /*panel*/
-.panel {
-    border: none;
-    box-shadow: none;
-}
+
 
 .panel-heading {
     background: #fff;
@@ -603,7 +600,7 @@ a.logo {
 
 .weather-bg .panel-body{
     background: #39B27C;
-    background: #777 !important;
+    background: #4454c3 !important;
     padding: 10px !important;
 }
 
@@ -624,7 +621,6 @@ a.logo {
     color: #777;
    // color: #428BCA !important;
     padding-left: 14px;
-    margin: 20px 0px 0px 0px;
     font-weight: 500;
   //  font-weight: bold;
     font-family: 'proxima nova',proxima-nova,'-apple-system',BlinkMacSystemFont,'Segoe UI','open sans',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji';
