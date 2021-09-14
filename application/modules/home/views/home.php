@@ -507,29 +507,15 @@
                             <?php if (in_array('finance', $this->modules)) { ?>
                                 <div class="col-lg-8 col-sm-12">
                                     <div id="chart_div" class="panel" style=""></div>
-
                                 </div>
-
                                 <div class="col-lg-4 col-sm-6">
-
                                     <div id="piechart_3d" class="panel" style=""></div>
                                 </div>
-
-
                             <?php } ?>
-
                         <?php } ?>
-
-
-
                     </div>
 
-
-
-
-
                     <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
-
                         <?php if (in_array('appointment', $this->modules)) { ?>
                             <div class="col-lg-5 col-sm-6">
                                 <div id="donutchart" class="panel" style=""></div>
@@ -542,9 +528,8 @@
                                     <header class="panel-heading">
                                         <?php echo lang('notice'); ?>
                                     </header>
-                                    <div class="panel col-md-12">
-                                        <div class="task-content panel">
-                                            <ul class="task-list">
+                                    <div class="panel-body">
+                                        <div class="task-content">
                                                 <table class="table table-striped table-hover table-bordered" id="editable-sample">
                                                     <thead>
                                                         <tr>
@@ -562,9 +547,7 @@
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>
-                                            </ul>
-
-                                            <div class="panel col-md-12 add-task-row">
+                                            <div class="col-md-12 add-task-row">
                                                 <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                                                     <a class="btn btn-success btn-sm pull-left" href="notice/addNewView"><?php echo lang('add'); ?> <?php echo lang('notice'); ?></a>
                                                 <?php } ?>

@@ -132,7 +132,7 @@
                         <input type="hidden" name="id" value=''>
 
                         <div class="form-group col-md-12">
-                            <button type="submit" name="submit" class="btn btn-info col-md-3 pull-right"><i class="fa fa-location-arrow"></i> <?php echo lang('send_email'); ?></button>
+                            <button type="submit" name="submit" class="btn btn-info pull-right"><i class="fa fa-location-arrow"></i> <?php echo lang('send_email'); ?></button>
                         </div>
 
                     </form>

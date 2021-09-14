@@ -3,81 +3,73 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="col-md-5">
-            <header class="panel-heading">
-                <?php echo lang('add'); ?> <?php echo lang('case'); ?> 
-            </header> 
+        <div class="row">
+            <section class="col-md-5">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php echo lang('add'); ?> <?php echo lang('case'); ?> 
+                    </header> 
 
-            <div class=""> 
-                <form role="form" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data">
-                    <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
-                        <input type="text" class="form-control form-control-inline input-medium default-date-picker" name="date" id="exampleInputEmail1" value='' placeholder="" readonly="" required="">
+                    <div class=""> 
+                        <form role="form" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data">
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
+                                <input type="text" class="form-control form-control-inline input-medium default-date-picker" name="date" id="exampleInputEmail1" value='' placeholder="" readonly="" required="">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
+                                <select class="form-control m-bot15" id="patientchoose" name="patient_id" value=''>
+
+                                </select>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="exampleInputEmail1"><?php echo lang('title'); ?></label>
+                                <input type="text" class="form-control form-control-inline input-medium" name="title" id="exampleInputEmail1" value='' placeholder="">
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label class=""><?php echo lang('case'); ?></label>
+                                <textarea class="form-control ckeditor" name="description" value="" rows="70" cols="70"></textarea>
+                            </div>
+                            <input type="hidden" name="redirect" value='patient/caseList'>
+                            <section class="col-md-12">
+                                <button type="submit" name="submit" class="btn btn-info submit_button pull-right"><?php echo lang('submit'); ?></button>
+                            </section>
+                        </form>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
-                        <select class="form-control m-bot15" id="patientchoose" name="patient_id" value=''>
-
-                        </select>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="exampleInputEmail1"><?php echo lang('title'); ?></label>
-                        <input type="text" class="form-control form-control-inline input-medium" name="title" id="exampleInputEmail1" value='' placeholder="">
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label class=""><?php echo lang('case'); ?></label>
-                        <textarea class="form-control ckeditor" name="description" value="" rows="70" cols="70"></textarea>
-                    </div>
-                    <input type="hidden" name="redirect" value='patient/caseList'>
-                    <section class="col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info submit_button pull-right"><?php echo lang('submit'); ?></button>
-                    </section>
-                </form>
-            </div>
-
-        </section>
-
-
-        <section class="col-md-7">
-            <header class="panel-heading">
-                <?php echo lang('all'); ?> <?php echo lang('case'); ?>
-            </header> 
-            <div class="panel-body"> 
-
-                <div class="adv-table editable-table">
-                    <table class="table table-striped table-hover table-bordered" id="editable-sample">
-                        <thead>
-                            <tr>
-                                <th style="width: 10%"><?php echo lang('date'); ?></th>
-                                <th style="width: 15%"><?php echo lang('patient'); ?></th>
-                                <th style="width: 15%"><?php echo lang('case'); ?> <?php echo lang('title'); ?></th>
-                                <th style="width: 10%;" class="no-print"><?php echo lang('options'); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
                 </div>
-            </div>
+            </section>
+            <section class="col-md-7">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php echo lang('all'); ?> <?php echo lang('case'); ?>
+                    </header> 
+                    <div class="panel-body"> 
 
-        </section>
+                        <div class="adv-table editable-table">
+                            <table class="table table-striped table-hover table-bordered" id="editable-sample">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%"><?php echo lang('date'); ?></th>
+                                        <th style="width: 15%"><?php echo lang('patient'); ?></th>
+                                        <th style="width: 15%"><?php echo lang('case'); ?> <?php echo lang('title'); ?></th>
+                                        <th style="width: 10%;" class="no-print"><?php echo lang('options'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-
-
-
-
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <!-- page end-->        
     </section>
-    <!-- page end-->
 </section>
 </section>
 <!--main content end-->
 <!--footer start-->
-
-
-
-
-
 
 <!-- Add Department Modal-->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -203,14 +195,14 @@
                     </div>
 
 
-                    <div class="panel col-md-12">
+                    <div class="col-md-12">
                         <h5 class="pull-right">
                             <?php echo $settings->title . '<br>' . $settings->address; ?>
                         </h5>
                     </div>
 
 
-                    <div class="panel col-md-12 no-print">
+                    <div class="col-md-12 no-print">
                         <a class="btn btn-info invoice_button pull-right" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
                     </div>
 

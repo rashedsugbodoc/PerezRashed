@@ -4,322 +4,309 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="no-print col-md-8">
-            <header class="panel-heading">
-                <?php echo lang('payment_history'); ?>
+        <div class="row">
+            <section class="no-print col-md-8">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php echo lang('payment_history'); ?>
 
 
 
-                <div class="panel-body no-print pull-right">
-                    <a data-toggle="modal" href="#" onclick="openModal()">
-                        <div class="btn-group">
-                            <button id="" class="btn btn-xs green">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('deposit'); ?>
-                            </button>
-                        </div>
-                    </a>   
-                </div>
-
-                <div class="panel-body no-print pull-right">
-                    <a data-toggle="modal" href="#myModal5">
-                        <div class="btn-group">
-                            <button id="" class="btn btn-xs green">
-                                <i class="fa fa-file"></i> <?php echo lang('invoice'); ?>
-                            </button>
-                        </div>
-                    </a>   
-                </div>
-
-                <div class="panel-body no-print pull-right">
-                    <a href="finance/addPaymentByPatientView?id=<?php echo $patient->id; ?>&type=gen">
-                        <div class="btn-group">
-                            <button id="" class="btn btn-xs green">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_payment'); ?>
-                            </button>
-                        </div>
-                    </a>     
-                </div>
-
-            </header>
-            <div class=" panel-body">
-                <div class="adv-table editable-table ">
-
-
-                    <section class="col-md-12 no-print row">
-                        <form role="form" class="f_report" action="/finance/patientPaymentHistory" method="post" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <!--     <label class="control-label col-md-3">Date Range</label> -->
-                                <div class="col-md-6">
-                                    <div class="input-group input-large" data-date="13/07/2013" data-date-format="mm/dd/yyyy">
-                                        <input type="text" class="form-control dpd1" name="date_from" value="<?php
-                                        if (!empty($date_from)) {
-                                            echo date('m/d/Y', $date_from);
-                                        }
-                                        ?>" placeholder="<?php echo lang('date_from'); ?>" readonly="">
-                                        <span class="input-group-addon"><?php echo lang('to'); ?></span>
-                                        <input type="text" class="form-control dpd2" name="date_to" value="<?php
-                                        if (!empty($date_to)) {
-                                            echo date('m/d/Y', $date_to);
-                                        }
-                                        ?>" placeholder="<?php echo lang('date_to'); ?>" readonly="">
-                                        <input type="hidden" class="form-control dpd2" name="patient" value="<?php echo $patient->id; ?>">
-                                    </div>
-                                    <div class="row"></div>
-                                    <span class="help-block"></span> 
+                        <div class="panel-body no-print pull-right">
+                            <a data-toggle="modal" href="#" onclick="openModal()">
+                                <div class="btn-group">
+                                    <button id="" class="btn btn-xs green">
+                                        <i class="fa fa-plus-circle"></i> <?php echo lang('deposit'); ?>
+                                    </button>
                                 </div>
-                                <div class="col-md-6 no-print">
-                                    <button type="submit" name="submit" class="btn btn-info range_submit"><?php echo lang('submit'); ?></button>
-                                </div>
-                            </div>
-                        </form>
-                    </section>
+                            </a>   
+                        </div>
 
-                    <header class="panel-heading col-md-12 row">
-                        <?php echo lang('all_bills'); ?> & <?php echo lang('deposits'); ?>
+                        <div class="panel-body no-print pull-right">
+                            <a data-toggle="modal" href="#myModal5">
+                                <div class="btn-group">
+                                    <button id="" class="btn btn-xs green">
+                                        <i class="fa fa-file"></i> <?php echo lang('invoice'); ?>
+                                    </button>
+                                </div>
+                            </a>   
+                        </div>
+
+                        <div class="panel-body no-print pull-right">
+                            <a href="finance/addPaymentByPatientView?id=<?php echo $patient->id; ?>&type=gen">
+                                <div class="btn-group">
+                                    <button id="" class="btn btn-xs green">
+                                        <i class="fa fa-plus-circle"></i> <?php echo lang('add_payment'); ?>
+                                    </button>
+                                </div>
+                            </a>     
+                        </div>
+
                     </header>
-                    <div class="space15"></div>
-                    <table class="table table-striped table-hover table-bordered" id="editable-samples">
-                        <thead>
-                            <tr>
-                                <th class=""><?php echo lang('date'); ?></th>
-                                <th class=""><?php echo lang('invoice'); ?> #</th>
-                                <th class=""><?php echo lang('bill_amount'); ?></th>
-                                <th class=""><?php echo lang('deposit'); ?></th>
-                                <th class=""><?php echo lang('deposit_type'); ?></th>
-                                <th class="no-print"><?php echo lang('options'); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                    <div class=" panel-body">
+                        <div class="adv-table editable-table ">
+                            <section class="col-md-12 no-print row">
+                                <form role="form" class="f_report" action="/finance/patientPaymentHistory" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <!--     <label class="control-label col-md-3">Date Range</label> -->
+                                        <div class="col-md-8">
+                                            <div class="input-group input-large" data-date="13/07/2013" data-date-format="mm/dd/yyyy">
+                                                <input type="text" class="form-control dpd1" name="date_from" value="<?php
+                                                if (!empty($date_from)) {
+                                                    echo date('m/d/Y', $date_from);
+                                                }
+                                                ?>" placeholder="<?php echo lang('date_from'); ?>" readonly="">
+                                                <span class="input-group-addon"><?php echo lang('to'); ?></span>
+                                                <input type="text" class="form-control dpd2" name="date_to" value="<?php
+                                                if (!empty($date_to)) {
+                                                    echo date('m/d/Y', $date_to);
+                                                }
+                                                ?>" placeholder="<?php echo lang('date_to'); ?>" readonly="">
+                                                <input type="hidden" class="form-control dpd2" name="patient" value="<?php echo $patient->id; ?>">
+                                            </div>
+                                            <span class="help-block"></span> 
+                                        </div>
+                                        <div class="col-md-4 no-print">
+                                            <button type="submit" name="submit" class="btn btn-info range_submit"><?php echo lang('submit'); ?></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </section>
 
-                        <style>
-
-                            .img_url{
-                                height:20px;
-                                width:20px;
-                                background-size: contain; 
-                                max-height:20px;
-                                border-radius: 100px;
-                            }
-                            .option_th{
-                                width:33%;
-                            }
-
-                        </style>
-
-                        <?php
-                        $dates = array();
-                        $datess = array();
-                        foreach ($payments as $payment) {
-                            $dates[] = $payment->date;
-                        }
-                        foreach ($deposits as $deposit) {
-                            $datess[] = $deposit->date;
-                        }
-                        $dat = array_merge($dates, $datess);
-                        $dattt = array_unique($dat);
-                        asort($dattt);
-
-                        $total_pur = array();
-
-                        $total_p = array();
-                        ?>
-
-                        <?php
-                        foreach ($dattt as $key => $value) {
-                            foreach ($payments as $payment) {
-                                if ($payment->date == $value) {
-                                    ?>
-                                    <tr class="">
-                                        <td><?php echo date('d-m-y', $payment->date); ?></td>
-                                        <td> <?php echo $payment->id; ?></td>
-                                        <td><?php echo $settings->currency; ?> <?php echo $payment->gross_total; ?></td>
-                                        <td><?php
-                                            if (!empty($payment->amount_received)) {
-                                                echo $settings->currency;
-                                            }
-                                            ?> <?php echo $payment->amount_received; ?>
-                                        </td>
-
-                                        <td> <?php echo $payment->deposit_type; ?></td>
-
-
-
-                                        <td  class="no-print"> 
-                                            <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
-                                                <a class="btn-xs btn-info" title="<?php echo lang('edit'); ?>" style="width: 25%;" href="finance/editPayment?id=<?php echo $payment->id; ?>"><i class="fa fa-edit"> </i></a>
-                                            <?php } ?>
-                                            <a class="btn-xs invoicebutton" title="<?php echo lang('invoice'); ?>" style="color: #fff; width: 25%;" href="finance/invoice?id=<?php echo $payment->id; ?>"><i class="fa fa-file-invoice"></i> </a>
-                                            <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?> 
-                                                <a class="btn-xs btn-danger delete_button" title="<?php echo lang('delete'); ?>" style="width: 25%;"  href="finance/delete?id=<?php echo $payment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                            <?php } ?>
-                                            </button>
-                                        </td>
+                            <header class="panel-heading col-md-12 row">
+                                <?php echo lang('all_bills'); ?> & <?php echo lang('deposits'); ?>
+                            </header>
+                            <div class="space15"></div>
+                            <table class="table table-striped table-hover table-bordered" id="editable-samples">
+                                <thead>
+                                    <tr>
+                                        <th class=""><?php echo lang('date'); ?></th>
+                                        <th class=""><?php echo lang('invoice'); ?> #</th>
+                                        <th class=""><?php echo lang('bill_amount'); ?></th>
+                                        <th class=""><?php echo lang('deposit'); ?></th>
+                                        <th class=""><?php echo lang('deposit_type'); ?></th>
+                                        <th class="no-print"><?php echo lang('options'); ?></th>
                                     </tr>
+                                </thead>
+                                <tbody>
+
+                                <style>
+
+                                    .img_url{
+                                        height:20px;
+                                        width:20px;
+                                        background-size: contain; 
+                                        max-height:20px;
+                                        border-radius: 100px;
+                                    }
+                                    .option_th{
+                                        width:33%;
+                                    }
+
+                                </style>
+
+                                <?php
+                                $dates = array();
+                                $datess = array();
+                                foreach ($payments as $payment) {
+                                    $dates[] = $payment->date;
+                                }
+                                foreach ($deposits as $deposit) {
+                                    $datess[] = $deposit->date;
+                                }
+                                $dat = array_merge($dates, $datess);
+                                $dattt = array_unique($dat);
+                                asort($dattt);
+
+                                $total_pur = array();
+
+                                $total_p = array();
+                                ?>
+
+                                <?php
+                                foreach ($dattt as $key => $value) {
+                                    foreach ($payments as $payment) {
+                                        if ($payment->date == $value) {
+                                            ?>
+                                            <tr class="">
+                                                <td><?php echo date('d-m-y', $payment->date); ?></td>
+                                                <td> <?php echo $payment->id; ?></td>
+                                                <td><?php echo $settings->currency; ?> <?php echo $payment->gross_total; ?></td>
+                                                <td><?php
+                                                    if (!empty($payment->amount_received)) {
+                                                        echo $settings->currency;
+                                                    }
+                                                    ?> <?php echo $payment->amount_received; ?>
+                                                </td>
+
+                                                <td> <?php echo $payment->deposit_type; ?></td>
+
+
+
+                                                <td  class="no-print"> 
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
+                                                        <a class="btn-xs btn-info" title="<?php echo lang('edit'); ?>" style="width: 25%;" href="finance/editPayment?id=<?php echo $payment->id; ?>"><i class="fa fa-edit"> </i></a>
+                                                    <?php } ?>
+                                                    <a class="btn-xs invoicebutton" title="<?php echo lang('invoice'); ?>" style="color: #fff; width: 25%;" href="finance/invoice?id=<?php echo $payment->id; ?>"><i class="fa fa-file-invoice"></i> </a>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?> 
+                                                        <a class="btn-xs btn-danger delete_button" title="<?php echo lang('delete'); ?>" style="width: 25%;"  href="finance/delete?id=<?php echo $payment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                    <?php } ?>
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+
 
                                     <?php
-                                }
-                            }
-                            ?>
+                                    foreach ($deposits as $deposit) {
+                                        if ($deposit->date == $value) {
+                                            if (!empty($deposit->deposited_amount) && empty($deposit->amount_received_id)) {
+                                                ?>
 
-
-                            <?php
-                            foreach ($deposits as $deposit) {
-                                if ($deposit->date == $value) {
-                                    if (!empty($deposit->deposited_amount) && empty($deposit->amount_received_id)) {
-                                        ?>
-
-                                        <tr class="">
-                                            <td><?php echo date('d-m-y', $deposit->date); ?></td>
-                                            <td><?php echo $deposit->payment_id; ?></td>
-                                            <td></td>
-                                            <td><?php echo $settings->currency; ?> <?php echo $deposit->deposited_amount; ?></td>
-                                            <td> <?php echo $deposit->deposit_type; ?></td>  
-                                            <td  class="no-print"> 
-                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
-                                                    <button type="button" class="btn-xs btn-info editbutton" title="<?php echo lang('edit'); ?>" style="width: 25%;" data-toggle="modal" data-id="<?php echo $deposit->id; ?>"><i class="fa fa-edit"></i> </button> 
-                                                <?php } ?>
-                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?> 
-                                                    <a class="btn-xs btn-danger delete_button" title="<?php echo lang('delete'); ?>" style="width: 25%;" href="finance/deleteDeposit?id=<?php echo $deposit->id; ?>&patient=<?php echo $patient->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
-                                                <?php } ?>
-                                            </td>
-                                        </tr>
-                                        <?php
-                                    }
-                                }
-                            }
-                            ?>
-                        <?php } ?>
-
-
-
-                        </tbody>
-
-                    </table>
-                </div>
-            </div>
-
-        </section>
-
-
-        <section class="no-print col-md-4">
-            <header class="panel-heading">
-                <?php echo lang(''); ?>
-            </header>
-
-            <div class="">
-                <section class="m_t">
-                    <div class="panel-body profile">
-                        <div class="task-thumb-details">
-                            <?php echo lang('patient'); ?> <?php echo lang('name'); ?>: <h1><a href="#"><?php echo $patient->name; ?></a></h1> <br>
-                            <?php echo lang('address'); ?>: <p> <?php echo $patient->address; ?></p>
-                        </div>
-                    </div>
-                    <table class="table table-hover personal-task">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <i class=" fa fa-envelope"></i>
-                                </td>
-                                <td><?php echo $patient->email; ?></td>
-
-                            </tr>
-                            <tr>
-                                <td>
-                                    <i class="fa fa-phone"></i>
-                                </td>
-                                <td><?php echo $patient->phone; ?></td>
-
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </section>
-
-                <?php
-                $total_bill = array();
-                foreach ($payments as $payment) {
-                    $total_bill[] = $payment->gross_total;
-                }
-                if (!empty($total_bill)) {
-                    $total_bill = array_sum($total_bill);
-                } else {
-                    $total_bill = 0;
-                }
-                ?>
-
-
-
-
-
-
-                <section class="panel">
-                    <div class="weather-bg">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <i class="fa fa-money"></i>
-                                    <?php echo lang('total_bill_amount'); ?>
-                                </div>
-                                <div class="col-xs-8">
-                                    <div class="degree">
-                                        <?php echo $settings->currency; ?>
-                                        <?php echo $total_payable_bill = $total_bill; ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="panel">
-                    <div class="weather-bg">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <i class="fa fa-money"></i>
-                                    <?php echo lang('total_deposit_amount'); ?>
-                                </div>
-                                <div class="col-xs-8">
-                                    <div class="degree">
-                                        <?php echo $settings->currency; ?>
-                                        <?php
-                                        $total_deposit = array();
-                                        foreach ($deposits as $deposit) {
-                                            $total_deposit[] = $deposit->deposited_amount;
+                                                <tr class="">
+                                                    <td><?php echo date('d-m-y', $deposit->date); ?></td>
+                                                    <td><?php echo $deposit->payment_id; ?></td>
+                                                    <td></td>
+                                                    <td><?php echo $settings->currency; ?> <?php echo $deposit->deposited_amount; ?></td>
+                                                    <td> <?php echo $deposit->deposit_type; ?></td>  
+                                                    <td  class="no-print"> 
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
+                                                            <button type="button" class="btn-xs btn-info editbutton" title="<?php echo lang('edit'); ?>" style="width: 25%;" data-toggle="modal" data-id="<?php echo $deposit->id; ?>"><i class="fa fa-edit"></i> </button> 
+                                                        <?php } ?>
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?> 
+                                                            <a class="btn-xs btn-danger delete_button" title="<?php echo lang('delete'); ?>" style="width: 25%;" href="finance/deleteDeposit?id=<?php echo $deposit->id; ?>&patient=<?php echo $patient->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
+                                                        <?php } ?>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
                                         }
-                                        echo array_sum($total_deposit);
-                                        ?>
+                                    }
+                                    ?>
+                                <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>                
+                </div>
+            </section>
+
+
+            <section class="no-print col-md-4">
+                <div class="panel">
+
+
+                    <div class="">
+                        <section class="m_t">
+                            <div class="panel-body profile">
+                                <div class="task-thumb-details">
+                                    <?php echo lang('patient'); ?> <?php echo lang('name'); ?>: <h1><a href="#"><?php echo $patient->name; ?></a></h1> <br>
+                                    <?php echo lang('address'); ?>: <p> <?php echo $patient->address; ?></p>
+                                </div>
+                            </div>
+                            <table class="table table-hover personal-task">
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <i class=" fa fa-envelope"></i>
+                                        </td>
+                                        <td><?php echo $patient->email; ?></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <i class="fa fa-phone"></i>
+                                        </td>
+                                        <td><?php echo $patient->phone; ?></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </section>
+
+                        <?php
+                        $total_bill = array();
+                        foreach ($payments as $payment) {
+                            $total_bill[] = $payment->gross_total;
+                        }
+                        if (!empty($total_bill)) {
+                            $total_bill = array_sum($total_bill);
+                        } else {
+                            $total_bill = 0;
+                        }
+                        ?>
+                        <section class="">
+                            <div class="weather-bg">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <i class="fa fa-money"></i>
+                                            <?php echo lang('total_bill_amount'); ?>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <div class="degree">
+                                                <?php echo $settings->currency; ?>
+                                                <?php echo $total_payable_bill = $total_bill; ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </section>
+                        </section>
 
-                <section class="panel red"  style="border: 2px solid red; color: red;">
-                    <div class="weather-bg">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                    <i class="fa fa-money"></i>
-                                    <?php echo lang('due_amount'); ?>
-                                </div>
-                                <div class="col-xs-8">
-                                    <div class="degree">
-                                        <?php echo $settings->currency; ?>
-                                        <?php
-                                        echo $total_payable_bill - array_sum($total_deposit);
-                                        ?>
+                        <section class="">
+                            <div class="weather-bg">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <i class="fa fa-money"></i>
+                                            <?php echo lang('total_deposit_amount'); ?>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <div class="degree">
+                                                <?php echo $settings->currency; ?>
+                                                <?php
+                                                $total_deposit = array();
+                                                foreach ($deposits as $deposit) {
+                                                    $total_deposit[] = $deposit->deposited_amount;
+                                                }
+                                                echo array_sum($total_deposit);
+                                                ?>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </section>
+
+                        <section class=" red"  style="border: 2px solid red; color: red;">
+                            <div class="weather-bg">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-4">
+                                            <i class="fa fa-money"></i>
+                                            <?php echo lang('due_amount'); ?>
+                                        </div>
+                                        <div class="col-xs-8">
+                                            <div class="degree">
+                                                <?php echo $settings->currency; ?>
+                                                <?php
+                                                echo $total_payable_bill - array_sum($total_deposit);
+                                                ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
-                </section>
+                </div>
 
-
-            </div>
-        </section>
+            </section>
+        </div>
         <!-- page end-->
     </section>
 </section>

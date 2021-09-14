@@ -5,475 +5,436 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="col-md-3">
-            <header class="panel-heading clearfix">
-                <div class="">
-                    <?php echo lang('patient'); ?> <?php echo lang('info'); ?> 
-                </div>
-
-            </header> 
-
-
-
-
-            <aside class="profile-nav">
-                <section class="">
-                    <div class="user-heading round">
-                        <?php if (!empty($patient->img_url)) { ?>
-                            <a href="#">
-                                <img src="<?php echo $patient->img_url; ?>" alt="">
-                            </a>
-                        <?php } ?>
-                        <h1> <?php echo $patient->name; ?> </h1>
-                        <p> <?php echo $patient->email; ?> </p>
-                        <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                            <button type="button" class="btn btn-info btn-xs btn_width editPatient" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $patient->id; ?>"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></button>  
-                        <?php } ?>
-                    </div>
-
-                    <ul class="nav nav-pills nav-stacked">
-                      <!--  <li class="active"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?><span class="label pull-right r-activity"><?php echo $patient->name; ?></span></li> -->
-                        <li>  <?php echo lang('patient_id'); ?> <span class=" pull-right "><?php echo $patient->id; ?></span></li>
-                        <li>  <?php echo lang('gender'); ?><span class=" pull-right "><?php echo $patient->sex; ?></span></li>
-                        <li>  <?php echo lang('birth_date'); ?><span class=" pull-right "><?php echo $patient->birthdate; ?></span></li>
-                        <li>  <?php echo lang('phone'); ?><span class=" pull-right "><?php echo $patient->phone; ?></span></li>
-                        <li>  <?php echo lang('email'); ?><span class="pull-right "><?php echo $patient->email; ?></span></li>
-                        <li style="height: 200px;">  <?php echo lang('address'); ?><span class="pull-right" style="height: 200px;"><?php echo $patient->address; ?></span></li>
-
-                    </ul>
-
-                </section>
-            </aside>
-
-
-        </section>
-
-
-
-
-
-        <section class="col-md-9">
-            <header class="panel-heading clearfix">
-                <div class="col-md-7">
-                    <?php echo lang('history'); ?> | <?php echo $patient->name; ?>
-                </div>
-                
-            </header>
-
-            <section class="panel-body">   
-                <header class="panel-heading tab-bg-dark-navy-blueee">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a data-toggle="tab" href="#appointments"><?php echo lang('appointments'); ?></a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#home"><?php echo lang('case_history'); ?></a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#about"><?php echo lang('prescription'); ?></a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#lab"><?php echo lang('lab'); ?></a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#profile"><?php echo lang('documents'); ?></a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#contact"><?php echo lang('bed'); ?></a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#timeline"><?php echo lang('timeline'); ?></a> 
-                        </li>
-                    </ul>
-                </header>
+        <div class="row">
+            <section class="col-md-3">
                 <div class="panel">
-                    <div class="tab-content">
-                        <div id="appointments" class="tab-pane active">
-                            <div class="">
-                                <?php if (!$this->ion_auth->in_group('Patient')) { ?>
-                                    <div class=" no-print">
-                                        <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
-                                            <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
-                                        </a>
-                                    </div>
-                                <?php } else { ?>
-                                    <div class=" no-print">
-                                        <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
-                                            <i class="fa fa-plus-circle"> </i> <?php echo lang('request_a_appointment'); ?> 
-                                        </a>
-                                    </div>
-                                <?php } ?>
-                                <div class="adv-table editable-table ">
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-                                                <th><?php echo lang('date'); ?></th>
-                                                <th><?php echo lang('time_slot'); ?></th>
-                                                <th><?php echo lang('doctor'); ?></th>
-                                                <th><?php echo lang('status'); ?></th>
-                                                <?php if (!$this->ion_auth->in_group('Patient')) { ?>
-                                                    <th class="no-print"><?php echo lang('options'); ?></th>
-                                                <?php } ?>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($appointments as $appointment) { ?>
-                                                <tr class="">
-
-                                                    <td><?php echo date('d-m-Y', $appointment->date); ?></td>
-                                                    <td><?php echo $appointment->time_slot; ?></td>
-                                                    <td>
-                                                        <?php
-                                                        $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
-                                                        if (!empty($doctor_details)) {
-                                                            $appointment_doctor = $doctor_details->name;
-                                                        } else {
-                                                            $appointment_doctor = '';
-                                                        }
-                                                        echo $appointment_doctor;
-                                                        ?>
-                                                    </td>
-                                                    <td><?php echo $appointment->status; ?></td>
-                                                    <?php if (!$this->ion_auth->in_group('Patient')) { ?>
-                                                        <td class="no-print">
-                                                            <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                                            <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                        </td>
-                                                    <?php } ?>
-                                                </tr>
-                                            <?php } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="home" class="tab-pane">
-                            <div class="">
-
-                                <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                    <div class=" no-print">
-                                        <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModal">
-                                            <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
-                                        </a>
-                                    </div>
-                                <?php } ?>
-
-                                <div class="adv-table editable-table ">
-
-
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-                                                <th><?php echo lang('date'); ?></th>
-                                                <th><?php echo lang('title'); ?></th>
-                                                <th><?php echo lang('description'); ?></th>
-                                                <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                    <th class="no-print"><?php echo lang('options'); ?></th>
-                                                <?php } ?>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($medical_histories as $medical_history) { ?>
-                                                <tr class="">
-
-                                                    <td><?php echo date('d-m-Y', $medical_history->date); ?></td>
-                                                    <td><?php echo $medical_history->title; ?></td>
-                                                    <td><?php echo $medical_history->description; ?></td>
-                                                    <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                        <td class="no-print">
-                                                            <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                                            <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                        </td>
-                                                    <?php } ?>
-                                                </tr>
-                                            <?php } ?>
-                                        </tbody>
-                                    </table>
-
-
-
-
-                                    <!--
-                                                                        <form role="form" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data">
-                                                                            <div class="form-group col-md-12">
-                                                                                <label class=""> <?php echo lang('case'); ?> <?php echo lang('history'); ?></label>
-                                                                                <div class="">
-                                                                                    <textarea class="ckeditor form-control" name="description" id="description" value="" rows="100" cols="50">      
-                                    <?php foreach ($medical_histories as $medical_history) { ?>         
-                                                                                                                                                                                                <td><?php echo $medical_history->description; ?></td>
-                                    <?php } ?>
-                                                                                    </textarea>
-                                                                                </div>
-                                                                            </div>
-                                    
-                                                                            <input type="hidden" name="patient_id" value='<?php echo $patient->id; ?>'>
-                                                                            <input type="hidden" name="id" value='<?php echo $medical_history->id ?>'>
-                                                                            <div class="form-group col-md-12">
-                                                                                <button type="submit" name="submit" class="btn btn-info submit_button pull-right"><?php echo lang('save'); ?></button>
-                                                                            </div>
-                                                                        </form>
-                                    
-                                    -->
-
-
-
-                                </div>
-                            </div>
-                        </div>
-                        <div id="about" class="tab-pane"> <div class="">
-                                <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
-                                    <div class=" no-print">
-                                        <a class="btn btn-info btn_width btn-xs" href="prescription/addPrescriptionView">
-                                            <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
-                                        </a>
-                                    </div>
-                                <?php } ?>
-                                <div class="adv-table editable-table ">
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-
-                                                <th><?php echo lang('date'); ?></th>
-                                                <th><?php echo lang('doctor'); ?></th>
-                                                <th><?php echo lang('medicine'); ?></th>
-                                                <th class="no-print"><?php echo lang('options'); ?></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($prescriptions as $prescription) { ?>
-                                                <tr class="">
-                                                    <td><?php echo date('m/d/Y', $prescription->date); ?></td>
-                                                    <td>
-                                                        <?php
-                                                        $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);
-                                                        if (!empty($doctor_details)) {
-                                                            $prescription_doctor = $doctor_details->name;
-                                                        } else {
-                                                            $prescription_doctor = '';
-                                                        }
-                                                        echo $prescription_doctor;
-                                                        ?>
-
-                                                    </td>
-                                                    <td>
-
-                                                        <?php
-                                                        if (!empty($prescription->medicine)) {
-                                                            $medicine = explode('###', $prescription->medicine);
-
-                                                            foreach ($medicine as $key => $value) {
-                                                                $medicine_id = explode('***', $value);
-                                                                $medicine_details = $this->medicine_model->getMedicineById($medicine_id[0]);
-                                                                if (!empty($medicine_details)) {
-                                                                    $medicine_name_with_dosage = $medicine_details->name . ' -' . $medicine_id[1];
-                                                                    $medicine_name_with_dosage = $medicine_name_with_dosage . ' | ' . $medicine_id[3] . '<br>';
-                                                                    rtrim($medicine_name_with_dosage, ',');
-                                                                    echo '<p>' . $medicine_name_with_dosage . '</p>';
-                                                                }
-                                                            }
-                                                        }
-                                                        ?>
-
-
-                                                    </td>
-                                                    <td class="no-print">
-                                                        <a class="btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?> </a> 
-                                                        <?php
-                                                        if ($this->ion_auth->in_group('Doctor')) {
-                                                            $current_user = $this->ion_auth->get_user_id();
-                                                            $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
-                                                            if ($prescription->doctor == $doctor_table_id) {
-                                                                ?>
-                                                                <a type="button" class="btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
-                                                                <a class="btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
-                                                                <?php
-                                                            }
-                                                        }
-                                                        ?>
-                                                        <a class="btn-default btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i> <?php echo lang('print'); ?></a>
-                                                    </td>
-                                                </tr>
-                                            <?php } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                    <header class="panel-heading clearfix">
+                        <div class="">
+                            <?php echo lang('patient'); ?> <?php echo lang('info'); ?> 
                         </div>
 
-                        <div id="lab" class="tab-pane"> <div class="">
-                                <div class="adv-table editable-table ">
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-                                                <th><?php echo lang('id'); ?></th>
-                                                <th><?php echo lang('date'); ?></th>
-                                                <th><?php echo lang('doctor'); ?></th>
-                                                <th class="no-print"><?php echo lang('options'); ?></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($labs as $lab) { ?>
-                                                <tr class="">
-                                                    <td><?php echo $lab->id; ?></td>
-                                                    <td><?php echo date('m/d/Y', $lab->date); ?></td>
-                                                    <td>
-                                                        <?php
-                                                        $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
-                                                        if (!empty($doctor_details)) {
-                                                            $lab_doctor = $doctor_details->name;
-                                                        } else {
-                                                            $lab_doctor = '';
-                                                        }
-                                                        echo $lab_doctor;
-                                                        ?>
-                                                    </td>
-                                                    <td class="no-print">
-                                                        <a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=<?php echo $lab->id; ?>"><i class="fa fa-eye"> <?php echo lang('report'); ?> </i></a>   
-                                                    </td>
-                                                </tr>
-                                            <?php } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <div id="profile" class="tab-pane"> <div class="">
-                                <div class=" no-print">
-                                    <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModal1">
-                                        <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                    </header> 
+                    <aside class="profile-nav">
+                        <section class="">
+                            <div class="user-heading round">
+                                <?php if (!empty($patient->img_url)) { ?>
+                                    <a href="#">
+                                        <img src="<?php echo $patient->img_url; ?>" alt="">
                                     </a>
-                                </div>
-                                <div class="adv-table editable-table ">
-                                    <div class="">
-                                        <?php foreach ($patient_materials as $patient_material) { ?>
-                                            <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
-
-                                                <div class="post-info">
-                                                    <a class="example-image-link" href="<?php echo $patient_material->url; ?>" data-lightbox="example-1">
-                                                        <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" height="100" width="100"/></a>
-                              <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
-                                                </div>
-                                                <div class="post-info">
-                                                    <?php
-                                                    if (!empty($patient_material->title)) {
-                                                        echo $patient_material->title;
-                                                    }
-                                                    ?>
-
-                                                </div>
-                                                <p></p>
-                                                <div class="post-info">
-                                                    <a class="btn btn-info btn-xs btn_width" href="<?php echo $patient_material->url; ?>" download> <?php echo lang('download'); ?> </a>
-                                                    <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                        <a class="btn btn-info btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"> X </a>
-                                                    <?php } ?>
-
-                                                </div>
-
-                                                <hr>
-
-                                            </div>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="contact" class="tab-pane"> 
-                            <div class="">
-                                <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
-                                    <div class=" no-print">
-                                        <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModa3">
-                                            <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
-                                        </a>
-                                    </div>
                                 <?php } ?>
-                                <div class="adv-table editable-table ">
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-                                                <th><?php echo lang('bed_id'); ?></th>
-                                                <th><?php echo lang('alloted_time'); ?></th>
-                                                <th><?php echo lang('discharge_time'); ?></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                        <style>
-
-                                            .img_url{
-                                                height:20px;
-                                                width:20px;
-                                                background-size: contain; 
-                                                max-height:20px;
-                                                border-radius: 100px;
-                                            }
-
-                                        </style>
-
-                                        <?php foreach ($beds as $bed) { ?>
-                                            <tr class="">
-                                                <td><?php echo $bed->bed_id; ?></td>            
-                                                <td><?php echo $bed->a_time; ?></td>
-                                                <td><?php echo $bed->d_time; ?></td>
-                                            </tr>
-                                        <?php } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <h1> <?php echo $patient->name; ?> </h1>
+                                <p> <?php echo $patient->email; ?> </p>
+                                <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                    <button type="button" class="btn btn-info btn-xs btn_width editPatient" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $patient->id; ?>"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></button>  
+                                <?php } ?>
                             </div>
-                        </div>
-                        <div id="timeline" class="tab-pane"> 
-                            <div class="">
-                                <div class="">
-                                    <section class="panel ">
-                                        <header class="panel-heading">
-                                            Timeline
-                                        </header>
-                                        <!--
-                                        <div class=" profile-activity" >
-                                            <h5 class="pull-right">12 August 2013</h5>
-                                            <div class="activity terques">
-                                                <span>
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel">
-                                                        <div class="">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-clock-o"></i>
-                                                            <h4>10:45 AM</h4>
-                                                            <p>Purchased new equipments for zonal office setup and stationaries.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        -->
 
-                                        <?php
-                                        if (!empty($timeline)) {
-                                            krsort($timeline);
-                                            foreach ($timeline as $key => $value) {
-                                                echo $value;
-                                            }
-                                        }
-                                        ?>
+                            <ul class="nav nav-pills nav-stacked">
+                              <!--  <li class="active"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?><span class="label pull-right r-activity"><?php echo $patient->name; ?></span></li> -->
+                                <li>  <?php echo lang('patient_id'); ?> <span class=" pull-right "><?php echo $patient->id; ?></span></li>
+                                <li>  <?php echo lang('gender'); ?><span class=" pull-right "><?php echo $patient->sex; ?></span></li>
+                                <li>  <?php echo lang('birth_date'); ?><span class=" pull-right "><?php echo $patient->birthdate; ?></span></li>
+                                <li>  <?php echo lang('phone'); ?><span class=" pull-right "><?php echo $patient->phone; ?></span></li>
+                                <li>  <?php echo lang('email'); ?><span class="pull-right "><?php echo $patient->email; ?></span></li>
+                                <li style="height: 200px;">  <?php echo lang('address'); ?><span class="pull-right" style="height: 200px;"><?php echo $patient->address; ?></span></li>
 
-                                    </section>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                            </ul>
+
+                        </section>
+                    </aside>
                 </div>
             </section>
+            <section class="col-md-9">
+                <div class="panel">
+                    <header class="panel-heading clearfix">
+                        <div class="col-md-7">
+                            <?php echo lang('history'); ?> | <?php echo $patient->name; ?>
+                        </div>
+                    </header>
+                    <section class="panel-body">
+                        <header class="panel-heading tab-bg-dark-navy-blueee">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#appointments"><?php echo lang('appointments'); ?></a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" href="#home"><?php echo lang('case_history'); ?></a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" href="#about"><?php echo lang('prescription'); ?></a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" href="#lab"><?php echo lang('lab'); ?></a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" href="#profile"><?php echo lang('documents'); ?></a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" href="#contact"><?php echo lang('bed'); ?></a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" href="#timeline"><?php echo lang('timeline'); ?></a> 
+                                </li>
+                            </ul>
+                        </header>
 
-        </section>
+                        <div class="tab-content">
+                            <div id="appointments" class="tab-pane active">
+                                <div class="">
+                                    <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                        <div class=" no-print">
+                                            <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
+                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                            </a>
+                                        </div>
+                                    <?php } else { ?>
+                                        <div class=" no-print">
+                                            <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
+                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('request_a_appointment'); ?> 
+                                            </a>
+                                        </div>
+                                    <?php } ?>
+                                    <div class="adv-table editable-table ">
+                                        <table class="table table-striped table-hover table-bordered" id="">
+                                            <thead>
+                                                <tr>
+                                                    <th><?php echo lang('date'); ?></th>
+                                                    <th><?php echo lang('time_slot'); ?></th>
+                                                    <th><?php echo lang('doctor'); ?></th>
+                                                    <th><?php echo lang('status'); ?></th>
+                                                    <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                                        <th class="no-print"><?php echo lang('options'); ?></th>
+                                                    <?php } ?>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($appointments as $appointment) { ?>
+                                                    <tr class="">
+
+                                                        <td><?php echo date('d-m-Y', $appointment->date); ?></td>
+                                                        <td><?php echo $appointment->time_slot; ?></td>
+                                                        <td>
+                                                            <?php
+                                                            $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
+                                                            if (!empty($doctor_details)) {
+                                                                $appointment_doctor = $doctor_details->name;
+                                                            } else {
+                                                                $appointment_doctor = '';
+                                                            }
+                                                            echo $appointment_doctor;
+                                                            ?>
+                                                        </td>
+                                                        <td><?php echo $appointment->status; ?></td>
+                                                        <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                                            <td class="no-print">
+                                                                <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                                                <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                            </td>
+                                                        <?php } ?>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="home" class="tab-pane">
+                                <div class="">
+
+                                    <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                        <div class=" no-print">
+                                            <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModal">
+                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                            </a>
+                                        </div>
+                                    <?php } ?>
+
+                                    <div class="adv-table editable-table ">
+
+
+                                        <table class="table table-striped table-hover table-bordered" id="">
+                                            <thead>
+                                                <tr>
+                                                    <th><?php echo lang('date'); ?></th>
+                                                    <th><?php echo lang('title'); ?></th>
+                                                    <th><?php echo lang('description'); ?></th>
+                                                    <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                                        <th class="no-print"><?php echo lang('options'); ?></th>
+                                                    <?php } ?>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($medical_histories as $medical_history) { ?>
+                                                    <tr class="">
+
+                                                        <td><?php echo date('d-m-Y', $medical_history->date); ?></td>
+                                                        <td><?php echo $medical_history->title; ?></td>
+                                                        <td><?php echo $medical_history->description; ?></td>
+                                                        <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                                            <td class="no-print">
+                                                                <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                                                <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                            </td>
+                                                        <?php } ?>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
 
 
 
+
+                                        <!--
+                                                                            <form role="form" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data">
+                                                                                <div class="form-group col-md-12">
+                                                                                    <label class=""> <?php echo lang('case'); ?> <?php echo lang('history'); ?></label>
+                                                                                    <div class="">
+                                                                                        <textarea class="ckeditor form-control" name="description" id="description" value="" rows="100" cols="50">      
+                                        <?php foreach ($medical_histories as $medical_history) { ?>         
+                                                                                                                                                                                                    <td><?php echo $medical_history->description; ?></td>
+                                        <?php } ?>
+                                                                                        </textarea>
+                                                                                    </div>
+                                                                                </div>
+                                        
+                                                                                <input type="hidden" name="patient_id" value='<?php echo $patient->id; ?>'>
+                                                                                <input type="hidden" name="id" value='<?php echo $medical_history->id ?>'>
+                                                                                <div class="form-group col-md-12">
+                                                                                    <button type="submit" name="submit" class="btn btn-info submit_button pull-right"><?php echo lang('save'); ?></button>
+                                                                                </div>
+                                                                            </form>
+                                        
+                                        -->
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="about" class="tab-pane"> <div class="">
+                                    <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                        <div class=" no-print">
+                                            <a class="btn btn-info btn_width btn-xs" href="prescription/addPrescriptionView">
+                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                            </a>
+                                        </div>
+                                    <?php } ?>
+                                    <div class="adv-table editable-table ">
+                                        <table class="table table-striped table-hover table-bordered" id="">
+                                            <thead>
+                                                <tr>
+
+                                                    <th><?php echo lang('date'); ?></th>
+                                                    <th><?php echo lang('doctor'); ?></th>
+                                                    <th><?php echo lang('medicine'); ?></th>
+                                                    <th class="no-print"><?php echo lang('options'); ?></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($prescriptions as $prescription) { ?>
+                                                    <tr class="">
+                                                        <td><?php echo date('m/d/Y', $prescription->date); ?></td>
+                                                        <td>
+                                                            <?php
+                                                            $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);
+                                                            if (!empty($doctor_details)) {
+                                                                $prescription_doctor = $doctor_details->name;
+                                                            } else {
+                                                                $prescription_doctor = '';
+                                                            }
+                                                            echo $prescription_doctor;
+                                                            ?>
+
+                                                        </td>
+                                                        <td>
+
+                                                            <?php
+                                                            if (!empty($prescription->medicine)) {
+                                                                $medicine = explode('###', $prescription->medicine);
+
+                                                                foreach ($medicine as $key => $value) {
+                                                                    $medicine_id = explode('***', $value);
+                                                                    $medicine_details = $this->medicine_model->getMedicineById($medicine_id[0]);
+                                                                    if (!empty($medicine_details)) {
+                                                                        $medicine_name_with_dosage = $medicine_details->name . ' -' . $medicine_id[1];
+                                                                        $medicine_name_with_dosage = $medicine_name_with_dosage . ' | ' . $medicine_id[3] . '<br>';
+                                                                        rtrim($medicine_name_with_dosage, ',');
+                                                                        echo '<p>' . $medicine_name_with_dosage . '</p>';
+                                                                    }
+                                                                }
+                                                            }
+                                                            ?>
+
+
+                                                        </td>
+                                                        <td class="no-print">
+                                                            <a class="btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?> </a> 
+                                                            <?php
+                                                            if ($this->ion_auth->in_group('Doctor')) {
+                                                                $current_user = $this->ion_auth->get_user_id();
+                                                                $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
+                                                                if ($prescription->doctor == $doctor_table_id) {
+                                                                    ?>
+                                                                    <a type="button" class="btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
+                                                                    <a class="btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                    <?php
+                                                                }
+                                                            }
+                                                            ?>
+                                                            <a class="btn-default btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i> <?php echo lang('print'); ?></a>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="lab" class="tab-pane"> <div class="">
+                                    <div class="adv-table editable-table ">
+                                        <table class="table table-striped table-hover table-bordered" id="">
+                                            <thead>
+                                                <tr>
+                                                    <th><?php echo lang('id'); ?></th>
+                                                    <th><?php echo lang('date'); ?></th>
+                                                    <th><?php echo lang('doctor'); ?></th>
+                                                    <th class="no-print"><?php echo lang('options'); ?></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($labs as $lab) { ?>
+                                                    <tr class="">
+                                                        <td><?php echo $lab->id; ?></td>
+                                                        <td><?php echo date('m/d/Y', $lab->date); ?></td>
+                                                        <td>
+                                                            <?php
+                                                            $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
+                                                            if (!empty($doctor_details)) {
+                                                                $lab_doctor = $doctor_details->name;
+                                                            } else {
+                                                                $lab_doctor = '';
+                                                            }
+                                                            echo $lab_doctor;
+                                                            ?>
+                                                        </td>
+                                                        <td class="no-print">
+                                                            <a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=<?php echo $lab->id; ?>"><i class="fa fa-eye"> <?php echo lang('report'); ?> </i></a>   
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="profile" class="tab-pane"> <div class="">
+                                    <div class=" no-print">
+                                        <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModal1">
+                                            <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                        </a>
+                                    </div>
+                                    <div class="adv-table editable-table ">
+                                        <div class="">
+                                            <?php foreach ($patient_materials as $patient_material) { ?>
+                                                <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
+
+                                                    <div class="post-info">
+                                                        <a class="example-image-link" href="<?php echo $patient_material->url; ?>" data-lightbox="example-1">
+                                                            <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" height="100" width="100"/></a>
+                                  <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
+                                                    </div>
+                                                    <div class="post-info">
+                                                        <?php
+                                                        if (!empty($patient_material->title)) {
+                                                            echo $patient_material->title;
+                                                        }
+                                                        ?>
+
+                                                    </div>
+                                                    <p></p>
+                                                    <div class="post-info">
+                                                        <a class="btn btn-info btn-xs btn_width" href="<?php echo $patient_material->url; ?>" download> <?php echo lang('download'); ?> </a>
+                                                        <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                                            <a class="btn btn-info btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"> X </a>
+                                                        <?php } ?>
+
+                                                    </div>
+
+                                                    <hr>
+
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="contact" class="tab-pane"> 
+                                <div class="">
+                                    <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                        <div class=" no-print">
+                                            <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModa3">
+                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                            </a>
+                                        </div>
+                                    <?php } ?>
+                                    <div class="adv-table editable-table ">
+                                        <table class="table table-striped table-hover table-bordered" id="">
+                                            <thead>
+                                                <tr>
+                                                    <th><?php echo lang('bed_id'); ?></th>
+                                                    <th><?php echo lang('alloted_time'); ?></th>
+                                                    <th><?php echo lang('discharge_time'); ?></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            <style>
+
+                                                .img_url{
+                                                    height:20px;
+                                                    width:20px;
+                                                    background-size: contain; 
+                                                    max-height:20px;
+                                                    border-radius: 100px;
+                                                }
+
+                                            </style>
+
+                                            <?php foreach ($beds as $bed) { ?>
+                                                <tr class="">
+                                                    <td><?php echo $bed->bed_id; ?></td>            
+                                                    <td><?php echo $bed->a_time; ?></td>
+                                                    <td><?php echo $bed->d_time; ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="timeline" class="tab-pane"> 
+                                <div class="">
+                                    <div class="">
+                                            <h3>
+                                                Timeline
+                                            </h3>
+                                            <?php
+                                            if (!empty($timeline)) {
+                                                krsort($timeline);
+                                                foreach ($timeline as $key => $value) {
+                                                    echo $value;
+                                                }
+                                            }
+                                            ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </section>
+                </div>
+            </section>
+        </div>
     </section>
     <!-- page end-->
 </section>

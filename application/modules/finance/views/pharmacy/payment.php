@@ -3,7 +3,7 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="">
+        <section class="panel">
             <header class="panel-heading">
                 <?php echo lang('pharmacy'); ?> <?php echo lang('all_sales'); ?> 
                 <div class="col-md-4 no-print pull-right"> 
@@ -16,8 +16,6 @@
                     </a>
                 </div>
             </header>
-
-
             <style>
 
                 .editable-table .search_form{
@@ -45,8 +43,6 @@
                 }
 
             </style>
-
-
             <div class="panel-body">
                 <div class="adv-table editable-table">
                     <div class="space15">

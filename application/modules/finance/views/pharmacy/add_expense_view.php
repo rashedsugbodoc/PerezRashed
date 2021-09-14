@@ -3,18 +3,18 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="col-md-6 row">
-            <header class="panel-heading">
-                <?php
-                if (!empty($expense->id))
-                    echo lang('pharmacy') . ' ' . lang('edit_expense');
-                else
-                    echo lang('pharmacy') . ' ' . lang('add_expense');
-                ?>
-            </header>
-            <div class="panel-body">
-                <div class="adv-table editable-table ">
-                    <div class="clearfix">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php
+                        if (!empty($expense->id))
+                            echo lang('pharmacy') . ' ' . lang('edit_expense');
+                        else
+                            echo lang('pharmacy') . ' ' . lang('add_expense');
+                        ?>
+                    </header>
+                    <div class="panel-body">
                         <?php echo validation_errors(); ?>
                         <form role="form" action="finance/pharmacy/addExpense" method="post" enctype="multipart/form-data">
                             <div class="form-group">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
         <!-- page end-->
     </section>
 </section>

@@ -4,9 +4,9 @@
 <section id="main-content"> 
     <section class="wrapper site-min-height">
         <!--state overview start-->
-        <div class="col-md-12">
-            <div class="row state-overview" style="padding: 23px 0px;">
-                <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel">
                     <!--custom chart start-->
 
                     <?php
@@ -105,15 +105,6 @@
                             </table>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
-
                 </div>
             </div>
         </div>

@@ -3,425 +3,255 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="panel col-md-7 no-print">
-            <header class="panel-heading no-print">
-                <?php
-                if (!empty($lab->id))
-                    echo lang('edit_lab_report');
-                else
-                    echo lang('add_lab_report');
-                ?>
-            </header>
-            <div class="no-print">
-                <div class="adv-table editable-table ">
-                    <div class="clearfix">
-                        <style> 
-                            .lab{
-                                padding-top: 10px;
-                                padding-bottom: 20px;
-                                border: none;
+        <div class="row">
+            <section class="col-md-7 no-print">
+                <div class="panel">
+                    <header class="panel-heading no-print">
+                        <?php
+                        if (!empty($lab->id))
+                            echo lang('edit_lab_report');
+                        else
+                            echo lang('add_lab_report');
+                        ?>
+                    </header>
+                    <div class="no-print">
+                        <div class="adv-table editable-table ">
+                            <div class="clearfix">
+                                <form role="form" id="editLabForm" class="clearfix" action="lab/addLab" method="post" enctype="multipart/form-data">
 
-                            }
-                            .pad_bot{
-                                padding-bottom: 5px;
-                            }  
-
-                            form{
-                                background: #ffffff;
-                                padding: 20px 0px;
-                            }
-
-                            .modal-body form{
-                                background: #fff;
-                                padding: 21px;
-                            }
-
-                            .remove{
-                                float: right;
-                                margin-top: -45px;
-                                margin-right: 42%;
-                                margin-bottom: 41px;
-                                width: 94px;
-                                height: 29px;
-                            }
-
-                            .remove1 span{
-                                width: 33%;
-                                height: 50px !important;
-                                padding: 10px
-
-                            }
-
-                            .qfloww {
-                                padding: 10px 0px;
-                                height: 370px;
-                                background: #f1f2f9;
-                                overflow: auto;
-                            }
-
-                            .remove1 {
-                                background: #5A9599;
-                                color: #fff;
-                                padding: 5px;
-                            }
-
-
-                            .span2{
-                                padding: 6px 12px;
-                                font-size: 14px;
-                                font-weight: 400;
-                                line-height: 1;
-                                color: #555;
-                                text-align: center;
-                                background-color: #eee;
-                                border: 1px solid #ccc
-                            }
-
-                        </style>
-
-                        <form role="form" id="editLabForm" class="clearfix" action="lab/addLab" method="post" enctype="multipart/form-data">
-
-                            <div class="">
-                                <div class="col-md-6 lab pad_bot"> 
-                                    <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
-                                    <input type="text" class="form-control pay_in default-date-picker" name="date" value='<?php
-                                    if (!empty($lab->date)) {
-                                        echo date('d-m-Y', $lab->date);
-                                    } else {
-                                        echo date('d-m-Y');
-                                    }
-                                    ?>' placeholder="">
-                                </div>
-
-                                <div class="col-md-6 lab pad_bot">
-                                    <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
-                                    <select class="form-control m-bot15 pos_select" id="pos_select" name="patient" value=''> 
-                                       <?php if (!empty($lab->patient)) { ?>
-                                            <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
-                                        <?php } ?>
-                                    </select>
-                                </div> 
-
-                                <div class="col-md-8 panel"> 
-                                </div>
-
-                                <div class="pos_client">
-                                    <div class="col-md-8 lab pad_bot">
-                                        <div class="col-md-3 lab_label"> 
-                                            <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
-                                            <input type="text" class="form-control pay_in" name="p_name" value='<?php
-                                            if (!empty($lab->p_name)) {
-                                                echo $lab->p_name;
+                                    <div class="">
+                                        <div class="form-group col-md-6"> 
+                                            <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
+                                            <input type="text" class="form-control pay_in default-date-picker" name="date" value='<?php
+                                            if (!empty($lab->date)) {
+                                                echo date('d-m-Y', $lab->date);
+                                            } else {
+                                                echo date('d-m-Y');
                                             }
                                             ?>' placeholder="">
                                         </div>
-                                    </div>
-                                    <div class="col-md-8 lab pad_bot">
-                                        <div class="col-md-3 lab_label"> 
-                                            <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
-                                            <input type="text" class="form-control pay_in" name="p_email" value='<?php
-                                            if (!empty($lab->p_email)) {
-                                                echo $lab->p_email;
-                                            }
-                                            ?>' placeholder="">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8 lab pad_bot">
-                                        <div class="col-md-3 lab_label"> 
-                                            <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
-                                            <input type="text" class="form-control pay_in" name="p_phone" value='<?php
-                                            if (!empty($lab->p_phone)) {
-                                                echo $lab->p_phone;
-                                            }
-                                            ?>' placeholder="">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8 lab pad_bot">
-                                        <div class="col-md-3 lab_label"> 
-                                            <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
-                                            <input type="text" class="form-control pay_in" name="p_age" value='<?php
-                                            if (!empty($lab->p_age)) {
-                                                echo $lab->p_age;
-                                            }
-                                            ?>' placeholder="">
-                                        </div>
-                                    </div> 
-                                    <div class="col-md-8 lab pad_bot">
-                                        <div class="col-md-3 lab_label"> 
-                                            <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('gender'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
-                                            <select class="form-control m-bot15" name="p_gender" value=''>
 
-                                                <option value="Male" <?php
-                                                if (!empty($patient->sex)) {
-                                                    if ($patient->sex == 'Male') {
-                                                        echo 'selected';
+                                        <div class="form-group col-md-6">
+                                            <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
+                                            <select class="form-control m-bot15 pos_select" id="pos_select" name="patient" value=''> 
+                                               <?php if (!empty($lab->patient)) { ?>
+                                                    <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
+                                                <?php } ?>
+                                            </select>
+                                        </div> 
+
+                                        <div class="pos_client">
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control pay_in" name="p_name" value='<?php
+                                                    if (!empty($lab->p_name)) {
+                                                        echo $lab->p_name;
                                                     }
-                                                }
-                                                ?> > Male </option>   
-                                                <option value="Female" <?php
-                                                if (!empty($patient->sex)) {
-                                                    if ($patient->sex == 'Female') {
-                                                        echo 'selected';
-                                                    }
-                                                }
-                                                ?> > Female </option>
-                                                <option value="Others" <?php
-                                                if (!empty($patient->sex)) {
-                                                    if ($patient->sex == 'Others') {
-                                                        echo 'selected';
-                                                    }
-                                                }
-                                                ?> > Others </option>
+                                                    ?>' placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control pay_in" name="p_email" value='<?php
+                                                        if (!empty($lab->p_email)) {
+                                                            echo $lab->p_email;
+                                                        }
+                                                        ?>' placeholder="">
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3">
+                                                        <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <input type="text" class="form-control pay_in" name="p_phone" value='<?php
+                                                        if (!empty($lab->p_phone)) {
+                                                            echo $lab->p_phone;
+                                                        }
+                                                        ?>' placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3"> 
+                                                        <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
+                                                    </div>
+                                                    <div class="col-md-9"> 
+                                                        <input type="text" class="form-control pay_in" name="p_age" value='<?php
+                                                        if (!empty($lab->p_age)) {
+                                                            echo $lab->p_age;
+                                                        }
+                                                        ?>' placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div> 
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3"> 
+                                                        <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('gender'); ?></label>
+                                                    </div>
+                                                    <div class="col-md-9"> 
+                                                        <select class="form-control m-bot15" name="p_gender" value=''>
+                                                            <option value="Male" <?php
+                                                            if (!empty($patient->sex)) {
+                                                                if ($patient->sex == 'Male') {
+                                                                    echo 'selected';
+                                                                }
+                                                            }
+                                                            ?> > Male </option>   
+                                                            <option value="Female" <?php
+                                                            if (!empty($patient->sex)) {
+                                                                if ($patient->sex == 'Female') {
+                                                                    echo 'selected';
+                                                                }
+                                                            }
+                                                            ?> > Female </option>
+                                                            <option value="Others" <?php
+                                                            if (!empty($patient->sex)) {
+                                                                if ($patient->sex == 'Others') {
+                                                                    echo 'selected';
+                                                                }
+                                                            }
+                                                            ?> > Others </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="exampleInputEmail1"> <?php echo lang('template'); ?></label>
+                                            <select class="form-control m-bot15 js-example-basic-multiple template" id="template" name="template" value=''> 
+                                                <option value="">Select .....</option>
+                                                <?php foreach ($templates as $template) { ?>
+                                                    <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
+                                                <?php } ?>
                                             </select>
                                         </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6 lab pad_bot">
-                                    <label for="exampleInputEmail1"> <?php echo lang('refd_by_doctor'); ?></label>
-                                    <select class="form-control m-bot15 add_doctor" id="add_doctor" name="doctor" value=''>  
-                                       
-                                    </select>
-                                </div>
-
-                                <div class="col-md-6 lab pad_bot">
-                                    <label for="exampleInputEmail1"> <?php echo lang('template'); ?></label>
-                                    <select class="form-control m-bot15 js-example-basic-multiple template" id="template" name="template" value=''> 
-                                        <option value="">Select .....</option>
-                                        <?php foreach ($templates as $template) { ?>
-                                            <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-
-
-
-                                <div class="pos_doctor">
-                                    <div class="col-md-8 lab pad_bot">
-                                        <div class="col-md-3 lab_label"> 
-                                            <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?></label>
+                                        <div class="form-group col-md-6">
+                                            <label for="exampleInputEmail1"> <?php echo lang('refd_by_doctor'); ?></label>
+                                            <select class="form-control m-bot15 add_doctor" id="add_doctor" name="doctor" value=''>  
+                                               
+                                            </select>
                                         </div>
-                                        <div class="col-md-9"> 
-                                            <input type="text" class="form-control pay_in" name="d_name" value='<?php
-                                            if (!empty($lab->p_name)) {
-                                                echo $lab->p_name;
+                                        <div class="pos_doctor">
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3"> 
+                                                        <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?></label>
+                                                    </div>
+                                                    <div class="col-md-9"> 
+                                                        <input type="text" class="form-control pay_in" name="d_name" value='<?php
+                                                        if (!empty($lab->p_name)) {
+                                                            echo $lab->p_name;
+                                                        }
+                                                        ?>' placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3"> 
+                                                        <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?> <?php echo lang('email'); ?></label>
+                                                    </div>
+                                                    <div class="col-md-9"> 
+                                                        <input type="text" class="form-control pay_in" name="d_email" value='<?php
+                                                        if (!empty($lab->p_email)) {
+                                                            echo $lab->p_email;
+                                                        }
+                                                        ?>' placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <div class="row">
+                                                    <div class="col-md-3"> 
+                                                        <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?> <?php echo lang('phone'); ?></label>
+                                                    </div>
+                                                    <div class="col-md-9"> 
+                                                        <input type="text" class="form-control pay_in" name="d_phone" value='<?php
+                                                        if (!empty($lab->p_phone)) {
+                                                            echo $lab->p_phone;
+                                                        }
+                                                        ?>' placeholder="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
+                                        <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10"><?php
+                                            if (!empty($setval)) {
+                                                echo set_value('report');
                                             }
-                                            ?>' placeholder="">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-8 lab pad_bot">
-                                        <div class="col-md-3 lab_label"> 
-                                            <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?> <?php echo lang('email'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
-                                            <input type="text" class="form-control pay_in" name="d_email" value='<?php
-                                            if (!empty($lab->p_email)) {
-                                                echo $lab->p_email;
+                                            if (!empty($lab->report)) {
+                                                echo $lab->report;
                                             }
-                                            ?>' placeholder="">
-                                        </div>
+                                            ?>
+                                        </textarea>
                                     </div>
-                                    <div class="col-md-8 lab pad_bot">
-                                        <div class="col-md-3 lab_label"> 
-                                            <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?> <?php echo lang('phone'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
-                                            <input type="text" class="form-control pay_in" name="d_phone" value='<?php
-                                            if (!empty($lab->p_phone)) {
-                                                echo $lab->p_phone;
-                                            }
-                                            ?>' placeholder="">
-                                        </div>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-8 panel">
-                                </div>
+                                    <input type="hidden" name="redirect" value="lab">
 
-
-
-                            </div>
-
-
-
-
-
-
-
-
-
-                            <div class="col-md-12 lab pad_bot">
-                                <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
-                                <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10"><?php
-                                    if (!empty($setval)) {
-                                        echo set_value('report');
+                                    <input type="hidden" name="id" value='<?php
+                                    if (!empty($lab->id)) {
+                                        echo $lab->id;
                                     }
-                                    if (!empty($lab->report)) {
-                                        echo $lab->report;
-                                    }
-                                    ?>
-                                </textarea>
+                                    ?>'>
+
+
+                                    <div class="col-md-12"> 
+                                        <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
+                                    </div>
+
+                                </form>
                             </div>
-
-                            <input type="hidden" name="redirect" value="lab">
-
-                            <input type="hidden" name="id" value='<?php
-                            if (!empty($lab->id)) {
-                                echo $lab->id;
-                            }
-                            ?>'>
-
-
-                            <div class="col-md-12 lab"> 
-                                <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
-                            </div>
-
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
+
+            <style>
+
+                th{
+                    text-align: center;
+                }
+
+                td{
+                    text-align: center;
+                }
+
+                tr.total{
+                    color: green;
+                }
 
 
 
-        </section>
+                .control-label{
+                    width: 100px;
+                }
 
 
-
-
-
-
-
-
-        <style>
-
-            th{
-                text-align: center;
-            }
-
-            td{
-                text-align: center;
-            }
-
-            tr.total{
-                color: green;
-            }
-
-
-
-            .control-label{
-                width: 100px;
-            }
-
-
-
-            h1{
-                margin-top: 5px;
-            }
-
-
-            .print_width{
-                width: 50%;
-                float: left;
-            } 
-
-            ul.amounts li {
-                padding: 0px !important;
-            }
-
-            .invoice-list {
-                margin-bottom: 10px;
-            }
-
-
-
-
-            .panel{
-                border: 0px solid #5c5c47;
-                background: #fff !important;
-                height: 100%;
-                margin: 20px 5px 5px 5px;
-                border-radius: 0px !important;
-
-            }
-
-
-
-            .table.main{
-                margin-top: -50px;
-            }
-
-
-
-            .control-label{
-                margin-bottom: 0px;
-            }
-
-            tr.total td{
-                color: green !important;
-            }
-
-            .theadd th{
-                background: #edfafa !important;
-            }
-
-            td{
-                font-size: 12px;
-                padding: 5px;
-                font-weight: bold;
-            }
-
-            .details{
-                font-weight: bold;
-            }
-
-            hr{
-                border-bottom: 2px solid green !important;
-            }
-
-            .corporate-id {
-                margin-bottom: 5px;
-            }
-
-            .adv-table table tr td {
-                padding: 5px 10px;
-            }
-
-
-
-            .btn{
-                margin: 10px 10px 10px 0px;
-            }
-
-
-
-
-
-
-
-
-
-
-
-
-            @media print {
 
                 h1{
                     margin-top: 5px;
                 }
 
-                #main-content{
-                    padding-top: 0px;
-                }
 
                 .print_width{
                     width: 50%;
@@ -435,35 +265,6 @@
                 .invoice-list {
                     margin-bottom: 10px;
                 }
-
-                .wrapper{
-                    margin-top: 0px;
-                }
-
-                .wrapper{
-                    padding: 0px 0px !important;
-                    background: #fff !important;
-
-                }
-
-
-
-                .wrapper{
-                    border: 2px solid #777;
-                    min-height: 910px;
-                }
-
-                .panel{
-                    border: 0px solid #5c5c47;
-                    background: #fff !important;
-                    padding: 0px 0px;
-                    height: 100%;
-                    margin: 5px 5px 5px 5px;
-                    border-radius: 0px !important;
-
-                }
-
-
 
                 .table.main{
                     margin-top: -50px;
@@ -488,6 +289,7 @@
                     padding: 5px;
                     font-weight: bold;
                 }
+
                 .details{
                     font-weight: bold;
                 }
@@ -503,204 +305,275 @@
                 .adv-table table tr td {
                     padding: 5px 10px;
                 }
-            }
-        </style>
+
+
+
+                .btn{
+                    margin: 10px 10px 10px 0px;
+                }
 
 
 
 
 
 
-        <section class="panel col-md-4">
-            <header class="panel-heading no-print">
-                <?php
-                if (!empty($lab->id))
-                    echo lang('report');
-                else
-                    echo lang('report');
-                ?>
-            </header>
-
-            <div class="panel panel-primary" style="margin: 2% 3%;">
-                <!--<div class="panel-heading navyblue"> INVOICE</div>-->
-                <div class="panel-body" style="font-size: 10px;">
-                    <div class="row invoice-list">
-
-                        <div class="text-center corporate-id">
-
-
-                            <h3>
-                                <?php echo $settings->title ?>
-                            </h3>
-                            <h4>
-                                <?php echo $settings->address ?>
-                            </h4>
-                            <h4>
-                                Tel: <?php echo $settings->phone ?>
-                            </h4>
-                            <img alt="" src="<?php echo $this->settings_model->getSettings()->logo; ?>" width="200" height="100">
-                            <h4 style="font-weight: bold; margin-top: 20px; text-transform: uppercase;">
-                                 <?php echo lang('lab_report') ?>
-                                <hr style="width: 200px; border-bottom: 1px solid #000; margin-top: 5px; margin-bottom: 5px;">
-                            </h4>
-                        </div>
 
 
 
 
 
-                        <div class="col-md-12">
-                            <div class="col-md-6 pull-left row" style="text-align: left;">
-                                <div class="col-md-12 row details" style="">
-                                    <p>
-                                        <?php
-                                        if (!empty($lab)) {
-                                            $patient_info = $this->db->get_where('patient', array('id' => $lab->patient))->row();
-                                        }
-                                        ?>
-                                        <label class="control-label"><?php echo lang('patient'); ?> <?php echo lang('name'); ?> </label>
-                                        <span style="text-transform: uppercase;"> : 
-                                            <?php
-                                            if (!empty($patient_info)) {
-                                                echo $patient_info->name . ' <br>';
-                                            }
-                                            ?>
-                                        </span>
-                                    </p>
-                                </div>
-                                <div class="col-md-12 row details" style="">
-                                    <p>
-                                        <label class="control-label"><?php echo lang('patient_id'); ?>  </label>
-                                        <span style="text-transform: uppercase;"> : 
-                                            <?php
-                                            if (!empty($patient_info)) {
-                                                echo $patient_info->id . ' <br>';
-                                            }
-                                            ?>
-                                        </span>
-                                    </p>
-                                </div>
-                                <div class="col-md-12 row details" style="">
-                                    <p>
-                                        <label class="control-label"> <?php echo lang('address'); ?> </label>
-                                        <span style="text-transform: uppercase;"> : 
-                                            <?php
-                                            if (!empty($patient_info)) {
-                                                echo $patient_info->address . ' <br>';
-                                            }
-                                            ?>
-                                        </span>
-                                    </p>
-                                </div>
-                                <div class="col-md-12 row details" style="">
-                                    <p>
-                                        <label class="control-label"><?php echo lang('phone'); ?>  </label>
-                                        <span style="text-transform: uppercase;"> : 
-                                            <?php
-                                            if (!empty($patient_info)) {
-                                                echo $patient_info->phone . ' <br>';
-                                            }
-                                            ?>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
 
-                            <div class="col-md-6 pull-right" style="text-align: left;">
-                                <div class="col-md-12 row details" style="">
-                                    <p>
-                                        <label class="control-label"> <?php echo lang('lab'); ?> <?php echo lang('report'); ?> <?php echo lang('id'); ?>  </label>
-                                        <span style="text-transform: uppercase;"> : 
-                                            <?php
-                                            if (!empty($lab->id)) {
-                                                echo $lab->id;
-                                            }
-                                            ?>
-                                        </span>
-                                    </p>
-                                </div>
+                @media print {
+
+                    h1{
+                        margin-top: 5px;
+                    }
+
+                    #main-content{
+                        padding-top: 0px;
+                    }
+
+                    .print_width{
+                        width: 50%;
+                        float: left;
+                    } 
+
+                    ul.amounts li {
+                        padding: 0px !important;
+                    }
+
+                    .invoice-list {
+                        margin-bottom: 10px;
+                    }
+
+                    .wrapper{
+                        margin-top: 0px;
+                    }
+
+                    .wrapper{
+                        padding: 0px 0px !important;
+                        background: #fff !important;
+
+                    }
 
 
-                                <div class="col-md-12 row details">
-                                    <p>
-                                        <label class="control-label"><?php echo lang('date'); ?>  </label>
-                                        <span style="text-transform: uppercase;"> : 
-                                            <?php
-                                            if (!empty($lab->date)) {
-                                                echo date('d-m-Y', $lab->date) . ' <br>';
-                                            }
-                                            ?>
-                                        </span>
-                                    </p>
-                                </div>
 
-                                <div class="col-md-12 row details">
-                                    <p>
-                                        <label class="control-label"><?php echo lang('doctor'); ?>  </label>
-                                        <span style="text-transform: uppercase;"> : 
-                                            <?php
-                                            if (!empty($lab->doctor)) {
-                                                echo $this->doctor_model->getDoctorById($lab->doctor)->name . ' <br>';
-                                            }
-                                            ?>
-                                        </span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <br>
+                    .wrapper{
+                        border: 2px solid #777;
+                        min-height: 910px;
+                    }
 
-                    </div> 
+                    .panel{
+                        border: 0px solid #5c5c47;
+                        background: #fff !important;
+                        padding: 0px 0px;
+                        height: 100%;
+                        margin: 5px 5px 5px 5px;
+                        border-radius: 0px !important;
+
+                    }
 
 
-                    <div class="col-md-12 panel-body">
-                        <?php
-                        if (!empty($lab->report)) {
-                            echo $lab->report;
-                        }
-                        ?>
+
+                    .table.main{
+                        margin-top: -50px;
+                    }
+
+
+
+                    .control-label{
+                        margin-bottom: 0px;
+                    }
+
+                    tr.total td{
+                        color: green !important;
+                    }
+
+                    .theadd th{
+                        background: #edfafa !important;
+                    }
+
+                    td{
+                        font-size: 12px;
+                        padding: 5px;
+                        font-weight: bold;
+                    }
+                    .details{
+                        font-weight: bold;
+                    }
+
+                    hr{
+                        border-bottom: 2px solid green !important;
+                    }
+
+                    .corporate-id {
+                        margin-bottom: 5px;
+                    }
+
+                    .adv-table table tr td {
+                        padding: 5px 10px;
+                    }
+                }
+            </style>
+            <section class="col-md-4">
+                <div class="row">
+                    <div class="text-center invoice-btn col-md-4 pull-right">
+                        <a class="btn btn-info invoice_button" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
                     </div>
-
-
+                    <div class="no-print col-md-8 pull-right">
+                        <a href="lab/addLabView" class="">
+                            <div class="btn-group">
+                                <button id="" class="btn green">
+                                    <i class="fa fa-plus-circle"></i> <?php echo lang('add_a_new_report'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="panel">
+                            <header class="panel-heading no-print">
+                                <?php
+                                if (!empty($lab->id))
+                                    echo lang('report');
+                                else
+                                    echo lang('report');
+                                ?>
+                            </header>
+                            <div class="panel-body" style="font-size: 10px;">
+                                <div class="row invoice-list">
+
+                                    <div class="text-center corporate-id">
 
 
-                <div class="text-center invoice-btn col-md-4 pull-right">
-                    <a class="btn btn-info invoice_button" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
-                </div>
+                                        <h3>
+                                            <?php echo $settings->title ?>
+                                        </h3>
+                                        <h4>
+                                            <?php echo $settings->address ?>
+                                        </h4>
+                                        <h4>
+                                            Tel: <?php echo $settings->phone ?>
+                                        </h4>
+                                        <img alt="" src="<?php echo $this->settings_model->getSettings()->logo; ?>" width="200" height="100">
+                                        <h4 style="font-weight: bold; margin-top: 20px; text-transform: uppercase;">
+                                             <?php echo lang('lab_report') ?>
+                                            <hr style="width: 200px; border-bottom: 1px solid #000; margin-top: 5px; margin-bottom: 5px;">
+                                        </h4>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-6 pull-left row" style="text-align: left;">
+                                            <div class="col-md-12 row details" style="">
+                                                <p>
+                                                    <?php
+                                                    if (!empty($lab)) {
+                                                        $patient_info = $this->db->get_where('patient', array('id' => $lab->patient))->row();
+                                                    }
+                                                    ?>
+                                                    <label class="control-label"><?php echo lang('patient'); ?> <?php echo lang('name'); ?> </label>
+                                                    <span style="text-transform: uppercase;"> : 
+                                                        <?php
+                                                        if (!empty($patient_info)) {
+                                                            echo $patient_info->name . ' <br>';
+                                                        }
+                                                        ?>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12 row details" style="">
+                                                <p>
+                                                    <label class="control-label"><?php echo lang('patient_id'); ?>  </label>
+                                                    <span style="text-transform: uppercase;"> : 
+                                                        <?php
+                                                        if (!empty($patient_info)) {
+                                                            echo $patient_info->id . ' <br>';
+                                                        }
+                                                        ?>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12 row details" style="">
+                                                <p>
+                                                    <label class="control-label"> <?php echo lang('address'); ?> </label>
+                                                    <span style="text-transform: uppercase;"> : 
+                                                        <?php
+                                                        if (!empty($patient_info)) {
+                                                            echo $patient_info->address . ' <br>';
+                                                        }
+                                                        ?>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12 row details" style="">
+                                                <p>
+                                                    <label class="control-label"><?php echo lang('phone'); ?>  </label>
+                                                    <span style="text-transform: uppercase;"> : 
+                                                        <?php
+                                                        if (!empty($patient_info)) {
+                                                            echo $patient_info->phone . ' <br>';
+                                                        }
+                                                        ?>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
 
+                                        <div class="col-md-6 pull-right" style="text-align: left;">
+                                            <div class="col-md-12 row details" style="">
+                                                <p>
+                                                    <label class="control-label"> <?php echo lang('lab'); ?> <?php echo lang('report'); ?> <?php echo lang('id'); ?>  </label>
+                                                    <span style="text-transform: uppercase;"> : 
+                                                        <?php
+                                                        if (!empty($lab->id)) {
+                                                            echo $lab->id;
+                                                        }
+                                                        ?>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-12 row details">
+                                                <p>
+                                                    <label class="control-label"><?php echo lang('date'); ?>  </label>
+                                                    <span style="text-transform: uppercase;"> : 
+                                                        <?php
+                                                        if (!empty($lab->date)) {
+                                                            echo date('d-m-Y', $lab->date) . ' <br>';
+                                                        }
+                                                        ?>
+                                                    </span>
+                                                </p>
+                                            </div>
 
-                <div class="no-print col-md-8 pull-right">
-                    <a href="lab/addLabView" class="">
-                        <div class="btn-group">
-                            <button id="" class="btn green">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_a_new_report'); ?>
-                            </button>
+                                            <div class="col-md-12 row details">
+                                                <p>
+                                                    <label class="control-label"><?php echo lang('doctor'); ?>  </label>
+                                                    <span style="text-transform: uppercase;"> : 
+                                                        <?php
+                                                        if (!empty($lab->doctor)) {
+                                                            echo $this->doctor_model->getDoctorById($lab->doctor)->name . ' <br>';
+                                                        }
+                                                        ?>
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                </div> 
+                                <div class="col-md-12">
+                                    <?php
+                                    if (!empty($lab->report)) {
+                                        echo $lab->report;
+                                    }
+                                    ?>
+                                </div>
+                            </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
-
-
-            </div>
-
-        </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            </section>
+        </div>
     </section>
 
 </section>

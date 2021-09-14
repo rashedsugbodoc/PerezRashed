@@ -4,165 +4,152 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="col-md-8">
-            <header class="panel-heading">
-                <?php echo lang('appointments'); ?>
-
-            </header>
-
-            <div class="col-md-12">
-                <header class="panel-heading tab-bg-dark-navy-blueee row">
-                    <ul class="nav nav-tabs col-md-8">
-                        <li class="active">
-                            <a data-toggle="tab" href="#calendardetails"><?php echo lang('appointments'); ?> <?php echo lang('calendar'); ?></a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#list"><?php echo lang('appointments'); ?></a>
-                        </li>
-
-                    </ul>
-
-                    <div class="pull-right col-md-4"><div class="pull-right custom_buttonss"></div></div>
-
-                </header>
-            </div>
-
-
-            <div class="">
-                <div class="tab-content">
-
-                    <div id="calendardetails" class="tab-pane active">
-                        <div class="">
-                            <div class="panel-body">
-                                <div class="col-md-12">
-                                    <aside class="calendar_ui col-md-12 panel calendar_ui">
-                                        <section class="">
-                                            <div class="">
-                                                <div id="calendarview" class="has-toolbar calendar_view"></div>
-                                            </div>
-                                        </section>
-                                    </aside>
-                                </div>
-                            </div>
-                        </div>
+        <div class="row">
+            <section class="col-md-8">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php echo lang('appointments'); ?>
+                    </header>
+                    <div class="col-md-12">
+                        <header class="panel-heading tab-bg-dark-navy-blueee row">
+                            <ul class="nav nav-tabs col-md-12">
+                                <li class="active">
+                                    <a data-toggle="tab" href="#calendardetails"><?php echo lang('appointments'); ?> <?php echo lang('calendar'); ?></a>
+                                </li>
+                                <li class="">
+                                    <a data-toggle="tab" href="#list"><?php echo lang('appointments'); ?></a>
+                                </li>
+                            </ul>
+                            <div class="pull-right col-md-4"><div class="pull-right custom_buttonss"></div></div>
+                        </header>
                     </div>
+                    <div class="">
+                        <div class="tab-content">
 
-
-                    <div id="list" class="tab-pane ">
-                        <div class="">
-                            <div class="panel-body">
-                                <div class="adv-table editable-table ">
-                                    <div class="clearfix">
-                                        <button class="export" onclick="javascript:window.print();">Print</button>  
+                            <div id="calendardetails" class="tab-pane active">
+                                <div class="">
+                                    <div class="panel-body">
+                                        <div class="col-md-12">
+                                            <aside class="calendar_ui col-md-12 calendar_ui">
+                                                <section class="">
+                                                    <div class="">
+                                                        <div id="calendarview" class="has-toolbar calendar_view"></div>
+                                                    </div>
+                                                </section>
+                                            </aside>
+                                        </div>
                                     </div>
-                                    <div class="space15"></div>
-                                    <table class="table table-striped table-hover table-bordered" id="editable-sample">
-                                        <thead>
-                                            <tr>
-                                                <th> <?php echo lang('id'); ?></th>
-                                                <th> <?php echo lang('patient'); ?></th>
-                                                <th> <?php echo lang('date-time'); ?></th>
-                                                <th> <?php echo lang('remarks'); ?></th>
-                                                <th> <?php echo lang('options'); ?></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                </div>
+                            </div>
 
-                                        <style>
 
-                                            .img_url{
-                                                height:20px;
-                                                width:20px;
-                                                background-size: contain; 
-                                                max-height:20px;
-                                                border-radius: 100px;
-                                            }
+                            <div id="list" class="tab-pane ">
+                                <div class="">
+                                    <div class="panel-body">
+                                        <div class="adv-table editable-table ">
+                                            <div class="clearfix">
+                                                <button class="export" onclick="javascript:window.print();">Print</button>  
+                                            </div>
+                                            <div class="space15"></div>
+                                            <table class="table table-striped table-hover table-bordered" id="editable-sample" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th> <?php echo lang('id'); ?></th>
+                                                        <th> <?php echo lang('patient'); ?></th>
+                                                        <th> <?php echo lang('date-time'); ?></th>
+                                                        <th> <?php echo lang('remarks'); ?></th>
+                                                        <th> <?php echo lang('options'); ?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
 
-                                        </style>
+                                                <style>
 
-                                        <?php
-                                        foreach ($appointments as $appointment) {
-                                            if ($appointment->doctor == $doctor_id) {
-                                                ?>
-                                                <tr class="">
-                                                    <td ><?php echo $appointment->id; ?></td>
-                                                    <td> <?php echo $this->db->get_where('patient', array('id' => $appointment->patient))->row()->name; ?></td>
-                                                    <td class="center"><?php echo date('d-m-Y', $appointment->date); ?> => <?php echo $appointment->time_slot; ?></td>
-                                                    <td>
-                                                        <?php echo $appointment->remarks; ?>
-                                                    </td> 
-                                                    <td>
-                                                        <!--
-                                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"> <?php echo lang('edit'); ?></i></button>   
-                                                        -->
-                                                        <a class="btn btn-danger btn-xs btn_width delete_button" href="appointment/delete?id=<?php echo $appointment->id; ?>&doctor_id=<?php echo $appointment->doctor; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
-                                                    </td>
-                                                </tr>
+                                                    .img_url{
+                                                        height:20px;
+                                                        width:20px;
+                                                        background-size: contain; 
+                                                        max-height:20px;
+                                                        border-radius: 100px;
+                                                    }
+
+                                                </style>
+
                                                 <?php
-                                            }
-                                        }
-                                        ?>
-
-
-
-
-                                        </tbody>
-                                    </table>
+                                                foreach ($appointments as $appointment) {
+                                                    if ($appointment->doctor == $doctor_id) {
+                                                        ?>
+                                                        <tr class="">
+                                                            <td ><?php echo $appointment->id; ?></td>
+                                                            <td> <?php echo $this->db->get_where('patient', array('id' => $appointment->patient))->row()->name; ?></td>
+                                                            <td class="center"><?php echo date('d-m-Y', $appointment->date); ?> => <?php echo $appointment->time_slot; ?></td>
+                                                            <td>
+                                                                <?php echo $appointment->remarks; ?>
+                                                            </td> 
+                                                            <td>
+                                                                <!--
+                                                                <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"> <?php echo lang('edit'); ?></i></button>   
+                                                                -->
+                                                                <a class="btn btn-danger btn-xs btn_width delete_button" href="appointment/delete?id=<?php echo $appointment->id; ?>&doctor_id=<?php echo $appointment->doctor; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
+                                                            </td>
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                }
+                                                ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </div>
-
-
-        </section>
-        <!-- page end-->
-
-        <section class="col-md-4">
-            <header class="panel-heading">
-                <?php echo lang('doctor'); ?>
-            </header>
-
-
-            <section class="">
-                <div class="panel-body profile">
-                    <a href="#" class="task-thumb" style="margin-right: 10px;">
-                        <img src="<?php
-                        if (!empty($mmrdoctor->img_url)) {
-                            echo $mmrdoctor->img_url;
-                        } else {
-                            echo 'uploads/favicon.png';
-                        }
-                        ?>" height="100" width="100">
-                    </a>
-                    <div class="task-thumb-details">
-                        <h1><a href="#"><?php echo $mmrdoctor->name; ?></a></h1>
-                        <p><?php echo $mmrdoctor->profile; ?></p>
-                    </div>
-                </div>
-                <table class="table table-hover personal-task">
-                    <tbody>
-                        <tr>
-                            <td>
-                                <i class=" fa fa-envelope"></i>
-                            </td>
-                            <td><?php echo $mmrdoctor->email; ?></td>
-
-                        </tr>
-                        <tr>
-                            <td>
-                                <i class="fa fa-phone"></i>
-                            </td>
-                            <td><?php echo $mmrdoctor->phone; ?></td>
-
-                        </tr>
-
-                    </tbody>
-                </table>
             </section>
-        </section>
+            <!-- page end-->
+            <section class="col-md-4">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php echo lang('doctor'); ?>
+                    </header>
+                    <section class="">
+                        <div class="panel-body profile">
+                            <a href="#" class="task-thumb" style="margin-right: 10px;">
+                                <img src="<?php
+                                if (!empty($mmrdoctor->img_url)) {
+                                    echo $mmrdoctor->img_url;
+                                } else {
+                                    echo 'uploads/favicon.png';
+                                }
+                                ?>" height="100" width="100">
+                            </a>
+                            <div class="task-thumb-details">
+                                <h1><a href="#"><?php echo $mmrdoctor->name; ?></a></h1>
+                                <p><?php echo $mmrdoctor->profile; ?></p>
+                            </div>
+                        </div>
+                        <table class="table table-hover personal-task">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <i class=" fa fa-envelope"></i>
+                                    </td>
+                                    <td><?php echo $mmrdoctor->email; ?></td>
+
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-phone"></i>
+                                    </td>
+                                    <td><?php echo $mmrdoctor->phone; ?></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                </div>
+            </section>
+        </div>
     </section>
 </section>
 <!--main content end-->

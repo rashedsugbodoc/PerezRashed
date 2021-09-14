@@ -4,9 +4,9 @@
 <section id="main-content"> 
     <section class="wrapper site-min-height">
         <!--state overview start-->
-        <div class="col-md-12">
-            <div class="row state-overview" style="padding: 23px 0px;">
-                <div class="col-md-8">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="panel">
                     <!--custom chart start-->
 
                     <?php
@@ -29,7 +29,7 @@
                     }
                     ?>
 
-                    <div class="panel-heading"> <?php echo date('F, Y', $first_minute) . ' ' . lang('pharmacy').' '.lang('expense_report'); ?> 
+                    <div class="panel-heading"> <?php echo date('F Y', $first_minute) . ' ' . lang('pharmacy').' '.lang('expense_report'); ?> 
 
                         <div class="col-md-1 pull-right no-print">
                             <a class="no-print pull-right" onclick="javascript:window.print();"> <i class="fa fa-print"></i>  </a>
