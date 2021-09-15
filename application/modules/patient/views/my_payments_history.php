@@ -666,7 +666,7 @@
 
 
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 <script src="vendor/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="common/js/ajaxrequest-coderygel.min.js"></script>

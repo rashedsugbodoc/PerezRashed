@@ -66,7 +66,7 @@
 </section>
 <!--main content end-->
 <!--footer start-->
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
                                     $(document).ready(function () {
                                         var table = $('#editable-sample').DataTable({
