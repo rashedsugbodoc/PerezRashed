@@ -796,7 +796,7 @@ class Patient extends MX_Controller {
                                                     <i class="fa fa-stethoscope"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
@@ -829,7 +829,7 @@ class Patient extends MX_Controller {
                                                     <i class="fa fa-medkit"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
@@ -837,7 +837,7 @@ class Patient extends MX_Controller {
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $doctor_name . '</h4>
-                                                                    <a class="btn btn-info btn-xs detailsbutton" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i> View</a>
+                                                                    <a class="btn btn-primary btn-xs" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank"><i class="fa fa-eye"></i> View</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -857,12 +857,12 @@ class Patient extends MX_Controller {
             $timeline[$lab->date + 3] = '<div class="panel-body profile-activity" >
                                             <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('lab') . '</span></h5>
                                             <h5 class="pull-right">' . date('d-m-Y', $lab->date) . '</h5>
-                                            <div class="activity blue">
+                                            <div class="activity pink">
                                                 <span>
                                                     <i class="fa fa-flask"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
@@ -870,7 +870,7 @@ class Patient extends MX_Controller {
                                                             <p></p>
                                                              <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $lab_doctor . '</h4>
-                                                                    <a class="btn btn-xs invoicebutton" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-file-text"></i>' . lang('report') . '</a>
+                                                                    <a class="btn btn-xs btn-danger" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
                                                         </div>
                                                     </div> 
                                                 </div>
@@ -887,7 +887,7 @@ class Patient extends MX_Controller {
                                                     <i class="fa fa-file"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
@@ -908,16 +908,18 @@ class Patient extends MX_Controller {
                                             <h5 class="pull-right">' . date('d-m-Y', $patient_material->date) . '</h5>
                                             <div class="activity purplee">
                                                 <span>
-                                                    <i class="fa fa-file-o"></i>
+                                                    <i class="fa fa-file"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $patient_material->date) . ' <a class="pull-right" title="' . lang('download') . '"  href="' . $patient_material->url . '" download=""> <i class=" fa fa-download"></i> </a> </h4>
-                                                                
-                                                                 <h4>' . $patient_material->title . '</h4>
+                                                            <h4>' . date('d-m-Y', $patient_material->date) . ' </h4>
+                                                                <i class=" fa fa-book"></i>
+                                                                <h4>' . $patient_material->title . '</h4>
+                                                                <a class="btn btn-xs btn-purple" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
+                                                                <a class="btn btn-xs btn-purple" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . lang('download') . '</a>
                                                             
                                                                 
                                                         </div>
@@ -1498,7 +1500,7 @@ class Patient extends MX_Controller {
                                                     <i class="fa fa-stethoscope"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
@@ -1532,7 +1534,7 @@ class Patient extends MX_Controller {
                                                     <i class="fa fa-medkit"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
@@ -1540,7 +1542,7 @@ class Patient extends MX_Controller {
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $doctor_name . '</h4>
-                                                                    <a class="btn btn-info btn-xs detailsbutton" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i> View</a>
+                                                                    <a class="btn btn-primary btn-xs" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank">' . lang('view') . '</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1559,12 +1561,12 @@ class Patient extends MX_Controller {
             $timeline[$lab->date + 3] = '<div class="panel-body profile-activity" >
                                             <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('lab') . '</span></h5>
                                             <h5 class="pull-right">' . date('d-m-Y', $lab->date) . '</h5>
-                                            <div class="activity blue">
+                                            <div class="activity pink">
                                                 <span>
                                                     <i class="fa fa-flask"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
@@ -1572,7 +1574,7 @@ class Patient extends MX_Controller {
                                                             <p></p>
                                                              <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $lab_doctor . '</h4>
-                                                                    <a class="btn btn-xs invoicebutton" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-file-text"></i>' . lang('report') . '</a>
+                                                                    <a class="btn btn-xs btn-danger" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
                                                         </div>
                                                     </div> 
                                                 </div>
@@ -1589,7 +1591,7 @@ class Patient extends MX_Controller {
                                                     <i class="fa fa-file"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
@@ -1610,17 +1612,18 @@ class Patient extends MX_Controller {
                                             <h5 class="pull-right">' . date('d-m-Y', $patient_material->date) . '</h5>
                                             <div class="activity purplee">
                                                 <span>
-                                                    <i class="fa fa-file-o"></i>
+                                                    <i class="fa fa-file"></i>
                                                 </span>
                                                 <div class="activity-desk">
-                                                    <div class="panel col-md-6">
+                                                    <div class="panel col-md-12">
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $patient_material->date) . ' <a class="pull-right" title="' . lang('download') . '"  href="' . $patient_material->url . '" download=""> <i class=" fa fa-download"></i> </a> </h4>
-                                                                
-                                                                 <h4>' . $patient_material->title . '</h4>
-                                                            
+                                                            <h4>' . date('d-m-Y', $patient_material->date) . ' </h4>
+                                                                <i class=" fa fa-book"></i>
+                                                                <h4>' . $patient_material->title . '</h4>
+                                                                <a class="btn btn-xs btn-purple" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
+                                                                <a class="btn btn-xs btn-purple" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . lang('download') . '</a>
                                                                 
                                                         </div>
                                                     </div> 
@@ -1640,18 +1643,6 @@ class Patient extends MX_Controller {
                 $timeline_value .= $value;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1696,10 +1687,10 @@ class Patient extends MX_Controller {
 
         foreach ($medical_histories as $medical_history) {
             $patient_case = ' <tr class="">
-                                                    <td>' . date("d-m-Y", $medical_history->date) . '</td>
-                                                    <td>' . $medical_history->title . '</td>
-                                                    <td>' . $medical_history->description . '</td>
-                                                </tr>';
+                                    <td>' . date("d-m-Y", $medical_history->date) . '</td>
+                                    <td>' . $medical_history->title . '</td>
+                                    <td>' . $medical_history->description . '</td>
+                                </tr>';
 
             $all_case .= $patient_case;
         }
@@ -1737,7 +1728,7 @@ class Patient extends MX_Controller {
 
             $option1 = '<a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' . lang('view') . '</a>';
             $prescription_case = ' <tr class="">
-                                                    <td>' . date('m/d/Y', $prescription->date) . '</td>
+                                                    <td>' . date('d/m/Y', $prescription->date) . '</td>
                                                     <td>' . $prescription_doctor . '</td>
                                                     <td>' . $medicinelist . '</td>
                                                          <td>' . $option1 . '</td>
@@ -1761,10 +1752,10 @@ class Patient extends MX_Controller {
             } else {
                 $lab_doctor = "";
             }
-            $option1 = '<a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-eye"></i>' . lang('report') . '</a>';
+            $option1 = '<a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-eye"></i>' .' '. lang('report') . '</a>';
             $lab_class = ' <tr class="">
                                                     <td>' . $lab->id . '</td>
-                                                    <td>' . date("m/d/Y", $lab->date) . '</td>
+                                                    <td>' . date("d/m/Y", $lab->date) . '</td>
                                                     <td>' . $lab_doctor . '</td>
                                                          <td>' . $option1 . '</td>
                                                 </tr>';
@@ -1806,26 +1797,22 @@ class Patient extends MX_Controller {
 
 
             $patient_material = '
-            
-                                            <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
+                <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
+                    <div class="post-info">
+                        <img src="' . $patient_material->url . '" height="100" width="100">
+                    </div>
+                    <div class="post-info">
+                        ' . $patient_documents . '
+                    </div>
+                    <p></p>
+                    <div class="post-info">
+                        <a class="btn btn-info btn-xs btn_width" href="' . $patient_material->url . '" download> ' . lang("download") . ' </a>
+                        <a class="btn btn-info btn-xs btn_width" title="' . lang("delete") . '" href="patient/deletePatientMaterial?id=' . $patient_material->id . '"onclick="return confirm("Are you sure you want to delete this item?");"> X </a>
+                    </div>
 
-                                                <div class="post-info">
-                                                    <img src="' . $patient_material->url . '" height="100" width="100">
-                                                </div>
-                                                <div class="post-info">
-                                                    
-                                                ' . $patient_documents . '
+                    <hr>
 
-                                                </div>
-                                                <p></p>
-                                                <div class="post-info">
-                                                    <a class="btn btn-info btn-xs btn_width" href="' . $patient_material->url . '" download> ' . lang("download") . ' </a>
-                                                    <a class="btn btn-info btn-xs btn_width" title="' . lang("delete") . '" href="patient/deletePatientMaterial?id=' . $patient_material->id . '"onclick="return confirm("Are you sure you want to delete this item?");"> X </a>
-                                                </div>
-
-                                                <hr>
-
-                                            </div>';
+                </div>';
             $all_material .= $patient_material;
         }
 
@@ -1850,12 +1837,7 @@ class Patient extends MX_Controller {
                 <div class="">
                     ' . lang("patient") . ' ' . lang("info") . ' 
                 </div>
-
             </header> 
-
-
-
-
             <aside class="profile-nav">
                 <section class="">
                     <div class="user-heading round">
@@ -1873,25 +1855,16 @@ class Patient extends MX_Controller {
                         <li>  ' . lang("birth_date") . '<span class="label pull-right r-activity">' . $patient->birthdate . '</span></li>
                         <li style="height: 200px;">  ' . lang("address") . '<span class="pull-right r-activity" style="height: 200px;">' . $patient->address . '</span></li>
                     </ul>
-
                 </section>
             </aside>
-
-
         </section>
-
-
-
-
 
         <section class="col-md-9">
             <header class="panel-heading clearfix">
                 <div class="col-md-7">
                     ' . lang("history") . ' | ' . $patient->name . '
                 </div>
-
             </header>
-
             <section class="panel-body">   
                 <header class="panel-heading tab-bg-dark-navy-blueee">
                     <ul class="nav nav-tabs">
@@ -1920,156 +1893,127 @@ class Patient extends MX_Controller {
                         </li>
                     </ul>
                 </header>
-                <div class="panel">
-                    <div class="tab-content">
-                        <div id="appointments" class="tab-pane active">
-                            <div class="">
-
-                                <div class="adv-table editable-table ">
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-                                                <th>' . lang("date") . '</th>
-                                                <th>' . lang("time_slot") . '</th>
-                                                <th>' . lang("doctor") . '</th>
-                                                <th>' . lang("status") . '</th>
-                                                <th>' . lang("option") . '</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ' . $all_appointments . '
-                                        </tbody>
-                                    </table>
-                                </div>
+                
+                <div class="tab-content">
+                    <div id="appointments" class="tab-pane active">
+                        <div class="">
+                            <div class="adv-table editable-table ">
+                                <table class="table table-striped table-hover table-bordered" id="">
+                                    <thead>
+                                        <tr>
+                                            <th>' . lang("date") . '</th>
+                                            <th>' . lang("time_slot") . '</th>
+                                            <th>' . lang("doctor") . '</th>
+                                            <th>' . lang("status") . '</th>
+                                            <th>' . lang("option") . '</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ' . $all_appointments . '
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div id="home" class="tab-pane">
-                            <div class="">
-
-
-
-                                <div class="adv-table editable-table ">
-
-
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-                                                <th>' . lang("date") . '</th>
-                                                <th>' . lang("title") . '</th>
-                                                <th>' . lang("description") . '</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ' . $all_case . '
-                                        </tbody>
-                                    </table>
-
-
-                                </div>
+                    </div>
+                    <div id="home" class="tab-pane">
+                        <div class="">
+                            <div class="adv-table editable-table ">
+                                <table class="table table-striped table-hover table-bordered" id="">
+                                    <thead>
+                                        <tr>
+                                            <th>' . lang("date") . '</th>
+                                            <th>' . lang("title") . '</th>
+                                            <th>' . lang("description") . '</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ' . $all_case . '
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-            
-                                    <div id="prescription" class="tab-pane">
-                                           <div class="">
-
-
-
-                                       <div class="adv-table editable-table ">
-
-
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-                                                <th>' . lang("date") . '</th>
-                                                <th>' . lang("doctor") . '</th>
-                                                <th>' . lang("medicine") . '</th>
-                                                <th>' . lang("options") . '</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            ' . $all_prescription . '
-                                        </tbody>
-                                    </table>
-
-
-                                </div>
+                    </div>
+                    <div id="prescription" class="tab-pane">
+                        <div class="">
+                            <div class="adv-table editable-table ">
+                                <table class="table table-striped table-hover table-bordered" id="">
+                                    <thead>
+                                        <tr>
+                                            <th>' . lang("date") . '</th>
+                                            <th>' . lang("doctor") . '</th>
+                                            <th>' . lang("medicine") . '</th>
+                                            <th>' . lang("options") . '</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ' . $all_prescription . '
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div id="lab" class="tab-pane"> <div class="">
-                                <div class="adv-table editable-table ">
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-                                                <th>' . lang("id") . '</th>
-                                                <th>' . lang("date") . '</th>
-                                                <th>' . lang("doctor") . '</th>
-                                                <th>' . lang("options") . '</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>'
-                . $all_lab .
-                '</tbody>
-                                    </table>
-                                </div>
+                    </div>
+                    <div id="lab" class="tab-pane"> 
+                        <div class="">
+                            <div class="adv-table editable-table ">
+                                <table class="table table-striped table-hover table-bordered" id="">
+                                    <thead>
+                                        <tr>
+                                            <th>' . lang("id") . '</th>
+                                            <th>' . lang("date") . '</th>
+                                            <th>' . lang("doctor") . '</th>
+                                            <th>' . lang("options") . '</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>'
+                                        . $all_lab .
+                                    '</tbody>
+                                </table>
                             </div>
                         </div>
-                           <div id="bed" class="tab-pane"> <div class="">
-                                <div class="adv-table editable-table ">
-                                    <table class="table table-striped table-hover table-bordered" id="">
-                                        <thead>
-                                            <tr>
-                                                <th>' . lang("bed_id") . '</th>
-                                                <th>' . lang("alloted_time") . '</th>
-                                                <th>' . lang("discharge_time") . '</th>
-                                               
-                                            </tr>
-                                        </thead>
-                                        <tbody>'
-                . $all_bed .
-                '</tbody>
-                                    </table>
-                                </div>
+                    </div>
+                    <div id="bed" class="tab-pane"> 
+                        <div class="">
+                            <div class="adv-table editable-table ">
+                                <table class="table table-striped table-hover table-bordered" id="">
+                                    <thead>
+                                        <tr>
+                                            <th>' . lang("bed_id") . '</th>
+                                            <th>' . lang("alloted_time") . '</th>
+                                            <th>' . lang("discharge_time") . '</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>'
+                                        . $all_bed .
+                                    '</tbody>
+                                </table>
                             </div>
                         </div>
-
-
-                        <div id="profile" class="tab-pane"> <div class="">
-
-                                <div class="adv-table editable-table ">
-                                    <div class="">
-                                        ' . $all_material . '
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="timeline" class="tab-pane"> 
-                            <div class="">
+                    </div>
+                    <div id="profile" class="tab-pane"> 
+                        <div class="">
+                            <div class="adv-table editable-table ">
                                 <div class="">
-                                    <section class="panel ">
-                                        <header class="panel-heading">
-                                            Timeline
-                                        </header>
-
-
-                                        ' . $timeline_value . '
-
-                            </section>
+                                    ' . $all_material . '
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="timeline" class="tab-pane"> 
+                        <div class="">
+                            <div class="">
+                                <section class="">
+                                    <header class="panel-heading">
+                                        ' . lang("timeline") . '
+                                    </header>
+                                    ' . $timeline_value . '
+                                </section>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-</section>
-
-
-
-</section>';
+            </section>
+        </section>
+    </section>';
 
 
         echo json_encode($data);

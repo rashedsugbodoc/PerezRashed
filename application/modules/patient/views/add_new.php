@@ -4,7 +4,7 @@
     <section class="wrapper site-min-height">
         <!-- page start-->
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-12">
                 <section class="panel">
                     <header class="panel-heading">
                         <?php
@@ -198,9 +198,11 @@
                                                     echo $patient->patient_id;
                                                 }
                                                 ?>'>
-                                                <section class="">
-                                                    <button type="submit" name="submit" class="btn btn-info"><?php echo lang('submit'); ?></button>
-                                                </section>
+                                                <div class="row">
+                                                    <section class="col-md-12">
+                                                        <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
+                                                    </section>
+                                                </div>
                                             </form>
                                         </div>
                                     </div>

@@ -336,11 +336,11 @@
                                     <div class="adv-table editable-table ">
                                         <div class="">
                                             <?php foreach ($patient_materials as $patient_material) { ?>
-                                                <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
+                                                <div class="panel col-md-4"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
 
                                                     <div class="post-info">
                                                         <a class="example-image-link" href="<?php echo $patient_material->url; ?>" data-lightbox="example-1">
-                                                            <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" height="100" width="100"/></a>
+                                                            <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" height="100"/></a>
                                   <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
                                                     </div>
                                                     <div class="post-info">
@@ -415,9 +415,9 @@
                             <div id="timeline" class="tab-pane"> 
                                 <div class="">
                                     <div class="">
-                                            <h3>
-                                                Timeline
-                                            </h3>
+                                            <header class="panel-heading">
+                                                <?php echo lang("timeline"); ?>
+                                            </header>
                                             <?php
                                             if (!empty($timeline)) {
                                                 krsort($timeline);
@@ -570,60 +570,66 @@ if ($this->ion_auth->in_group('Doctor')) {
             </div>
             <div class="modal-body">
                 <form role="form" action="appointment/addNew" class="clearfix row" method="post" enctype="multipart/form-data">
-                    <div class="col-md-4 panel">
-                        <label for="exampleInputEmail1">  <?php echo lang('patient'); ?></label>
-                        <select class="form-control m-bot15 js-example-basic-single pos_select" id="pos_select" name="patient" value=''> 
-                            <option value="">Select .....</option>
-                            <option value="<?php echo $patient->id; ?>"><?php echo $patient->name; ?> </option>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1">  <?php echo lang('patient'); ?></label>
+                                <select class="form-control  js-example-basic-single pos_select" id="pos_select" name="patient" value=''> 
+                                    <option value="">Select .....</option>
+                                    <option value="<?php echo $patient->id; ?>"><?php echo $patient->name; ?> </option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1">  <?php echo lang('doctor'); ?></label>
+                                <select class="form-control" id="adoctors" name="doctor" value=''>  
+
+                                </select>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="col-md-4 panel">
-                        <label for="exampleInputEmail1">  <?php echo lang('doctor'); ?></label>
-                        <select class="form-control m-bot15" id="adoctors" name="doctor" value=''>  
-
-                        </select>
-                    </div>
-
-
-                    <div class="col-md-4 panel">
-                        <label for="exampleInputEmail1"> <?php echo lang('date'); ?></label>
-                        <input type="text" class="form-control default-date-picker" id="date" readonly="" name="date" id="exampleInputEmail1" value='' placeholder="">
-                    </div>
-
-                    <div class="col-md-6 panel">
-                        <label class=""><?php echo lang('available_slots'); ?></label> 
-                        <select class="form-control m-bot15" name="time_slot" id="aslots" value=''> 
-
-                        </select>
-                    </div>
-
-                    <div class="col-md-6 panel"> 
-                        <label for="exampleInputEmail1"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?></label>
-                        <select class="form-control m-bot15" name="status" value=''>
-
-                            <?php if (!$this->ion_auth->in_group('Patient')) { ?>
-                                <option value="Pending Confirmation" <?php
-                                ?> > <?php echo lang('pending_confirmation'); ?> </option>
-                                <option value="Confirmed" <?php
-                                ?> > <?php echo lang('confirmed'); ?> </option>
-                                <option value="Treated" <?php
-                                ?> > <?php echo lang('treated'); ?> </option>
-                                <option value="Cancelled" <?php ?> > <?php echo lang('cancelled'); ?> </option>
-                            <?php } else { ?>
-                                <option value="Requested" <?php ?> > <?php echo lang('requested'); ?> </option> 
-                            <?php } ?>
-                        </select>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1"> <?php echo lang('date'); ?></label>
+                                <input type="text" class="form-control default-date-picker" id="date" readonly="" name="date" id="exampleInputEmail1" value='' placeholder="">
+                            </div>                            
+                            <div class="col-md-6 form-group">
+                                <label class=""><?php echo lang('available_slots'); ?></label> 
+                                <select class="form-control " name="time_slot" id="aslots" value=''> 
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-md-8 panel">
-                        <label for="exampleInputEmail1"> <?php echo lang('remarks'); ?></label>
-                        <input type="text" class="form-control" name="remarks" id="exampleInputEmail1" value='' placeholder="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6 form-group"> 
+                                <label for="exampleInputEmail1"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?></label>
+                                <select class="form-control" name="status" value=''>
+                                    <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                        <option value="Pending Confirmation" <?php
+                                        ?> > <?php echo lang('pending_confirmation'); ?> </option>
+                                        <option value="Confirmed" <?php
+                                        ?> > <?php echo lang('confirmed'); ?> </option>
+                                        <option value="Treated" <?php
+                                        ?> > <?php echo lang('treated'); ?> </option>
+                                        <option value="Cancelled" <?php ?> > <?php echo lang('cancelled'); ?> </option>
+                                    <?php } else { ?>
+                                        <option value="Requested" <?php ?> > <?php echo lang('requested'); ?> </option> 
+                                    <?php } ?>
+                                </select>
+                            </div>                            
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1"> <?php echo lang('remarks'); ?></label>
+                                <input type="text" class="form-control" name="remarks" id="exampleInputEmail1" value='' placeholder="">
+                            </div>
+                        </div>
                     </div>
 
 
 
-
-                    <div class="col-md-5 panel">
+                    <div class="col-md-5 form-group">
                         <input type="checkbox" name="sms" value="sms"> <?php echo lang('send_sms') ?><br>
                     </div>
 
@@ -635,7 +641,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     }
                     ?>'>
 
-                    <div class="col-md-12 panel">
+                    <div class="col-md-12 form-group">
                         <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
 
@@ -663,68 +669,73 @@ if ($this->ion_auth->in_group('Doctor')) {
             </div>
             <div class="modal-body">
                 <form role="form" id="editAppointmentForm" class="clearfix row" action="appointment/addNew" method="post" enctype="multipart/form-data">
-                    <div class="col-md-4 panel"> 
-                        <label for="exampleInputEmail1"> <?php echo lang('patient'); ?></label>
-                        <select class="form-control m-bot15 js-example-basic-single pos_select patient" id="pos_select" name="patient" value=''> 
-                            <option value="">Select .....</option>
-                            <option value="<?php echo $patient->id; ?>"><?php echo $patient->name; ?> </option>
-                        </select>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6 form-group"> 
+                                <label for="exampleInputEmail1"> <?php echo lang('patient'); ?></label>
+                                <select class="form-control js-example-basic-single pos_select patient" id="pos_select" name="patient" value=''> 
+                                    <option value="">Select .....</option>
+                                    <option value="<?php echo $patient->id; ?>"><?php echo $patient->name; ?> </option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1">  <?php echo lang('doctor'); ?></label> 
+                                <select class="form-control doctor" id="adoctors1" name="doctor" value=''>  
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6 form-group"> 
+                                <label for="exampleInputEmail1"> <?php echo lang('date'); ?></label>
+                                <input type="text" class="form-control default-date-picker" readonly="" id="date1" name="date" id="exampleInputEmail1" value='' placeholder="">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label class=""><?php echo lang('available_slots'); ?></label> 
+                                <select class="form-control" name="time_slot" id="aslots1" value=''> 
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?></label>
+                                <select class="form-control" name="status" value=''>
+                                    <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                        <option value="Pending Confirmation" <?php ?> > <?php echo lang('pending_confirmation'); ?> </option>
+                                        <option value="Confirmed" <?php
+                                        ?> > <?php echo lang('confirmed'); ?> </option>
+                                        <option value="Treated" <?php
+                                        ?> > <?php echo lang('treated'); ?> </option>
+                                        <option value="Cancelled" <?php ?> > <?php echo lang('cancelled'); ?> </option>
+                                    <?php } else { ?>
+                                        <option value="Requested" <?php ?> > <?php echo lang('requested'); ?> </option> 
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1"> <?php echo lang('remarks'); ?></label>
+                                <input type="text" class="form-control" name="remarks" id="exampleInputEmail1" value='' placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-12 form-group">
+                                <input type="checkbox" name="sms" value="sms"> <?php echo lang('send_sms') ?><br>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-md-4 panel">
-                        <label for="exampleInputEmail1">  <?php echo lang('doctor'); ?></label> 
-                        <select class="form-control m-bot15 doctor" id="adoctors1" name="doctor" value=''>  
 
-                        </select>
-                    </div>
-
-
-                    <div class="col-md-4 panel"> 
-                        <label for="exampleInputEmail1"> <?php echo lang('date'); ?></label>
-                        <input type="text" class="form-control default-date-picker" readonly="" id="date1" name="date" id="exampleInputEmail1" value='' placeholder="">
-                    </div>
-
-                    <div class="col-md-6 panel">
-                        <label class=""><?php echo lang('available_slots'); ?></label> 
-                        <select class="form-control m-bot15" name="time_slot" id="aslots1" value=''> 
-
-                        </select>
-                    </div>
-
-                    <div class="col-md-6 panel">
-                        <label for="exampleInputEmail1"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?></label>
-                        <select class="form-control m-bot15" name="status" value=''>
-                            <?php if (!$this->ion_auth->in_group('Patient')) { ?>
-                                <option value="Pending Confirmation" <?php ?> > <?php echo lang('pending_confirmation'); ?> </option>
-                                <option value="Confirmed" <?php
-                                ?> > <?php echo lang('confirmed'); ?> </option>
-                                <option value="Treated" <?php
-                                ?> > <?php echo lang('treated'); ?> </option>
-                                <option value="Cancelled" <?php ?> > <?php echo lang('cancelled'); ?> </option>
-                            <?php } else { ?>
-                                <option value="Requested" <?php ?> > <?php echo lang('requested'); ?> </option> 
-                            <?php } ?>
-                        </select>
-                    </div>
-
-                    <div class="col-md-8 panel">
-                        <label for="exampleInputEmail1"> <?php echo lang('remarks'); ?></label>
-                        <input type="text" class="form-control" name="remarks" id="exampleInputEmail1" value='' placeholder="">
-                    </div>
-
-
-
-
-                    <div class="col-md-6 panel">
-                        <input type="checkbox" name="sms" value="sms"> <?php echo lang('send_sms') ?><br>
-                    </div>
-
-
-
-                    <input type="hidden" name="redirect" value='patient/medicalHistory?id=<?php echo $patient->id; ?>'>>
+                    <input type="hidden" name="redirect" value='patient/medicalHistory?id=<?php echo $patient->id; ?>'>
                     <input type="hidden" name="id" id="appointment_id" value=''>
 
-                    <div class="col-md-12 panel">
+                    <div class="col-md-12">
                         <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
 

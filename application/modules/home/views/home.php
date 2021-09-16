@@ -566,13 +566,17 @@
                         <?php if (in_array('appointment', $this->modules)) { ?>
                             <?php if (!$this->ion_auth->in_group('Doctor')) { ?>
                                 <div class="col-md-8">
-                                    <aside class="calendar_ui col-md-12 panel calendar_ui">
-                                        <section class="">
-                                            <div class="">
-                                                <div id="calendar" class="has-toolbar calendar_view"></div>
-                                            </div>
-                                        </section>
-                                    </aside>
+                                    <div class="panel">
+                                        <div class="panel-body">
+                                            <aside class="calendar_ui col-md-12 calendar_ui">
+                                                <section class="">
+                                                    <div class="">
+                                                        <div id="calendar" class="has-toolbar calendar_view"></div>
+                                                    </div>
+                                                </section>
+                                            </aside>
+                                        </div>
+                                    </div>
                                 </div>
 
 

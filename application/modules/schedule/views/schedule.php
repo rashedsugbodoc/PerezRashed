@@ -81,58 +81,65 @@
             </div>
             <div class="modal-body row">
                 <form role="form" action="schedule/addSchedule" class="clearfix" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1">  <?php echo lang('doctor'); ?></label>
+                                <select class="form-control" id="doctorchoose" name="doctor" value=''>
+                                    <?php if (!empty($prescription->doctor)) { ?>
+                                        <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
+                                    <?php } ?>
+                                    <?php
+                                    if (!empty($setval)) {
+                                        $doctordetails1 = $this->db->get_where('doctor', array('id' => set_value('doctor')))->row();
+                                        ?>
+                                        <option value="<?php echo $doctordetails1->id; ?>" selected="selected"><?php echo $doctordetails1->name; ?> - <?php echo $doctordetails1->id; ?></option>
+                                    <?php }
+                                    ?>
+                                </select>
+                            </div>
 
-                    <div class="col-md-6 panel">
-                        <label for="exampleInputEmail1">  <?php echo lang('doctor'); ?></label>
-                        <select class="form-control m-bot15" id="doctorchoose" name="doctor" value=''>
-                            <?php if (!empty($prescription->doctor)) { ?>
-                                <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
-                            <?php } ?>
-                            <?php
-                            if (!empty($setval)) {
-                                $doctordetails1 = $this->db->get_where('doctor', array('id' => set_value('doctor')))->row();
-                                ?>
-                                <option value="<?php echo $doctordetails1->id; ?>" selected="selected"><?php echo $doctordetails1->name; ?> - <?php echo $doctordetails1->id; ?></option>
-                            <?php }
-                            ?>
-                        </select>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1"> <?php echo lang('weekday'); ?></label>
-                        <select class="form-control m-bot15" id="weekday" name="weekday" value=''> 
-                            <option value="Friday"><?php echo lang('friday') ?></option>
-                            <option value="Saturday"><?php echo lang('saturday') ?></option>
-                            <option value="Sunday"><?php echo lang('sunday') ?></option>
-                            <option value="Monday"><?php echo lang('monday') ?></option>
-                            <option value="Tuesday"><?php echo lang('tuesday') ?></option>
-                            <option value="Wednesday"><?php echo lang('wednesday') ?></option>
-                            <option value="Thursday"><?php echo lang('thursday') ?></option>
-                        </select>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="exampleInputEmail1"> <?php echo lang('start_time'); ?></label>
-                        <div class="input-group bootstrap-timepicker">
-                            <input type="text" class="form-control timepicker-default" name="s_time" id="exampleInputEmail1" value=''>
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-clock-o"></i></button>
-                            </span>
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"> <?php echo lang('weekday'); ?></label>
+                                <select class="form-control" id="weekday" name="weekday" value=''> 
+                                    <option value="Friday"><?php echo lang('friday') ?></option>
+                                    <option value="Saturday"><?php echo lang('saturday') ?></option>
+                                    <option value="Sunday"><?php echo lang('sunday') ?></option>
+                                    <option value="Monday"><?php echo lang('monday') ?></option>
+                                    <option value="Tuesday"><?php echo lang('tuesday') ?></option>
+                                    <option value="Wednesday"><?php echo lang('wednesday') ?></option>
+                                    <option value="Thursday"><?php echo lang('thursday') ?></option>
+                                </select>
+                            </div>
                         </div>
-
                     </div>
-                    <div class="form-group bootstrap-timepicker col-md-6">
-                        <label for="exampleInputEmail1"> <?php echo lang('end_time'); ?></label>
-                        <div class="input-group bootstrap-timepicker">
-                            <input type="text" class="form-control timepicker-default" name="e_time" id="exampleInputEmail1" value=''>
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-clock-o"></i></button>
-                            </span>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"> <?php echo lang('start_time'); ?></label>
+                                <div class="input-group bootstrap-timepicker">
+                                    <input type="text" class="form-control timepicker-default" name="s_time" id="exampleInputEmail1" value=''>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-info" type="button"><i class="fa fa-clock"></i></button>
+                                    </span>
+                                </div>
+
+                            </div>
+                            <div class="form-group bootstrap-timepicker col-md-6">
+                                <label for="exampleInputEmail1"> <?php echo lang('end_time'); ?></label>
+                                <div class="input-group bootstrap-timepicker">
+                                    <input type="text" class="form-control timepicker-default" name="e_time" id="exampleInputEmail1" value=''>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-info" type="button"><i class="fa fa-clock"></i></button>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label for="exampleInputEmail1"><?php echo lang('appointment') ?> <?php echo lang('duration') ?> </label>
-                        <select class="form-control m-bot15" name="duration" value=''>
+                        <select class="form-control" name="duration" value=''>
 
                             <option value="3" <?php
                             if (!empty($settings->duration)) {
@@ -231,7 +238,7 @@
                         <div class="input-group bootstrap-timepicker">
                             <input type="text" class="form-control timepicker-default" name="s_time" id="exampleInputEmail1" value=''>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-clock-o"></i></button>
+                                <button class="btn btn-info" type="button"><i class="fa fa-clock"></i></button>
                             </span>
                         </div>
 
@@ -241,7 +248,7 @@
                         <div class="input-group bootstrap-timepicker">
                             <input type="text" class="form-control timepicker-default" name="e_time" id="exampleInputEmail1" value=''>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-clock-o"></i></button>
+                                <button class="btn btn-info" type="button"><i class="fa fa-clock"></i></button>
                             </span>
                         </div>
                     </div>
