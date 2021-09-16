@@ -1279,7 +1279,7 @@ h3.timeline-title {
     color: #56C9F5;
 }
 .timeline-desk h1.purple, .timeline-desk span a.purple {
-    color: #8074C6;
+    color: #4454c3;
 }
 .timeline-desk h1.light-green, .timeline-desk span a.light-green {
     color: #A8D76F;
@@ -2680,18 +2680,18 @@ ul.summary-list > li:last-child  {
 }
 
 .activity.terques span {
-    background: #42A5F5;
+    background: #45AAF2;
 }
 
 .activity.terques h4 {
-    color: #42A5F5;
+    color: #45AAF2;
 }
 .activity.purple span {
-    background: #b984dc;
+    background: #4454c3;
 }
 
 .activity.purple h4 {
-    color: #b984dc;
+    color: #4454c3;
 }
 .activity.blue span {
     background: #90b4e6;
@@ -2700,12 +2700,21 @@ ul.summary-list > li:last-child  {
 .activity.blue h4 {
     color: #90b4e6;
 }
-.activity.green span {
-    background: #aec785;
+
+.activity.pink span {
+    background: #ff5b51;
 }
 
-.activity.green h4 {
-    color: #aec785;
+.activity.pink h4 {
+    color: #ff5b51;
+}
+
+.activity.green span {
+    background: #ffffff;
+}
+
+.activity.greenn h4 {
+    color: #2dce89;
 }
 
 .activity h4 {
@@ -2741,13 +2750,15 @@ ul.summary-list > li:last-child  {
 }
 
 .activity-desk .panel {
-    background: #F4F4F4 ;
+    padding: 8px;
+    margin-top: 5px;
+    
     display: inline-block;
 }
 
 
 .activity .activity-desk .arrow {
-    border-right: 8px solid #F4F4F4 !important;
+    border-right: 8px solid #FFFFFF !important;
 }
 .activity .activity-desk .arrow {
     border-bottom: 8px solid transparent;
@@ -5761,13 +5772,16 @@ table {
 }
 
 .activity.greenn span {
-    background: #B98478;
+    background: #2dce89;
 }
 
 .activity.purplee span {
-    background: #009988;
+    background: #6574cd;
 }
 
+.activity.purplee h4 {
+    color: #6574cd;
+}
 .profile-activity{
     margin-bottom: 10px;
     background: #fff;
