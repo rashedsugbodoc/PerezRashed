@@ -3,60 +3,62 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="panel">
-            <header class="panel-heading">
-                <?php echo lang('time_schedule'); ?> (<?php echo $this->db->get_where('doctor', array('id' => $doctorr))->row()->name; ?>)
-                <div class="col-md-4 clearfix pull-right">
-                    <a data-toggle="modal" href="#myModal">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i>  <?php echo lang('add_new'); ?> 
-                            </button>
+        <div class="row">
+            <div class="col-md-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        <?php echo lang('time_schedule'); ?> (<?php echo $this->db->get_where('doctor', array('id' => $doctorr))->row()->name; ?>)
+                        <div class="col-md-4 clearfix pull-right">
+                            <a data-toggle="modal" href="#myModal">
+                                <div class="btn-group pull-right">
+                                    <button id="" class="btn green btn-xs">
+                                        <i class="fa fa-plus-circle"></i>  <?php echo lang('add_new'); ?> 
+                                    </button>
+                                </div>
+                            </a>  
                         </div>
-                    </a>  
-                </div>
-            </header>
+                    </header>
+                    <div class="panel-body">
+                        <div class="adv-table editable-table">
+                            <table class="table table-striped table-hover table-bordered" id="editable-sample">
+                                <thead>
+                                    <tr>
+                                        <th> # </th>
+                                        <th> <?php echo lang('weekday'); ?></th>
+                                        <th> <?php echo lang('start_time'); ?></th>
+                                        <th> <?php echo lang('end_time'); ?></th>
+                                        <th> <?php echo lang('duration'); ?></th>
+                                        <th> <?php echo lang('options'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody> 
+                                    <?php
+                                    $i = 0;
+                                    foreach ($schedules as $schedule) {
+                                        $i = $i + 1;
+                                        ?>
+                                        <tr class="">
+                                            <td style=""> <?php echo $i; ?></td> 
+                                            <td> <?php echo $schedule->weekday; ?></td> 
+                                            <td><?php echo $schedule->s_time; ?></td>
+                                            <td><?php echo $schedule->e_time; ?></td>
+                                            <td><?php echo $schedule->duration * 5 . ' ' . lang('minutes'); ?></td>
+                                            <td>
+                                                <!--
+                                                <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $schedule->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
+                                                -->
+                                                <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $doctorr; ?>&weekday=<?php echo $schedule->weekday; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
 
-            <div class="panel-body">
-                <div class="adv-table editable-table">
-                    <table class="table table-striped table-hover table-bordered" id="editable-sample">
-                        <thead>
-                            <tr>
-                                <th> # </th>
-                                <th> <?php echo lang('weekday'); ?></th>
-                                <th> <?php echo lang('start_time'); ?></th>
-                                <th> <?php echo lang('end_time'); ?></th>
-                                <th> <?php echo lang('duration'); ?></th>
-                                <th> <?php echo lang('options'); ?></th>
-
-                            </tr>
-                        </thead>
-                        <tbody> 
-                            <?php
-                            $i = 0;
-                            foreach ($schedules as $schedule) {
-                                $i = $i + 1;
-                                ?>
-                                <tr class="">
-                                    <td style=""> <?php echo $i; ?></td> 
-                                    <td> <?php echo $schedule->weekday; ?></td> 
-                                    <td><?php echo $schedule->s_time; ?></td>
-                                    <td><?php echo $schedule->e_time; ?></td>
-                                    <td><?php echo $schedule->duration * 5 . ' ' . lang('minitues'); ?></td>
-                                    <td>
-                                        <!--
-                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $schedule->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
-                                        -->
-                                        <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $doctorr; ?>&weekday=<?php echo $schedule->weekday; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
-                                    </td>
-                                </tr>
-                            <?php } ?>
-                        </tbody>
-                    </table>
-
-                </div>
-            </div> 
-        </section>
+                        </div>
+                    </div> 
+                </section>
+            </div>
+        </div>
         <!-- page end-->
     </section>
 </section>
@@ -96,7 +98,7 @@
                         <div class="input-group bootstrap-timepicker">
                             <input type="text" class="form-control timepicker-default" name="s_time" id="exampleInputEmail1" value=''>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-clock-o"></i></button>
+                                <button class="btn btn-primary" type="button"><i class="fa fa-clock"></i></button>
                             </span>
                         </div>
 
@@ -106,7 +108,7 @@
                         <div class="input-group bootstrap-timepicker">
                             <input type="text" class="form-control timepicker-default" name="e_time" id="exampleInputEmail1" value=''>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-clock-o"></i></button>
+                                <button class="btn btn-primary" type="button"><i class="fa fa-clock"></i></button>
                             </span>
                         </div>
                     </div>
@@ -121,7 +123,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 15 Minitues </option>
+                            ?> > 15 Minutes </option>
 
                             <option value="4" <?php
                             if (!empty($settings->duration)) {
@@ -129,7 +131,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 20 Minitues </option>
+                            ?> > 20 Minutes </option>
 
                             <option value="6" <?php
                             if (!empty($settings->duration)) {
@@ -137,7 +139,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 30 Minitues </option>
+                            ?> > 30 Minutes </option>
 
                             <option value="9" <?php
                             if (!empty($settings->duration)) {
@@ -145,7 +147,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 45 Minitues </option>
+                            ?> > 45 Minutes </option>
 
                             <option value="12" <?php
                             if (!empty($settings->duration)) {
@@ -153,7 +155,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 60 Minitues </option>
+                            ?> > 60 Minutes </option>
 
                         </select>
                     </div>
@@ -231,7 +233,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 15 Minitues </option>
+                            ?> > 15 Minutes </option>
 
                             <option value="4" <?php
                             if (!empty($settings->duration)) {
@@ -239,7 +241,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 20 Minitues </option>
+                            ?> > 20 Minutes </option>
 
                             <option value="6" <?php
                             if (!empty($settings->duration)) {
@@ -247,7 +249,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 30 Minitues </option>
+                            ?> > 30 Minutes </option>
 
                             <option value="9" <?php
                             if (!empty($settings->duration)) {
@@ -255,7 +257,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 45 Minitues </option>
+                            ?> > 45 Minutes </option>
 
                             <option value="12" <?php
                             if (!empty($settings->duration)) {
@@ -263,7 +265,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 60 Minitues </option>
+                            ?> > 60 Minutes </option>
 
                         </select>
                     </div>

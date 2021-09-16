@@ -46,7 +46,7 @@
                                     <td> <?php echo $schedule->weekday; ?></td> 
                                     <td><?php echo $schedule->s_time; ?></td>
                                     <td><?php echo $schedule->e_time; ?></td>
-                                    <td><?php echo $schedule->duration * 5 . ' ' . lang('minitues'); ?></td>
+                                    <td><?php echo $schedule->duration * 5 . ' ' . lang('minutes'); ?></td>
                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                         <td>
                                             <!--
@@ -140,7 +140,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 15 Minitues </option>
+                            ?> > 15 Minutes </option>
 
                             <option value="4" <?php
                             if (!empty($settings->duration)) {
@@ -148,7 +148,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 20 Minitues </option>
+                            ?> > 20 Minutes </option>
 
                             <option value="6" <?php
                             if (!empty($settings->duration)) {
@@ -156,7 +156,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 30 Minitues </option>
+                            ?> > 30 Minutes </option>
 
                             <option value="9" <?php
                             if (!empty($settings->duration)) {
@@ -164,7 +164,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 45 Minitues </option>
+                            ?> > 45 Minutes </option>
 
                             <option value="12" <?php
                             if (!empty($settings->duration)) {
@@ -172,7 +172,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 60 Minitues </option>
+                            ?> > 60 Minutes </option>
 
                         </select>
                     </div>
@@ -272,7 +272,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 15 Minitues </option>
+                            ?> > 15 Minutes </option>
 
                             <option value="4" <?php
                             if (!empty($settings->duration)) {
@@ -280,7 +280,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 20 Minitues </option>
+                            ?> > 20 Minutes </option>
 
                             <option value="6" <?php
                             if (!empty($settings->duration)) {
@@ -288,7 +288,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 30 Minitues </option>
+                            ?> > 30 Minutes </option>
 
                             <option value="9" <?php
                             if (!empty($settings->duration)) {
@@ -296,7 +296,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 45 Minitues </option>
+                            ?> > 45 Minutes </option>
 
                             <option value="12" <?php
                             if (!empty($settings->duration)) {
@@ -304,7 +304,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?> > 60 Minitues </option>
+                            ?> > 60 Minutes </option>
 
                         </select>
                     </div>

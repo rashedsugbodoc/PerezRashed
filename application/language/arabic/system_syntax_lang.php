@@ -890,7 +890,7 @@ $lang['schedule'] = 'جدول';
 $lang['duration'] = 'المدة الزمنية';
 
 
-$lang['minitues'] = 'مينيتويس';
+$lang['minutes'] = 'مينيتويس';
 
 $lang['work_place'] = 'مكان العمل';
 
