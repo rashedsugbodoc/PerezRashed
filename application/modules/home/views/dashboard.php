@@ -180,7 +180,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li class="dropdown">
                                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                         <i class="fa fa-procedures"></i>
-                                        <span class="badge bg-success">  
+                                        <span class="badge bg-secondary">  
 
 
 
@@ -213,9 +213,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu extended tasks-bar">
-                                        <div class="notify-arrow notify-arrow-green"></div>
+                                        <div class="notify-arrow notify-arrow-purple"></div>
                                         <li>
-                                            <p class="green">
+                                            <p class="purple">
                                                 <?php
                                                 if (!empty($query)) {
                                                     echo $available_bed;
@@ -235,7 +235,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         </li>
                                         <?php ?>
                                         <li class="external">
-                                            <a href="bed/bedAllotment"><p class="green"><?php
+                                            <a href="bed/bedAllotment"><p class="purple"><?php
                                                     if ($available_bed > 0) {
                                                         echo lang('add_a_allotment');
                                                     } else {
@@ -254,7 +254,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li id="header_inbox_bar" class="dropdown">
                                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                         <i class="fa fa-money-check"></i>
-                                        <span class="badge bg-important"> 
+                                        <span class="badge bg-secondary">
                                             <?php
                                             $this->db->where('hospital_id', $this->hospital_id);
                                             $query = $this->db->get('payment');
@@ -275,9 +275,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu extended inbox">
-                                        <div class="notify-arrow notify-arrow-red"></div>
+                                        <div class="notify-arrow notify-arrow-purple"></div>
                                         <li>
-                                            <p class="red"> <?php
+                                            <p class="purple"> <?php
                                                 echo $payment_number . ' ';
                                                 if ($payment_number <= 1) {
                                                     echo lang('payment_today');
@@ -287,7 +287,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                 ?></p>
                                         </li>
                                         <li>
-                                            <a href="finance/payment"><p class="green"> <?php echo lang('see_all_payments'); ?></p></a>
+                                            <a href="finance/payment"><p class="purple"> <?php echo lang('see_all_payments'); ?></p></a>
                                         </li>
                                     </ul>
                                 </li>
@@ -300,7 +300,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li id="header_notification_bar" class="dropdown">
                                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                         <i class="fa fa-user"></i>
-                                        <span class="badge bg-warning">   
+                                        <span class="badge bg-secondary">   
                                             <?php
                                             $this->db->where('hospital_id', $this->hospital_id);
                                             $this->db->where('add_date', date('m/d/y'));
@@ -319,9 +319,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu extended notification">
-                                        <div class="notify-arrow notify-arrow-yellow"></div>
+                                        <div class="notify-arrow notify-arrow-purple"></div>
                                         <li>
-                                            <p class="yellow"><?php
+                                            <p class="purple"><?php
                                                 echo $patient_number . ' ';
                                                 if ($patient_number <= 1) {
                                                     echo lang('patient_registerred_today');
@@ -331,7 +331,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                 ?> </p>
                                         </li>    
                                         <li>
-                                            <a href="patient"><p class="green"><?php echo lang('see_all_patients'); ?></p></a>
+                                            <a href="patient"><p class="purple"><?php echo lang('see_all_patients'); ?></p></a>
                                         </li>
                                     </ul>
                                 </li>
@@ -344,7 +344,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li id="header_notification_bar" class="dropdown">
                                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                         <i class="fa fa-user"></i>
-                                        <span class="badge bg-success">       
+                                        <span class="badge bg-secondary">       
                                             <?php
                                             $this->db->where('hospital_id', $this->hospital_id);
                                             $this->db->where('add_date', date('m/d/y'));
@@ -363,9 +363,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu extended notification">
-                                        <div class="notify-arrow notify-arrow-yellow"></div>
+                                        <div class="notify-arrow notify-arrow-purple"></div>
                                         <li>
-                                            <p class="green"><?php
+                                            <p class="purple"><?php
                                                 echo $donor_number . ' ';
                                                 if ($donor_number <= 1) {
                                                     echo lang('donor_registerred_today');
@@ -375,7 +375,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                 ?> </p>
                                         </li>
                                         <li>
-                                            <a href="donor"><p class="green"><?php echo lang('see_all_donors'); ?></p></a>
+                                            <a href="donor"><p class="purple"><?php echo lang('see_all_donors'); ?></p></a>
                                         </li>
                                     </ul>
                                 </li>
@@ -388,7 +388,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li id="header_notification_bar" class="dropdown">
                                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                         <i class="fa fa-medkit"></i>
-                                        <span class="badge bg-success">                          
+                                        <span class="badge bg-secondary">                          
                                             <?php
                                             $this->db->where('hospital_id', $this->hospital_id);
                                             $this->db->where('add_date', date('m/d/y'));
@@ -407,9 +407,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu extended notification">
-                                        <div class="notify-arrow notify-arrow-yellow"></div>
+                                        <div class="notify-arrow notify-arrow-purple"></div>
                                         <li>
-                                            <p class="yellow"><?php
+                                            <p class="purple"><?php
                                                 echo $medicine_number . ' ';
                                                 if ($medicine_number <= 1) {
                                                     echo lang('medicine_registerred_today');
@@ -419,7 +419,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                 ?> </p>
                                         </li>
                                         <li>
-                                            <a href="medicine"><p class="green"><?php echo lang('see_all_medicines'); ?></p></a>
+                                            <a href="medicine"><p class="purple"><?php echo lang('see_all_medicines'); ?></p></a>
                                         </li>
                                     </ul>
                                 </li>
@@ -432,7 +432,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li id="header_notification_bar" class="dropdown">
                                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                         <i class="fa fa-notes-medical"></i>
-                                        <span class="badge bg-success">                         
+                                        <span class="badge bg-secondary">                         
                                             <?php
                                             $this->db->where('hospital_id', $this->hospital_id);
                                             $this->db->where('add_date', date('m/d/y'));
@@ -451,9 +451,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu extended notification">
-                                        <div class="notify-arrow notify-arrow-yellow"></div>
+                                        <div class="notify-arrow notify-arrow-purple"></div>
                                         <li>
-                                            <p class="yellow"><?php
+                                            <p class="purple"><?php
                                                 echo $report_number . ' ';
                                                 if ($report_number <= 1) {
                                                     echo lang('report_added_today');
@@ -463,7 +463,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                 ?> </p>
                                         </li>
                                         <li>
-                                            <a href="report"><p class="green"><?php echo lang('see_all_reports'); ?></p></a>
+                                            <a href="report"><p class="purple"><?php echo lang('see_all_reports'); ?></p></a>
                                         </li>
                                     </ul>
                                 </li>
@@ -474,7 +474,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li id="header_notification_bar" class="dropdown">
                                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                         <i class="fa fa-notes-medical"></i>
-                                        <span class="badge bg-success">                         
+                                        <span class="badge bg-secondary">                         
                                             <?php
                                             $this->db->where('hospital_id', $this->hospital_id);
                                             $query = $this->db->get('report');
@@ -494,9 +494,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         </span>
                                     </a>
                                     <ul class="dropdown-menu extended notification">
-                                        <div class="notify-arrow notify-arrow-yellow"></div>
+                                        <div class="notify-arrow notify-arrow-purple"></div>
                                         <li>
-                                            <p class="yellow"><?php
+                                            <p class="purple"><?php
                                                 echo $report_number . ' ';
                                                 if ($report_number <= 1) {
                                                     echo lang('report_is_available_for_you');
@@ -506,7 +506,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                 ?> </p>
                                         </li>
                                         <li>
-                                            <a href="report/myreports"><p class="green"><?php echo lang('see_your_reports'); ?></p></a>
+                                            <a href="report/myreports"><p class="purple"><?php echo lang('see_your_reports'); ?></p></a>
                                         </li>
                                     </ul>
                                 </li>

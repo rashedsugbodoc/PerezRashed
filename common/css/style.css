@@ -531,6 +531,12 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     -webkit-border-radius: 4px 4px 0px 0px;
 }
 
+
+.dropdown-menu.extended li p.purple {
+    background-color: #4454c3;
+    color: #fff;
+}
+
 .dropdown-menu.extended li p.green {
     background-color: #66BB6A;
     color: #fff;
@@ -637,7 +643,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     float: left;
     text-align: center;
     width: 100%;
-    background: #a9d96c;
+    background: #4454c3;
     border-radius: 0 0 3px 3px;
 }
 
@@ -666,7 +672,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 
 .dropdown-menu.extended.logout > li > a:hover i {
-    color: #50c8ea;
+    color: #8e98db;
 }
 
 .dropdown-menu.extended.logout > li > a i {
@@ -754,6 +760,11 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
     border-color: transparent transparent #a9d86e;
     border-bottom-color: #a9d86e !important;
     border-top-color: #a9d86e !important;
+}
+.notify-arrow-purple {
+    border-color: transparent transparent #4454c3;
+    border-bottom-color: #4454c3 !important;
+    border-top-color: #4454c3 !important;
 }
 
 
@@ -860,15 +871,15 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 
 .state-overview .red {
-    background: #ff6c60;
+    background: #ff5b51;
 }
 
 .state-overview .yellow {
-    background: #FFAB12;
+    background: #ecb403;
 }
 
 .state-overview .blue {
-    background: #57c8f2;
+    background: #45aaf2;
 }
 
 /*main chart*/
@@ -1134,15 +1145,15 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 /*badge*/
 
 .badge.bg-primary {
-    background: #8075c4;
+    background: #4454c3;
 }
 
 .badge.bg-success {
-    background: #a9d86e;
+    background: #2dce89;
 }
 
 .badge.bg-warning {
-    background: #FCB322;
+    background: #ecb403;
 }
 
 .badge.bg-important {
@@ -1150,7 +1161,7 @@ ul.top-menu > li > a:hover, ul.top-menu > li > a:focus {
 }
 
 .badge.bg-info {
-    background: #41cac0;
+    background: #45aaf2;
 }
 
 .badge.bg-inverse {
@@ -2945,7 +2956,7 @@ ul.amounts li {
 
 .fc-state-active, .fc-state-active .fc-button-inner,
 .fc-state-hover, .fc-state-hover .fc-button-inner{
-    background:  #286EFB !important;
+    background:  #4454c3 !important;
     color: #fff !important;
 }
 

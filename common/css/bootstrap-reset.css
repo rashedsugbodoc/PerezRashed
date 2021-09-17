@@ -178,14 +178,17 @@ ul {
 }
 
 .btn-success {
-    background-color: #66BB6A;
-    border-color: #66BB6A;
-    color: #FFFFFF;
+    color: #fff !important;
+    background-color: #2dce89;
+    border-color: #2dce89;
+    box-shadow: 0 0px 10px -5px rgba(45, 206, 137, 0.5);
 }
 
 .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open .dropdown-toggle.btn-success {
 
-    color: #FFFFFF;
+    color: #fff !important;
+    background-color: #15ca7c !important;
+    border-color: #15ca7c !important;
 }
 
 .btn-info {
@@ -483,6 +486,12 @@ ul {
     border-color: #ef5349; 
 }
 
+.purple {
+    color: #fff !important;
+    background-color: #4454c3;
+    border-color: #4454c3;
+    box-shadow: 0 0px 10px -5px rgba(45, 206, 137, 0.5); 
+}
 
 .green{
     color: #fff !important;
@@ -563,7 +572,7 @@ table{
 
 .fa-dedent:before, .fa-outdent:before{
     content: "\f03b";
-    background: #39B27C;
+    background: #8e98db;
     padding: 6px 11px;
     color: #fff;
     //  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
@@ -575,11 +584,15 @@ table{
 }
 
 .badge.bg-success{
-    background: #39B27C !important;
+    background: #2dce89 !important;
+}
+
+.badge.bg-secondary{
+    background: #f72d66 !important;
 }
 
 .badge.bg-important{
-    background: #1a7bb9 !important;
+    background: #f72d66 !important;
 }
 
 .state-overview .terques {
@@ -587,7 +600,7 @@ table{
 }
 
 .state-overview .blue {
-    background: #0073B7 !important;
+    background: #45aaf2 !important;
 }
 
 .state-overview .panel{
@@ -602,7 +615,7 @@ ul.sidebar-menu li a{
 
 a.logo {
     font-size: 32px;
-    color: #1a7bb9 !important;
+    color: #4454c3 !important;
     float: left;
     margin-top: 6px;
     /* text-transform: uppercase; */
