@@ -9,8 +9,8 @@
                 <div class="col-md-4 no-print pull-right"> 
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('register_new_patient'); ?>
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('register_new_patient'); ?>
                             </button>
                         </div>
                     </a>
@@ -166,7 +166,7 @@
                                 </div>
                                 <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                                 <div>
-                                    <span class="btn btn-white btn-file">
+                                    <span class="btn btn-light btn-file">
                                         <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
                                         <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
                                         <input type="file" class="default" name="img_url"/>
@@ -195,7 +195,7 @@
 
 
                     <section class="col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                     </section>
                 </form>
 

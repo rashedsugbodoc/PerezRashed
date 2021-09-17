@@ -33,7 +33,7 @@
                                     <span class="help-block"></span> 
                                 </div>
                                 <div class="col-md-6">
-                                    <button type="submit" name="submit" class="btn btn-info range_submit"> <?php  echo lang('submit'); ?></button>
+                                    <button type="submit" name="submit" class="btn btn-primary range_submit"> <?php  echo lang('submit'); ?></button>
                                 </div>
                             </div>
                         </form>
@@ -107,7 +107,7 @@
                                     }
                                     ?>
                                 </td>
-                                 <td> <a class="btn btn-info btn-xs btn_width add_payment_button" style="width: 100px;" href="appointment/getAppointmentByDoctorId?id=<?php echo $doctor->id; ?>"><i class="fa fa-money"></i>  <?php  echo lang('details'); ?></a></td>
+                                 <td> <a class="btn btn-info btn-xs" style="width: 100px;" href="appointment/getAppointmentByDoctorId?id=<?php echo $doctor->id; ?>"><i class="fa fa-money"></i>  <?php  echo lang('details'); ?></a></td>
                                
                                
                             </tr>

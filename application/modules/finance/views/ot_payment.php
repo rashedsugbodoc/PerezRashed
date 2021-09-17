@@ -13,7 +13,7 @@
                         <a href="finance/addOtPaymentView">
                             <div class="btn-group">
                                 <button id="" class="btn green">
-                                   <i class="fa fa-plus-circle"></i> <?php echo lang('add_new'); ?>
+                                   <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
                                 </button>
                             </div>
                         </a>

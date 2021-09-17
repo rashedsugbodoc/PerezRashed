@@ -13,7 +13,7 @@
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
                             <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_doctor'); ?>
+                                <i class="fa fa-plus"></i> <?php echo lang('add_doctor'); ?>
                             </button>
                         </div>
                     </a>

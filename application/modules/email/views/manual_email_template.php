@@ -11,7 +11,7 @@
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
                             <button id="add_new" class="btn green btn-md">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_new'); ?> <?php echo lang('template'); ?>
+                                <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?> <?php echo lang('template'); ?>
                             </button>
                         </div>
                     </a>

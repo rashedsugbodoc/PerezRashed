@@ -78,7 +78,7 @@
                                         echo $notice->id;
                                     }
                                     ?>'>
-                                    <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                                    <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                                 </form>
                             </div>
                         </div>

@@ -11,8 +11,8 @@
                     <div class="col-md-4 no-print pull-right"> 
                         <a data-toggle="modal" href="#myModal">
                             <div class="btn-group pull-right">
-                                <button id="" class="btn green btn-xs">
-                                    <i class="fa fa-plus-circle"></i> <?php echo lang('add_donor'); ?>
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_donor'); ?>
                                 </button>
                             </div>
                         </a>
@@ -63,7 +63,7 @@
                                 <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Laboratorist', 'Doctor'))) { ?>
                                     <td class="no-print">
                                         <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $donor->id; ?>"><i class="fa fa-edit"> </i></button>   
-                                        <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="donor/delete?id=<?php echo $donor->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
+                                        <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="donor/delete?id=<?php echo $donor->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
                                     </td>
                                 <?php } ?>
                             </tr>
@@ -267,31 +267,31 @@
 
 <script src="common/js/coderygel.min.js"></script>
 <script type="text/javascript">
-                                    $(document).ready(function () {
-                                        $(".editbutton").click(function (e) {
-                                            e.preventDefault(e);
-                                            // Get the record's ID via attribute  
-                                            var iid = $(this).attr('data-id');
-                                            $('#editDonorForm').trigger("reset");
-                                            $('#myModal2').modal('show');
-                                            $.ajax({
-                                                url: 'donor/editDonorByJason?id=' + iid,
-                                                method: 'GET',
-                                                data: '',
-                                                dataType: 'json',
-                                            }).success(function (response) {
-                                                // Populate the form fields with the data returned from server
-                                                $('#editDonorForm').find('[name="id"]').val(response.donor.id).end()
-                                                $('#editDonorForm').find('[name="name"]').val(response.donor.name).end()
-                                                $('#editDonorForm').find('[name="group"]').val(response.donor.group).end()
-                                                $('#editDonorForm').find('[name="age"]').val(response.donor.age).end()
-                                                $('#editDonorForm').find('[name="sex"]').val(response.donor.sex).end()
-                                                $('#editDonorForm').find('[name="ldd"]').val(response.donor.ldd).end()
-                                                $('#editDonorForm').find('[name="phone"]').val(response.donor.phone).end()
-                                                $('#editDonorForm').find('[name="email"]').val(response.donor.email).end()
-                                            });
-                                        });
-                                    });
+    $(document).ready(function () {
+        $(".editbutton").click(function (e) {
+            e.preventDefault(e);
+            // Get the record's ID via attribute  
+            var iid = $(this).attr('data-id');
+            $('#editDonorForm').trigger("reset");
+            $('#myModal2').modal('show');
+            $.ajax({
+                url: 'donor/editDonorByJason?id=' + iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+            }).success(function (response) {
+                // Populate the form fields with the data returned from server
+                $('#editDonorForm').find('[name="id"]').val(response.donor.id).end()
+                $('#editDonorForm').find('[name="name"]').val(response.donor.name).end()
+                $('#editDonorForm').find('[name="group"]').val(response.donor.group).end()
+                $('#editDonorForm').find('[name="age"]').val(response.donor.age).end()
+                $('#editDonorForm').find('[name="sex"]').val(response.donor.sex).end()
+                $('#editDonorForm').find('[name="ldd"]').val(response.donor.ldd).end()
+                $('#editDonorForm').find('[name="phone"]').val(response.donor.phone).end()
+                $('#editDonorForm').find('[name="email"]').val(response.donor.email).end()
+            });
+        });
+    });
 </script>
 <script>
     $(document).ready(function () {

@@ -283,7 +283,7 @@
                     <a href="finance/addPaymentView" class="pull-left">
                         <div class="btn-group">
                             <button id="" class="btn btn-info green btn-sm">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_another_payment'); ?>
+                                <i class="fa fa-plus"></i> <?php echo lang('add_another_payment'); ?>
                             </button>
                         </div>
                     </a>

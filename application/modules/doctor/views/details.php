@@ -35,8 +35,8 @@
                             <div id="todays" class="tab-pane">
                                 <div class="">
                                     <div class=" no-print">
-                                        <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal" style="margin-bottom: 20px;">
-                                            <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                        <a class="btn btn-primary btn-xs" data-toggle="modal" href="#addAppointmentModal" style="margin-bottom: 20px;">
+                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                         </a>
                                     </div>
                                     <div class="adv-table editable-table ">
@@ -65,9 +65,9 @@
                                                             <td class="no-print">
                                                                 <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fa fa-edit"></i> </button>   
                                                                 <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $todays_appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                                <a class="btn btn-info btn-xs btn_width green" title="<?php echo lang('history'); ?>" style="color: #fff;" href="patient/medicalHistory?id=<?php echo $todays_appointment->patient; ?>"><i class="fa fa-stethoscope"></i> <?php echo lang('patient'); ?> <?php echo lang('history'); ?></a>
+                                                                <a class="btn btn-secondary btn-xs" title="<?php echo lang('history'); ?>" style="color: #fff;" href="patient/medicalHistory?id=<?php echo $todays_appointment->patient; ?>"><i class="fa fa-stethoscope"></i> <?php echo lang('patient'); ?> <?php echo lang('history'); ?></a>
                                                                 <?php if ($todays_appointment->status == 'Confirmed') { ?>
-                                                                    <a class="btn btn-info btn-xs btn_width detailsbutton" title=" <?php echo lang('start_live'); ?>" style="color: #fff;" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?> " target="_blank" onclick="return confirm('Are you sure you want to start a live meeting with this patient? SMS and Email notification will be sent to the Patient.');"><i class="fa fa-headphones"></i> <?php echo lang('live'); ?> </a>
+                                                                    <a class="btn btn-cyan btn-xs" title=" <?php echo lang('start_live'); ?>" style="color: #fff;" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?> " target="_blank" onclick="return confirm('Are you sure you want to start a live meeting with this patient? SMS and Email notification will be sent to the Patient.');"><i class="fa fa-headphones"></i> <?php echo lang('live'); ?> </a>
                                                                 <?php } ?>
                                                             </td>
                                                         </tr>
@@ -102,7 +102,7 @@
                                                             <td><?php echo $appointed_patient->id; ?></td>
                                                             <td><?php echo $appointed_patient->name; ?></td>
                                                             <td class="no-print">
-                                                                <a class="btn green" title="<?php echo lang('history'); ?>" style="color: #fff;" href="patient/medicalHistory?id=<?php echo $appointed_patient->id; ?>"><i class="fa fa-stethoscope"></i> <?php echo lang('history'); ?></a>
+                                                                <a class="btn btn-secondary" title="<?php echo lang('history'); ?>" style="color: #fff;" href="patient/medicalHistory?id=<?php echo $appointed_patient->id; ?>"><i class="fa fa-stethoscope"></i> <?php echo lang('history'); ?></a>
                                                             </td>
                                                         </tr>
                                                     <?php } ?>
@@ -115,8 +115,8 @@
                             <div id="prescription" class="tab-pane"> <div class="">
                                     <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
-                                            <a class="btn btn-info btn_width btn-xs" href="prescription/addPrescriptionView" style="margin-bottom: 20px;">
-                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                            <a class="btn btn-primary btn-xs" href="prescription/addPrescriptionView" style="margin-bottom: 20px;">
+                                                <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
                                     <?php } ?>
@@ -152,10 +152,10 @@
                                                             ?>
                                                         </td>
                                                         <td class="no-print">
-                                                            <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?> </a> 
+                                                            <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?> </a> 
                                                             <?php if ($this->ion_auth->in_group('Doctor')) { ?>
-                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>" "><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
-                                                                <a class="btn btn-danger btn-xs btn_width delete_button" href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
+                                                                <a class="btn btn-danger btn-xs" href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
                                                             <?php } ?>
                                                         </td>
                                                     </tr>
@@ -169,7 +169,7 @@
                                     <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addScheduleModal" style="margin-bottom: 20px;">
-                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                                <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
                                     <?php } ?>
@@ -214,7 +214,7 @@
                             <div id="holiday" class="tab-pane"> <div class="">
                                     <div class=" no-print">
                                         <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#holidayModal" style="margin-bottom: 20px;">
-                                            <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                         </a>
                                     </div>
                                     <div class="adv-table editable-table ">
@@ -355,7 +355,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i>  <?php echo lang('add'); ?> <?php echo lang('files'); ?></h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i>  <?php echo lang('add'); ?> <?php echo lang('files'); ?></h4>
             </div>
             <div class="modal-body">
                 <form role="form" action="patient/addPatientMaterial" class="clearfix row" method="post" enctype="multipart/form-data">
@@ -389,7 +389,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> <?php echo lang('add_medical_history'); ?></h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> <?php echo lang('add_medical_history'); ?></h4>
             </div> 
             <div class="modal-body">
                 <form role="form" action="patient/addMedicalHistory" method="post" enctype="multipart/form-data">
@@ -407,7 +407,7 @@
                     <input type="hidden" name="patient_id" value='<?php echo $patient->id; ?>'>
                     <input type="hidden" name="id" value=''>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                     </section>
                 </form>
             </div>
@@ -439,7 +439,7 @@
                     <input type="hidden" name="patient_id" value='<?php echo $patient->id; ?>'>
                     <input type="hidden" name="id" value=''>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                     </section>
                 </form>
             </div>
@@ -464,7 +464,7 @@
             </div>
             <div class="modal-footer">
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -941,7 +941,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     <input type="hidden" name="id" value=''>
 
                     <div class="form-group col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
 
                 </form>
@@ -958,7 +958,7 @@ if ($this->ion_auth->in_group('Doctor')) {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i>  <?php echo lang('edit'); ?>  <?php echo lang('time_slot'); ?></h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i>  <?php echo lang('edit'); ?>  <?php echo lang('time_slot'); ?></h4>
             </div>
             <div class="modal-body">
                 <form role="form" id="editTimeSlotForm" action="schedule/addSchedule" method="post" enctype="multipart/form-data">
@@ -967,7 +967,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                         <div class="input-group bootstrap-timepicker">
                             <input type="text" class="form-control timepicker-default" name="s_time" id="exampleInputEmail1" value=''>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-clock-o"></i></button>
+                                <button class="btn btn-default" type="button"><i class="fa fa-clock"></i></button>
                             </span>
                         </div>
 
@@ -977,7 +977,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                         <div class="input-group bootstrap-timepicker">
                             <input type="text" class="form-control timepicker-default" name="e_time" id="exampleInputEmail1" value=''>
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button"><i class="fa fa-clock-o"></i></button>
+                                <button class="btn btn-default" type="button"><i class="fa fa-clock"></i></button>
                             </span>
                         </div>
                     </div>
@@ -1047,7 +1047,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     <input type="hidden" name="doctor" value="<?php echo $doctorr; ?>">
                     <input type="hidden" name="redirect" value='doctor/details'>
                     <input type="hidden" name="id" value=''>
-                    <button type="submit" name="submit" class="btn btn-info"> <?php echo lang('submit'); ?></button>
+                    <button type="submit" name="submit" class="btn btn-primary"> <?php echo lang('submit'); ?></button>
                 </form>
 
             </div>

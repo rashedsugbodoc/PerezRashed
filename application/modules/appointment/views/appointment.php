@@ -10,8 +10,8 @@
                 <div class="clearfix no-print col-md-8 pull-right">
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i>  <?php echo lang('add_appointment'); ?> 
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i>  <?php echo lang('add_appointment'); ?> 
                             </button>
                         </div>
                     </a>
@@ -415,7 +415,7 @@
                           <input type="checkbox" name="sms" class="" value="sms">  <?php echo lang('yes'); ?>
                       </div>-->
                     <div class="col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                 </form>
             </div>
@@ -442,7 +442,7 @@
             </div>
             <div class="modal-footer">
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -565,7 +565,7 @@
                         </div> -->
                     <input type="hidden" name="id" id="appointment_id" value=''>
                     <div class="col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                 </form>
 

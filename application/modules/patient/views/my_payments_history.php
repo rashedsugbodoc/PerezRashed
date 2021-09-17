@@ -14,7 +14,7 @@
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group">
                             <button id="" class="btn btn-xs green">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('deposit'); ?>
+                                <i class="fa fa-plus"></i> <?php echo lang('deposit'); ?>
                             </button>
                         </div>
                     </a>   
@@ -137,7 +137,7 @@
 
 
                                         <td  class="no-print"> 
-                                            <a class="btn-xs invoicebutton" title="<?php echo lang('invoice'); ?>" style="color: #fff; width: 23px;" href="patient/myInvoice?id=<?php echo $payment->id; ?>"><i class="fas fa-file-invoice"></i> </a>
+                                            <a class="btn btn-xs btn-success" title="<?php echo lang('invoice'); ?>" style="color: #fff; width: 23px;" href="patient/myInvoice?id=<?php echo $payment->id; ?>"><i class="fas fa-file-invoice"></i> </a>
                                         </td>
                                     </tr>
 

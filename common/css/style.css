@@ -27,7 +27,7 @@ a, a:hover, a:focus {
 }
 ::selection {
 
-    background: #286EFB;
+    background: #4454c3;
     color: #fff;
 }
 ::-moz-selection {
@@ -5792,6 +5792,14 @@ table {
 
 .activity.purplee h4 {
     color: #6574cd;
+}
+
+.activity.violet span {
+    background: #4454c3;
+}
+
+.activity.violet h4 {
+    color: #4454c3;
 }
 .profile-activity{
     margin-bottom: 10px;

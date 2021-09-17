@@ -10,7 +10,7 @@
                     <a href="finance/pharmacy/addExpenseView">
                         <div class="btn-group pull-right">
                             <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_expense'); ?>
+                                <i class="fa fa-plus"></i> <?php echo lang('add_expense'); ?>
                             </button>
                         </div>
                     </a>

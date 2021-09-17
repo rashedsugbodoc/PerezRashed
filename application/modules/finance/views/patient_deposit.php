@@ -16,7 +16,7 @@
                             <a data-toggle="modal" href="#" onclick="openModal()">
                                 <div class="btn-group">
                                     <button id="" class="btn btn-xs green">
-                                        <i class="fa fa-plus-circle"></i> <?php echo lang('deposit'); ?>
+                                        <i class="fa fa-plus"></i> <?php echo lang('deposit'); ?>
                                     </button>
                                 </div>
                             </a>   
@@ -36,7 +36,7 @@
                             <a href="finance/addPaymentByPatientView?id=<?php echo $patient->id; ?>&type=gen">
                                 <div class="btn-group">
                                     <button id="" class="btn btn-xs green">
-                                        <i class="fa fa-plus-circle"></i> <?php echo lang('add_payment'); ?>
+                                        <i class="fa fa-plus"></i> <?php echo lang('add_payment'); ?>
                                     </button>
                                 </div>
                             </a>     
@@ -455,7 +455,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> <?php echo lang('choose_payment_type'); ?></h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> <?php echo lang('choose_payment_type'); ?></h4>
             </div>
             <div class="modal-body">
                 <div class="clearfix">

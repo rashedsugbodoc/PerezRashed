@@ -9,8 +9,8 @@
                 <div class="col-md-4 no-print pull-right"> 
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_pharmacist'); ?>
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('add_pharmacist'); ?>
                             </button>
                         </div>
                     </a>
@@ -52,8 +52,8 @@
                                 <td class="center"><?php echo $pharmacist->address; ?></td>
                                 <td><?php echo $pharmacist->phone; ?></td>
                                 <td class="no-print">
-                                    <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $pharmacist->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                    <a class="btn btn-danger btn-xs btn_width delete_button" href="pharmacist/delete?id=<?php echo $pharmacist->id; ?>" title="<?php echo lang('delete'); ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                    <button type="button" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $pharmacist->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                    <a class="btn btn-danger btn-xs" href="pharmacist/delete?id=<?php echo $pharmacist->id; ?>" title="<?php echo lang('delete'); ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -110,7 +110,7 @@
                     </div>
 
                     <div class="form-group col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right row"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right row"><?php echo lang('submit'); ?></button>
                     </div>
 
                 </form>
@@ -166,7 +166,7 @@
 
 
                     <div class="form-group col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right row"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right row"><?php echo lang('submit'); ?></button>
                     </div>
 
                 </form>

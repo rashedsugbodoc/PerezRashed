@@ -4,11 +4,10 @@
 <section id="main-content"> 
     <section class="wrapper site-min-height">
         <!--state overview start-->
-        <div class="col-md-12">
-            <div class="row state-overview" style="padding: 23px 0px;">
-                <div class="col-md-8">
-                    <!--custom chart start-->
-
+        <div class="row">
+            <div class="col-md-8 col-sm-12">
+                <!--custom chart start-->
+                <div class="panel">
                     <?php
                     $currently_processing_month = date('m', $first_minute);
                     $currently_processing_year = date('Y', $first_minute);
@@ -29,8 +28,7 @@
                     }
                     ?>
 
-                    <div class="panel-heading"> <?php echo date('F, Y', $first_minute) . ' ' .lang('hospital').' ' .lang('sales_report'); ?> 
-
+                    <div class="panel-heading"> <?php echo date('F Y', $first_minute) . ' ' .lang('hospital').' ' .lang('sales_report'); ?> 
                         <div class="col-md-1 pull-right no-print">
                             <a class="no-print pull-right" onclick="javascript:window.print();"> <i class="fa fa-print"></i>  </a>
                         </div>
@@ -44,21 +42,10 @@
                                 <i class="fa fa-arrow-left"></i>
                             </a>
                         </div>
-
-
                     </div>
-
-
-
-
                     <div  id="chart_div"></div>
-
-
-
-
                     <div class="panel-body">
                         <div class="adv-table editable-table ">
-
                             <div class="space15"></div>
                             <table class="table table-striped table-hover table-bordered" id="editable-sample1">
                                 <thead>
@@ -93,7 +80,6 @@
                                         <?php
                                     }
                                     ?>
-
                                     <?php
                                     if (!empty($total_amount)) {
                                         $total_amount = array_sum($total_amount);
@@ -101,15 +87,11 @@
                                         $total_amount = 0;
                                     }
                                     ?>
-
                                     <tr style="color: #000 !important; font-weight: bold;">
                                         <td><?php echo lang('total'); ?></td> 
                                         <td><?php echo $this->currency; ?><?php echo number_format($total_amount, 2, '.', ','); ?></td>
                                     </tr>
-
-
                                 <style>
-
                                     .img_url{
                                         height:20px;
                                         width:20px;
@@ -117,22 +99,11 @@
                                         max-height:20px;
                                         border-radius: 100px;
                                     }
-
                                 </style>                      
-
                                 </tbody>
                             </table>
                         </div>
                     </div>
-
-
-
-
-
-
-
-
-
                 </div>
             </div>
         </div>

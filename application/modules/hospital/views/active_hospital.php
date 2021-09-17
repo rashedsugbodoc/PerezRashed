@@ -10,7 +10,7 @@
                     <a data-toggle="modal" class="pull-right" href="hospital/addNewView">
                         <div class="btn-group">
                             <button id="" class="btn green">
-                                <i class="fa fa-plus-circle"></i>   <?php echo lang('create_new_hospital'); ?>
+                                <i class="fa fa-plus"></i>   <?php echo lang('create_new_hospital'); ?>
                             </button>
                         </div>
                     </a>
@@ -137,7 +137,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i>  <?php echo lang('create_new_hospital'); ?></h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i>  <?php echo lang('create_new_hospital'); ?></h4>
             </div>
             <div class="modal-body">
                 <form role="form" action="hospital/addNew" method="post" enctype="multipart/form-data">

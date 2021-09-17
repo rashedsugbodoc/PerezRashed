@@ -2,7 +2,6 @@
 <!--main content start-->
 <script type="text/javascript" src="common/js/google-loader.js"></script>
 <section id="main-content"> 
-
     <section class="wrapper site-min-height">           
         <style>         
             .panel-heading{
@@ -14,19 +13,17 @@
                 margin-top: 5px;
             }
         </style>
-
-
         <!--state overview start-->
         <div class="col-md-12">
-            <header class="panel-heading">
-                <i class="fa fa-home"></i>  <?php echo lang('pharmacy'); ?> <?php echo lang('dashboard'); ?>
+            <header class="page-header">
+                <div class="page-title"><?php echo lang('pharmacy'); ?> <?php echo lang('dashboard'); ?></div>
             </header>
             <div class="row state-overview">
                 <div class="col-lg-3 col-sm-6">
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
                         <a href="finance/pharmacy/todaySales">
                         <?php } ?>
-                        <section class="panel panel-moree">
+                        <section class="panel">
                             <div class="symbol terques">
                                 <i class="fa fa-plus"></i>
                             </div>
@@ -41,7 +38,6 @@
                         </a>
                     <?php } ?>
                 </div>
-
                 <div class="col-lg-3 col-sm-6">
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
                         <a href="finance/pharmacy/todayExpense">
@@ -55,14 +51,12 @@
                                 <h1 class="">
                                     <?php echo $settings->currency; ?> <?php echo number_format($today_expenses_amount, 2, '.', ','); ?>
                                 </h1>
-
                             </div>
                         </section>
                         <?php if ($this->ion_auth->in_group('admin')) { ?>
                         </a>
                     <?php } ?>
                 </div>
-
                 <div class="col-lg-3 col-sm-6">
                     <?php if ($this->ion_auth->in_group('admin')) { ?>
                         <a href="medicine">

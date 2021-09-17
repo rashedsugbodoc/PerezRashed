@@ -10,8 +10,8 @@
                     <div class="col-md-4 no-print pull-right"> 
                         <a href="prescription/addPrescriptionView">
                             <div class="btn-group pull-right">
-                                <button id="" class="btn green btn-xs">
-                                    <i class="fa fa-plus-circle"></i> <?php echo lang('add_new'); ?>
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
                                 </button>
                             </div>
                         </a>
@@ -126,7 +126,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     <input type="hidden" name="admin" value='admin'>
                     <input type="hidden" name="id" value=''>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                     </section>
                 </form>
             </div>
@@ -204,7 +204,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     <input type="hidden" name="admin" value='admin'>
                     <input type="hidden" name="id" value=''>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit'); ?></button>
                     </section>
                 </form>
             </div>

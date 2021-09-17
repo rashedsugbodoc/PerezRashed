@@ -7,7 +7,7 @@
             <section class="panel">
                 <header class="panel-heading">
                     <?php if (empty($id)) { ?>
-                        <i class="fa fa-plus-circle"></i> <?php echo lang('add_new'); ?> <?php echo lang('manual'); ?> <?php echo lang('template');
+                        <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?> <?php echo lang('manual'); ?> <?php echo lang('template');
                 } else { ?>
                         <i class="fa fa-edit"></i> <?php echo lang('edit'); ?> <?php echo lang('manual'); ?> <?php echo lang('template');
                 } ?>

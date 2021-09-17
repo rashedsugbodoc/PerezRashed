@@ -9,7 +9,7 @@
                 if (!empty($ot_payment->id)) {
                     echo '<i class="fa fa-edit"></i>'. lang('edit_ot_paayment');
                 } else
-                    echo '<i class="fa fa-plus-circle"></i>'. lang('add_new_ot_payment');
+                    echo '<i class="fa fa-plus"></i>'. lang('add_new_ot_payment');
                 ?>
             </header>
             <div class="panel-body">

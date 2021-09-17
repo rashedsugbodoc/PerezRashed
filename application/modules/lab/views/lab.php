@@ -30,7 +30,6 @@
                                             }
                                             ?>' placeholder="">
                                         </div>
-
                                         <div class="form-group col-md-6">
                                             <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
                                             <select class="form-control m-bot15 pos_select" id="pos_select" name="patient" value=''> 
@@ -39,7 +38,6 @@
                                                 <?php } ?>
                                             </select>
                                         </div> 
-
                                         <div class="pos_client">
                                             <div class="form-group col-md-12">
                                                 <div class="row">
@@ -130,7 +128,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="form-group col-md-6">
                                             <label for="exampleInputEmail1">
                                                 <?php echo lang('template'); ?>
@@ -150,9 +147,6 @@
                                                 <?php } ?>
                                             </select>
                                         </div>
-
-
-
                                         <div class="pos_doctor">
                                             <div class="form-group col-md-12">
                                                 <div class="row">
@@ -197,17 +191,7 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-
-
-
-
-
-
-
-
-
                                     <div class="col-md-12 lab pad_bot">
                                         <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
                                         <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10"><?php
@@ -220,7 +204,6 @@
                                             ?>
                                         </textarea>
                                     </div>
-
                                     <input type="hidden" name="redirect" value="<?php
                                     if (!empty($lab_single)) {
                                         echo 'lab?id=' . $lab_single->id;
@@ -228,18 +211,14 @@
                                         echo 'lab';
                                     }
                                     ?>">
-
                                     <input type="hidden" name="id" value='<?php
                                     if (!empty($lab_single->id)) {
                                         echo $lab_single->id;
                                     }
                                     ?>'>
-
-
                                     <div class="col-md-12 lab"> 
-                                        <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
+                                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                                     </div>
-
                                 </form>
                             </div>
                         </div>
@@ -253,8 +232,8 @@
                         <div class="col-md-4 no-print pull-right"> 
                             <a href="lab/addLabView">
                                 <div class="btn-group pull-right">
-                                    <button id="" class="btn green btn-xs">
-                                        <i class="fa fa-plus-circle"></i> <?php echo lang('add_lab_report'); ?>
+                                    <button id="" class="btn btn-primary btn-xs">
+                                        <i class="fa fa-plus"></i> <?php echo lang('add_lab_report'); ?>
                                     </button>
                                 </div>
                             </a>
@@ -273,9 +252,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                 <style>
-
                                     .img_url{
                                         height:20px;
                                         width:20px;
@@ -286,9 +263,7 @@
                                     .option_th{
                                         width:18%;
                                     }
-
                                 </style>
-
                                 </tbody>
                             </table>
                         </div>
@@ -301,9 +276,6 @@
 </section>
 <!--main content end-->
 <!--footer start-->
-
-
-
 <script src="common/js/coderygel.min.js"></script>
 <script>
     $(document).ready(function () {

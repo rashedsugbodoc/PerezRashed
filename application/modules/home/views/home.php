@@ -85,7 +85,7 @@
                     </div>
                     <div class="modal-footer">
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
@@ -547,11 +547,11 @@
                                                         <?php } ?>
                                                     </tbody>
                                                 </table>
-                                            <div class="col-md-12 add-task-row">
+                                            <div class="col-md-12 form-group">
                                                 <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
-                                                    <a class="btn btn-success btn-sm pull-left" href="notice/addNewView"><?php echo lang('add'); ?> <?php echo lang('notice'); ?></a>
+                                                    <a class="btn btn-primary btn-sm pull-left" href="notice/addNewView"><?php echo lang('add'); ?> <?php echo lang('notice'); ?></a>
                                                 <?php } ?>
-                                                <a class="btn btn-default btn-sm pull-right" href="notice"><?php echo lang('all'); ?> <?php echo lang('notice'); ?></a>
+                                                <a class="btn btn-info btn-sm pull-right" href="notice"><?php echo lang('all'); ?> <?php echo lang('notice'); ?></a>
                                             </div>
 
                                         </div>

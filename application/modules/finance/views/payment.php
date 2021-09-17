@@ -10,8 +10,8 @@
                 <div class="col-md-4 clearfix no-print pull-right">
                     <a href="finance/addPaymentView"> 
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_payment'); ?>
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('add_payment'); ?>
                             </button>
                         </div>
                     </a> 

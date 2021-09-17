@@ -91,7 +91,7 @@
                                     <?php echo $bill_total - $deposit_total; ?>
                                 </td>
                                 <td class="no-print">
-                                    <a class="btn btn-info btn-xs btn_width add_payment_button" style="width: 100px;" href="finance/allUserActivityReport?user=<?php echo $accountant_ion_user_id; ?>"><i class="fa fa-info"></i> Details</a>
+                                    <a class="btn btn-info btn-xs" style="width: 100px;" href="finance/allUserActivityReport?user=<?php echo $accountant_ion_user_id; ?>"><i class="fa fa-info"></i> Details</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -146,7 +146,7 @@
                                     <?php echo $bill_total_receptionist - $deposit_total_receptionist; ?>
                                 </td>
                                 <td class="no-print">
-                                    <a class="btn btn-info btn-xs btn_width add_payment_button" style="width: 100px;" href="finance/allUserActivityReport?user=<?php echo $receptionist_ion_user_id; ?>"><i class="fa fa-info"></i> Details</a>
+                                    <a class="btn btn-info btn-xs" style="width: 100px;" href="finance/allUserActivityReport?user=<?php echo $receptionist_ion_user_id; ?>"><i class="fa fa-info"></i> Details</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -154,13 +154,6 @@
                     </table>
                 </div>
             </div>
-
-
-
-
-
-
-
         </section>
         <!-- page end-->
     </section>

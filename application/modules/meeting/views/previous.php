@@ -12,7 +12,7 @@
                         <a href="meeting/addNewView">
                             <div class="btn-group pull-right">
                                 <button id="" class="btn green btn-xs">
-                                    <i class="fa fa-plus-circle"></i>   <?php echo lang('add_meeting'); ?> 
+                                    <i class="fa fa-plus"></i>   <?php echo lang('add_meeting'); ?> 
                                 </button>
                             </div>
                         </a>
@@ -83,7 +83,7 @@
             </div>
             <div class="modal-footer">
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -331,7 +331,7 @@
                     </div>
                     <input type="hidden" id="id" value="" name="id">
                     <button type="submit" name="submit" class="btn btn-info submit_button"><?php echo lang('yes'); ?></button>
-                    <button type="submit" name="submit" class="btn btn-info invoicebutton" data-dismiss="modal" aria-hidden="true"><?php echo lang('cancel'); ?></button>
+                    <button type="submit" name="submit" class="btn btn-light" data-dismiss="modal" aria-hidden="true"><?php echo lang('cancel'); ?></button>
                 </form>
             </div>
         </div><!-- /.modal-content -->

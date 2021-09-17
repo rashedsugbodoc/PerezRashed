@@ -11,7 +11,7 @@
                         <a href="prescription/addPrescriptionView">
                             <div class="btn-group pull-right">
                                 <button id="" class="btn green btn-xs">
-                                    <i class="fa fa-plus-circle"></i> <?php echo lang('add_new'); ?>
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
                                 </button>
                             </div>
                         </a>
@@ -72,7 +72,7 @@ if ($this->ion_auth->in_group('Doctor')) {
         <div class="modal-content">  
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> <?php echo lang('add_prescription'); ?></h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> <?php echo lang('add_prescription'); ?></h4>
             </div> 
             <div class="modal-body">
                 <form role="form" action="prescription/addNewPrescription" method="post" enctype="multipart/form-data">
@@ -142,7 +142,7 @@ if ($this->ion_auth->in_group('Doctor')) {
         <div class="modal-content">  
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> <?php echo lang('edit_prescription'); ?></h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> <?php echo lang('edit_prescription'); ?></h4>
             </div> 
             <div class="modal-body">
                 <form role="form" id="prescriptionEditForm" action="prescription/addNewPrescription" method="post" enctype="multipart/form-data">

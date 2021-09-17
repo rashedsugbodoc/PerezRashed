@@ -244,7 +244,7 @@
                     </div>
                     <div class="modal-footer">
                         <div class="col-md-12">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>

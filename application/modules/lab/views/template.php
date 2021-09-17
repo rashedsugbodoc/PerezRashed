@@ -10,8 +10,8 @@
                 <div class="col-md-8 no-print pull-right"> 
                     <a href="lab/addTemplateView">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_template'); ?>
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('add_template'); ?>
                             </button>
                         </div>
                     </a>
@@ -33,7 +33,7 @@
                                 <tr class="">
                                     <td> <?php echo $template->name; ?></td>
                                     <td class="no-print">
-                                        <a href="lab/editTemplate?id=<?php echo $template->id;?>" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $template->id; ?>"><i class="fa fa-edit"> </i></a>   
+                                        <a href="lab/editTemplate?id=<?php echo $template->id;?>" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $template->id; ?>"><i class="fa fa-edit"> </i></a>   
                                         <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="lab/deleteTemplate?id=<?php echo $template->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
                                     </td>
                                 </tr>

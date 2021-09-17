@@ -4,7 +4,7 @@
     <section class="wrapper site-min-height">
         <!-- page start-->
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-12">
                     <div class="panel">
                         <header class="panel-heading">
                             <?php
@@ -38,7 +38,7 @@
                                     echo $medicine->id;
                                 }
                                 ?>'>
-                                <button type="submit" name="submit" class="btn btn-info pull-right"> <?php  echo lang('submit'); ?></button>
+                                <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php  echo lang('submit'); ?></button>
                             </form>
                         </div>
                     </div>

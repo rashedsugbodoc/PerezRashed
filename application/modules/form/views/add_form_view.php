@@ -223,7 +223,7 @@
                                     }
                                     ?>'>
                                     <div class="col-md-12 form"> 
-                                        <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
+                                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                                     </div>
 
                                 </form>
@@ -410,8 +410,8 @@
                     <div class="no-print col-md-8 pull-right">
                         <a href="form/addFormView" class="">
                             <div class="btn-group">
-                                <button id="" class="btn green">
-                                    <i class="fa fa-plus-circle"></i> <?php echo lang('add_a_new_report'); ?>
+                                <button id="" class="btn btn-primary">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_a_new_report'); ?>
                                 </button>
                             </div>
                         </a>
@@ -693,7 +693,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Patient Registration</h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Patient Registration</h4>
             </div>
             <div class="modal-body">
                 <form role="form" action="patient/addNew?redirect=form" method="post" enctype="multipart/form-data">
@@ -722,7 +722,7 @@
                     <input type="hidden" name="id" value=''>
 
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                     </section>
                 </form>
 

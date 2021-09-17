@@ -77,7 +77,7 @@
                                                 <a data-toggle="modal" href="#myModal">
                                                     <div class="btn-group">
                                                         <button id="" class="btn green">
-                                                            <i class="fa fa-plus-circle"></i> <?php echo lang('register_new_patient'); ?>
+                                                            <i class="fa fa-plus"></i> <?php echo lang('register_new_patient'); ?>
                                                         </button>
                                                     </div>
                                                 </a>
@@ -942,7 +942,7 @@ if ($discount_type == 'flat') {
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Patient Registration</h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Patient Registration</h4>
             </div>
             <div class="modal-body">
                 <form role="form" action="patient/addNew?redirect=payment" method="post" enctype="multipart/form-data">

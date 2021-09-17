@@ -142,7 +142,7 @@
                                         <div class="col-md-3"> 
                                         </div>  
                                         <div class="col-md-6"> 
-                                            <button type="submit" name="submit" class="btn btn-info"> <?php echo lang('submit'); ?></button>
+                                            <button type="submit" name="submit" class="btn btn-primary"> <?php echo lang('submit'); ?></button>
                                         </div>
                                         <div class="col-md-3"> 
                                         </div> 
@@ -447,7 +447,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Patient Registration</h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i> Patient Registration</h4>
             </div>
             <div class="modal-body">
                 <form role="form" action="patient/addNew?redirect=payment" method="post" enctype="multipart/form-data">
@@ -473,7 +473,7 @@
                     <input type="hidden" name="id" value=''>
 
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                     </section>
                 </form>
 

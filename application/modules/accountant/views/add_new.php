@@ -10,7 +10,7 @@
                 if (!empty($accountant->id))
                     echo '<i class="fa fa-edit"></i> ' . lang('edit_accountant');
                 else
-                    echo '<i class="fa fa-plus-circle"></i> ' . lang('add_accountant');
+                    echo '<i class="fa fa-plus"></i> ' . lang('add_accountant');
                 ?>
             </header>
             <div class="panel-body col-md-7">

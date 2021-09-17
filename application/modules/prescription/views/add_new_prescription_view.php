@@ -10,203 +10,181 @@ if ($this->ion_auth->in_group('Doctor')) {
 }
 ?>
 
-
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="col-md-8">
-            <header class="panel-heading">
-                <?php
-                if (!empty($prescription->id))
-                    echo lang('edit_prescription');
-                else
-                    echo lang('add_prescription');
-                ?>
-            </header>
-            <div class="panel col-md-12">
-                <div class="adv-table editable-table ">
-                    <div class="clearfix">
-                        <?php echo validation_errors(); ?>
-                        <form role="form" action="prescription/addNewPrescription" class="clearfix" method="post" enctype="multipart/form-data">
-                            <div class="">
-                                <div class="form-group col-md-4">
-                                    <label for="exampleInputEmail1"> <?php echo lang('date'); ?></label>
-                                    <input type="text" class="form-control default-date-picker" name="date" id="exampleInputEmail1" value='<?php
-                                    if (!empty($setval)) {
-                                        echo set_value('date');
-                                    }
-                                    if (!empty($prescription->date)) {
-                                        echo date('d-m-Y', $prescription->date);
-                                    }
-                                    ?>' placeholder="" readonly="">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="exampleInputEmail1"> <?php echo lang('patient'); ?></label>
-                                    <select class="form-control m-bot15" id="patientchoose" name="patient" value=''>
-                                        <?php if (!empty($prescription->patient)) { ?>
-                                            <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patients->id; ?>)</option>  
-                                        <?php } ?>
-                                        <?php
-                                        if (!empty($setval)) {
-                                            $patientdetails = $this->db->get_where('patient', array('id' => set_value('patient')))->row();
-                                            ?>
-                                            <option value="<?php echo $patientdetails->id; ?>" selected="selected"><?php echo $patientdetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patientdetails->id; ?>)</option>
-                                        <?php }
-                                        ?>
-                                    </select>
-                                </div>
-                                <?php if (!$this->ion_auth->in_group('Doctor')) { ?>
-                                    <div class="form-group col-md-4"> 
-                                        <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?></label>
-                                        <select class="form-control m-bot15" id="doctorchoose" name="doctor" value=''>
-                                            <?php if (!empty($prescription->doctor)) { ?>
-                                                <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
-                                            <?php } ?>
-                                            <?php
+        <div class="row">
+            <section class="col-md-10 col-sm-12">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php
+                        if (!empty($prescription->id))
+                            echo lang('edit_prescription');
+                        else
+                            echo lang('add_prescription');
+                        ?>
+                    </header>
+                    <div class="panel-body">
+                        <div class="adv-table editable-table ">
+                            <div class="clearfix">
+                                <?php echo validation_errors(); ?>
+                                <form role="form" action="prescription/addNewPrescription" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <div class="">
+                                        <div class="form-group col-md-4">
+                                            <label for="exampleInputEmail1"> <?php echo lang('date'); ?></label>
+                                            <input type="text" class="form-control default-date-picker" name="date" id="exampleInputEmail1" value='<?php
                                             if (!empty($setval)) {
-                                                $doctordetails1 = $this->db->get_where('doctor', array('id' => set_value('doctor')))->row();
-                                                ?>
-                                                <option value="<?php echo $doctordetails1->id; ?>" selected="selected"><?php echo $doctordetails1->name; ?> -(<?php echo lang('id'); ?> : <?php echo $doctordetails1->id; ?>)</option>
-                                            <?php }
-                                            ?>
-                                        </select>
-                                    </div>
-                                <?php } else { ?>
-                                    <div class="form-group col-md-4"> 
-                                        <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?></label>
-                                        <?php if (!empty($prescription->doctor)) { ?>
-                                            <select class="form-control m-bot15" name="doctor" value=''>
-                                                <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
-                                            </select>
-                                        <?php } else { ?>
-                                            <select class="form-control m-bot15" id="doctorchoose1" name="doctor" value=''>
-                                                <?php if (!empty($prescription->doctor)) { ?>
-                                                    <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
-                                                <?php } ?>
-                                                <?php if (!empty($doctordetails)) { ?>
-                                                    <option value="<?php echo $doctordetails->id; ?>" selected="selected"><?php echo $doctordetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctordetails->id; ?>)</option>  
+                                                echo set_value('date');
+                                            }
+                                            if (!empty($prescription->date)) {
+                                                echo date('d-m-Y', $prescription->date);
+                                            }
+                                            ?>' placeholder="" readonly="">
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="exampleInputEmail1"> <?php echo lang('patient'); ?></label>
+                                            <select class="form-control m-bot15" id="patientchoose" name="patient" value=''>
+                                                <?php if (!empty($prescription->patient)) { ?>
+                                                    <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patients->id; ?>)</option>  
                                                 <?php } ?>
                                                 <?php
                                                 if (!empty($setval)) {
-                                                    $doctordetails1 = $this->db->get_where('doctor', array('id' => set_value('doctor')))->row();
+                                                    $patientdetails = $this->db->get_where('patient', array('id' => set_value('patient')))->row();
                                                     ?>
-                                                    <option value="<?php echo $doctordetails1->id; ?>" selected="selected"><?php echo $doctordetails1->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctordetails->id; ?>)</option>
+                                                    <option value="<?php echo $patientdetails->id; ?>" selected="selected"><?php echo $patientdetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patientdetails->id; ?>)</option>
                                                 <?php }
                                                 ?>
                                             </select>
-                                        <?php } ?>
-
-
-
-                                    </div>
-                                <?php } ?>
-
-                                <div class="form-group col-md-6">
-                                    <label class="control-label"><?php echo lang('history'); ?></label>
-                                    <textarea class="form-control ckeditor" id="editor1" name="symptom" value="" rows="50" cols="20"><?php
-                                        if (!empty($setval)) {
-                                            echo set_value('symptom');
-                                        }
-                                        if (!empty($prescription->symptom)) {
-                                            echo $prescription->symptom;
-                                        }
-                                        ?></textarea>
-                                </div>
-
-
-
-                                <div class="form-group col-md-6">
-                                    <label class="control-label"><?php echo lang('note'); ?></label>
-                                    <textarea class="form-control ckeditor" id="editor3" name="note" value="" rows="30" cols="20"><?php
-                                        if (!empty($setval)) {
-                                            echo set_value('note');
-                                        }
-                                        if (!empty($prescription->note)) {
-                                            echo $prescription->note;
-                                        }
-                                        ?></textarea>
-                                </div>
-
-                                <div class="form-group col-md-12 medicine_block">
-                                    <label class="control-label col-md-3"> <?php echo lang('medicine'); ?></label>
-                                    <div class="col-md-9">
-                                        <?php if (empty($prescription->medicine)) { ?>
-                                            <select class="form-control m-bot15 medicinee"  id="my_select1_disabled" name="category" value=''>
-
-                                            </select>
-                                        <?php } else { ?>
-                                            <select name="category"  class="form-control m-bot15 medicinee"  multiple="multiple" id="my_select1_disabled" >
-                                                <?php
-                                                if (!empty($prescription->medicine)) {
-
-                                                    // $category_name = $payment->category_name;
-                                                    $prescription_medicine = explode('###', $prescription->medicine);
-                                                    foreach ($prescription_medicine as $key => $value) {
-                                                        $prescription_medicine_extended = explode('***', $value);
-                                                        $medicine = $this->medicine_model->getMedicineById($prescription_medicine_extended[0]);
+                                        </div>
+                                        <?php if (!$this->ion_auth->in_group('Doctor')) { ?>
+                                            <div class="form-group col-md-4"> 
+                                                <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?></label>
+                                                <select class="form-control m-bot15" id="doctorchoose" name="doctor" value=''>
+                                                    <?php if (!empty($prescription->doctor)) { ?>
+                                                        <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
+                                                    <?php } ?>
+                                                    <?php
+                                                    if (!empty($setval)) {
+                                                        $doctordetails1 = $this->db->get_where('doctor', array('id' => set_value('doctor')))->row();
                                                         ?>
-                                                        <option value="<?php echo $medicine->id . '*' . $medicine->name; ?>"  <?php echo 'data-dosage="' . $prescription_medicine_extended[1] . '"' . 'data-frequency="' . $prescription_medicine_extended[2] . '"data-days="' . $prescription_medicine_extended[3] . '"data-instruction="' . $prescription_medicine_extended[4] . '"'; ?> selected="selected">
-                                                            <?php echo $medicine->name; ?>
-                                                        </option>                
-
+                                                        <option value="<?php echo $doctordetails1->id; ?>" selected="selected"><?php echo $doctordetails1->name; ?> -(<?php echo lang('id'); ?> : <?php echo $doctordetails1->id; ?>)</option>
+                                                    <?php }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        <?php } else { ?>
+                                            <div class="form-group col-md-4"> 
+                                                <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?></label>
+                                                <?php if (!empty($prescription->doctor)) { ?>
+                                                    <select class="form-control m-bot15" name="doctor" value=''>
+                                                        <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
+                                                    </select>
+                                                <?php } else { ?>
+                                                    <select class="form-control m-bot15" id="doctorchoose1" name="doctor" value=''>
+                                                        <?php if (!empty($prescription->doctor)) { ?>
+                                                            <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
+                                                        <?php } ?>
+                                                        <?php if (!empty($doctordetails)) { ?>
+                                                            <option value="<?php echo $doctordetails->id; ?>" selected="selected"><?php echo $doctordetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctordetails->id; ?>)</option>  
+                                                        <?php } ?>
                                                         <?php
-                                                    }
+                                                        if (!empty($setval)) {
+                                                            $doctordetails1 = $this->db->get_where('doctor', array('id' => set_value('doctor')))->row();
+                                                            ?>
+                                                            <option value="<?php echo $doctordetails1->id; ?>" selected="selected"><?php echo $doctordetails1->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctordetails->id; ?>)</option>
+                                                        <?php }
+                                                        ?>
+                                                    </select>
+                                                <?php } ?>
+                                            </div>
+                                        <?php } ?>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label"><?php echo lang('history'); ?></label>
+                                            <textarea class="form-control ckeditor" id="editor1" name="symptom" value="" rows="50" cols="20"><?php
+                                                if (!empty($setval)) {
+                                                    echo set_value('symptom');
+                                                }
+                                                if (!empty($prescription->symptom)) {
+                                                    echo $prescription->symptom;
+                                                }
+                                                ?></textarea>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="control-label"><?php echo lang('note'); ?></label>
+                                            <textarea class="form-control ckeditor" id="editor3" name="note" value="" rows="30" cols="20"><?php
+                                                if (!empty($setval)) {
+                                                    echo set_value('note');
+                                                }
+                                                if (!empty($prescription->note)) {
+                                                    echo $prescription->note;
+                                                }
+                                                ?>        
+                                            </textarea>
+                                        </div>
+                                        <div class="form-group col-md-12 medicine_block">
+                                            <label class="control-label col-md-3"> <?php echo lang('medicine'); ?></label>
+                                            <div class="col-md-9">
+                                                <?php if (empty($prescription->medicine)) { ?>
+                                                    <select class="form-control m-bot15 medicinee"  id="my_select1_disabled" name="category" value=''>
+                                                    </select>
+                                                <?php } else { ?>
+                                                    <select name="category"  class="form-control m-bot15 medicinee"  multiple="multiple" id="my_select1_disabled" >
+                                                        <?php
+                                                        if (!empty($prescription->medicine)) {
+
+                                                            // $category_name = $payment->category_name;
+                                                            $prescription_medicine = explode('###', $prescription->medicine);
+                                                            foreach ($prescription_medicine as $key => $value) {
+                                                                $prescription_medicine_extended = explode('***', $value);
+                                                                $medicine = $this->medicine_model->getMedicineById($prescription_medicine_extended[0]);
+                                                                ?>
+                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name; ?>"  <?php echo 'data-dosage="' . $prescription_medicine_extended[1] . '"' . 'data-frequency="' . $prescription_medicine_extended[2] . '"data-days="' . $prescription_medicine_extended[3] . '"data-instruction="' . $prescription_medicine_extended[4] . '"'; ?> selected="selected">
+                                                                    <?php echo $medicine->name; ?>
+                                                                </option>                
+                                                                <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                <?php } ?>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-12 panel-body medicine_block">
+                                            <label class="control-label col-md-3"><?php echo lang('medicine'); ?></label>
+                                            <div class="col-md-9 medicine pull-right">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label class="control-label"><?php echo lang('advice'); ?></label>
+                                            <textarea class="form-control ckeditor" id="editor3" name="advice" value="" rows="30" cols="20"><?php
+                                                if (!empty($setval)) {
+                                                    echo set_value('advice');
+                                                }
+                                                if (!empty($prescription->advice)) {
+                                                    echo $prescription->advice;
                                                 }
                                                 ?>
-                                            </select>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-12 panel-body medicine_block">
-                                    <label class="control-label col-md-3"><?php echo lang('medicine'); ?></label>
-                                    <div class="col-md-9 medicine pull-right">
-
-                                    </div>
-
-                                </div>
-
-
-
-                                <div class="form-group col-md-12">
-                                    <label class="control-label"><?php echo lang('advice'); ?></label>
-                                    <textarea class="form-control ckeditor" id="editor3" name="advice" value="" rows="30" cols="20"><?php
-                                        if (!empty($setval)) {
-                                            echo set_value('advice');
+                                            </textarea>
+                                        </div>
+                                        <input type="hidden" name="admin" value='admin'>
+                                        <input type="hidden" name="id" value='<?php
+                                        if (!empty($prescription->id)) {
+                                            echo $prescription->id;
                                         }
-                                        if (!empty($prescription->advice)) {
-                                            echo $prescription->advice;
-                                        }
-                                        ?>
-                                    </textarea>
-                                </div>
-
-
-
-                                <input type="hidden" name="admin" value='admin'>
-
-                                <input type="hidden" name="id" value='<?php
-                                if (!empty($prescription->id)) {
-                                    echo $prescription->id;
-                                }
-                                ?>'>
-
-                                <div class="form-group">
-                                    <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
-                                </div>
+                                        ?>'>
+                                        <div class="form-group">
+                                            <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                    </div>
+                                </form>
                             </div>
-
-                            <div class="col-md-5">
-
-                            </div>
-
-
-
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
         <!-- page end-->
     </section>
 </section>

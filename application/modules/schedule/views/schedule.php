@@ -9,8 +9,8 @@
                 <div class="col-md-4 clearfix pull-right">
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i>  <?php echo lang('add_new'); ?> 
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i>  <?php echo lang('add_new'); ?> 
                             </button>
                         </div>
                     </a>  
@@ -52,7 +52,7 @@
                                             <!--
                                             <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $schedule->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
                                             -->
-                                            <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $schedule->doctor; ?>&weekday=<?php echo $schedule->weekday; ?>&all=all" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
+                                            <a class="btn btn-danger btn-xs" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $schedule->doctor; ?>&weekday=<?php echo $schedule->weekday; ?>&all=all" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
                                         </td>
                                     <?php } ?>
                                 </tr>
@@ -188,7 +188,7 @@
                     <input type="hidden" name="id" value=''>
 
                     <div class="form-group col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                 </form>
 
@@ -208,7 +208,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i>  <?php echo lang('edit'); ?>  <?php echo lang('time_slot'); ?></h4>
+                <h4 class="modal-title"><i class="fa fa-edit"></i>  <?php echo lang('edit'); ?>  <?php echo lang('time_slot'); ?></h4>
             </div>
             <div class="modal-body">
                 <form role="form" id="editTimeSlotForm" action="schedule/addSchedule" method="post" enctype="multipart/form-data">
@@ -318,7 +318,7 @@
 
                     <input type="hidden" name="redirect" value='schedule'>
                     <input type="hidden" name="id" value=''>
-                    <button type="submit" name="submit" class="btn btn-info"> <?php echo lang('submit'); ?></button>
+                    <button type="submit" name="submit" class="btn btn-primary"> <?php echo lang('submit'); ?></button>
                 </form>
 
             </div>

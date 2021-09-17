@@ -9,8 +9,8 @@
                  <div class="col-md-4 no-print pull-right"> 
                     <a href="finance/pharmacy/addExpenseView">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_expense'); ?>
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('add_expense'); ?>
                             </button>
                         </div>
                     </a>
@@ -51,8 +51,8 @@
                                 <td><?php echo $settings->currency; ?> <?php echo $expense->amount; ?></td>             
                                 <?php if ($this->ion_auth->in_group('admin')) { ?>
                                     <td>
-                                        <a class="btn btn-info btn-xs editbutton width_auto" href="finance/pharmacy/editExpense?id=<?php echo $expense->id; ?>"><i class="fa fa-edit"></i>  <?php  echo lang('edit'); ?></a>
-                                        <a class="btn btn-danger btn-xs delete_button width_auto" href="finance/pharmacy/deleteExpense?id=<?php echo $expense->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i>  <?php  echo lang('delete'); ?></a>
+                                        <a class="btn btn-info btn-xs editbutton" href="finance/pharmacy/editExpense?id=<?php echo $expense->id; ?>"><i class="fa fa-edit"></i>  <?php  echo lang('edit'); ?></a>
+                                        <a class="btn btn-danger btn-xs" href="finance/pharmacy/deleteExpense?id=<?php echo $expense->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i>  <?php  echo lang('delete'); ?></a>
                                     </td>
                                 <?php } ?>
                             </tr>

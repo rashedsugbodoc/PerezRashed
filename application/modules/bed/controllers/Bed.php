@@ -313,9 +313,9 @@ class Bed extends MX_Controller {
         foreach ($data['beds'] as $bed) {
             $i = $i + 1;
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $bed->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
+            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $bed->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
 
-            $option2 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="bed/delete?id=' . $bed->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+            $option2 = '<a class="btn btn-danger btn-xs" href="bed/delete?id=' . $bed->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             $last_a_time = explode('-', $bed->last_a_time);
             $last_d_time = explode('-', $bed->last_d_time);
             if (!empty($last_d_time[1])) {

@@ -44,7 +44,9 @@
                                 echo $expense->id;
                             }
                             ?>'>
-                            <button type="submit" name="submit" class="btn btn-info"> <?php echo lang('submit'); ?> </button>
+                            <div class="col-md-12 form-group">
+                                <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?> </button>
+                            </div>
                         </form>
                     </div>
                 </div>

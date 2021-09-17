@@ -31,7 +31,7 @@
                         <a data-toggle="modal" href="hospital/package/addNewView">
                             <div class="btn-group">
                                 <button id="" class="btn green">
-                                    <i class="fa fa-plus-circle"></i>   <?php echo lang('add_new_package'); ?>
+                                    <i class="fa fa-plus"></i>   <?php echo lang('add_new_package'); ?>
                                 </button>
                             </div>
                         </a>
@@ -115,7 +115,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title"><i class="fa fa-plus-circle"></i>  <?php echo lang('create_new_package'); ?></h4>
+                <h4 class="modal-title"><i class="fa fa-plus"></i>  <?php echo lang('create_new_package'); ?></h4>
             </div>
             <div class="modal-body">
                 <form role="form" action="package/addNew" method="post" enctype="multipart/form-data">

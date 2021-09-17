@@ -10,7 +10,7 @@
                     <a data-toggle="modal" href="#myModal1">
                         <div class="btn-group pull-right">
                             <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_new'); ?>
+                                <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
                             </button>
                         </div>
                     </a>

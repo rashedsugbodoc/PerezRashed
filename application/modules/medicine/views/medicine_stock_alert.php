@@ -9,8 +9,8 @@
                 <div class="col-md-4 no-print pull-right"> 
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_medicine'); ?>
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('add_medicine'); ?>
                             </button>
                         </div>
                     </a>
@@ -109,7 +109,7 @@
                                 <td><?php echo $settings->currency; ?> <?php echo $medicine->s_price; ?></td>
                                 <td> <?php
                                     if ($medicine->quantity <= 0) {
-                                        echo '<p class="os">Stock Out</p>';
+                                        echo '<p class="os">'.lang('out_of_stock').'</p>';
                                     } else {
                                         echo $medicine->quantity;
                                     }
@@ -122,7 +122,7 @@
                                 <td> <?php echo $medicine->e_date; ?></td>
                                 <td>
                                     <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $medicine->id; ?>"><i class="fa fa-edit"></i>  <?php echo lang('edit'); ?></button>   
-                                    <a class="btn btn-danger btn-xs btn_width delete_button" href="medicine/delete?id=<?php echo $medicine->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash-o"> </i> <?php echo lang('delete'); ?></a>
+                                    <a class="btn btn-danger btn-xs" href="medicine/delete?id=<?php echo $medicine->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
                                 </td>
                             </tr>
                         <?php } ?>

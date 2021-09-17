@@ -659,7 +659,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub"> 
                                         <li><a href="appointment"><i class="fa fa-list-alt"></i><?php echo lang('all'); ?></a></li>
-                                        <li><a href="appointment/addNewView"><i class="fa fa-plus-circle"></i><?php echo lang('add'); ?></a></li>
+                                        <li><a href="appointment/addNewView"><i class="fa fa-plus"></i><?php echo lang('add'); ?></a></li>
                                         <li><a href="appointment/todays"><i class="fa fa-list-alt"></i><?php echo lang('todays'); ?></a></li>
                                         <li><a href="appointment/upcoming"><i class="fa fa-list-alt"></i><?php echo lang('upcoming'); ?></a></li>
                                         <li><a href="appointment/calendar"><i class="fa fa-list-alt"></i><?php echo lang('calendar'); ?></a></li>
@@ -679,7 +679,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub"> 
                                         <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                            <li><a href="meeting/addNewView"><i class="fa fa-plus-circle"></i><?php echo lang('create'); ?> <?php echo lang('meeting'); ?></a></li>
+                                            <li><a href="meeting/addNewView"><i class="fa fa-plus"></i><?php echo lang('create'); ?> <?php echo lang('meeting'); ?></a></li>
                                         <?php } ?>
                                         <li><a href="meeting"><i class="fa fa-video"></i><?php echo lang('live'); ?> <?php echo lang('now'); ?></a></li>
                                         <li><a href="meeting/upcoming"><i class="fa fa-list-alt"></i><?php echo lang('upcoming'); ?> <?php echo lang('meetings'); ?></a></li>
@@ -743,10 +743,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="finance/payment"><i class="fa fa-money-check"></i> <?php echo lang('payments'); ?></a></li>
-                                        <li><a  href="finance/addPaymentView"><i class="fa fa-plus-circle"></i><?php echo lang('add_payment'); ?></a></li>
+                                        <li><a  href="finance/addPaymentView"><i class="fa fa-plus"></i><?php echo lang('add_payment'); ?></a></li>
                                         <li><a  href="finance/paymentCategory"><i class="fa fa-edit"></i><?php echo lang('payment_procedures'); ?></a></li>
                                         <li><a  href="finance/expense"><i class="fa fa-money-check"></i><?php echo lang('expense'); ?></a></li>
-                                        <li><a  href="finance/addExpenseView"><i class="fa fa-plus-circle"></i><?php echo lang('add_expense'); ?></a></li>
+                                        <li><a  href="finance/addExpenseView"><i class="fa fa-plus"></i><?php echo lang('add_expense'); ?></a></li>
                                         <li><a  href="finance/expenseCategory"><i class="fa fa-edit"></i><?php echo lang('expense_categories'); ?> </a></li>
 
 
@@ -772,7 +772,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="finance/payment"><i class="fa fa-money-check"></i> <?php echo lang('payments'); ?></a></li>
-                                        <li><a  href="finance/addPaymentView"><i class="fa fa-plus-circle"></i><?php echo lang('add_payment'); ?></a></li>
+                                        <li><a  href="finance/addPaymentView"><i class="fa fa-plus"></i><?php echo lang('add_payment'); ?></a></li>
                                     </ul>
                                 </li> 
                             <?php } ?>
@@ -865,8 +865,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="lab"><i class="fa fa-file-medical"></i><?php echo lang('lab_reports'); ?></a></li>
-                                        <li><a  href="lab/addLabView"><i class="fa fa-plus-circle"></i><?php echo lang('add_lab_report'); ?></a></li>
-                                        <li><a  href="lab/template"><i class="fa fa-plus-circle"></i><?php echo lang('template'); ?></a></li>
+                                        <li><a  href="lab/addLabView"><i class="fa fa-plus"></i><?php echo lang('add_lab_report'); ?></a></li>
+                                        <li><a  href="lab/template"><i class="fa fa-plus"></i><?php echo lang('template'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -881,8 +881,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="form"><i class="fa fa-file-medical"></i><?php echo lang('forms_reports'); ?></a></li>
-                                        <li><a  href="form/addFormView"><i class="fa fa-plus-circle"></i><?php echo lang('add_form_report'); ?></a></li>
-                                        <li><a  href="form/template"><i class="fa fa-plus-circle"></i><?php echo lang('report_templates'); ?></a></li>
+                                        <li><a  href="form/addFormView"><i class="fa fa-plus"></i><?php echo lang('add_form_report'); ?></a></li>
+                                        <li><a  href="form/template"><i class="fa fa-plus"></i><?php echo lang('report_templates'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -900,10 +900,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="medicine"><i class="fa fa-medkit"></i><?php echo lang('medicine_list'); ?></a></li>
-                                        <li><a  href="medicine/addMedicineView"><i class="fa fa-plus-circle"></i><?php echo lang('add_medicine'); ?></a></li>
+                                        <li><a  href="medicine/addMedicineView"><i class="fa fa-plus"></i><?php echo lang('add_medicine'); ?></a></li>
                                         <li><a  href="medicine/medicineCategory"><i class="fa fa-edit"></i><?php echo lang('medicine_category'); ?></a></li>
-                                        <li><a  href="medicine/addCategoryView"><i class="fa fa-plus-circle"></i><?php echo lang('add_medicine_category'); ?></a></li>
-                                        <li><a  href="medicine/medicineStockAlert"><i class="fa fa-plus-circle"></i><?php echo lang('medicine_stock_alert'); ?></a></li>
+                                        <li><a  href="medicine/addCategoryView"><i class="fa fa-plus"></i><?php echo lang('add_medicine_category'); ?></a></li>
+                                        <li><a  href="medicine/medicineStockAlert"><i class="fa fa-plus"></i><?php echo lang('medicine_stock_alert'); ?></a></li>
 
                                     </ul>
                                 </li>
@@ -929,9 +929,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             <li><a  href="finance/pharmacy/home"><i class="fa fa-home"></i> <?php echo lang('dashboard'); ?></a></li>
                                         <?php } ?>
                                         <li><a  href="finance/pharmacy/payment"><i class="fa fa-money-check"></i> <?php echo lang('sales'); ?></a></li>
-                                        <li><a  href="finance/pharmacy/addPaymentView"><i class="fa fa-plus-circle"></i><?php echo lang('add_new_sale'); ?></a></li>
+                                        <li><a  href="finance/pharmacy/addPaymentView"><i class="fa fa-plus"></i><?php echo lang('add_new_sale'); ?></a></li>
                                         <li><a  href="finance/pharmacy/expense"><i class="fa fa-money-check"></i><?php echo lang('expense'); ?></a></li>
-                                        <li><a  href="finance/pharmacy/addExpenseView"><i class="fa fa-plus-circle"></i><?php echo lang('add_expense'); ?></a></li>
+                                        <li><a  href="finance/pharmacy/addExpenseView"><i class="fa fa-plus"></i><?php echo lang('add_expense'); ?></a></li>
                                         <li><a  href="finance/pharmacy/expenseCategory"><i class="fa fa-edit"></i><?php echo lang('expense_categories'); ?> </a></li>
 
 
@@ -976,7 +976,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="donor"><i class="fa fa-user"></i><?php echo lang('donor_list'); ?></a></li>
-                                        <li><a  href="donor/addDonorView"><i class="fa fa-plus-circle"></i><?php echo lang('add_donor'); ?></a></li>
+                                        <li><a  href="donor/addDonorView"><i class="fa fa-plus"></i><?php echo lang('add_donor'); ?></a></li>
                                         <li><a  href="donor/bloodBank"><i class="fa fa-tint"></i><?php echo lang('blood_bank'); ?></a></li>
                                     </ul>
                                 </li>
@@ -991,10 +991,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="bed"><i class="fas fa-procedures"></i><?php echo lang('bed_list'); ?></a></li>
-                                        <li><a  href="bed/addBedView"><i class="fa fa-plus-circle"></i><?php echo lang('add_bed'); ?></a></li>
+                                        <li><a  href="bed/addBedView"><i class="fa fa-plus"></i><?php echo lang('add_bed'); ?></a></li>
                                         <li><a  href="bed/bedCategory"><i class="fa fa-edit"></i><?php echo lang('bed_category'); ?></a></li>
                                         <li><a  href="bed/bedAllotment"><i class="fas fa-bed"></i><?php echo lang('bed_allotments'); ?></a></li>
-                                        <li><a  href="bed/addAllotmentView"><i class="fa fa-plus-circle"></i><?php echo lang('add_allotment'); ?></a></li>
+                                        <li><a  href="bed/addAllotmentView"><i class="fa fa-plus"></i><?php echo lang('add_allotment'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -1140,7 +1140,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         </li>
                                         <li>
                                             <a href="finance/addPaymentView" >
-                                                <i class="fa fa-plus-circle"></i>
+                                                <i class="fa fa-plus"></i>
                                                 <span> <?php echo lang('add_payment'); ?> </span>
                                             </a>
                                         </li>
@@ -1160,7 +1160,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                                 <li>
                                     <a href="finance/addExpenseView" >
-                                        <i class="fa fa-plus-circle"></i>
+                                        <i class="fa fa-plus"></i>
                                         <span> <?php echo lang('add_expense'); ?> </span>
                                     </a>
                                 </li>
@@ -1195,7 +1195,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                                 <li>
                                     <a href="medicine/addMedicineView" >
-                                        <i class="fa fa-plus-circle"></i>
+                                        <i class="fa fa-plus"></i>
                                         <span> <?php echo lang('add_medicine'); ?> </span>
                                     </a>
                                 </li>
@@ -1207,7 +1207,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                                 <li>
                                     <a href="medicine/addCategoryView" >
-                                        <i class="fa fa-plus-circle"></i>
+                                        <i class="fa fa-plus"></i>
                                         <span> <?php echo lang('add_medicine_category'); ?> </span>
                                     </a>
                                 </li>
@@ -1229,7 +1229,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                                 <li>
                                     <a href="bed/bedAllotment" >
-                                        <i class="fa fa-plus-circle"></i>
+                                        <i class="fa fa-plus"></i>
                                         <span> <?php echo lang('bed_allotments'); ?> </span>
                                     </a>
                                 </li>
@@ -1365,7 +1365,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             </li>
                             <li>
                                 <a href="hospital/addNewView">
-                                    <i class="fa fa-plus-circle"></i>
+                                    <i class="fa fa-plus"></i>
                                     <span><?php echo lang('create_new_hospital'); ?></span>
                                 </a>
                             </li>
@@ -1380,7 +1380,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             </li>
                             <li>
                                 <a href="hospital/package/addNewView">
-                                    <i class="fa fa-plus-circle"></i>
+                                    <i class="fa fa-plus"></i>
                                     <span><?php echo lang('add_new_package'); ?></span>
                                 </a>
                             </li>

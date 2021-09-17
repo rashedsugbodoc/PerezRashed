@@ -9,8 +9,8 @@
                 <div class="col-md-4 no-print pull-right"> 
                     <a href="finance/pharmacy/addExpenseCategoryView">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_expense_category'); ?>
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('add_expense_category'); ?>
                             </button>
                         </div>
                     </a>
@@ -39,23 +39,19 @@
                                 max-height:20px;
                                 border-radius: 100px;
                             }
-
                         </style>
-
                         <?php foreach ($categories as $category) { ?>
                             <tr class="">
                                 <td><?php echo $category->category; ?></td>
                                 <td> <?php echo $category->description; ?></td>
                                 <?php if ($this->ion_auth->in_group('admin')) { ?>
                                     <td>
-                                        <a class="btn btn-info btn-xs editbutton width_auto" href="finance/pharmacy/editExpenseCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"></i>  <?php echo lang('edit'); ?></a>
-                                        <a class="btn btn-danger btn-xs delete_button width_auto" href="finance/pharmacy/deleteExpenseCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i>  <?php echo lang('delete'); ?></a>
+                                        <a class="btn btn-info btn-xs editbutton" href="finance/pharmacy/editExpenseCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"></i>  <?php echo lang('edit'); ?></a>
+                                        <a class="btn btn-danger btn-xs" href="finance/pharmacy/deleteExpenseCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i>  <?php echo lang('delete'); ?></a>
                                     </td>
                                 <?php } ?>
                             </tr>
                         <?php } ?>
-
-
                         </tbody>
                     </table>
                 </div>

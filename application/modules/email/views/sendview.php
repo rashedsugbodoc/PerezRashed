@@ -9,11 +9,11 @@
                     <?php echo lang('send_email'); ?>
 
                     <div id="templatebar" class="pull-right col-md-6 btn-toolbar">
-                        <button class='btn green pull-right' onclick="location.href = 'email/sent'" type="button">
+                        <button class='btn btn-info pull-right' onclick="location.href = 'email/sent'" type="button">
                             <?php echo lang('sent_messages'); ?></button>
-                        <button class='btn green pull-right' onclick="location.href = 'email/manualEmailTemplate'" type="button">
+                        <button class='btn btn-info pull-right' onclick="location.href = 'email/manualEmailTemplate'" type="button">
                             <?php echo lang('template'); ?></button>
-                        <button class='btn green pull-right' data-toggle="modal" data-target="#myModal1" type="button">
+                        <button class='btn btn-info pull-right' data-toggle="modal" data-target="#myModal1" type="button">
                             <?php echo lang('add'); ?> <?php echo lang('template'); ?></button>
                     </div>
 
@@ -132,7 +132,7 @@
                         <input type="hidden" name="id" value=''>
 
                         <div class="form-group col-md-12">
-                            <button type="submit" name="submit" class="btn btn-info pull-right"><i class="fa fa-location-arrow"></i> <?php echo lang('send_email'); ?></button>
+                            <button type="submit" name="submit" class="btn btn-primary pull-right"><i class="fa fa-location-arrow"></i> <?php echo lang('send_email'); ?></button>
                         </div>
 
                     </form>
@@ -235,7 +235,7 @@
                         <textarea cols="50" rows="10" class="form-control" name="message" id="exampleInputEmail1" value=''> </textarea>
                     </div>
                     <input type="hidden" id="area_id" value="" name="area_id">
-                    <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div><!-- /.modal-content -->
@@ -256,7 +256,7 @@
                         <label for="exampleInputEmail1">Message</label>
                         <textarea cols="50" rows="10" class="form-control" name="message" id="exampleInputEmail1" value=''> </textarea>
                     </div>
-                    <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div><!-- /.modal-content -->
@@ -283,7 +283,7 @@
                         <textarea cols="50" rows="10" class="form-control" name="message" id="exampleInputEmail1" value=''> </textarea>
                     </div>
                     <input type="hidden" id="area_idd" value="" name="area_id">
-                    <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div><!-- /.modal-content -->

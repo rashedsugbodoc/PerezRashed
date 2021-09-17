@@ -84,13 +84,13 @@
                                     <?php if (!$this->ion_auth->in_group('Patient')) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
-                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                                <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
                                     <?php } else { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
-                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('request_a_appointment'); ?> 
+                                                <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?> 
                                             </a>
                                         </div>
                                     <?php } ?>
@@ -144,7 +144,7 @@
                                     <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModal">
-                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                                <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
                                     <?php } ?>
@@ -215,7 +215,7 @@
                                     <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-info btn_width btn-xs" href="prescription/addPrescriptionView">
-                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                                <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
                                     <?php } ?>
@@ -330,7 +330,7 @@
                             <div id="profile" class="tab-pane"> <div class="">
                                     <div class=" no-print">
                                         <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModal1">
-                                            <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                         </a>
                                     </div>
                                     <div class="adv-table editable-table ">
@@ -373,7 +373,7 @@
                                     <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModa3">
-                                                <i class="fa fa-plus-circle"> </i> <?php echo lang('add_new'); ?> 
+                                                <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
                                     <?php } ?>
@@ -507,7 +507,7 @@
                     <input type="hidden" name="patient_id" value='<?php echo $patient->id; ?>'>
                     <input type="hidden" name="id" value=''>
                     <div class="form-group col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info submit_button pull-right">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right">Submit</button>
                     </div>
                 </form>
             </div>
@@ -544,7 +544,7 @@
                     <input type="hidden" name="patient_id" value='<?php echo $patient->id; ?>'>
                     <input type="hidden" name="id" value=''>
                     <div class="form-group col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info submit_button pull-right">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right">Submit</button>
                     </div>
                 </form>
             </div>

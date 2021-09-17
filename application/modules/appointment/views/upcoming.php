@@ -10,8 +10,8 @@
                 <div class="col-md-4 clearfix pull-right custom_buttons">
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i>   <?php echo lang('add_appointment'); ?> 
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i>   <?php echo lang('add_appointment'); ?> 
                             </button>
                         </div>
                     </a>
@@ -81,7 +81,7 @@
             </div>
             <div class="modal-footer">
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -189,7 +189,7 @@
                       <input type="checkbox" name="sms" class="" value="sms">  <?php echo lang('yes'); ?>
                   </div> -->
                     <div class="col-md-12 panel">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                 </form>
             </div>
@@ -305,7 +305,7 @@
                      </div> -->
                     <input type="hidden" name="id" id="appointment_id" value=''>
                     <div class="col-md-12 panel">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                 </form>
 
@@ -328,8 +328,8 @@
                         <p><?php echo lang('reminder_message'); ?></p>
                     </div>
                     <input type="hidden" id="id" value="" name="id">
-                    <button type="submit" name="submit" class="btn btn-info submit_button"><?php echo lang('yes'); ?></button>
-                    <button type="submit" name="submit" class="btn btn-info invoicebutton" data-dismiss="modal" aria-hidden="true"><?php echo lang('cancel'); ?></button>
+                    <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('yes'); ?></button>
+                    <button type="submit" name="submit" class="btn btn-light" data-dismiss="modal" aria-hidden="true"><?php echo lang('cancel'); ?></button>
                 </form>
             </div>
         </div><!-- /.modal-content -->

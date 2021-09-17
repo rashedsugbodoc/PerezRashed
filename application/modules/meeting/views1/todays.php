@@ -13,7 +13,7 @@
                         <a data-toggle="modal" href="#myModal">
                             <div class="btn-group pull-right">
                                 <button id="" class="btn green btn-xs pull-right">
-                                    <i class="fa fa-plus-circle"></i>   <?php echo lang('add_meeting'); ?> 
+                                    <i class="fa fa-plus"></i>   <?php echo lang('add_meeting'); ?> 
                                 </button>
                             </div>
                         </a>
@@ -192,7 +192,7 @@
             </div>
             <div class="modal-footer">
                 <div class="col-md-12">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

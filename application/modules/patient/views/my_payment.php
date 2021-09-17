@@ -81,7 +81,7 @@
                                 <td><?php echo $settings->currency; ?> <?php echo $grand_total - $amount_received; ?></td>
                                 <td><?php echo $settings->currency; ?> <?php echo $payment->remarks; ?></td>
                                 <td class="no-print"> 
-                                    <a class="btn btn-xs invoicebutton" title="<?php echo lang('invoice'); ?>" style="color: #fff;" href="patient/myInvoice?id=<?php echo $payment->id; ?>"><i class="fas fa-file-invoice"></i> <?php echo lang('invoice'); ?></a>
+                                    <a class="btn btn-xs btn-success" title="<?php echo lang('invoice'); ?>" style="color: #fff;" href="patient/myInvoice?id=<?php echo $payment->id; ?>"><i class="fas fa-file-invoice"></i> <?php echo lang('invoice'); ?></a>
                                     </button>
                                 </td>
                             </tr>

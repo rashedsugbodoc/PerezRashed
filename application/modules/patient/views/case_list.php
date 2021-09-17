@@ -32,7 +32,7 @@
                             </div>
                             <input type="hidden" name="redirect" value='patient/caseList'>
                             <section class="col-md-12">
-                                <button type="submit" name="submit" class="btn btn-info submit_button pull-right"><?php echo lang('submit'); ?></button>
+                                <button type="submit" name="submit" class="btn btn-primary pull-right no-print"><?php echo lang('submit'); ?></button>
                             </section>
                         </form>
                     </div>
@@ -104,7 +104,7 @@
                     <input type="hidden" name="id" value=''>
                     <input type="hidden" name="redirect" value='patient/caseList'>
                     <section class="col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info submit_button pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </section>
                 </form>
             </div>
@@ -146,7 +146,7 @@
                     <input type="hidden" name="id" value=''>
                     <input type="hidden" name="redirect" value='patient/caseList'>
                     <div class="col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info submit_button pull-right">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right">Submit</button>
                     </div>
                 </form>
             </div>
@@ -203,7 +203,7 @@
 
 
                     <div class="col-md-12 no-print">
-                        <a class="btn btn-info invoice_button pull-right" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
+                        <a class="btn btn-primary pull-right no-print" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
                     </div>
 
                 </form>

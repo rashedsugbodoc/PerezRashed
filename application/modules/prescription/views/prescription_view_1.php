@@ -209,7 +209,7 @@
                 <div class="panel_button">
                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                         <div class="text-center invoice-btn no-print pull-left">
-                            <a class="btn btn-info btn-lg green" href="prescription/addPrescriptionView"><i class="fa fa-plus-circle"></i> <?php echo lang('add_prescription'); ?> </a>
+                            <a class="btn btn-info btn-lg green" href="prescription/addPrescriptionView"><i class="fa fa-plus"></i> <?php echo lang('add_prescription'); ?> </a>
                         </div>
                     <?php } ?>
                 </div>

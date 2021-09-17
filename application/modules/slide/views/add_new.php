@@ -10,7 +10,7 @@
                 if (!empty($slide->id))
                     echo '<i class="fa fa-edit"></i> ' . lang('edit_slide');
                 else
-                    echo '<i class="fa fa-plus-circle"></i> ' . lang('add_slide');
+                    echo '<i class="fa fa-plus"></i> ' . lang('add_slide');
                 ?>
             </header>
             <div class="panel-body">

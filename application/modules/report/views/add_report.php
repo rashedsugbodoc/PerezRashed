@@ -9,7 +9,7 @@
                 if (!empty($report->id)) {
                     echo '<i class="fa fa-edit"></i> ' . lang('edit_report');
                 } else {
-                    echo '<i class="fa fa-plus-circle"></i> ' . lang('add_new_report');
+                    echo '<i class="fa fa-plus"></i> ' . lang('add_new_report');
                 }
                 ?>
             </header>

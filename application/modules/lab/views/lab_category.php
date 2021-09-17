@@ -10,7 +10,7 @@ Lab<!--sidebar end-->
                     <a href="lab/addLabCategoryView">
                         <div class="btn-group pull-right">
                             <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_lab_test'); ?>
+                                <i class="fa fa-plus"></i> <?php echo lang('add_lab_test'); ?>
                             </button>
                         </div>
                     </a>

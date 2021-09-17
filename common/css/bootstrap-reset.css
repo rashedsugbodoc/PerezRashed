@@ -191,6 +191,33 @@ ul {
     border-color: #15ca7c !important;
 }
 
+.btn-secondary {
+    color: #fff !important;
+    background-color: #f72d66;
+    border-color: #f72d66;
+    box-shadow: 0 0px 10px -5px rgba(246, 45, 103, 0.5);
+}
+
+.btn-secondary:hover, .btn-secondary:focus, .btn-secondary:active, .btn-secondary.active, .open .dropdown-toggle.btn-secondary {
+
+    color: #fff !important;
+    background-color: #f54274;
+    border-color: #f54274;
+}
+
+.btn-cyan {
+    color: #fff !important;
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-cyan:hover, .btn-cyan:focus, .btn-cyan:active, .btn-cyan.active, .open .dropdown-toggle.btn-cyan {
+
+    color: #fff !important;
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
 .btn-info {
     color: #fff !important;
     background-color: #45aaf2;
@@ -286,9 +313,9 @@ ul {
 /*split dropdown btn*/
 
 .btn-white {
-    background-color: #949494;
-    border-color: #6a747b;
-    color: #6a747b;
+    background-color: #e8ebf2;
+    border-color: #dae0e5;
+    color: #495057;
 }
 
 /*breadcrumbs*/
@@ -454,36 +481,21 @@ ul {
 }
 
 .editbutton{
-    background: #39B27C;
-    border-color: #39B27C;
-    border-radius: 4px;
     color: #fff;
 }
 
 .editbutton:hover{
-    background: #418bca;
-    border-color: #418bca;
-    border-radius: 0px;
-    // width: 100px;
-    background: #39B27C;
-    // border-color: #39B27C;
-    border-radius: 4px;
     color: #fff;
 }
 
 .delete_button{
     color: #fff !important;
-    background-color: #ff5b51;
-    border-color: #ff5b51;
-    box-shadow: 0 0px 10px -5px rgba(255, 91, 81, 0.44); 
 }
 
 
 .delete_button:hover{
 
     color: #fff !important;
-    background-color: #f95045;
-    border-color: #ef5349; 
 }
 
 .purple {

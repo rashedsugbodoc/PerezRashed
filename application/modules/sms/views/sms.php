@@ -83,7 +83,7 @@
                     </div>
                     <input type="hidden" name="id" value=''>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                     </section>
                 </form>
             </div>
@@ -116,7 +116,7 @@
                     <input type="hidden" name="p_id" value=''>
 
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button">Submit</button>
+                        <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                     </section>
                 </form>
             </div>

@@ -11,7 +11,7 @@
                     <a href="finance/pharmacy/addPaymentView">
                         <div class="btn-group pull-right">
                             <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_sale'); ?>
+                                <i class="fa fa-plus"></i> <?php echo lang('add_sale'); ?>
                             </button>
                         </div>
                     </a>

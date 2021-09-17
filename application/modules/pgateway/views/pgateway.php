@@ -37,7 +37,7 @@
                                             ?></td>
 
                                         <td>
-                                            <a class="btn btn-info btn-xs btn_width" href="pgateway/settings?id=<?php echo $pgateway->id; ?>">   <?php echo lang('manage'); ?></a>
+                                            <a class="btn btn-info btn-xs" href="pgateway/settings?id=<?php echo $pgateway->id; ?>">   <?php echo lang('manage'); ?></a>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -75,7 +75,7 @@
                         <input type="hidden" name="id" value="<?php echo $settings->id; ?>">
 
                         <div class="col-md-12">
-                            <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                            <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                         </div>
                     </form>
                 </div>

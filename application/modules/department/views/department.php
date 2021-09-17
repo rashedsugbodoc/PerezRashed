@@ -9,8 +9,8 @@
                 <div class="col-md-4 no-print pull-right"> 
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_new'); ?>
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
                             </button>
                         </div>
                     </a>
@@ -33,8 +33,8 @@
                                     <td><?php echo $department->name; ?></td>
                                     <td><?php echo $department->description; ?></td>
                                     <td class="no-print">
-                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" title="<?php echo lang('edit'); ?>" data-id="<?php echo $department->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                        <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="department/delete?id=<?php echo $department->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                        <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" title="<?php echo lang('edit'); ?>" data-id="<?php echo $department->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                        <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="department/delete?id=<?php echo $department->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                     </td>
                                 </tr>
                             <?php } ?>
@@ -74,7 +74,7 @@
                     </div>
                     <input type="hidden" name="id" value=''>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button pull-right"> <?php echo lang('submit') ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit') ?></button>
                     </section>
                 </form>
             </div>
@@ -107,7 +107,7 @@
                     <input type="hidden" name="p_id" value=''>
 
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button pull-right"> <?php echo lang('submit') ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit') ?></button>
                     </section>
                 </form>
             </div>

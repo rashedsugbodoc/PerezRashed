@@ -37,7 +37,7 @@
                                             ?></td>
 
                                         <td>
-                                            <a class="btn btn-info btn-xs btn_width" href="sms/settings?id=<?php echo $sgateway->id; ?>">  <i class="fa fa-"> </i> <?php echo lang('manage'); ?></a>
+                                            <a class="btn btn-info btn-xs" href="sms/settings?id=<?php echo $sgateway->id; ?>">  <i class="fa fa-"> </i> <?php echo lang('manage'); ?></a>
                                         </td>
                                     </tr>
                                 <?php } ?>
@@ -47,8 +47,6 @@
                 </div>
             </div>
         </section>
-
-
         <section class="col-md-5">
             <div class="panel">
                 <header class="panel-heading">
@@ -56,8 +54,6 @@
                 </header>
                 <div class="panel-body">
                     <form role="form" id="editAppointmentForm" action="settings/selectSmsGateway" class="clearfix" method="post" enctype="multipart/form-data">
-
-                       
                             <?php foreach ($sgateways as $sgateway) { ?>
                                  <div class="form-group">
                                     <input type="radio" class=""  readonly="" name="sms_gateway" id="exampleInputEmail1" value='<?php echo $sgateway->name; ?>' placeholder="" <?php
@@ -69,12 +65,9 @@
                                     ?>> <?php echo $sgateway->name; ?>
                                  </div>
                             <?php } ?>
-                      
-
                         <input type="hidden" name="id" value="<?php echo $settings->id; ?>">
-
                         <div class="col-md-12">
-                            <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                            <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                         </div>
                     </form>
                 </div>

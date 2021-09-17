@@ -10,8 +10,8 @@
                 <div class="col-md-4 no-print pull-right"> 
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
-                                <i class="fa fa-plus-circle"></i> <?php echo lang('add_new_report'); ?>
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('add_new_report'); ?>
                             </button>
                         </div>
                     </a>
@@ -154,7 +154,7 @@
                     </div>
                     <input type="hidden" name="id" value=''>
                     <div class="">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                     </div>
                 </form>
 
@@ -248,7 +248,7 @@
                     </div>
                     <input type="hidden" name="id" value=''>
                      <div class="">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                     </div>
                 </form>
             </div>

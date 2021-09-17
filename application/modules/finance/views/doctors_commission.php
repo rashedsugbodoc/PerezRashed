@@ -8,7 +8,7 @@
             <header class="panel-heading">
                  <?php echo lang('doctors_commission'); ?>
                 <div class="col-md-2 pull-right">
-                <button class="btn btn-info green no-print pull-right" onclick="javascript:window.print();"><?php echo lang('print'); ?></button>
+                <button class="btn btn-info no-print pull-right" onclick="javascript:window.print();"><?php echo lang('print'); ?></button>
             </div>
             </header>
             <div class="space15"></div> 
@@ -37,7 +37,7 @@
                                     <span class="help-block"></span> 
                                 </div>
                                 <div class="col-md-2 no-print">
-                                    <button type="submit" name="submit" class="btn btn-info range_submit"><?php echo lang('submit'); ?></button>
+                                    <button type="submit" name="submit" class="btn btn-primary range_submit"><?php echo lang('submit'); ?></button>
                                 </div>
                             </div>
                         </form>
@@ -120,7 +120,7 @@
                                     }
                                     ?>
                                 </td>
-                                 <td> <a class="btn btn-info btn-xs invoicebutton no-print" href="finance/docComDetails?id=<?php echo $doctor->id; ?>"><i class="fa fa-file-text"></i> <?php echo lang('details'); ?> </a></td>
+                                 <td> <a class="btn btn-info btn-xs no-print" href="finance/docComDetails?id=<?php echo $doctor->id; ?>"><i class="fa fa-file-text"></i> <?php echo lang('details'); ?> </a></td>
                             </tr>
                             <?php $doctor_amount = NULL; ?>
                             <?php $doctor_gross = NULL; ?>
