@@ -95,8 +95,18 @@ a:hover {
 /*modal*/
 
 .modal-content {
-    box-shadow: none;
-    border: none;
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #eff0f6;
+    border-radius: 3px;
+    outline: 0;
 }
 
 .modal-header {
@@ -536,7 +546,7 @@ header .green:hover{
 }
 
 .modal-content{
-    border-radius: 0px !important;
+    border-radius: 3px !important;
 }
 
 
