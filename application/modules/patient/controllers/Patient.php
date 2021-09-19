@@ -2012,7 +2012,7 @@ class Patient extends MX_Controller {
                     </div>
                 </div>
             </section>
-        </section>
+
     </section>';
 
 
