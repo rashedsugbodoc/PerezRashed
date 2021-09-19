@@ -805,7 +805,7 @@ class Patient extends MX_Controller {
                                                             <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $doctor_name . '</h4>
                                                                     <p></p>
-                                                                    <i class=" fa fa-clock-o"></i>
+                                                                    <i class=" fa fa-clock"></i>
                                                                 <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
                                                         </div>
                                                     </div>
@@ -1167,7 +1167,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a type="button" class="btn btn-info" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a type="button" class="btn btn-info editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
             $options2 = '<a class="btn btn-info" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
@@ -1509,7 +1509,7 @@ class Patient extends MX_Controller {
                                                             <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $doctor_name . '</h4>
                                                                     <p></p>
-                                                                    <i class=" fa fa-clock-o"></i>
+                                                                    <i class=" fa fa-clock"></i>
                                                                 <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
                                                         </div>
                                                     </div>

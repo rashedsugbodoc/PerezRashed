@@ -168,7 +168,7 @@
                             <div id="schedule" class="tab-pane"> <div class="">
                                     <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
-                                            <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addScheduleModal" style="margin-bottom: 20px;">
+                                            <a class="btn btn-primary btn-xs" data-toggle="modal" href="#addScheduleModal" style="margin-bottom: 20px;">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
@@ -213,7 +213,7 @@
                             </div>
                             <div id="holiday" class="tab-pane"> <div class="">
                                     <div class=" no-print">
-                                        <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#holidayModal" style="margin-bottom: 20px;">
+                                        <a class="btn btn-primary btn-xs" data-toggle="modal" href="#holidayModal" style="margin-bottom: 20px;">
                                             <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                         </a>
                                     </div>

@@ -303,7 +303,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 <div class = "form-group medicine_sect col-md-2"><div class=col-md-12>\n\
 <label><?php echo lang("frequency"); ?> </label>\n\
 </div>\n\
-<div class=col-md-12><input class = "potency medi_div sale" id="salee' + count + '" name = "frequency[]" value = "' + frequency + '" placeholder="1 + 0 + 1" required>\n\
+<div class=col-md-12><input class = "potency medi_div sale" id="salee' + count + '" name = "frequency[]" value = "' + frequency + '" placeholder="<?php echo lang("frequency_placeholder"); ?>" required>\n\
 </div>\n\
 </div>\n\
 \n\
@@ -400,7 +400,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 <div class = "form-group medicine_sect col-md-2"><div class=col-md-12>\n\
 <label><?php echo lang("frequency"); ?> </label>\n\
 </div>\n\
-<div class=col-md-12><input class = "potency medi_div sale" id="salee' + count + '" name = "frequency[]" value = "" placeholder="1 + 0 + 1" required>\n\
+<div class=col-md-12><input class = "potency medi_div sale" id="salee' + count + '" name = "frequency[]" value = "" placeholder="<?php echo lang("frequency_placeholder"); ?>" required>\n\
 </div>\n\
 </div>\n\
 \n\
