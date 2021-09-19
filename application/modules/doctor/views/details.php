@@ -17,7 +17,7 @@
                                 <a data-toggle="tab" href="#patient"><?php echo lang('patient'); ?></a>
                             </li>
                             <li class="">
-                                <a data-toggle="tab" href="#prescription"><?php echo lang('prescription'); ?></a>
+                                <a data-toggle="tab" href="#prescriptions"><?php echo lang('prescription'); ?></a>
                             </li>
                             <li class="">
                                 <a data-toggle="tab" href="#schedule"><?php echo lang('schedule'); ?></a>
@@ -112,7 +112,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="prescription" class="tab-pane"> <div class="">
+                            <div id="prescriptions" class="tab-pane"> <div class="">
                                     <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-primary btn-xs" href="prescription/addPrescriptionView" style="margin-bottom: 20px;">
@@ -266,44 +266,6 @@
                                                 </div>
                                             </section>
                                         </aside>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="timeline" class="tab-pane"> 
-                                <div class="">
-                                    <div class="">
-                                        <header class="panel-heading">
-                                            <?php echo lang('timeline'); ?>
-                                        </header>
-                                        <!--
-                                        <div class=" profile-activity" >
-                                            <h5 class="pull-right">12 August 2013</h5>
-                                            <div class="activity terques">
-                                                <span>
-                                                    <i class="fa fa-shopping-cart"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel">
-                                                        <div class="">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-clock-o"></i>
-                                                            <h4>10:45 AM</h4>
-                                                            <p>Purchased new equipments for zonal office setup and stationaries.</p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        -->
-
-                                        <?php
-                                        if (!empty($timeline)) {
-                                            krsort($timeline);
-                                            foreach ($timeline as $key => $value) {
-                                                echo $value;
-                                            }
-                                        }
-                                        ?>
                                     </div>
                                 </div>
                             </div>
