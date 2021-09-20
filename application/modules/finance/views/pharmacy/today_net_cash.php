@@ -79,10 +79,4 @@
 <!--main content end-->
 <!--footer start-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $(".alert").hide();
-        $(".alert").fadeIn(500);
-        $(".alert").delay(3000).fadeOut(1000);
-    });
-</script>
+

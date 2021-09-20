@@ -314,6 +314,7 @@ $lang['add_bed_allotment'] = 'Add Bed Allotment';
 $lang['edit_bed_aalotment'] = 'Edit Bed Allotment';
 $lang['add_a_allotment'] = 'Add an Allotment';
 $lang['no_bed_is_available_for_allotment'] = 'No bed is available for allocation';
+$lang['new_patient_registered_email_subject'] = 'New Patient Registration Confirmation';
 $lang['patient_registerred_today'] = 'Patient Registered Today';
 $lang['patients_registerred_today'] = 'Patients Registered Today';
 $lang['donor_registerred_today'] = 'Donor Registered Today';

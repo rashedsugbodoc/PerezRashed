@@ -790,13 +790,7 @@
 
 
 
-<script>
-    $(document).ready(function () {
-        $(".alert").hide();
-        $(".alert").fadeIn(500);
-        $(".alert").delay(3000).fadeOut(1000);
-    });
-</script>
+
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>

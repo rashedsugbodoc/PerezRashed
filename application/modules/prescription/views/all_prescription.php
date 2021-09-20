@@ -306,11 +306,5 @@ if ($this->ion_auth->in_group('Doctor')) {
 
 
 
-<script>
-    $(document).ready(function () {
-        $(".alert").hide();
-        $(".alert").fadeIn(500);
-        $(".alert").delay(3000).fadeOut(1000);
-    });
-</script>
+
 
