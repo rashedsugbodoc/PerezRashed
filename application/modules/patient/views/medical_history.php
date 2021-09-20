@@ -31,12 +31,12 @@
 
                             <ul class="nav nav-pills nav-stacked">
                               <!--  <li class="active"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?><span class="label pull-right r-activity"><?php echo $patient->name; ?></span></li> -->
-                                <li>  <?php echo lang('patient_id'); ?> <span class=" pull-right "><?php echo $patient->id; ?></span></li>
-                                <li>  <?php echo lang('gender'); ?><span class=" pull-right "><?php echo $patient->sex; ?></span></li>
-                                <li>  <?php echo lang('birth_date'); ?><span class=" pull-right "><?php echo $patient->birthdate; ?></span></li>
-                                <li>  <?php echo lang('phone'); ?><span class=" pull-right "><?php echo $patient->phone; ?></span></li>
-                                <li>  <?php echo lang('email'); ?><span class="pull-right "><?php echo $patient->email; ?></span></li>
-                                <li style="height: 200px;">  <?php echo lang('address'); ?><span class="pull-right" style="height: 200px;"><?php echo $patient->address; ?></span></li>
+                                <li>  <?php echo lang('patient_id'); ?> <span class=" pull-right r-activity"><?php echo $patient->id; ?></span></li>
+                                <li>  <?php echo lang('gender'); ?><span class=" pull-right r-activity"><?php echo $patient->sex; ?></span></li>
+                                <li>  <?php echo lang('birth_date'); ?><span class=" pull-right r-activity"><?php echo $patient->birthdate; ?></span></li>
+                                <li>  <?php echo lang('phone'); ?><span class=" pull-right r-activity"><?php echo $patient->phone; ?></span></li>
+                                <li>  <?php echo lang('email'); ?><span class="pull-right r-activity"><?php echo $patient->email; ?></span></li>
+                                <li style="height: 200px;">  <?php echo lang('address'); ?><span class="pull-right r-activity" style="height: 200px;"><?php echo $patient->address; ?></span></li>
 
                             </ul>
 
@@ -83,7 +83,7 @@
                                 <div class="">
                                     <?php if (!$this->ion_auth->in_group('Patient')) { ?>
                                         <div class=" no-print">
-                                            <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
+                                            <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
@@ -143,7 +143,7 @@
 
                                     <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
                                         <div class=" no-print">
-                                            <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModal">
+                                            <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
@@ -214,7 +214,7 @@
                             <div id="about" class="tab-pane"> <div class="">
                                     <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
-                                            <a class="btn btn-info btn_width btn-xs" href="prescription/addPrescriptionView">
+                                            <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
@@ -329,7 +329,7 @@
                             </div>
                             <div id="profile" class="tab-pane"> <div class="">
                                     <div class=" no-print">
-                                        <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModal1">
+                                        <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal1">
                                             <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                         </a>
                                     </div>
@@ -372,7 +372,7 @@
                                 <div class="">
                                     <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
-                                            <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#myModa3">
+                                            <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModa3">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
