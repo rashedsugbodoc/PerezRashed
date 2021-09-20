@@ -257,7 +257,7 @@ class Patient extends MX_Controller {
                         $messageprint1 = $this->parser->parse_string($message1, $data1);
                         $this->email->from($emailSettings->admin_email);
                         $this->email->to($email);
-                        $this->email->subject('Appointment confirmation');
+                        $this->email->subject(lang('new_patient_registered_email_subject'));
                         $this->email->message($messageprint1);
                         $this->email->send();
                     }
