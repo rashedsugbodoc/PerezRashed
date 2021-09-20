@@ -863,7 +863,9 @@ button.dt-button, div.dt-button, a.dt-button {
     font-weight: bold;
 }
 
-
+.rounded-circle {
+    border-radius: 50% !important;
+}
 
 
 

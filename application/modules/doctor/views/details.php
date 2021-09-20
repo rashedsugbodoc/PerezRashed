@@ -284,7 +284,7 @@
                                 <div class="user-heading round">
                                     <?php if (!empty($doctor->img_url)) { ?>
                                         <a href="#">
-                                            <img src="<?php echo $doctor->img_url; ?>" alt="">
+                                            <img src="<?php echo $doctor->img_url; ?>" alt="" class="rounded-circle">
                                         </a>
                                     <?php } ?>
                                     <h1> <?php echo $doctor->name; ?> </h1>
