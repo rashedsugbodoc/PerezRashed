@@ -6,7 +6,7 @@
     <section class="wrapper site-min-height">
         <!-- page start-->
         <div class="row">
-            <section class="col-md-9">
+            <section class="col-lg-9 col-md-12 col-sm-12">
                 <section class="panel">
                     <header class="panel-heading">
                         <ul class="nav nav-tabs">
@@ -273,7 +273,7 @@
                     </div>
                 </section>
             </section>
-            <section class="col-md-3 col-sm-12">
+            <section class="col-lg-3 col-md-12 col-sm-12">
                 <div class="panel">
                     <header class="panel-heading">
                         <?php echo lang('profile'); ?>
@@ -288,15 +288,14 @@
                                         </a>
                                     <?php } ?>
                                     <h1> <?php echo $doctor->name; ?> </h1>
-                                    <p> <?php echo $doctor->email; ?> </p>
+                                    <p> <?php echo $doctor->profile; ?> </p>
                                 </div>
                                 <ul class="nav nav-pills nav-stacked">
-                                    <li class="active"> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?><span class="label pull-right r-activity"><?php echo $doctor->name; ?></span></li>
-                                    <li>  <?php echo lang('doctor_id'); ?> <span class="label pull-right r-activity"><?php echo $doctor->id; ?></span></li>
-                                    <li>  <?php echo lang('profile'); ?><span class="label pull-right r-activity"><?php echo $doctor->profile; ?></span></li>
-                                    <li>  <?php echo lang('address'); ?><span class="label pull-right r-activity"><?php echo $doctor->address; ?></span></li>
-                                    <li>  <?php echo lang('phone'); ?><span class="label pull-right r-activity"><?php echo $doctor->phone; ?></span></li>
-                                    <li>  <?php echo lang('email'); ?><span class="label pull-right r-activity"><?php echo $doctor->email; ?></span></li>
+                                    <li> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?><span class="pull-right r-activity"><?php echo $doctor->name; ?></span></li>
+                                    <li>  <?php echo lang('doctor_id'); ?> <span class="pull-right r-activity"><?php echo $doctor->id; ?></span></li>
+                                    <li>  <?php echo lang('address'); ?><span class="pull-right r-activity"><?php echo $doctor->address; ?></span></li>
+                                    <li>  <?php echo lang('phone'); ?><span class="pull-right r-activity"><?php echo $doctor->phone; ?></span></li>
+                                    <li>  <?php echo lang('email'); ?><span class="pull-right r-activity"><?php echo $doctor->email; ?></span></li>
                                 </ul>
                             </section>
                         </aside>
