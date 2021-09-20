@@ -25,7 +25,7 @@
                                 <h1> <?php echo $patient->name; ?> </h1>
                                 <p> <?php echo $patient->email; ?> </p>
                                 <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                    <button type="button" class="btn btn-info btn-xs btn_width editPatient" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $patient->id; ?>"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></button>  
+                                    <button type="button" class="btn btn-primary btn-xs btn_width editPatient" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $patient->id; ?>"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></button>  
                                 <?php } ?>
                             </div>
 
@@ -268,20 +268,20 @@
 
                                                         </td>
                                                         <td class="no-print">
-                                                            <a class="btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?> </a> 
+                                                            <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?> </a> 
                                                             <?php
                                                             if ($this->ion_auth->in_group('Doctor')) {
                                                                 $current_user = $this->ion_auth->get_user_id();
                                                                 $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
                                                                 if ($prescription->doctor == $doctor_table_id) {
                                                                     ?>
-                                                                    <a type="button" class="btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
-                                                                    <a class="btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                    <a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
+                                                                    <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
                                                                     <?php
                                                                 }
                                                             }
                                                             ?>
-                                                            <a class="btn-default btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i> <?php echo lang('print'); ?></a>
+                                                            <a class="btn btn-info btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i> <?php echo lang('print'); ?></a>
                                                         </td>
                                                     </tr>
                                                 <?php } ?>
@@ -336,14 +336,14 @@
                                     <div class="adv-table editable-table ">
                                         <div class="">
                                             <?php foreach ($patient_materials as $patient_material) { ?>
-                                                <div class="panel col-md-4"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
+                                                <div class="panel col-md-3"  style="width: 200px ;height: 200px; margin: 10px; padding: 5px;">
 
-                                                    <div class="post-info">
+                                                    <div class="panel-body text-center">
                                                         <a class="example-image-link" href="<?php echo $patient_material->url; ?>" data-lightbox="example-1">
-                                                            <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" height="100"/></a>
+                                                            <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" width="120" height="120"/></a>
                                   <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
                                                     </div>
-                                                    <div class="post-info">
+                                                    <div class="panel-body text-center">
                                                         <?php
                                                         if (!empty($patient_material->title)) {
                                                             echo $patient_material->title;
@@ -351,16 +351,16 @@
                                                         ?>
 
                                                     </div>
-                                                    <p></p>
-                                                    <div class="post-info">
+                                                    
+                                                    <div class="text-center" style="vertical-align: bottom;">
                                                         <a class="btn btn-info btn-xs btn_width" href="<?php echo $patient_material->url; ?>" download> <?php echo lang('download'); ?> </a>
                                                         <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                            <a class="btn btn-info btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"> X </a>
+                                                            <a class="btn btn-danger btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                         <?php } ?>
 
                                                     </div>
 
-                                                    <hr>
+                                                    
 
                                                 </div>
                                             <?php } ?>

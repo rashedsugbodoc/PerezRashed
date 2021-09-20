@@ -768,7 +768,7 @@ class Patient extends MX_Controller {
             redirect('home/permission');
         }
 
-
+        $data['groups'] = $this->donor_model->getBloodBank();
         $data['patient'] = $this->patient_model->getPatientById($id);
         $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
         $data['patients'] = $this->patient_model->getPatient();
@@ -837,7 +837,7 @@ class Patient extends MX_Controller {
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $doctor_name . '</h4>
-                                                                    <a class="btn btn-primary btn-xs" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank"><i class="fa fa-eye"></i> View</a>
+                                                                    <a class="btn btn-primary btn-xs" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank"> View</a>
                                                         </div>
                                                     </div>
                                                 </div>

@@ -396,8 +396,8 @@ class Prescription extends MX_Controller {
             //$i = $i + 1;
             $settings = $this->settings_model->getSettings();
 
-            $option1 = '<a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' . lang('view') . ' ' . lang('prescription') . ' </a>';
-            $option3 = '<a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=' . $prescription->id . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . ' ' . lang('prescription') . '</a>';
+            $option1 = '<a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>';
+            $option3 = '<a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=' . $prescription->id . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . ' ' .lang('edit') . ' ' . '</a>';
             $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=' . $prescription->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
 
@@ -426,7 +426,7 @@ class Prescription extends MX_Controller {
                 $patientname,
                 $prescription->patient,
                 $medicinelist,
-                $option1 . ' ' . $option3 . ' ' . $option2 . ' ' . $options4
+                $option1 . ' ' . $option3 . ' ' . $options4 . ' ' . $option2
             );
             $i = $i + 1;
         }
