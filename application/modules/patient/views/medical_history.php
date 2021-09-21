@@ -89,7 +89,7 @@
                                         </div>
                                     <?php } else { ?>
                                         <div class=" no-print">
-                                            <a class="btn btn-info btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
+                                            <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?> 
                                             </a>
                                         </div>

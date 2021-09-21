@@ -245,6 +245,7 @@ $lang['add_new'] = 'Add New';
 $lang['add_new_doctor'] = 'Add New Doctor';
 $lang['add_general_payment'] = 'Add General Payment';
 $lang['choose_payment_type'] = 'Choose Payment Type';
+$lang['patient_bill_summary'] = 'Patient Bill Summary';
 $lang['total_bill_amount'] = 'Total Bill Amount';
 $lang['total_deposit_amount'] = 'Total Deposit Amount';
 $lang['add_another_ot_payment'] = 'Add Another OR Payment';
