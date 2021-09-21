@@ -63,7 +63,7 @@
 
                                 </td>
                                 <td>
-                                    <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"> <?php echo lang('view'); ?> <?php echo lang('prescription'); ?> </i></a>   
+                                    <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"> <?php echo lang('view'); ?></i></a>   
                                 </td>
                             </tr>
                         <?php } ?>

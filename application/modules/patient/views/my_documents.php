@@ -9,7 +9,7 @@
                 <div class="col-md-4 no-print pull-right"> 
                     <a data-toggle="modal" href="#myModal1">
                         <div class="btn-group pull-right">
-                            <button id="" class="btn green btn-xs">
+                            <button id="" class="btn btn-primary btn-xs">
                                 <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
                             </button>
                         </div>

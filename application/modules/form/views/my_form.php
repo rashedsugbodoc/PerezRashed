@@ -4,53 +4,53 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
+        <div class="row">
+            <section class="col-md-12">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php echo lang('form_report'); ?>
+                    </header>
+                    <div class="panel-body">
+                        <div class="adv-table editable-table ">
+                            <div class="space15"></div>
+                            <table class="table table-striped table-hover table-bordered" id="editable-sample">
+                                <thead>
+                                    <tr>
+                                        <th><?php echo lang('report_id'); ?></th>
+                                        <th><?php echo lang('patient'); ?></th>
+                                        <th><?php echo lang('date'); ?></th>
+                                        <th class=""><?php echo lang('options'); ?></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
+                                <style>
 
-        <section class="col-md-12">
-            <header class="panel-heading">
-                <?php echo lang('form_report'); ?>
-            </header>
-            <div class="panel-body">
-                <div class="adv-table editable-table ">
-                    <div class="space15"></div>
-                    <table class="table table-striped table-hover table-bordered" id="editable-sample">
-                        <thead>
-                            <tr>
-                                <th><?php echo lang('report_id'); ?></th>
-                                <th><?php echo lang('patient'); ?></th>
-                                <th><?php echo lang('date'); ?></th>
-                                <th class=""><?php echo lang('options'); ?></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                                    .img_url{
+                                        height:20px;
+                                        width:20px;
+                                        background-size: contain; 
+                                        max-height:20px;
+                                        border-radius: 100px;
+                                    }
+                                    .option_th{
+                                        width:18%;
+                                    }
 
-                        <style>
+                                </style>
 
-                            .img_url{
-                                height:20px;
-                                width:20px;
-                                background-size: contain; 
-                                max-height:20px;
-                                border-radius: 100px;
-                            }
-                            .option_th{
-                                width:18%;
-                            }
-
-                        </style>
-
-                        </tbody>
-                    </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
         <!-- page end-->
     </section>
 </section>
 <!--main content end-->
 <!--footer start-->
-
-
 
 <script src="common/js/coderygel.min.js"></script>
 
