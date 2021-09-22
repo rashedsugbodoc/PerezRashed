@@ -54,10 +54,13 @@
                         <div class="row">
                             <div class="col-md-8 mx-auto d-block">
                                 <div class="">
+                                    <div class="text-white py-5 px-8 text-center">
+                                        <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                                    </div>
                                     <?php if($message) { ?>
                                         <div class="alert alert-info"><?php echo $message; ?></div>
                                     <?php } ?>
-                                    <?php echo form_open('auth/reset_password/' . $code); ?>
+                                    <form method="post" action="<?php echo base_url('auth/reset_password/' . $code); ?>" onsubmit="submit.disabled = true; return true;">
                                         <h1 class="mb-2"><?php echo lang('reset_password_heading'); ?></h1>
                                         <p class="text-muted"><?php echo sprintf(lang('reset_password_new_password_label'), $min_password_length); ?></p>
 
@@ -73,7 +76,7 @@
                                         <?php echo form_hidden($csrf); ?>
                                         <div class="row">
                                             <div class="col-12">
-                                                <button type="submit" class="btn  btn-lg btn-primary btn-block px-4"><i class="fe fe-arrow-right"></i> <?php echo lang('reset_password_submit_btn');?></button>
+                                                <button type="submit" name="submit" class="btn  btn-lg btn-primary btn-block px-4"><?php echo lang('reset_password_submit_btn');?></button>
                                             </div>
                                         </div>
                                     <?php echo form_close(); ?>
