@@ -17,47 +17,45 @@
 
 
         <!-- page start-->
-        <section class="col-md-8">
-            <header class="panel-heading">
-                <?php echo lang('live'); ?> <?php echo lang('appointment'); ?> 
-            </header>
-
-            <div class="">
-                <div class="tab-content"  id="meeting">
-                    <input type="hidden" name="appointmentid" id="appointmentid"value="<?php echo $appointmentid; ?>">
-                    <input type="hidden" name="username" id="username"value="<?php echo $display_name; ?>">
-                    <input type="hidden" name="email" id="email" value="<?php echo $email; ?>">
+        <div class="row">
+            <section class="col-md-8">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php echo lang('live'); ?> <?php echo lang('appointment'); ?> 
+                    </header>
+                    <div class="panel-body">
+                        <div class="tab-content"  id="meeting">
+                            <input type="hidden" name="appointmentid" id="appointmentid"value="<?php echo $appointmentid; ?>">
+                            <input type="hidden" name="username" id="username"value="<?php echo $display_name; ?>">
+                            <input type="hidden" name="email" id="email" value="<?php echo $email; ?>">
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-        <section class="col-md-4">
-            <header class="panel-heading">
-                <?php echo lang('appointment'); ?> <?php echo lang('details'); ?> 
-            </header>
-
-            <div class="">
-                <div class="tab-content"  id="">
-                    <aside class="profile-nav">
-                        <section class="">
-
-
-                            <ul class="nav nav-pills nav-stacked">
-                              <!--  <li class="active"> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?><span class="label pull-right r-activity"><?php echo $doctor_name; ?></span></li> -->
-                                <li>  <?php echo lang('doctor'); ?> <?php echo lang('name'); ?> <span class="label pull-right r-activity"><?php echo $doctor_name; ?></span></li>
-                                <li>  <?php echo lang('patient'); ?> <?php echo lang('name'); ?> <span class="label pull-right r-activity"><?php echo $patient_name; ?></span></li>
-                                <li>  <?php echo lang('patient_id'); ?><span class="label pull-right r-activity"><?php echo $patient_id; ?></span></li>
-                                <li>  <?php echo lang('appointment'); ?> <?php echo lang('date'); ?> <span class="label pull-right r-activity"><?php echo date('jS F, Y', $appointment_details->date); ?></span></li>
-                                <li>  <?php echo lang('appointment'); ?> <?php echo lang('slot'); ?><span class="label pull-right r-activity"><?php echo $appointment_details->time_slot; ?></span></li>
-                            </ul>
-
-                        </section>
-                    </aside>
+            </section>
+            <section class="col-md-4">
+                <div class="panel">
+                    <header class="panel-heading">
+                        <?php echo lang('appointment'); ?> <?php echo lang('details'); ?> 
+                    </header>
+                    <div class="panel-body">
+                        <div class="tab-content"  id="">
+                            <aside class="profile-nav">
+                                <section class="">
+                                    <ul class="nav nav-pills nav-stacked">
+                                      <!--  <li class="active"> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?><span class="label pull-right r-activity"><?php echo $doctor_name; ?></span></li> -->
+                                        <li>  <?php echo lang('doctor'); ?> <?php echo lang('name'); ?> <span class="label pull-right r-activity"><?php echo $doctor_name; ?></span></li>
+                                        <li>  <?php echo lang('patient'); ?> <?php echo lang('name'); ?> <span class="label pull-right r-activity"><?php echo $patient_name; ?></span></li>
+                                        <li>  <?php echo lang('patient_id'); ?><span class="label pull-right r-activity"><?php echo $patient_id; ?></span></li>
+                                        <li>  <?php echo lang('appointment'); ?> <?php echo lang('date'); ?> <span class="label pull-right r-activity"><?php echo date('jS F, Y', $appointment_details->date); ?></span></li>
+                                        <li>  <?php echo lang('appointment'); ?> <?php echo lang('slot'); ?><span class="label pull-right r-activity"><?php echo $appointment_details->time_slot; ?></span></li>
+                                    </ul>
+                                </section>
+                            </aside>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </section>
-
-
+            </section>
+        </div>
         <!-- page end-->
     </section>
 </section>
