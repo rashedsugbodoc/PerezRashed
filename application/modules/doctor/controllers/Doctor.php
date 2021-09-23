@@ -334,7 +334,7 @@ class Doctor extends MX_Controller {
                 $doctor->department,
                 $doctor->profile,
                 //  $options1 . ' ' . $options2 . ' ' . $options3,
-                $options6 . ' ' . $options1 . ' ' . $options2 . ' ' . $options4 . ' ' . $options5 . ' ' . $options3,
+                '<div class="btn-list">'. $options6 . ' ' . $options1 . ' ' . $options2 . ' ' . $options4 . ' ' . $options5 . ' ' . $options3 . '</div>',
                     //  $options2
             );
         }
