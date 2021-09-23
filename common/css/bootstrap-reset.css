@@ -9,6 +9,9 @@ a:hover {
 
 /*panel*/
 
+.shadow-none {
+    box-shadow: none !important;
+}
 
 .panel-heading {
     background: #fff;
@@ -541,10 +544,6 @@ header .green:hover{
 }
 
 
-.btn{
-    border-radius: 0px !important;
-}
-
 .modal-content{
     border-radius: 3px !important;
 }
@@ -590,6 +589,10 @@ table{
 
 .btn{
     //  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.btn-list {
+    margin: 0px 8px 8px 0px;
 }
 
 .fa-dedent:before, .fa-outdent:before{
@@ -801,7 +804,6 @@ button.dt-button, div.dt-button, a.dt-button {
 
 .btn{
     font-weight: 600;
-    margin-top: 5px;
 }
 
 .home_section{
