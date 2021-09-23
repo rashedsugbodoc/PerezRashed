@@ -192,7 +192,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 lab pad_bot">
+                                    <div class="col-md-12 form-group">
                                         <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
                                         <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10"><?php
                                             if (!empty($setval)) {
