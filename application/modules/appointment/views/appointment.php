@@ -7,11 +7,11 @@
         <section class="panel">
             <header class="panel-heading">
                 <?php echo lang('appointment'); ?>
-                <div class="clearfix no-print col-md-8 pull-right">
+                <div class="clearfix no-print col-md-3 pull-right">
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
                             <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i>  <?php echo lang('add_appointment'); ?> 
+                                <i class="fa fa-plus"></i>  <?php echo lang('appointment'); ?> 
                             </button>
                         </div>
                     </a>
