@@ -274,7 +274,7 @@
                                                 }).success(function (response) {
                                                     // Populate the form fields with the data returned from server
                                                     $('#editReportForm').find('[name="id"]').val(response.report.id).end()
-                                                    $('#editReportForm').find('[name="type"]').val(response.report.type).end()
+                                                    $('#editReportForm').find('[name="type"]').val(response.report.report_type).end()
                                                     $('#editReportForm').find('[name="description"]').val(response.report.description).end()
                                                     $('#editReportForm').find('[name="patient"]').val(response.report.patient).end()
                                                     $('#editReportForm').find('[name="doctor"]').val(response.report.doctor).end()
