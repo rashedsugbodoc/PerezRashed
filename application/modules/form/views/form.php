@@ -18,6 +18,7 @@
                     <div class="no-print">
                         <div class="adv-table editable-table ">
                             <div class="clearfix">
+                                <?php echo validation_errors(); ?>
                                 <form role="form" id="editFormForm" class="clearfix" action="form/addForm" method="post" enctype="multipart/form-data">
 
                                     <div class="">
