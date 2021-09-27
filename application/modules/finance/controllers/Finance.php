@@ -141,7 +141,7 @@ class Finance extends MX_Controller {
         $user = $this->ion_auth->get_user_id();
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
 // Validating Category Field
 // $this->form_validation->set_rules('category_amount[]', 'Category', 'min_length[1]|max_length[100]');
@@ -621,7 +621,7 @@ class Finance extends MX_Controller {
         $user = $this->ion_auth->get_user_id();
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
 // Validating Patient Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[2]|max_length[100]|xss_clean');
@@ -869,7 +869,7 @@ class Finance extends MX_Controller {
 
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 // Validating Category Name Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Description Field
@@ -957,7 +957,7 @@ class Finance extends MX_Controller {
 
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
 // Validating Category Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
@@ -1065,7 +1065,7 @@ class Finance extends MX_Controller {
         $description = $this->input->post('description');
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 // Validating Category Name Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Description Field
@@ -1267,7 +1267,7 @@ class Finance extends MX_Controller {
         $user = $this->ion_auth->get_user_id();
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 // Validating Patient Name Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
 // Validating Deposited Amount Field

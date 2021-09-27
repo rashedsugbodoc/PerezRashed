@@ -33,7 +33,7 @@ class Service extends MX_Controller {
         $title = $this->input->post('title');
         $description = $this->input->post('description');
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         // Validating Name Field
         $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[1]|max_length[100]|xss_clean');

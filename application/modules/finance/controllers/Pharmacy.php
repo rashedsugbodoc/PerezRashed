@@ -191,7 +191,7 @@ class Pharmacy extends MX_Controller {
         $amount_received = $this->input->post('amount_received');
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         // Validating Price Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
@@ -347,7 +347,7 @@ class Pharmacy extends MX_Controller {
         $date = time();
         $amount = $this->input->post('amount');
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Category Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Generic Name Field
@@ -438,7 +438,7 @@ class Pharmacy extends MX_Controller {
         $description = $this->input->post('description');
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Category Name Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Description Field

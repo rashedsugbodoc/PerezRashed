@@ -43,7 +43,7 @@ class Settings extends MX_Controller {
 
         if (!empty($email)) {
             $this->load->library('form_validation');
-            $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+            $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
             // Validating Name Field
             $this->form_validation->set_rules('name', 'System Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
             // Validating Title Field
@@ -173,7 +173,7 @@ class Settings extends MX_Controller {
 
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
         $this->form_validation->set_rules('language', 'language', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
@@ -210,7 +210,7 @@ class Settings extends MX_Controller {
 
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
         $this->form_validation->set_rules('payment_gateway', 'Payment Gateway', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
@@ -243,7 +243,7 @@ class Settings extends MX_Controller {
 
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
         $this->form_validation->set_rules('sms_gateway', 'Sms Gateway', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 

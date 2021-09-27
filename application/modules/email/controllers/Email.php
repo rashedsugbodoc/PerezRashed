@@ -52,7 +52,7 @@ class Email extends MX_Controller {
         $email = $this->input->post('email');
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
         $this->form_validation->set_rules('email', 'Admin Email', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Password Field
@@ -517,7 +517,7 @@ class Email extends MX_Controller {
         $id = $this->input->post('id');
         $status = $this->input->post('status');
 
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         $this->form_validation->set_rules('message', 'Message', 'trim|xss_clean|required');
         if ($this->form_validation->run() == FALSE) {
 
@@ -546,7 +546,7 @@ class Email extends MX_Controller {
         $name = $this->input->post('name');
         $type = $this->input->post('type');
         $id = $this->input->post('id');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating 
         $this->form_validation->set_rules('message', 'Message', 'trim|xss_clean|required');
 

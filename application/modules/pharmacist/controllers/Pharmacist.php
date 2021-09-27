@@ -36,7 +36,7 @@ class Pharmacist extends MX_Controller {
         $phone = $this->input->post('phone');
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
         $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         // Validating Password Field
