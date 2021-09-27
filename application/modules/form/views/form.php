@@ -49,8 +49,8 @@
                                                     </div>
                                                     <div class="col-md-9"> 
                                                         <input type="text" class="form-control pay_in" name="p_name" value='<?php
-                                                        if (!empty($form_single->p_name)) {
-                                                            echo $form_single->p_name;
+                                                        if (!empty($patients->name)) {
+                                                            echo $patients->name;
                                                         }
                                                         ?>' placeholder="">
                                                     </div>
@@ -63,8 +63,8 @@
                                                     </div>
                                                     <div class="col-md-9"> 
                                                         <input type="text" class="form-control pay_in" name="p_email" value='<?php
-                                                        if (!empty($form_single->p_email)) {
-                                                            echo $form_single->p_email;
+                                                        if (!empty($patients->email)) {
+                                                            echo $patients->email;
                                                         }
                                                         ?>' placeholder="">
                                                     </div>
@@ -77,8 +77,8 @@
                                                     </div>
                                                     <div class="col-md-9"> 
                                                         <input type="text" class="form-control pay_in" name="p_phone" value='<?php
-                                                        if (!empty($form_single->p_phone)) {
-                                                            echo $form_single->p_phone;
+                                                        if (!empty($patients->phone)) {
+                                                            echo $patients->phone;
                                                         }
                                                         ?>' placeholder="">
                                                     </div>
@@ -91,8 +91,8 @@
                                                     </div>
                                                     <div class="col-md-9"> 
                                                         <input type="text" class="form-control pay_in" name="p_age" value='<?php
-                                                        if (!empty($form_single->p_age)) {
-                                                            echo $form_single->p_age;
+                                                        if (!empty($patients->age)) {
+                                                            echo $patients->age;
                                                         }
                                                         ?>' placeholder="">
                                                     </div>
@@ -107,22 +107,22 @@
                                                         <select class="form-control m-bot15" name="p_gender" value=''>
 
                                                             <option value="Male" <?php
-                                                            if (!empty($patient->sex)) {
-                                                                if ($patient->sex == 'Male') {
+                                                            if (!empty($patients->sex)) {
+                                                                if ($patients->sex == 'Male') {
                                                                     echo 'selected';
                                                                 }
                                                             }
                                                             ?> > Male </option>   
                                                             <option value="Female" <?php
-                                                            if (!empty($patient->sex)) {
-                                                                if ($patient->sex == 'Female') {
+                                                            if (!empty($patients->sex)) {
+                                                                if ($patients->sex == 'Female') {
                                                                     echo 'selected';
                                                                 }
                                                             }
                                                             ?> > Female </option>
                                                             <option value="Others" <?php
-                                                            if (!empty($patient->sex)) {
-                                                                if ($patient->sex == 'Others') {
+                                                            if (!empty($patients->sex)) {
+                                                                if ($patients->sex == 'Others') {
                                                                     echo 'selected';
                                                                 }
                                                             }
@@ -159,8 +159,8 @@
                                                     </div>
                                                     <div class="col-md-9"> 
                                                         <input type="text" class="form-control pay_in" name="d_name" value='<?php
-                                                        if (!empty($form_single->p_name)) {
-                                                            echo $form_single->p_name;
+                                                        if (!empty($doctors->name)) {
+                                                            echo $doctors->name;
                                                         }
                                                         ?>' placeholder="">
                                                     </div>
@@ -173,8 +173,8 @@
                                                     </div>
                                                     <div class="col-md-9"> 
                                                         <input type="text" class="form-control pay_in" name="d_email" value='<?php
-                                                        if (!empty($form_single->p_email)) {
-                                                            echo $form_single->p_email;
+                                                        if (!empty($doctors->email)) {
+                                                            echo $doctors->email;
                                                         }
                                                         ?>' placeholder="">
                                                     </div>
@@ -187,8 +187,8 @@
                                                     </div>
                                                     <div class="col-md-9"> 
                                                         <input type="text" class="form-control pay_in" name="d_phone" value='<?php
-                                                        if (!empty($form_single->p_phone)) {
-                                                            echo $form_single->p_phone;
+                                                        if (!empty($doctors->phone)) {
+                                                            echo $doctors->phone;
                                                         }
                                                         ?>' placeholder="">
                                                     </div>
@@ -199,7 +199,11 @@
                                     <div class="">
                                         <div class="form-group col-md-12">
                                             <label for="exampleInputEmail1"><?php echo lang('name'); ?></label>
-                                            <input type="text" class="form-control" name="form_name" value='' placeholder="<?php echo lang('form_report_name'); ?>">
+                                            <input type="text" class="form-control" name="form_name" value='<?php
+                                            if (!empty($form_single->name)) {
+                                                echo $form_single->name;
+                                            }
+                                            ?>' placeholder="<?php echo lang('form_report_name'); ?>">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">
