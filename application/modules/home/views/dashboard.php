@@ -555,7 +555,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                     if (!empty($message)) {
                         ?>
                         
-                        <div class="alert alert-info pull-right" role="alert"><?php echo $message; ?></div>
+                        <div class="alert alert-info pull-right notification-alert" role="alert"><?php echo $message; ?></div>
                     <?php } ?> 
                 </div>
             </header>
