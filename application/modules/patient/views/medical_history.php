@@ -468,7 +468,7 @@
                     <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
 
                     <div class="form-group col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                 </form>
 
@@ -642,7 +642,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     ?>'>
 
                     <div class="col-md-12 form-group">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
 
                 </form>
@@ -736,7 +736,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     <input type="hidden" name="id" id="appointment_id" value=''>
 
                     <div class="col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
 
                 </form>
@@ -893,7 +893,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                         <input type="checkbox" name="sms" value="sms"> <?php echo lang('send_sms') ?><br>
                     </div>
 
-                    <input type="hidden" name="redirect" value='patient/medicalHistory?id=<?php echo $patient->id; ?>'>>
+                    <input type="hidden" name="redirect" value='patient/medicalHistory?id=<?php echo $patient->id; ?>'>
 
                     <input type="hidden" name="id" value=''>
                     <input type="hidden" name="p_id" value='<?php
@@ -909,7 +909,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 
 
                     <section class="col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                     </section>
 
                 </form>
