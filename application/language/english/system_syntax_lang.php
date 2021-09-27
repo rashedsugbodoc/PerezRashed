@@ -81,6 +81,7 @@ $lang['edit_patient'] = 'Edit Patient';
 $lang['birth_date'] = 'Birth Date';
 $lang['blood_group'] = 'Blood Group';
 $lang['due_balance'] = 'Balance Due';
+$lang['unpaid_amount'] = 'Unpaid Amount';
 $lang['invoice'] = 'Invoice';
 $lang['details'] = 'Details';
 $lang['bio_graph'] = 'Bio Graph';
