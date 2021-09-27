@@ -48,11 +48,7 @@
                                                         <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
                                                     </div>
                                                     <div class="col-md-9"> 
-                                                        <input type="text" class="form-control pay_in" name="p_name" value='<?php
-                                                        if (!empty($patients->name)) {
-                                                            echo $patients->name;
-                                                        }
-                                                        ?>' placeholder="">
+                                                        <input type="text" class="form-control pay_in" name="p_name" value='' placeholder="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -62,11 +58,7 @@
                                                         <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
                                                     </div>
                                                     <div class="col-md-9"> 
-                                                        <input type="text" class="form-control pay_in" name="p_email" value='<?php
-                                                        if (!empty($patients->email)) {
-                                                            echo $patients->email;
-                                                        }
-                                                        ?>' placeholder="">
+                                                        <input type="text" class="form-control pay_in" name="p_email" value='' placeholder="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -76,11 +68,7 @@
                                                         <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
                                                     </div>
                                                     <div class="col-md-9"> 
-                                                        <input type="text" class="form-control pay_in" name="p_phone" value='<?php
-                                                        if (!empty($patients->phone)) {
-                                                            echo $patients->phone;
-                                                        }
-                                                        ?>' placeholder="">
+                                                        <input type="text" class="form-control pay_in" name="p_phone" value='' placeholder="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -90,11 +78,7 @@
                                                         <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
                                                     </div>
                                                     <div class="col-md-9"> 
-                                                        <input type="text" class="form-control pay_in" name="p_age" value='<?php
-                                                        if (!empty($patients->age)) {
-                                                            echo $patients->age;
-                                                        }
-                                                        ?>' placeholder="">
+                                                        <input type="text" class="form-control pay_in" name="p_age" value='' placeholder="">
                                                     </div>
                                                 </div>
                                             </div> 
@@ -158,11 +142,7 @@
                                                         <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?></label>
                                                     </div>
                                                     <div class="col-md-9"> 
-                                                        <input type="text" class="form-control pay_in" name="d_name" value='<?php
-                                                        if (!empty($doctors->name)) {
-                                                            echo $doctors->name;
-                                                        }
-                                                        ?>' placeholder="">
+                                                        <input type="text" class="form-control pay_in" name="d_name" value='' placeholder="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -172,11 +152,7 @@
                                                         <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?> <?php echo lang('email'); ?></label>
                                                     </div>
                                                     <div class="col-md-9"> 
-                                                        <input type="text" class="form-control pay_in" name="d_email" value='<?php
-                                                        if (!empty($doctors->email)) {
-                                                            echo $doctors->email;
-                                                        }
-                                                        ?>' placeholder="">
+                                                        <input type="text" class="form-control pay_in" name="d_email" value='' placeholder="">
                                                     </div>
                                                 </div>
                                             </div>
@@ -186,11 +162,7 @@
                                                         <label for="exampleInputEmail1"> <?php echo lang('doctor'); ?> <?php echo lang('phone'); ?></label>
                                                     </div>
                                                     <div class="col-md-9"> 
-                                                        <input type="text" class="form-control pay_in" name="d_phone" value='<?php
-                                                        if (!empty($doctors->phone)) {
-                                                            echo $doctors->phone;
-                                                        }
-                                                        ?>' placeholder="">
+                                                        <input type="text" class="form-control pay_in" name="d_phone" value='' placeholder="">
                                                     </div>
                                                 </div>
                                             </div>
