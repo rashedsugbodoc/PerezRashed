@@ -83,7 +83,9 @@
                         <input type="text" class="form-control" name="status" id="exampleInputEmail1" value='' placeholder="">
                     </div>
                     <input type="hidden" name="id" value=''>
-                    <button type="submit" name="submit" class="btn btn-info"><?php echo lang('submit'); ?></button>
+                    <div class="form-group col-md-12">
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
+                    </div>
                 </form>
 
             </div>
