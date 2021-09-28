@@ -196,16 +196,13 @@ class Form extends MX_Controller {
         $user = $this->ion_auth->get_user_id();
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
 // Validating Category Field
 // $this->form_validation->set_rules('category_amount[]', 'Category', 'min_length[1]|max_length[100]');
-// Validating Price Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
-// Validating Price Field
-        $this->form_validation->set_rules('discount', 'Discount', 'trim|min_length[1]|max_length[100]|xss_clean');
 // Validating Name Field
-        $this->form_validation->set_rules('name', 'Name', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('form_name', 'Name', 'trim|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             redirect('form/addFormView');
         } else {
@@ -352,7 +349,7 @@ class Form extends MX_Controller {
     }
 
     function delete() {
-        if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+        if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
             $id = $this->input->get('id');
 
             $form_details = $this->form_model->getFormById($id);
@@ -407,7 +404,7 @@ class Form extends MX_Controller {
 
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         $this->form_validation->set_rules('report', 'Report', 'trim|min_length[1]|max_length[10000]|xss_clean');
 // Validating Price Field
         $this->form_validation->set_rules('user', 'User', 'trim|min_length[1]|max_length[100]|xss_clean');
@@ -483,7 +480,7 @@ class Form extends MX_Controller {
 
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 // Validating Category Name Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Description Field

@@ -52,7 +52,7 @@ class Symptom extends MX_Controller {
         $page = $this->input->post('page');
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
         $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]|max_length[10000]|xss_clean');
         // Validating Category Field

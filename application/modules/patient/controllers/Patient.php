@@ -109,7 +109,7 @@ class Patient extends MX_Controller {
 
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         // Validating Name Field
         $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
@@ -353,7 +353,7 @@ class Patient extends MX_Controller {
         $date = time();
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
 
         // Validating Name Field
@@ -533,7 +533,7 @@ class Patient extends MX_Controller {
         $user = $this->ion_auth->get_user_id();
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 // Validating Patient Name Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
 // Validating Deposited Amount Field
@@ -671,7 +671,7 @@ class Patient extends MX_Controller {
 
         $description = $this->input->post('description');
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         $redirect = $this->input->post('redirect');
         if (empty($redirect)) {
@@ -1001,7 +1001,7 @@ class Patient extends MX_Controller {
             $redirect = "patient/medicalHistory?id=" . $patient_id;
         }
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         // Validating Patient Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');

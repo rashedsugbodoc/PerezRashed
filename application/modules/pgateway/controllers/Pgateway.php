@@ -51,7 +51,7 @@ class pgateway extends MX_Controller {
         $pgateway = $this->pgateway_model->getPaymentGatewaySettingsById($id);
 
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         if ($pgateway->name == 'Pay U Money') {
             // Validating Name Field

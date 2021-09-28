@@ -217,9 +217,9 @@ if ($language == 'english') {
 
 <script>
     $(document).ready(function () {
-        $(".alert").hide();
-        $(".alert").fadeIn(1000);
-        $(".alert").delay(4000).slideUp(2000);
+        $(".notification-alert").hide();
+        $(".notification-alert").fadeIn(1000);
+        $(".notification-alert").delay(4000).slideUp(2000);
     });
 </script>
 

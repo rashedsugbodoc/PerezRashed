@@ -28,7 +28,7 @@
                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist'))) { ?>
                                     <th><?php echo lang('due_balance'); ?></th>
                                 <?php } ?>
-                                <th class="no-print"><?php echo lang('options'); ?></th>
+                                <th class="no-print"><?php echo lang('unpaid_amount'); ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -68,7 +68,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">  <?php echo lang('register_new_patient'); ?></h4>
             </div>
-            <div class="modal-body row">
+            <div class="modal-body">
                 <form role="form" action="patient/addNew" class="clearfix" method="post" enctype="multipart/form-data">
 
                     <div class="form-group col-md-5">
@@ -155,9 +155,7 @@
                         </select>
                     </div>
 
-
-
-                    <div class="form-group last col-md-8">
+                    <div class="form-group col-md-8">
                         <label class="control-label">Image Upload</label>
                         <div class="">
                             <div class="fileupload fileupload-new" data-provides="fileupload">
@@ -166,11 +164,11 @@
                                 </div>
                                 <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                                 <div>
-                                    <span class="btn btn-light btn-file">
+                                    <button class="btn btn-light btn-file">
                                         <span class="fileupload-new"><i class="fa fa-paper-clip"></i> Select image</span>
                                         <span class="fileupload-exists"><i class="fa fa-undo"></i> Change</span>
                                         <input type="file" class="default" name="img_url"/>
-                                    </span>
+                                    </button>
                                     <a href="#" class="btn btn-danger fileupload-exists" data-dismiss="fileupload"><i class="fa fa-trash"></i> Remove</a>
                                 </div>
                             </div>
@@ -178,21 +176,11 @@
                         </div>
                     </div>
 
-
-                    <div class="form-group last col-md-4">
-                        <div style="text-align:center;">
-                            <video id="video" width="200" height="200" autoplay></video>
-                            <div class="snap" id="snap">Capture Photo</div>
-                            <canvas id="canvas" width="200" height="200"></canvas>
-                            Right click on the captured image and save. Then select the saved image from the left side's Select Image button.
-                        </div>
-                    </div>
-
-
-                    <div class="form-group col-md-3">
+                    
+                    <div class="form-group col-md-12">
                         <input type="checkbox" name="sms" value="sms"> <?php echo lang('send_sms') ?><br>
                     </div>
-
+                    
 
                     <section class="col-md-12">
                         <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
@@ -219,7 +207,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">  <?php echo lang('edit_patient'); ?></h4>
             </div>
-            <div class="modal-body row">
+            <div class="modal-body">
                 <form role="form" id="editPatientForm" action="patient/addNew" class="clearfix" method="post" enctype="multipart/form-data">
 
                     <div class="form-group col-md-5">
@@ -329,37 +317,15 @@
                         </div>
                     </div>
 
-
-                    <div class="form-group last col-md-4">
-                        <div style="text-align:center;">
-                            <video id="video" width="200" height="200" autoplay></video>
-                            <div class="snap" id="snap">Capture Photo</div>
-                            <canvas id="canvas" width="200" height="200"></canvas>
-                            Right click on the captured image and save. Then select the saved image from the left side's Select Image button.
-                        </div>
-                    </div>
-
-
-
-
-
-
-
-
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-12">
                         <input type="checkbox" name="sms" value="sms"> <?php echo lang('send_sms') ?><br>
                     </div>
-
                     <input type="hidden" name="id" value=''>
                     <input type="hidden" name="p_id" value='<?php
                     if (!empty($patient->patient_id)) {
                         echo $patient->patient_id;
                     }
                     ?>'>
-
-
-
-
 
                     <section class="col-md-12">
                         <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
@@ -374,30 +340,6 @@
 <!-- Edit Patient Modal-->
 
 <script src="common/js/coderygel.min.js"></script>
-
-<script>
-
-
-    var video = document.getElementById('video');
-    // Get access to the camera!
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Not adding `{ audio: true }` since we only want video now
-        navigator.mediaDevices.getUserMedia({video: true}).then(function (stream) {
-            video.src = window.URL.createObjectURL(stream);
-            video.play();
-        });
-    }
-
-    // Elements for taking the snapshot
-    var canvas = document.getElementById('canvas');
-    var context = canvas.getContext('2d');
-    var video = document.getElementById('video');
-    // Trigger photo take
-    document.getElementById("snap").addEventListener("click", function () {
-        context.drawImage(video, 0, 0, 200, 200);
-    });</script>
-
-
 
 <script type="text/javascript">
 

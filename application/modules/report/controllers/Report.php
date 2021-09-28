@@ -101,7 +101,7 @@ class Report extends MX_Controller {
             $add_date = $this->db->get_where('report', array('id' => $id))->row()->add_date;
         }
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
         $this->form_validation->set_rules('type', 'Type', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Category Field
