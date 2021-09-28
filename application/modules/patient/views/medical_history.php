@@ -233,7 +233,7 @@
                                             <tbody>
                                                 <?php foreach ($prescriptions as $prescription) { ?>
                                                     <tr class="">
-                                                        <td><?php echo date('m/d/Y', $prescription->date); ?></td>
+                                                        <td><?php echo date('m/d/Y', strtotime($prescription->date)); ?></td>
                                                         <td>
                                                             <?php
                                                             $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);

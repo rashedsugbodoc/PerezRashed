@@ -37,7 +37,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                                                 echo set_value('date');
                                             }
                                             if (!empty($prescription->date)) {
-                                                echo date('d-m-Y', $prescription->date);
+                                                echo date('d-m-Y', strtotime($prescription->date));
                                             }
                                             ?>' placeholder="" readonly="">
                                         </div>

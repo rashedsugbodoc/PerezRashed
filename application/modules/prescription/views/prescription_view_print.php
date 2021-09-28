@@ -36,7 +36,7 @@
                         <hr>
                         <div class="col-md-12">
                             <div class="">
-                                <h5 class="col-md-4 prescription"><?php echo lang('date'); ?> : <?php echo date('d-m-Y', $prescription->date); ?></h5>
+                                <h5 class="col-md-4 prescription"><?php echo lang('date'); ?> : <?php echo date('d-m-Y', strtotime($prescription->date)); ?></h5>
                                 <h5 class="col-md-3 prescription"><?php echo lang('prescription'); ?> <?php echo lang('id'); ?> : <?php echo $prescription->id; ?></h5>
                             </div>
                         </div>

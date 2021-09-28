@@ -821,9 +821,9 @@ class Patient extends MX_Controller {
             } else {
                 $doctor_name = '';
             }
-            $timeline[$prescription->date + 2] = '<div class="panel-body profile-activity" >
+            $timeline[strtotime($prescription->date) + 2] = '<div class="panel-body profile-activity" >
                                            <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('prescription') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $prescription->date) . '</h5>
+                                            <h5 class="pull-right">' . date('d-m-Y', strtotime($prescription->date)) . '</h5>
                                             <div class="activity violet">
                                                 <span>
                                                     <i class="fa fa-medkit"></i>
@@ -833,7 +833,7 @@ class Patient extends MX_Controller {
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $prescription->date) . '</h4>
+                                                            <h4>' . date('d-m-Y', strtotime($prescription->date)) . '</h4>
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $doctor_name . '</h4>
@@ -1526,9 +1526,9 @@ class Patient extends MX_Controller {
             } else {
                 $doctor_name = '';
             }
-            $timeline[$prescription->date + 6] = '<div class="panel-body profile-activity" >
+            $timeline[strtotime($prescription->date) + 6] = '<div class="panel-body profile-activity" >
                                            <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('prescription') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $prescription->date) . '</h5>
+                                            <h5 class="pull-right">' . date('d-m-Y', strtotime($prescription->date)) . '</h5>
                                             <div class="activity violet">
                                                 <span>
                                                     <i class="fa fa-medkit"></i>
@@ -1538,7 +1538,7 @@ class Patient extends MX_Controller {
                                                         <div class="panel-body">
                                                             <div class="arrow"></div>
                                                             <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $prescription->date) . '</h4>
+                                                            <h4>' . date('d-m-Y', strtotime($prescription->date)) . '</h4>
                                                             <p></p>
                                                             <i class=" fa fa-user-md"></i>
                                                                 <h4>' . $doctor_name . '</h4>
@@ -1728,7 +1728,7 @@ class Patient extends MX_Controller {
 
             $option1 = '<a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' . lang('view') . '</a>';
             $prescription_case = ' <tr class="">
-                                                    <td>' . date('d/m/Y', $prescription->date) . '</td>
+                                                    <td>' . date('d/m/Y', strtotime($prescription->date)) . '</td>
                                                     <td>' . $prescription_doctor . '</td>
                                                     <td>' . $medicinelist . '</td>
                                                          <td>' . $option1 . '</td>

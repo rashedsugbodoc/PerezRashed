@@ -79,6 +79,7 @@ class Prescription extends MX_Controller {
         $date = $this->input->post('date');
         if (!empty($date)) {
             $date = strtotime($date);
+            $date = date("Y-m-d", $date);
         }
 
         $patient = $this->input->post('patient');
@@ -261,7 +262,7 @@ class Prescription extends MX_Controller {
         $id = $this->input->get('id');
         $prescriptions = $this->prescription_model->getPrescriptionByPatientId($id);
         foreach ($prescriptions as $prescription) {
-            $lists[] = ' <div class="pull-left prescription_box" style = "padding: 10px; background: #fff;"><div class="prescription_box_title">Prescription Date</div> <div>' . date('d-m-Y', $prescription->date) . '</div> <div class="prescription_box_title">Medicine</div> <div>' . $prescription->medicine . '</div> </div> ';
+            $lists[] = ' <div class="pull-left prescription_box" style = "padding: 10px; background: #fff;"><div class="prescription_box_title">Prescription Date</div> <div>' . date('d-m-Y', strtotime($prescription->date)) . '</div> <div class="prescription_box_title">Medicine</div> <div>' . $prescription->medicine . '</div> </div> ';
         }
         $data['prescription'] = $lists;
         $lists = NULL;
@@ -422,7 +423,7 @@ class Prescription extends MX_Controller {
             }
             $info[] = array(
                 $prescription->id,
-                date('d-m-Y', $prescription->date),
+                date('d-m-Y', strtotime($prescription->date)),
                 $patientname,
                 $prescription->patient,
                 $medicinelist,
@@ -518,7 +519,7 @@ class Prescription extends MX_Controller {
 
             $info[] = array(
                 $prescription->id,
-                date('d-m-Y', $prescription->date),
+                date('d-m-Y', strtotime($prescription->date)),
                 $doctorname,
                 $patientname,
                 $medicinelist,

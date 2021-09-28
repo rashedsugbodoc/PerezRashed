@@ -68,7 +68,7 @@
                             <tbody>
                                 <?php foreach ($prescriptions as $prescription) { ?>
                                     <tr class="">
-                                        <td><?php echo date('m/d/Y', $prescription->date); ?></td>
+                                        <td><?php echo date('m/d/Y', strtotime($prescription->date)); ?></td>
                                         <td><?php echo $this->doctor_model->getDoctorById($prescription->doctor)->name; ?></td>
                                         <td class="no-print">
                                               <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"> <?php echo lang('view'); ?> </i></a> 

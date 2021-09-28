@@ -421,7 +421,7 @@
                                         <span style="text-transform: uppercase;"> : 
                                             <?php
                                             if (!empty($prescription->date)) {
-                                                echo date('d-m-Y', $prescription->date) . ' <br>';
+                                                echo date('d-m-Y', strtotime($prescription->date)) . ' <br>';
                                             }
                                             ?>
                                         </span>
