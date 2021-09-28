@@ -247,7 +247,7 @@ class Ion_auth {
             if ($this->config->item('forgot_password_expiration', 'ion_auth') > 0) {
                 //Make sure it isn't expired
                 $expiration = $this->config->item('forgot_password_expiration', 'ion_auth');
-                if (time() - $profile->forgotten_password_time > $expiration) {
+                if (time() - strtotime($profile->forgotten_password_time) > $expiration) {
                     //it has expired
                     $this->clear_forgotten_password_code($code);
                     $this->set_error('password_change_unsuccessful');
