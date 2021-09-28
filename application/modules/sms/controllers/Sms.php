@@ -277,7 +277,7 @@ class Sms extends MX_Controller {
             $message1 = urlencode($message);
             $this->sendSms($to, $message1, $data2);
             $data = array();
-            $date = time();
+            $date = date('Y-m-d H:i:s', time());
             $data = array(
                 'message' => $message,
                 'date' => $date,
@@ -307,7 +307,7 @@ class Sms extends MX_Controller {
             $message1 = urlencode($message);
             $this->sendSms($to, $message1);
             $data_p = array();
-            $date = time();
+            $date = date('Y-m-d H:i:s', time());
             $data_p = array(
                 'message' => $message,
                 'date' => $date,
@@ -332,11 +332,11 @@ class Sms extends MX_Controller {
 
         // $message = urlencode("Test Message");
         if (!empty($patient)) {
-            $message = 'Appointment is scheduled for you With Doctor ' . $doctor_detail->name . ' Date: ' . date('d-m-Y', $date) . ' Time: ' . $s_time;
+            $message = 'Appointment is scheduled for you With Doctor ' . $doctor_detail->name . ' on ' .  date('d-m-Y', $date) . ' Time: ' . $s_time;
             $message1 = urlencode($message);
             $this->sendSms($patient_detail->phone, $message1);
             $data_p = array();
-            $date = time();
+            $date = date('Y-m-d H:i:s', time());
             $data_p = array(
                 'message' => $message,
                 'date' => $date,
@@ -351,7 +351,7 @@ class Sms extends MX_Controller {
             $message1 = urlencode($message);
             $this->sendSms($doctor_detail->phone, $message1);
             $data_d = array();
-            $date = time();
+            $date = date('Y-m-d H:i:s', time());
             $data_d = array(
                 'message' => $message,
                 'date' => $date,
@@ -377,7 +377,7 @@ class Sms extends MX_Controller {
             $message1 = urlencode($message);
             $this->sendSms($to, $message1);
             $data_p = array();
-            $date = time();
+            $date = date('Y-m-d H:i:s', time());
             $data_p = array(
                 'message' => $message,
                 'date' => $date,
@@ -397,11 +397,11 @@ class Sms extends MX_Controller {
         // $message = urlencode("Test Message");
         if (!empty($patient)) {
             $to = $patient_detail->phone;
-            $message = 'Bill For Patient ' . $patient_detail->name . 'Amount: ' . $amount . ' Date: ' . date('d-m-Y', $date);
+            $message = 'Bill For Patient ' . $patient_detail->name . ' - Amount: ' . $amount . ' Date: ' . date('d-m-Y', $date);
             $message1 = urlencode($message);
             $this->sendSms($to, $message1);
             $data_p = array();
-            $date = time();
+            $date = date('Y-m-d H:i:s', time());
             $data_p = array(
                 'message' => $message,
                 'date' => $date,
@@ -425,7 +425,7 @@ class Sms extends MX_Controller {
             $message1 = urlencode($message);
             $this->sendSms($to, $message1);
             $data_p = array();
-            $date = time();
+            $date = date('Y-m-d H:i:s', time());
             $data_p = array(
                 'message' => $message,
                 'date' => $date,

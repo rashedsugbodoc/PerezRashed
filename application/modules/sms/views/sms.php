@@ -31,7 +31,7 @@
                                 ?>
                                 <tr class="">
                                     <td><?php echo $i; ?></td>
-                                    <td style='width: 25%;'><?php echo date('h:i:s a m/d/y', $sent->date); ?></td>
+                                    <td style='width: 25%;'><?php echo date('h:i:s a d/m/Y', strtotime($sent->date)); ?></td>
                                     <td><?php
                                         if (!empty($sent->message)) {
                                             echo $sent->message;
