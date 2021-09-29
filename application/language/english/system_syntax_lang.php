@@ -298,6 +298,7 @@ $lang['download'] = 'Download';
 $lang['file'] = 'File';
 $lang['files'] = 'Files';
 $lang['prescription'] = 'Prescription';
+$lang['prescriptions'] = 'Prescriptions';
 $lang['view'] = 'View';
 $lang['note'] = 'Note';
 $lang['medication'] = 'Medication';

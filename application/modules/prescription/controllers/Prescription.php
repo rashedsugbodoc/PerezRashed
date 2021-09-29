@@ -201,9 +201,9 @@ class Prescription extends MX_Controller {
                 $this->load->view('home/permission');
             } else {
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('prescription_view_1', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('prescription_view_1v2', $data);
+                //$this->load->view('home/footerv2'); // just the header file
             }
         } else {
             $this->load->view('home/permission');
