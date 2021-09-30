@@ -1,37 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
     <head>
-        <base href="<?php echo base_url(); ?>">
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="">
-        <meta name="author" content="Rizvi">
-        <meta name="keyword" content="Php, Hospital, Clinic, Management, Software, Php, CodeIgniter, Hms, Accounting">
-        <link rel="shortcut icon" href="uploads/favicon.png">
-        <title>Access Is Denied</title>
-        <!-- Bootstrap core CSS -->
-        <link href="common/css/bootstrap.min.css" rel="stylesheet">
-        <link href="common/css/bootstrap-reset.css" rel="stylesheet">
-        <!--external css-->
-        <link href="common/assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-        <!-- Custom styles for this template -->
-        <link href="common/css/style.css" rel="stylesheet">
-        <link href="common/css/style-responsive.css" rel="stylesheet" />
+        <!-- Meta data -->
+        <meta charset="UTF-8">
+        <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+        <meta content="Health Information System Permission Denied" name="description">
+        <meta content="Rygel Technology Solutions" name="author">
+        <meta name="keywords" content="Hospital Information System, Clinic, Management, Software, Finance"/>
 
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
+        <!-- Title -->
+        <title>Rygel Dash - Bootstrap Theme</title>
+
+        <!--Favicon -->
+        <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>" type="image/x-icon"/>
+
+        <!-- Bootstrap css -->
+        <link href="<?php echo base_url('public/assets/plugins/bootstrap/css/bootstrap.css'); ?>" rel="stylesheet" />
+
+        <!-- Style css -->
+        <link href="<?php echo base_url('public/assets/css/style.css'); ?>" rel="stylesheet" />
+
+        <!-- Dark css -->
+        <link href="<?php echo base_url('public/assets/css/dark.css'); ?>" rel="stylesheet" />
+
+        <!-- Skins css -->
+        <link href="<?php echo base_url('public/assets/css/skins.css'); ?>" rel="stylesheet" />
+
+        <!-- Animate css -->
+        <link href="<?php echo base_url('public/assets/css/animated.css'); ?>" rel="stylesheet" />
+
+        <!---Icons css-->
+        <link href="<?php echo base_url('public/assets/plugins/web-fonts/icons.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/web-fonts/font-awesome/font-awesome.min.css'); ?>" rel="stylesheet">
+        <link href="<?php echo base_url('public/assets/plugins/web-fonts/plugin.css'); ?>" rel="stylesheet" />
+        <!-- Font Family -->
+        <link href="https://fonts.googleapis.com/css?family=Comfortaa:300,400,700" rel="stylesheet">
     </head>
 
-    <body class="body-404">
-        <div class="container">
-            <section class="error-wrapper">
-                <i class="icon-404"></i>
-                <h1>Access Is Denied</h1>
-                <h2>You dont Have enough permission to see this page</h2>
-            </section>
+    <body class="h-100vh bg-style light-mode default-sidebar">
+
+        <div class="page">
+            <div class="page-content">
+                <div class="container text-center  relative">
+                    <div class="fs-100  mb-5 text-white font-weight-normal h1"><i class="fa fa-lock"></i></div>
+                    <h1 class="h1  mb-3 font-weight-bold text-white">Access Is Denied</h1>
+                    <p class="h5 font-weight-normal mb-7 leading-normal text-white-80">You do not have enough permissions to see this page</p>
+                    <a class="btn btn-secondary" href="<?php echo base_url('home'); ?>"><i class="fe fe-arrow-left-circle mr-1"></i>Back to Home</a>
+                </div>
+            </div>
         </div>
+        <!-- Jquery js-->
+        <script src="<?php echo base_url('public/assets/js/vendors/jquery-3.5.1.min.js'); ?>"></script>
+
+        <!-- Bootstrap4 js-->
+        <script src="<?php echo base_url('public/assets/plugins/bootstrap/popper.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/bootstrap/js/bootstrap.min.js'); ?>"></script>
+
+        <!--Othercharts js-->
+        <script src="<?php echo base_url('public/assets/plugins/othercharts/jquery.sparkline.min.js'); ?>"></script>
+
+        <!-- Circle-progress js-->
+        <script src="<?php echo base_url('public/assets/js/vendors/circle-progress.min.js'); ?>"></script>
+
+        <!-- Jquery-rating js-->
+        <script src="<?php echo base_url('public/assets/plugins/rating/jquery.rating-stars.js'); ?>"></script>
     </body>
 </html>
