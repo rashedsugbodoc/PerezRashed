@@ -74,7 +74,7 @@
                                 ?>' placeholder="">
                             </div>
                             <div class="form-group">
-                                <label for="exampleInputEmail1"><?php echo lang('depaartment'); ?></label>
+                                <label for="exampleInputEmail1"><?php echo lang('department'); ?></label>
                                 <select class="form-control m-bot15" name="department" value=''>
                                     <?php foreach ($departments as $department) { ?>
                                         <option value="<?php echo $department->name; ?>" <?php
