@@ -10,6 +10,7 @@ class Hospital extends MX_Controller {
 
         $this->load->model('hospital_model');
         $this->load->model('hospital/package_model');
+        $this->load->model('country/country_model');
         $this->load->model('donor/donor_model');
         $this->load->model('pgateway/pgateway_model');
         $this->load->model('sms/sms_model');
@@ -29,6 +30,7 @@ class Hospital extends MX_Controller {
 
     public function addNewView() {
         $data['packages'] = $this->package_model->getPackage();
+        $data['countries'] = $this->country_model->getCountry();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('add_new', $data);
         $this->load->view('home/footer'); // just the header file
@@ -43,7 +45,13 @@ class Hospital extends MX_Controller {
         $phone = $this->input->post('phone');
         $package = $this->input->post('package');
         $language = $this->input->post('language');
-
+        $country_id = $this->input->post('country_id');
+        $company_name = $this->input->post('company_name');
+        $company_vat_number = $this->input->post('company_vat_number');
+        $timezone = $this->input->post('timezone');
+        $time_format = $this->input->post('time_format');
+        $date_format = $this->input->post('date_format');
+        $date_format_long = $this->input->post('date_format_long');
 
         if (!empty($package)) {
             $module = $this->package_model->getPackageById($package)->module;
@@ -87,6 +95,10 @@ class Hospital extends MX_Controller {
 
         // Validating Phone Field           
         $this->form_validation->set_rules('language', 'Language', 'trim|required|min_length[1]|max_length[50]|xss_clean');
+
+        $this->form_validation->set_rules('country_id', 'Country ID', 'trim|required|min_length[1]|max_length[4]|xss_clean');
+        $this->form_validation->set_rules('company_name', 'Company Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('company_vat_number','Company VAT Number', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
@@ -132,6 +144,13 @@ class Hospital extends MX_Controller {
                         'address' => $address,
                         'phone' => $phone,
                         'language' => $language,
+                        'country_id' => $country_id,
+                        'company_name' => $company_name,
+                        'company_vat_number' => $company_vat_number,
+                        'timezone' => $timezone,
+                        'time_format' => $time_format,
+                        'date_format' => $date_format,
+                        'date_format_long' => $date_format_long,
                         'system_vendor' => 'Rygel Hospital Information System',
                         'discount' => 'flat',
                         'sms_gateway' => 'Twilio',
@@ -257,7 +276,14 @@ class Hospital extends MX_Controller {
 
                 $hospital_settings_data = array();
                 $hospital_settings_data = array(
-                    'language' => $language
+                    'language' => $language,
+                    'country_id' => $country_id,
+                    'company_name' => $company_name,
+                    'company_vat_number' => $company_vat_number,
+                    'timezone' => $timezone,
+                    'time_format' => $time_format,
+                    'date_format' => $date_format,
+                    'date_format_long' => $date_format_long
                 );
                 $this->settings_model->updateHospitalSettings($id, $hospital_settings_data);
 
@@ -308,6 +334,7 @@ class Hospital extends MX_Controller {
     function editHospital() {
         $data = array();
         $id = $this->input->get('id');
+        $data['countries'] = $this->country_model->getCountry();
         $data['packages'] = $this->package_model->getPackage();
         $data['hospital'] = $this->hospital_model->getHospitalById($id);
         $this->load->view('home/dashboard'); // just the header file
