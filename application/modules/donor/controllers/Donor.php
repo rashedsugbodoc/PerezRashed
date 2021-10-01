@@ -10,7 +10,7 @@ class Donor extends MX_Controller {
 
         $this->load->model('donor_model');
 
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Laboratorist', 'Doctor', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Laboratorist', 'Doctor'))) {
             redirect('home/permission');
         }
     }

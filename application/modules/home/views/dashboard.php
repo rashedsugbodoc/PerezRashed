@@ -136,40 +136,26 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                 <?php
                 if (!$this->ion_auth->in_group(array('superadmin'))) {
                     $this->db->where('hospital_id', $this->hospital_id);
-                    $settings_title = $this->db->get('settings')->row()->title;
-                    $settings_title = explode(' ', $settings_title);
+                    $settings_logo = $this->db->get('settings')->row()->logo;
+                    $settings_mobile_logo = $this->db->get('settings')->row()->mobile_logo;
                     ?>
                     <a href="home" class="logo">
-                        <strong>
-                            <?php echo $settings_title[0]; ?>
-
-                            <?php
-                            if (!empty($settings_title[1])) {
-                                echo $settings_title[1];
-                            }
-                            ?>
-
-                            <?php
-                            if (!empty($settings_title[2])) {
-                                echo $settings_title[2];
-                            }
-                            ?>
-
-                        </strong>
+                        <img src="<?php if(!empty($settings_logo)) { echo $settings_logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="" style="height: 50px;" alt="SugboDoc logo">
                     </a>
 
                 <?php } else { ?>
 
                     <a href="" class="logo">
                         <strong>
-                            Hospital
+                            Rygel
                             <span>
-                                System
+                                Hospital System
                             </span>
                         </strong>
                     </a>
 
                 <?php } ?>
+
                 <!--logo end-->
                 <div class="nav notify-row" id="top_menu">
                     <!--  notification start -->
@@ -1312,14 +1298,6 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <a href="report/myreports" >
                                         <i class="fa fa-file-medical-alt"></i>
                                         <span> <?php echo lang('other'); ?> <?php echo lang('reports'); ?> </span>
-                                    </a>
-                                </li>
-                            <?php } ?>
-                            <?php if (in_array('donor', $this->modules)) { ?>
-                                <li>
-                                    <a href="donor" >
-                                        <i class="fa fa-user"></i>
-                                        <span><?php echo lang('donor'); ?></span>
                                     </a>
                                 </li>
                             <?php } ?>
