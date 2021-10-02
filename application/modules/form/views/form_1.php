@@ -8,7 +8,7 @@
             <section class="col-md-12">
                 <div class="panel">
                     <header class="panel-heading">
-                        <?php echo lang('form_report'); ?>
+                        <?php echo lang('forms_reports'); ?>
                     </header>
                     <div class="panel-body">
                         <div class="adv-table editable-table ">

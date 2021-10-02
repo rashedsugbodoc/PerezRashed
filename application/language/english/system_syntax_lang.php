@@ -461,6 +461,7 @@ $lang['assessment'] = 'Assessment';
 $lang['assessments'] = 'Assessments';
 $lang['forms'] = 'Forms';
 $lang['form_report'] = 'Form / Report';
+$lang['forms_reports'] = 'Forms / Reports';
 $lang['labs'] = 'Lab Tests';
 $lang['add_lab'] = 'Add Lab Test';
 $lang['add_new_lab'] = 'Add New Lab Test';
