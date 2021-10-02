@@ -140,7 +140,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                     $settings_mobile_logo = $this->db->get('settings')->row()->mobile_logo;
                     ?>
                     <a href="home" class="logo">
-                        <img src="<?php if(!empty($settings_logo)) { echo $settings_logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="" style="height: 50px;" alt="SugboDoc logo">
+                        <img src="<?php if(!empty($settings_logo)) { echo $settings_logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="" style="height: 40px;" alt="SugboDoc logo">
                     </a>
 
                 <?php } else { ?>
