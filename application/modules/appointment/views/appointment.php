@@ -605,9 +605,9 @@
 
                 //$('.js-example-basic-single.doctor').val(response.appointment.doctor).trigger('change');
                 // $('.js-example-basic-single.patient').val(response.appointment.patient).trigger('change');
-                var option = new Option(response.patient.name + '-' + response.patient.id, response.patient.id, true, true);
+                var option = new Option(response.patient.name + ' (ID: ' + response.patient.id + ')', response.patient.id, true, true);
                 $('#editAppointmentForm').find('[name="patient"]').append(option).trigger('change');
-                var option1 = new Option(response.doctor.name + '-' + response.doctor.id, response.doctor.id, true, true);
+                var option1 = new Option(response.doctor.name + ' (ID: ' + response.doctor.id + ')', response.doctor.id, true, true);
                 $('#editAppointmentForm').find('[name="doctor"]').append(option1).trigger('change');
 
 
