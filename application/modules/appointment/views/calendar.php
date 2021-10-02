@@ -10,11 +10,7 @@
             </header>
             <div class="panel-body">
                 <aside>
-                    <section class="panel">
-                        <div class="panel-body">
-                            <div id="calendar" class="has-toolbar calendar_view"></div>
-                        </div>
-                    </section>
+                    <div id="calendar" class="has-toolbar calendar_view"></div>
                 </aside>
             </div>
         </section>
@@ -27,10 +23,8 @@
     <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title"><?php echo lang('patient') . " " . lang('history'); ?></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title"><?php echo lang('patient') . " " . lang('history'); ?></h4>
             </div>
             <div id='medical_history'>
                 <div class="col-md-12">
