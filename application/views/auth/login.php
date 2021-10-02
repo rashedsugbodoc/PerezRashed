@@ -56,7 +56,7 @@
                             <div class="row">
                                 <div class="col-md-8 mx-auto d-block">
                                     <div class="">
-                                        <div class="text-white py-5 px-8 text-center">
+                                        <div class="text-white py-1 px-8 text-center">
                                             <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
                                         </div>
                                         <?php if($message) { ?>
