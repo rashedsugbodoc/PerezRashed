@@ -14,7 +14,6 @@ class Auth extends MX_Controller {
 		$this->lang->load('auth');
 	}
 
-	//redirect if needed, otherwise display the user list
 	function index()
 	{
 
@@ -23,12 +22,7 @@ class Auth extends MX_Controller {
 			//redirect them to the login page
 			redirect('auth/login', 'refresh');
 		}
-	/*	elseif (!$this->ion_auth->is_admin()) //remove this elseif if you want to enable this for non-admins
-		{
-			//redirect them to the home page because they must be an administrator to view this
-			return show_error('You must be an administrator to view this page.');
-		}
-        */        
+     
 		else
 		{
 			//set the flash data error message if there is one
@@ -41,8 +35,8 @@ class Auth extends MX_Controller {
 				$data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();
 			}
 
-			// $this->_render_page('auth/index', $data);
-                        redirect('home', 'refresh');
+			
+			redirect('home', 'refresh');
 		}
 	}
 
@@ -50,9 +44,8 @@ class Auth extends MX_Controller {
 	function login()
 	{
             
-            if ($this->ion_auth->logged_in())
+        if ($this->ion_auth->logged_in())
 		{
-			//redirect them to the login page
 			redirect('home');
 		}
 		$data['title'] = "Login";
