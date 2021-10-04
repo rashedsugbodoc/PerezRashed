@@ -12,8 +12,8 @@ class Welcome extends CI_Controller {
  
     protected function sendSMS($data) {
           // Your Account SID and Auth Token from twilio.com/console
-            $sid = 'AC2e78b039528cf65d94db68674ba43ead';
-            $token = '9859a8217b4cc699d516f46fbb21a0d5';
+            $sid = 'ACf35706e20d847684b01dd918b3114d34';
+            $token = '812657f263cb1015c04190b39186e9df';
             $client = new Client($sid, $token);
             
             // Use the client to do fun stuff like send text messages!
@@ -22,7 +22,7 @@ class Welcome extends CI_Controller {
                 $data['phone'],
                 array(
                     // A Twilio phone number you purchased at twilio.com/console
-                    "from" => "+15183536455",
+                    "from" => "+13158424589",
                     // the body of the text message you'd like to send
                     'body' => $data['text']
                 )
