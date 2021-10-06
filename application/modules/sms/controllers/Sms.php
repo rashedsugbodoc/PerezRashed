@@ -131,12 +131,29 @@ class Sms extends MX_Controller {
                     file_get_contents('https://platform.clickatell.com/messages/http/send?apiKey=' . $api_id . '&to=' . $key2 . '&content=' . $value2);           // file_get_contents('https://platform.clickatell.com/messages/http/send?apiKey='.$api_id.'&to='.$to.'&content='.$message1);           // file_get_contents('https://api.clickatell.com/http/sendmsg?user=' . $username . '&password=' . $password . '&api_id=' . $api_id . '&to=' . $to . '&text=' . $message1);
                 }
 
-                if ($smsSettings->name == 'MSG91') {
-                    $authkey = $smsSettings->authkey;
-                    $sender = $smsSettings->sender;
-                    $value2 = urlencode($value2);
-                  //  file_get_contents('http://api.msg91.com/api/v2/sendsms?route=4&sender=' . $sender . '&mobiles=' . $key2 . '&authkey=' . $authkey . '&message=' . $value2 . '&country=0');           // file_get_contents('https://platform.clickatell.com/messages/http/send?apiKey='.$api_id.'&to='.$to.'&content='.$message1);           // file_get_contents('https://api.clickatell.com/http/sendmsg?user=' . $username . '&password=' . $password . '&api_id=' . $api_id . '&to=' . $to . '&text=' . $message1);
-                    file_get_contents('http://world.msg91.com/api/v2/sendsms?authkey='.$authkey.'&mobiles='.$key2.'&message='.$value2.'&sender='.$sender.'&route=4&country=0');
+                if ($smsSettings->name == 'Semaphore') {
+                    //$authkey = $smsSettings->authkey;
+                    //$sender = $smsSettings->sender;
+                    //$value2 = urlencode($value2);
+
+                    $postdata = http_build_query(
+                        array(
+                            'apikey' => $smsSettings->authkey,
+                            'sendername' => $smsSettings->sender,
+                            'number' => $to,
+                            'message' => $value2
+                        )
+                    );
+                    $opts = array('http' =>
+                        array(
+                            'method' => 'POST',
+                            'header' => 'Content-Type: application/x-www-form-urlencoded',
+                            'content' => $postdata
+                        )
+                    );
+                    $context = stream_context_create($opts);
+                    file_get_contents('https://api.semaphore.co/api/v4/messages', false, $context);
+                    
                 }
                 if ($smsSettings->name == 'Twilio') {
                     $sid = $smsSettings->sid;
