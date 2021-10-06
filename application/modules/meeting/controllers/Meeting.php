@@ -728,7 +728,7 @@ class Meeting extends MX_Controller {
             $message1 = $autoemail->message;
             $messageprint1 = $this->parser->parse_string($message1, $data1);
             $subject = lang('doctor') . ' ' . lang('appointment');
-            $this->email->from($emailSettings->admin_email);
+            $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
             $this->email->to($patient_details->email);
             $this->email->subject($subject);
             $this->email->message($messageprint1);

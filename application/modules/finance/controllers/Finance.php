@@ -348,7 +348,7 @@ class Finance extends MX_Controller {
                     $emailSettings = $this->email_model->getEmailSettings();
                     $message1 = $autoemail->message;
                     $messageprint1 = $this->parser->parse_string($message1, $data1);
-                    $this->email->from($emailSettings->admin_email);
+                    $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
                     $this->email->to($patient_email);
                     $this->email->subject('Payment confirmation');
                     $this->email->message($messageprint1);

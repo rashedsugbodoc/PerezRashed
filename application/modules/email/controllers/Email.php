@@ -40,7 +40,7 @@ class Email extends MX_Controller {
 
     public function settings() {
         $data = array();
-        $data['settings'] = $this->email_model->getEmailSettings();
+        $data['settings'] = $this->email_model->getEmailSettings();  
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('settings', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -50,6 +50,7 @@ class Email extends MX_Controller {
 
         $id = $this->input->post('id');
         $email = $this->input->post('email');
+        $email_display_name = $this->input->post('email_display_name');
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -70,6 +71,7 @@ class Email extends MX_Controller {
             $data = array();
             $data = array(
                 'admin_email' => $email,
+                'admin_email_display_name' => $email_display_name
             );
 
             $this->email_model->updateEmailSettings($data);
@@ -211,7 +213,7 @@ class Email extends MX_Controller {
 
 
 
-                    $this->email->from($emailSettings->admin_email);
+                    $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
                     $this->email->to($key2);
                     $this->email->subject($subject);
                     $this->email->message($value2);

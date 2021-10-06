@@ -192,7 +192,7 @@ class Doctor extends MX_Controller {
                         $emailSettings = $this->email_model->getEmailSettings();
                         $message1 = $autoemail->message;
                         $messageprint1 = $this->parser->parse_string($message1, $data1);
-                        $this->email->from($emailSettings->admin_email);
+                        $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
                         $this->email->to($email);
                         $this->email->subject('Appointment confirmation');
                         $this->email->message($messageprint1);
