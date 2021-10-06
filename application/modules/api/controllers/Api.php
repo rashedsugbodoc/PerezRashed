@@ -1108,7 +1108,7 @@ $temp_phone = str_replace('.','',$temp_phone);
             'lastname' => $name1[1],
             'name' => $patientdetails->name,
             'doctorname' => $doctordetails->name,
-            'appoinmentdate' => date('d-m-Y', $data['date']),
+            'appointmentdate' => date('d-m-Y', $data['date']),
             'time_slot' => $data['time_slot'],
             'hospital_name' => $set['settings']->system_vendor
         );
@@ -1126,7 +1126,7 @@ $temp_phone = str_replace('.','',$temp_phone);
             $emailSettings = $this->api_model->getEmailSettings($this->hospitalID);
             $message1 = $autoemail->message;
             $messageprint1 = $this->parser->parse_string($message1, $data1);
-            $this->email->from($emailSettings->admin_email);
+            $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
             $this->email->to($patientdetails->email);
             $this->email->subject(lang('appointment'));
             $this->email->message($messageprint1);
@@ -1569,12 +1569,27 @@ $temp_phone = str_replace('.','',$temp_phone);
                     
                 }
 
-                if ($smsSettings->name == 'MSG91') {
-                    $authkey = $smsSettings->authkey;
-                    $sender = $smsSettings->sender;
-                    $value2 = urlencode($value2);
-                  //  file_get_contents('http://api.msg91.com/api/v2/sendsms?route=4&sender=' . $sender . '&mobiles=' . $key2 . '&authkey=' . $authkey . '&message=' . $value2 . '&country=0');           // file_get_contents('https://platform.clickatell.com/messages/http/send?apiKey='.$api_id.'&to='.$to.'&content='.$message1);           // file_get_contents('https://api.clickatell.com/http/sendmsg?user=' . $username . '&password=' . $password . '&api_id=' . $api_id . '&to=' . $to . '&text=' . $message1);
-                    file_get_contents('http://world.msg91.com/api/v2/sendsms?authkey='.$authkey.'&mobiles='.$key2.'&message='.$value2.'&sender='.$sender.'&route=4&country=0');
+                if ($smsSettings->name == 'Semaphore') {
+                    //$authkey = $smsSettings->authkey;
+                    //$sender = $smsSettings->sender;
+                    //$value2 = urlencode($value2);
+                    $postdata = http_build_query(
+                        array(
+                            'apikey' => $smsSettings->authkey,
+                            'sendername' => $smsSettings->sender,
+                            'number' => $to,
+                            'message' => $value2
+                        )
+                    );
+                    $opts = array('http' =>
+                        array(
+                            'method' => 'POST',
+                            'header' => 'Content-Type: application/x-www-form-urlencoded',
+                            'content' => $postdata
+                        )
+                    );
+                    $context = stream_context_create($opts);
+                    file_get_contents('https://api.semaphore.co/api/v4/messages', false, $context);
                 }
                 if ($smsSettings->name == 'Twilio') {
                     $sid = $smsSettings->sid;
