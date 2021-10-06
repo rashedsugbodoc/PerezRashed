@@ -51,9 +51,9 @@
                                     <?php } ?>
 
 
-                                    <?php if ($settings->name == 'MSG91') { ?>
+                                    <?php if ($settings->name == 'Semaphore') { ?>
                                         <div class="form-group">
-                                            <label for="exampleInputEmail1"> <?php echo lang('authkey'); ?></label>
+                                            <label for="exampleInputEmail1"> <?php echo lang('api_key'); ?></label>
                                             <input type="text" class="form-control" name="authkey" id="exampleInputEmail1" value='<?php
                                             if (!empty($settings->authkey)) {
                                                 echo $settings->authkey;
