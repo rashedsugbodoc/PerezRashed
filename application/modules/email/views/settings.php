@@ -14,12 +14,20 @@
                             <?php echo validation_errors(); ?>
                             <form role="form" action="email/addNewSettings" class="clearfix" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1"> <?php echo lang('admin'); ?> <?php echo lang('email'); ?></label>
+                                    <label for="exampleInputEmail1"> <?php echo lang('admin'); ?> <?php echo lang('email'); ?> <?php echo lang('address'); ?></label>
                                     <input type="text" class="form-control" name="email" id="exampleInputEmail1" value='<?php
                                     if (!empty($settings->admin_email)) {
                                         echo $settings->admin_email;
                                     }
                                     ?>' placeholder="From which you want to send the email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo lang('email_display_name'); ?></label>
+                                    <input type="text" class="form-control" name="email_display_name" id="exampleInputEmail1" value='<?php
+                                    if (!empty($settings->admin_email_display_name)) {
+                                        echo $settings->admin_email_display_name;
+                                    }
+                                    ?>' placeholder="Name displayed in emails">
                                 </div>
 
                                 <code>
