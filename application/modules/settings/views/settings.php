@@ -13,7 +13,7 @@
                         <?php echo validation_errors(); ?>
                         <form role="form" action="settings/update" method="post" enctype="multipart/form-data">
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"><?php echo lang('system_name'); ?></label>
+                                <label for="exampleInputEmail1"><?php echo lang('healthcare_institution_name'); ?></label>
                                 <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='<?php
                                 if (!empty($settings->system_vendor)) {
                                     echo $settings->system_vendor;
@@ -44,6 +44,239 @@
                                 }
                                 ?>' placeholder="phone">
                             </div>
+                            <div class="col-md-6 form-group">
+                                <label for="companyName"><?php echo lang('company_name');?></label>
+                                <input type="text" class="form-control" name="company_name" id="company_name" value='<?php
+                                if (!empty($settings->company_name)) {
+                                    echo $settings->company_name;
+                                }
+                                ?>' placeholder="<?php echo lang('company_name');?>">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="companyVATNumber"><?php echo lang('company_vat_number');?></label>
+                                <input type="text" class="form-control" name="company_vat_number" id="company_vat_number" value='<?php
+                                if (!empty($settings->company_vat_number)) {
+                                    echo $settings->company_vat_number;
+                                    }
+                                    ?>' placeholder="<?php echo lang('company_vat_number');?>">
+                            </div>   
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1"><?php echo lang('country'); ?></label>
+                                <select class="form-control" name="country_id" value=''>
+                                    <?php foreach ($countries as $country) { ?>
+                                        <option value="<?php echo $country->id; ?>" <?php
+                                        if (!empty($setval)) {
+                                            if ($country->id == set_value('country_id')) {
+                                                echo 'selected';
+                                            }
+                                        }
+                                        if (!empty($settings->country_id)) {
+                                            if ($country->id == $settings->country_id) {
+                                                echo 'selected';
+                                            }
+                                        }
+                                        ?> > <?php echo $country->name; ?> </option>
+                                            <?php } ?>
+                                </select>                                      
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="exampleInputEmail1"> <?php echo lang('language'); ?></label>
+                                <select class="form-control" name="language" value='' disabled="">
+                                    <option value="arabic" <?php
+                                    if (!empty($settings->language)) {
+                                        if ($settings->language == 'arabic') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>><?php echo lang('arabic'); ?> 
+                                    </option>
+                                    <option value="english" <?php
+                                    if (!empty($settings->language)) {
+                                        if ($settings->language == 'english') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>><?php echo lang('english'); ?> 
+                                    </option>
+                                    <option value="spanish" <?php
+                                    if (!empty($settings->language)) {
+                                        if ($settings->language == 'spanish') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>><?php echo lang('spanish'); ?>
+                                    </option>
+                                    <option value="french" <?php
+                                    if (!empty($settings->language)) {
+                                        if ($settings->language == 'french') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>><?php echo lang('french'); ?>
+                                    </option>
+                                    <option value="italian" <?php
+                                    if (!empty($settings->language)) {
+                                        if ($settings->language == 'italian') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>><?php echo lang('italian'); ?>
+                                    </option>
+                                    <option value="portuguese" <?php
+                                    if (!empty($settings->language)) {
+                                        if ($settings->language == 'portuguese') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>><?php echo lang('portuguese'); ?>
+                                    </option>
+                                </select>                                        
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="timezone"><?php echo lang('timezone');?></label>
+                                <input type="text" class="form-control" name="timezone" id="timezone" value='<?php 
+                                if (!empty($settings->timezone)) {
+                                    echo $settings->timezone;
+                                }
+                                ?>' placeholder="<?php echo lang('timezone');?>">
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="time_format"><?php echo lang('time_format');?></label>
+                                <select class="form-control" name="time_format" value=''>
+                                    <option value="" selected>
+                                        <?php echo lang('select');?>
+                                    </option>
+                                    <option value="h:i a" <?php
+                                    if (!empty($settings->time_format)) {
+                                        if ($settings->time_format == 'h:i a') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>><?php echo lang('time_format_12am'); ?> 
+                                    </option>
+                                    <option value="h:i A" <?php
+                                    if (!empty($settings->time_format)) {
+                                        if ($settings->time_format == 'h:i A') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>><?php echo lang('time_format_12AM'); ?> 
+                                    </option>
+                                    <option value="H:i" <?php
+                                    if (!empty($settings->time_format)) {
+                                        if ($settings->time_format == 'H:i') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>><?php echo lang('time_format_24hr'); ?>
+                                    </option>
+                                
+                                </select>    
+                            </div>   
+                            <div class="col-md-6 form-group">
+                                <label for="date_format"><?php echo lang('date_format');?></label>
+                                <select class="form-control" name="date_format" value=''>
+                                    <option value="" selected>
+                                        <?php echo lang('select');?>
+                                    </option>
+                                    <option value="d-m-Y" <?php
+                                    if (!empty($settings->date_format)) {
+                                        if ($settings->date_format == 'd-m-Y') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>d-m-Y (example: 25-04-2013)
+                                    </option>
+                                    <option value="m-d-Y" <?php
+                                    if (!empty($settings->date_format)) {
+                                        if ($settings->date_format == 'm-d-Y') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>m-d-Y (example: 04-25-2013)
+                                    </option>
+                                    <option value="Y-m-d" <?php
+                                    if (!empty($settings->date_format)) {
+                                        if ($settings->date_format == 'Y-m-d') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>Y-m-d (example: 2013-04-25)
+                                    </option>
+                                    <option value="d/m/Y" <?php
+                                    if (!empty($settings->date_format)) {
+                                        if ($settings->date_format == 'd/m/Y') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>d/m/Y (example: 25/04/2013)
+                                    </option>
+                                    <option value="m/d/Y" <?php
+                                    if (!empty($settings->date_format)) {
+                                        if ($settings->date_format == 'm/d/Y') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>m/d/Y (example: 04/25/2013)
+                                    </option>
+                                    <option value="Y/m/d" <?php
+                                    if (!empty($settings->date_format)) {
+                                        if ($settings->date_format == 'Y/m/d') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>Y/m/d (example: 2013/04/25)
+                                    </option> 
+                                    <option value="d.m.Y" <?php
+                                    if (!empty($settings->date_format)) {
+                                        if ($settings->date_format == 'd.m.Y') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>d.m.Y (example: 25.04.2013)
+                                    </option>
+                                    <option value="m.d.Y" <?php
+                                    if (!empty($settings->date_format)) {
+                                        if ($settings->date_format == 'm.d.Y') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>m.d.Y (example: 04.25.2013)
+                                    </option>
+                                    <option value="Y.m.d" <?php
+                                    if (!empty($settings->date_format)) {
+                                        if ($settings->date_format == 'Y.m.d') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>Y.m.d (example: 2013.04.25)
+                                    </option>                                                                                      
+                                </select>                                            
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label for="date_format"><?php echo lang('date_format_long');?></label>
+                                <select class="form-control" name="date_format_long" value=''>
+                                    <option value="" selected>
+                                        <?php echo lang('select');?>
+                                    </option>
+                                    <option value="F j, Y" <?php
+                                    if (!empty($settings->date_format_long)) {
+                                        if ($settings->date_format_long == 'F j, Y') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>August 24, 2013
+                                    </option>
+                                    <option value="j F Y" <?php
+                                    if (!empty($settings->date_format_long)) {
+                                        if ($settings->date_format_long == 'j F Y') {
+                                            echo 'selected';
+                                        }
+                                    }
+                                    ?>>24 August 2013
+                                    </option>
+                                </select>                                        
+                            </div>                                                     
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1"><?php echo lang('hospital_email'); ?></label>
                                 <input type="text" class="form-control" name="email" id="exampleInputEmail1" value='<?php
