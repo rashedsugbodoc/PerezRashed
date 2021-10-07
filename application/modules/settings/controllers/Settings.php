@@ -8,6 +8,7 @@ class Settings extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('sma');
+        $this->load->model('country/country_model');
         if (!$this->ion_auth->in_group(array('admin', 'superadmin'))) {
             redirect('home/permission');
         }
@@ -16,6 +17,7 @@ class Settings extends MX_Controller {
     public function index() {
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
+        $data['countries'] = $this->country_model->getCountry();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('settings', $data);
         $this->load->view('home/footer'); // just the footer file
