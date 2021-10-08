@@ -239,8 +239,12 @@ class Patient extends MX_Controller {
                         'firstname' => $name1[0],
                         'lastname' => $name1[1],
                         'name' => $name,
+                        'email' => $email,
+                        'password' => $password,
                         'doctor' => $doctor_name,
-                        'company' => $set['settings']->system_vendor
+                        'company' => $set['settings']->system_vendor,
+                        'hospital_name' => $set['settings']->system_vendor,
+                        'hospital_contact' => $set['settings']->phone
                     );
                     //   if (!empty($sms)) {
                     // $this->sms->sendSmsDuringPatientRegistration($patient_user_id);
