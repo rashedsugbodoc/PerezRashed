@@ -89,6 +89,9 @@ class Patient extends MX_Controller {
         $birthdate = $this->input->post('birthdate');
         $bloodgroup = $this->input->post('bloodgroup');
         $patient_id = $this->input->post('p_id');
+        if (!empty($doctor)) {
+            $doctor_name = $this->doctor_model->getDoctorById($doctor)->name;
+        }
         if (empty($patient_id)) {
             $patient_id = rand(10000, 1000000);
         }
@@ -236,7 +239,7 @@ class Patient extends MX_Controller {
                         'firstname' => $name1[0],
                         'lastname' => $name1[1],
                         'name' => $name,
-                        'doctor' => $doctor,
+                        'doctor' => $doctor_name,
                         'company' => $set['settings']->system_vendor
                     );
                     //   if (!empty($sms)) {
@@ -255,7 +258,7 @@ class Patient extends MX_Controller {
                         $emailSettings = $this->email_model->getEmailSettings();
                         $message1 = $autoemail->message;
                         $messageprint1 = $this->parser->parse_string($message1, $data1);
-                        $this->email->from($emailSettings->admin_email);
+                        $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
                         $this->email->to($email);
                         $this->email->subject(lang('new_patient_registered_email_subject'));
                         $this->email->message($messageprint1);
