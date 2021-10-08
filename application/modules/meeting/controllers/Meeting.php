@@ -711,6 +711,7 @@ class Meeting extends MX_Controller {
             'doctor_name' => $doctor_details->name,
             'start_time' => $start_time,
             'hospital_name' => $set['settings']->system_vendor,
+            'hospital_contact' => $set['settings']->phone,
             'meeting_link' => $appointment_details->live_meeting_link
         );
 
