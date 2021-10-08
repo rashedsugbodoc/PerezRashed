@@ -173,7 +173,7 @@
                                       <input type="hidden" name="redirect" value='meeting/request'>
                   
                                       <div class="col-md-12 panel">
-                                          <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                                          <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                                       </div>
                                   </form>
                               </div>
@@ -305,7 +305,7 @@
                             <input type="hidden" name="redirect" value='meeting/request'>
                             <input type="hidden" name="id" id="meeting_id" value=''>
                             <div class="col-md-12 panel">
-                                <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                                <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                             </div>
                         </form>
 

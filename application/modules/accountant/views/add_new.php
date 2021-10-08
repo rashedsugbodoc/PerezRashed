@@ -86,7 +86,7 @@
                                             echo $accountant->id;
                                         }
                                         ?>'>
-                                        <button type="submit" name="submit" class="btn btn-info"><?php echo lang('submit'); ?></button>
+                                        <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit'); ?></button>
                                     </form>
                                 </div>
                             </section>

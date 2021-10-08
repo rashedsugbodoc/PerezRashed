@@ -478,10 +478,10 @@
 
 
                                             <div class="form-group cashsubmit payment  right-six col-md-12">
-                                                <button type="submit" name="submit2" id="submit1" class="btn btn-info row pull-right"> <?php echo lang('submit'); ?></button>
+                                                <button type="submit" name="submit2" id="submit1" class="btn btn-primary row pull-right"> <?php echo lang('submit'); ?></button>
                                             </div>
                                             <div class="form-group cardsubmit  right-six col-md-12 hidden">
-                                                <button type="submit" name="pay_now" id="submit-btn" class="btn btn-info row pull-right" <?php if ($settings->payment_gateway == 'Stripe') {
+                                                <button type="submit" name="pay_now" id="submit-btn" class="btn btn-primary row pull-right" <?php if ($settings->payment_gateway == 'Stripe') {
                                                 ?>onClick="stripePay(event);"<?php }
                                             ?>> <?php echo lang('submit'); ?></button>
                                             </div>

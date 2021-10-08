@@ -45,7 +45,7 @@
                                         <?php } ?>
                                         <tr>
                                             <td></td>
-                                            <td> <button id="submit" type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button></td>
+                                            <td> <button id="submit" type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button></td>
                                         </tr>
                                     </tbody>
                                     <tfoot>

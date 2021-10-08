@@ -67,7 +67,7 @@
                                             <span class="help-block"></span> 
                                         </div>
                                         <div class="col-md-4 no-print">
-                                            <button type="submit" name="submit" class="btn btn-info range_submit"><?php echo lang('submit'); ?></button>
+                                            <button type="submit" name="submit" class="btn btn-primary range_submit"><?php echo lang('submit'); ?></button>
                                         </div>
                                     </div>
                                 </form>
@@ -434,10 +434,10 @@
                     <input type="hidden" name="id" value=''>
                     <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
                     <div class="form-group cashsubmit payment  right-six col-md-12">
-                        <button type="submit" name="submit2" id="submit1" class="btn btn-info row pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit2" id="submit1" class="btn btn-primary row pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                     <div class="form-group cardsubmit  right-six col-md-12 hidden">
-                        <button type="submit" name="pay_now" id="submit-btn" class="btn btn-info row pull-right" <?php if ($settings->payment_gateway == 'Stripe') {
+                        <button type="submit" name="pay_now" id="submit-btn" class="btn btn-primary row pull-right" <?php if ($settings->payment_gateway == 'Stripe') {
                             ?>onClick="stripePay(event);"<?php }
                         ?>> <?php echo lang('submit'); ?></button>
                     </div>

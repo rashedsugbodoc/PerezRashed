@@ -47,7 +47,7 @@
                                     }
                                     ?>'>
                                     <div class="form-group cl-md-12">
-                                        <button type="submit" name="submit" class="btn btn-info pull-right"><?php echo lang('submit'); ?></button>
+                                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                                     </div>
                                 </form>
                             </div>

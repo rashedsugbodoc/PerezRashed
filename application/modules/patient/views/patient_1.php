@@ -247,7 +247,7 @@
                     }
                     ?>'>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit'); ?></button>
                     </section>
                 </form>
 
@@ -382,7 +382,7 @@
                     <input type="hidden" name="id" value=''>
                     <input type="hidden" name="p_id" value=''>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit'); ?></button>
                     </section>
                 </form>
             </div>

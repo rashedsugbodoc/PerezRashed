@@ -164,7 +164,7 @@
                     <input type="hidden" name="redirect" value='schedule/timeSchedule?doctor=<?php echo $doctorr;?>'>
                     <input type="hidden" name="id" value=''>
                     <div class="form-group">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                 </form>
 
@@ -273,7 +273,7 @@
                     <input type="hidden" name="doctor" value="<?php echo $doctorr; ?>">
                     <input type="hidden" name="redirect" value='schedule/timeSchedule'>
                     <input type="hidden" name="id" value=''>
-                    <button type="submit" name="submit" class="btn btn-info"> <?php echo lang('submit'); ?></button>
+                    <button type="submit" name="submit" class="btn btn-primary"> <?php echo lang('submit'); ?></button>
                 </form>
 
             </div>

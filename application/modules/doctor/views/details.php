@@ -333,7 +333,7 @@
                     <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
 
                     <div class="form-group col-md-6">
-                        <button type="submit" name="submit" class="btn btn-info"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary"> <?php echo lang('submit'); ?></button>
                     </div>
 
                 </form>
@@ -580,7 +580,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     <input type="hidden" name="redirect" value='doctor/details'>
 
                     <div class="col-md-12"> 
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
 
                 </form>
@@ -737,7 +737,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     <input type="hidden" name="id" id="appointment_id" value=''>
 
                     <div class="col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
 
                 </form>
@@ -768,7 +768,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     <input type="hidden" name="redirect" value='doctor/details'>
                     <input type="hidden" name="id" value=''>
                     <div class="form-group col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                 </form>
             </div>
@@ -797,7 +797,7 @@ if ($this->ion_auth->in_group('Doctor')) {
                     <input type="hidden" name="redirect" value='doctor/details'>
                     <input type="hidden" name="id" value=''>
                     <div class="form-group col-md-12">
-                        <button type="submit" name="submit" class="btn btn-info pull-right"> <?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                 </form>
 

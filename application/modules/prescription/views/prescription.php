@@ -192,7 +192,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 
                     <input type="hidden" name="id" value=''>
                     <section class="">
-                        <button type="submit" name="submit" class="btn btn-info submit_button"><?php echo lang('submit'); ?></button>
+                        <button type="submit" name="submit" class="btn btn-primary submit_button"><?php echo lang('submit'); ?></button>
                     </section>
                 </form>
             </div>

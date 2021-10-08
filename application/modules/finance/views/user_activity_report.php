@@ -178,7 +178,7 @@
                                     <span class="help-block"></span> 
                                 </div>
                                 <div class="col-md-6 no-print">
-                                    <button type="submit" name="submit" class="btn btn-info range_submit"><?php echo lang('submit'); ?></button>
+                                    <button type="submit" name="submit" class="btn btn-primary range_submit"><?php echo lang('submit'); ?></button>
                                 </div>
                             </div>
                         </form>
@@ -214,7 +214,7 @@
                                     <span class="help-block"></span> 
                                 </div>
                                 <div class="col-md-6 no-print">
-                                    <button type="submit" name="submit" class="btn btn-info range_submit"><?php echo lang('submit'); ?></button>
+                                    <button type="submit" name="submit" class="btn btn-primary range_submit"><?php echo lang('submit'); ?></button>
                                 </div>
                             </div>
                         </form>

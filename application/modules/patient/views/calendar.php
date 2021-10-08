@@ -60,7 +60,7 @@ if ($this->ion_auth->in_group(array('Patient'))) {
                     <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
 
 
-                    <button type="submit" name="submit" class="btn btn-info"> <?php echo lang('submit'); ?></button>
+                    <button type="submit" name="submit" class="btn btn-primary"> <?php echo lang('submit'); ?></button>
                 </form>
 
             </div>

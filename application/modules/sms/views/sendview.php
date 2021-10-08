@@ -193,7 +193,7 @@
                     }
                     ?>'>
                     <input type="hidden" name="type" value='sms'>
-                    <button type="submit" name="submit" class="btn btn-info"><?php echo lang('submit'); ?></button>
+                    <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit'); ?></button>
                 </form>
             </div>
         </div><!-- /.modal-content -->
