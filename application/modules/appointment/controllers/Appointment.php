@@ -372,7 +372,7 @@ class Appointment extends MX_Controller {
             'lastname' => $name1[1],
             'name' => $patientdetails->name,
             'doctorname' => $doctordetails->name,
-            'appointmentdate' => date('d-m-Y', $data['date']),
+            'appointmentdate' => date('F j, Y', $data['date']),
             'time_slot' => $data['time_slot'],
             'hospital_name' => $set['settings']->system_vendor,
             'hospital_contact' => $set['settings']->phone
@@ -393,7 +393,7 @@ class Appointment extends MX_Controller {
             $messageprint1 = $this->parser->parse_string($message1, $data1);
             $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
             $this->email->to($patientdetails->email);
-            $this->email->subject(lang('appointment'));
+            $this->email->subject(lang('appointment_awaiting_confirmation'));
             $this->email->message($messageprint1);
             $this->email->send();
         }
