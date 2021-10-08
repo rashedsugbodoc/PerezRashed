@@ -177,17 +177,17 @@ class Hospital extends MX_Controller {
 
                     $this->sms_model->addSmsSettings($data_sms_clickatell);
 
-                    $data_sms_msg91 = array(
-                        'name' => 'MSG91',
-                        'username' => 'Your MSG91 Username',
-                        'api_id' => 'Your MSG91 API ID',
-                        'sender' => 'Sender Number',
-                        'authkey' => 'Your MSG91 Auth Key',
+                    $data_sms_semaphore = array(
+                        'name' => 'Semaphore',
+                        'username' => 'Your Semaphore Username',
+                        'api_id' => '',
+                        'sender' => 'Your Semaphore SenderName',
+                        'authkey' => 'Your Semaphore API Key',
                         'user' => $this->ion_auth->get_user_id(),
                         'hospital_id' => $hospital_user_id
                     );
 
-                    $this->sms_model->addSmsSettings($data_sms_msg91);
+                    $this->sms_model->addSmsSettings($data_sms_semaphore);
 
 
 
@@ -201,11 +201,6 @@ class Hospital extends MX_Controller {
                     );
 
                     $this->sms_model->addSmsSettings($data_sms_twilio);
-
-
-
-
-
 
                     $data_pgateway_paypal = array(
                         'name' => 'PayPal', // Sandbox / testing mode option.
@@ -228,8 +223,6 @@ class Hospital extends MX_Controller {
 
                     $this->pgateway_model->addPaymentGatewaySettings($data_pgateway_payumoney);
 
-
-
                     $data_pgateway_stripe = array(
                         'name' => 'Stripe', // Sandbox / testing mode option.
                         'secret' => 'Secret', // Sandbox / testing mode option.
@@ -248,8 +241,6 @@ class Hospital extends MX_Controller {
                     );
 
                     $this->pgateway_model->addPaymentGatewaySettings($data_pgateway_payumoney);
-
-
 
                     $data_email_settings = array(
                         'admin_email' => 'Admin Email', // Sandbox / testing mode option.
