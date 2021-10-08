@@ -3,7 +3,7 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="col-md-7 row">
+        <section class="col-md-7">
             <div class="panel">
                 <header class="panel-heading">
                     <?php echo lang('sms_gateways'); ?>
