@@ -89,6 +89,7 @@ $lang['bio_graph'] = 'Bio Graph';
 $lang['patient_id'] = 'Patient ID';
 $lang['gender'] = 'Gender';
 $lang['appointments'] = 'Appointments';
+$lang['appointment_awaiting_confirmation'] = 'Appointment is Awaiting Confirmation';
 $lang['appointment'] = 'Appointment';
 $lang['id'] = 'ID';
 $lang['date-time'] = 'Date - Time';
