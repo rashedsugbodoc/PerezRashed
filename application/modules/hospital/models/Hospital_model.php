@@ -119,38 +119,38 @@ class Hospital_model extends CI_model {
     function createAutoSmsTemplate($hospital_id) {
         $data = array();
         $data = array('0' => array(
-                'name' => 'Payment successful sms to patient',
-                'message' => 'Dear {name}, Thank you for your payment of {amount}. This is a system generated notification. Please do not reply.',
+                'name' => 'Payment Successful - SMS to patient',
+                'message' => 'Dear {name}, Thank you for your payment of {amount}. This is a system generated notification. Please do not reply. For more information, contact {hospital_name} at {hospital_contact}. Thank You.',
                 'type' => 'payment',
                 'status' => 'Active',
             ),
             '1' => array(
                 'name' => 'Appointment Confirmation - SMS to patient',
-                'message' => 'Dear {name}, Your appointment with {doctorname} on {appointmentdate} at {time_slot} is confirmed. Login to sugbodoc.com with your email and click on Go Live at least 10 minutes before the schedule to prepare. For more information, contact {hospital_name} at {hospital_contact}.',
+                'message' => 'Dear {name}, Your appointment with Dr. {doctorname} on {appointmentdate} at {time_slot} is confirmed. Login to sugbodoc.com with your email and click on Go Live at least 10 minutes before the schedule to prepare. For more information, contact {hospital_name} at {hospital_contact}. Thank You.',
                 'type' => 'appoinment_confirmation',
                 'status' => 'Active',
             ),
             '2' => array(
                 'name' => 'Appointment Creation - SMS to patient',
-                'message' => 'Dear {name}, You have booked an appointment with {doctorname} on {appointmentdate} at {time_slot}. Please wait for another SMS once the doctor confirms your appointment. View your appointment calendar at sugbodoc.com.',
+                'message' => 'Dear {name}, You have booked an appointment with Dr. {doctorname} on {appointmentdate} at {time_slot}. Please wait for another SMS once the doctor confirms your appointment. Login and view your appointment calendar at sugbodoc.com. For more information, contact {hospital_name} at {hospital_contact}. Thank You.',
                 'type' => 'appoinment_creation',
                 'status' => 'Active',
             ),
             '3' => array(
                 'name' => 'Meeting Started - Notification To Patient',
-                'message' => 'Dear {patient_name}, Your Live Video Meeting with {doctor_name} scheduled on {start_time} has started. Login to sugbodoc.com and click on Go Live to join the meeting.',
+                'message' => 'Dear {patient_name}, Your Live Video Meeting with Dr. {doctor_name} scheduled on {start_time} has started. Login to sugbodoc.com and click on Go Live to join the meeting. For more information, please contact {hospital_name} at {hospital_contact}. Thank You.',
                 'type' => 'meeting_creation',
                 'status' => 'Active',
             ),
             '4' => array(
                 'name' => 'Doctor Registration Confirmation',
-                'message' => 'Dear {name}, Welcome to {company}. You are now registered as a doctor in {department} Department. You may now login at sugbodoc.com using your email. Thank You.',
+                'message' => 'Dear {name}, Welcome to {company}. You are now registered as a doctor in {department} Department. You may now login at sugbodoc.com using your email. For more information, please contact {hospital_name} at {hospital_contact}. Thank You.',
                 'type' => 'doctor',
                 'status' => 'Active',
             ),
             '5' => array(
                 'name' => 'Patient Registration Confirmation',
-                'message' => 'Dear {name}, Welcome to {company}. You are now registered as a patient of Dr. {doctor}. Login using your email at sugbodoc.com to view your patient records or book an appointment with our doctors. Cheers!',
+                'message' => 'Dear {name}, Welcome to {company}. You are now registered as a patient of Dr. {doctor}. Login using your email at sugbodoc.com to view your patient records or book an appointment with our doctors. For more information, please contact {hospital_name} at {hospital_contact}. Cheers!',
                 'type' => 'patient',
                 'status' => 'Active',
         ));
@@ -176,37 +176,37 @@ class Hospital_model extends CI_model {
         $data = array();
         $data = array('0' => array(
                 'name' => 'Payment Successful - Email to Patient',
-                'message' => 'Dear {name}, Thank you for your payment of {amount}. This is a system generated notification. Please do not reply.',
+                'message' => '<p>Dear {name},</p><br><p>Thank you for your payment of {amount}. This is a system generated notification. Please do not reply. For more information, contact {hospital_name} at {hospital_contact}.</p><br><p>Your SugboDoc Team</p>',
                 'type' => 'payment',
                 'status' => 'Active',
             ),
             '1' => array(
                 'name' => 'Appointment Confirmation - Email to Patient',
-                'message' => 'Dear {name}, Your appointment with {doctorname} on {appointmentdate} at {time_slot} is confirmed. Login to sugbodoc.com with your email and click on Go Live at least 10 minutes before the schedule to prepare. For more information, contact {hospital_name} at {hospital_contact}.',
+                'message' => '<p>Dear {name},</p><br><p>Your appointment with Dr. {doctorname} on {appoinmentdate} at {time_slot} is confirmed. For more information, please contact {hospital_name} at {hospital_contact}.</p><br><p>Your SugboDoc Team</p>',
                 'type' => 'appoinment_confirmation',
                 'status' => 'Active',
             ),
             '2' => array(
                 'name' => 'Appointment Creation - Email to Patient',
-                'message' => 'Dear {name}, You have booked an appointment with {doctorname} on {appointmentdate} at {time_slot}. Please wait for another email once the doctor confirms your appointment. View your appointment calendar at sugbodoc.com.',
+                'message' => '<p>Dear {name},</p><br><p>You have booked an appointment with Dr. {doctorname} on {appointmentdate} at {time_slot}. Please wait for another email once the doctor confirms your appointment. Login and view your appointment calendar at sugbodoc.com. For more information, contact {hospital_name} at {hospital_contact}. Thank You.</p><br><p>Your SugboDoc Team</p>',
                 'type' => 'appoinment_creation',
                 'status' => 'Active',
             ),
             '3' => array(
                 'name' => 'Meeting Started - Notification To Patient',
-                'message' => 'Dear {patient_name}, Your Live Video Meeting with {doctor_name} scheduled on {start_time} has started. Login to sugbodoc.com and click on Go Live to join the meeting.',
+                'message' => '<p>Dear {patient_name},</p><br><p>You have a Live Video Meeting with Dr. {doctor_name} on {start_time}. For more information, please contact {hospital_name} at {hospital_contact}.</p><br><p>Your SugboDoc Team</p>',
                 'type' => 'meeting_creation',
                 'status' => 'Active',
             ),
             '4' => array(
                 'name' => 'Doctor Registration Confirmation',
-                'message' => 'Dear {name}, Welcome to {company}. You are now registered as a doctor in {department}. You may now login using your email. Thank You.',
+                'message' => '<p>Dear {name},</p><br><p>Welcome to {company}. You are now registered as a doctor in {department} . You may now login at sugbodoc.com using your email address or click on Forgot Password to reset it. For more information, contact {hospital_name} at {hospital_contact}. Thank You.</p><br><p>Your SugboDoc Team</p>',
                 'type' => 'doctor',
                 'status' => 'Active',
             ),
             '5' => array(
                 'name' => 'Patient Registration Confirmation',
-                'message' => 'Dear {name}, Welcome to {company}. You are now registered as a patient of Dr. {doctor}. Login using your email at sugbodoc.com to view your patient records or book an appointment with our doctors. Cheers!',
+                'message' => '<p>Dear {name},</p><br><p>We welcome you to {company}. You are now registered as a patient of Dr. {doctor}. You may login to sugbodoc.com using your email address and default password 12345 or click on Forgot Password to reset it. Make sure to change your password on your first login.</p><br><p>Once logged in, you may view your Patient records, book appointments, start a video consultation with our doctor or pay for your bills. For more information, contact {hospital_name} at {hospital_contact}.</p><br><br><br><p>Cheers,</p><br><p>Your SugboDoc Team</p>',
                 'type' => 'patient',
                 'status' => 'Active',
         ));
