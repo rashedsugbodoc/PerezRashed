@@ -198,8 +198,16 @@ class Request extends MX_Controller {
                 'address' => $address,
                 'phone' => $phone,
                 'language' => $language,
+                'country_id' => $country_id,
+                'company_name' => $company_name,
+                'company_vat_number' => $company_vat_number,
+                'timezone' => $timezone,
+                'time_format' => $time_format,
+                'date_format' => $date_format,
+                'date_format_long' => $date_format_long,                
                 'system_vendor' => 'Rygel Hospital Information System',
                 'discount' => 'flat',
+                'sms_gateway' => 'Twilio',                
                 'currency' => '$'
             );
             $this->settings_model->insertSettings($hospital_settings_data);
@@ -223,16 +231,17 @@ class Request extends MX_Controller {
 
             $this->sms_model->addSmsSettings($data_sms_clickatell);
 
-            $data_sms_msg91 = array(
-                'name' => 'MSG91',
-                'username' => 'Your MSG91 Username',
-                'api_id' => 'Your MSG91 API ID',
-                'authkey' => 'Your MSG91 Auth Key',
+            $data_sms_semaphore = array(
+                'name' => 'Semaphore',
+                'username' => 'Your Semaphore Username',
+                'api_id' => '',
+                'sender' => 'Your Semaphore SenderName',
+                'authkey' => 'Your Semaphore API Key',
                 'user' => $this->ion_auth->get_user_id(),
                 'hospital_id' => $hospital_user_id
             );
 
-            $this->sms_model->addSmsSettings($data_sms_msg91);
+            $this->sms_model->addSmsSettings($data_sms_semaphore);
 
 
 
