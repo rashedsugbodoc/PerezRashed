@@ -135,6 +135,7 @@ class Request extends MX_Controller {
     function approve() {
         $id = $this->input->get('id');
         $request = $this->request_model->getRequestById($id);
+        $group_name = $request->group_name;
         $name = $request->name;
         $email = $request->email;
         $address = $request->address;
@@ -193,6 +194,7 @@ class Request extends MX_Controller {
 
             $hospital_settings_data = array();
             $hospital_settings_data = array('hospital_id' => $hospital_user_id,
+                'group_name' => $group_name,
                 'title' => $name,
                 'email' => $email,
                 'address' => $address,
@@ -205,7 +207,7 @@ class Request extends MX_Controller {
                 'time_format' => $time_format,
                 'date_format' => $date_format,
                 'date_format_long' => $date_format_long,                
-                'system_vendor' => 'Rygel Hospital Information System',
+                'system_vendor' => 'SugboDoc',
                 'discount' => 'flat',
                 'sms_gateway' => 'Twilio',                
                 'currency' => '$'
