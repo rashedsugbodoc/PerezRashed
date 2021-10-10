@@ -28,7 +28,7 @@
                             <form role="form" action="hospital/addNew" method="post" enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-6 form-group">
-                                        <label for="exampleInputEmail1"><?php echo lang('title'); ?></label>
+                                        <label for="exampleInputEmail1"><?php echo lang('healthcare_institution_name'); ?></label>
                                         <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='<?php
                                         if (!empty($hospital->name)) {
                                             echo $hospital->name;
@@ -196,11 +196,22 @@
                                 <div class="row">
                                     <div class="col-md-6 form-group">
                                         <label for="timezone"><?php echo lang('timezone');?></label>
-                                        <input type="text" class="form-control" name="timezone" id="timezone" value='<?php 
-                                        if (!empty($settings->timezone)) {
-                                            echo $settings->timezone;
-                                        }
-                                        ?>' placeholder="<?php echo lang('timezone');?>">
+                                        <select class="form-control" name="timezone" value=''>
+                                            <?php foreach ($zones as $zone) { ?>
+                                                <option value="<?php echo $zone; ?>" <?php
+                                                if (!empty($setval)) {
+                                                    if ($zone == set_value('timezone')) {
+                                                        echo 'selected';
+                                                    }
+                                                }
+                                                if (!empty($settings->timezone)) {
+                                                    if ($zone == $settings->timezone) {
+                                                        echo 'selected';
+                                                    }
+                                                }
+                                                ?> > <?php echo $zone; ?> </option>
+                                                    <?php } ?>
+                                        </select>  
                                     </div>
                                     <div class="col-md-6 form-group">
                                         <label for="time_format"><?php echo lang('time_format');?></label>
