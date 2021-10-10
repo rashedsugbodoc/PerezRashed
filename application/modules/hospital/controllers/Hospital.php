@@ -30,6 +30,7 @@ class Hospital extends MX_Controller {
 
     public function addNewView() {
         $data['packages'] = $this->package_model->getPackage();
+        $data['zones'] = timezone_identifiers_list();
         $data['countries'] = $this->country_model->getCountry();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('add_new', $data);
@@ -37,7 +38,9 @@ class Hospital extends MX_Controller {
     }
 
     public function addNew() {
+        $data['zones'] = timezone_identifiers_list();
         $id = $this->input->post('id');
+        $group_name = $this->input->post('group_name');
         $name = $this->input->post('name');
         $password = $this->input->post('password');
         $email = $this->input->post('email');
@@ -139,6 +142,7 @@ class Hospital extends MX_Controller {
                     $this->hospital_model->updateHospital($hospital_user_id, $id_info);
                     $hospital_settings_data = array();
                     $hospital_settings_data = array('hospital_id' => $hospital_user_id,
+                        'group_name' => $group_name,
                         'title' => $name,
                         'email' => $email,
                         'address' => $address,
@@ -151,7 +155,7 @@ class Hospital extends MX_Controller {
                         'time_format' => $time_format,
                         'date_format' => $date_format,
                         'date_format_long' => $date_format_long,
-                        'system_vendor' => 'Rygel Hospital Information System',
+                        'system_vendor' => 'SugboDoc',
                         'discount' => 'flat',
                         'sms_gateway' => 'Twilio',
                         'currency' => '$'
@@ -325,6 +329,7 @@ class Hospital extends MX_Controller {
     function editHospital() {
         $data = array();
         $id = $this->input->get('id');
+        $data['zones'] = timezone_identifiers_list();
         $data['countries'] = $this->country_model->getCountry();
         $data['packages'] = $this->package_model->getPackage();
         $data['hospital'] = $this->hospital_model->getHospitalById($id);
