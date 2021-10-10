@@ -707,11 +707,13 @@ class Meeting extends MX_Controller {
             $name1[1] = null;
         }
         $data1 = array(
-            'patient_name' => $patient_details->name,
+            'name' => $patient_details->name,
             'doctor_name' => $doctor_details->name,
             'start_time' => $start_time,
             'hospital_name' => $set['settings']->system_vendor,
             'hospital_contact' => $set['settings']->phone,
+            'appointmentdate' => $appointment_details->date,
+            'time_slot' => $appointment_details->time_slot,
             'meeting_link' => $appointment_details->live_meeting_link
         );
 
