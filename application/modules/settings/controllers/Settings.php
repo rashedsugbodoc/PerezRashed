@@ -17,6 +17,7 @@ class Settings extends MX_Controller {
     public function index() {
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
+        $data['zones'] = timezone_identifiers_list();
         $data['countries'] = $this->country_model->getCountry();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('settings', $data);
@@ -33,7 +34,7 @@ class Settings extends MX_Controller {
 
     public function update() {
         $id = $this->input->post('id');
-        $name = $this->input->post('name');
+        $group_name = $this->input->post('group_name');
         $title = $this->input->post('title');
         $email = $this->input->post('email');
         $address = $this->input->post('address');
@@ -42,14 +43,22 @@ class Settings extends MX_Controller {
         $logo = $this->input->post('logo');
         $buyer = $this->input->post('buyer');
         $p_code = $this->input->post('p_code');
+        $language = $this->input->post('language');
+        $country_id = $this->input->post('country_id');        
+        $company_name = $this->input->post('company_name');
+        $company_vat_number = $this->input->post('company_vat_number');
+        $timezone = $this->input->post('timezone');
+        $time_format = $this->input->post('time_format');
+        $date_format = $this->input->post('date_format');
+        $date_format_long = $this->input->post('date_format_long');
 
         if (!empty($email)) {
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
-            // Validating Name Field
-            $this->form_validation->set_rules('name', 'System Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            // Validating Group Name Field
+            $this->form_validation->set_rules('group_name', 'Group Name', 'trim|min_length[1]|max_length[100]|xss_clean');
             // Validating Title Field
-            $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('title', 'Healthcare Institution or Practice Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
             // Validating Email Field
             $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[1]|max_length[100]|xss_clean');
             // Validating Address Field    
@@ -68,12 +77,14 @@ class Settings extends MX_Controller {
             if ($this->form_validation->run() == FALSE) {
                 $data = array();
                 $data['settings'] = $this->settings_model->getSettings();
+                $data['zones'] = timezone_identifiers_list();
+                $data['countries'] = $this->country_model->getCountry();
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('settings', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
 
-                $file_name = $_FILES['img_url']['name'];
+                $file_name = $_FILES['img_url']['title'];
                 $file_name_pieces = explode('_', $file_name);
                 $new_file_name = '';
                 $count = 1;
@@ -103,7 +114,7 @@ class Settings extends MX_Controller {
                     $img_url = "uploads/" . $path['file_name'];
                     $data = array();
                     $data = array(
-                        'system_vendor' => $name,
+                        'group_name' => $group_name,
                         'title' => $title,
                         'address' => $address,
                         'phone' => $phone,
@@ -111,12 +122,19 @@ class Settings extends MX_Controller {
                         'currency' => $currency,
                         'codec_username' => $buyer,
                         'codec_purchase_code' => $p_code,
-                        'logo' => $img_url
+                        'logo' => $img_url,
+                        'country_id' => $country_id,
+                        'company_name' => $company_name,
+                        'company_vat_number' => $company_vat_number,
+                        'timezone' => $timezone,
+                        'time_format' => $time_format,
+                        'date_format' => $date_format,
+                        'date_format_long' => $date_format_long
                     );
                 } else {
                     $data = array();
                     $data = array(
-                        'system_vendor' => $name,
+                        'group_name' => $group_name,
                         'title' => $title,
                         'address' => $address,
                         'phone' => $phone,
@@ -124,6 +142,13 @@ class Settings extends MX_Controller {
                         'currency' => $currency,
                         'codec_username' => $buyer,
                         'codec_purchase_code' => $p_code,
+                        'country_id' => $country_id,
+                        'company_name' => $company_name,
+                        'company_vat_number' => $company_vat_number,
+                        'timezone' => $timezone,
+                        'time_format' => $time_format,
+                        'date_format' => $date_format,
+                        'date_format_long' => $date_format_long
                     );
                 }
                 //$error = array('error' => $this->upload->display_errors());

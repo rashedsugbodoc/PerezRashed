@@ -14,19 +14,19 @@
                         <form role="form" action="settings/update" method="post" enctype="multipart/form-data">
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1"><?php echo lang('healthcare_institution_name'); ?></label>
-                                <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='<?php
-                                if (!empty($settings->system_vendor)) {
-                                    echo $settings->system_vendor;
-                                }
-                                ?>' placeholder="system name">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"><?php echo lang('title'); ?></label>
                                 <input type="text" class="form-control" name="title" id="exampleInputEmail1" value='<?php
                                 if (!empty($settings->title)) {
                                     echo $settings->title;
                                 }
-                                ?>' placeholder="title">
+                                ?>' placeholder="<?php echo lang('healthcare_institution_name'); ?>">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="exampleInputEmail1"><?php echo lang('healthcare_institution_group_name'); ?></label>
+                                <input type="text" class="form-control" name="group_name" id="exampleInputEmail1" value='<?php
+                                if (!empty($settings->group_name)) {
+                                    echo $settings->group_name;
+                                }
+                                ?>' placeholder="<?php echo lang('healthcare_institution_group_name'); ?>">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1"><?php echo lang('address'); ?></label>
@@ -134,11 +134,22 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="timezone"><?php echo lang('timezone');?></label>
-                                <input type="text" class="form-control" name="timezone" id="timezone" value='<?php 
-                                if (!empty($settings->timezone)) {
-                                    echo $settings->timezone;
-                                }
-                                ?>' placeholder="<?php echo lang('timezone');?>">
+                                <select class="form-control" name="timezone" value=''>
+                                    <?php foreach ($zones as $zone) { ?>
+                                        <option value="<?php echo $zone; ?>" <?php
+                                        if (!empty($setval)) {
+                                            if ($zone == set_value('timezone')) {
+                                                echo 'selected';
+                                            }
+                                        }
+                                        if (!empty($settings->timezone)) {
+                                            if ($zone == $settings->timezone) {
+                                                echo 'selected';
+                                            }
+                                        }
+                                        ?> > <?php echo $zone; ?> </option>
+                                            <?php } ?>
+                                </select>  
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="time_format"><?php echo lang('time_format');?></label>
@@ -279,14 +290,14 @@
                             </div>                                                     
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1"><?php echo lang('hospital_email'); ?></label>
-                                <input type="text" class="form-control" name="email" id="exampleInputEmail1" value='<?php
+                                <input type="email" class="form-control" name="email" id="exampleInputEmail1" value='<?php
                                 if (!empty($settings->email)) {
                                     echo $settings->email;
                                 }
                                 ?>' placeholder="email">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"><?php echo lang('currency'); ?></label>
+                                <label for="exampleInputEmail1"><?php echo lang('currency_symbol'); ?></label>
                                 <input type="text" class="form-control" name="currency" id="exampleInputEmail1" value='<?php
                                 if (!empty($settings->currency)) {
                                     echo $settings->currency;
