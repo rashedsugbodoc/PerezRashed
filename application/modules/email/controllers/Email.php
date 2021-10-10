@@ -86,6 +86,7 @@ class Email extends MX_Controller {
         $is_v_v = $this->input->post('radio');
         $emailSettings = $this->email_model->getEmailSettings();
         $settngsname = $this->settings_model->getSettings()->system_vendor;
+        $hospital_name = $this->settings_model->getSettings()->title;
         if ($is_v_v == 'allpatient') {
             $patients = $this->patient_model->getpatient();
             foreach ($patients as $patient) {
@@ -101,7 +102,8 @@ class Email extends MX_Controller {
                     'phone' => $patient->phone,
                     'email' => $patient->email,
                     'address' => $patient->address,
-                    'company' => $settngsname
+                    'company' => $settngsname,
+                    'hospital_name' => $hospital_name
                 );
                 $messageprint = $this->parser->parse_string($message, $data1);
                 $data2[] = array($patient->email => $messageprint);
@@ -126,6 +128,7 @@ class Email extends MX_Controller {
                     'email' => $doctor->email,
                     'address' => $doctor->address,
                     'company' => $settngsname,
+                    'hospital_name' => $hospital_name,
                     'department' => $doctor->department
                 );
                 $messageprint = $this->parser->parse_string($message, $data1);
@@ -151,7 +154,8 @@ class Email extends MX_Controller {
                         'name' => $donor->name,
                         'phone' => $donor->phone,
                         'email' => $donor->email,
-                        'company' => $settngsname
+                        'company' => $settngsname,
+                        'hospital_name' => $hospital_name
                     );
                     $messageprint = $this->parser->parse_string($message, $data1);
                     $data2[] = array($donor->email => $messageprint);
@@ -178,7 +182,8 @@ class Email extends MX_Controller {
                 'phone' => $patient_detail->phone,
                 'email' => $patient_detail->email,
                 'address' => $patient_detail->address,
-                'company' => $settngsname
+                'company' => $settngsname,
+                'hospital_name' => $hospital_name
             );
             $messageprint = $this->parser->parse_string($message, $data1);
             $data2[] = array($patient_detail->email => $messageprint);
