@@ -179,7 +179,7 @@ class Doctor extends MX_Controller {
                         'password' => $password,
                         'department' => $department,
                         'company' => $set['settings']->system_vendor,
-                        'hospital_name' => $set['settings']->system_vendor,
+                        'hospital_name' => $set['settings']->title,
                         'hospital_contact' => $set['settings']->phone
                     );
 
@@ -198,7 +198,7 @@ class Doctor extends MX_Controller {
                         $messageprint1 = $this->parser->parse_string($message1, $data1);
                         $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
                         $this->email->to($email);
-                        $this->email->subject('New Doctor Registration');
+                        $this->email->subject(lang('new_doctor_registered_email_subject'));
                         $this->email->message($messageprint1);
                         $this->email->send();
                     }
