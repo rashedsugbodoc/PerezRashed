@@ -188,7 +188,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         </div>
         <div class="page">
             <div class="page-main">
-
+                <?php
+                date_default_timezone_set($this->settings_model->getSettings()->timezone);
+                ?>
                 <!--aside open-->
                 <div class="app-sidebar app-sidebar2">
                     <div class="app-sidebar__logo">
