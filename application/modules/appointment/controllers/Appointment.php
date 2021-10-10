@@ -352,14 +352,18 @@ class Appointment extends MX_Controller {
             if ($status != 'Confirmed') {
                 $autosms = $this->sms_model->getAutoSmsByType('appoinment_creation');
                 $autoemail = $this->email_model->getAutoEmailByType('appoinment_creation');
+                $autoemail_subject = 'appointment_awaiting_confirmation';
             } else {
                 $autosms = $this->sms_model->getAutoSmsByType('appoinment_confirmation');
                 $autoemail = $this->email_model->getAutoEmailByType('appoinment_confirmation');
+                $autoemail_subject = 'appointment_confirmed';
+
             }
         } else {
 
             $autosms = $this->sms_model->getAutoSmsByType('appoinment_confirmation');
             $autoemail = $this->email_model->getAutoEmailByType('appoinment_confirmation');
+            $autoemail_subject = 'appointment_confirmed';
         }
         $message = $autosms->message;
         $to = $patientdetails->phone;
@@ -374,7 +378,7 @@ class Appointment extends MX_Controller {
             'doctorname' => $doctordetails->name,
             'appointmentdate' => date('F j, Y', $data['date']),
             'time_slot' => $data['time_slot'],
-            'hospital_name' => $set['settings']->system_vendor,
+            'hospital_name' => $set['settings']->title,
             'hospital_contact' => $set['settings']->phone
         );
 
@@ -384,16 +388,14 @@ class Appointment extends MX_Controller {
             $data2[] = array($to => $messageprint);
             $this->sms->sendSms($to, $message, $data2);
         }
-        //end
-        //email
-        // $autoemail = $this->email_model->getAutoEmailByType('payment');
+
         if ($autoemail->status == 'Active') {
             $emailSettings = $this->email_model->getEmailSettings();
             $message1 = $autoemail->message;
             $messageprint1 = $this->parser->parse_string($message1, $data1);
             $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
             $this->email->to($patientdetails->email);
-            $this->email->subject(lang('appointment_awaiting_confirmation'));
+            $this->email->subject(lang($autoemail_subject));
             $this->email->message($messageprint1);
             $this->email->send();
         }
