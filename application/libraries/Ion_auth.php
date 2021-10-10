@@ -154,7 +154,7 @@ class Ion_auth {
                     
                     $message = $this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_forgot_password', 'ion_auth'), $data, true);
                     $this->email->clear();
-                    $this->email->from($admin_email->admin_email, $settings->system_vendor);
+                    $this->email->from($admin_email->admin_email, $admin_email->admin_email_display_name);
                     $this->email->to($user->email);
                     $this->email->subject($settings->system_vendor . ' - ' . $this->lang->line('email_forgotten_password_subject'));
                     $this->email->message($message);
