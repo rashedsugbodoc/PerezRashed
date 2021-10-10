@@ -134,6 +134,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                 </div>
                 <!--logo start-->
                 <?php
+                date_default_timezone_set($this->settings_model->getSettings()->timezone);
+                ?>
+                <?php
                 if (!$this->ion_auth->in_group(array('superadmin'))) {
                     $this->db->where('hospital_id', $this->hospital_id);
                     $settings_logo = $this->db->get('settings')->row()->logo;
