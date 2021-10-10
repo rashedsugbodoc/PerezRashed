@@ -1110,7 +1110,7 @@ $temp_phone = str_replace('.','',$temp_phone);
             'doctorname' => $doctordetails->name,
             'appointmentdate' => date('d-m-Y', $data['date']),
             'time_slot' => $data['time_slot'],
-            'hospital_name' => $set['settings']->system_vendor
+            'hospital_name' => $set['settings']->title
         );
 
         if ($autosms->status == 'Active') {
