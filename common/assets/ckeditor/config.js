@@ -31,7 +31,7 @@ CKEDITOR.editorConfig = function( config ) {
         
         
 
- config.removeButtons = 'Cut,Copy,Paste,Undo,Redo,Anchor,Underline,Strike,Subscript,Superscript,Source,About,Styles,Indent,Link,Unlink,Spellchecker,Paste,Outdent,SpecialChar,PasteText,PasteFromWord,Templates';
+ config.removeButtons = 'Cut,Copy,Paste,Subscript,Superscript,About,Styles,Spellchecker,Paste,SpecialChar,PasteText,PasteFromWord,Templates';
 
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
