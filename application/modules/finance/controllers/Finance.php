@@ -333,6 +333,10 @@ class Finance extends MX_Controller {
                     'lastname' => $name1[1],
                     'name' => $patient_name,
                     'amount' => $gross_total,
+                    'hospital_name' => $set['settings']->system_vendor,
+                    'hospital_contact' => $set['settings']->phone,
+                    'currency_symbol' => $set['settings']->currency,
+                    'invoice_id' => $inserted_id
                 );
 
                 if ($autosms->status == 'Active') {
@@ -350,7 +354,7 @@ class Finance extends MX_Controller {
                     $messageprint1 = $this->parser->parse_string($message1, $data1);
                     $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
                     $this->email->to($patient_email);
-                    $this->email->subject('Payment confirmation');
+                    $this->email->subject(lang('payment_successful_subject'));
                     $this->email->message($messageprint1);
                     $this->email->send();
                 }
