@@ -1135,16 +1135,27 @@ class Finance extends MX_Controller {
     function invoice() {
         $id = $this->input->get('id');
         $data['payment'] = $this->finance_model->getPaymentById($id);
-        $patient_hospital_id = $this->patient_model->getPatientById($data['payment']->patient)->hospital_id;
+        $data['patient'] = $this->patient_model->getPatientById($data['payment']->patient);
+        $patient_hospital_id = $data['patient']->hospital_id;
+
+        if (!empty($data['patient']->birthdate)) {
+            $birthDate = strtotime($data['patient']->birthdate);
+            $birthDate = date('m/d/Y', $birthDate);
+            $birthDate = explode("/", $birthDate);
+            $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
+            $data['age'] = $age;
+        }
+
+
         if ($patient_hospital_id != $this->session->userdata('hospital_id')) {
             redirect('home/permission');
         }
         $data['settings'] = $this->settings_model->getSettings();
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['payment'] = $this->finance_model->getPaymentById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('invoice', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2');
+        $this->load->view('invoicev2', $data);
+        //$this->load->view('home/footer'); // just the footer fi
     }
 
     function printInvoice() {
