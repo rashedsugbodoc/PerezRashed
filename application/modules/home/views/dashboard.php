@@ -731,9 +731,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <span><?php echo lang('financial_activities'); ?></span>
                                     </a>
                                     <ul class="sub">
-                                        <li><a  href="finance/payment"><i class="fa fa-money-check"></i> <?php echo lang('payments'); ?></a></li>
-                                        <li><a  href="finance/addPaymentView"><i class="fa fa-plus"></i><?php echo lang('add_payment'); ?></a></li>
-                                        <li><a  href="finance/paymentCategory"><i class="fa fa-edit"></i><?php echo lang('payment_procedures'); ?></a></li>
+                                        <li><a  href="finance/payment"><i class="fa fa-money-check"></i> <?php echo lang('invoices'); ?></a></li>
+                                        <li><a  href="finance/addPaymentView"><i class="fa fa-plus"></i><?php echo lang('add_invoice'); ?></a></li>
+                                        <li><a  href="finance/paymentCategory"><i class="fa fa-list"></i><?php echo lang('service_listing'); ?></a></li>
+                                        <li><a  href="finance/serviceCategory"><i class="fa fa-th-list"></i><?php echo lang('service_categories'); ?> </a></li>
                                         <li><a  href="finance/expense"><i class="fa fa-money-check"></i><?php echo lang('expense'); ?></a></li>
                                         <li><a  href="finance/addExpenseView"><i class="fa fa-plus"></i><?php echo lang('add_expense'); ?></a></li>
                                         <li><a  href="finance/expenseCategory"><i class="fa fa-edit"></i><?php echo lang('expense_categories'); ?> </a></li>

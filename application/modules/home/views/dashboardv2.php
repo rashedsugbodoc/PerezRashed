@@ -326,9 +326,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('financial_activities'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
 
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('payments'); ?></a></li>
-                                        <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_payment'); ?></a></li>
-                                        <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('payment_procedures'); ?></a></li>
+                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
+                                        <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
+                                        <li><a href="finance/paymentCategory"><i class="fa fa-list"></i><?php echo lang('service_listing'); ?></a></li>
+                                        <li><a  href="finance/serviceCategory"><i class="fa fa-th-list"></i><?php echo lang('service_categories'); ?> </a></li>
                                         <li><a href="finance/expense" class="slide-item"><?php echo lang('expense'); ?></a></li>
                                         <li><a href="finance/addExpenseView" class="slide-item"><?php echo lang('add_expense'); ?></a></li>
                                         <li><a href="finance/expenseCategory" class="slide-item"><?php echo lang('expense_categories'); ?></a></li>
