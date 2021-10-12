@@ -736,9 +736,33 @@ class Finance_model extends CI_model {
         return $query->row();
     }
 
+    function insertServiceCategory($data) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('service_category', $data2);
+    }
+
+    function getServiceCategory() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('service_category');
+        return $query->result();
+    }
+
+    function getServiceCategoryById($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('id', $id);
+        $query = $this->db->get('service_category');
+        return $query->row();
+    }
+
     function updateExpenseCategory($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('expense_category', $data);
+    }
+
+    function updateServiceCategory($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('service_category', $data);
     }
 
     function deleteExpense($id) {
@@ -749,6 +773,11 @@ class Finance_model extends CI_model {
     function deleteExpenseCategory($id) {
         $this->db->where('id', $id);
         $this->db->delete('expense_category');
+    }
+
+    function deleteServiceCategory($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('service_category');
     }
 
     function getDiscountType() {
