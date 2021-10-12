@@ -8,10 +8,10 @@
                 <div class="panel">
                     <header class="panel-heading">
                         <?php
-                        if (!empty($category->id))
-                            echo lang('edit_payment_category');
+                        if (!empty($service->id))
+                            echo lang('edit_service');  
                         else
-                            echo lang('create_payment_procedure');
+                            echo lang('add_service');
                         ?>
                     </header>
                     <div class="panel-body">
@@ -20,13 +20,13 @@
                                 <?php echo validation_errors(); ?>
                                 <form role="form" action="finance/addPaymentCategory" class="clearfix" method="post" enctype="multipart/form-data">
                                     <div class="form-group"> 
-                                        <label for="exampleInputEmail1"><?php echo lang('category'); ?> <?php echo lang('name'); ?></label>
-                                        <input type="text" class="form-control" name="category" id="exampleInputEmail1" value='<?php
+                                        <label for="exampleInputEmail1"><?php echo lang('service'); ?> <?php echo lang('name'); ?></label>
+                                        <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='<?php
                                         if (!empty($setval)) {
-                                            echo set_value('category');
+                                            echo set_value('name');
                                         }
-                                        if (!empty($category->category)) {
-                                            echo $category->category;
+                                        if (!empty($service->category)) {
+                                            echo $service->category;
                                         }
                                         ?>' placeholder="">    
                                     </div> 
@@ -37,19 +37,19 @@
                                         if (!empty($setval)) {
                                             echo set_value('description');
                                         }
-                                        if (!empty($category->description)) {
-                                            echo $category->description;
+                                        if (!empty($service->description)) {
+                                            echo $service->description;
                                         }
                                         ?>' placeholder="">
                                     </div>
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1"><?php echo lang('category'); ?> <?php echo lang('price'); ?></label>
+                                        <label for="exampleInputEmail1"><?php echo lang('price'); ?></label>
                                         <input type="text" class="form-control" name="c_price" id="exampleInputEmail1" value='<?php
                                         if (!empty($setval)) {
                                             echo set_value('c_price');
                                         }
-                                        if (!empty($category->c_price)) {
-                                            echo $category->c_price;
+                                        if (!empty($service->c_price)) {
+                                            echo $service->c_price;
                                         }
                                         ?>' placeholder="">
                                     </div>
@@ -59,45 +59,36 @@
                                         if (!empty($setval)) {
                                             echo set_value('d_commission');
                                         }
-                                        if (!empty($category->d_commission)) {
-                                            echo $category->d_commission;
+                                        if (!empty($service->d_commission)) {
+                                            echo $service->d_commission;
                                         }
                                         ?>' placeholder="">
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1"><?php echo lang('type'); ?></label>
-                                        <select class="form-control m-bot15" name="type" value=''>    
-                                            <option value="diagnostic" <?php
-                                            if (!empty($setval)) {
-                                                if (set_value('type') == 'diagnostic') {
-                                                    echo 'selected';
+                                        <label for="exampleInputEmail1"><?php echo lang('category'); ?></label>
+                                        <select class="form-control m-bot15 js-example-basic-single" name="category_id" value=''>
+                                            <option value=""><?php echo lang('select_category');?></option>
+                                            <?php foreach ($categories as $category) { ?>
+                                                <option value="<?php echo $category->id; ?>" <?php
+                                                if (!empty($setval)) {
+                                                    if ($category->id == set_value('category_id')) {
+                                                        echo 'selected';
+                                                    }
                                                 }
-                                            }
-                                            if (!empty($category->type)) {
-                                                if ($category->type == 'diagnostic') {
-                                                    echo 'selected';
+                                                if (!empty($service->category_id)) {
+                                                    if ($category->id == $service->category_id) {
+                                                        echo 'selected';
+                                                    }
                                                 }
-                                            }
-                                            ?> > <?php echo lang('diagnostic_test'); ?> </option>  
-                                            <option value="others" <?php
-                                            if (!empty($setval)) {
-                                                if (set_value('type') == 'others') {
-                                                    echo 'selected';
-                                                }
-                                            }
-                                            if (!empty($category->type)) {
-                                                if ($category->type == 'others') {
-                                                    echo 'selected';
-                                                }
-                                            }
-                                            ?> > <?php echo lang('others'); ?> </option>  
+                                                ?> > <?php echo $category->category; ?> </option>
+                                                    <?php } ?> 
                                         </select>
                                     </div>
 
                                     <input type="hidden" name="id" value='<?php
-                                    if (!empty($category->id)) {
-                                        echo $category->id;
+                                    if (!empty($service->id)) {
+                                        echo $service->id;
                                     }
                                     ?>'>
 

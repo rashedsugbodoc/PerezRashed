@@ -5,12 +5,12 @@
         <!-- page start-->
         <section class="panel">
             <header class="panel-heading">
-                <?php echo lang('payment_procedures'); ?>
+                <?php echo lang('service_listing'); ?>
                 <div class="col-md-4 no-print pull-right"> 
                     <a href="finance/addPaymentCategoryView">
                         <div class="btn-group pull-right">
                             <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('create_payment_procedure'); ?>
+                                <i class="fa fa-plus"></i> <?php echo lang('add_service'); ?>
                             </button>
                         </div>
                     </a>
@@ -26,7 +26,7 @@
                                 <th><?php echo lang('description'); ?></th>
                                 <th><?php echo lang('category'); ?> <?php echo lang('price'); ?> ( <?php echo $settings->currency; ?> )</th>
                                 <th><?php echo lang('doctors_commission'); ?></th>
-                                <th><?php echo lang('type'); ?></th>
+                                <th><?php echo lang('category'); ?></th>
                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                     <th class="no-print"><?php echo lang('options'); ?></th>
                                 <?php } ?>
@@ -56,14 +56,7 @@
                                 <td> <?php echo $category->description; ?></td>
                                 <td> <?php echo $category->c_price; ?></td>
                                 <td> <?php echo $category->d_commission; ?> %</td>
-                                <td> <?php
-                                    if ($category->type == 'diagnostic') {
-                                        echo lang('diagnostic_test');
-                                    } else {
-                                        echo lang('others');
-                                    }
-                                    ?>
-                                </td>
+                                <td> <?php echo $this->finance_model->getServiceCategoryById($category->category_id)->category;?></td>
                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                     <td class="no-print">
                                         <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editPaymentCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"> </i></a>
