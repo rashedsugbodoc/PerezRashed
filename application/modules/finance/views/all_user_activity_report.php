@@ -10,7 +10,7 @@
             </header>
             <div class="panel-body">
                 <header class="panel-heading">
-                    <?php echo lang('today'); ?> <?php echo lang('report'); ?>
+                    <?php echo lang('todays'); ?> <?php echo lang('report'); ?>
                 </header>
                 <div class="adv-table editable-table ">
                     <div class="space15"></div>
