@@ -855,18 +855,20 @@ class Finance extends MX_Controller {
     }
 
     public function addPaymentCategoryView() {
+        $data['categories'] = $this->finance_model->getServiceCategory();
         $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_payment_category');
+        $this->load->view('add_payment_category', $data);
         $this->load->view('home/footer'); // just the header file
     }
 
     public function addPaymentCategory() {
         $id = $this->input->post('id');
-        $category = $this->input->post('category');
-        $type = $this->input->post('type');
+        $name = $this->input->post('name');
+        $category_id = $this->input->post('category_id');
         $description = $this->input->post('description');
         $c_price = $this->input->post('c_price');
         $d_commission = $this->input->post('d_commission');
+
         if (empty($c_price)) {
             $c_price = 0;
         }
@@ -875,15 +877,15 @@ class Finance extends MX_Controller {
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 // Validating Category Name Field
-        $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('name', 'Service Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Description Field
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Description Field
         $this->form_validation->set_rules('c_price', 'Category price', 'trim|min_length[1]|max_length[100]|xss_clean');
 // Validating Doctor Commission Rate Field
         $this->form_validation->set_rules('d_commission', 'Doctor Commission rate', 'trim|min_length[1]|max_length[100]|xss_clean');
-// Validating Description Field
-        $this->form_validation->set_rules('type', 'Type', 'trim|min_length[1]|max_length[100]|xss_clean');
+// Validating Service Category Name Field
+        $this->form_validation->set_rules('category_id', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');        
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
@@ -898,9 +900,9 @@ class Finance extends MX_Controller {
             }
         } else {
             $data = array();
-            $data = array('category' => $category,
+            $data = array('category' => $name,
                 'description' => $description,
-                'type' => $type,
+                'category_id' => $category_id,
                 'c_price' => $c_price,
                 'd_commission' => $d_commission
             );
@@ -918,7 +920,8 @@ class Finance extends MX_Controller {
     function editPaymentCategory() {
         $data = array();
         $id = $this->input->get('id');
-        $data['category'] = $this->finance_model->getPaymentCategoryById($id);
+        $data['service'] = $this->finance_model->getPaymentCategoryById($id);
+        $data['categories'] = $this->finance_model->getServiceCategory();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('add_payment_category', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -1132,6 +1135,94 @@ class Finance extends MX_Controller {
         redirect('finance/expenseCategory');
     }
 
+    //start service category
+    public function serviceCategory() {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
+        $data['categories'] = $this->finance_model->getServiceCategory();
+        $this->load->view('home/dashboard'); // just the header file
+        $this->load->view('service_category', $data);
+        $this->load->view('home/footer'); // just the header file
+    }
+
+    public function addServiceCategoryView() {
+        $this->load->view('home/dashboard'); // just the header file
+        $this->load->view('add_service_category');
+        $this->load->view('home/footer'); // just the header file
+    }
+
+    public function addServiceCategory() {
+        $id = $this->input->post('id');
+        $category = $this->input->post('category');
+        $description = $this->input->post('description');
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+// Validating Category Name Field
+        $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+// Validating Description Field
+        $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            if (!empty($id)) {
+                $this->session->set_flashdata('feedback', lang('validation_error'));
+                redirect('finance/editServiceCategory?id=' . $id);
+            } else {
+                $data = array();
+                $data['setval'] = 'setval';
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_service_category', $data);
+                $this->load->view('home/footer'); // just the header file
+            }
+        } else {
+            $data = array();
+            $data = array('category' => $category,
+                'description' => $description
+            );
+            if (empty($id)) {
+                $this->finance_model->insertServiceCategory($data);
+                $this->session->set_flashdata('feedback', lang('added'));
+            } else {
+                $this->finance_model->updateServiceCategory($id, $data);
+                $this->session->set_flashdata('feedback', lang('updated'));
+            }
+            redirect('finance/serviceCategory');
+        }
+    }
+
+    function editServiceCategory() {
+        $data = array();
+        $id = $this->input->get('id');
+
+        if (!empty($id)) {
+            $service_category_details = $this->finance_model->getServiceCategoryById($id);
+            if ($service_category_details->hospital_id != $this->session->userdata('hospital_id')) {
+                redirect('home/permission');
+            }
+        }
+
+        $data['category'] = $this->finance_model->getServiceCategoryById($id);
+        $this->load->view('home/dashboard'); // just the header file
+        $this->load->view('add_service_category', $data);
+        $this->load->view('home/footer'); // just the footer file
+    }
+
+    function deleteServiceCategory() {
+        $id = $this->input->get('id');
+
+        if (!empty($id)) {
+            $service_category_details = $this->finance_model->getServiceCategoryById($id);
+            if ($service_category_details->hospital_id != $this->session->userdata('hospital_id')) {
+                redirect('home/permission');
+            }
+        }
+
+        $this->finance_model->deleteServiceCategory($id);
+        redirect('finance/serviceCategory');
+    }
+
+    //end service category
+
     function invoice() {
         $id = $this->input->get('id');
         $data['payment'] = $this->finance_model->getPaymentById($id);
@@ -1169,9 +1260,9 @@ class Finance extends MX_Controller {
             redirect('home/permission');
         }
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('print_invoice', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv3'); // just the header file
+        $this->load->view('print_invoicev2', $data);
+        //$this->load->view('home/footer'); // just the footer fi
     }
 
     function expenseInvoice() {
