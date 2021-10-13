@@ -635,6 +635,7 @@ $lang['api_username'] = 'API Username';
 $lang['api_password'] = 'API Password';
 $lang['api_signature'] = 'API Signature';
 $lang['back_to_payment_modules'] = 'Back To Payment Module';
+$lang['back_to_all_invoices'] = 'Back To All Invoices';
 $lang['manager'] = 'Manager';
 $lang['cases'] = 'Cases';
 $lang['add_case'] = 'Add Case';
