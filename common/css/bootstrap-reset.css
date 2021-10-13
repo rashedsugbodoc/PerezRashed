@@ -134,11 +134,11 @@ a:hover {
     border: 1px solid #092;
     border-radius: 5px;
     box-shadow: none;
-    border: 1px solid #e2e2e4;
+    border: 1px solid #d3dfea;
     color: #068;
     background: #fff;
     width: 100%;
-    color: #000;
+    color: #424e79;
     height: 38px !important;
 }
 
@@ -728,7 +728,7 @@ form input{
 
 
 .select2-container--default .select2-selection--single{
-    border: 1px solid #e2e2e4 !important;
+    border: 1px solid #d3dfea !important;
 }
 
 table.dataTable thead th, table.dataTable thead td{
@@ -740,7 +740,8 @@ table.dataTable thead th, table.dataTable thead td{
 label{
     font-weight: bold;
     font-family: 'proxima nova',proxima-nova,'-apple-system',BlinkMacSystemFont,'Segoe UI','open sans',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji';
-    color: #777;
+    color: #424e79;
+    font-size: 14px;
 }
 
 .table-bordered>thead>tr>th, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>tbody>tr>td, .table-bordered>tfoot>tr>td{

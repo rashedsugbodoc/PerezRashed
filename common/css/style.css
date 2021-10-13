@@ -2296,7 +2296,7 @@ ul.inbox-pagination li {
 }
 
 .modal-body label {
-    font-weight: normal;
+    font-weight: bold;
     font-family: 'proxima nova',proxima-nova,'-apple-system',BlinkMacSystemFont,'Segoe UI','open sans',Helvetica,Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji';
     font-size: 14px;
     color: #424e79;
