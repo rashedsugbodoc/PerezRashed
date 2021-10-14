@@ -321,7 +321,7 @@ class Finance extends MX_Controller {
 
                 //sms
                 $set['settings'] = $this->settings_model->getSettings();
-                $autosms = $this->sms_model->getAutoSmsByType('payment');
+                $autosms = $this->sms_model->getAutoSmsByType('bill');
                 $message = $autosms->message;
                 $to = $patient_phone;
                 $name1 = explode(' ', $patient_name);
@@ -332,7 +332,8 @@ class Finance extends MX_Controller {
                     'firstname' => $name1[0],
                     'lastname' => $name1[1],
                     'name' => $patient_name,
-                    'amount' => $gross_total,
+                    'amount' => number_format($gross_total,2),
+                    'date' => date('F j, Y',$date),
                     'hospital_name' => $set['settings']->title,
                     'hospital_contact' => $set['settings']->phone,
                     'currency_symbol' => $set['settings']->currency,
@@ -348,14 +349,14 @@ class Finance extends MX_Controller {
                 //end
                 //email 
 
-                $autoemail = $this->email_model->getAutoEmailByType('payment');
+                $autoemail = $this->email_model->getAutoEmailByType('bill');
                 if ($autoemail->status == 'Active') {
                     $emailSettings = $this->email_model->getEmailSettings();
                     $message1 = $autoemail->message;
                     $messageprint1 = $this->parser->parse_string($message1, $data1);
                     $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
                     $this->email->to($patient_email);
-                    $this->email->subject(lang('payment_successful_subject'));
+                    $this->email->subject(lang('bill_generated_subject').' '.$set['settings']->title);
                     $this->email->message($messageprint1);
                     $this->email->send();
                 }
