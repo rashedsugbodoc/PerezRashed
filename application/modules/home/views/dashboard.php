@@ -720,6 +720,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <?php if (in_array('medicine', $this->modules)) { ?>
                                         <li><a href="receptionist"><i class="fa fa-user"></i><?php echo lang('receptionist'); ?></a></li>
                                     <?php } ?>
+                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                        <li><a href="companyuser"><i class="fa fa-user"></i><?php echo lang('company_user'); ?></a></li>
+                                    <?php } ?>
                                 </ul>
                             </li>
                         <?php } ?>
