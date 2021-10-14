@@ -247,7 +247,8 @@ class Hospital extends MX_Controller {
                     $this->pgateway_model->addPaymentGatewaySettings($data_pgateway_payumoney);
 
                     $data_email_settings = array(
-                        'admin_email' => 'Admin Email', // Sandbox / testing mode option.
+                        'admin_email' => 'team@sugbodoc.com', // Sandbox / testing mode option.
+                        'admin_email_display_name' => 'SugboDoc Team',
                         'hospital_id' => $hospital_user_id
                     );
 
@@ -255,6 +256,8 @@ class Hospital extends MX_Controller {
 
                     $this->hospital_model->createAutoSmsTemplate($hospital_user_id);
                     $this->hospital_model->createAutoEmailTemplate($hospital_user_id);
+                    $this->hospital_model->createCompanyClassification($hospital_user_id);
+                    $this->hospital_model->createCompanyType($hospital_user_id);
 
                     $this->session->set_flashdata('feedback', lang('new_hospital_created'));
                     redirect('hospital');
