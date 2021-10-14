@@ -517,7 +517,8 @@ class Patient extends MX_Controller {
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             $patient_ion_id = $this->ion_auth->get_user_id();
-            $patient = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+            $patient_details = $this->patient_model->getPatientByIonUserId($patient_ion_id);
+            $patient = $patient_details->id;
         } else {
             $this->session->set_flashdata('feedback', lang('undefined_patient_id'));
             redirect('patient/myPaymentsHistory');
@@ -613,13 +614,63 @@ class Patient extends MX_Controller {
                                 'date' => $date,
                                 'patient' => $patient,
                                 'payment_id' => $payment_id,
-                                'deposited_amount' => $amount_received,
+                                'deposited_amount' => $deposited_amount,
+                                'amount_received_id' => $deposited_amount . '.' . 'gp',
+                                'deposit_type' => $deposit_type,                                
                                 'gateway' => 'Stripe',
                                 'user' => $user,
                                 'hospital_id' => $this->session->userdata('hospital_id')
                             );
                             $this->finance_model->insertDeposit($data1);
-                            $this->session->set_flashdata('feedback', lang('added'));
+                            $inserted_id = $this->db->insert_id();
+                            $this->session->set_flashdata('feedback', lang('payment_successful'));
+
+                            //Credit card payment was successful so send payment receipt by email and sms notification
+                            //sms
+                            $set['settings'] = $this->settings_model->getSettings();
+                            $autosms = $this->sms_model->getAutoSmsByType('payment');
+                            $message = $autosms->message;
+                            $to = $patient_details->phone;
+                            $name1 = explode(' ', $patient_details->name);
+                            if (!isset($name1[1])) {
+                                $name1[1] = null;
+                            }
+                            $data1 = array(
+                                'firstname' => $name1[0],
+                                'lastname' => $name1[1],
+                                'name' => $patient_details->name,
+                                'amount' => number_format($deposited_amount,2),
+                                'date' => date('F j, Y',$date),
+                                'hospital_name' => $set['settings']->title,
+                                'hospital_contact' => $set['settings']->phone,
+                                'currency_symbol' => $set['settings']->currency,
+                                'base_url' => base_url(),
+                                'receipt_id' => $inserted_id,
+                                'invoice_id' => $payment_id
+                            );
+
+                            if ($autosms->status == 'Active') {
+                                $messageprint = $this->parser->parse_string($message, $data1);
+                                $data2[] = array($to => $messageprint);
+                                $this->sms->sendSms($to, $message, $data2);
+                            }
+                            //end
+                            //email 
+
+                            $autoemail = $this->email_model->getAutoEmailByType('payment');
+                            if ($autoemail->status == 'Active') {
+                                $emailSettings = $this->email_model->getEmailSettings();
+                                $message1 = $autoemail->message;
+                                $messageprint1 = $this->parser->parse_string($message1, $data1);
+                                $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                                $this->email->to($patient_details->email);
+                                $this->email->subject(lang('payment_successful_subject'));
+                                $this->email->message($messageprint1);
+                                $this->email->send();
+                            }
+
+                            //end
+                            //End email and sms
                         } else {
                             $this->session->set_flashdata('feedback', lang('transaction_failed'));
                         }
