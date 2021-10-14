@@ -333,9 +333,10 @@ class Finance extends MX_Controller {
                     'lastname' => $name1[1],
                     'name' => $patient_name,
                     'amount' => $gross_total,
-                    'hospital_name' => $set['settings']->system_vendor,
+                    'hospital_name' => $set['settings']->title,
                     'hospital_contact' => $set['settings']->phone,
                     'currency_symbol' => $set['settings']->currency,
+                    'base_url' => base_url(),
                     'invoice_id' => $inserted_id
                 );
 

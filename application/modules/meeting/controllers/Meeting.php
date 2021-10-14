@@ -710,7 +710,7 @@ class Meeting extends MX_Controller {
             'name' => $patient_details->name,
             'doctorname' => $doctor_details->name,
             'start_time' => $start_time,
-            'hospital_name' => $set['settings']->system_vendor,
+            'hospital_name' => $set['settings']->title,
             'hospital_contact' => $set['settings']->phone,
             'appointmentdate' => date('F j, Y', $appointment_details->date),
             'time_slot' => $appointment_details->time_slot,
