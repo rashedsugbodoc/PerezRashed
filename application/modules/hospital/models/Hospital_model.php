@@ -119,38 +119,44 @@ class Hospital_model extends CI_model {
     function createAutoSmsTemplate($hospital_id) {
         $data = array();
         $data = array('0' => array(
-                'name' => 'Payment Successful - SMS to patient',
-                'message' => 'Dear {name}, Thank you for your payment of {currency_symbol} {amount}. This is a system generated notification. Please do not reply. For more information, contact {hospital_name} at {hospital_contact}. Thank You.',
-                'type' => 'payment',
+                'name' => 'New Patient Bill - SMS to patient',
+                'message' => 'Dear {name}, You have a new bill from {hospital_name} for the amount of {currency_symbol} {amount}. You may login to {base_url} to view and make payment. This is a system generated notification. Please do not reply. For more information, contact {hospital_name} at {hospital_contact}. Thank You.',
+                'type' => 'bill',
                 'status' => 'Active',
             ),
             '1' => array(
+                'name' => 'Payment Successful - SMS to patient',
+                'message' => 'Dear {name}, Thank you for your payment of {currency_symbol} {amount} for Bill ID {invoice_id}. This is a system generated notification. Please do not reply. For more information, contact {hospital_name} at {hospital_contact}. Thank You.',
+                'type' => 'payment',
+                'status' => 'Active',
+            ),            
+            '2' => array(
                 'name' => 'Appointment Confirmation - SMS to patient',
                 'message' => 'Dear {name}, Your appointment with Dr. {doctorname} on {appointmentdate} at {time_slot} is CONFIRMED. Login to sugbodoc.com with your email and click on Go Live at least 10 minutes before the schedule to prepare. For more information, contact {hospital_name} at {hospital_contact}.',
                 'type' => 'appoinment_confirmation',
                 'status' => 'Active',
             ),
-            '2' => array(
+            '3' => array(
                 'name' => 'Appointment Creation - SMS to patient',
                 'message' => 'Dear {name}, You have booked an appointment with Dr. {doctorname} on {appointmentdate} at {time_slot}. Please wait for another SMS once the doctor confirms your appointment. Login and view your appointment calendar at sugbodoc.com. For more information, contact {hospital_name} at {hospital_contact}.',
                 'type' => 'appoinment_creation',
                 'status' => 'Active',
             ),
-            '3' => array(
+            '4' => array(
                 'name' => 'Meeting Started - Notification To Patient',
                 'message' => 'Dear {patient_name}, Your Live Video Meeting with Dr. {doctor_name} scheduled on {start_time} has started. Login to sugbodoc.com and click on Go Live to join the meeting. For more information, please contact {hospital_name} at {hospital_contact}. Thank You.',
                 'type' => 'meeting_creation',
                 'status' => 'Active',
             ),
-            '4' => array(
+            '5' => array(
                 'name' => 'Doctor Registration Confirmation',
-                'message' => 'Dear {name}, Welcome to {company}. You are now registered as a doctor in {department} Department. You may now login at sugbodoc.com using your email. For more information, please contact {hospital_name} at {hospital_contact}. Thank You.',
+                'message' => 'Dear {name}, Welcome to {hospital_name}. You are now registered as a doctor in {department} Department. You may now login at sugbodoc.com using your email. For more information, please contact {hospital_name} at {hospital_contact}. Thank You.',
                 'type' => 'doctor',
                 'status' => 'Active',
             ),
-            '5' => array(
+            '6' => array(
                 'name' => 'Patient Registration Confirmation',
-                'message' => 'Dear {name}, Welcome to {company}. You are now registered as a patient of Dr. {doctor}. Login using your email at sugbodoc.com to view your patient records or book an appointment with our doctors. For more information, please contact {hospital_name} at {hospital_contact}. Cheers!',
+                'message' => 'Dear {name}, Welcome to {hospital_name}. You are now registered as a patient of Dr. {doctor}. Login using your email at sugbodoc.com to view your patient records or book an appointment with our doctors. For more information, please contact {hospital_name} at {hospital_contact}. Cheers!',
                 'type' => 'patient',
                 'status' => 'Active',
         ));
@@ -175,38 +181,44 @@ class Hospital_model extends CI_model {
     function createAutoEmailTemplate($hospital_id) {
         $data = array();
         $data = array('0' => array(
-                'name' => 'Payment Successful - Email to Patient',
-                'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Payment Receipt</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255);color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>We have received your payment of {currency_symbol} {amount}.</p><p> Thank you for your payment.</p><p><br><b>Payment details:</b></p><hr><p></p><p><span><b>Invoice ID:</b> {invoice_id}</span><br></p><p><span><b>Amount Paid:</b> {currency_symbol} {amount}</span><br></p><br><p> Login to <a href="https://sugbodoc.com" target="_blank">sugbodoc.com</a> to view your invoice and payment history.</p><table border="0" cellpadding="0" cellspacing="0" style="border-collapse: separate !important;border-radius: 2px;background-color: #4454c3;"><tbody><tr><td align="center" valign="middle" style="font-family: Arial;font-size: 16px;padding: 10px;"><a href="https://sugbodoc.com/finance/invoice?id={invoice_id}" target="_blank" style="font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF;-webkit-text-size-adjust: 100%;display: block;">View Invoice</a></td></tr></tbody></table><br><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
-                'type' => 'payment',
+                'name' => 'New Patient Bill - Email to Patient',
+                'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Your {hospital_name} Bill</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255);color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>You have a new bill from {hospital_name} for the amount of {currency_symbol} {amount}.</p><p><br><b>Bill details:</b></p><hr><p></p><p><span><b>Bill ID:</b> {invoice_id}</span><br></p><p><span><b>Bill Generated:</b> {date}</span><br></p><p><span><b>Total Amount Due:</b> {currency_symbol} {amount}</span></p><br><p> Login to <a href="{base_url}" target="_blank">sugbodoc.com</a> to view and pay for your bills.</p><a href="{base_url}patient/myInvoice?id={invoice_id}" target="_blank" style="border-radius: 4px;background-color: #4454c3;font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF; font-size:  15px;padding: 10px 15px;-webkit-text-size-adjust: 100%;display: inline-block;">View Bill</a><br><br><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
+                'type' => 'bill',
                 'status' => 'Active',
             ),
             '1' => array(
+                'name' => 'Payment Successful - Email to Patient',
+                'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Payment Receipt</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255);color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>We have received your payment of {currency_symbol} {amount}.</p><p> Thank you for your payment.</p><p><br><b>Payment details:</b></p><hr><p></p><p><span><b>Receipt ID:</b> {receipt_id}</span><br></p><p><span><b>Payment for Invoice ID:</b> {invoice_id}</span><br></p><p><span><b>Amount Paid:</b> {currency_symbol} {amount}</span></p><br><p> Login to <a href="https://sugbodoc.com" target="_blank">sugbodoc.com</a> to view your bills and payment history.</p><a href="{base_url}patient/myInvoice?id={invoice_id}" target="_blank" style="border-radius: 4px;background-color: #4454c3;font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF; font-size:  15px;padding: 10px 15px;-webkit-text-size-adjust: 100%;display: inline-block;">View Invoice</a><br><br><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
+                'type' => 'payment',
+                'status' => 'Active',
+            ),        
+            '2' => array(
                 'name' => 'Appointment Confirmation - Email to Patient',
                 'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Appointment Confirmed</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>Your appointment with Dr. {doctorname} is now <b>Confirmed</b>.</p><p> Please join the meeting below at least 5 minutes earlier to prepare your camera and microphone.</p><p> Login and view your appointment calendar at <a href="sugbodoc.com" target="_blank">sugbodoc.com</a>.</p><p><br><b>Here are your appointment details:</b></p><hr><p style=""><span><b>Appointment Status:</b> Confirmed</span><br></p><p><b>Your Appointment Calendar:</b>&nbsp;<a href="https://sugbodoc.com/patient/calendar" target="_blank">https://sugbodoc.com/patient/calendar</a></p><p></p><p><span><b>Appointment Date:</b> {appointmentdate}</span><br></p><p><span><b>Time:</b> {time_slot}</span><br></p><p><br></p><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
                 'type' => 'appoinment_confirmation',
                 'status' => 'Active',
             ),
-            '2' => array(
+            '3' => array(
                 'name' => 'Appointment Creation - Email to Patient',
                 'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Appointment Awaiting Confirmation</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>You have booked an appointment with Dr. {doctorname}.</p><p> Please wait for another email once the doctor confirms your appointment.</p><p> Login and view your appointment calendar at <a href="sugbodoc.com" target="_blank">sugbodoc.com</a>.</p><p><br> <b>Here are the appointment details:</b></p><hr><p style=""><span><b>Appointment Status:</b> Waiting for Doctor Confirmation</span><br></p><p><b>Your Appointment Calendar:</b>&nbsp;<a href="https://sugbodoc.com/patient/calendar" target="_blank">https://sugbodoc.com/patient/calendar</a></p><p></p><p style=""><span><b>Appointment Date:</b> {appointmentdate}</span><br></p><p style=""><span><b>Time:</b> {time_slot}</span><br></p><p><br></p><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
                 'type' => 'appoinment_creation',
                 'status' => 'Active',
             ),
-            '3' => array(
+            '4' => array(
                 'name' => 'Meeting Started - Notification To Patient',
                 'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Meeting Started</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255);color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>Your meeting with Dr. {doctorname} has just <b>started</b>.</p><p> Please Login to <a href="sugbodoc.com" target="_blank">sugbodoc.com</a> and click on Go Live to join the meeting now.</p><p><br><b>Here are your appointment details:</b></p><hr><p style=""><span><b>Meeting Status:</b> Meeting Started</span><br></p><p><b>Join this Meeting Link:</b>&nbsp;<a href="{meeting_link}" target="_blank">{meeting_link}</a></p><p></p><p style=""><span><b>Appointment Date:</b> {appointmentdate}</span><br></p><p style=""><span><b>Time:</b> {time_slot}</span><br></p><p style="color: rgb(85, 85, 85);"><br></p><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
                 'type' => 'meeting_creation',
                 'status' => 'Active',
             ),
-            '4' => array(
+            '5' => array(
                 'name' => 'Doctor Registration Confirmation',
-                'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Welcome to {company}</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255);color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>Welcome to SugboDoc!</p><p> You are now registered as a doctor in {department} Department.</p><p> Login to <a href="sugbodoc.com" target="_blank">sugbodoc.com</a> to view and manage Patient Health Records, Manage Appointments, Start a Video Consultation or Manage Bills of your patients.</p><p><br><b>Here are your login details:</b></p><hr><p><b>Login URL:</b>&nbsp;<a href="https://sugbodoc.com" target="_blank">sugbodoc.com</a></p><p></p><p style=""><span><b>Email:</b> {email}</span><br></p><p style=""><span><b>Password:</b> {password}</span><br></p><br><p> Make sure you change your password after your first login.</p><p> We look forward to being your partner in patient healthcare management.</p><p><br></p><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
+                'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Welcome to {hospital_name}</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255);color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>Welcome to SugboDoc!</p><p> You are now registered as a doctor in {department} Department.</p><p> Login to <a href="sugbodoc.com" target="_blank">sugbodoc.com</a> to view and manage Patient Health Records, Manage Appointments, Start a Video Consultation or Manage Bills of your patients.</p><p><br><b>Here are your login details:</b></p><hr><p><b>Login URL:</b>&nbsp;<a href="https://sugbodoc.com" target="_blank">sugbodoc.com</a></p><p></p><p style=""><span><b>Email:</b> {email}</span><br></p><p style=""><span><b>Password:</b> {password}</span><br></p><br><p> Make sure you change your password after your first login.</p><p> We look forward to being your partner in patient healthcare management.</p><p><br></p><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
                 'type' => 'doctor',
                 'status' => 'Active',
             ),
-            '5' => array(
+            '6' => array(
                 'name' => 'Patient Registration Confirmation',
-                'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Welcome to {company}</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>Welcome to SugboDoc!</p><p> You are now registered as a patient of Dr. {doctor}.</p><p> Login to <a href="sugbodoc.com" target="_blank">sugbodoc.com</a> to view your Patient Records, Book Appointments, Start a Video Consultation with any of our doctors or Pay for your Bills from the comfort of your home.</p><p><br><b>Here are your login details:</b></p><hr><p><b>Login URL:</b>&nbsp;<a href="https://sugbodoc.com" target="_blank">sugbodoc.com</a></p><p></p><p style=""><span><b>Email:</b> {email}</span><br></p><p style=""><span><b>Password:</b> {password}</span><br></p><br><p> Make sure you change your password after your first login.</p><p> We look forward to managing your care wherever you are.</p><p><br></p><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
+                'message' => '<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1>Welcome to {hospital_name}</h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85); font-size: 14px;"><p> Dear {name},<br><br>Welcome to SugboDoc!</p><p> You are now registered as a patient of Dr. {doctor}.</p><p> Login to <a href="sugbodoc.com" target="_blank">sugbodoc.com</a> to view your Patient Records, Book Appointments, Start a Video Consultation with any of our doctors or Pay for your Bills from the comfort of your home.</p><p><br><b>Here are your login details:</b></p><hr><p><b>Login URL:</b>&nbsp;<a href="https://sugbodoc.com" target="_blank">sugbodoc.com</a></p><p></p><p style=""><span><b>Email:</b> {email}</span><br></p><p style=""><span><b>Password:</b> {password}</span><br></p><br><p> Make sure you change your password after your first login.</p><p> We look forward to managing your care wherever you are.</p><p><br></p><p><b>{hospital_name}</b></p><p>{hospital_contact}</p></div></div></div>',
                 'type' => 'patient',
                 'status' => 'Active',
         ));
@@ -224,8 +236,92 @@ class Hospital_model extends CI_model {
             $this->db->insert('autoemailtemplate', $data1);
         }
     }
+
+    function createCompanyClassification($hospital_id) {
+        $data = array();
+        $data = array('0' => array(
+                'name' => 'Personal',
+                'description' => 'Personal Payment',
+            ),
+            '1' => array(
+                'name' => 'Company',
+                'description' => 'Company Payment',
+            ),
+            '2' => array(
+                'name' => 'Insurance',
+                'description' => 'Insurance Payment',
+            ),
+            '3' => array(
+                'name' => 'HMO',
+                'description' => 'HMO Payment',
+            ),
+            '4' => array(
+                'name' => 'National Health Insurance',
+                'description' => 'National Health Insurance Payment',
+            ),
+            '5' => array(
+                'name' => 'Government Schemes',
+                'description' => 'Government Schemes',
+        ));
+
+
+        foreach ($data as $row) {
+            $data1 = array();
+            $data1 = array(
+                'name' => $row['name'],
+                'description' => $row['description'],
+                'hospital_id' => $hospital_id
+            );
+            $this->db->insert('company_classification', $data1);
+        }
+    }    
     
-    
+    function createCompanyType($hospital_id) {
+        $data = array();
+        $data = array('0' => array(
+                'name' => 'Personal',
+                'description' => 'Personal',
+            ),
+            '1' => array(
+                'name' => 'Sole Proprietorship',
+                'description' => 'Sole Proprietorship',
+            ),
+            '2' => array(
+                'name' => 'Partnership',
+                'description' => 'Partnership',
+            ),
+            '3' => array(
+                'name' => 'Limited Liability Company',
+                'description' => 'Limited Liability Company',
+            ),
+            '4' => array(
+                'name' => 'Corporation',
+                'description' => 'Corporation',
+            ),
+            '5' => array(
+                'name' => 'Non-Profit Organization',
+                'description' => 'Non-Profit Organization',
+            ),
+            '6' => array(
+                'name' => 'Government',
+                'description' => 'Government',
+            ),                          
+            '7' => array(
+                'name' => 'Others',
+                'description' => 'Others',
+        ));
+
+
+        foreach ($data as $row) {
+            $data1 = array();
+            $data1 = array(
+                'name' => $row['name'],
+                'description' => $row['description'],
+                'hospital_id' => $hospital_id
+            );
+            $this->db->insert('company_type', $data1);
+        }
+    }    
     
     
     
