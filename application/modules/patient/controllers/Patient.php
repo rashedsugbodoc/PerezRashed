@@ -243,7 +243,7 @@ class Patient extends MX_Controller {
                         'password' => $password,
                         'doctor' => $doctor_name,
                         'company' => $set['settings']->system_vendor,
-                        'hospital_name' => $set['settings']->system_vendor,
+                        'hospital_name' => $set['settings']->title,
                         'hospital_contact' => $set['settings']->phone
                     );
                     //   if (!empty($sms)) {
@@ -657,6 +657,16 @@ class Patient extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['payment'] = $this->finance_model->getPaymentById($id);
+
+        if ($this->ion_auth->in_group(array('Patient'))) {
+            $current_patient = $this->ion_auth->get_user_id();
+            $patient_id = $this->patient_model->getPatientByIonUserId($current_patient)->id;
+            //if patient logged in isn't the owner of the invoice being viewed, then prohibit him from viewing invoice
+            if ($patient_id != $data['payment']->patient) {
+                redirect('home/permission');
+            }
+        }
+
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('myInvoice', $data);
         $this->load->view('home/footer'); // just the footer fi
