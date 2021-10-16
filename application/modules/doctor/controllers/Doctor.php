@@ -59,6 +59,7 @@ class Doctor extends MX_Controller {
         $phone = $this->input->post('phone');
         $department = $this->input->post('department');
         $profile = $this->input->post('profile');
+        $license = $this->input->post('license');
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -78,6 +79,7 @@ class Doctor extends MX_Controller {
         $this->form_validation->set_rules('department', 'Department', 'trim|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
         $this->form_validation->set_rules('profile', 'Profile', 'trim|required|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('license', 'License Number', 'trim|min_length[1]|max_length[50]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -133,7 +135,8 @@ class Doctor extends MX_Controller {
                     'address' => $address,
                     'phone' => $phone,
                     'department' => $department,
-                    'profile' => $profile
+                    'profile' => $profile,
+                    'license' => $license
                 );
             } else {
                 //$error = array('error' => $this->upload->display_errors());
@@ -144,7 +147,8 @@ class Doctor extends MX_Controller {
                     'address' => $address,
                     'phone' => $phone,
                     'department' => $department,
-                    'profile' => $profile
+                    'profile' => $profile,
+                    'license' => $license
                 );
             }
             $username = $this->input->post('name');
@@ -178,6 +182,7 @@ class Doctor extends MX_Controller {
                         'email' => $email,
                         'password' => $password,
                         'department' => $department,
+                        'license' => $license,
                         'company' => $set['settings']->system_vendor,
                         'hospital_name' => $set['settings']->title,
                         'hospital_contact' => $set['settings']->phone

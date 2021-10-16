@@ -106,6 +106,10 @@
                         <label for="exampleInputEmail1"><?php echo lang('profile'); ?></label>
                         <input type="text" class="form-control" name="profile" id="exampleInputEmail1" value='' placeholder="">
                     </div>
+                    <div class="form-group col-md-6">
+                        <label for="exampleInputEmail1"><?php echo lang('license'); ?> <?php echo lang('number'); ?></label>
+                        <input type="text" class="form-control" name="license" id="exampleInputEmail1" value='' placeholder="">
+                    </div>                    
                     <div class="form-group last col-md-6">
                         <label class="control-label">Image Upload</label>
                         <div class="">
@@ -193,6 +197,10 @@
                         <label for="exampleInputEmail1"><?php echo lang('profile'); ?></label>
                         <input type="text" class="form-control" name="profile" id="exampleInputEmail1" value='' placeholder="">
                     </div>
+                    <div class="form-group col-md-6">
+                        <label for="exampleInputEmail1"><?php echo lang('license'); ?> <?php echo lang('number'); ?></label>
+                        <input type="text" class="form-control" name="license" id="exampleInputEmail1" value='' placeholder="">
+                    </div>                    
                     <div class="form-group last col-md-6">
                         <label class="control-label">Image Upload</label>
                         <div class="">
@@ -274,7 +282,10 @@
                         <label for="exampleInputEmail1"><?php echo lang('profile'); ?></label>
                         <div class="profileClass"></div>
                     </div>
-
+                    <div class="form-group col-md-6">
+                        <label for="exampleInputEmail1"><?php echo lang('license'); ?> <?php echo lang('number'); ?></label>
+                        <div class="licenseClass"></div>
+                    </div>
 
                 </form>
 
@@ -339,6 +350,7 @@
             $('.phoneClass').html("").end()
             $('.departmentClass').html("").end()
             $('.profileClass').html("").end()
+            $('.licenseClass').html("").end()
             $.ajax({
                 url: 'doctor/editDoctorByJason?id=' + iid,
                 method: 'GET',
@@ -353,6 +365,7 @@
                 $('.phoneClass').append(response.doctor.phone).end()
                 $('.departmentClass').append(response.doctor.department).end()
                 $('.profileClass').append(response.doctor.profile).end()
+                $('.licenseClass').append(response.doctor.license).end()
 
                 if (typeof response.doctor.img_url !== 'undefined' && response.doctor.img_url != '') {
                     $("#img1").attr("src", response.doctor.img_url);
