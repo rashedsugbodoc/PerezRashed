@@ -100,8 +100,8 @@ class Hospital extends MX_Controller {
         $this->form_validation->set_rules('language', 'Language', 'trim|required|min_length[1]|max_length[50]|xss_clean');
 
         $this->form_validation->set_rules('country_id', 'Country ID', 'trim|required|min_length[1]|max_length[4]|xss_clean');
-        $this->form_validation->set_rules('company_name', 'Company Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-        $this->form_validation->set_rules('company_vat_number','Company VAT Number', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('company_name', 'Company Name', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('company_vat_number','Company VAT Number', 'trim|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
