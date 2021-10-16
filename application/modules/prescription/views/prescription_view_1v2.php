@@ -52,7 +52,7 @@
                         ?>
                         <div class="page-header d-print-none">
                             <div class="page-leftheader">
-                                <h4 class="page-title">Prescription</h4>
+                                <h4 class="page-title"><?php echo lang('prescription');?> <?php echo lang('details');?></h4>
                             </div>
                         </div>
                         <!--End Page header-->
@@ -73,7 +73,7 @@
                                         <button type="button" class="btn btn-info" id="create_pdf"><i class="fe fe-download"></i><span class="button-text"> <?php echo lang('download'); ?></span></button>
                                         <button type="button" id="print" class="btn btn-info" onClick="javascript:window.print();"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
                                         <!-- <button type="button" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></button> -->
-                                        <a href="edit_prescription" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></a>
+                                        <!--a href="prescription/editPrescription?id=<?php echo $prescription->id;?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></a-->
                                     </div>
                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                         <div class="flex-grow-1 mr-3">
@@ -99,30 +99,39 @@
                                                     </h2>
                                                 </div>
                                                 <div class="row">
-                                                    <h4><?php
-                                                    if (!empty($doctor)) {
-                                                        echo $doctor->profile;
-                                                    }
-                                                    ?>
-                                                    </h4>
+                                                    <div class="col-md-12 col-sm-12 pl-0">
+                                                        <h4 class="mb-1"><?php
+                                                        if (!empty($doctor)) {
+                                                            echo $doctor->profile;
+                                                        }
+                                                        ?>
+                                                        </h4>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 header-brand pl-0">
-                                                        <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-lgo pull-right" style="height: 60px;" alt="Rygel Dash logo">
+                                                        <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-lgo pull-right" style="height: 60px;" alt="<?php echo $settings->title;?>">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php if (!empty($doctor->license)) { ?>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                    <i class="fa fa-stethoscope"></i>  <?php echo lang('license');?> # : <?php echo $doctor->license; ?>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12 pl-0">
-                                                <i class="fe fe-mail"></i><?php echo $settings->address; ?>
+                                                <i class="fe fe-mail"></i>  <?php echo $settings->address; ?>
                                             </div>
-                                        </div>
+                                        </div>                                        
                                         <div class="row mb-5">
                                             <div class="col-md-12 col-sm-12 pl-0">
-                                                <i class="fe fe-phone"></i><?php echo $settings->phone; ?>
+                                                <i class="fe fe-phone"></i>  <?php echo $settings->phone; ?>
                                             </div>
                                         </div>
                                         <div class="row border-bottom border-dark">
@@ -182,7 +191,7 @@
                                             </div>
                                             <div class="col-md-3 p-0">
                                                 <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('date');?> : <?php echo date('d-m-Y',strtotime($prescription->date)); ?></label>
+                                                    <label class="form-label mb-0"><?php echo lang('date');?> : <?php echo date($settings->date_format_long?$settings->date_format_long:'F j, Y',strtotime($prescription->date)); ?></label>
                                                 </div>
                                             </div>
                                         </div>
@@ -266,34 +275,28 @@
                                         <div class="row mt-6"></div>
                                         <div class="row">
                                             <div class="col-md-4">
-                                                
-                                            </div>
-                                            <div class="col-md-8 text-right">
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <h2><?php echo $settings->title; ?></h2>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="form-label text-center border-top">
-                                                        <?php echo lang('signature');?>
+                                                    <label class="form-label border-top">
+                                                        <?php echo lang('eprescription_label');?>
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="col-md-8 text-right">
-                                                <label><?php echo $settings->address; ?></label>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                
-                                            </div>
-                                            <div class="col-md-8 text-right">
-                                                <label><?php echo $settings->phone; ?></label>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <h3 class="mb-1"><?php echo $settings->title; ?></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="mb-1"><?php echo $settings->address; ?></label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="mb-1"><?php echo $settings->phone; ?></label>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -365,7 +368,7 @@
 
                 var opt = {
                     margin: 0.2,
-                    filename: 'prescription_id_<?php echo $prescription->id; ?>.pdf',
+                    filename: 'Prescription_ID_<?php echo $prescription->id; ?>.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2 },
                     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
