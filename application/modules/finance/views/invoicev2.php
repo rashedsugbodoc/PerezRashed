@@ -92,10 +92,7 @@
                                             <div class="col-md-3">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 header-brand pl-0">
-                                                        <img src="<?php echo base_url('public/assets/images/brand/logo.png'); ?>" class="header-brand-img desktop-lgo" alt="Rygel Dash logo">
-                                                        <img src="<?php echo base_url('public/assets/images/brand/logo1.png'); ?>" class="header-brand-img dark-logo" alt="Rygel Dash logo">
-                                                        <img src="<?php echo base_url('public/assets/images/brand/favicon.png'); ?>" class="header-brand-img mobile-logo" alt="Rygel Dash logo">
-                                                        <img src="<?php echo base_url('public/assets/images/brand/favicon1.png'); ?>" class="header-brand-img darkmobile-logo" alt="Rygel Dash logo">
+                                                        <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-lgo" style="height: 60px;" alt="<?php echo $settings->title;?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -107,17 +104,17 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <label class="h6"><?php echo $settings->address ?></label>
+                                                        <label class="h6 mb-1"><?php echo $settings->address ?></label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <label class="h6">Tel: <?php echo $settings->phone ?></label>
+                                                        <label class="h6 mb-3">Tel: <?php echo $settings->phone ?></label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <label class="h4"><?php echo lang('invoice') ?></label>
+                                                        <label class="h3"><?php echo lang('invoice') ?></label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -175,7 +172,7 @@
                                                                 </td>
                                                                 <td></td>
                                                                 <td class="w-15 p-0">
-                                                                    <span class="pull-right"><?php echo lang('hospital'); ?> <?php echo lang('id');?></span>
+                                                                    <span class="pull-right"><?php echo lang('facility'); ?> <?php echo lang('id');?></span>
                                                                 </td>
                                                                 <td class="w-7 p-0">
                                                                     <span>: </span>
@@ -412,7 +409,7 @@
                                                 <tr>
                                                     <td class="border-bottom border-dark w-30"><?php echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
                                                     <td class="w-5"></td>
-                                                    <td class="border-bottom border-dark w-30 text-center"><?php echo date('M j, Y - g:i A',$payment->date);?></td>
+                                                    <td class="border-bottom border-dark w-30 text-center"><?php echo date($settings->date_format_long.' - '.$settings->time_format,$payment->date);?></td>
                                                     <td class="w-5"></td>
                                                     <td class="border-bottom border-dark w-30"></td>
                                                 </tr>
