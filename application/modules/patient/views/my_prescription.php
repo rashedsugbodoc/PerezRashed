@@ -9,7 +9,7 @@
             </header>
             <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                 <div class="panel-body">
-                    <a class="btn btn-info btn_width" data-toggle="modal" href="#myModa3">
+                    <a class="btn btn-info" data-toggle="modal" href="#myModa3">
                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                     </a>
                 </div>
@@ -63,7 +63,7 @@
 
                                 </td>
                                 <td>
-                                    <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"> <?php echo lang('view'); ?></i></a>   
+                                    <a class="btn btn-info" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?></a>   
                                 </td>
                             </tr>
                         <?php } ?>
