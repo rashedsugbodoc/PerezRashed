@@ -36,7 +36,7 @@
                             <a href="finance/addPaymentByPatientView?id=<?php echo $patient->id; ?>&type=gen">
                                 <div class="btn-group">
                                     <button id="" class="btn btn-xs green">
-                                        <i class="fa fa-plus"></i> <?php echo lang('add_payment'); ?>
+                                        <i class="fa fa-plus"></i> <?php echo lang('add_invoice'); ?>
                                     </button>
                                 </div>
                             </a>     
@@ -145,11 +145,11 @@
 
                                                 <td  class="no-print"> 
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
-                                                        <a class="btn-xs btn-info" title="<?php echo lang('edit'); ?>" style="width: 25%;" href="finance/editPayment?id=<?php echo $payment->id; ?>"><i class="fa fa-edit"> </i></a>
+                                                        <a class="btn btn-info" title="<?php echo lang('edit'); ?>" href="finance/editPayment?id=<?php echo $payment->id; ?>"><i class="fa fa-edit"> </i></a>
                                                     <?php } ?>
-                                                    <a class="btn-xs invoicebutton" title="<?php echo lang('invoice'); ?>" style="color: #fff; width: 25%;" href="finance/invoice?id=<?php echo $payment->id; ?>"><i class="fa fa-file-invoice"></i> </a>
+                                                    <a class="btn btn-info" title="<?php echo lang('invoice'); ?>" href="finance/invoice?id=<?php echo $payment->id; ?>"><i class="fa fa-file-invoice"></i> </a>
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?> 
-                                                        <a class="btn-xs btn-danger delete_button" title="<?php echo lang('delete'); ?>" style="width: 25%;"  href="finance/delete?id=<?php echo $payment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                        <a class="btn btn-danger delete_button" title="<?php echo lang('delete'); ?>" href="finance/delete?id=<?php echo $payment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                     <?php } ?>
                                                     </button>
                                                 </td>
@@ -175,10 +175,10 @@
                                                     <td> <?php echo $deposit->deposit_type; ?></td>  
                                                     <td  class="no-print"> 
                                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
-                                                            <button type="button" class="btn-xs btn-info editbutton" title="<?php echo lang('edit'); ?>" style="width: 25%;" data-toggle="modal" data-id="<?php echo $deposit->id; ?>"><i class="fa fa-edit"></i> </button> 
+                                                            <button type="button" class="btn btn-sm btn-info editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $deposit->id; ?>"><i class="fa fa-edit"></i> </button> 
                                                         <?php } ?>
                                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?> 
-                                                            <a class="btn-xs btn-danger delete_button" title="<?php echo lang('delete'); ?>" style="width: 25%;" href="finance/deleteDeposit?id=<?php echo $deposit->id; ?>&patient=<?php echo $patient->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
+                                                            <a class="btn btn-danger" title="<?php echo lang('delete'); ?>" href="finance/deleteDeposit?id=<?php echo $deposit->id; ?>&patient=<?php echo $patient->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
                                                         <?php } ?>
                                                     </td>
                                                 </tr>
@@ -380,7 +380,7 @@
                         <div class = "card">
 
                             <hr>
-                            <div class="col-md-12 payment pad_bot">
+                            <div class="col-md-12 form-group">
                                 <label for="exampleInputEmail1"> <?php echo lang('accepted'); ?> <?php echo lang('cards'); ?></label>
                                 <div class="payment pad_bot">
                                     <img src="uploads/card.png" width="100%">
@@ -390,7 +390,7 @@
                             if ($payment_gateway == 'PayPal') {
                                 ?>
 
-                                <div class="col-md-12 payment pad_bot">
+                                <div class="col-md-12 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('card'); ?> <?php echo lang('type'); ?></label>
                                     <select class="form-control m-bot15" name="card_type" value=''>
 
@@ -399,26 +399,26 @@
                                         <option value="American Express" > <?php echo lang('american_express'); ?> </option>
                                     </select>
                                 </div>
-                                <div class="col-md-12 payment pad_bot">
+                                <div class="col-md-12 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('cardholder'); ?> <?php echo lang('name'); ?></label>
                                     <input type="text"  id="cardholder" class="form-control pay_in" name="cardholder" value='' placeholder="">
                                 </div>
                             <?php } ?>
                             <?php if ($payment_gateway != 'Pay U Money' && $payment_gateway != 'Paystack') { ?>
-                                <div class="col-md-12 payment pad_bot">
+                                <div class="col-md-12 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('card'); ?> <?php echo lang('number'); ?></label>
                                     <input type="text" class="form-control pay_in" id="card" name="card_number" value='' placeholder="">
                                 </div>
 
 
 
-                                <div class="col-md-8 payment pad_bot">
+                                <div class="col-md-8 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('expire'); ?> <?php echo lang('date'); ?></label>
-                                    <input type="text" class="form-control pay_in" id="expire" data-date="" data-date-format="MM YY" placeholder="Expiry (MM/YY)" name="expire_date" maxlength="7" aria-describedby="basic-addon1" value='' placeholder="">
+                                    <input type="text" class="form-control" id="expire" data-date="" data-date-format="MM YY" placeholder="Expiry (MM/YY)" name="expire_date" maxlength="7" aria-describedby="basic-addon1" value='' placeholder="">
                                 </div>
-                                <div class="col-md-4 payment pad_bot">
+                                <div class="col-md-4 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('cvv'); ?> </label>
-                                    <input type="text" class="form-control pay_in" id="cvv" maxlength="3" name="cvv_number" value='' placeholder="">
+                                    <input type="text" class="form-control" id="cvv" maxlength="3" name="cvv_number" value='' placeholder="">
                                 </div> 
 
                             </div>
@@ -433,7 +433,7 @@
 
                     <input type="hidden" name="id" value=''>
                     <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
-                    <div class="form-group cashsubmit payment  right-six col-md-12">
+                    <div class="form-group cashsubmit right-six col-md-12">
                         <button type="submit" name="submit2" id="submit1" class="btn btn-primary row pull-right"> <?php echo lang('submit'); ?></button>
                     </div>
                     <div class="form-group cardsubmit  right-six col-md-12 hidden">
@@ -504,9 +504,9 @@
                 <h4 class="modal-title"> <?php echo lang('invoice'); ?></h4>
             </div>
             <div class="modal-body clearfix">
-                <div class="panel panel-primary">
+                <div class="row">
                     <!--<div class="panel-heading navyblue"> INVOICE</div>-->
-                    <div class="panel"  id="invoice" style="font-size: 10px;">
+                    <div class="col-md-12" id="invoice" style="font-size: 10px;">
                         <div class="row invoice-list">
                             <div class="text-center corporate-id top_title">
                                 <img alt="" src="<?php echo $this->settings_model->getSettings()->logo; ?>" width="200" height="100">
@@ -648,13 +648,10 @@
                             </div>
                         </div>
                     </div>
-
-
-                    <div class="panel col-md-12 no-print">
+                    <div class="col-md-12 no-print">
                         <a class="btn btn-info invoice_button" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
                     </div>
-
-                    <div class="text-center invoice-btn clearfix">
+                    <div class="text-center clearfix">
                         <a class="btn btn-info btn-sm detailsbutton pull-left download" id="download"><i class="fa fa-download"></i> <?php echo lang('download'); ?> </a>
                     </div>
 
@@ -716,7 +713,7 @@
                                             $('#myModal').modal('show');
 
                                         } else {
-                                            alert('Payement Processed By Card can not be edited. Thanks.')
+                                            alert('Payment Processed By Card cannot be edited. Thanks.')
                                         }
                                     });
                                 });
