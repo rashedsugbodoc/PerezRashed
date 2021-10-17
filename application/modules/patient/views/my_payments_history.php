@@ -31,11 +31,11 @@
             <div class="row">
                 <div class="adv-table editable-table ">
                     <section class="col-md-12 no-print">
-                        <form role="form" class="f_report" action="finance/patientPaymentHistory" method="post" enctype="multipart/form-data">
+                        <form role="form" class="f_report" action="patient/myPaymentHistory" method="post" enctype="multipart/form-data">
                             <div class="form-group">
                                 <!--     <label class="control-label col-md-3">Date Range</label> -->
                                 <div class="col-md-6">
-                                    <div class="input-group input-large" data-date="13/07/2013" data-date-format="mm/dd/yyyy">
+                                    <div class="input-group input-large" data-date="13/07/2013" data-date-format="dd/mm/yyyy">
                                         <input type="text" class="form-control dpd1" name="date_from" value="<?php
                                         if (!empty($date_from)) {
                                             echo date('d/m/Y', $date_from);
@@ -351,7 +351,7 @@
                             <?php
                             if ($payment_gateway == 'PayPal') {
                                 ?>
-                                <div class="col-md-12 payment pad_bot">
+                                <div class="col-md-12 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('card'); ?> <?php echo lang('type'); ?></label>
                                     <select class="form-control m-bot15" name="card_type" value=''>
 
@@ -360,24 +360,24 @@
                                         <option value="American Express" > <?php echo lang('american_express'); ?> </option>
                                     </select>
                                 </div>
-                                <div class="col-md-12 payment pad_bot">
+                                <div class="col-md-12 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('cardholder'); ?> <?php echo lang('name'); ?></label>
                                     <input type="text"  id="cardholder" class="form-control pay_in" name="cardholder" value='' placeholder="">
                                 </div>
                             <?php } ?>
                             <?php if ($payment_gateway != 'Pay U Money'&& $payment_gateway != 'Paystack') { ?>
-                                <div class="col-md-12 payment pad_bot">
+                                <div class="col-md-12 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('card'); ?> <?php echo lang('number'); ?></label>
                                     <input type="text" class="form-control pay_in" id="card"  name="card_number" value='' placeholder="">
                                 </div>
 
 
 
-                                <div class="col-md-8 payment pad_bot">
+                                <div class="col-md-8 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('expire'); ?> <?php echo lang('date'); ?></label>
                                     <input type="text" class="form-control pay_in" data-date="" id="expire" data-date-format="MM YY" placeholder="Expiry (MM/YY)" name="expire_date" maxlength="7" aria-describedby="basic-addon1" value='' placeholder="">
                                 </div>
-                                <div class="col-md-4 payment pad_bot">
+                                <div class="col-md-4 form-group">
                                     <label for="exampleInputEmail1"> <?php echo lang('cvv'); ?> </label>
                                     <input type="text" class="form-control pay_in" id="cvv" maxlength="3" name="cvv_number" value='' placeholder="">
                                 </div> 
@@ -395,8 +395,8 @@
                     <input type="hidden" name="id" value=''>
                     <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
 
-                    <div class="form-group cardsubmit  right-six col-md-12"> 
-                        <button type="submit" name="pay_now" id="submit-btn" class="btn btn-primary row pull-right" <?php if ($settings->payment_gateway == 'Stripe') {
+                    <div class="cardsubmit  right-six col-md-12"> 
+                        <button type="submit" name="pay_now" id="submit-btn" class="btn btn-primary pull-right" <?php if ($settings->payment_gateway == 'Stripe') {
                             ?>onClick="stripePay(event);"<?php }
                         ?>> <?php echo lang('submit'); ?></button>
                     </div>
