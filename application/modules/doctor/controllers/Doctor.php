@@ -203,7 +203,7 @@ class Doctor extends MX_Controller {
                         $messageprint1 = $this->parser->parse_string($message1, $data1);
                         $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
                         $this->email->to($email);
-                        $this->email->subject(lang('new_doctor_registered_email_subject'));
+                        $this->email->subject(lang('welcome_to').$set['settings']->title);
                         $this->email->message($messageprint1);
                         $this->email->send();
                     }
