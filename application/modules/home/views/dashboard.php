@@ -1122,25 +1122,25 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
                                         <i class="fa fa-money-bill-alt"></i>
-                                        <span><?php echo lang('payments'); ?></span>
+                                        <span><?php echo lang('invoices'); ?></span>
                                     </a>
                                     <ul class="sub">
                                         <li>
                                             <a href="finance/payment" >
                                                 <i class="fa fa-money-check"></i>
-                                                <span> <?php echo lang('payments'); ?> </span>
+                                                <span> <?php echo lang('invoices'); ?> </span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="finance/addPaymentView" >
                                                 <i class="fa fa-plus"></i>
-                                                <span> <?php echo lang('add_payment'); ?> </span>
+                                                <span> <?php echo lang('add_invoice'); ?> </span>
                                             </a>
                                         </li>
                                         <li>
                                             <a href="finance/paymentCategory" >
                                                 <i class="fa fa-edit"></i>
-                                                <span> <?php echo lang('payment_procedures'); ?> </span>
+                                                <span> <?php echo lang('service_listing'); ?> </span>
                                             </a>
                                         </li>
                                     </ul>

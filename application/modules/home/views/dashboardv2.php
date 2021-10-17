@@ -331,7 +331,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
                                         <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
                                         <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
-                                        <li><a href="finance/paymentCategory"class="slide-item"><?php echo lang('service_listing'); ?></a></li>
+                                        <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('service_listing'); ?></a></li>
                                         <li><a href="finance/serviceCategory" class="slide-item"><?php echo lang('service_categories'); ?> </a></li>
                                         <li><a href="finance/expense" class="slide-item"><?php echo lang('expense'); ?></a></li>
                                         <li><a href="finance/addExpenseView" class="slide-item"><?php echo lang('add_expense'); ?></a></li>
@@ -354,8 +354,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="14.31" y1="8" x2="20.05" y2="17.94"></line><line x1="9.69" y1="8" x2="21.17" y2="8"></line><line x1="7.38" y1="12" x2="13.12" y2="2.06"></line><line x1="9.69" y1="16" x2="3.95" y2="6.06"></line><line x1="14.31" y1="16" x2="2.83" y2="16"></line><line x1="16.62" y1="12" x2="10.88" y2="21.94"></line></svg>
                                     <span class="side-menu__label"><?php echo lang('financial_activities'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('payments'); ?></a></li>
-                                        <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_payment'); ?></a></li>
+                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
+                                        <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -623,11 +623,11 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="side-menu__icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                                    <span class="side-menu__label"><?php echo lang('payments'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <span class="side-menu__label"><?php echo lang('invoices'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('payments'); ?></a></li>
-                                        <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_payment'); ?></a></li>
-                                        <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('payment_procedures'); ?></a></li>
+                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
+                                        <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
+                                        <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('service_listing'); ?></a></li>
                                     </ul>
                                 </li>
                                 <li class="slide">
