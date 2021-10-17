@@ -264,7 +264,7 @@ class Patient extends MX_Controller {
                         $messageprint1 = $this->parser->parse_string($message1, $data1);
                         $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
                         $this->email->to($email);
-                        $this->email->subject(lang('new_patient_registered_email_subject'));
+                        $this->email->subject(lang('welcome_to').$set['settings']->title);
                         $this->email->message($messageprint1);
                         $this->email->send();
                     }
@@ -398,6 +398,7 @@ class Patient extends MX_Controller {
     function patientPayments() {
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['settings'] = $this->settings_model->getSettings();
+        $data['doctors'] = $this->doctor_model->getDoctor();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('patient_payments', $data);
         $this->load->view('home/footer'); // just the header file
@@ -615,7 +616,6 @@ class Patient extends MX_Controller {
                                 'patient' => $patient,
                                 'payment_id' => $payment_id,
                                 'deposited_amount' => $deposited_amount,
-                                'amount_received_id' => $deposited_amount . '.' . 'gp',
                                 'deposit_type' => $deposit_type,                                
                                 'gateway' => 'Stripe',
                                 'user' => $user,
@@ -708,7 +708,7 @@ class Patient extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['payment'] = $this->finance_model->getPaymentById($id);
-
+        $data['patient'] = $this->patient_model->getPatientById($data['payment']->patient);
         if ($this->ion_auth->in_group(array('Patient'))) {
             $current_patient = $this->ion_auth->get_user_id();
             $patient_id = $this->patient_model->getPatientByIonUserId($current_patient)->id;
@@ -718,9 +718,9 @@ class Patient extends MX_Controller {
             }
         }
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('myInvoice', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('myInvoicev2', $data);
+        //$this->load->view('home/footer'); // just the footer fi
     }
 
     function addMedicalHistory() {
@@ -1252,7 +1252,7 @@ class Patient extends MX_Controller {
 
 
             if ($this->ion_auth->in_group('Doctor')) {
-                $options7 = '<a class="btn btn-cyan" title="' . lang('instant_meeting') . '" style="color: #fff;" href="meeting/instantLive?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_live') . '</a>';
+                $options7 = '<a class="btn btn-cyan" title="' . lang('instant_meeting') . '" style="color: #fff;" href="meeting/instantLive?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
             } else {
                 $options7 = '';
             }
