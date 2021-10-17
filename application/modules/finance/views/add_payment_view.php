@@ -399,6 +399,7 @@
                                         <tr>
                                             <th class=""><?php echo lang('deposit'); ?> #</th>
                                             <th class=""><?php echo lang('date'); ?> <?php echo lang('and');?> <?php echo lang('time');?></th>
+                                            <th class=""><?php echo lang('transacted_by'); ?></th>
                                             <th class=""><?php echo lang('deposit_type'); ?></th>
                                             <th class=""><?php echo lang('amount'); ?> (<?php echo $settings->currency;?>)</th>
                                         </tr>
@@ -410,6 +411,7 @@
                                             <tr class="">
                                                 <td>1</td>
                                                 <td><?php echo date('d/m/Y - h:i A', $payment->date);?> </td>
+                                                <td><?php echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
                                                 <td><?php echo $payment->deposit_type;?></td>
                                                 <td>
                                                     <input type="text" class="form-control" name="amount_received" id="amount_received" value='<?php if (!empty($payment->amount_received)) { echo $payment->amount_received; } ?>' <?php
@@ -434,6 +436,7 @@
                                                     <tr class="">
                                                         <td><?php echo $i;?></td>
                                                         <td><?php echo date('d/m/Y - h:i A', $deposit->date);?> </td>
+                                                        <td><?php echo $this->ion_auth->user($deposit->user)->row()->username; ?></td>
                                                         <td><?php echo $deposit->deposit_type;?></td>
                                                         <td>
                                                             <input type="text" class="form-control" name="deposit_edit_amount[]" id="amount_received" value='<?php echo $deposit->deposited_amount; ?>' <?php
@@ -447,8 +450,17 @@
                                                 <?php
                                                 }
                                             }
-                                        }
-                                        ?>
+                                        }  
+                                        else { ?>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="text-center"><h4><?php echo lang('no_deposits_made');?></h4></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            
+                                            <?php } ?>
                                     </tbody>                                        
                                 </table>                               
                             </div>
