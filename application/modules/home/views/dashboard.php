@@ -1296,7 +1296,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li>
                                     <a href="patient/myPaymentHistory" >
                                         <i class="fa fa-money-bill-alt"></i>
-                                        <span> <?php echo lang('payment'); ?> </span>      
+                                        <span> <?php echo lang('bills_and_payments'); ?> </span> 
                                     </a>
                                 </li>
                             <?php } ?>

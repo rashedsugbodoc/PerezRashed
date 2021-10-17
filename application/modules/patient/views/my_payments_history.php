@@ -6,7 +6,7 @@
         <!-- page start-->
         <section class="no-print col-md-8">
             <header class="page-header">
-                <div class="page-title"><?php echo lang('payment_history'); ?></div>
+                <div class="page-title"><?php echo lang('bills_and_payments'); ?></div>
 
                     <div class="no-print">
                         <a data-toggle="modal" href="#myModal">
