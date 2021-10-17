@@ -73,7 +73,7 @@
                                                                                     </div>
                                                                                     <?php if ($todays_appointment->status == 'Confirmed') { ?>
                                                                                         <div class="btn-group mb-0">
-                                                                                            <a title=" <?php echo lang('start_live'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('live'); ?></a>
+                                                                                            <a title=" <?php echo lang('start_video_call'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('start_video_call'); ?></a>
                                                                                         </div>
                                                                                     <?php } ?>
                                                                                 </td>
