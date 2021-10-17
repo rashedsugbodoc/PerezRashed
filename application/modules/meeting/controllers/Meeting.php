@@ -581,7 +581,7 @@ class Meeting extends MX_Controller {
         // Validating Duration Field
         $this->form_validation->set_rules('duration', 'Duration', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Meeting Password Field
-        $this->form_validation->set_rules('meeting_password', 'Meeting Pawssword', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('meeting_password', 'Meeting Password', 'trim|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
