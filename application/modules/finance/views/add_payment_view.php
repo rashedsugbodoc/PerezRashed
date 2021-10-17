@@ -287,26 +287,12 @@
                             </div>   
                             <div class="row">                                                  
                                 <div class="col-md-12 form-group">
-                                    <label for="exampleInputEmail1"><?php
-                                        if (empty($payment)) {
-                                            echo lang('deposited_amount');
-                                        } else {
-                                            echo lang('deposit') . ' 1 <br>';
-                                            echo date('d/m/Y', $payment->date);
-                                        };
-                                        ?> 
+                                    <?php if (empty($payment)) { ?>
+                                    <label for="exampleInputEmail1">
+                                        <?php echo lang('deposited_amount'); ?> 
                                     </label>
-                                    <input type="text" class="form-control" name="amount_received" id="amount_received" value='<?php
-                                    if (!empty($payment->amount_received)) {
-                                        echo $payment->amount_received;
-                                    }
-                                    ?>' placeholder=" " <?php
-                                           if (!empty($payment->deposit_type)) {
-                                               if ($payment->deposit_type == 'Card') {
-                                                   echo 'readonly';
-                                               }
-                                           }
-                                           ?>>
+                                    <input type="text" class="form-control" name="amount_received" id="amount_received" value='' placeholder=" ">
+                                    <?php } ?>
                                 </div>
                             </div>    
                             <?php if (empty($payment->id)) { ?>
@@ -369,33 +355,6 @@
                             </div>                                                                                           
                             <?php } ?>
 
-                            <?php
-                            if (!empty($payment)) {
-                                $deposits = $this->finance_model->getDepositByPaymentId($payment->id);
-                                $i = 1;
-                                foreach ($deposits as $deposit) {
-                                    if (empty($deposit->amount_received_id)) {
-                                        $i = $i + 1;
-                                        ?>
-                                            <div class="col-md-12 form-group"> 
-                                                <label for="exampleInputEmail1"><?php echo lang('deposit'); ?> <?php
-                                                    echo $i . '<br>';
-                                                    echo date('d/m/Y', $deposit->date);
-                                                    ?> 
-                                                </label>
-                                                <input type="text" class="form-control" name="deposit_edit_amount[]" id="amount_received" value='<?php echo $deposit->deposited_amount; ?>' <?php
-                                                if ($deposit->deposit_type == 'Card') {
-                                                    echo 'readonly';
-                                                }
-                                                ?>>
-                                                <input type="hidden" class="form-control" name="deposit_edit_id[]" id="amount_received" value='<?php echo $deposit->id; ?>' placeholder=" ">
-                                            </div>
-
-                                        <?php
-                                        }
-                                }
-                            }
-                            ?>
                             <div class="form-group cashsubmit col-md-12">
                                 <button type="submit" name="submit2" id="submit1" class="btn btn-primary row pull-right"> <?php echo lang('submit'); ?>
                                 </button>
@@ -428,6 +387,74 @@
                     echo $payment->id;
                 }
                 ?>'>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="panel">
+                        <div class="panel-heading"><?php echo lang('deposits');?></div>
+                        <div class="panel-body">
+                            <div class="col-md-12">
+                                <table class="table table-striped table-hover table-bordered" id="editable-samples">
+                                    <thead>
+                                        <tr>
+                                            <th class=""><?php echo lang('deposit'); ?> #</th>
+                                            <th class=""><?php echo lang('date'); ?> <?php echo lang('and');?> <?php echo lang('time');?></th>
+                                            <th class=""><?php echo lang('deposit_type'); ?></th>
+                                            <th class=""><?php echo lang('amount'); ?> (<?php echo $settings->currency;?>)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        if (!empty($payment)) {
+                                        ?>
+                                            <tr class="">
+                                                <td>1</td>
+                                                <td><?php echo date('d/m/Y - h:i A', $payment->date);?> </td>
+                                                <td><?php echo $payment->deposit_type;?></td>
+                                                <td>
+                                                    <input type="text" class="form-control" name="amount_received" id="amount_received" value='<?php if (!empty($payment->amount_received)) { echo $payment->amount_received; } ?>' <?php
+                                                    if ($payment->deposit_type == 'Card') {
+                                                        echo 'readonly';
+                                                    }
+                                                    ?>>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                            $deposits = $this->finance_model->getDepositByPaymentId($payment->id);
+                                            $i = 1;
+                                            foreach ($deposits as $deposit) 
+                                            { ?>
+
+
+                                                <?php
+                                                if (empty($deposit->amount_received_id)) 
+                                                {
+                                                    $i = $i + 1;
+                                                    ?>
+                                                    <tr class="">
+                                                        <td><?php echo $i;?></td>
+                                                        <td><?php echo date('d/m/Y - h:i A', $deposit->date);?> </td>
+                                                        <td><?php echo $deposit->deposit_type;?></td>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="deposit_edit_amount[]" id="amount_received" value='<?php echo $deposit->deposited_amount; ?>' <?php
+                                                            if ($deposit->deposit_type == 'Card') {
+                                                                echo 'readonly';
+                                                            }
+                                                            ?>>
+                                                            <input type="hidden" class="form-control" name="deposit_edit_id[]" id="amount_received" value='<?php echo $deposit->id; ?>' placeholder=" ">
+                                                        </td>
+                                                    </tr>
+                                                <?php
+                                                }
+                                            }
+                                        }
+                                        ?>
+                                    </tbody>                                        
+                                </table>                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </section>
