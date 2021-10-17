@@ -377,6 +377,7 @@ class Appointment extends MX_Controller {
             'name' => $patientdetails->name,
             'doctorname' => $doctordetails->name,
             'appointmentdate' => date('F j, Y', $data['date']),
+            'meeting_link' => $data['live_meeting_link'],
             'time_slot' => $data['time_slot'],
             'hospital_name' => $set['settings']->title,
             'hospital_contact' => $set['settings']->phone
@@ -1107,7 +1108,7 @@ class Appointment extends MX_Controller {
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 if ($appointment->status == 'Confirmed') {
                     if ($appointment->status == 'Confirmed') {
-                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
                     } else {
                         $options7 = '';
                     }
@@ -1392,7 +1393,7 @@ class Appointment extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 if ($appointment->status == 'Confirmed') {
-                    $options7 = '<a class="btn btn btn-cyan btn-xs" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                    $options7 = '<a class="btn btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
                 } else {
                     $options7 = '';
                 }
@@ -1491,7 +1492,7 @@ class Appointment extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
                 if ($appointment->status == 'Confirmed') {
-                    $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                    $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
                 } else {
                     $options7 = '';
                 }
@@ -1680,7 +1681,7 @@ class Appointment extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
                 if ($appointment->status == 'Confirmed') {
-                    $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                    $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
                 } else {
                     $options7 = '';
                 }
@@ -1790,7 +1791,7 @@ class Appointment extends MX_Controller {
                 }
                 if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
                     if ($appointment->status == 'Confirmed') {
-                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
                     } else {
                         $options7 = '';
                     }
@@ -1810,7 +1811,7 @@ class Appointment extends MX_Controller {
             } else {
                 if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
                     if ($appointment->status == 'Confirmed') {
-                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
                     } else {
                         $options7 = '';
                     }
@@ -1913,7 +1914,7 @@ class Appointment extends MX_Controller {
 
                 if ($this->ion_auth->in_group(array('Patient'))) {
                     if ($appointment->status == 'Confirmed') {
-                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_live') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start a live meeting with this patient? SMS and Email will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('live') . '</a>';
+                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to join the video call with the doctor? Please prepare your video camera and microphone and wait for the doctor to join the call.\');"><i class="fa fa-headphones"></i> ' . lang('join_video_call') . '</a>';
                     } else {
                         $options7 = '';
                     }
