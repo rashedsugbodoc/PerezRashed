@@ -52,7 +52,7 @@ class CompanyUser_model extends CI_model {
     function getCompanyUserByIonUserId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('ion_user_id', $id);
-        $query = $this->db->get('accountant');
+        $query = $this->db->get('companyuser');
         return $query->row();
     }
 
