@@ -573,6 +573,19 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                            <?php if (in_array('company', $this->modules)) { ?>
+                                <li class="sub-menu">
+                                    <a href="javascript:;" >
+                                        <i class="fa fa-city"></i>
+                                        <span><?php echo lang('companies'); ?></span>
+                                    </a>
+                                    <ul class="sub">
+                                        <li><a href="company"><i class="fa fa-city"></i><?php echo lang('list_of_companies'); ?></a></li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>
+                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                             <?php if (in_array('doctor', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -585,7 +598,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </ul>
                                 </li>
                             <?php } ?>
-                        <?php } ?>
+                        <?php } ?>                        
                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Nurse', 'Doctor', 'Laboratorist', 'Receptionist'))) { ?>
                             <?php if (in_array('patient', $this->modules)) { ?>
                                 <li class="sub-menu">
