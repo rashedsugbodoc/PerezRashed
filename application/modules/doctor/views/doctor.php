@@ -322,7 +322,7 @@
                 $('#editDoctorForm').find('[name="phone"]').val(response.doctor.phone).end()
                 $('#editDoctorForm').find('[name="department"]').val(response.doctor.department).end()
                 $('#editDoctorForm').find('[name="profile"]').val(response.doctor.profile).end()
-
+                $('#editDoctorForm').find('[name="license"]').val(response.doctor.license).end()
                 if (typeof response.doctor.img_url !== 'undefined' && response.doctor.img_url != '') {
                     $("#img").attr("src", response.doctor.img_url);
                 }
