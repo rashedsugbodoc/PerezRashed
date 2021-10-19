@@ -321,7 +321,7 @@ class Company extends MX_Controller {
                 $options1 = '<a type="button" class="btn btn-info btn-xs btn_width editbutton" title="' . lang('edit') . '" data-toggle="modal" data-id="' . $company->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
                 
             }
-            $options2 = '<a class="btn btn-info btn-xs" title="' . lang('company_reports') . '"  href="finance/getReportByCompanyId?id=' . $company->id . '"> <i class="fa fa-calendar"> </i> ' . lang('company_reports') . '</a>';
+            $options2 = '<a class="btn btn-info btn-xs" title="' . lang('account_reports') . '"  href="finance/allAccountActivityReport?account=' . $company->id . '"> <i class="fa fa-calendar"> </i> ' . lang('account_reports') . '</a>';
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
                 $options3 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="' . lang('delete') . '" href="company/delete?id=' . $company->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             }
