@@ -15,6 +15,7 @@ class Patient extends MX_Controller {
         $this->load->model('finance/finance_model');
         $this->load->model('finance/pharmacy_model');
         $this->load->model('sms/sms_model');
+        $this->load->model('company/company_model');
         $this->load->module('sms');
         $this->load->model('prescription/prescription_model');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
