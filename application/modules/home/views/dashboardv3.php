@@ -219,9 +219,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li class="slide">
                                     <a class="side-menu__item"  data-toggle="slide" href="javascript:;">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><circle cx="12" cy="8" opacity="1" r="2.1"/><path d="M12 14.9c-2.97 0-6.1 1.46-6.1 2.1v1.1h12.2V17c0-.64-3.13-2.1-6.1-2.1z" opacity="1"/><path fill="currentColor" d="M12 13c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4zm6.1 5.1H5.9V17c0-.64 3.13-2.1 6.1-2.1s6.1 1.46 6.1 2.1v1.1zM12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6.1c1.16 0 2.1.94 2.1 2.1 0 1.16-.94 2.1-2.1 2.1S9.9 9.16 9.9 8c0-1.16.94-2.1 2.1-2.1z"/></svg>
-                                    <span class="side-menu__label"><?php echo lang('companies'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <span class="side-menu__label"><?php echo lang('accounts'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
-                                        <li><a href="company" class="slide-item"><?php echo lang('list_of_companies'); ?></a></li>
+                                        <li><a href="company" class="slide-item"><?php echo lang('payer_accounts'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -541,6 +541,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <?php if (in_array('finance', $this->modules)) { ?>
                                             <li><a href="finance/financialReport" class="slide-item"><?php echo lang('financial_report'); ?></a></li>
                                             <li><a href="finance/AllUserActivityReport" class="slide-item"><?php echo lang('user_activity_report'); ?></a></li>
+                                            <li><a href="finance/allAccountActivityReport" class="slide-item"><?php echo lang('all');?> <?php echo lang('accounts_report'); ?></a></li>
                                         <?php } ?>
                                     <?php } ?>
                                     <?php if ($this->ion_auth->in_group(array('admin'))) { ?>

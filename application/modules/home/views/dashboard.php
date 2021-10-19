@@ -577,10 +577,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
                                         <i class="fa fa-city"></i>
-                                        <span><?php echo lang('companies'); ?></span>
+                                        <span><?php echo lang('accounts'); ?></span>
                                     </a>
                                     <ul class="sub">
-                                        <li><a href="company"><i class="fa fa-city"></i><?php echo lang('list_of_companies'); ?></a></li>
+                                        <li><a href="company"><i class="fa fa-city"></i><?php echo lang('payer_accounts'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -1016,7 +1016,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                                         <?php if (in_array('finance', $this->modules)) { ?>
                                             <li><a  href="finance/financialReport"><i class="fa fa-book"></i><?php echo lang('financial_report'); ?></a></li>
-                                            <li> <a href="finance/AllUserActivityReport">  <i class="fa fa-home"></i>   <span><?php echo lang('user_activity_report'); ?></span> </a></li>
+                                            <li> <a href="finance/AllUserActivityReport">  <i class="fa fa-home"></i><span><?php echo lang('user_activity_report'); ?></span> </a></li>
+                                            <li> <a href="finance/allAccountActivityReport"><i class="fa fa-city"></i><span><?php echo lang('all');?> <?php echo lang('accounts_report'); ?></span> </a></li>
                                         <?php } ?>
                                     <?php } ?>
 
