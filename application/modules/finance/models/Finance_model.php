@@ -94,6 +94,14 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getPaymentByCompanyId($id) {
+        $this->db->order_by('id', 'desc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('company_id', $id);
+        $query = $this->db->get('payment');
+        return $query->result();
+    }
+
     function thisMonthPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('payment')->result();
@@ -510,6 +518,14 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getOtPaymentByCompanyId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('company_id', $id);
+        $query = $this->db->get('ot_payment');
+        return $query->result();
+    }
+
     function insertDeposit($data) {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
@@ -559,6 +575,14 @@ class Finance_model extends CI_model {
         $query = $this->db->get('patient_deposit');
         return $query->result();
     }
+
+    function getDepositByCompanyId($id) {
+        $this->db->order_by('id', 'desc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('company_id', $id);
+        $query = $this->db->get('patient_deposit');
+        return $query->result();
+    }    
 
     function deleteDeposit($id) {
         $this->db->where('id', $id);
@@ -994,6 +1018,18 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getPaymentByCompanyIdByDate($company, $date_from, $date_to) {
+        $this->db->order_by('id', 'desc');
+        $this->db->select('*');
+        $this->db->from('payment');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('company_id', $company);
+        $this->db->where('date >=', $date_from);
+        $this->db->where('date <=', $date_to);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     function getOtPaymentByUserIdByDate($user, $date_from, $date_to) {
         $this->db->order_by('id', 'desc');
         $this->db->select('*');
@@ -1006,12 +1042,36 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getOtPaymentByCompanyIdByDate($company, $date_from, $date_to) {
+        $this->db->order_by('id', 'desc');
+        $this->db->select('*');
+        $this->db->from('ot_payment');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('company_id', $company);
+        $this->db->where('date >=', $date_from);
+        $this->db->where('date <=', $date_to);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     function getDepositByUserIdByDate($user, $date_from, $date_to) {
         $this->db->order_by('id', 'desc');
         $this->db->select('*');
         $this->db->from('patient_deposit');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('user', $user);
+        $this->db->where('date >=', $date_from);
+        $this->db->where('date <=', $date_to);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function getDepositByCompanyIdByDate($company, $date_from, $date_to) {
+        $this->db->order_by('id', 'desc');
+        $this->db->select('*');
+        $this->db->from('patient_deposit');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('company_id', $company);
         $this->db->where('date >=', $date_from);
         $this->db->where('date <=', $date_to);
         $query = $this->db->get();
