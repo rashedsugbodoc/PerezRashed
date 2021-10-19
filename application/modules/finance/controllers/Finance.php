@@ -437,6 +437,7 @@ class Finance extends MX_Controller {
                                 'date' => $date,
                                 'patient' => $patient,
                                 'payment_id' => $inserted_id,
+                                'company_id' => $company_id,
                                 'deposited_amount' => $amount_received,
                                 'amount_received_id' => $inserted_id . '.' . 'gp',
                                 'gateway' => 'Stripe',
@@ -460,6 +461,7 @@ class Finance extends MX_Controller {
                     $data1 = array(
                         'date' => $date,
                         'patient' => $patient,
+                        'company_id' => $company_id,
                         'deposited_amount' => $amount_received,
                         'payment_id' => $inserted_id,
                         'amount_received_id' => $inserted_id . '.' . 'gp',
@@ -481,6 +483,7 @@ class Finance extends MX_Controller {
                     $deposited_edit = array_combine($deposit_edit_id, $deposit_edit_amount);
                     foreach ($deposited_edit as $key_deposit => $value_deposit) {
                         $data_deposit = array(
+                            'company_id' => $company_id,
                             'deposited_amount' => $value_deposit
                         );
                         $this->finance_model->updateDeposit($key_deposit, $data_deposit);
@@ -516,6 +519,7 @@ class Finance extends MX_Controller {
                         'date' => $date,
                         'patient' => $patient,
                         'payment_id' => $id,
+                        'company_id' => $company_id,
                         'deposited_amount' => $amount_received,
                         'user' => $user
                     );
@@ -525,6 +529,7 @@ class Finance extends MX_Controller {
                         'date' => $date,
                         'patient' => $patient,
                         'payment_id' => $id,
+                        'company_id' => $company_id,
                         'deposited_amount' => $amount_received,
                         'amount_received_id' => $id . '.' . 'gp',
                         'user' => $user
@@ -1377,7 +1382,7 @@ class Finance extends MX_Controller {
         if (empty($deposit_type)) {
             $deposit_type = 'Cash';
         }
-
+        $payment_details = $this->finance_model->getPaymentById($payment_id);
         $user = $this->ion_auth->get_user_id();
 
         $this->load->library('form_validation');
@@ -1393,15 +1398,14 @@ class Finance extends MX_Controller {
             $data = array('patient' => $patient,
                 'date' => $date,
                 'payment_id' => $payment_id,
+                'company_id' => $payment_details->company_id,
                 'deposited_amount' => $deposited_amount,
                 'deposit_type' => $deposit_type,
                 'user' => $user
             );
             if (empty($id)) {
                 if ($deposit_type == 'Card') {
-                    $payment_details = $this->finance_model->getPaymentById($payment_id);
                     $gateway = $this->settings_model->getSettings()->payment_gateway;
-
                     if ($gateway == 'PayPal') {
                         $card_type = $this->input->post('card_type');
                         $card_number = $this->input->post('card_number');
@@ -1422,6 +1426,7 @@ class Finance extends MX_Controller {
                             'patient_address' => $payment_details->patient_address,
                             'deposited_amount' => $deposited_amount,
                             'payment_id' => $payment_details->id,
+                            'company_id' => $payment_details->company_id,
                             'card_type' => $card_type,
                             'card_number' => $card_number,
                             'expire_date' => $expire_date,
@@ -1455,6 +1460,7 @@ class Finance extends MX_Controller {
                                 'date' => $date,
                                 'patient' => $patient,
                                 'payment_id' => $payment_id,
+                                'company_id' => $payment_details->company_id,
                                 'deposited_amount' => $deposited_amount,
                                 'gateway' => 'Stripe',
                                 'deposit_type' => 'Card',
@@ -1696,6 +1702,43 @@ class Finance extends MX_Controller {
         $this->load->view('home/footer'); // just the header file
     }
 
+    function accountActivityReport() {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
+        $account = $this->input->get('account');
+        $data['company'] = $this->company_model->getCompanyById($account);
+        $hour = 0;
+        $TODAY_ON = $this->input->get('today');
+        $YESTERDAY_ON = $this->input->get('yesterday');
+        $ALL = $this->input->get('all');
+
+        $today = strtotime($hour . ':00:00');
+        $today_last = strtotime($hour . ':00:00') + 86399;
+        $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($account, $today, $today_last);
+        $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyIdByDate($account, $today, $today_last);
+        $data['deposits'] = $this->finance_model->getDepositByCompanyIdByDate($account, $today, $today_last);
+        $data['day'] = 'Today';
+        if (!empty($YESTERDAY_ON)) {
+            $today = strtotime($hour . ':00:00');
+            $yesterday = strtotime('-1 day', $today);
+            $data['day'] = 'Yesterday';
+            $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($account, $yesterday, $today);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyIdByDate($account, $yesterday, $today);
+            $data['deposits'] = $this->finance_model->getDepositByCompanyIdByDate($account, $yesterday, $today);
+        }
+        if (!empty($ALL)) {
+            $data['day'] = 'All';
+            $data['payments'] = $this->finance_model->getPaymentByCompanyId($account);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyId($account);
+            $data['deposits'] = $this->finance_model->getDepositByCompanyId($account);
+        }
+        $data['settings'] = $this->settings_model->getSettings();
+        $this->load->view('home/dashboard'); // just the header file
+        $this->load->view('account_activity_report', $data);
+        $this->load->view('home/footer'); // just the header file
+    }    
+
     function UserActivityReportDateWise() {
         $data = array();
         if (!$this->ion_auth->logged_in()) {
@@ -1725,6 +1768,182 @@ class Finance extends MX_Controller {
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('user_activity_report', $data);
         $this->load->view('home/footer'); // just the header file
+    }
+
+    function accountActivityReportDateWise() {
+        $data = array();
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
+        $account = $this->input->post('account');
+        $data['company'] = $this->company_model->getCompanyById($account);
+        $date_from = strtotime($this->input->post('date_from'));
+        $date_to = strtotime($this->input->post('date_to'));
+        if (!empty($date_to)) {
+            $date_to = $date_to + 86399;
+        }
+
+        $data['date_from'] = $date_from;
+        $data['date_to'] = $date_to;
+
+        $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($account, $date_from, $date_to);
+        $data['ot_payments'] = $this->finance_model->getOtPaymentByUserIdByDate($account, $date_from, $date_to);
+        $data['deposits'] = $this->finance_model->getDepositByUserIdByDate($account, $date_from, $date_to);
+        $data['settings'] = $this->settings_model->getSettings();
+        $this->load->view('home/dashboard'); // just the header file
+        $this->load->view('account_activity_report', $data);
+        $this->load->view('home/footer'); // just the header file
+    }
+
+    function allAccountActivityReport() {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
+        $account = $this->input->get('account');
+
+        if (!empty($account)) {
+            $data['company'] = $this->company_model->getCompanyById($account);
+            $data['settings'] = $this->settings_model->getSettings();
+            $hour = 0;
+            $TODAY_ON = $this->input->get('today');
+            $YESTERDAY_ON = $this->input->get('yesterday');
+            $ALL = $this->input->get('all');
+
+            $today = strtotime($hour . ':00:00');
+            $today_last = strtotime($hour . ':00:00') + 86399;
+            $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($account, $today, $today_last);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyIdByDate($account, $today, $today_last);
+            $data['deposits'] = $this->finance_model->getDepositByCompanyIdByDate($account, $today, $today_last);
+            $data['day'] = 'Today';
+
+            if (!empty($YESTERDAY_ON)) {
+                $today = strtotime($hour . ':00:00');
+                $yesterday = strtotime('-1 day', $today);
+                $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($account, $yesterday, $today);
+                $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyIdByDate($account, $yesterday, $today);
+                $data['deposits'] = $this->finance_model->getDepositByCompanyIdByDate($account, $yesterday, $today);
+                $data['day'] = 'Yesterday';
+            }
+
+            if (!empty($ALL)) {
+                $data['payments'] = $this->finance_model->getPaymentByCompanyId($account);
+                $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyId($account);
+                $data['deposits'] = $this->finance_model->getDepositByUserId($account);
+                $data['day'] = 'All';
+            }
+
+
+            $this->load->view('home/dashboard'); // just the header file
+            $this->load->view('account_activity_report', $data);
+            $this->load->view('home/footer'); // just the header file
+        }
+
+        if (empty($account)) {
+            $hour = 0;
+            $today = strtotime($hour . ':00:00');
+            $today_last = strtotime($hour . ':00:00') + 86399;
+            $data['companies'] = $this->company_model->getCompany();
+            //$data['receptionists'] = $this->receptionist_model->getReceptionist();
+            $data['settings'] = $this->settings_model->getSettings();
+            $data['payments'] = $this->finance_model->getPaymentByDate($today, $today_last);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByDate($today, $today_last);
+            $data['deposits'] = $this->finance_model->getDepositsByDate($today, $today_last);
+            $this->load->view('home/dashboard'); // just the header file
+            $this->load->view('all_account_activity_report', $data);
+            $this->load->view('home/footer'); // just the header file
+        }
+    }
+
+    function AllUserActivityReportDateWise() {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
+        $user = $this->input->post('user');
+
+        if (!empty($user)) {
+            $user_group = $this->db->get_where('users_groups', array('user_id' => $user))->row()->group_id;
+            if ($user_group == '3') {
+                $data['user'] = $this->accountant_model->getAccountantByIonUserId($user);
+            }
+            if ($user_group == '10') {
+                $data['user'] = $this->receptionist_model->getReceptionistByIonUserId($user);
+            }
+            $date_from = strtotime($this->input->post('date_from'));
+            $date_to = strtotime($this->input->post('date_to'));
+            if (!empty($date_to)) {
+                $date_to = $date_to + 86399;
+            }
+
+            $data['settings'] = $this->settings_model->getSettings();
+            $data['date_from'] = $date_from;
+            $data['date_to'] = $date_to;
+            $data['payments'] = $this->finance_model->getPaymentByUserIdByDate($user, $date_from, $date_to);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByUserIdByDate($user, $date_from, $date_to);
+            $data['deposits'] = $this->finance_model->getDepositByUserIdByDate($user, $date_from, $date_to);
+
+
+
+            $this->load->view('home/dashboard'); // just the header file
+            $this->load->view('user_activity_report', $data);
+            $this->load->view('home/footer'); // just the header file
+        }
+
+        if (empty($user)) {
+            $hour = 0;
+            $today = strtotime($hour . ':00:00');
+            $today_last = strtotime($hour . ':00:00') + 86399;
+            $data['accountants'] = $this->accountant_model->getAccountant();
+            $data['receptionists'] = $this->receptionist_model->getReceptionist();
+            $data['settings'] = $this->settings_model->getSettings();
+            $data['payments'] = $this->finance_model->getPaymentByDate($today, $today_last);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByDate($today, $today_last);
+            $data['deposits'] = $this->finance_model->getDepositsByDate($today, $today_last);
+            $this->load->view('home/dashboard'); // just the header file
+            $this->load->view('all_user_activity_report', $data);
+            $this->load->view('home/footer'); // just the header file
+        }
+    }
+
+    function allAccountActivityReportDateWise() {
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
+        $account = $this->input->post('account');
+
+        if (!empty($account)) {
+            $data['company'] = $this->company_model->getCompanyById($account);
+
+            $date_from = strtotime($this->input->post('date_from'));
+            $date_to = strtotime($this->input->post('date_to'));
+            if (!empty($date_to)) {
+                $date_to = $date_to + 86399;
+            }
+
+            $data['settings'] = $this->settings_model->getSettings();
+            $data['date_from'] = $date_from;
+            $data['date_to'] = $date_to;
+            $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($user, $date_from, $date_to);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyIdByDate($user, $date_from, $date_to);
+            $data['deposits'] = $this->finance_model->getDepositByCompanyIdByDate($user, $date_from, $date_to);
+
+            $this->load->view('home/dashboard'); // just the header file
+            $this->load->view('account_activity_report', $data);
+            $this->load->view('home/footer'); // just the header file
+        }
+
+        if (empty($account)) {
+            $hour = 0;
+            $today = strtotime($hour . ':00:00');
+            $today_last = strtotime($hour . ':00:00') + 86399;
+            $data['companies'] = $this->company_model->getCompany();
+            $data['settings'] = $this->settings_model->getSettings();
+            $data['payments'] = $this->finance_model->getPaymentByDate($today, $today_last);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByDate($today, $today_last);
+            $data['deposits'] = $this->finance_model->getDepositsByDate($today, $today_last);
+            $this->load->view('home/dashboard'); // just the header file
+            $this->load->view('all_account_activity_report', $data);
+            $this->load->view('home/footer'); // just the header file
+        }
     }
 
     function AllUserActivityReport() {
@@ -1791,57 +2010,6 @@ class Finance extends MX_Controller {
             $this->load->view('home/footer'); // just the header file
         }
     }
-
-    function AllUserActivityReportDateWise() {
-        if (!$this->ion_auth->logged_in()) {
-            redirect('auth/login', 'refresh');
-        }
-        $user = $this->input->post('user');
-
-        if (!empty($user)) {
-            $user_group = $this->db->get_where('users_groups', array('user_id' => $user))->row()->group_id;
-            if ($user_group == '3') {
-                $data['user'] = $this->accountant_model->getAccountantByIonUserId($user);
-            }
-            if ($user_group == '10') {
-                $data['user'] = $this->receptionist_model->getReceptionistByIonUserId($user);
-            }
-            $date_from = strtotime($this->input->post('date_from'));
-            $date_to = strtotime($this->input->post('date_to'));
-            if (!empty($date_to)) {
-                $date_to = $date_to + 86399;
-            }
-
-            $data['settings'] = $this->settings_model->getSettings();
-            $data['date_from'] = $date_from;
-            $data['date_to'] = $date_to;
-            $data['payments'] = $this->finance_model->getPaymentByUserIdByDate($user, $date_from, $date_to);
-            $data['ot_payments'] = $this->finance_model->getOtPaymentByUserIdByDate($user, $date_from, $date_to);
-            $data['deposits'] = $this->finance_model->getDepositByUserIdByDate($user, $date_from, $date_to);
-
-
-
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('user_activity_report', $data);
-            $this->load->view('home/footer'); // just the header file
-        }
-
-        if (empty($user)) {
-            $hour = 0;
-            $today = strtotime($hour . ':00:00');
-            $today_last = strtotime($hour . ':00:00') + 86399;
-            $data['accountants'] = $this->accountant_model->getAccountant();
-            $data['receptionists'] = $this->receptionist_model->getReceptionist();
-            $data['settings'] = $this->settings_model->getSettings();
-            $data['payments'] = $this->finance_model->getPaymentByDate($today, $today_last);
-            $data['ot_payments'] = $this->finance_model->getOtPaymentByDate($today, $today_last);
-            $data['deposits'] = $this->finance_model->getDepositsByDate($today, $today_last);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('all_user_activity_report', $data);
-            $this->load->view('home/footer'); // just the header file
-        }
-    }
-
     function getPayment() {
         $requestData = $_REQUEST;
         $start = $requestData['start'];
