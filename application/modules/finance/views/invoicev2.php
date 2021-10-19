@@ -231,13 +231,26 @@
                                                                 </td>
                                                                 <td></td>
                                                                 <td class="w-15 p-0">
-                                                                    <span class="pull-right"> </span>
+                                                                    <span class="pull-right"><?php echo lang('payer_account'); ?></span>
                                                                 </td>
                                                                 <td class="w-7 p-0">
-                                                                    <span></span>
+                                                                    <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span> </span>
+                                                                    <span>
+                                                                        <?php
+                                                                        if (!empty($payment->company_id)) {
+                                                                            $company_details = $this->company_model->getCompanyById($payment->company_id);
+                                                                            if (!empty($company_details)) {
+                                                                                echo substr(str_repeat(0, 5).$company_details->id, - 5) . ' - '.$company_details->display_name .' <br>';
+                                                                            } else {
+                                                                                echo lang('none');
+                                                                            }
+                                                                        }
+                                                                        ?> 
+
+
+                                                                    </span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
