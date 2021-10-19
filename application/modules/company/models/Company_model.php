@@ -152,9 +152,33 @@ class Company_model extends CI_model {
         $data = array();
         $data[] = array("id" => 'add_new', "text" => lang('add_new'));
         foreach ($companies as $company) {
-            $data[] = array("id" => $company['id'], "text" => $company['name'] . ' (' . lang('id') . ': ' . $company['id'] . ')');
+            $data[] = array("id" => $company['id'], "text" => format_number_with_digits($company['id'], COMPANY_ID_LENGTH) . ' - ' .$company['display_name'] );
         }
         return $data;
     }
+
+    function getCompanyWithoutAddNewOption($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('company')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $companies = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('company');
+            $companies = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($companies as $company) {
+            $data[] = array("id" => $company['id'], "text" => format_number_with_digits($company['id'], COMPANY_ID_LENGTH) . ' - ' .$company['display_name'] );
+        }
+        return $data;
+    }    
 
 }
