@@ -382,12 +382,12 @@ class Company extends MX_Controller {
         echo json_encode($response);
     }
 
-    public function getCompanyWithAddNewOption() {
+    public function getCompanyWithoutAddNewOption() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');
 
 // Get users
-        $response = $this->company_model->getCompanyWithAddNewOption($searchTerm);
+        $response = $this->company_model->getCompanyWithoutAddNewOption($searchTerm);
 
         echo json_encode($response);
     }
