@@ -5,7 +5,7 @@
         <!-- page start-->
         <section class="panel">
             <header class="panel-heading">
-                <?php echo lang('list_of_companies'); ?>    
+                <?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>    
                 <div class="col-md-4 no-print pull-right"> 
                     <a data-toggle="modal" href="#myModal">
                         <div class="btn-group pull-right">
@@ -67,7 +67,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">  <?php echo lang('add_company'); ?></h4>
+                <h4 class="modal-title">  <?php echo lang('add_account'); ?></h4>
             </div>
             <div class="modal-body row">
                 <form role="form" action="company/addNew" class="clearfix" method="post" enctype="multipart/form-data">
