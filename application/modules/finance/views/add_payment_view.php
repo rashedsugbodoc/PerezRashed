@@ -180,6 +180,18 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-12 form-group">
+                                <div class="row">
+                                    <div class="col-md-12 form-group">
+                                        <label for="exampleInputEmail1"> <?php echo lang('payer_account'); ?></label>
+                                        <select class="form-control m-bot15  add_payer" id="company" name="company_id" value=''>
+                                            <?php if (!empty($payment)) { ?>
+                                                <option value="<?php echo $company->id; ?>" selected="selected"><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>                                
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -1033,6 +1045,29 @@ if ($discount_type == 'flat') {
             allowClear: true,
             ajax: {
                 url: 'doctor/getDoctorWithAddNewOption',
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+
+        });
+
+        $("#company").select2({
+            placeholder: '<?php echo lang('select_payer'); ?>',
+            allowClear: true,
+            ajax: {
+                url: 'company/getCompanyWithoutAddNewOption',
                 type: "post",
                 dataType: 'json',
                 delay: 250,
