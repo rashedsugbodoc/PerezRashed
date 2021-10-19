@@ -14,6 +14,7 @@ class Finance extends MX_Controller {
         $this->load->model('accountant/accountant_model');
         $this->load->model('receptionist/receptionist_model');
         $this->load->model('pgateway/pgateway_model');
+        $this->load->model('company/company_model');
         $this->load->module('sms');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->module('paypal');
@@ -75,6 +76,7 @@ class Finance extends MX_Controller {
         $item_selected = $this->input->post('category_id');
         $quantity = $this->input->post('quantity');
         $remarks = $this->input->post('remarks');
+        $company_id = $this->input->post('company_id');
 
         if (empty($item_selected)) {
             $this->session->set_flashdata('feedback', lang('select_an_item'));
@@ -312,7 +314,8 @@ class Finance extends MX_Controller {
                     'patient_address' => $patient_address,
                     'doctor_name' => $doctor_name,
                     'date_string' => $date_string,
-                    'remarks' => $remarks
+                    'remarks' => $remarks,
+                    'company_id' => $company_id
                 );
 
 
@@ -390,6 +393,7 @@ class Finance extends MX_Controller {
                             'doctor_name' => $doctor_name,
                             'date_string' => $date_string,
                             'remarks' => $remarks,
+                            'company_id' => $company_id,
                             'deposited_amount' => $amount_received,
                             'payment_id' => $inserted_id,
                             'card_type' => $card_type,
@@ -503,7 +507,8 @@ class Finance extends MX_Controller {
                     'patient_phone' => $patient_details->phone,
                     'patient_address' => $patient_details->address,
                     'doctor_name' => $doctor_details->name,
-                    'remarks' => $remarks
+                    'remarks' => $remarks,
+                    'company_id' => $company_id
                 );
 
                 if (!empty($deposit_id->id)) {
@@ -553,6 +558,7 @@ class Finance extends MX_Controller {
             $data['payment'] = $this->finance_model->getPaymentById($id);
             $data['patients'] = $this->patient_model->getPatientById($data['payment']->patient);
             $data['doctors'] = $this->doctor_model->getDoctorById($data['payment']->doctor);
+            $data['company'] = $this->company_model->getCompanyById($data['payment']->company_id);
             $this->load->view('home/dashboard'); // just the header file
             $this->load->view('add_payment_view', $data);
             $this->load->view('home/footer'); // just the footer file
