@@ -46,7 +46,7 @@
                             </style>
 
                         <!--Page header-->
-                        <div class="page-header">   
+                        <div class="page-header d-print-none">   
                             <div class="page-leftheader">
                                 <h4 class="page-title"><?php echo lang('bill');?> <?php echo lang('details');?></h4>
                             </div>
@@ -93,7 +93,7 @@
                                             <div class="col-md-3">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 header-brand pl-0">
-                                                        <img src="<?php echo base_url('public/assets/images/brand/logo.png'); ?>" class="header-brand-img desktop-lgo" alt="<?php echo $settings->title;?>">
+                                                        <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-lgo" style="height: 60px;" alt="<?php echo $settings->title;?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -232,13 +232,26 @@
                                                                 </td>
                                                                 <td></td>
                                                                 <td class="w-15 p-0">
-                                                                    <span class="pull-right"> </span>
+                                                                    <span class="pull-right"><?php echo lang('payer_account'); ?></span>
                                                                 </td>
                                                                 <td class="w-7 p-0">
-                                                                    <span></span>
+                                                                    <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span> </span>
+                                                                    <span>
+                                                                        <?php
+                                                                        if (!empty($payment->company_id)) {
+                                                                            $company_details = $this->company_model->getCompanyById($payment->company_id);
+                                                                            if (!empty($company_details)) {
+                                                                                echo substr(str_repeat(0, 5).$company_details->id, - 5) . ' - '.$company_details->display_name .' <br>';
+                                                                            } else {
+                                                                                echo lang('none');
+                                                                            }
+                                                                        }
+                                                                        ?> 
+
+
+                                                                    </span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
