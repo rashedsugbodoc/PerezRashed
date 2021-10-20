@@ -87,7 +87,7 @@ class Company_model extends CI_model {
             $query = $this->db->select('*')
                     ->from('company')
                     ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
                     ->get();
             $users = $query->result_array();
         } else {
@@ -95,13 +95,13 @@ class Company_model extends CI_model {
             $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
             $this->db->limit(10);
             $fetched_records = $this->db->get('company');
-            $users = $fetched_records->result_array();
+            $companies = $fetched_records->result_array();
         }
 
         // Initialize Array with fetched data
         $data = array();
-        foreach ($users as $user) {
-            $data[] = array("id" => $user['id'], "text" => $user['name'] . ' (' . lang('id') . ': ' . $user['id'] . ')');
+        foreach ($companies as $company) {
+            $data[] = array("id" => $company['id'], "text" => format_number_with_digits($company['id'], COMPANY_ID_LENGTH) . ' - ' .$company['display_name'] );
         }
         return $data;
     }
@@ -137,7 +137,7 @@ class Company_model extends CI_model {
             $query = $this->db->select('*')
                     ->from('company')
                     ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
                     ->get();
             $companies = $query->result_array();
         } else {
@@ -162,7 +162,7 @@ class Company_model extends CI_model {
             $query = $this->db->select('*')
                     ->from('company')
                     ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
                     ->get();
             $companies = $query->result_array();
         } else {
