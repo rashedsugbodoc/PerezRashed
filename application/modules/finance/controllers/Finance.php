@@ -15,6 +15,7 @@ class Finance extends MX_Controller {
         $this->load->model('receptionist/receptionist_model');
         $this->load->model('pgateway/pgateway_model');
         $this->load->model('company/company_model');
+        $this->load->model('companyuser/companyuser_model');
         $this->load->module('sms');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->module('paypal');
@@ -2018,7 +2019,7 @@ class Finance extends MX_Controller {
         $settings = $this->settings_model->getSettings();
         $user_id = $this->ion_auth->get_user_id();
         //First Check if Company Administrator is logged in and only show their company's invoices
-        if ($this->ion_auth->in_group(array('admin','CompanyUser'))) {
+        if ($this->ion_auth->in_group(array('CompanyUser'))) {
             $company_user = $this->companyuser_model->getCompanyUserByIonUserId($user_id);
             $company_id = $company_user->company_id;
             if ($limit == -1) {
