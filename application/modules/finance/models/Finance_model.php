@@ -34,8 +34,29 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getPaymentByCompanyIdBySearch($company_id, $search) {
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->select('*')
+                ->from('payment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('company_id', $company_id)
+                ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+
+        return $query->result();
+    }
+
     function getPaymentByLimit($limit, $start) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('payment');
+        return $query->result();
+    }
+
+    function getPaymentByCompanyIdByLimit($company_id, $limit, $start) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('company_id', $company_id);
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->get('payment');
@@ -61,6 +82,18 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getPaymentByCompanyIdByLimitBySearch($company_id, $limit, $start, $search) {
+        $this->db->order_by('id', 'desc');
+        $this->db->limit($limit, $start);
+        $query = $this->db->select('*')
+                ->from('payment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('company_id', $company_id)
+                ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+
+        return $query->result();
+    }
     function getPaymentById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
