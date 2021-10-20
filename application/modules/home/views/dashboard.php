@@ -1128,7 +1128,66 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
 
 
-
+                        <?php if ($this->ion_auth->in_group('CompanyUser')) { ?>
+                            <?php if (in_array('finance', $this->modules)) { ?>
+                                <li class="sub-menu">
+                                    <a href="javascript:;" >
+                                        <i class="fa fa-money-bill-alt"></i>
+                                        <span><?php echo lang('invoices'); ?></span>
+                                    </a>
+                                    <ul class="sub">
+                                        <li>
+                                            <a href="finance/payment" >
+                                                <i class="fa fa-money-check"></i>
+                                                <span> <?php echo lang('invoices'); ?> </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="finance/addPaymentView" >
+                                                <i class="fa fa-plus"></i>
+                                                <span> <?php echo lang('add_invoice'); ?> </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="finance/paymentCategory" >
+                                                <i class="fa fa-edit"></i>
+                                                <span> <?php echo lang('service_listing'); ?> </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="finance/expense" >
+                                        <i class="fa fa-money-check"></i>
+                                        <span> <?php echo lang('expense'); ?> </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="finance/addExpenseView" >
+                                        <i class="fa fa-plus"></i>
+                                        <span> <?php echo lang('add_expense'); ?> </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="finance/expenseCategory" >
+                                        <i class="fa fa-edit"></i>
+                                        <span> <?php echo lang('expense_categories'); ?> </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="finance/doctorsCommission" >
+                                        <i class="fa fa-edit"></i>
+                                        <span> <?php echo lang('doctors_commission'); ?> </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="finance/financialReport" >
+                                        <i class="fa fa-book"></i>
+                                        <span> <?php echo lang('financial_report'); ?> </span>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>
 
 
                         <?php if ($this->ion_auth->in_group('Accountant')) { ?>
