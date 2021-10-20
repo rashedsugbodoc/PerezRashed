@@ -19,7 +19,7 @@ class Finance extends MX_Controller {
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->module('paypal');
 
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Nurse', 'Laboratorist', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Nurse', 'Laboratorist', 'Doctor', 'CompanyUser'))) {
             redirect('home/permission');
         }
     }
@@ -2016,20 +2016,44 @@ class Finance extends MX_Controller {
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
         $settings = $this->settings_model->getSettings();
+        $user_id = $this->ion_auth->get_user_id();
+        //First Check if Company Administrator is logged in and only show their company's invoices
+        if ($this->ion_auth->in_group(array('admin','CompanyUser'))) {
+            $company_user = $this->companyuser_model->getCompanyUserByIonUserId($user_id);
+            $company_id = $company_user->company_id;
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['payments'] = $this->finance_model->getPaymentByCompanyIdBySearch($company_id, $search);
+                } else {
+                    $data['payments'] = $this->finance_model->getPaymentByCompanyId($company_id);
+                }
+            } else {
+                if (!empty($search)) {
+                    $data['payments'] = $this->finance_model->getPaymentByCompanyIdByLimitBySearch($company_id, $limit, $start, $search);
+                } else {
+                    $data['payments'] = $this->finance_model->getPaymentByCompanyIdByLimit($company_id, $limit, $start);
+                }
+            }
 
-        if ($limit == -1) {
-            if (!empty($search)) {
-                $data['payments'] = $this->finance_model->getPaymentBysearch($search);
-            } else {
-                $data['payments'] = $this->finance_model->getPayment();
-            }
         } else {
-            if (!empty($search)) {
-                $data['payments'] = $this->finance_model->getPaymentByLimitBySearch($limit, $start, $search);
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['payments'] = $this->finance_model->getPaymentBySearch($search);
+                } else {
+                    $data['payments'] = $this->finance_model->getPayment();
+                }
             } else {
-                $data['payments'] = $this->finance_model->getPaymentByLimit($limit, $start);
+                if (!empty($search)) {
+                    $data['payments'] = $this->finance_model->getPaymentByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['payments'] = $this->finance_model->getPaymentByLimit($limit, $start);
+                }
             }
+
         }
+
+
+
         //  $data['payments'] = $this->finance_model->getPayment();
 
         foreach ($data['payments'] as $payment) {
