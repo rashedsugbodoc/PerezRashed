@@ -229,7 +229,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </ul>
                                 </li>
                             <?php } ?>
-                        <?php } ?>
+                        <?php } ?>                        
                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                             <?php if (in_array('doctor', $this->modules)) { ?>
                                 <li class="slide">
@@ -242,7 +242,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </ul>
                                 </li>
                             <?php } ?>
-                        <?php } ?>                        
+                        <?php } ?>
                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Nurse', 'Doctor', 'Laboratorist', 'Receptionist'))) { ?>
                             <?php if (in_array('patient', $this->modules)) { ?>
                                 <li class="slide">
@@ -630,6 +630,18 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>                         
+                        <?php if ($this->ion_auth->in_group('CompanyUser')) { ?>
+                            <?php if (in_array('finance', $this->modules)) { ?>                
+                                <li class="slide">
+                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="side-menu__icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                                    <span class="side-menu__label"><?php echo lang('invoices'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <ul class="slide-menu">
+                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
+                                    </ul>
+                                </li>                                                                                                                                                             
+                            <?php } ?>
+                        <?php } ?>
 
                         <?php if ($this->ion_auth->in_group('Accountant')) { ?>
                             <?php if (in_array('finance', $this->modules)) { ?>                
