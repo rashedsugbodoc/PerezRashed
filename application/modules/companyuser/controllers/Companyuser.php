@@ -8,7 +8,8 @@ class Companyuser extends MX_Controller {
     function __construct() {
         parent::__construct();
 
-        $this->load->model('companyuser_model');
+        $this->load->model('companyuser/companyuser_model');
+        $this->load->model('company/company_model');
  
         if (!$this->ion_auth->in_group('admin')) {
             redirect('home/permission');
@@ -16,7 +17,7 @@ class Companyuser extends MX_Controller {
     }
 
     public function index() {
-
+        //$data['company'] = $this->company_model->getCompany();
         $data['companyusers'] = $this->companyuser_model->getCompanyUser();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('companyuser', $data);
@@ -37,6 +38,7 @@ class Companyuser extends MX_Controller {
         $email = $this->input->post('email');
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
+        $company_id = $this->input->post('company_id');
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
@@ -52,6 +54,7 @@ class Companyuser extends MX_Controller {
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
         $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('company_id', 'Company', 'trim|required|min_length[1]|max_length[50]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
@@ -97,7 +100,8 @@ class Companyuser extends MX_Controller {
                     'name' => $name,
                     'email' => $email,
                     'address' => $address,
-                    'phone' => $phone
+                    'phone' => $phone,
+                    'company_id' => $company_id
                 );
             } else {
                 //$error = array('error' => $this->upload->display_errors());
@@ -106,7 +110,8 @@ class Companyuser extends MX_Controller {
                     'name' => $name,
                     'email' => $email,
                     'address' => $address,
-                    'phone' => $phone
+                    'phone' => $phone,
+                    'company_id' => $company_id
                 );
             }
 
@@ -160,6 +165,7 @@ class Companyuser extends MX_Controller {
     function editCompanyUserByJason() {
         $id = $this->input->get('id');
         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+        $data['company'] = $this->company_model->getCompanyById($data['companyuser']->company_id);
         echo json_encode($data);
     }
 

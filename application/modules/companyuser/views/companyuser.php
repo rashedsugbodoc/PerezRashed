@@ -31,6 +31,7 @@
                                 <th><?php echo lang('email'); ?></th>
                                 <th><?php echo lang('address'); ?></th>
                                 <th><?php echo lang('phone'); ?></th>
+                                <th><?php echo lang('company'); ?></th>
                                 <th class="no-print"><?php echo lang('options'); ?></th>
                             </tr>
                         </thead>
@@ -55,6 +56,7 @@
                                 <td><?php echo $companyuser->email; ?></td>
                                 <td class="center"><?php echo $companyuser->address; ?></td>
                                 <td><?php echo $companyuser->phone; ?></td>
+                                <td><?php echo $this->company_model->getCompanyById($companyuser->company_id)->name; ?></td>
                                 <td class="no-print">
                                     <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $companyuser->id; ?>"><i class="fa fa-edit"> </i></button>   
                                     <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="companyuser/delete?id=<?php echo $companyuser->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
@@ -108,6 +110,14 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1"><?php echo lang('phone'); ?></label>
                         <input type="text" class="form-control" name="phone" id="exampleInputEmail1" value='' placeholder="">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1"> <?php echo lang('company'); ?></label>
+                        <select class="form-control m-bot15  add_payer" id="company" name="company_id" value=''>
+                            <?php if (!empty($companyuser)) { ?>
+                                <option value="<?php echo $company->id; ?>" selected="selected"><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
+                            <?php } ?>
+                        </select>                        
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1"><?php echo lang('image'); ?></label>
@@ -164,6 +174,12 @@
                         <input type="text" class="form-control" name="phone" id="exampleInputEmail1" value='' placeholder="">
                     </div>
                     <div class="form-group">
+                        <label for="exampleInputEmail1"> <?php echo lang('company'); ?></label>
+                        <select class="form-control m-bot15  add_payer" id="company_select" name="company_id" value=''>
+
+                        </select>                        
+                    </div>                    
+                    <div class="form-group">
                         <label for="exampleInputEmail1"><?php echo lang('image'); ?></label>
                         <input type="file" name="img_url">
                     </div>
@@ -184,29 +200,40 @@
 
 <script src="common/js/coderygel.min.js"></script>
 <script type="text/javascript">
-                                    $(document).ready(function () {
-                                        $(".editbutton").click(function (e) {
-                                            e.preventDefault(e);
-                                            // Get the record's ID via attribute  
-                                            var iid = $(this).attr('data-id');
-                                            $('#editCompanyUserForm').trigger("reset");
-                                            $.ajax({
-                                                url: 'companyuser/editCompanyUserByJason?id=' + iid,
-                                                method: 'GET',
-                                                data: '',
-                                                dataType: 'json',
-                                            }).success(function (response) {
-                                                // Populate the form fields with the data returned from server
-                                                $('#editCompanyUserForm').find('[name="id"]').val(response.companyuser.id).end()
-                                                $('#editCompanyUserForm').find('[name="name"]').val(response.companyuser.name).end()
-                                                $('#editCompanyUserForm').find('[name="password"]').val(response.companyuser.password).end()
-                                                $('#editCompanyUserForm').find('[name="email"]').val(response.companyuser.email).end()
-                                                $('#editCompanyUserForm').find('[name="address"]').val(response.companyuser.address).end()
-                                                $('#editCompanyUserForm').find('[name="phone"]').val(response.companyuser.phone).end()
-                                                $('#myModal2').modal('show');
-                                            });
-                                        });
-                                    });</script>
+    $(document).ready(function () {
+
+        $(".editbutton").click(function (e) {
+            e.preventDefault(e);
+            // Get the record's ID via attribute  
+            var iid = $(this).attr('data-id');
+            $('#editCompanyUserForm').trigger("reset");
+            $.ajax({
+                url: 'companyuser/editCompanyUserByJason?id=' + iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+            }).success(function (response) {
+                // Populate the form fields with the data returned from server
+                $('#editCompanyUserForm').find('[name="id"]').val(response.companyuser.id).end()
+                $('#editCompanyUserForm').find('[name="name"]').val(response.companyuser.name).end()
+                $('#editCompanyUserForm').find('[name="password"]').val(response.companyuser.password).end()
+                $('#editCompanyUserForm').find('[name="email"]').val(response.companyuser.email).end()
+                $('#editCompanyUserForm').find('[name="address"]').val(response.companyuser.address).end()
+                $('#editCompanyUserForm').find('[name="phone"]').val(response.companyuser.phone).end()
+                
+                if (response.company !== null) {
+                    var option1 = new Option(response.company.name + '-' + response.company.id, response.company.id, true, true);
+                } else {
+                    var option1 = new Option(' ' + '-' + '', '', true, true);
+                }
+                $('#editCompanyUserForm').find('[name="company_id"]').append(option1).trigger('change');
+
+                $('#myModal2').modal('show');
+            });
+        });
+    });
+
+</script>
 
 
 
@@ -250,11 +277,63 @@
 
         table.buttons().container()
                 .appendTo('.custom_buttons');
+
+
+
+        $("#company").select2({
+            placeholder: '<?php echo lang('select_payer'); ?>',
+            allowClear: true,
+            ajax: {
+                url: 'company/getCompanyWithoutAddNewOption',
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
+
+        });                
     });
+
+
 </script>
 
 
+<script>
+    $(document).ready(function () {
+        $("#company_select").select2({
+            placeholder: '<?php echo lang('select_payer'); ?>',
+            allowClear: true,
+            ajax: {
+                url: 'company/getCompanyInfo',
+                type: "post",
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        searchTerm: params.term // search term
+                    };
+                },
+                processResults: function (response) {
+                    return {
+                        results: response
+                    };
+                },
+                cache: true
+            }
 
+        });
+    });
+</script>
 
 
 
