@@ -585,6 +585,20 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist'))) { ?>
+                            <?php if (in_array('admission', $this->modules)) { ?>
+                                <li class="sub-menu">
+                                    <a href="javascript:;" >
+                                        <i class="fas fa-procedures"></i>
+                                        <span><?php echo lang('admissions'); ?></span>
+                                    </a>
+                                    <ul class="sub">
+                                        <li><a  href="admission/admissions"><i class="fas fa-bed"></i><?php echo lang('admissions'); ?></a></li>
+                                        <li><a  href="admission/addAdmissionView"><i class="fa fa-plus"></i><?php echo lang('add_admission'); ?></a></li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>                        
                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                             <?php if (in_array('doctor', $this->modules)) { ?>
                                 <li class="sub-menu">

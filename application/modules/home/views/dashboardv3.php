@@ -225,7 +225,20 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </ul>
                                 </li>
                             <?php } ?>
-                        <?php } ?>                        
+                        <?php } ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist'))) { ?>
+                            <?php if (in_array('admission', $this->modules)) { ?>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g fill="currentColor" ><g><rect height="3" opacity=".3" width="16" x="4" y="12"/><path d="M20,10V7c0-1.1-0.9-2-2-2H6C4.9,5,4,5.9,4,7v3c-1.1,0-2,0.9-2,2v5h1.33L4,19h1l0.67-2h12.67L19,19h1l0.67-2H22v-5 C22,10.9,21.1,10,20,10z M13,7h5v3h-5V7z M6,7h5v3H6V7z M20,15H4v-3h16V15z"/></g></g></svg>
+                                    <span class="side-menu__label"><?php echo lang('admissions'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <ul class="slide-menu">
+                                        <li><a href="bed/bedAllotment" class="slide-item"><?php echo lang('admissions'); ?></a></li>
+                                        <li><a href="bed/addAllotmentView" class="slide-item"><?php echo lang('add_admission'); ?></a></li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>                                           
                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                             <?php if (in_array('doctor', $this->modules)) { ?>
                                 <li class="slide">
