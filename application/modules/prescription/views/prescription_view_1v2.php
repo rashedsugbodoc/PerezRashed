@@ -377,4 +377,6 @@
                 html2pdf(element, opt);
             };
         </script>
+    </body>
+</html>         
 <!--OLD Starts Here-->
