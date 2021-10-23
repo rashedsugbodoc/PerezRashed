@@ -558,9 +558,9 @@ class Lab extends MX_Controller {
             $this->load->view('home/permission');
         }
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('invoice', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('invoicev2', $data);
+        // $this->load->view('home/footer'); // just the footer fi
     }
 
     function patientLabHistory() {
