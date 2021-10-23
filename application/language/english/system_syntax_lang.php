@@ -21,6 +21,7 @@ if (!defined('BASEPATH'))
  */
 // Errors
 $lang['doctor'] = 'Doctor';
+$lang['dr'] = 'Dr';
 $lang['patient'] = 'Patient';
 $lang['nurse'] = 'Nurse';
 $lang['pharmacist'] = 'Pharmacist';
@@ -83,6 +84,7 @@ $lang['email'] = 'Email';
 $lang['address'] = 'Address';
 $lang['country'] = 'Country';
 $lang['phone'] = 'Phone';
+$lang['tel'] = 'Tel';
 $lang['password'] = 'Password';
 $lang['add_patient'] = 'Add Patient';
 $lang['register_new_patient'] = 'Register Patient';
@@ -686,6 +688,7 @@ $lang['add_case'] = 'Add Case';
 $lang['edit_case'] = 'Edit Case';
 $lang['subject'] = 'Subject';
 $lang['admin'] = 'Admin';
+$lang['superadmin'] = 'Super Admin';
 $lang['hospital_statistics'] = 'Hospital Statistics';
 $lang['hospital'] = 'Hospital';
 $lang['facility'] = 'Facility';

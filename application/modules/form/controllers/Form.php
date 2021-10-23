@@ -551,14 +551,15 @@ class Form extends MX_Controller {
         $id = $this->input->get('id');
         $data['settings'] = $this->settings_model->getSettings();
         $data['form'] = $this->form_model->getFormById($id);
-
+        $data['patient'] = $this->patient_model->getPatientById($data['form']->patient);
+        $data['doctor'] = $this->doctor_model->getDoctorById($data['form']->doctor);
         if ($data['form']->hospital_id != $this->session->userdata('hospital_id')) {
             $this->load->view('home/permission');
         }
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('form_view', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('form_viewv2', $data);
+        //$this->load->view('home/footer'); // just the footer fi
     }
 
     function patientFormHistory() {
