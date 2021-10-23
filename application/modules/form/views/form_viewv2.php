@@ -38,16 +38,41 @@
                                     color: black;
                                 }
 
+                                @media (max-width: 765px) {
+                                    .header-brand-img-cus{
+                                        width: 170px;
+                                    }
+                                    .image-mobile{
+                                        display: block;
+                                    }
+                                    .image-desktop{
+                                        display: none;
+                                    }
+
+                                }
+                                @media (min-width: 766px) {
+                                    .header-brand-img-cus{
+                                        width: 170px;
+                                    }
+                                    .image-mobile{
+                                        display: none;
+                                    }
+                                    .image-desktop{
+                                        display: block;
+                                    }
+                                }
+
                                 /* @media (min-width: 768px) {
                                  .new-pull-left {
                                     float: right;
                                   }
                                 }*/
                             </style>                        
-                        <div class="row mt-5 mb-5" id="actionbuttons">
+                        <div class="row mt-5 mb-5 d-print-none" id="actionbuttons">
                             <div class="col-md-12 col-sm-12 col-lg-12">
-                                <div class="row page-rightheader ml-auto .d-block d-print-none">
+                                <div class="row page-rightheader ml-auto .d-block">
                                     <div class="flex-grow-1">
+                                        
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
                                         <a href="form" class="btn btn-cyan"><i class="fe fe-arrow-left"></i><span class="button-text"> <?php echo lang('back_to_form_module'); ?></span></a>
                                         <?php }?>
@@ -83,14 +108,21 @@
                                     </div> -->
                                     <div class="card-body pt-0">
                                         <div class="row border-bottom border-dark">
-                                            <div class="col-md-3">
+                                            <div class="col-md-2 col-sm-12">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 header-brand pl-0">
-                                                        <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-lgo" alt="Rygel Dash logo">
+                                                        <div class="row">
+                                                            <div class="col-md-12 image-mobile text-center">
+                                                                <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img-cus"  alt="Rygel Dash logo">
+                                                            </div>
+                                                            <div class="col-md-12 image-desktop">
+                                                                <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img-cus"  alt="Rygel Dash logo">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 col-sm-12 text-center">
+                                            <div class="col-md-8 col-sm-12 text-center">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h2 mb-1"><?php echo $settings->title ?></label>
@@ -98,12 +130,17 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <label class="h6"><?php echo $settings->address ?></label>
+                                                        <label class="h6 mb-0"><?php echo $settings->address ?></label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <label class="h6"><?php echo lang('phone');?>:  <?php echo $settings->phone ?></label>
+                                                        <label class="h6 mb-0">TIN: 474-984301-000</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <label class="h6 mb-3"><?php echo lang('phone');?>:  <?php echo $settings->phone ?></label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -120,7 +157,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <div class="col-md-2">
                                                 
                                             </div>
                                         </div>
