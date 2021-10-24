@@ -116,7 +116,7 @@
 
 
                         <label for="exampleInputEmail1"><?php echo lang('description'); ?></label>
-                        <input type="text" class="form-control" name="description" id="exampleInputEmail1" value='' placeholder="">
+                        <textarea class="ckeditor form-control" id="editor" name="description" value="" rows="5"></textarea>
 
                     </div>
                     <div class="form-group">
@@ -210,7 +210,7 @@
 
 
                         <label for="exampleInputEmail1"><?php echo lang('description'); ?></label>
-                        <input type="text" class="form-control" name="description" id="exampleInputEmail1" value='' placeholder="">
+                        <textarea class="ckeditor form-control editor" id="editor" name="description" value="" rows="10"></textarea>
 
                     </div>
                     <div class="form-group">
@@ -275,7 +275,7 @@
                                                     // Populate the form fields with the data returned from server
                                                     $('#editReportForm').find('[name="id"]').val(response.report.id).end()
                                                     $('#editReportForm').find('[name="type"]').val(response.report.report_type).end()
-                                                    $('#editReportForm').find('[name="description"]').val(response.report.description).end()
+                                                    CKEDITOR.instances['editor'].setData(response.report.description)
                                                     $('#editReportForm').find('[name="patient"]').val(response.report.patient).end()
                                                     $('#editReportForm').find('[name="doctor"]').val(response.report.doctor).end()
                                                     $('#editReportForm').find('[name="date"]').val(response.report.date).end()
