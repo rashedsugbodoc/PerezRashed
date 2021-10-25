@@ -74,7 +74,7 @@
                                     <div class="flex-grow-1">
 
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
-                                        <a href="payment" class="btn btn-cyan"><i class="fe fe-arrow-left"></i><span class="button-text"> <?php echo lang('back_to_lab_module'); ?></span></a>
+                                        <a href="lab" class="btn btn-cyan"><i class="fe fe-arrow-left"></i><span class="button-text"> <?php echo lang('back_to_lab_module'); ?></span></a>
                                         <?php }?>
 
                                         <?php if ($this->ion_auth->in_group(array('Patient'))) { ?>
