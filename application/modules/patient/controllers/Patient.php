@@ -1295,8 +1295,8 @@ class Patient extends MX_Controller {
         if (!empty($data['patients'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('patient')->num_rows(),
-                "recordsFiltered" => $this->db->get('patient')->num_rows(),
+                "recordsTotal" => $this->patient_model->getPatientCount(),
+                "recordsFiltered" => count($data['patients']),
                 "data" => $info
             );
         } else {

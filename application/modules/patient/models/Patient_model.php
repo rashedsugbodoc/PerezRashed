@@ -23,6 +23,13 @@ class Patient_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('patient');
+        return $query->num_rows();
+    }
+
     function getLimit() {
         $current = $this->db->get_where('patient', array('hospital_id' => $this->session->userdata('hospital_id')))->num_rows();
         $limit = $this->db->get_where('hospital', array('id' => $this->session->userdata('hospital_id')))->row()->p_limit;
