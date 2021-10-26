@@ -357,7 +357,7 @@ class Company extends MX_Controller {
             $output = array(
                 "draw" => intval($requestData['draw']),
                 "recordsTotal" => $this->company_model->getCompanyCount(),
-                "recordsFiltered" => count($data['companies']),
+                "recordsFiltered" => $this->company_model->getCompanyBySearchCount($search),
                 "data" => $info
             );
         } else {
