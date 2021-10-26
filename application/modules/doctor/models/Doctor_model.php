@@ -39,9 +39,18 @@ class Doctor_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('doctor')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getDoctorBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('doctor')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getDoctorByLimit($limit, $start) {
@@ -53,12 +62,11 @@ class Doctor_model extends CI_model {
     }
 
     function getDoctorByLimitBySearch($limit, $start, $search) {
-        $this->db->like('id', $search);
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
                 ->from('doctor')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
 
         return $query->result();

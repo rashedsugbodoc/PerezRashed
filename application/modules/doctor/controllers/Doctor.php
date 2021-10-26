@@ -352,7 +352,7 @@ class Doctor extends MX_Controller {
             $output = array(
                 "draw" => intval($requestData['draw']),
                 "recordsTotal" => $this->doctor_model->getDoctorCount(),
-                "recordsFiltered" => count($data['doctors']),
+                "recordsFiltered" => $this->doctor_model->getDoctorBySearchCount($search),
                 "data" => $info
             );
         } else {
