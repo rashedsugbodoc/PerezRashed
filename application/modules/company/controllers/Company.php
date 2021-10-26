@@ -303,7 +303,7 @@ class Company extends MX_Controller {
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['companies'] = $this->company_model->getCompanyBysearch($search);
+                $data['companies'] = $this->company_model->getCompanyBySearch($search);
             } else {
                 $data['companies'] = $this->company_model->getCompany();
             }
