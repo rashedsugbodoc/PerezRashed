@@ -53,12 +53,11 @@ class Company_model extends CI_model {
     }
 
     function getCompanyByLimitBySearch($limit, $start, $search) {
-        $this->db->like('id', $search);
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
                 ->from('company')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
 
         return $query->result();
