@@ -23,6 +23,12 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getPaymentCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('payment');
+        return $query->num_rows();
+    }    
+
     function getPaymentBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')

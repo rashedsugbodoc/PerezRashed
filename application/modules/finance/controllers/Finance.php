@@ -2127,8 +2127,8 @@ class Finance extends MX_Controller {
         if (!empty($data['payments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('payment')->num_rows(),
-                "recordsFiltered" => $this->db->get('payment')->num_rows(),
+                "recordsTotal" => $this->finance_model->getPaymentCount(), 
+                "recordsFiltered" => count($data['payments']),
                 "data" => $info
             );
         } else {
