@@ -50,6 +50,16 @@ class Patient_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('patient')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        ;
+        return $query->num_rows();
+    }
+
     function getPatientByLimit($limit, $start) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');

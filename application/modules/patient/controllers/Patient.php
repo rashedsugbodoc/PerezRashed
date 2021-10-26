@@ -1219,7 +1219,7 @@ class Patient extends MX_Controller {
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['patients'] = $this->patient_model->getPatientBysearch($search);
+                $data['patients'] = $this->patient_model->getPatientBySearch($search);
             } else {
                 $data['patients'] = $this->patient_model->getPatient();
             }
@@ -1296,7 +1296,7 @@ class Patient extends MX_Controller {
             $output = array(
                 "draw" => intval($requestData['draw']),
                 "recordsTotal" => $this->patient_model->getPatientCount(),
-                "recordsFiltered" => count($data['patients']),
+                "recordsFiltered" => $this->patient_model->getPatientBySearchCount($search),
                 "data" => $info
             );
         } else {
