@@ -356,8 +356,8 @@ class Company extends MX_Controller {
         if (!empty($data['companies'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('company')->num_rows(),
-                "recordsFiltered" => $this->db->get('company')->num_rows(),
+                "recordsTotal" => $this->company_model->getCompanyCount(),
+                "recordsFiltered" => count($data['companies']),
                 "data" => $info
             );
         } else {

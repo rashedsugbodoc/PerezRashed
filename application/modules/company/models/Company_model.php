@@ -22,6 +22,12 @@ class Company_model extends CI_model {
         return $query->result();
     }
 
+    function getCompanyCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('company');
+        return $query->num_rows();
+    }
+
     function getLimit() {
         $current = $this->db->get_where('company', array('hospital_id' => $this->hospital_id))->num_rows();
         $limit = $this->db->get_where('hospital', array('id' => $this->hospital_id))->row()->d_limit;
