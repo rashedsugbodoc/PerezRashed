@@ -1134,8 +1134,8 @@ class Appointment extends MX_Controller {
         if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('appointment')->num_rows(),
-                "recordsFiltered" => $this->db->get('appointment')->num_rows(),
+                "recordsTotal" => $this->appointment_model->getAppointmentCount(),
+                "recordsFiltered" => $this->appointment_model->getAppointmentBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -1224,8 +1224,8 @@ class Appointment extends MX_Controller {
         if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->appointment_model->getRequestAppointmentCount(),
+                "recordsFiltered" => $this->appointment_model->getRequestAppointmentBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -1316,8 +1316,8 @@ class Appointment extends MX_Controller {
         if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->appointment_model->getPendingAppointmentCount(),
+                "recordsFiltered" => $this->appointment_model->getPendingAppointmentBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -1416,8 +1416,8 @@ class Appointment extends MX_Controller {
         if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->appointment_model->getConfirmedAppointmentCount(),
+                "recordsFiltered" => $this->appointment_model->getConfirmedAppointmentBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -1515,8 +1515,8 @@ class Appointment extends MX_Controller {
         if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->appointment_model->getTreatedAppointmentCount(),
+                "recordsFiltered" => $this->appointment_model->getTreatedAppointmentBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -1605,8 +1605,8 @@ class Appointment extends MX_Controller {
         if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->appointment_model->getCancelledAppointmentCount(),
+                "recordsFiltered" => $this->appointment_model->getCancelledAppointmentBySearchCount($search),
                 "data" => $info
             );
         } else {
