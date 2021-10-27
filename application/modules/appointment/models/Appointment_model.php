@@ -30,6 +30,24 @@ class Appointment_model extends CI_model {
         return $query->num_rows();
     }
 
+    function getAppointmentByTodayCount() {
+        $today = strtotime(date('Y-m-d'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('date', $today);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getAppointmentByUpcomingCount() {
+        $today = strtotime(date('Y-m-d'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('date >', $today);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
     function getAppointmentBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -44,6 +62,28 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('id')
                 ->from('appointment')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getAppointmentByTodayBySearchCount($search) {
+        $today = strtotime(date('Y-m-d'));
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('date', $today)
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getAppointmentByUpcomingBySearchCount($search) {
+        $today = strtotime(date('Y-m-d'));
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('date >', $today)
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->num_rows();

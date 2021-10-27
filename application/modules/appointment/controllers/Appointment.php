@@ -1712,11 +1712,11 @@ class Appointment extends MX_Controller {
             }
         }
 
-        if ($i !== 0) {
+        if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->appointment_model->getAppointmentByTodayCount(),
+                "recordsFiltered" => $this->appointment_model->getAppointmentByTodayBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -1829,11 +1829,11 @@ class Appointment extends MX_Controller {
             }
         }
 
-        if ($i !== 0) {
+        if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->appointment_model->getAppointmentByUpcomingCount(),
+                "recordsFiltered" => $this->appointment_model->getAppointmentByUpcomingBySearchCount($search),
                 "data" => $info
             );
         } else {
