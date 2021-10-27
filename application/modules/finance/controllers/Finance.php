@@ -2405,8 +2405,8 @@ class Finance extends MX_Controller {
         if (!empty($data['expenses'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('expense')->num_rows(),
-                "recordsFiltered" => $this->db->get('expense')->num_rows(),
+                "recordsTotal" => $this->finance_model->getExpenseCount(),
+                "recordsFiltered" => $this->finance_model->getExpenseBySearchCount($search),
                 "data" => $info
             );
         } else {
