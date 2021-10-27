@@ -30,7 +30,9 @@
                             <div class="value">
                                 <p> <?php echo lang('today_sales'); ?> </p>
                                 <h1 class="">
-                                    <?php echo $settings->currency; ?> <?php echo number_format($today_sales_amount, 2, '.', ','); ?>
+                                    <?php echo $settings->currency; ?> <?php
+                                        echo number_format($today_sales_amount, 2, '.', ','); 
+                                    ?>
                                 </h1>
                             </div>
                         </section>
@@ -49,7 +51,9 @@
                             <div class="value">
                                 <p> <?php echo lang('today_expense'); ?> </p>
                                 <h1 class="">
-                                    <?php echo $settings->currency; ?> <?php echo number_format($today_expenses_amount, 2, '.', ','); ?>
+                                    <?php echo $settings->currency; ?> <?php
+                                        echo number_format($today_expenses_amount, 2, '.', ','); 
+                                    ?>
                                 </h1>
                             </div>
                         </section>
@@ -68,7 +72,12 @@
                             <div class="value">
                                 <p> <?php echo lang('medicine'); ?> </p>
                                 <h1 class="">
-                                    <?php echo $this->db->count_all('medicine'); ?>
+                                    <?php 
+                                        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+                                        $this->db->from('medicine');
+                                        $count = $this->db->count_all_results();
+                                        echo $count;
+                                    ?>
                                 </h1>
 
                             </div>
@@ -89,7 +98,12 @@
                             <div class="value">
                                 <p> <?php echo lang('staff'); ?> </p>
                                 <h1 class="">
-                                    <?php echo $this->db->count_all('accountant'); ?>
+                                    <?php 
+                                        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+                                        $this->db->from('pharmacist');
+                                        $count = $this->db->count_all_results();
+                                        echo $count;
+                                    ?>
                                 </h1>
                             </div>
                         </section>
@@ -219,6 +233,7 @@
                                     <td>
                                         <span class="badge bg-important">
                                             <?php
+                                            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
                                             $query_n_o_s = $this->db->get('pharmacy_payment')->result();
                                             $i = 0;
                                             foreach ($query_n_o_s as $q_n_o_s) {
@@ -244,6 +259,7 @@
                                         <span class="badge bg-important">
                                             <?php echo $settings->currency; ?>
                                             <?php
+                                            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
                                             $query = $this->db->get('pharmacy_payment')->result();
                                             $sales_total = array();
                                             foreach ($query as $q) {
@@ -270,6 +286,7 @@
                                     <td>
                                         <span class="badge bg-success">
                                             <?php
+                                            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
                                             $query_n_o_e = $this->db->get('pharmacy_expense')->result();
                                             $i = 0;
                                             foreach ($query_n_o_e as $q_n_o_e) {
@@ -295,6 +312,7 @@
                                         <span class="badge bg-success">
                                             <?php echo $settings->currency; ?>
                                             <?php
+                                            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
                                             $query_expense = $this->db->get('pharmacy_expense')->result();
                                             $sales_total = array();
                                             foreach ($query_expense as $q_expense) {
@@ -321,6 +339,7 @@
                                     <td>
                                         <span class="badge bg-info"> 
                                             <?php
+                                            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
                                             $query_medicine_number = $this->db->get('medicine')->result();
                                             $i = 0;
                                             foreach ($query_medicine_number as $q_medicine_number) {
@@ -343,6 +362,7 @@
                                     <td>
                                         <span class="badge bg-info"> 
                                             <?php
+                                            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
                                             $query_medicine = $this->db->get('medicine')->result();
                                             $i = 0;
                                             foreach ($query_medicine as $q_medicine) {
@@ -366,6 +386,7 @@
                                     <td>
                                         <span class="badge bg-warning">
                                             <?php
+                                            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
                                             $query_medicine = $this->db->get('medicine')->result();
                                             $i = 0;
                                             foreach ($query_medicine as $q_medicine) {
