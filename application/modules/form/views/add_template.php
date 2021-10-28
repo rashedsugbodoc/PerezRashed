@@ -3,7 +3,7 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
-        <section class="panel col-md-7">
+        <section class="panel col-md-8 col-sm-12">
             <header class="panel-heading no-print">
                 <?php
                 if (!empty($template->id))
