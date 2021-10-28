@@ -136,6 +136,12 @@ class Bed_model extends CI_model {
         return $query->result();
     }
 
+    function getAllotmentCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('alloted_bed');
+        return $query->num_rows();
+    }
+
     function getBedAllotmentBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -144,6 +150,15 @@ class Bed_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR bed_id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getBedAllotmentBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('alloted_bed')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR bed_id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getBedAllotmentByLimit($limit, $start) {
