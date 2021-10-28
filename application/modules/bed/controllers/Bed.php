@@ -352,8 +352,8 @@ class Bed extends MX_Controller {
         if (!empty($data['beds'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('bed')->num_rows(),
-                "recordsFiltered" => $this->db->get('bed')->num_rows(),
+                "recordsTotal" => $this->bed_model->getBedCount(),
+                "recordsFiltered" => $this->bed_model->getBedBySearchCount($search),
                 "data" => $info
             );
         } else {

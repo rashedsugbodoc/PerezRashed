@@ -22,6 +22,12 @@ class Bed_model extends CI_model {
         return $query->result();
     }
 
+    function getBedCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('bed');
+        return $query->num_rows();
+    }
+
     function getBedBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -30,6 +36,15 @@ class Bed_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR bed_id LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getBedBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('bed')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR bed_id LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getBedByLimit($limit, $start) {
