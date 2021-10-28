@@ -531,8 +531,8 @@ class Prescription extends MX_Controller {
         if ($data['prescriptions']) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->prescription_model->getPrescriptionCount(),
+                "recordsFiltered" => $this->prescription_model->getPrescriptionBySearchCount($search),
                 "data" => $info
             );
         } else {
