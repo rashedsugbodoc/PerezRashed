@@ -23,6 +23,12 @@ class Lab_model extends CI_model {
         return $query->result();
     }
 
+    function getLabCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('lab');
+        return $query->num_rows();
+    }
+
     function getLabBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -32,6 +38,16 @@ class Lab_model extends CI_model {
                 ->get();
 
         return $query->result();
+    }
+
+    function getLabBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('lab')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+
+        return $query->num_rows();
     }
 
     function getLabByLimit($limit, $start) {

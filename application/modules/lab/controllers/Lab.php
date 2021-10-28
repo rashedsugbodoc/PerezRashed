@@ -702,8 +702,8 @@ class Lab extends MX_Controller {
         if (!empty($data['labs'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('lab')->num_rows(),
-                "recordsFiltered" => $this->db->get('lab')->num_rows(),
+                "recordsTotal" => $this->lab_model->getLabCount(),
+                "recordsFiltered" => $this->lab_model->getLabBySearchCount($search),
                 "data" => $info
             );
         } else {
