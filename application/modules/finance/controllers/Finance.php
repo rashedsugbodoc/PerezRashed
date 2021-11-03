@@ -77,6 +77,7 @@ class Finance extends MX_Controller {
         $item_selected = $this->input->post('category_id');
         $quantity = $this->input->post('quantity');
         $remarks = $this->input->post('remarks');
+        $completion_status = $this->input->post('completion_status');
         $company_id = $this->input->post('company_id');
 
         if (empty($item_selected)) {
@@ -316,6 +317,7 @@ class Finance extends MX_Controller {
                     'doctor_name' => $doctor_name,
                     'date_string' => $date_string,
                     'remarks' => $remarks,
+                    'completion_status' => $completion_status,
                     'company_id' => $company_id
                 );
 
@@ -394,6 +396,7 @@ class Finance extends MX_Controller {
                             'doctor_name' => $doctor_name,
                             'date_string' => $date_string,
                             'remarks' => $remarks,
+                            'completion_status' => $completion_status,
                             'company_id' => $company_id,
                             'deposited_amount' => $amount_received,
                             'payment_id' => $inserted_id,
@@ -512,6 +515,7 @@ class Finance extends MX_Controller {
                     'patient_address' => $patient_details->address,
                     'doctor_name' => $doctor_details->name,
                     'remarks' => $remarks,
+                    'completion_status' => $completion_status,
                     'company_id' => $company_id
                 );
 
