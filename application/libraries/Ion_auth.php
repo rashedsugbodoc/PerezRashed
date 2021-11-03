@@ -69,7 +69,7 @@ class Ion_auth {
         $this->load->library('session');
 
         $this->load->model('ion_auth_model');
-        
+        $this->load->model('settings/settings_model');
         $this->load->model('email/email_model');
         
 
@@ -156,7 +156,7 @@ class Ion_auth {
                     $this->email->clear();
                     $this->email->from($admin_email->admin_email, $admin_email->admin_email_display_name);
                     $this->email->to($user->email);
-                    $this->email->subject($settings->system_vendor . ' - ' . $this->lang->line('email_forgotten_password_subject'));
+                    $this->email->subject($this->lang->line('email_forgotten_password_subject'));
                     $this->email->message($message);
 
                     if ($this->email->send()) {
