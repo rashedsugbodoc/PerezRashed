@@ -65,9 +65,10 @@ $lang['email_activate_heading']    = 'Activate account for %s';
 $lang['email_activate_subheading'] = 'Please click this link to %s.';
 $lang['email_activate_link']       = 'Activate Your Account';
 // Forgot Password Email
-$lang['email_forgotten_password_subject']    = 'Forgotten Password Verification';
-$lang['email_forgot_password_heading']    = 'Reset Password for %s';
-$lang['email_forgot_password_subheading'] = 'Please click this link to %s.';
+$lang['email_forgotten_password_subject']    = 'SugboDoc password reset confirmation';
+$lang['email_forgot_password_heading']    = 'Reset Password';
+$lang['email_forgot_password_subheading'] = 'There was a recent request to change the password on your account. If you requested this password change, please click the link below to set a new password within 1 hour:';
+$lang['email_forgot_password_closing'] = 'If you do not want to change your password, just ignore this message.';
 $lang['email_forgot_password_link']       = 'Reset Your Password';
 // New Password Email
 $lang['email_new_password_subject']          = 'New Password';
