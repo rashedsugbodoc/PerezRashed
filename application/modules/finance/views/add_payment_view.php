@@ -297,6 +297,41 @@
                                     ?>' placeholder=" ">
                                 </div> 
                             </div>   
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label><?php echo lang('completion_status');?> </label>
+                                    <select class="form-control" name="completion_status" value='<?php
+                                    if (!empty($payment->completion_status)) {
+                                        echo $payment->completion_status;
+                                    }
+                                    ?>'>
+                                        <option value="in progress" <?php
+                                                if (!empty($payment->completion_status)) {
+                                                    if ($payment->completion_status == 'in progress') {
+                                                    echo 'selected';
+                                                    }
+                                                }
+                                                ?>
+                                        > <?php echo lang('in_progress'); ?> </option>
+                                        <option value="completed" <?php
+                                                if (!empty($payment->completion_status)) {
+                                                    if ($payment->completion_status == 'completed') {
+                                                    echo 'selected';
+                                                    }
+                                                }
+                                                ?>
+                                        > <?php echo lang('completed'); ?> </option>
+                                        <option value="cancelled" <?php
+                                                if (!empty($payment->completion_status)) {
+                                                    if ($payment->completion_status == 'cancelled') {
+                                                    echo 'selected';
+                                                    }
+                                                }
+                                                ?>
+                                        > <?php echo lang('cancelled'); ?> </option>                                        
+                                    </select>
+                                </div>
+                            </div>
                             <div class="row">                                                  
                                 <div class="col-md-12 form-group">
                                     <?php if (empty($payment)) { ?>
