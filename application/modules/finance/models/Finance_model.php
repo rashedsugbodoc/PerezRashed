@@ -739,6 +739,12 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getExpenseCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('expense');
+        return $query->num_rows();
+    }
+
     function getExpenseBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -747,6 +753,15 @@ class Finance_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR datestring LIKE '%" . $search . "%' OR category LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getExpenseBySearchCount($search) {
+        $query = $this->db->select('*')
+                ->from('expense')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR datestring LIKE '%" . $search . "%' OR category LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getExpenseByLimit($limit, $start) {

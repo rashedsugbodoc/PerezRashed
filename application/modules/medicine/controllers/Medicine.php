@@ -351,8 +351,8 @@ class Medicine extends MX_Controller {
         if (!empty($data['medicines'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('medicine')->num_rows(),
-                "recordsFiltered" => $this->db->get('medicine')->num_rows(),
+                "recordsTotal" => $this->medicine_model->getMedicineCount(),
+                "recordsFiltered" => $this->medicine_model->getMedicineBySearchCount($search),
                 "data" => $info
             );
         } else {

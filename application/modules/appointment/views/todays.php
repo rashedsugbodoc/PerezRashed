@@ -155,8 +155,6 @@
                                         ?> > <?php echo lang('confirmed'); ?> </option>
                                     <option value="Treated" <?php
                                         ?> > <?php echo lang('treated'); ?> </option>
-                                    <option value="Cancelled" <?php
-                                        ?> > <?php echo lang('cancelled'); ?> </option>
                                 </select>
                             </div>                        
                             <div class="col-md-6 form-group">

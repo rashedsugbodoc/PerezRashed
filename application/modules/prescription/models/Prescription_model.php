@@ -23,6 +23,12 @@ class Prescription_model extends CI_model {
         return $query->result();
     }
 
+    function getPrescriptionCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('prescription');
+        return $query->num_rows();
+    }
+
     function getPrescriptionById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
@@ -65,6 +71,16 @@ class Prescription_model extends CI_model {
                 ->get();
         ;
         return $query->result();
+    }
+
+    function getPrescriptionBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('prescription')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        ;
+        return $query->num_rows();
     }
 
     function getPrescriptionByLimit($limit, $start) {

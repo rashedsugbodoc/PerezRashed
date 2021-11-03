@@ -23,6 +23,12 @@ class Medicine_model extends CI_model {
         return $query->result();
     }
 
+    function getMedicineCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('medicine');
+        return $query->num_rows();
+    }
+
     function getLatestMedicine() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
@@ -157,6 +163,15 @@ class Medicine_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR category LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR e_date LIKE '%" . $search . "%'OR generic LIKE '%" . $search . "%'OR company LIKE '%" . $search . "%'OR effects LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getMedicineBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('medicine')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR category LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR e_date LIKE '%" . $search . "%'OR generic LIKE '%" . $search . "%'OR company LIKE '%" . $search . "%'OR effects LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getMedicineByLimit($limit, $start) {

@@ -702,8 +702,8 @@ class Form extends MX_Controller {
         if (!empty($data['forms'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('form')->num_rows(),
-                "recordsFiltered" => $this->db->get('form')->num_rows(),
+                "recordsTotal" => $this->form_model->getFormCount(),
+                "recordsFiltered" => $this->form_model->getFormBySearchCount($search),
                 "data" => $info
             );
         } else {
