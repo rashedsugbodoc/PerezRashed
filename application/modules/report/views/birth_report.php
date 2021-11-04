@@ -103,7 +103,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?>><?php echo lang('expire'); ?></option>
+                            ?>><?php echo lang('death'); ?></option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -197,7 +197,7 @@
                                     echo 'selected';
                                 }
                             }
-                            ?>><?php echo lang('expire'); ?></option>
+                            ?>><?php echo lang('death'); ?></option>
                         </select>
                     </div>
                     <div class="form-group">
