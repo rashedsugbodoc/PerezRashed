@@ -105,7 +105,7 @@ class Report extends MX_Controller {
         // Validating Name Field
         $this->form_validation->set_rules('type', 'Type', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Category Field
-        $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[5000]|xss_clean');
+        $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[8000]|xss_clean');
         // Validating Price Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Generic Name Field
