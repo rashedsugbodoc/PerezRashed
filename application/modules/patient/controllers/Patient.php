@@ -320,7 +320,7 @@ class Patient extends MX_Controller {
         $data['patient'] = $this->patient_model->getPatientById($id);
 
         $doctor = $data['patient']->doctor;
-        $data['doctor'] = $this->doctor_model->getDoctorById($doctor);
+        $data['doctorNames'] = $this->getDoctorList($doctor);
 
         if (!empty($data['patient']->birthdate)) {
             $birthDate = strtotime($data['patient']->birthdate);
@@ -1258,12 +1258,15 @@ class Patient extends MX_Controller {
                 $options7 = '';
             }
 
+            $doctorNames = $this->getDoctorList($patient->doctor);
+
 
             if ($this->ion_auth->in_group(array('admin'))) {
                 $info[] = array(
                     $patient->id,
                     $patient->name,
                     $patient->phone,
+                    $doctorNames,
                     $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
                     $options1 . ' ' . $options6 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
                         //  $options2
@@ -1275,6 +1278,7 @@ class Patient extends MX_Controller {
                     $patient->id,
                     $patient->name,
                     $patient->phone,
+                    $doctorNames,
                     $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
                     $options1 . ' ' . $options6 . ' ' . $options4,
                         //  $options2
@@ -1286,6 +1290,7 @@ class Patient extends MX_Controller {
                     $patient->id,
                     $patient->name,
                     $patient->phone,
+                    $doctorNames,
                     $options1 . ' ' . $options6 . ' ' . $options3,
                         //  $options2
                 );
@@ -2106,6 +2111,22 @@ class Patient extends MX_Controller {
         $response = $this->patient_model->getPatientinfoWithAddNewOption($searchTerm);
 
         echo json_encode($response);
+    }
+
+    public function getDoctorList($doctorsString) {
+
+        if(!empty($doctorsString)) {
+            $doctors = explode(',', $doctorsString);
+            foreach ($doctors as $doctor) {
+                $doctorName = $this->doctor_model->getDoctorById($doctor)->name;
+                $doctorListString .= '<p>' . $doctorName . '</p>';
+            }
+            return $doctorListString;
+        } else {
+            return '';
+        }
+
+
     }
 
 }

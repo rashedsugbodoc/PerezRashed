@@ -28,6 +28,7 @@
                                 <th><?php echo lang('patient_id'); ?></th>                        
                                 <th><?php echo lang('name'); ?></th>
                                 <th><?php echo lang('phone'); ?></th>
+                                <th><?php echo lang('doctors'); ?></th>
                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
                                     <th><?php echo lang('due_balance'); ?></th>
                                 <?php } ?>
@@ -604,8 +605,8 @@
             $('.bloodgroupClass').append(response.patient.bloodgroup).end()
             $('.patientidClass').append(response.patient.patient_id).end()
 
-            if (response.doctor !== null) {
-                $('.doctorClass').append(response.doctor.name).end()
+            if (response.doctorNames !== null) {
+                $('.doctorClass').append(response.doctorNames).end()
             }else{
                 $('.doctorClass').append('').end()
             }
