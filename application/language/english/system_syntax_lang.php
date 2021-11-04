@@ -251,6 +251,7 @@ $lang['edit_report'] = 'Edit Report';
 $lang['birth'] = 'Birth';
 $lang['operation'] = 'Operation';
 $lang['expire'] = 'Expiration';
+$lang['death'] = 'Death';
 $lang['select_type'] = 'Select Type';
 $lang['select_category'] = 'Select Category';
 $lang['my'] = 'My ';
