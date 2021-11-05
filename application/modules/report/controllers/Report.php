@@ -117,7 +117,8 @@ class Report extends MX_Controller {
         if ($this->form_validation->run() == FALSE) {
             if(!empty($id)){
                 $this->session->set_flashdata('feedback', lang('validation_error'));
-                redirect('report/editReport?id'.$id);
+                redirect("report/editReport?id=$id");
+
             }else{
             $data = array();
             $data['setval'] = 'setval';
