@@ -18,6 +18,7 @@
                     <div class="clearfix">
                         <div class="col-lg-12">
                             <?php echo validation_errors(); ?>
+                            
                             <form role="form" action="report/addReport" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('select_type'); ?></label>
@@ -72,7 +73,7 @@
                                             }
                                         ?>
                                     </textarea>
-
+                                </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
                                     <select class="form-control js-example-basic-single" name="patient" value=''> 
