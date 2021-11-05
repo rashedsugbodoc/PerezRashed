@@ -196,7 +196,8 @@ class Appointment extends MX_Controller {
         if ($patient == 'add_new') {
             $this->form_validation->set_rules('p_name', 'Patient Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
             $this->form_validation->set_rules('p_phone', 'Patient Phone', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-            $this->form_validation->set_rules('p_email', 'Email', 'trim|required|valid_email|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('p_email', 'Email', 'trim|required|valid_email|min_length[1]|max_length[1000]|xss_clean');
+            $this->form_validation->set_rules('p_age', 'Age', 'trim|numeric|required|min_length[1]|max_length[100]|xss_clean');
         }
 
         // Validating Name Field
