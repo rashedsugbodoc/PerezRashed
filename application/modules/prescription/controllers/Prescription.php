@@ -86,11 +86,12 @@ class Prescription extends MX_Controller {
         $doctor = $this->input->post('doctor');
         $symptom = $this->input->post('symptom');
         $medicine = $this->input->post('medicine');
+        $category = $this->input->post('category');
         $dosage = $this->input->post('dosage');
         $frequency = $this->input->post('frequency');
         $days = $this->input->post('days');
         $instruction = $this->input->post('instruction');
-        $note = $this->input->post('note');
+        $laboratory = $this->input->post('laboratory');
         $admin = $this->input->post('admin');
 
 
@@ -134,7 +135,10 @@ class Prescription extends MX_Controller {
         // Validating Advice Field
         $this->form_validation->set_rules('symptom', 'History', 'trim|min_length[1]|max_length[1000]|xss_clean');
         // Validating Do And Dont Name Field
-        $this->form_validation->set_rules('note', 'Note', 'trim|min_length[1]|max_length[1000]|xss_clean');
+        $this->form_validation->set_rules('laboratory', 'Laboratory', 'trim|min_length[1]|max_length[2000]|xss_clean');
+
+        // Validating Medicine Category
+        $this->form_validation->set_rules('category', 'Medicine', 'trim|required|max_length[2000]|xss_clean');
 
         // Validating Advice Field
         $this->form_validation->set_rules('advice', 'Advice', 'trim|min_length[1]|max_length[1000]|xss_clean');
@@ -167,7 +171,7 @@ class Prescription extends MX_Controller {
                 'doctor' => $doctor,
                 'symptom' => $symptom,
                 'medicine' => $final_report,
-                'note' => $note,
+                'laboratory' => $laboratory,
                 'advice' => $advice,
                 'patientname' => $patientname,
                 'doctorname' => $doctorname
