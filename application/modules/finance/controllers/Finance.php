@@ -987,9 +987,9 @@ class Finance extends MX_Controller {
 // Validating Category Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Generic Name Field
-        $this->form_validation->set_rules('amount', 'Amount', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('amount', 'Amount', 'trim|required|numeric|min_length[1]|max_length[100]|xss_clean');
 // Validating Note Field
-        $this->form_validation->set_rules('note', 'Note', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('note', 'Note', 'trim|min_length[1]|max_length[1000]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
