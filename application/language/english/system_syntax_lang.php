@@ -380,6 +380,7 @@ $lang['eprescription_label'] = 'This is an e-prescription';
 $lang['license'] = 'License';
 $lang['view'] = 'View';
 $lang['note'] = 'Note';
+$lang['laboratory'] = 'Laboratory';
 $lang['medication'] = 'Medication';
 $lang['add_prescription'] = 'Add Prescription';
 $lang['edit_prescription'] = 'Edit Prescription';
