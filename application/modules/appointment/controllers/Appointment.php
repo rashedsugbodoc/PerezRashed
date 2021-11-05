@@ -196,6 +196,7 @@ class Appointment extends MX_Controller {
         if ($patient == 'add_new') {
             $this->form_validation->set_rules('p_name', 'Patient Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
             $this->form_validation->set_rules('p_phone', 'Patient Phone', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('p_email', 'Email', 'trim|required|valid_email|min_length[1]|max_length[100]|xss_clean');
         }
 
         // Validating Name Field
@@ -210,7 +211,7 @@ class Appointment extends MX_Controller {
         // Validating Email Field
         $this->form_validation->set_rules('e_time', 'End Time', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Address Field   
-        $this->form_validation->set_rules('remarks', 'Remarks', 'trim|min_length[1]|max_length[1000]|xss_clean');
+        $this->form_validation->set_rules('remarks', 'Remarks', 'trim|min_length[1]|max_length[500]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
