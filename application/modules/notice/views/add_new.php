@@ -4,7 +4,7 @@
     <section class="wrapper site-min-height">
         <!-- page start-->
         <div class="row">
-            <section class="col-md-6">
+            <section class="col-md-8">
                 <div class="panel">
                     <header class="panel-heading">
                         <?php
