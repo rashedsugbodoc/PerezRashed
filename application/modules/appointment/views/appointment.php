@@ -326,7 +326,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
-                                <input type="text" class="form-control pay_in" name="p_email" value='' placeholder="">
+                                <input type="email" class="form-control pay_in" name="p_email" value='' placeholder="">
                             </div>
                         </div>
                         <div class="row">
