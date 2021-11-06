@@ -122,13 +122,13 @@ class Patient extends MX_Controller {
             $this->form_validation->set_rules('password', 'Password', 'trim|min_length[3]|max_length[100]|xss_clean');
         }
         // Validating Email Field
-        $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|valid_email|max_length[100]|xss_clean');
         // Validating Doctor Field
         //   $this->form_validation->set_rules('doctor', 'Doctor', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[2]|max_length[500]|xss_clean');
         // Validating Phone Field           
-        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[2]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|numeric|min_length[2]|max_length[50]|xss_clean');
         // Validating Email Field
         $this->form_validation->set_rules('sex', 'Sex', 'trim|min_length[2]|max_length[100]|xss_clean');
         // Validating Address Field   
@@ -139,8 +139,15 @@ class Patient extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                $this->session->set_flashdata('feedback', lang('validation_error'));
-                redirect("patient/editPatient?id=$id");
+                $data = array();
+
+                // $id = $this->input->get('id');
+                $data['patient'] = $this->patient_model->getPatientById($id);
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['groups'] = $this->donor_model->getBloodBank();
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_new', $data);
+                $this->load->view('home/footer'); // just the footer file
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
