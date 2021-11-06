@@ -216,7 +216,16 @@ class Appointment extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                redirect("appointment/editAppointment?id=$id");
+                $data = array();
+                // $id = $this->input->get('id');
+
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['appointment'] = $this->appointment_model->getAppointmentById($id);
+                $data['patients'] = $this->patient_model->getPatientById($data['appointment']->patient);
+                $data['doctors'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
+                $this->load->view('home/dashboard', $data); // just the header file
+                $this->load->view('add_new', $data);
+                $this->load->view('home/footer'); // just the footer file 
             } else {
                 $data['patients'] = $this->patient_model->getPatient();
                 $data['doctors'] = $this->doctor_model->getDoctor();
