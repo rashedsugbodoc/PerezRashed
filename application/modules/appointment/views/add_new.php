@@ -5,7 +5,7 @@
     <section class="wrapper site-min-height">
         <!-- page start-->
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-8 col-sm-12">
                 <section class="panel">
                     <header class="panel-heading">
                         <?php
@@ -28,10 +28,8 @@
                         <form role="form" action="appointment/addNew" class="clearfix row" method="post" enctype="multipart/form-data">
                             <div class="form-group col-md-12">
                                 <div class="row">
-                                    <div class="col-md-3 text-right"> 
+                                    <div class="col-md-12">
                                         <label for="exampleInputEmail1"> <?php echo lang('patient'); ?></label>
-                                    </div>
-                                    <div class="col-md-9"> 
                                         <select class="form-control m-bot15  pos_select" id="pos_select" name="patient" value=''> 
                                             <?php if (!empty($patients)) { ?>
                                                 <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
@@ -41,12 +39,13 @@
                                 </div>
                             </div>
                             <div class="pos_client clearfix">
-                                <div class="col-md-8 form-group pull-right">
+                                <div class="col-md-4">
+                                    
+                                </div>
+                                <div class="col-md-8 form-group">
                                     <div class="row">
-                                        <div class="col-md-3 text-right"> 
+                                        <div class="col-md-12"> 
                                             <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
                                             <input type="text" class="form-control pay_in" name="p_name" value='<?php
                                             if (!empty($payment->p_name)) {
                                                 echo $payment->p_name;
@@ -55,12 +54,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8 form-group pull-right">
+                                <div class="col-md-4">
+                                    
+                                </div>
+                                <div class="col-md-8 form-group">
                                     <div class="row">
-                                        <div class="col-md-3 text-right"> 
+                                        <div class="col-md-12"> 
                                             <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
                                             <input type="text" class="form-control pay_in" name="p_email" value='<?php
                                             if (!empty($payment->p_email)) {
                                                 echo $payment->p_email;
@@ -69,12 +69,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8 form-group pull-right">
+                                <div class="col-md-4">
+                                    
+                                </div>
+                                <div class="col-md-8 form-group">
                                     <div class="row">
-                                        <div class="col-md-3 text-right"> 
+                                        <div class="col-md-12"> 
                                             <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
                                             <input type="text" class="form-control pay_in" name="p_phone" value='<?php
                                             if (!empty($payment->p_phone)) {
                                                 echo $payment->p_phone;
@@ -83,12 +84,13 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-8 form-group pull-right">
+                                <div class="col-md-4">
+                                    
+                                </div>
+                                <div class="col-md-8 form-group">
                                     <div class="row">
-                                        <div class="col-md-3 text-right"> 
+                                        <div class="col-md-12"> 
                                             <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
                                             <input type="text" class="form-control pay_in" name="p_age" value='<?php
                                             if (!empty($payment->p_age)) {
                                                 echo $payment->p_age;
@@ -96,13 +98,14 @@
                                             ?>' placeholder="">
                                         </div>
                                     </div>
-                                </div> 
-                                <div class="col-md-8 form-group pull-right">
+                                </div>
+                                <div class="col-md-4">
+                                    
+                                </div>
+                                <div class="col-md-8 form-group">
                                     <div class="row">
-                                        <div class="col-md-3 text-right"> 
+                                        <div class="col-md-12"> 
                                             <label for="exampleInputEmail1"> <?php echo lang('patient'); ?> <?php echo lang('gender'); ?></label>
-                                        </div>
-                                        <div class="col-md-9"> 
                                             <select class="form-control m-bot15" name="p_gender" value=''>
 
                                                 <option value="Male" <?php
@@ -134,10 +137,8 @@
 
                             <div class="form-group col-md-12">
                                 <div class="row">
-                                    <div class="col-md-3 text-right"> 
+                                    <div class="col-md-12"> 
                                         <label for="exampleInputEmail1">  <?php echo lang('doctor'); ?></label>
-                                    </div>
-                                    <div class="col-md-9"> 
                                         <select class="form-control m-bot15" id="adoctors" name="doctor" value=''>  
                                             <?php if (!empty($doctors)) { ?>
                                                 <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
@@ -150,10 +151,8 @@
 
                             <div class="form-group col-md-12">
                                 <div class="row">
-                                    <div class="col-md-3 text-right"> 
+                                    <div class="col-md-12"> 
                                         <label for="exampleInputEmail1"> <?php echo lang('date'); ?></label>
-                                    </div>
-                                    <div class="col-md-9"> 
                                         <input type="text" class="form-control" id="date" readonly="" name="date" id="exampleInputEmail1" value='<?php
                                         if (!empty($appointment->date)) {
                                             echo date('d-m-Y', $appointment->date);
@@ -165,11 +164,9 @@
 
                             <div class="form-group col-md-12">
                                 <div class="row">
-                                    <div class="col-md-3 text-right"> 
-                                        <label class=""><?php echo lang('available_slots'); ?></label>
-                                    </div>
-                                    <div class="col-md-9"> 
-                                        <select class="form-control m-bot15" name="time_slot" id="aslots" value=''> 
+                                    <div class="col-md-12"> 
+                                        <label class=""><?php echo lang('available_slots'); ?></label> 
+                                        <select class="form-control" name="time_slot" id="aslots" value=''> 
 
                                         </select>
                                     </div>
@@ -179,10 +176,8 @@
 
                             <div class="form-group col-md-12">
                                 <div class="row">
-                                    <div class="col-md-3 text-right"> 
+                                    <div class="col-md-12"> 
                                         <label for="exampleInputEmail1"> <?php echo lang('remarks'); ?></label>
-                                    </div>
-                                    <div class="col-md-9"> 
                                         <input type="text" class="form-control" name="remarks" id="exampleInputEmail1" value='<?php
                                         if (!empty($appointment->remarks)) {
                                             echo $appointment->remarks;
@@ -193,10 +188,8 @@
                             </div>
                             <div class="form-group col-md-12">
                                 <div class="row">
-                                    <div class="col-md-3 text-right"> 
+                                    <div class="col-md-12"> 
                                         <label for="exampleInputEmail1"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?></label>
-                                    </div>
-                                    <div class="col-md-9"> 
                                         <select class="form-control m-bot15" name="status" value=''>
                                             <option value="Pending Confirmation" <?php
                                             if (!empty($appointment->status)) {
