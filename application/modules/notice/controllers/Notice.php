@@ -55,7 +55,12 @@ class Notice extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                redirect("notice/editNotice?id=$id");
+                $data = array();
+                // $id = $this->input->get('id');
+                $data['notice'] = $this->notice_model->getNoticeById($id);
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_new', $data);
+                $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_new');
