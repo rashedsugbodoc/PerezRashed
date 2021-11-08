@@ -142,7 +142,7 @@ class Medicine extends MX_Controller {
         // Validating Purchase Price Field
         $this->form_validation->set_rules('price', 'Purchase Price', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Store Box Field
-        $this->form_validation->set_rules('box', 'Store Box', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('box', 'Store Box', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Selling Price Field
         $this->form_validation->set_rules('s_price', 'Selling Price', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Quantity Field
@@ -150,20 +150,31 @@ class Medicine extends MX_Controller {
         // Validating Generic Name Field
         $this->form_validation->set_rules('generic', 'Generic Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Company Name Field
-        $this->form_validation->set_rules('company', 'Company', 'trim|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('company', 'Company', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Effects Field
-        $this->form_validation->set_rules('effects', 'Effects', 'trim|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('effects', 'Effects', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Expire Date Field
         $this->form_validation->set_rules('e_date', 'Expire Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
-            $data = array();
-            $data['categories'] = $this->medicine_model->getMedicineCategory();
-            $data['settings'] = $this->settings_model->getSettings();
-            $this->load->view('home/dashboard', $data); // just the header file
-            $this->load->view('add_new_medicine_view', $data);
-            $this->load->view('home/footer'); // just the header file
+            if(!empty($id)){
+                $data = array();
+                $data['categories'] = $this->medicine_model->getMedicineCategory();
+                // $id = $this->input->get('id');
+                $data['medicine'] = $this->medicine_model->getMedicineById($id);
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboard', $data); // just the header file
+                $this->load->view('add_new_medicine_view', $data);
+                $this->load->view('home/footer'); // just the footer file
+            } else {
+                $data = array();
+                $data['categories'] = $this->medicine_model->getMedicineCategory();
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboard', $data); // just the header file
+                $this->load->view('add_new_medicine_view', $data);
+                $this->load->view('home/footer'); // just the header file
+            }
         } else {
             $data = array();
             $data = array('name' => $name,
