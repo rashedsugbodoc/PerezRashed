@@ -247,16 +247,16 @@
                                                 <div class="row">
                                                     <div class="col-md-12 pl-0">
                                                         <div class="form-group">
-                                                            <label class="form-label font-weight-bold"><?php echo lang('history'); ?>:</label>
-                                                            <label class="form-label"><?php echo $prescription->symptom; ?></label>
+                                                            <label class="form-label font-weight-bold"><?php echo lang('laboratory'); ?>:</label>
+                                                            <label class="form-label"><?php echo $prescription->laboratory; ?></label>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 pl-0">
                                                         <div class="form-group">
-                                                            <label class="form-label font-weight-bold"><?php echo lang('note'); ?>:</label>
-                                                            <label class="form-label"><?php echo $prescription->note; ?></label>
+                                                            <label class="form-label font-weight-bold"><?php echo lang('history'); ?>:</label>
+                                                            <label class="form-label"><?php echo $prescription->symptom; ?></label>
                                                         </div>
                                                     </div>
                                                 </div>
