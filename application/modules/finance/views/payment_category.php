@@ -7,7 +7,7 @@
             <header class="panel-heading">
                 <?php echo lang('service_listing'); ?>
                 <div class="col-md-4 no-print pull-right"> 
-                    <a href="finance/addPaymentCategoryView">
+                    <a href="finance/addPaymentCategory">
                         <div class="btn-group pull-right">
                             <button id="" class="btn btn-primary btn-xs">
                                 <i class="fa fa-plus"></i> <?php echo lang('add_service'); ?>
