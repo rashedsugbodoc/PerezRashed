@@ -899,19 +899,26 @@ class Finance extends MX_Controller {
 // Validating Description Field
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Description Field
-        $this->form_validation->set_rules('c_price', 'Category price', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('c_price', 'Price', 'trim|min_length[1]|required|numeric|max_length[100]|xss_clean');
 // Validating Doctor Commission Rate Field
-        $this->form_validation->set_rules('d_commission', 'Doctor Commission rate', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('d_commission', 'Doctor Commission rate', 'trim|numeric|min_length[1]|max_length[100]|xss_clean');
 // Validating Service Category Name Field
         $this->form_validation->set_rules('category_id', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');        
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 $this->session->set_flashdata('feedback', lang('validation_error'));
-                redirect('finance/editPaymentCategory?id=' . $id);
+                $data = array();
+                // $id = $this->input->get('id');
+                $data['service'] = $this->finance_model->getPaymentCategoryById($id);
+                $data['categories'] = $this->finance_model->getServiceCategory();
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_payment_category', $data);
+                $this->load->view('home/footer'); // just the footer file
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
+                $data['categories'] = $this->finance_model->getServiceCategory();
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_payment_category', $data);
                 $this->load->view('home/footer'); // just the header file
