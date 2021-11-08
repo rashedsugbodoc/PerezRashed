@@ -73,13 +73,13 @@
                             <div class="col-md-5 left_panel">
                                 <div class="panel-body">
                                     <div class="pull-left">
-                                        <h5><strong><?php echo lang('history'); ?>: </strong> <br> <br> <?php echo $prescription->symptom; ?></h5>
+                                        <h5><strong><?php echo lang('laboratory'); ?>:</strong> <br> <br> <?php echo $prescription->laboratory; ?></h5>
                                     </div>
                                 </div>
                                 <hr>
                                 <div class="panel-body">
                                     <div class="pull-left">
-                                        <h5><strong><?php echo lang('note'); ?>:</strong> <br> <br> <?php echo $prescription->laboratory; ?></h5>
+                                        <h5><strong><?php echo lang('history'); ?>: </strong> <br> <br> <?php echo $prescription->symptom; ?></h5>
                                     </div>
                                 </div>
                                 <hr>

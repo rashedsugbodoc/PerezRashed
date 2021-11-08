@@ -150,7 +150,27 @@ class Prescription extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                redirect('prescription/editPrescription?id=' . $id);
+                $data = array();
+                // $id = $this->input->get('id');
+                // $data['patients'] = $this->patient_model->getPatient();
+                // $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['medicines'] = $this->medicine_model->getMedicine();
+                $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['patients'] = $this->patient_model->getPatientById($data['prescription']->patient);
+                $data['doctors'] = $this->doctor_model->getDoctorById($data['prescription']->doctor);
+                if (!empty($data['prescription']->hospital_id)) {
+                    if ($data['prescription']->hospital_id != $this->session->userdata('hospital_id')) {
+                        $this->load->view('home/permission');
+                    } else {
+                        $data['settings'] = $this->settings_model->getSettings();
+                        $this->load->view('home/dashboard', $data); // just the header file
+                        $this->load->view('add_new_prescription_view', $data);
+                        $this->load->view('home/footer'); // just the footer file 
+                    }
+                } else {
+                    $this->load->view('home/permission');
+                }
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
