@@ -250,7 +250,7 @@
                                                     <div class="col-md-12 pl-0">
                                                         <div class="form-group">
                                                             <label class="form-label font-weight-bold"><?php echo lang('note'); ?>:</label>
-                                                            <label class="form-label"><?php echo $prescription->note; ?></label>
+                                                            <label class="form-label"><?php echo $prescription->laboratory; ?></label>
                                                         </div>
                                                     </div>
                                                 </div>

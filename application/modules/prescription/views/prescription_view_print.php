@@ -79,7 +79,7 @@
                                 <hr>
                                 <div class="panel-body">
                                     <div class="pull-left">
-                                        <h5><strong><?php echo lang('note'); ?>:</strong> <br> <br> <?php echo $prescription->note; ?></h5>
+                                        <h5><strong><?php echo lang('note'); ?>:</strong> <br> <br> <?php echo $prescription->laboratory; ?></h5>
                                     </div>
                                 </div>
                                 <hr>

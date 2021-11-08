@@ -455,7 +455,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label class="control-label col-md-12"><?php echo lang('note'); ?></label>
-                                <?php echo $prescription->note ?>
+                                <?php echo $prescription->laboratory ?>
                             </div>
                         </div>
 
