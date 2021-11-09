@@ -22,9 +22,9 @@
                     <table class="table table-striped table-hover table-bordered" id="editable-sample">
                         <thead>
                             <tr>
-                                <th><?php echo lang('category'); ?> <?php echo lang('name'); ?></th>
+                                <th><?php echo lang('service'); ?> <?php echo lang('name'); ?></th>
                                 <th><?php echo lang('description'); ?></th>
-                                <th><?php echo lang('category'); ?> <?php echo lang('price'); ?> ( <?php echo $settings->currency; ?> )</th>
+                                <th><?php echo lang('service'); ?> <?php echo lang('price'); ?> ( <?php echo $settings->currency; ?> )</th>
                                 <th><?php echo lang('doctors_commission'); ?></th>
                                 <th><?php echo lang('category'); ?></th>
                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>

@@ -22,7 +22,7 @@
                     <table class="table table-striped table-hover table-bordered" id="editable-sample">
                         <thead>
                             <tr>
-                                <th><?php echo lang('category'); ?></th>
+                                <th><?php echo lang('expense'); ?> <?php echo lang('name'); ?></th>
                                 <th><?php echo lang('date'); ?></th>
                                 <th><?php echo lang('note'); ?></th>
                                 <th><?php echo lang('amount'); ?></th>

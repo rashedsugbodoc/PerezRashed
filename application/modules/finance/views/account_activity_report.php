@@ -264,12 +264,12 @@
                                             <tr class="">
                                                 <td><?php echo date('d/m/y', $payment->date); ?></td>
                                                 <td> <?php echo $payment->id; ?></td>
-                                                <td><?php echo $settings->currency; ?> <?php echo $payment->gross_total; ?></td>
+                                                <td><?php echo $settings->currency; ?> <?php echo number_format($payment->gross_total,2); ?></td>
                                                 <td><?php
                                                     if (!empty($payment->amount_received)) {
                                                         echo $settings->currency;
                                                     }
-                                                    ?> <?php echo $payment->amount_received; ?></td>
+                                                    ?> <?php echo number_format($payment->amount_received,2); ?></td>
 
                                             </tr>
 
@@ -315,8 +315,8 @@
                                 <tr class="total">
                                     <td></td>
                                     <td> <strong> <?php echo lang('total'); ?> </strong></td>
-                                    <td> <strong> <?php echo $settings->currency; ?> <?php echo $total_p; ?> </strong></td>
-                                    <td> <strong> <?php echo $settings->currency; ?> <?php echo $total_d; ?> </strong></td>
+                                    <td> <strong> <?php echo $settings->currency; ?> <?php echo number_format($total_p,2); ?> </strong></td>
+                                    <td> <strong> <?php echo $settings->currency; ?> <?php echo number_format($total_d,2); ?> </strong></td>
                                 </tr>
                             </tbody>
                         </table>

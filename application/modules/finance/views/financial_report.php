@@ -60,7 +60,7 @@
                         <table class="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
-                                    <th> <?php echo lang('category'); ?></th>
+                                    <th> <?php echo lang('service'); ?> <?php echo lang('name'); ?></th>
                                     <th> <?php echo lang('quantity'); ?></th>
                                     <th class="hidden-phone"> <?php echo lang('amount'); ?></th>
 
@@ -280,7 +280,7 @@
                         <table class="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
-                                    <th> <?php echo lang('category'); ?></th>
+                                    <th> <?php echo lang('expense'); ?> <?php echo lang('name'); ?></th>
                                     <th class="hidden-phone"> <?php echo lang('amount'); ?></th>
                                 </tr>
                             </thead>
