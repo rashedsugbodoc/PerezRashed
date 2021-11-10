@@ -1913,10 +1913,10 @@ class Patient extends MX_Controller {
 
 
         $data['view'] = '
-        <section class="col-md-3">
+        <section class="col-md-4 col-sm-12">
             <header class="panel-heading clearfix">
                 <div class="">
-                    ' . lang("patient") . ' ' . lang("info") . ' 
+                ' . lang("patient") . ' ' . lang("info") . ' 
                 </div>
             </header> 
             <aside class="profile-nav">
@@ -1940,7 +1940,7 @@ class Patient extends MX_Controller {
             </aside>
         </section>
 
-        <section class="col-md-9">
+        <section class="col-md-8 col-sm-12">
             <header class="panel-heading clearfix">
                 <div class="col-md-7">
                     ' . lang("history") . ' | ' . $patient->name . '
