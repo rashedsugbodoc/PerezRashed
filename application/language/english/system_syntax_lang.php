@@ -638,6 +638,7 @@ $lang['minutes'] = 'Minutes';
 $lang['work_place'] = 'Work Place';
 $lang['patient_deleted'] = 'Patient Deleted';
 $lang['time_slot'] = 'Time Slot';
+$lang['time_slot_not_selected_error'] = 'You need to Select Available Slot for that Date';
 $lang['request_a_appointment'] = 'Request an Appointment';
 $lang['add_new_bed'] = 'Add New Bed';
 $lang['notice'] = 'Notice';

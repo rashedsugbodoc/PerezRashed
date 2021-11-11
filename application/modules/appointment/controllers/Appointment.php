@@ -204,6 +204,12 @@ class Appointment extends MX_Controller {
         $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Password Field
         $this->form_validation->set_rules('doctor', 'Doctor', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Email Field
+
+        if ($time_slot == 'Not Selected') {
+                $this->form_validation->set_rules('time_slot', 'Timeslot', 'trim|required|check_default|xss_clean');
+                $this->form_validation->set_message('check_default', lang('time_slot_not_selected_error'));
+        }
 
         // Validating Email Field
         $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
