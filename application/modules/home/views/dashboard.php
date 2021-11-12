@@ -67,6 +67,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
         <link rel="stylesheet" type="text/css" href="common/assets/DataTables/DataTables-1.10.16/custom/css/datatable-responsive-cdn-version-1-0-7.css" />
 
+        <!-- Notifications  Css -->
+        <link href="<?php echo base_url('public/assets/plugins/notify/css/jquery.growl.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/notify/css/notifIt.css'); ?>" rel="stylesheet" />
+
 
         <!-- Google Fonts -->
 
@@ -539,13 +543,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         </li>
                         <!-- user login dropdown end -->
                     </ul>
-                    <?php
-                    $message = $this->session->flashdata('feedback');
-                    if (!empty($message)) {
-                        ?>
-                        
-                        <div class="alert alert-info pull-right notification-alert" role="alert"><?php echo $message; ?></div>
-                    <?php } ?> 
+                    
                 </div>
             </header>
             <!--header end-->

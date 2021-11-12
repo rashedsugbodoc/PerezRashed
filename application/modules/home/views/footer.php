@@ -46,6 +46,15 @@
 
 <script type="text/javascript" src="common/assets/bootstrap-fileupload/bootstrap-fileupload.js"></script>
 
+<!-- popover js -->
+<script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
+
+<!-- Notifications js -->
+<script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
+<script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
+<script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
+<script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
 
 <?php
 $language = $this->db->get('settings')->row()->language;
@@ -217,9 +226,34 @@ if ($language == 'english') {
 
 <script>
     $(document).ready(function () {
-        $(".notification-alert").hide();
-        $(".notification-alert").fadeIn(1000);
-        $(".notification-alert").delay(4000).slideUp(2000);
+        var error = "<?php echo $this->session->flashdata('error') ?>";
+        var success = "<?php echo $this->session->flashdata('success') ?>";
+        var warning = "<?php echo $this->session->flashdata('warning') ?>";
+
+        if (success) {
+            notif({
+                type: "success",
+                msg: success,
+                position: "center",
+                opacity: 0.9
+            });
+        }
+        if (error) {
+            notif({
+                type: "error",
+                msg: error,
+                position: "center",
+                opacity: 0.9
+            });
+        }
+        if (warning) {
+            notif({
+                type: "warning",
+                msg: warning,
+                position: "center"
+            });
+        }
+
     });
 </script>
 

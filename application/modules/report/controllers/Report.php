@@ -113,13 +113,20 @@ class Report extends MX_Controller {
         // Validating Company Name Field
         $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
-
         if ($this->form_validation->run() == FALSE) {
             if(!empty($id)){
-                $this->session->set_flashdata('feedback', lang('validation_error'));
-                redirect("report/editReport?id=$id");
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['patients'] = $this->patient_model->getPatient();
+                // $id = $this->input->get('id');
+                $data['report'] = $this->report_model->getReportById($id);
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_report', $data);
+                $this->load->view('home/footer'); // just the footer file
 
             }else{
+            $this->session->set_flashdata('error', lang('validation_error'));
             $data = array();
             $data['setval'] = 'setval';
             $data['doctors'] = $this->doctor_model->getDoctor();
@@ -139,10 +146,10 @@ class Report extends MX_Controller {
             );
             if (empty($id)) {
                 $this->report_model->insertReport($data); 
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->report_model->updateReport($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             if ($type == 'birth') {
                 redirect('report/birth');
@@ -197,7 +204,7 @@ class Report extends MX_Controller {
         $id = $this->input->get('id');
         $type = $this->report_model->getReportById($id)->report_type;
         $this->report_model->deleteReport($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         if ($type == 'birth') {
             redirect('report/birth');
         } elseif ($type == 'operation') {
