@@ -70,7 +70,7 @@ class Doctor extends MX_Controller {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         }
         // Validating Email Field
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[doctor.email]|max_length[100]|xss_clean');
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
@@ -84,6 +84,7 @@ class Doctor extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['departments'] = $this->department_model->getDepartment();
                 $data['doctor'] = $this->doctor_model->getDoctorById($id);
@@ -91,6 +92,7 @@ class Doctor extends MX_Controller {
                 $this->load->view('add_new', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['departments'] = $this->department_model->getDepartment();
@@ -154,7 +156,7 @@ class Doctor extends MX_Controller {
             $username = $this->input->post('name');
             if (empty($id)) {     // Adding New Doctor
                 if ($this->ion_auth->email_check($email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                     redirect('doctor/addNewView');
                 } else {
                     $dfg = 4;
@@ -211,7 +213,7 @@ class Doctor extends MX_Controller {
                     //end
 
 
-                    $this->session->set_flashdata('feedback', lang('added'));
+                    $this->session->set_flashdata('success', lang('record_added'));
                 }
             } else { // Updating Doctor
                 $ion_user_id = $this->db->get_where('doctor', array('id' => $id))->row()->ion_user_id;
@@ -222,7 +224,7 @@ class Doctor extends MX_Controller {
                 }
                 $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                 $this->doctor_model->updateDoctor($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
             redirect('doctor');
@@ -292,7 +294,7 @@ class Doctor extends MX_Controller {
         $this->db->where('id', $ion_user_id);
         $this->db->delete('users');
         $this->doctor_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('error', lang('record_deleted'));
         redirect('doctor');
     }
 
