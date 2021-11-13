@@ -44,13 +44,6 @@ class Company extends MX_Controller {
 
         $id = $this->input->post('id');
         
-        if (empty($id)) {
-            $limit = $this->company_model->getLimit();
-            if ($limit <= 0) {
-                $this->session->set_flashdata('feedback', lang('company_limit_exceed'));
-                redirect('company');
-            }
-        }
         
         
         $name = $this->input->post('name');
