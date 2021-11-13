@@ -224,7 +224,7 @@ class Appointment extends MX_Controller {
             if (!empty($id)) {
                 $data = array();
                 // $id = $this->input->get('id');
-
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data['settings'] = $this->settings_model->getSettings();
                 $data['appointment'] = $this->appointment_model->getAppointmentById($id);
                 $data['patients'] = $this->patient_model->getPatientById($data['appointment']->patient);
@@ -233,6 +233,7 @@ class Appointment extends MX_Controller {
                 $this->load->view('add_new', $data);
                 $this->load->view('home/footer'); // just the footer file 
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data['patients'] = $this->patient_model->getPatient();
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['settings'] = $this->settings_model->getSettings();
@@ -246,7 +247,7 @@ class Appointment extends MX_Controller {
 
                 $limit = $this->patient_model->getLimit();
                 if ($limit <= 0) {
-                    $this->session->set_flashdata('feedback', lang('patient_limit_exceed'));
+                    $this->session->set_flashdata('warning', lang('patient_limit_exceed'));
                     redirect('patient');
                 }
 
@@ -264,7 +265,7 @@ class Appointment extends MX_Controller {
                 $username = $this->input->post('p_name');
                 // Adding New Patient
                 if ($this->ion_auth->email_check($p_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $p_email, $dfg);
@@ -338,7 +339,7 @@ class Appointment extends MX_Controller {
                     $this->patient_model->updatePatient($patient, $data_d);
                 }
                 $this->sendSmsDuringAppointment($id, $data, $patient, $doctor, $status);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else { // Updating department
                 $previous_status = $this->appointment_model->getAppointmentById($id)->status;
                 if ($previous_status != "Confirmed") {
@@ -348,7 +349,7 @@ class Appointment extends MX_Controller {
                 }
                 $this->appointment_model->updateAppointment($id, $data);
 
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
 
@@ -988,7 +989,7 @@ class Appointment extends MX_Controller {
         $id = $this->input->get('id');
         $doctor_id = $this->input->get('doctor_id');
         $this->appointment_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         if (!empty($doctor_id)) {
             redirect('appointment/getAppointmentByDoctorId?id=' . $doctor_id);
         } else {
