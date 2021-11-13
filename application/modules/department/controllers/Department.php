@@ -43,12 +43,14 @@ class Department extends MX_Controller {
         // Validating Address Field   
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['department'] = $this->department_model->getDepartmentById($id);
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_new', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data['setval'] = 'setval';
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_new', $data);
@@ -63,10 +65,10 @@ class Department extends MX_Controller {
             );
             if (empty($id)) {     // Adding New department
                 $this->department_model->insertDepartment($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else { // Updating department
                 $this->department_model->updateDepartment($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
             redirect('department');
@@ -96,7 +98,7 @@ class Department extends MX_Controller {
     function delete() {
         $id = $this->input->get('id');
         $this->department_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('department');
     }
 
