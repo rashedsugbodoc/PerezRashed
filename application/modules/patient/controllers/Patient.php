@@ -764,23 +764,27 @@ class Patient extends MX_Controller {
             $redirect = 'patient/medicalHistory?id=' . $patient_id;
         }
 
+        // Validating patient Field
+        $this->form_validation->set_rules('patient_id', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+
         // Validating Name Field
-        $this->form_validation->set_rules('date', 'Date', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         // Validating Title Field
-        $this->form_validation->set_rules('title', 'Title', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         // Validating Password Field
 
-        $this->form_validation->set_rules('description', 'Description', 'trim|min_length[5]|max_length[10000]|xss_clean');
+        $this->form_validation->set_rules('description', 'Description', 'trim|required|max_length[10000]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 redirect("patient/editMedicalHistory?id=$id");
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new');
+                $this->load->view('case_list');
                 $this->load->view('home/footer'); // just the header file
             }
         } else {
@@ -810,10 +814,10 @@ class Patient extends MX_Controller {
 
             if (empty($id)) {     // Adding New department
                 $this->patient_model->insertMedicalHistory($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else { // Updating department
                 $this->patient_model->updateMedicalHistory($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
             redirect($redirect);
@@ -1094,7 +1098,6 @@ class Patient extends MX_Controller {
 
 
         if ($this->form_validation->run() == FALSE) {
-            $this->session->set_flashdata('feedback', lang('validation_error'));
             redirect($redirect);
         } else {
 
@@ -1164,11 +1167,11 @@ class Patient extends MX_Controller {
                     'patient_phone' => $patient_phone,
                     'date_string' => date('d-m-y', $date),
                 );
-                $this->session->set_flashdata('feedback', lang('upload_error'));
+                $this->session->set_flashdata('error', lang('upload_error'));
             }
 
             $this->patient_model->insertPatientMaterial($data);
-            $this->session->set_flashdata('feedback', lang('added'));
+            $this->session->set_flashdata('success', lang('record_added'));
 
 
             redirect($redirect);
@@ -1180,7 +1183,7 @@ class Patient extends MX_Controller {
         $redirect = $this->input->get('redirect');
         $case_history = $this->patient_model->getMedicalHistoryById($id);
         $this->patient_model->deleteMedicalHistory($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('error', lang('record_deleted'));
         if ($redirect == 'case') {
             redirect('patient/caseList');
         } else {
@@ -1197,7 +1200,7 @@ class Patient extends MX_Controller {
             unlink($path);
         }
         $this->patient_model->deletePatientMaterial($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         if ($redirect == 'documents') {
             redirect('patient/documents');
         } else {
