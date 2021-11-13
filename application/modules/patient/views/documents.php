@@ -19,6 +19,7 @@
             <div class="">
                 <div class="">
                     <div class="adv-table editable-table panel-body">
+                        <?php echo validation_errors(); ?>
                         <table class="table table-striped table-hover table-bordered" id="editable-sample">
                             <thead>
                                 <tr>

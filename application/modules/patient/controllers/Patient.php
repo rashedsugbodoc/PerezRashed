@@ -1094,11 +1094,15 @@ class Patient extends MX_Controller {
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         // Validating Patient Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('patient_id', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
-            redirect($redirect);
+            $this->session->set_flashdata('error', lang('validation_error'));
+            $this->load->view('home/dashboard'); // just the header file
+            $this->load->view('documents');
+            $this->load->view('home/footer'); // just the header file
         } else {
 
             if (!empty($patient_id)) {
