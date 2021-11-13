@@ -62,20 +62,20 @@ class Schedule extends MX_Controller {
         if (empty($id)) {
             $check = $this->schedule_model->getScheduleByDoctorByWeekday($doctor, $weekday);
             if (!empty($check)) {
-                $this->session->set_flashdata('feedback', lang('schedule_already_exists'));
+                $this->session->set_flashdata('error', lang('schedule_already_exists'));
                 redirect($redirect);
                 die();
             }
         }
 
         if (empty($s_time)) {
-            $this->session->set_flashdata('feedback', lang('fields_can_not_be_empty'));
+            $this->session->set_flashdata('error', lang('fields_can_not_be_empty'));
             redirect($redirect);
             die();
         }
 
         if (empty($e_time)) {
-            $this->session->set_flashdata('feedback', lang('fields_can_not_be_empty'));
+            $this->session->set_flashdata('error', lang('fields_can_not_be_empty'));
             redirect($redirect);
             die();
         }
@@ -377,7 +377,7 @@ class Schedule extends MX_Controller {
 
 
         if ($key1 > $key2) {
-            $this->session->set_flashdata('feedback', lang('time_selection_error'));
+            $this->session->set_flashdata('error', lang('time_selection_error'));
             redirect($redirect);
             die();
         }
@@ -401,7 +401,7 @@ class Schedule extends MX_Controller {
                     if ($key2 <= $key_pre_s) {
                         continue;
                     } else {
-                        $this->session->set_flashdata('feedback', lang('slot_overlapped'));
+                        $this->session->set_flashdata('error', lang('slot_overlapped'));
                         redirect($redirect);
                         die();
                     }
@@ -410,21 +410,21 @@ class Schedule extends MX_Controller {
                         if ($key2 > $key_pre_e) {
                             continue;
                         } else {
-                            $this->session->set_flashdata('feedback', lang('slot_overlapped'));
+                            $this->session->set_flashdata('error', lang('slot_overlapped'));
                             redirect($redirect);
                             die();
                         }
                     } else {
-                        $this->session->set_flashdata('feedback', lang('slot_overlapped'));
+                        $this->session->set_flashdata('error', lang('slot_overlapped'));
                         redirect($redirect);
                         die();
                     }
                 } elseif ($key1 >= $key_pre_s && $key2 <= $key_pre_e) {
-                    $this->session->set_flashdata('feedback', lang('slot_overlapped'));
+                    $this->session->set_flashdata('error', lang('slot_overlapped'));
                     redirect($redirect);
                     die();
                 } elseif ($key1 == $key_pre_s) {
-                    $this->session->set_flashdata('feedback', lang('slot_overlapped'));
+                    $this->session->set_flashdata('error', lang('slot_overlapped'));
                     redirect($redirect);
                     die();
                 }
@@ -447,6 +447,7 @@ class Schedule extends MX_Controller {
             if (!empty($id)) {
                 redirect("schedule/editSchedule?id=$id");
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data['settings'] = $this->settings_model->getSettings();
                 $this->load->view('home/dashboard', $data); // just the header file
                 $this->load->view('timeschedule');
@@ -464,7 +465,7 @@ class Schedule extends MX_Controller {
                 'duration' => $duration
             );
             if (!empty($id)) {
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 $this->schedule_model->updateSchedule($id, $data);
             } else {
 
@@ -497,7 +498,7 @@ class Schedule extends MX_Controller {
                     }
                 }
                 $this->schedule_model->insertSchedule($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             }
 
             redirect($redirect);
@@ -523,6 +524,7 @@ class Schedule extends MX_Controller {
         $weekday = $this->input->get('weekday');
         $this->schedule_model->deleteTimeSlotByDoctorByWeekday($doctor, $weekday);
         $this->schedule_model->deleteSchedule($id);
+        $this->session->set_flashdata('success', lang('record_deleted'));
 
         if ($this->ion_auth->in_group(array('Doctor'))) {
             redirect('schedule/timeSchedule');
@@ -1056,7 +1058,7 @@ class Schedule extends MX_Controller {
         if (!empty($date)) {
             $date = strtotime($date);
         } else {
-            $this->session->set_flashdata('feedback', lang('date_not_selected'));
+            $this->session->set_flashdata('error', lang('date_not_selected'));
             redirect($redirect);
             die();
         }
@@ -1065,7 +1067,7 @@ class Schedule extends MX_Controller {
         if (empty($id)) {
             $is_exist = $this->schedule_model->getHolidayByDoctorByDate($doctor, $date);
             if (!empty($is_exist)) {
-                $this->session->set_flashdata('feedback', lang('already_exist'));
+                $this->session->set_flashdata('error', lang('already_exist'));
                 redirect($redirect);
                 die();
             }
@@ -1073,7 +1075,7 @@ class Schedule extends MX_Controller {
             $is_exist = $this->schedule_model->getHolidayByDoctorByDate($doctor, $date);
             if (!empty($is_exist)) {
                 if ($is_exist->date == $date) {
-                    $this->session->set_flashdata('feedback', lang('already_exist'));
+                    $this->session->set_flashdata('error', lang('already_exist'));
                     redirect($redirect);
                     die();
                 }
@@ -1101,10 +1103,10 @@ class Schedule extends MX_Controller {
                 'date' => $date,
             );
             if (!empty($id)) {
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 $this->schedule_model->updateHoliday($id, $data);
             } else {
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 $this->schedule_model->insertHoliday($data);
             }
 
@@ -1133,7 +1135,7 @@ class Schedule extends MX_Controller {
         }
         $doctor = $this->input->get('doctor');
         $this->schedule_model->deleteHoliday($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect($redirect);
     }
 
