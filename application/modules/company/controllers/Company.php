@@ -88,6 +88,7 @@ class Company extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['types'] = $this->company_model->getCompanyType();
                 $data['classifications'] = $this->company_model->getCompanyClassification();
@@ -96,6 +97,7 @@ class Company extends MX_Controller {
                 $this->load->view('add_new', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['types'] = $this->company_model->getCompanyType();
@@ -213,11 +215,11 @@ class Company extends MX_Controller {
                 //end
 
 
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 
             } else { // Updating Company
                 $this->company_model->updateCompany($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
             redirect('company');
@@ -291,7 +293,7 @@ class Company extends MX_Controller {
         }
 
         $this->company_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('company');
     }
 
