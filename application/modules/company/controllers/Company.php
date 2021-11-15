@@ -57,6 +57,8 @@ class Company extends MX_Controller {
         $display_name = $this->input->post('display_name');
         $registration_number = $this->input->post('registration_number');
 
+        $emailById = $this->company_model->getCompanyById($id)->email;
+
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
@@ -64,7 +66,13 @@ class Company extends MX_Controller {
         // Validating Display Name Field
         $this->form_validation->set_rules('display_name', 'Display Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Email Field
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        if ($email !== $emailById) {
+            $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|valid_email|is_unique[company.email]|max_length[100]|xss_clean');
+        } else {
+            $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|valid_email|max_length[100]|xss_clean');
+        }
+        // Validating Email Field
+        $this->form_validation->set_message('is_unique',lang('this_email_address_is_already_registered'));
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
