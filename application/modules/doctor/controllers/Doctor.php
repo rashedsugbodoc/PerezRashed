@@ -301,7 +301,7 @@ class Doctor extends MX_Controller {
         $this->db->where('id', $ion_user_id);
         $this->db->delete('users');
         $this->doctor_model->delete($id);
-        $this->session->set_flashdata('error', lang('record_deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('doctor');
     }
 
