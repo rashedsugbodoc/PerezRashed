@@ -66,7 +66,7 @@ class Companyuser extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                $this->session->set_flashdata('error', lang('form_validation_error'));
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 // $id = $this->input->get('id');
                 $data['companyusers'] = $this->companyuser_model->getCompanyUser();
@@ -75,7 +75,7 @@ class Companyuser extends MX_Controller {
                 $this->load->view('add_new', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
-                $this->session->set_flashdata('error', lang('form_validation_error'));
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['companyusers'] = $this->companyuser_model->getCompanyUser();
                 $data['setval'] = 'setval';
@@ -158,7 +158,7 @@ class Companyuser extends MX_Controller {
                     $password = $this->ion_auth_model->hash_password($password);
                 }
                 $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
-                $this->v->updateCompanyUser($id, $data);
+                $this->companyuser_model->updateCompanyUser($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View

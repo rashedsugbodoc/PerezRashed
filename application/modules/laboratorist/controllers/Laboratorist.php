@@ -187,7 +187,7 @@ class Laboratorist extends MX_Controller {
         $this->db->where('id', $ion_user_id);
         $this->db->delete('users');
         $this->laboratorist_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('laboratorist');
     }
 

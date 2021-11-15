@@ -62,7 +62,7 @@ class Receptionist extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                $this->session->set_flashdata('error', lang('form_validation_error'));
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 // $id = $this->input->get('id');
                 $data['receptionist'] = $this->receptionist_model->getReceptionistById($id);
@@ -70,7 +70,7 @@ class Receptionist extends MX_Controller {
                 $this->load->view('add_new', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
-                $this->session->set_flashdata('error', lang('form_validation_error'));
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['settings'] = $this->settings_model->getSettings();

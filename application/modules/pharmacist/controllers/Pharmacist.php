@@ -136,7 +136,7 @@ class Pharmacist extends MX_Controller {
                     $id_info = array('ion_user_id' => $ion_user_id);
                     $this->pharmacist_model->updatePharmacist($pharmacist_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                    $this->session->set_flashdata('success', lang('added'));
+                    $this->session->set_flashdata('success', lang('record_added'));
                 }
             } else { // Updating Pharmacist
                 $ion_user_id = $this->db->get_where('pharmacist', array('id' => $id))->row()->ion_user_id;
@@ -147,7 +147,7 @@ class Pharmacist extends MX_Controller {
                 }
                 $this->pharmacist_model->updateIonUser($username, $email, $password, $ion_user_id);
                 $this->pharmacist_model->updatePharmacist($id, $data);
-                $this->session->set_flashdata('success', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
             redirect('pharmacist');
