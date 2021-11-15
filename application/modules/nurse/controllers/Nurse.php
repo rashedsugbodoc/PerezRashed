@@ -34,6 +34,8 @@ class Nurse extends MX_Controller {
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
 
+        $emailById = $this->nurse_model->getNurseById($id)->email;
+
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
@@ -43,7 +45,14 @@ class Nurse extends MX_Controller {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         }
         // Validating Email Field
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+
+        if ($email !== $emailById) {
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[nurse.email]|max_length[100]|xss_clean');
+        } else {
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|max_length[100]|xss_clean');
+        }
+
+        $this->form_validation->set_message('is_unique',lang('this_email_address_is_already_registered'));
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[5]|max_length[500]|xss_clean');
         // Validating Phone Field           
@@ -51,12 +60,14 @@ class Nurse extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['nurse'] = $this->nurse_model->getNurseById($id);
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_new', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $this->load->view('home/dashboard'); // just the header file
@@ -112,8 +123,8 @@ class Nurse extends MX_Controller {
             $username = $this->input->post('name');
             if (empty($id)) {     // Adding New Nurse
                 if ($this->ion_auth->email_check($email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
-                    redirect('nurse/addNewView');
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+                    redirect('nurse/addNew');
                 } else {
                     $dfg = 6;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -123,7 +134,7 @@ class Nurse extends MX_Controller {
                     $id_info = array('ion_user_id' => $ion_user_id);
                     $this->nurse_model->updateNurse($nurse_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                    $this->session->set_flashdata('feedback', lang('added'));
+                    $this->session->set_flashdata('success', lang('record_added'));
                 }
             } else { // Updating Nurse
                 $ion_user_id = $this->db->get_where('nurse', array('id' => $id))->row()->ion_user_id;
@@ -134,7 +145,7 @@ class Nurse extends MX_Controller {
                 }
                 $this->nurse_model->updateIonUser($username, $email, $password, $ion_user_id);
                 $this->nurse_model->updateNurse($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
             redirect('nurse');
