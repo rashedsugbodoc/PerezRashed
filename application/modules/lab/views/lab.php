@@ -20,6 +20,9 @@
                             <div class="clearfix">
                                 <form role="form" id="editLabForm" class="clearfix" action="lab/addLab" method="post" enctype="multipart/form-data">
                                     <div class="">
+                                        <div class="form-group col-md-12">
+                                            <?php echo validation_errors(); ?>
+                                        </div>
                                         <div class="form-group col-md-6">
                                             <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
                                             <input type="text" class="form-control pay_in default-date-picker" name="date" value='<?php
