@@ -150,6 +150,7 @@ class Prescription extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 // $id = $this->input->get('id');
                 // $data['patients'] = $this->patient_model->getPatient();
@@ -172,6 +173,7 @@ class Prescription extends MX_Controller {
                     $this->load->view('home/permission');
                 }
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['medicines'] = $this->medicine_model->getMedicine();
@@ -198,10 +200,10 @@ class Prescription extends MX_Controller {
             );
             if (empty($id)) {
                 $this->prescription_model->insertPrescription($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->prescription_model->updatePrescription($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
 
             if (!empty($admin)) {
@@ -303,7 +305,7 @@ class Prescription extends MX_Controller {
                 $this->load->view('home/permission');
             } else {
                 $this->prescription_model->deletePrescription($id);
-                $this->session->set_flashdata('feedback', lang('deleted'));
+                $this->session->set_flashdata('success', lang('record_deleted'));
                 if (!empty($patient)) {
                     redirect('patient/caseHistory?patient_id=' . $patient);
                 } elseif (!empty($admin)) {
