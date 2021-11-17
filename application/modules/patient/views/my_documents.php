@@ -19,6 +19,16 @@
             <div class="">
                 <div class="">
                     <div class="adv-table editable-table panel-body">
+                        <?php echo validation_errors(); ?>
+                        <?php
+                            $file_error = $this->session->flashdata('fileError');
+
+                            if(!empty($file_error)) {
+                                echo $file_error;
+                            }else{
+
+                            }
+                        ?>
                         <table class="table table-striped table-hover table-bordered" id="editable-sample">
                             <thead>
                                 <tr>
@@ -55,7 +65,11 @@
                                         </td>
                                         <td>
                                             <?php
-                                            echo   '<a class="example-image-link" href="'. $file->url .'" data-lightbox="example-1" data-title="'. $file->title .'">'. '<img class="example-image" src="' . $file->url . '" width="100px" height="100px"alt="image-1">'.'</a>'  ;
+                                            if (pathinfo($file->url, PATHINFO_EXTENSION) === 'pdf') {
+                                                echo   '<a class="example-image-link" href="'. $file->url .'" data-title="'. $file->title .'" target="_blank">'. '<img class="example-image" src="uploads/PDF_DefaultImage.png" width="auto" height="auto"alt="image-1"style="max-width:150px;max-height:150px">'.'</a>'  ;
+                                            } else {
+                                                echo   '<a class="example-image-link" href="'. $file->url .'" data-lightbox="example-1" data-title="'. $file->title .'">'. '<img class="example-image" src="' . $file->url . '" width="auto" height="auto"alt="image-1"style="max-width:150px;max-height:150px">'.'</a>'  ;
+                                            }
                                             ?>
                                         </td>
                                         <td>
@@ -102,7 +116,8 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1"> <?php echo lang('file'); ?></label>
                         <input type="file" name="img_url">
-                        <span class="help-block"><?php echo lang('recommended_size'); ?> : 3000 x 2024</span>
+                        <span class="help-block"><?php echo lang('recommended_size'); ?> : <strong>3000 x 2024</strong></span>
+                        <span class="help-block"><?php echo lang('upload_either_types'); ?> <?php echo lang('max_size_of'); ?> <strong>10 MB</strong></span>
                     </div>
                     <input type="hidden" name="redirect" value='patient/myDocuments'>
                     <div class="form-group">

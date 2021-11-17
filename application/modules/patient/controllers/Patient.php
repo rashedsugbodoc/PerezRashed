@@ -780,7 +780,10 @@ class Patient extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                redirect("patient/editMedicalHistory?id=$id");
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('case_list');
+                $this->load->view('home/footer'); // just the header file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $this->load->view('home/dashboard'); // just the header file
@@ -1094,15 +1097,30 @@ class Patient extends MX_Controller {
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         // Validating Patient Field
-        $this->form_validation->set_rules('patient_id', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        if (!$this->ion_auth->in_group(array('Patient'))) {
+            $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        }
+
         $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
-
         if ($this->form_validation->run() == FALSE) {
-            $this->session->set_flashdata('error', lang('validation_error'));
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('documents');
-            $this->load->view('home/footer'); // just the header file
+            if ($this->ion_auth->in_group(array('Patient'))) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $patient_ion_id = $this->ion_auth->get_user_id();
+                $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+                $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('my_documents', $data);
+                $this->load->view('home/footer'); // just the footer file
+            } elseif ($this->ion_auth->in_group(array('admin' ,'Doctor', 'Nurse', 'Laboratorist', 'Receptionist'))) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('documents');
+                $this->load->view('home/footer'); // just the header file
+            } else {
+                redirect('home/permission');
+            }
+            
         } else {
 
             if (!empty($patient_id)) {
@@ -1115,10 +1133,6 @@ class Patient extends MX_Controller {
                 $patient_phone = 0;
                 $patient_address = 0;
             }
-
-
-
-
 
 
             $file_name = $_FILES['img_url']['name'];
@@ -1138,13 +1152,14 @@ class Patient extends MX_Controller {
                 'upload_path' => "./uploads/",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "48000000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_size' => "10000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "10000",
                 'max_width' => "10000"
             );
 
             $this->load->library('Upload', $config);
             $this->upload->initialize($config);
+
 
             if ($this->upload->do_upload('img_url')) {
                 $path = $this->upload->data();
@@ -1160,25 +1175,37 @@ class Patient extends MX_Controller {
                     'patient_phone' => $patient_phone,
                     'date_string' => date('d-m-y', $date),
                 );
+
+                $this->patient_model->insertPatientMaterial($data);
+                $this->session->set_flashdata('success', lang('record_added'));
+
+                redirect($redirect);
             } else {
-                $data = array();
-                $data = array(
-                    'date' => $date,
-                    'title' => $title,
-                    'patient' => $patient_id,
-                    'patient_name' => $patient_name,
-                    'patient_address' => $patient_address,
-                    'patient_phone' => $patient_phone,
-                    'date_string' => date('d-m-y', $date),
-                );
-                $this->session->set_flashdata('error', lang('upload_error'));
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
+                if ($this->ion_auth->in_group(array('Patient'))) {
+                    $this->session->set_flashdata('error', lang('validation_error'));
+                    $patient_ion_id = $this->ion_auth->get_user_id();
+                    $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+                    $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
+                    $this->load->view('home/dashboard'); // just the header file
+                    $this->load->view('my_documents', $data);
+                    $this->load->view('home/footer'); // just the footer file
+                } elseif ($this->ion_auth->in_group(array('admin' ,'Doctor', 'Nurse', 'Laboratorist', 'Receptionist'))) {
+                    $this->session->set_flashdata('error', lang('validation_error'));
+                    $this->load->view('home/dashboard'); // just the header file
+                    $this->load->view('documents');
+                    $this->load->view('home/footer'); // just the header file
+                } else {
+                    redirect('home/permission');
+                }
+                
             }
 
-            $this->patient_model->insertPatientMaterial($data);
-            $this->session->set_flashdata('success', lang('record_added'));
+            
 
 
-            redirect($redirect);
+            
         }
     }
 
@@ -1187,7 +1214,7 @@ class Patient extends MX_Controller {
         $redirect = $this->input->get('redirect');
         $case_history = $this->patient_model->getMedicalHistoryById($id);
         $this->patient_model->deleteMedicalHistory($id);
-        $this->session->set_flashdata('error', lang('record_deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         if ($redirect == 'case') {
             redirect('patient/caseList');
         } else {
@@ -1231,7 +1258,7 @@ class Patient extends MX_Controller {
         $this->db->where('id', $ion_user_id);
         $this->db->delete('users');
         $this->patient_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('patient');
     }
 
@@ -1522,14 +1549,27 @@ class Patient extends MX_Controller {
                 $patient_details = '';
             }
 
-            $info[] = array(
-                date('d-m-y', $document->date),
-                $patient_details,
-                $document->title,
-                '<a class="example-image-link" href="' . $document->url . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '" width="100px" height="100px"alt="image-1">' . '</a>',
-                $options1 . ' ' . $options2
-                    // $options4
-            );
+            if (pathinfo($document->url, PATHINFO_EXTENSION) === 'pdf'){
+                $info[] = array(
+                    date('d-m-y', $document->date),
+                    $patient_details,
+                    $document->title,
+                    '<a class="example-image-link" href="' . $document->url . '" data-title="' . $document->title . '" target="_blank"">' . '<img class="example-image" src="uploads/PDF_DefaultImage.png" width="auto" height="auto"alt="image-1"style="max-width:150px;max-height:150px">' . '</a>',
+                    $options1 . ' ' . $options2
+                        // $options4
+                );
+            } else {
+                $info[] = array(
+                    date('d-m-y', $document->date),
+                    $patient_details,
+                    $document->title,
+                    '<a class="example-image-link" href="' . $document->url . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '" width="auto" height="auto"alt="image-1"style="max-width:150px;max-height:150px">' . '</a>',
+                    $options1 . ' ' . $options2
+                        // $options4
+                );
+            }
+            
+
         }
 
         if (!empty($data['documents'])) {
