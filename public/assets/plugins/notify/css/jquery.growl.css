@@ -55,7 +55,7 @@
 	margin-right: auto;
 }
 .growl {
-	opacity: 0.8;
+	opacity: 1;
 	filter: alpha(opacity=80);
 	position: relative;
 	border-radius: 4px;
@@ -76,16 +76,55 @@
 	padding: 5px;
 	margin: 5px;
 }
-.growl.growl-medium {
-	width: 250px;
-	padding: 10px;
-	margin: 10px;
-}
-.growl.growl-large {
-	width: 300px;
+
+
+
+@media screen and (max-width: 415px) {
+	.growl.growl-medium {
+	width: 330px;
 	padding: 15px;
 	margin: 15px;
+	padding-bottom: 20px;
+	}
+	.growl.growl-large {
+		width: 330px;
+		padding: 15px;
+		margin: 15px;
+		padding-bottom: 20px;
+	}
 }
+
+@media (max-width: 281px) {
+	.growl.growl-medium {
+	width: 230px;
+	padding: 15px;
+	margin: 15px;
+	padding-bottom: 20px;
+	}
+	.growl.growl-large {
+		width: 230px;
+		padding: 15px;
+		margin: 15px;
+		padding-bottom: 20px;
+	}
+}
+
+@media (min-width: 416px) {
+	.growl.growl-medium {
+	width: 330px;
+	padding: 15px;
+	margin: 15px;
+	padding-bottom: 20px;
+	}
+	.growl.growl-large {
+		width: 500px;
+		padding: 15px;
+		margin: 15px;
+		padding-bottom: 20px;
+	}
+}
+
+
 .growl.growl-default {
 	color: #FFF;
 	background: #2d2d2d;
@@ -96,9 +135,9 @@
 }
 .growl.growl-notice {
 	color: #FFF;
-	background: #2dce89;
+	background: #45aaf2;
 }
-.growl.growl-sucess {
+.growl.growl-success {
 	color: #FFF;
 	background: #2dce89;
 }
@@ -121,6 +160,7 @@
 	margin-bottom:5px
 }
 .growl .growl-message {
-	font-size: 13px;
+	text-align: center;
+	font-size: 14px;
 	line-height: 18px;
 }

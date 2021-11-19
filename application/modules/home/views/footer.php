@@ -228,31 +228,43 @@ if ($language == 'english') {
     $(document).ready(function () {
         var error = "<?php echo $this->session->flashdata('error') ?>";
         var success = "<?php echo $this->session->flashdata('success') ?>";
+        var notice = "<?php echo $this->session->flashdata('notice') ?>";
         var warning = "<?php echo $this->session->flashdata('warning') ?>";
 
+
         if (success) {
-            notif({
-                type: "success",
-                msg: success,
-                position: "center",
-                opacity: 0.9
+            event.preventDefault();
+            event.stopPropagation();
+            return $.growl.success({
+                message: success
             });
         }
         if (error) {
-            notif({
-                type: "error",
-                msg: error,
-                position: "center",
-                opacity: 0.9
+            event.preventDefault();
+            event.stopPropagation();
+            return $.growl.error({
+                message: error
             });
         }
         if (warning) {
-            notif({
-                type: "warning",
-                msg: warning,
-                position: "center"
+            event.preventDefault();
+            event.stopPropagation();
+            return $.growl.warning({
+                message: warning
             });
         }
+        if (notice) {
+            event.preventDefault();
+            event.stopPropagation();
+            return $.growl.notice({
+                message: notice
+            });
+        }
+
+        var error = "<?php unset($_SESSION['error']); ?>";
+        var success = "<?php unset($_SESSION['success']); ?>";
+        var warning = "<?php unset($_SESSION['warning']); ?>";
+        var notice = "<?php unset($_SESSION['notice']); ?>";
 
     });
 </script>
