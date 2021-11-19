@@ -16,6 +16,15 @@
                 </header>
                 <div class="panel-body">
                     <?php echo validation_errors(); ?>
+                    <?php
+                        $file_error = $this->session->flashdata('fileError');
+
+                        if(!empty($file_error)) {
+                            echo $file_error;
+                        }else{
+
+                        }
+                    ?>
                     <form role="form" action="laboratorist/addNew" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="exampleInputEmail1"><?php echo lang('name'); ?></label>

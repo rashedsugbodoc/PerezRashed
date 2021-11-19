@@ -124,9 +124,15 @@ class Laboratorist extends MX_Controller {
             }
             $username = $this->input->post('name');
             if (empty($id)) {     // Adding New laboratorist
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
                 if ($this->ion_auth->email_check($email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
-                    redirect('laboratorist/addNewView');
+                    $data = array();
+                    $data['laboratorist'] = $this->laboratorist_model->getLaboratoristById($id);
+                    $this->load->view('home/dashboard'); // just the header file
+                    $this->load->view('add_new', $data);
+                    $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 8;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -137,20 +143,46 @@ class Laboratorist extends MX_Controller {
                     $this->laboratorist_model->updateLaboratorist($laboratorist_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
                     $this->session->set_flashdata('success', lang('record_added'));
+                    redirect('laboratorist');
                 }
             } else { // Updating laboratorist
-                $ion_user_id = $this->db->get_where('laboratorist', array('id' => $id))->row()->ion_user_id;
-                if (empty($password)) {
-                    $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
+                if ($email !== $emailById) {
+                    if ($this->ion_auth->email_check($email)) {
+                        $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+                        $data = array();
+                        $data['laboratorist'] = $this->laboratorist_model->getLaboratoristById($id);
+                        $this->load->view('home/dashboard'); // just the header file
+                        $this->load->view('add_new', $data);
+                        $this->load->view('home/footer'); // just the footer file
+                    } else {
+                        $ion_user_id = $this->db->get_where('laboratorist', array('id' => $id))->row()->ion_user_id;
+                        if (empty($password)) {
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        } else {
+                            $password = $this->ion_auth_model->hash_password($password);
+                        }
+                        $this->laboratorist_model->updateIonUser($username, $email, $password, $ion_user_id);
+                        $this->laboratorist_model->updateLaboratorist($id, $data);
+                        $this->session->set_flashdata('success', lang('record_updated'));
+                        redirect('laboratorist');
+                    }
                 } else {
-                    $password = $this->ion_auth_model->hash_password($password);
+                    $ion_user_id = $this->db->get_where('laboratorist', array('id' => $id))->row()->ion_user_id;
+                    if (empty($password)) {
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                    } else {
+                        $password = $this->ion_auth_model->hash_password($password);
+                    }
+                    $this->laboratorist_model->updateIonUser($username, $email, $password, $ion_user_id);
+                    $this->laboratorist_model->updateLaboratorist($id, $data);
+                    $this->session->set_flashdata('success', lang('record_updated'));
+                    redirect('laboratorist');
                 }
-                $this->laboratorist_model->updateIonUser($username, $email, $password, $ion_user_id);
-                $this->laboratorist_model->updateLaboratorist($id, $data);
-                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
-            redirect('laboratorist');
+            // redirect('laboratorist');
         }
     }
 
