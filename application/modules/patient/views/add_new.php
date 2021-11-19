@@ -21,6 +21,15 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <?php echo validation_errors(); ?>
+                                            <?php
+                                                $file_error = $this->session->flashdata('fileError');
+
+                                                if(!empty($file_error)) {
+                                                    echo $file_error;
+                                                }else{
+
+                                                }
+                                            ?>
                                         </div>
                                     </div>
                                     <div class="row">

@@ -70,7 +70,7 @@ class Patient extends MX_Controller {
         if (empty($id)) {
             $limit = $this->patient_model->getLimit();
             if ($limit <= 0) {
-                $this->session->set_flashdata('feedback', lang('patient_limit_exceed'));
+                $this->session->set_flashdata('warning', lang('patient_limit_exceed'));
                 redirect('patient');
             }
         }
@@ -232,9 +232,17 @@ class Patient extends MX_Controller {
             $username = $this->input->post('name');
 
             if (empty($id)) {     // Adding New Patient
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
                 if ($this->ion_auth->email_check($email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
-                    redirect('patient/addNewView');
+                    $data = array();
+                    $data['patient'] = $this->patient_model->getPatientById($id);
+                    $data['doctors'] = $this->doctor_model->getDoctor();
+                    $data['groups'] = $this->donor_model->getBloodBank();
+                    $this->load->view('home/dashboard'); // just the header file
+                    $this->load->view('add_new', $data);
+                    $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -292,25 +300,53 @@ class Patient extends MX_Controller {
 
 
                     $this->session->set_flashdata('success', lang('record_added'));
+                    redirect('patient');
                 }
                 //    }
             } else { // Updating Patient
-                $ion_user_id = $this->db->get_where('patient', array('id' => $id))->row()->ion_user_id;
-                if (empty($password)) {
-                    $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
+                if ($email !== $emailById) {
+                    if ($this->ion_auth->email_check($email)) {
+                        $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+                        $data = array();
+                        $data['patient'] = $this->patient_model->getPatientById($id);
+                        $data['doctors'] = $this->doctor_model->getDoctor();
+                        $data['groups'] = $this->donor_model->getBloodBank();
+                        $this->load->view('home/dashboard'); // just the header file
+                        $this->load->view('add_new', $data);
+                        $this->load->view('home/footer'); // just the footer file
+                    } else {
+                        $ion_user_id = $this->db->get_where('patient', array('id' => $id))->row()->ion_user_id;
+                        if (empty($password)) {
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        } else {
+                            $password = $this->ion_auth_model->hash_password($password);
+                        }
+                        $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
+                        $this->patient_model->updatePatient($id, $data);
+                        $this->session->set_flashdata('success', lang('record_updated'));
+                        redirect('patient');
+                    }
                 } else {
-                    $password = $this->ion_auth_model->hash_password($password);
+                    $ion_user_id = $this->db->get_where('patient', array('id' => $id))->row()->ion_user_id;
+                    if (empty($password)) {
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                    } else {
+                        $password = $this->ion_auth_model->hash_password($password);
+                    }
+                    $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
+                    $this->patient_model->updatePatient($id, $data);
+                    $this->session->set_flashdata('success', lang('record_updated'));
+                    redirect('patient');
                 }
-                $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
-                $this->patient_model->updatePatient($id, $data);
-                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
-            if (!empty($redirect)) {
-                redirect($redirect);
-            } else {
-                redirect('patient');
-            }
+            // if (!empty($redirect)) {
+            //     redirect($redirect);
+            // } else {
+            //     redirect('patient');
+            // }
         }
     }
 
