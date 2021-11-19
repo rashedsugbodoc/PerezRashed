@@ -129,9 +129,15 @@ class Receptionist extends MX_Controller {
             $username = $this->input->post('name');
 
             if (empty($id)) {     // Adding New Receptionist
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
                 if ($this->ion_auth->email_check($email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
-                    redirect('receptionist/addNewView');
+                    $data = array();
+                    $data['receptionist'] = $this->receptionist_model->getReceptionistById($id);
+                    $this->load->view('home/dashboard', $data); // just the header file
+                    $this->load->view('add_new', $data);
+                    $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 10;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -142,20 +148,46 @@ class Receptionist extends MX_Controller {
                     $this->receptionist_model->updateReceptionist($receptionist_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
                     $this->session->set_flashdata('success', lang('record_added'));
+                    redirect('receptionist');
                 }
             } else { // Updating Receptionist
-                $ion_user_id = $this->db->get_where('receptionist', array('id' => $id))->row()->ion_user_id;
-                if (empty($password)) {
-                    $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
+                if ($email !== $emailById) {
+                    if ($this->ion_auth->email_check($email)) {
+                        $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+                        $data = array();
+                        $data['receptionist'] = $this->receptionist_model->getReceptionistById($id);
+                        $this->load->view('home/dashboard', $data); // just the header file
+                        $this->load->view('add_new', $data);
+                        $this->load->view('home/footer'); // just the footer file
+                    } else {
+                        $ion_user_id = $this->db->get_where('receptionist', array('id' => $id))->row()->ion_user_id;
+                        if (empty($password)) {
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        } else {
+                            $password = $this->ion_auth_model->hash_password($password);
+                        }
+                        $this->receptionist_model->updateIonUser($username, $email, $password, $ion_user_id);
+                        $this->receptionist_model->updateReceptionist($id, $data);
+                        $this->session->set_flashdata('success', lang('record_updated'));
+                        redirect('receptionist');
+                    }
                 } else {
-                    $password = $this->ion_auth_model->hash_password($password);
+                    $ion_user_id = $this->db->get_where('receptionist', array('id' => $id))->row()->ion_user_id;
+                    if (empty($password)) {
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                    } else {
+                        $password = $this->ion_auth_model->hash_password($password);
+                    }
+                    $this->receptionist_model->updateIonUser($username, $email, $password, $ion_user_id);
+                    $this->receptionist_model->updateReceptionist($id, $data);
+                    $this->session->set_flashdata('success', lang('record_updated'));
+                    redirect('receptionist');
                 }
-                $this->receptionist_model->updateIonUser($username, $email, $password, $ion_user_id);
-                $this->receptionist_model->updateReceptionist($id, $data);
-                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
-            redirect('receptionist');
+            // redirect('receptionist');
         }
     }
 
