@@ -136,9 +136,16 @@ class Companyuser extends MX_Controller {
             $username = $this->input->post('name');
 
             if (empty($id)) {     // Adding New Company User
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
                 if ($this->ion_auth->email_check($email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
-                    redirect('companyuser/addNewView');
+                    $data = array();
+                    $data['companyusers'] = $this->companyuser_model->getCompanyUser();
+                    $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+                    $this->load->view('home/dashboard'); // just the header file
+                    $this->load->view('add_new', $data);
+                    $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 12;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -149,20 +156,47 @@ class Companyuser extends MX_Controller {
                     $this->companyuser_model->updateCompanyUser($companyuser_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
                     $this->session->set_flashdata('success', lang('record_added'));
+                    redirect('companyuser');
                 }
             } else { // Updating Company User
-                $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
-                if (empty($password)) {
-                    $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
+                if ($email !== $emailById) {
+                    if ($this->ion_auth->email_check($email)) {
+                        $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+                        $data = array();
+                        $data['companyusers'] = $this->companyuser_model->getCompanyUser();
+                        $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+                        $this->load->view('home/dashboard'); // just the header file
+                        $this->load->view('add_new', $data);
+                        $this->load->view('home/footer'); // just the footer file
+                    } else {
+                        $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
+                        if (empty($password)) {
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        } else {
+                            $password = $this->ion_auth_model->hash_password($password);
+                        }
+                        $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
+                        $this->companyuser_model->updateCompanyUser($id, $data);
+                        $this->session->set_flashdata('success', lang('record_updated'));
+                        redirect('companyuser');
+                    }
                 } else {
-                    $password = $this->ion_auth_model->hash_password($password);
+                    $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
+                    if (empty($password)) {
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                    } else {
+                        $password = $this->ion_auth_model->hash_password($password);
+                    }
+                    $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
+                    $this->companyuser_model->updateCompanyUser($id, $data);
+                    $this->session->set_flashdata('success', lang('record_updated'));
+                    redirect('companyuser');
                 }
-                $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
-                $this->companyuser_model->updateCompanyUser($id, $data);
-                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
-            redirect('companyuser');
+            // redirect('companyuser');
         }
     }
 
