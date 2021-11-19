@@ -61,6 +61,8 @@ class Nurse extends MX_Controller {
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 $this->session->set_flashdata('error', lang('validation_error'));
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
                 $data = array();
                 $data['nurse'] = $this->nurse_model->getNurseById($id);
                 $this->load->view('home/dashboard'); // just the header file
@@ -68,6 +70,8 @@ class Nurse extends MX_Controller {
                 $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
                 $data = array();
                 $data['setval'] = 'setval';
                 $this->load->view('home/dashboard'); // just the header file
@@ -91,7 +95,7 @@ class Nurse extends MX_Controller {
                 'upload_path' => "./uploads/",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "20480000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_size' => "2000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "1768",
                 'max_width' => "2024"
             );
@@ -122,9 +126,15 @@ class Nurse extends MX_Controller {
             }
             $username = $this->input->post('name');
             if (empty($id)) {     // Adding New Nurse
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
                 if ($this->ion_auth->email_check($email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
-                    redirect('nurse/addNew');
+                    $data = array();
+                    $data['nurse'] = $this->nurse_model->getNurseById($id);
+                    $this->load->view('home/dashboard'); // just the header file
+                    $this->load->view('add_new', $data);
+                    $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 6;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -134,21 +144,47 @@ class Nurse extends MX_Controller {
                     $id_info = array('ion_user_id' => $ion_user_id);
                     $this->nurse_model->updateNurse($nurse_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                    $this->session->set_flashdata('success', lang('record_added'));
+                    $this->session->set_flashdata('notice', lang('record_added'));
+                    redirect('nurse');
                 }
             } else { // Updating Nurse
-                $ion_user_id = $this->db->get_where('nurse', array('id' => $id))->row()->ion_user_id;
-                if (empty($password)) {
-                    $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
+                if ($email !== $emailById) {
+                    if ($this->ion_auth->email_check($email)) {
+                        $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+                        $data = array();
+                        $data['nurse'] = $this->nurse_model->getNurseById($id);
+                        $this->load->view('home/dashboard'); // just the header file
+                        $this->load->view('add_new', $data);
+                        $this->load->view('home/footer'); // just the footer file
+                    } else {
+                        $ion_user_id = $this->db->get_where('nurse', array('id' => $id))->row()->ion_user_id;
+                        if (empty($password)) {
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        } else {
+                            $password = $this->ion_auth_model->hash_password($password);
+                        }
+                        $this->nurse_model->updateIonUser($username, $email, $password, $ion_user_id);
+                        $this->nurse_model->updateNurse($id, $data);
+                        $this->session->set_flashdata('success', lang('record_updated'));
+                        redirect('nurse');
+                    }
                 } else {
-                    $password = $this->ion_auth_model->hash_password($password);
+                    $ion_user_id = $this->db->get_where('nurse', array('id' => $id))->row()->ion_user_id;
+                    if (empty($password)) {
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                    } else {
+                        $password = $this->ion_auth_model->hash_password($password);
+                    }
+                    $this->nurse_model->updateIonUser($username, $email, $password, $ion_user_id);
+                    $this->nurse_model->updateNurse($id, $data);
+                    $this->session->set_flashdata('success', lang('record_updated'));
+                    redirect('nurse');
                 }
-                $this->nurse_model->updateIonUser($username, $email, $password, $ion_user_id);
-                $this->nurse_model->updateNurse($id, $data);
-                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
-            redirect('nurse');
+            // redirect('nurse');
         }
     }
 
