@@ -200,11 +200,36 @@ class Form extends MX_Controller {
 
 // Validating Category Field
 // $this->form_validation->set_rules('category_amount[]', 'Category', 'min_length[1]|max_length[100]');
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Name Field
-        $this->form_validation->set_rules('form_name', 'Name', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('form_name', 'Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('report', 'Report', 'trim|required|min_length[1]|max_length[60000]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            redirect('form/addFormView');
+            $this->session->set_flashdata('error', lang('validation_error'));
+            if (!empty($id)) {
+                if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse', 'Patient'))) {
+                    $data = array();
+                    $data['settings'] = $this->settings_model->getSettings();
+                    $data['categories'] = $this->form_model->getFormCategory();
+                    $data['patients'] = $this->patient_model->getPatient();
+                    $data['doctors'] = $this->doctor_model->getDoctor();
+                    $data['form'] = $this->form_model->getFormById($id);
+                    $data['templates'] = $this->form_model->getTemplate();
+                    $this->load->view('home/dashboard'); // just the header file
+                    $this->load->view('add_form_view', $data);
+                    $this->load->view('home/footer'); // just the footer file
+                }
+            } else {
+                $data = array();
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['categories'] = $this->form_model->getFormCategory();
+                $data['patients'] = $this->patient_model->getPatient();
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['form'] = $this->form_model->getFormById($id);
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_form_view', $data);
+                $this->load->view('home/footer'); // just the footer file
+            }
         } else {
             if (!empty($p_name)) {
 
@@ -221,7 +246,7 @@ class Form extends MX_Controller {
                 $username = $this->input->post('p_name');
 // Adding New Patient
                 if ($this->ion_auth->email_check($p_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $p_email, $dfg);
@@ -239,7 +264,7 @@ class Form extends MX_Controller {
 
                 $limit = $this->doctor_model->getLimit();
                 if ($limit <= 0) {
-                    $this->session->set_flashdata('feedback', lang('doctor_limit_exceed'));
+                    $this->session->set_flashdata('warning', lang('doctor_limit_exceed'));
                     redirect('doctor');
                 }
 
@@ -251,7 +276,7 @@ class Form extends MX_Controller {
                 $username = $this->input->post('d_name');
 // Adding New Patient
                 if ($this->ion_auth->email_check($d_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfgg = 4;
                     $this->ion_auth->register($username, $password, $d_email, $dfgg);
@@ -312,7 +337,7 @@ class Form extends MX_Controller {
                 $this->form_model->insertForm($data);
                 $inserted_id = $this->db->insert_id();
 
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 redirect($redirect);
             } else {
                 $data = array(
@@ -327,7 +352,7 @@ class Form extends MX_Controller {
                     'doctor_name' => $doctor_details->name,
                 );
                 $this->form_model->updateForm($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 redirect($redirect);
             }
         }
@@ -405,12 +430,29 @@ class Form extends MX_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
-        $this->form_validation->set_rules('report', 'Report', 'trim|min_length[1]|max_length[10000]|xss_clean');
+        $this->form_validation->set_rules('template', 'Template', 'trim|required|min_length[1]|max_length[60000]|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Price Field
         $this->form_validation->set_rules('user', 'User', 'trim|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
-            redirect('form/addTemplate');
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['templates'] = $this->form_model->getTemplate($id);
+
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_template', $data);
+                $this->load->view('home/footer'); // just the header file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['setval'] = 'setval';
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_template', $data);
+                $this->load->view('home/footer'); // just the footer file
+            }
+            // redirect('form/addTemplate');
         } else {
             $data = array();
             if (empty($id)) {
@@ -421,7 +463,7 @@ class Form extends MX_Controller {
                 );
                 $this->form_model->insertTemplate($data);
                 $inserted_id = $this->db->insert_id();
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 redirect("form/addTemplateView?id=" . "$inserted_id");
             } else {
                 $data = array(
@@ -430,7 +472,7 @@ class Form extends MX_Controller {
                     'user' => $user,
                 );
                 $this->form_model->updateTemplate($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 redirect("form/addTemplateView?id=" . "$id");
             }
         }
@@ -451,7 +493,7 @@ class Form extends MX_Controller {
     function deleteTemplate() {
         $id = $this->input->get('id');
         $this->form_model->deleteTemplate($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('form/template');
     }
 

@@ -80,6 +80,7 @@
                         </style>
 
                         <form role="form" id="editFormForm" class="clearfix" action="form/addTemplate" method="post" enctype="multipart/form-data">
+                            <?php echo validation_errors(); ?>
                             <div class="col-md-12 form pad_bot row">
                                 <div class="col-md-3 form_label"> 
                                     <label for="exampleInputEmail1"> <?php echo lang('template'); ?> <?php echo lang('name'); ?></label>
