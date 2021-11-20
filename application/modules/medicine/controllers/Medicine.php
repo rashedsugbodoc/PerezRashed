@@ -159,6 +159,7 @@ class Medicine extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if(!empty($id)){
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['categories'] = $this->medicine_model->getMedicineCategory();
                 // $id = $this->input->get('id');
@@ -168,6 +169,7 @@ class Medicine extends MX_Controller {
                 $this->load->view('add_new_medicine_view', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['categories'] = $this->medicine_model->getMedicineCategory();
                 $data['settings'] = $this->settings_model->getSettings();
@@ -191,10 +193,10 @@ class Medicine extends MX_Controller {
             );
             if (empty($id)) {
                 $this->medicine_model->insertMedicine($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->medicine_model->updateMedicine($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('medicine');
         }
@@ -219,7 +221,7 @@ class Medicine extends MX_Controller {
         $data = array();
         $data = array('quantity' => $new_qty);
         $this->medicine_model->updateMedicine($id, $data);
-       $this->session->set_flashdata('feedback', lang('medicine_loaded'));
+       $this->session->set_flashdata('success', lang('medicine_loaded'));
         redirect('medicine');
     }
 
@@ -232,7 +234,7 @@ class Medicine extends MX_Controller {
     function delete() {
         $id = $this->input->get('id');
         $this->medicine_model->deleteMedicine($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('medicine');
     }
 
@@ -266,10 +268,22 @@ class Medicine extends MX_Controller {
         // Validating Description Field
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $data['settings'] = $this->settings_model->getSettings();
-            $this->load->view('home/dashboard', $data); // just the header file
-            $this->load->view('add_new_category_view');
-            $this->load->view('home/footer'); // just the header file
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                // $id = $this->input->get('id');
+                $data['medicine'] = $this->medicine_model->getMedicineCategoryById($id);
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboard', $data); // just the header file
+                $this->load->view('add_new_category_view', $data);
+                $this->load->view('home/footer'); // just the footer file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboard', $data); // just the header file
+                $this->load->view('add_new_category_view');
+                $this->load->view('home/footer'); // just the header file
+            }
         } else {
             $data = array();
             $data = array('category' => $category,
@@ -277,10 +291,10 @@ class Medicine extends MX_Controller {
             );
             if (empty($id)) {
                 $this->medicine_model->insertMedicineCategory($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->medicine_model->updateMedicineCategory($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('medicine/medicineCategory');
         }
@@ -305,7 +319,7 @@ class Medicine extends MX_Controller {
     function deleteMedicineCategory() {
         $id = $this->input->get('id');
         $this->medicine_model->deleteMedicineCategory($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('medicine/medicineCategory');
     }
 
