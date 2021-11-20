@@ -201,12 +201,40 @@ class Lab extends MX_Controller {
 // Validating Category Field
 // $this->form_validation->set_rules('category_amount[]', 'Category', 'min_length[1]|max_length[100]');
 // Validating Price Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('report', 'Report', 'trim|required|max_length[10000]|xss_clean');
 // Validating Price Field
         $this->form_validation->set_rules('discount', 'Discount', 'trim|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
-            redirect('lab/addLabView');
+            if(!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse', 'Patient'))) {
+                    $data = array();
+                    $data['templates'] = $this->lab_model->getTemplate();
+                    $data['settings'] = $this->settings_model->getSettings();
+                    $data['categories'] = $this->lab_model->getLabCategory();
+                    $data['patients'] = $this->patient_model->getPatient();
+                    $data['doctors'] = $this->doctor_model->getDoctor();
+                    // $id = $this->input->get('id');
+                    $data['lab'] = $this->lab_model->getLabById($id);
+                    $this->load->view('home/dashboard'); // just the header file
+                    $this->load->view('add_lab_view', $data);
+                    $this->load->view('home/footer'); // just the footer file
+                }
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['categories'] = $this->lab_model->getLabCategory();
+                $data['patients'] = $this->patient_model->getPatient();
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['lab'] = $this->lab_model->getLabById($id);
+                $data['templates'] = $this->lab_model->getTemplate();
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_lab_view', $data);
+                $this->load->view('home/footer'); // just the footer file
+            }
+            
         } else {
             if (!empty($p_name)) {
 
@@ -223,7 +251,7 @@ class Lab extends MX_Controller {
                 $username = $this->input->post('p_name');
 // Adding New Patient
                 if ($this->ion_auth->email_check($p_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $p_email, $dfg);
@@ -241,7 +269,7 @@ class Lab extends MX_Controller {
 
                 $limit = $this->doctor_model->getLimit();
                 if ($limit <= 0) {
-                    $this->session->set_flashdata('feedback', lang('doctor_limit_exceed'));
+                    $this->session->set_flashdata('error', lang('doctor_limit_exceed'));
                     redirect('doctor');
                 }
 
@@ -253,7 +281,7 @@ class Lab extends MX_Controller {
                 $username = $this->input->post('d_name');
 // Adding New Patient
                 if ($this->ion_auth->email_check($d_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfgg = 4;
                     $this->ion_auth->register($username, $password, $d_email, $dfgg);
@@ -314,7 +342,7 @@ class Lab extends MX_Controller {
                 $this->lab_model->insertLab($data);
                 $inserted_id = $this->db->insert_id();
 
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 redirect($redirect);
             } else {
                 $data = array(
@@ -329,7 +357,7 @@ class Lab extends MX_Controller {
                     'doctor_name' => $doctor_details->name,
                 );
                 $this->lab_model->updateLab($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 redirect($redirect);
             }
         }
@@ -360,7 +388,7 @@ class Lab extends MX_Controller {
             }
 
             $this->lab_model->deleteLab($id);
-            $this->session->set_flashdata('feedback', lang('deleted'));
+            $this->session->set_flashdata('success', lang('record_deleted'));
             redirect('lab/lab');
         } else {
             redirect('home/permission');
@@ -407,12 +435,28 @@ class Lab extends MX_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
-        $this->form_validation->set_rules('report', 'Report', 'trim|min_length[1]|max_length[10000]|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('template', 'Template', 'trim|required|min_length[1]|max_length[10000]|xss_clean');
 // Validating Price Field
         $this->form_validation->set_rules('user', 'User', 'trim|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
-            redirect('lab/addTemplate');
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['template'] = $this->lab_model->getTemplateById($id);
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_template', $data);
+                $this->load->view('home/footer'); // just the footer file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['setval'] = 'setval';
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_template', $data);
+                $this->load->view('home/footer'); // just the footer file
+            }
         } else {
             $data = array();
             if (empty($id)) {
@@ -423,7 +467,7 @@ class Lab extends MX_Controller {
                 );
                 $this->lab_model->insertTemplate($data);
                 $inserted_id = $this->db->insert_id();
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 redirect("lab/addTemplateView?id=" . "$inserted_id");
             } else {
                 $data = array(
@@ -432,7 +476,7 @@ class Lab extends MX_Controller {
                     'user' => $user,
                 );
                 $this->lab_model->updateTemplate($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 redirect("lab/addTemplateView?id=" . "$id");
             }
         }
@@ -453,7 +497,7 @@ class Lab extends MX_Controller {
     function deleteTemplate() {
         $id = $this->input->get('id');
         $this->lab_model->deleteTemplate($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('lab/template');
     }
 

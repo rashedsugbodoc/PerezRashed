@@ -18,8 +18,10 @@
                         <div class="adv-table editable-table ">
                             <div class="clearfix">
                                 <form role="form" id="editLabForm" class="clearfix" action="lab/addLab" method="post" enctype="multipart/form-data">
-
                                     <div class="">
+                                        <div class="form-group col-md-12">
+                                            <?php echo validation_errors(); ?>
+                                        </div>
                                         <div class="form-group col-md-6"> 
                                             <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
                                             <input type="text" class="form-control pay_in default-date-picker" name="date" value='<?php
@@ -35,7 +37,7 @@
                                             <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
                                             <select class="form-control m-bot15 pos_select" id="pos_select" name="patient" value=''> 
                                                <?php if (!empty($lab->patient)) { ?>
-                                                    <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
+                                                    <option value="<?php echo $lab->patient; ?>" selected="selected"><?php echo $lab->patient_name; ?> - <?php echo $lab->patient; ?></option>  
                                                 <?php } ?>
                                             </select>
                                         </div> 
@@ -144,7 +146,9 @@
                                         <div class="form-group col-md-6">
                                             <label for="exampleInputEmail1"> <?php echo lang('refd_by_doctor'); ?></label>
                                             <select class="form-control m-bot15 add_doctor" id="add_doctor" name="doctor" value=''>  
-                                               
+                                               <?php if (!empty($lab->doctor)) { ?>
+                                                    <option value="<?php echo $lab->doctor; ?>" selected="selected"><?php echo $lab->doctor_name; ?> - <?php echo $lab->doctor; ?></option>  
+                                                <?php } ?>
                                             </select>
                                         </div>
                                         <div class="pos_doctor">
@@ -415,10 +419,10 @@
                     }
                 }
             </style>
-            <section class="col-md-4">
+            <section class="col-md-5">
                 <div class="row">
                     <div class="text-center invoice-btn col-md-4 pull-right">
-                        <a class="btn btn-info invoice_button" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
+                        <a class="btn btn-info invoice_button pull-right" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
                     </div>
                     <div class="no-print col-md-8 pull-right">
                         <a href="lab/addLabView" class="">
@@ -446,7 +450,7 @@
 
                                     <div class="text-center corporate-id">
 
-
+                                        <img alt="" src="<?php echo $this->settings_model->getSettings()->logo; ?>" style="max-width: 200px; max-height: 75px;" width="auto" height="auto">
                                         <h3>
                                             <?php echo $settings->title ?>
                                         </h3>
@@ -456,7 +460,6 @@
                                         <h4>
                                             Tel: <?php echo $settings->phone ?>
                                         </h4>
-                                        <img alt="" src="<?php echo $this->settings_model->getSettings()->logo; ?>" width="200" height="100">
                                         <h4 style="font-weight: bold; margin-top: 20px; text-transform: uppercase;">
                                              <?php echo lang('lab_report') ?>
                                             <hr style="width: 200px; border-bottom: 1px solid #000; margin-top: 5px; margin-bottom: 5px;">
