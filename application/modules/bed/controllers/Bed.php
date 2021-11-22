@@ -49,6 +49,7 @@ class Bed extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['categories'] = $this->bed_model->getBedCategory();
                 $data['bed'] = $this->bed_model->getBedById($id);
@@ -56,6 +57,7 @@ class Bed extends MX_Controller {
                 $this->load->view('add_bed_view', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['categories'] = $this->bed_model->getBedCategory();
@@ -74,10 +76,10 @@ class Bed extends MX_Controller {
             );
             if (empty($id)) {
                 $this->bed_model->insertBed($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->bed_model->updateBed($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('bed');
         }
@@ -100,6 +102,7 @@ class Bed extends MX_Controller {
     }
 
     function delete() {
+        $this->session->set_flashdata('success', lang('record_deleted'));
         $id = $this->input->get('id');
         $this->bed_model->deleteBed($id);
         redirect('bed');
@@ -134,12 +137,14 @@ class Bed extends MX_Controller {
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['bed'] = $this->bed_model->getBedCategoryById($id);
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_category_view', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $this->load->view('home/dashboard'); // just the header file
@@ -153,10 +158,10 @@ class Bed extends MX_Controller {
             );
             if (empty($id)) {
                 $this->bed_model->insertBedCategory($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->bed_model->updateBedCategory($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('bed/bedCategory');
         }
@@ -180,7 +185,7 @@ class Bed extends MX_Controller {
     function deleteBedCategory() {
         $id = $this->input->get('id');
         $this->bed_model->deleteBedCategory($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('bed/bedCategory');
     }
 
@@ -227,12 +232,24 @@ class Bed extends MX_Controller {
         // Validating Status Field
         $this->form_validation->set_rules('status', 'Status', 'trim|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $data = array();
-            $data['beds'] = $this->bed_model->getBed();
-            $data['patients'] = $this->patient_model->getPatient();
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_allotment_view', $data);
-            $this->load->view('home/footer'); // just the header file
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['beds'] = $this->bed_model->getBed();
+                $data['patients'] = $this->patient_model->getPatient();
+                $data['allotment'] = $this->bed_model->getAllotmentById($id);
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_allotment_view', $data);
+                $this->load->view('home/footer'); // just the footer file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['beds'] = $this->bed_model->getBed();
+                $data['patients'] = $this->patient_model->getPatient();
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_allotment_view', $data);
+                $this->load->view('home/footer'); // just the header file
+            }
         } else {
             $data = array();
             $patientname = $this->patient_model->getPatientById($patient)->name;
@@ -252,11 +269,11 @@ class Bed extends MX_Controller {
             if (empty($id)) {
                 $this->bed_model->insertAllotment($data);
                 $this->bed_model->updateBedByBedId($bed_id, $data1);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->bed_model->updateAllotment($id, $data);
                 $this->bed_model->updateBedByBedId($bed_id, $data1);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('bed/bedAllotment');
         }
@@ -283,7 +300,7 @@ class Bed extends MX_Controller {
     function deleteAllotment() {
         $id = $this->input->get('id');
         $this->bed_model->deleteBedAllotment($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('bed/bedAllotment');
     }
 

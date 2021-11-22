@@ -9,7 +9,7 @@
                     <header class="panel-heading">
                         <?php
                         if (!empty($allotment->id))
-                            echo lang('edit_bed_allotment');
+                            echo lang('edit_bed_aalotment');
                         else
                             echo lang('add_bed_allotment');
                         ?>
@@ -37,7 +37,7 @@
                                     <div class="form-group col-md-12">
                                         <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
                                         <select class="form-control m-bot15" id="patientchoose" name="patient" value=''> 
-                                         
+                                            
                                         </select>
                                     </div>
 

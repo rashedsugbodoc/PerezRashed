@@ -220,6 +220,7 @@ $lang['male'] = 'Male';
 $lang['female'] = 'Female';
 $lang['blood_bank'] = 'Blood Bank';
 $lang['update_blood_bank'] = 'Update Blood Bank';
+$lang['edit_blood_quantity'] = 'Edit Blood Quantity';
 $lang['group'] = 'Group';
 $lang['others'] = 'Others';
 $lang['bed_list'] = 'Bed List';
