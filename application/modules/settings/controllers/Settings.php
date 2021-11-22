@@ -154,12 +154,12 @@ class Settings extends MX_Controller {
                 //$error = array('error' => $this->upload->display_errors());
 
                 $this->settings_model->updateSettings($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 // Loading View
                 redirect('settings');
             }
         } else {
-            $this->session->set_flashdata('feedback', lang('email_required'));
+            $this->session->set_flashdata('error', lang('email_required'));
             redirect('settings', 'refresh');
         }
     }
@@ -222,7 +222,7 @@ class Settings extends MX_Controller {
             $this->settings_model->updateSettings($id, $data);
 
             // Loading View
-            $this->session->set_flashdata('feedback', lang('updated'));
+            $this->session->set_flashdata('success', lang('updated'));
             if (!empty($language_settings)) {
                 redirect('settings/language');
             } else {
@@ -255,7 +255,7 @@ class Settings extends MX_Controller {
             $this->settings_model->updateSettings($id, $data);
 
             // Loading View
-            $this->session->set_flashdata('feedback', lang('updated'));
+            $this->session->set_flashdata('success', lang('updated'));
             if (!empty($payment_gateway)) {
                 redirect('pgateway');
             } else {
@@ -288,7 +288,7 @@ class Settings extends MX_Controller {
             $this->settings_model->updateSettings($id, $data);
 
             // Loading View
-            $this->session->set_flashdata('feedback', lang('updated'));
+            $this->session->set_flashdata('success', lang('updated'));
             if (!empty($sms_gateway)) {
                 redirect('sms');
             } else {
@@ -623,7 +623,7 @@ if (!defined('BASEPATH'))
 
 
         fclose($file_handle);
-        $this->session->set_flashdata('feedback', lang('updated'));
+        $this->session->set_flashdata('success', lang('updated'));
         redirect('settings/language');
     }
 
