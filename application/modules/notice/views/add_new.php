@@ -31,8 +31,8 @@
                                     <div class="form-group col-md-6">
                                                 <label for="exampleInputEmail1"> <?php echo lang('title'); ?></label>
                                                 <input type="text" class="form-control" name="title" id="exampleInputEmail1" value='<?php
-                                                if (!empty($notice->name)) {
-                                                    echo $notice->name;
+                                                if (!empty($notice->title)) {
+                                                    echo $notice->title;
                                                 }
                                                 ?>' placeholder="">
                                     </div>
@@ -58,7 +58,13 @@
                                     <div class="form-group col-md-12">
                                             <label for="description"><?php echo lang('description'); ?></label>
                                             <div class="">
-                                                <textarea class="ckeditor form-control editor" id="editor" name="description" value="" rows="10"></textarea>
+                                                <textarea class="ckeditor form-control editor" id="editor" name="description" value="" rows="10">
+                                                    <?php
+                                                        if (!empty($notice->description)) {
+                                                            echo $notice->description;
+                                                        }
+                                                    ?>
+                                                </textarea>
                                             </div>
                                     </div>
                                     <div class="form-group col-md-12">
