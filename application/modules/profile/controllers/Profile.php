@@ -29,7 +29,7 @@ class Profile extends MX_Controller {
         $data['profile'] = $this->profile_model->getProfileById($id);
         if ($data['profile']->email != $email) {
             if ($this->ion_auth->email_check($email)) {
-                $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 redirect('profile');
             }
         }
@@ -45,6 +45,7 @@ class Profile extends MX_Controller {
         // Validating Email Field
         $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('error', lang('validation_error'));
             $data = array();
             $id = $this->ion_auth->get_user_id();
             $data['profile'] = $this->profile_model->getProfileById($id);
@@ -76,7 +77,7 @@ class Profile extends MX_Controller {
                     $this->profile_model->updateProfile($ion_user_id, $data, $group_name);
                 }
             }
-            $this->session->set_flashdata('feedback', lang('updated'));
+            $this->session->set_flashdata('success', lang('record_updated'));
 
             // Loading View
             redirect('profile');
