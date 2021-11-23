@@ -12,7 +12,7 @@ class Lab extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('accountant/accountant_model');
         $this->load->model('receptionist/receptionist_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Nurse', 'Laboratorist', 'Doctor', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Laboratorist', 'Doctor', 'Patient'))) {
             redirect('home/permission');
         }
     }
@@ -597,6 +597,15 @@ class Lab extends MX_Controller {
         $id = $this->input->get('id');
         $data['settings'] = $this->settings_model->getSettings();
         $data['lab'] = $this->lab_model->getLabById($id);
+
+        if ($this->ion_auth->in_group(array('Patient'))) {
+            $current_patient = $this->ion_auth->get_user_id();
+            $patient_id = $this->patient_model->getPatientByIonUserId($current_patient)->id;
+            //if patient logged in isn't the owner of the invoice being viewed, then prohibit him from viewing invoice
+            if ($patient_id != $data['lab']->patient) {
+                redirect('home/permission');
+            }
+        }
 
         if ($data['lab']->hospital_id != $this->session->userdata('hospital_id')) {
             $this->load->view('home/permission');
