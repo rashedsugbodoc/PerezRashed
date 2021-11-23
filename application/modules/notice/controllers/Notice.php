@@ -23,6 +23,10 @@ class Notice extends MX_Controller {
     }
 
     public function addNewView() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
         $data['notices'] = $this->notice_model->getNotice();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
@@ -31,6 +35,9 @@ class Notice extends MX_Controller {
     }
 
     public function addNew() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
 
         $id = $this->input->post('id');
         $title = $this->input->post('title');
