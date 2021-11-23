@@ -17,19 +17,19 @@
                     <div class="panel-body">
                         <div class="adv-table editable-table ">
                             <div class="clearfix">
-                                <div class="col-lg-12">
-                                    <?php echo validation_errors(); ?>
-                                    <?php
-                                        $file_error = $this->session->flashdata('fileError');
-
-                                        if(!empty($file_error)) {
-                                            echo $file_error;
-                                        }else{
-
-                                        }
-                                    ?>
-                                </div>
                                 <form role="form" action="doctor/addNew" method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <?php echo validation_errors(); ?>
+                                        <?php
+                                            $file_error = $this->session->flashdata('fileError');
+
+                                            if(!empty($file_error)) {
+                                                echo $file_error;
+                                            }else{
+
+                                            }
+                                        ?>
+                                    </div>
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo lang('name'); ?></label>
                                         <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='<?php
