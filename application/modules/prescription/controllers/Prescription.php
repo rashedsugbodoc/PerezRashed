@@ -229,7 +229,20 @@ class Prescription extends MX_Controller {
             if ($patient_id != $data['prescription']->patient) {
                 redirect('home/permission');
             }
+
         }
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $current_doctor = $this->ion_auth->get_user_id();
+            $doctor_id = $this->doctor_model->getDoctorByIonUserId($current_doctor)->id;
+            //if patient logged in isn't the owner of the invoice being viewed, then prohibit him from viewing invoice
+            if ($doctor_id != $data['prescription']->doctor) {
+                redirect('home/permission');
+            }
+
+        }
+
+
 
         if (!empty($data['prescription']->hospital_id)) {
             if ($data['prescription']->hospital_id != $this->session->userdata('hospital_id')) {
