@@ -798,7 +798,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
 
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Nurse'))) { ?>
                             <?php if (in_array('prescription', $this->modules)) { ?>
                                 <li>
                                     <a href="prescription/all" >
