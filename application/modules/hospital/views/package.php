@@ -77,7 +77,7 @@
                                     ?></td>
                                 <td class="center" style="text-transform: capitalize;">
                                     <?php
-                                    $all_modules = array('accountant', 'appointment', 'lab', 'bed', 'department', 'doctor', 'donor', 'finance', 'form', 'pharmacy', 'laboratorist', 'medicine', 'nurse', 'patient', 'pharmacist', 'prescription', 'receptionist', 'report', 'sms', 'notice', 'email');
+                                    $all_modules = array('accountant', 'admission', 'appointment', 'company', 'companyuser', 'lab', 'bed', 'department', 'doctor', 'donor', 'finance', 'form', 'pharmacy', 'laboratorist', 'medicine', 'nurse', 'patient', 'pharmacist', 'prescription', 'receptionist', 'report', 'sms', 'notice', 'email', 'vital');
                                     $restricted_modules = array_diff($all_modules, $modules);
                                     foreach ($restricted_modules as $key1 => $value1) {
                                         echo $value1 . '<br>';
