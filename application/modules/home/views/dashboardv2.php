@@ -46,7 +46,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         </title>
         
         <!--Favicon -->
-        <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>" type="image/x-icon"/>
+        <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.png'); ?>" type="image/x-icon"/>
 
         <!-- Bootstrap css -->
         <link href="<?php echo base_url('public/assets/plugins/bootstrap/css/bootstrap.css'); ?>" rel="stylesheet" />
