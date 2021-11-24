@@ -24,6 +24,10 @@ class Doctor extends MX_Controller {
 
     public function index() {
 
+        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
+
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['departments'] = $this->department_model->getDepartment();
         $this->load->view('home/dashboard'); // just the header file
@@ -32,6 +36,10 @@ class Doctor extends MX_Controller {
     }
 
     public function addNewView() {
+        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
+        
         $data = array();
         $data['departments'] = $this->department_model->getDepartment();
         $this->load->view('home/dashboard'); // just the header file
@@ -40,6 +48,9 @@ class Doctor extends MX_Controller {
     }
 
     public function addNew() {
+        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
 
         $id = $this->input->post('id');
         
