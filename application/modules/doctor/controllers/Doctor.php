@@ -346,7 +346,7 @@ class Doctor extends MX_Controller {
             $doctor_ion_id = $this->ion_auth->get_user_id();
             $id = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->id;
         } else {
-            redirect('home');
+            redirect('home/permission');
         }
 
 
