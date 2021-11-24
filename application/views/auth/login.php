@@ -12,7 +12,7 @@
         <title>Login - <?php echo $this->db->get('settings')->row()->system_vendor; ?></title>
 
         <!--Favicon -->
-        <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>" type="image/x-icon"/>
+        <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.png'); ?>" type="image/x-icon"/>
 
         <!-- Bootstrap css -->
         <link href="<?php echo base_url('public/assets/plugins/bootstrap/css/bootstrap.css'); ?>" rel="stylesheet" />
