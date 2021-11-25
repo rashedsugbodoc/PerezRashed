@@ -11,7 +11,7 @@ class Pharmacy extends MX_Controller {
         $this->load->model('medicine/medicine_model');
         $this->load->model('settings/settings_model');
         $data['settings'] = $this->settings_model->getSettings();
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Pharmacist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Pharmacist'))) {
             redirect('home/permission');
         }
     }
