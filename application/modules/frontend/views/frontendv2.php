@@ -34,17 +34,7 @@ $title = explode(' ', $settings->title);
   <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg bg-primary navbar-dark position-sticky top-0  py-2">
     <div class="container">
       <a class="navbar-brand mr-lg-5" href="./index.html">
-            <?php
-            if (!empty($settings->logo)) {
-                if (file_exists($settings->logo)) {
-                    echo '<img src=' . $settings->logo . '>';
-                } else {
-                    echo $title;
-                }
-            } else {
-                echo $title;
-            }
-            ?>
+        <img src="<?php echo base_url('public/assets/images/brand/logo1.png'); ?>">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -162,7 +152,7 @@ $title = explode(' ', $settings->title);
       <div class="container-fluid shape-container d-flex align-items-center py-lg">
         <div class="col px-0">
           <div class="row align-items-center justify-content-center">
-            <div class="col-lg-5 ml-5 text-center">
+            <div class="col-lg-5 text-center">
               <img src="front/img/brand/logo.png" style="width: 300px;" class="img-fluid">
               <p class="lead"><b class="display-3">Access Healthcare Anywhere</b><br /> Bridging Patients, Doctors and Healthcare Providers </p>
               <div class="btn-wrapper mt-5">
@@ -272,7 +262,7 @@ $title = explode(' ', $settings->title);
           <div class="col-md-4">
             <div class="info">
               <div class="icon icon-lg icon-shape icon-shape-success shadow rounded-circle">
-                <i class="ni ni-circle-08"></i>
+                <i class="ni ni-single-02"></i>
               </div>
               <h6 class="info-title text-uppercase text-success">Patient Portal</h6>
               <p class="description opacity-8">Patients have access to their own workspace to view and download their prescriptions, forms, reports, assessments and pay clinic bills using credit card.</p>
@@ -352,7 +342,7 @@ $title = explode(' ', $settings->title);
       <section class="section-features bg-secondary">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-lg-6 col-md-12 pt-5">
+            <div class="col-lg-6 col-md-12">
               <div class="info info-horizontal">
                 <div class="icon icon-shape icon-shape-warning rounded-circle text-white">
                   <i class="ni ni-tv-2 text-warning"></i>
