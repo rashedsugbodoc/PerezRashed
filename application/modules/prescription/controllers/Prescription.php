@@ -11,7 +11,7 @@ class Prescription extends MX_Controller {
         $this->load->model('medicine/medicine_model');
         $this->load->model('patient/patient_model');
         $this->load->model('doctor/doctor_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Patient', 'Nurse'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
     }
@@ -37,7 +37,7 @@ class Prescription extends MX_Controller {
 
     function all() {
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Pharmacist', 'Nurse'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Pharmacist', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
 
@@ -53,7 +53,7 @@ class Prescription extends MX_Controller {
 
     public function addPrescriptionView() {
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('Doctor'))) {
             redirect('home/permission');
         }
 
@@ -70,7 +70,7 @@ class Prescription extends MX_Controller {
 
     public function addNewPrescription() {
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('Doctor'))) {
             redirect('home/permission');
         }
 
@@ -219,6 +219,7 @@ class Prescription extends MX_Controller {
     }
 
     function viewPrescription() {
+
         $id = $this->input->get('id');
         $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
 
@@ -286,6 +287,10 @@ class Prescription extends MX_Controller {
     }
 
     function editPrescription() {
+        if (!$this->ion_auth->in_group(array('Doctor'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
         $id = $this->input->get('id');
         // $data['patients'] = $this->patient_model->getPatient();
@@ -327,6 +332,10 @@ class Prescription extends MX_Controller {
     }
 
     function delete() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->get('id');
         $admin = $this->input->get('admin');
         $patient = $this->input->get('patient');
@@ -456,7 +465,11 @@ class Prescription extends MX_Controller {
 
             $option1 = '<a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>';
             $option3 = '<a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=' . $prescription->id . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . ' ' .lang('edit') . ' ' . '</a>';
-            $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+
+            if ($this->ion_auth->in_group(array('admin'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
+
             $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=' . $prescription->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
 
             if (!empty($prescription->medicine)) {
@@ -539,8 +552,16 @@ class Prescription extends MX_Controller {
             $settings = $this->settings_model->getSettings();
 
             $option1 = '<a title="' . lang('view') . ' " class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i> ' . lang('view') . ' </a>';
-            $option3 = '<a class="btn btn-info btn-xs" href="prescription/editPrescription?id=' . $prescription->id . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . ' </a>';
-            $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '&admin=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                $option3 = '<a class="btn btn-info btn-xs" href="prescription/editPrescription?id=' . $prescription->id . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . ' </a>';    
+            }
+
+            if ($this->ion_auth->in_group(array('admin'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '&admin=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
+            
+            
             $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=' . $prescription->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
 
             if (!empty($prescription->medicine)) {
