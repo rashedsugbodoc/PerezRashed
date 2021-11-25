@@ -19482,7 +19482,7 @@ textarea[resize="horizontal"] {
 }
 
 .navbar-brand img {
-  height: 30px;
+  height: 35px;
 }
 
 .navbar-dark .navbar-brand {
@@ -26946,7 +26946,7 @@ hr.line-deafult {
   }
 
   .navbar .navbar-brand {
-    margin-top: 10px;
+    margin-top: 0px;
   }
 
   .navbar .navbar-translate {
