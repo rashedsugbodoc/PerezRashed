@@ -812,7 +812,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php } ?>
 
                         <?php
-                        if ($this->ion_auth->in_group(array('Receptionist'))) {
+                        if ($this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Doctor'))) {
                             ?>
                             <?php if (in_array('lab', $this->modules)) { ?>
                                 <li>
@@ -827,7 +827,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         ?>
                         
                         <?php
-                        if ($this->ion_auth->in_group(array('Receptionist'))) {
+                        if ($this->ion_auth->in_group(array('Receptionist', 'Nurse'))) {
                             ?>
                             <?php if (in_array('form', $this->modules)) { ?>
                                 <li>
@@ -876,7 +876,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
 
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
                             <?php if (in_array('lab', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -885,14 +885,16 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="lab"><i class="fa fa-file-medical"></i><?php echo lang('lab_reports'); ?></a></li>
-                                        <li><a  href="lab/addLabView"><i class="fa fa-plus"></i><?php echo lang('add_lab_report'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
+                                            <li><a  href="lab/addLabView"><i class="fa fa-plus"></i><?php echo lang('add_lab_report'); ?></a></li>
+                                        <?php } ?>
                                         <li><a  href="lab/template"><i class="fa fa-plus"></i><?php echo lang('template'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                             <?php if (in_array('form', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >

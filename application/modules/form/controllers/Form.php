@@ -12,7 +12,7 @@ class Form extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('accountant/accountant_model');
         $this->load->model('receptionist/receptionist_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Nurse', 'Laboratorist', 'Doctor', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Doctor', 'Patient'))) {
             redirect('home/permission');
         }
     }
@@ -29,6 +29,10 @@ class Form extends MX_Controller {
 
         if ($this->ion_auth->in_group(array('Receptionist'))) {
             redirect('form/form1');
+        }
+
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
+            redirect('home/permission');
         }
 
         $id = $this->input->get('id');
@@ -65,7 +69,7 @@ class Form extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
 
@@ -125,6 +129,10 @@ class Form extends MX_Controller {
     }
 
     public function addFormView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
 
 
@@ -147,6 +155,10 @@ class Form extends MX_Controller {
     }
 
     public function addForm() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->post('id');
         $form_name = $this->input->post('form_name');
         $report = $this->input->post('report');
@@ -359,6 +371,9 @@ class Form extends MX_Controller {
     }
 
     function editForm() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
         if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse', 'Patient'))) {
             $data = array();
             $data['settings'] = $this->settings_model->getSettings();
@@ -374,7 +389,11 @@ class Form extends MX_Controller {
     }
 
     function delete() {
-        if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
+        if ($this->ion_auth->in_group(array('admin'))) {
             $id = $this->input->get('id');
 
             $form_details = $this->form_model->getFormById($id);
@@ -383,7 +402,7 @@ class Form extends MX_Controller {
             }
 
             $this->form_model->deleteForm($id);
-            $this->session->set_flashdata('feedback', lang('deleted'));
+            $this->session->set_flashdata('success', lang('record_deleted'));
             redirect('form/form');
         } else {
             redirect('home/permission');
@@ -391,6 +410,10 @@ class Form extends MX_Controller {
     }
 
     public function template() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
+
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -403,6 +426,10 @@ class Form extends MX_Controller {
     }
 
     public function addTemplateView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
         $id = $this->input->get('id');
         if (!empty($id)) {
@@ -422,6 +449,10 @@ class Form extends MX_Controller {
     }
 
     public function addTemplate() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->post('id');
         $name = $this->input->post('name');
         $template = $this->input->post('template');
@@ -491,6 +522,9 @@ class Form extends MX_Controller {
     }
 
     function deleteTemplate() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $this->form_model->deleteTemplate($id);
         $this->session->set_flashdata('success', lang('record_deleted'));
@@ -706,7 +740,7 @@ class Form extends MX_Controller {
 
             $options2 = '<a class="btn btn-xs btn-info" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) {
+            if ($this->ion_auth->in_group(array('admin'))) {
                 $options3 = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="form/delete?id=' . $form->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>' . lang('') . '</a>';
             } else {
                 $options3 = '';
