@@ -89,7 +89,7 @@ class Appointment extends MX_Controller {
 
     function calendar() {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
 
@@ -935,6 +935,10 @@ class Appointment extends MX_Controller {
     }
 
     function editAppointment() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
         $id = $this->input->get('id');
 

@@ -19,6 +19,7 @@
 </section>
 <!--main content end-->
 <!--footer start-->
+<?php if (!$this->ion_auth->in_group(array('Nurse'))) { ?>
 <div class="modal fade" tabindex="-1" role="dialog" id="cmodal">
     <div class="modal-dialog modal-lg" role="document" style="width: 80%;">
         <div class="modal-content">
@@ -39,3 +40,4 @@
         </div>
     </div>
 </div>
+<?php } ?>
