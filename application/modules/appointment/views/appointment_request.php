@@ -22,7 +22,9 @@
                                 <th> <?php echo lang('date-time'); ?></th>
                                 <th> <?php echo lang('remarks'); ?></th>
                                 <th> <?php echo lang('status'); ?></th>
-                                <th> <?php echo lang('options'); ?></th>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                    <th> <?php echo lang('options'); ?></th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>

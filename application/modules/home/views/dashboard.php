@@ -673,7 +673,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub"> 
                                         <li><a href="appointment"><i class="fa fa-list-alt"></i><?php echo lang('all'); ?></a></li>
-                                        <li><a href="appointment/addNewView"><i class="fa fa-plus"></i><?php echo lang('add'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                            <li><a href="appointment/addNewView"><i class="fa fa-plus"></i><?php echo lang('add'); ?></a></li>
+                                        <?php } ?>
                                         <li><a href="appointment/todays"><i class="fa fa-list-alt"></i><?php echo lang('today'); ?></a></li>
                                         <li><a href="appointment/upcoming"><i class="fa fa-list-alt"></i><?php echo lang('upcoming'); ?></a></li>
                                         <li><a href="appointment/calendar"><i class="fa fa-list-alt"></i><?php echo lang('calendar'); ?></a></li>
