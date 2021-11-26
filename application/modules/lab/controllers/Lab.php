@@ -125,6 +125,9 @@ class Lab extends MX_Controller {
     }
 
     public function addLabView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
         $data = array();
 
 
@@ -147,6 +150,9 @@ class Lab extends MX_Controller {
     }
 
     public function addLab() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
 
         $report = $this->input->post('report');
@@ -379,7 +385,7 @@ class Lab extends MX_Controller {
     }
 
     function delete() {
-        if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+        if ($this->ion_auth->in_group(array('admin'))) {
             $id = $this->input->get('id');
 
             $lab_details = $this->lab_model->getLabById($id);
@@ -710,7 +716,7 @@ class Lab extends MX_Controller {
 
         foreach ($data['labs'] as $lab) {
             $date = date('d-m-y', $lab->date);
-            if ($this->ion_auth->in_group(array('admin', 'Laboratorist', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
                 $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="lab?id=' . $lab->id . '"><i class="fa fa-edit"> </i> ' . lang('') . '</a>';
             } else {
                 $options1 = '';
@@ -718,7 +724,7 @@ class Lab extends MX_Controller {
 
             $options2 = '<a class="btn btn-xs btn-info" title="' . lang('lab') . '" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) {
+            if ($this->ion_auth->in_group(array('admin'))) {
                 $options3 = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="lab/delete?id=' . $lab->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>' . lang('') . '</a>';
             } else {
                 $options3 = '';
