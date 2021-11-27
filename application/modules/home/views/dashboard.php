@@ -624,7 +624,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist'))) { ?>
                                             <li><a href="patient/patientPayments"><i class="fa fa-money-check"></i><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
-                                        <?php if (!$this->ion_auth->in_group(array('Accountant'))) { ?>
+                                        <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist'))) { ?>
                                             <li><a href="patient/caseList"><i class="fa fa-book"></i><?php echo lang('case'); ?> <?php echo lang('manager'); ?></a></li>
                                         <?php } ?>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
@@ -944,7 +944,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
 
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Accountant'))) { ?>
                             <?php if (in_array('pharmacy', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >

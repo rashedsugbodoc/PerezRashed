@@ -11,7 +11,7 @@ class Pharmacy extends MX_Controller {
         $this->load->model('medicine/medicine_model');
         $this->load->model('settings/settings_model');
         $data['settings'] = $this->settings_model->getSettings();
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Pharmacist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Pharmacist'))) {
             redirect('home/permission');
         }
     }
@@ -291,7 +291,7 @@ class Pharmacy extends MX_Controller {
     }
 
     function delete() {
-        if ($this->ion_auth->in_group('admin')) {
+        if ($this->ion_auth->in_group(array('admin', 'Accountant'))) {
             $id = $this->input->get('id');
             
             $payment_details = $this->pharmacy_model->getPaymentById($id);
@@ -318,6 +318,8 @@ class Pharmacy extends MX_Controller {
             $this->pharmacy_model->deletePayment($id);
             $this->session->set_flashdata('success', lang('record_deleted'));
             redirect('finance/pharmacy/payment');
+        } else {
+            redirect('home/permission');
         }
     }
 
@@ -420,6 +422,9 @@ class Pharmacy extends MX_Controller {
     }
 
     function deleteExpense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         
         $data['expense'] = $this->pharmacy_model->getExpenseById($id);        
@@ -515,6 +520,9 @@ class Pharmacy extends MX_Controller {
     }
 
     function deleteExpenseCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         
         $data['category'] = $this->pharmacy_model->getExpenseCategoryById($id);              
@@ -699,10 +707,8 @@ class Pharmacy extends MX_Controller {
         foreach ($data['payments'] as $payment) {
             //$i = $i + 1;
             $settings = $this->settings_model->getSettings();
-            if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
-                $option1 = '<a class="btn btn-info btn-xs editbutton" href="finance/pharmacy/editPayment?id=' . $payment->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
-            }
-            if ($this->ion_auth->in_group('admin')) {
+            $option1 = '<a class="btn btn-info btn-xs editbutton" href="finance/pharmacy/editPayment?id=' . $payment->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Accountant'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="finance/pharmacy/delete?id=' . $payment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
             $option3 = '<a class="btn btn-xs green" style="color: #fff;" href="finance/pharmacy/invoice?id=' . $payment->id . '"><i class="fa fa-file-invoice"></i> ' . lang('invoice') . '</a>';
