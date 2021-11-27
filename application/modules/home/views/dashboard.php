@@ -624,8 +624,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist'))) { ?>
                                             <li><a href="patient/patientPayments"><i class="fa fa-money-check"></i><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
-                                        <?php if (!$this->ion_auth->in_group(array('Accountant', 'Receptionist'))) { ?>
+                                        <?php if (!$this->ion_auth->in_group(array('Accountant'))) { ?>
                                             <li><a href="patient/caseList"><i class="fa fa-book"></i><?php echo lang('case'); ?> <?php echo lang('manager'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                             <li><a href="patient/documents"><i class="fa fa-file"></i><?php echo lang('documents'); ?></a></li>
                                         <?php } ?>
                                     </ul>
@@ -913,7 +915,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
 
 
-                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Accountant'))) { ?>
                             <?php if (in_array('medicine', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -922,11 +924,14 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="medicine"><i class="fa fa-medkit"></i><?php echo lang('medicine_list'); ?></a></li>
-                                        <li><a  href="medicine/addMedicineView"><i class="fa fa-plus"></i><?php echo lang('add_medicine'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                            <li><a  href="medicine/addMedicineView"><i class="fa fa-plus"></i><?php echo lang('add_medicine'); ?></a></li>
+                                        <?php } ?>
                                         <li><a  href="medicine/medicineCategory"><i class="fa fa-edit"></i><?php echo lang('medicine_category'); ?></a></li>
-                                        <li><a  href="medicine/addCategoryView"><i class="fa fa-plus"></i><?php echo lang('add_medicine_category'); ?></a></li>
-                                        <li><a  href="medicine/medicineStockAlert"><i class="fa fa-plus"></i><?php echo lang('medicine_stock_alert'); ?></a></li>
-
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                            <li><a  href="medicine/addCategoryView"><i class="fa fa-plus"></i><?php echo lang('add_medicine_category'); ?></a></li>
+                                            <li><a  href="medicine/medicineStockAlert"><i class="fa fa-plus"></i><?php echo lang('medicine_stock_alert'); ?></a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                             <?php } ?>

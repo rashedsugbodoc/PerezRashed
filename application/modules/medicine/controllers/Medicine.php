@@ -8,7 +8,7 @@ class Medicine extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('medicine_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Nurse', 'Receptionist', 'Accountant'))) {
             redirect('home/permission');
         }
     }
@@ -40,6 +40,9 @@ class Medicine extends MX_Controller {
     }
 
     public function medicineStockAlert() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $page_number = $this->input->get('page_number');
         if (empty($page_number)) {
             $page_number = 0;
@@ -57,6 +60,9 @@ class Medicine extends MX_Controller {
     }
 
     public function medicineStockAlertByPageNumber() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $page_number = $this->input->get('page_number');
         if (empty($page_number)) {
             $page_number = 0;
@@ -107,6 +113,9 @@ class Medicine extends MX_Controller {
     }
 
     public function addMedicineView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->medicine_model->getMedicineCategory();
@@ -116,6 +125,10 @@ class Medicine extends MX_Controller {
     }
 
     public function addNewMedicine() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->post('id');
         $name = $this->input->post('name');
         $category = $this->input->post('category');
@@ -203,6 +216,9 @@ class Medicine extends MX_Controller {
     }
 
     function editMedicine() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['categories'] = $this->medicine_model->getMedicineCategory();
         $id = $this->input->get('id');
@@ -214,6 +230,9 @@ class Medicine extends MX_Controller {
     }
 
     function load() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $qty = $this->input->post('qty');
         $previous_qty = $this->db->get_where('medicine', array('id' => $id))->row()->quantity;
@@ -226,12 +245,18 @@ class Medicine extends MX_Controller {
     }
 
     function editMedicineByJason() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $data['medicine'] = $this->medicine_model->getMedicineById($id);
         echo json_encode($data);
     }
 
     function delete() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $this->medicine_model->deleteMedicine($id);
         $this->session->set_flashdata('success', lang('record_deleted'));
@@ -250,6 +275,9 @@ class Medicine extends MX_Controller {
     }
 
     public function addCategoryView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
         $this->load->view('add_new_category_view');
@@ -257,6 +285,9 @@ class Medicine extends MX_Controller {
     }
 
     public function addNewCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $category = $this->input->post('category');
         $description = $this->input->post('description');
@@ -301,6 +332,9 @@ class Medicine extends MX_Controller {
     }
 
     function edit_category() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $id = $this->input->get('id');
         $data['medicine'] = $this->medicine_model->getMedicineCategoryById($id);
@@ -311,12 +345,18 @@ class Medicine extends MX_Controller {
     }
 
     function editMedicineCategoryByJason() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $data['medicinecategory'] = $this->medicine_model->getMedicineCategoryById($id);
         echo json_encode($data);
     }
 
     function deleteMedicineCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $this->medicine_model->deleteMedicineCategory($id);
         $this->session->set_flashdata('success', lang('record_deleted'));
@@ -352,10 +392,14 @@ class Medicine extends MX_Controller {
             } else {
                 $quan = $medicine->quantity;
             }
-            $load = '<button type="button" class="btn btn-info btn-xs btn_width load" data-toggle="modal" data-id="' . $medicine->id . '">' . lang('load') . '</button>';
-            $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $medicine->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
+            if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+                $load = '<button type="button" class="btn btn-info btn-xs btn_width load" data-toggle="modal" data-id="' . $medicine->id . '">' . lang('load') . '</button>';
+            }
+            if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+                $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $medicine->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
 
-            $option2 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="medicine/delete?id=' . $medicine->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+                $option2 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="medicine/delete?id=' . $medicine->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+            }
             $info[] = array(
                 $i,
                 $medicine->name,

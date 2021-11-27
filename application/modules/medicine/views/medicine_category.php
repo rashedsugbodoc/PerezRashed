@@ -7,13 +7,15 @@
             <header class="panel-heading">
                 <?php echo lang('medicine_categories'); ?>
                 <div class="col-md-4 no-print pull-right"> 
-                    <a data-toggle="modal" href="#myModal">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('create_medicine_category'); ?>
-                            </button>
-                        </div>
-                    </a>
+                    <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                        <a data-toggle="modal" href="#myModal">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('create_medicine_category'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <div class="panel-body">
@@ -24,7 +26,9 @@
                             <tr>
                                 <th> <?php echo lang('category'); ?></th>
                                 <th> <?php echo lang('description'); ?></th>
-                                <th> <?php echo lang('options'); ?></th>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                    <th> <?php echo lang('options'); ?></th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,10 +49,12 @@
                             <tr class="">
                                 <td><?php echo $category->category; ?></td>
                                 <td> <?php echo $category->description; ?></td>
-                                <td>
-                                    <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
-                                    <a class="btn btn-danger btn-xs" href="medicine/deleteMedicineCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
-                                </td>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                    <td>
+                                        <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
+                                        <a class="btn btn-danger btn-xs" href="medicine/deleteMedicineCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                    </td>
+                                <?php } ?>
                             </tr>
                         <?php } ?>
 
