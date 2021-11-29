@@ -35,8 +35,8 @@
                                 padding: 21px;
                             }
                             .remove{
-                                width: 15%;
-                                float: left;
+                                width: 20%;
+                                float: right;
                                 margin-bottom: 10px;
                                 padding: 10px;
                                 height: 39px;
@@ -44,27 +44,9 @@
                                 border-bottom: 1px solid #f1f1f1;
                             }
                             .remove1{
-                                width: 55%;
+                                width: 80%;
                                 float: left;
                                 margin-bottom: 10px;
-                                border-bottom: 1px solid #f1f1f1;
-                            }
-                            .remove2{
-                                width: 15%;
-                                float: left;
-                                margin-bottom: 10px;
-                                padding: 10px;
-                                height: 39px;
-                                text-align: center;
-                                border-bottom: 1px solid #f1f1f1;
-                            }
-                            .remove3{
-                                width: 15%;
-                                float: left;
-                                margin-bottom: 10px;
-                                padding: 10px;
-                                height: 39px;
-                                text-align: center;
                                 border-bottom: 1px solid #f1f1f1;
                             }
                             form input {
@@ -252,20 +234,18 @@
                 </div>
             </section>
             <div class="row">
-                <div class="col-md-12 col-sm-12">
+                <div class="col-md-6 col-sm-12">
                     <div class="panel">
                         <div class="panel-heading"><?php echo lang('review_items');?></div>
                         <div class="panel-body">
                             <div class="col-md-12 qfloww">
-                                <label class=" col-md-8 pull-left remove1"><?php echo lang('items') ?></label>
-                                <label class="col-md-2 remove"><?php echo lang('qty') ?></label>
-                                <label class="col-md-2 remove2"><?php echo lang('discount') ?></label>
-                                <label class="col-md-2 remove3"><?php echo lang('national_insurance') ?></label>
+                                <label class=" col-md-10 pull-left remove1"><?php echo lang('items') ?></label><label class="pull-right col-md-2 remove"><?php echo lang('qty') ?>
+                                </label>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-12 col-sm-12">
+                <div class="col-md-6 col-sm-12">
                     <div class="panel">
                         <div class="panel-heading"><?php echo lang('summary');?></div>
                         <div class="panel-body">
@@ -279,7 +259,7 @@
                                     ?>' placeholder=" " disabled>
                                 </div>
                             </div>
-                            <!-- <div class="row">
+                            <div class="row">
                                 <div class="col-md-12 form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('discount'); ?>  <?php
                                         if ($discount_type == 'percentage') {
@@ -293,26 +273,6 @@
                                         echo $discount[0];
                                     }
                                     ?>' placeholder="">
-                                </div>
-                            </div> -->
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <label for="exampleInputEmail1"><?php echo lang('discount'); ?> </label>
-                                    <input type="text" class="form-control" name="discount" id="dis_id" value='<?php
-                                    if (!empty($payment->discount)) {
-                                        echo $payment->discount;
-                                    }
-                                    ?>' placeholder=" " disabled>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 form-group">
-                                    <label for="exampleInputEmail1"><?php echo lang('national_insurance'); ?> </label>
-                                    <input type="text" class="form-control" name="national_insurance" id="national_insurance" value='<?php
-                                    if (!empty($payment->national_insurance)) {
-                                        echo $payment->national_insurance;
-                                    }
-                                    ?>' placeholder=" " disabled>
                                 </div>
                             </div>
                             <div class="row">
@@ -664,8 +624,6 @@ if ($discount_type == 'flat') {
                                                             var idd = $(this).data('idd');
                                                             $('#id-div' + idd).remove();
                                                             $('#idinput-' + idd).remove();
-                                                            $('#discountinput-' + idd).remove();
-                                                            $('#nationalinsuranceinput-' + idd).remove();
                                                             $('#categoryinput-' + idd).remove();
 
                                                         });
@@ -673,8 +631,6 @@ if ($discount_type == 'flat') {
                                                             var curr_val = $(this).data('id');
                                                             var idd = $(this).data('idd');
                                                             var qtity = $(this).data('qtity');
-                                                            var item_discount = $(this).data('discount');
-                                                            var item_national_insurance = $(this).data('national-insurance');
                                                             //  tot = tot + curr_val;
                                                             var cat_name = $(this).data('cat_name');
                                                             if ($('#idinput-' + idd).length)
@@ -704,24 +660,6 @@ if ($discount_type == 'flat') {
                                                                     name: 'category_id[]',
                                                                     value: idd,
                                                                 }).appendTo('#editPaymentForm .qfloww');
-
-                                                                $('<input>').attr({
-                                                                    type: 'text',
-                                                                    class: "remove2",
-                                                                    id: 'discountinput-' + idd,
-                                                                    name: 'itemdiscount[]',
-                                                                    value: item_discount,
-                                                                }).appendTo('#editPaymentForm .qfloww');
-
-                                                                $('<input>').attr({
-                                                                    type: 'text',
-                                                                    class: "remove3",
-                                                                    id: 'nationalinsuranceinput-' + idd,
-                                                                    name: 'itemnationalinsurance[]',
-                                                                    value: item_national_insurance,
-                                                                }).appendTo('#editPaymentForm .qfloww');
-
-
                                                             }
 
 
@@ -729,22 +667,18 @@ if ($discount_type == 'flat') {
                                                                 $('#idinput-' + idd).keyup(function () {
                                                                     var qty = 0;
                                                                     var total = 0;
-                                                                    var discount = 0;
                                                                     $.each($('select.multi-select option:selected'), function () {
                                                                         var id1 = $(this).data('idd');
                                                                         qty = $('#idinput-' + id1).val();
-                                                                        discount = $('#discountinput-' + id1).val();
                                                                         var ekokk = $(this).data('id');
                                                                         total = total + qty * ekokk;
-                                                                        discountsum += discount;
                                                                     });
 
                                                                     tot = total;
 
-                                                                    // var discount = $('#dis_id').val();
-                                                                    var gross = tot - discountsum;
+                                                                    var discount = $('#dis_id').val();
+                                                                    var gross = tot - discount;
                                                                     $('#editPaymentForm').find('[name="subtotal"]').val(tot).end()
-                                                                    $('#editPaymentForm').find('[name="discount"]').val(discountsum).end()
                                                                     $('#editPaymentForm').find('[name="grsss"]').val(gross)
 
                                                                     var amount_received = $('#amount_received').val();
@@ -825,16 +759,12 @@ if ($discount_type == 'flat') {
                 var idd = $(this).data('idd');
                 $('#id-div' + idd).remove();
                 $('#idinput-' + idd).remove();
-                $('#discountinput-' + idd).remove();
-                $('#nationalinsuranceinput-' + idd).remove();
                 $('#categoryinput-' + idd).remove();
 
             });
             $.each($('select.multi-select option:selected'), function () {
                 var curr_val = $(this).data('id');
                 var idd = $(this).data('idd');
-                var item_discount = $(this).data('discount');
-                var item_national_insurance = $(this).data('national-insurance');
                 //  tot = tot + curr_val;
                 var cat_name = $(this).data('cat_name');
                 if ($('#idinput-' + idd).length)
@@ -864,22 +794,6 @@ if ($discount_type == 'flat') {
                         name: 'category_id[]',
                         value: idd,
                     }).appendTo('#editPaymentForm .qfloww');
-
-                    $('<input>').attr({
-                        type: 'text',
-                        class: "remove2",
-                        id: 'discountinput-' + idd,
-                        name: 'itemdiscount[]',
-                        value: item_discount,
-                    }).appendTo('#editPaymentForm .qfloww');
-
-                    $('<input>').attr({
-                        type: 'text',
-                        class: "remove3",
-                        id: 'nationalinsuranceinput-' + idd,
-                        name: 'itemnationalinsurance[]',
-                        value: item_national_insurance,
-                    }).appendTo('#editPaymentForm .qfloww');
                 }
 
 
@@ -887,22 +801,19 @@ if ($discount_type == 'flat') {
                     $('#idinput-' + idd).keyup(function () {
                         var qty = 0;
                         var total = 0;
-                        var discount = 0;
                         $.each($('select.multi-select option:selected'), function () {
                             var id1 = $(this).data('idd');
                             qty = $('#idinput-' + id1).val();
                             var ekokk = $(this).data('id');
                             total = total + qty * ekokk;
-                            discountsum += discount;
                         });
 
                         tot = total;
 
-                        // var discount = $('#dis_id').val();
-                        var gross = tot - discountsum;
+                        var discount = $('#dis_id').val();
+                        var gross = tot - discount;
                         $('#editPaymentForm').find('[name="subtotal"]').val(tot).end()
                         $('#editPaymentForm').find('[name="grsss"]').val(gross)
-                        $('#editPaymentForm').find('[name="discount"]').val(discountsum)
 
                         var amount_received = $('#amount_received').val();
                         var change = amount_received - gross;
