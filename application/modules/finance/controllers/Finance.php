@@ -85,13 +85,8 @@ class Finance extends MX_Controller {
         $completion_status = $this->input->post('completion_status');
         $company_id = $this->input->post('company_id');
 
-        if (empty($item_selected)) {
-            $this->session->set_flashdata('error', lang('select_an_item'));
-            redirect('finance/addPaymentView');
-        } else {
-            $item_quantity_array = array();
-            $item_quantity_array = array_combine($item_selected, $quantity);
-        }
+        $item_quantity_array = array();
+        $item_quantity_array = array_combine($item_selected, $quantity);
         $cat_and_price = array();
         if (!empty($item_quantity_array)) {
             foreach ($item_quantity_array as $key => $value) {
@@ -103,9 +98,6 @@ class Finance extends MX_Controller {
                 $amount_by_category[] = $category_price * $qty;
             }
             $category_name = implode(',', $cat_and_price);
-        } else {
-            $this->session->set_flashdata('error', lang('fill_in_required_fields'));
-            redirect('finance/addPaymentView');
         }
 
         $patient = $this->input->post('patient');
@@ -155,12 +147,25 @@ class Finance extends MX_Controller {
 // Validating Category Field
 // $this->form_validation->set_rules('category_amount[]', 'Category', 'min_length[1]|max_length[100]');
 // Validating Price Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Price Field
-        $this->form_validation->set_rules('discount', 'Discount', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('company_id', 'Company', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+
+        $this->form_validation->set_rules('category_name[]', 'Service Item', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
-            redirect('finance/addPaymentView');
+            $this->session->set_flashdata('error', lang('validation_error'));
+            $data = array();
+            $data['discount_type'] = $this->finance_model->getDiscountType();
+            $data['settings'] = $this->settings_model->getSettings();
+            $data['categories'] = $this->finance_model->getPaymentCategory();
+            $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
+            $data['patients'] = $this->patient_model->getPatient();
+            $data['doctors'] = $this->doctor_model->getDoctor();
+            $data['company'] = $this->company_model->getCompany();
+            $this->load->view('home/dashboard'); // just the header file
+            $this->load->view('add_payment_view', $data);
+            $this->load->view('home/footer'); // just the header file
         } else {
             if (!empty($p_name)) {
 
@@ -960,6 +965,10 @@ class Finance extends MX_Controller {
     }
 
     function deletePaymentCategory() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->get('id');
         $this->finance_model->deletePaymentCategory($id);
         redirect('finance/paymentCategory');
@@ -1105,7 +1114,7 @@ class Finance extends MX_Controller {
     }
 
     public function addExpenseCategoryView() {
-        if (!$this->ion_auth->in_group(array('admin'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) {
             redirect('home/permission');
         }
         $this->load->view('home/dashboard'); // just the header file
@@ -1114,6 +1123,10 @@ class Finance extends MX_Controller {
     }
 
     public function addExpenseCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->post('id');
         $category = $this->input->post('category');
         $description = $this->input->post('description');
@@ -1152,7 +1165,7 @@ class Finance extends MX_Controller {
     }
 
     function editExpenseCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
             redirect('home/permission');
         }
         $data = array();
