@@ -7,13 +7,15 @@
             <header class="panel-heading">
                 <?php echo lang('service_categories'); ?>
                 <div class="col-md-4 no-print pull-right"> 
-                    <a href="finance/addServiceCategoryView">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('add_service_category'); ?>
-                            </button>
-                        </div>
-                    </a>
+                    <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
+                        <a href="finance/addServiceCategoryView">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_service_category'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <div class="panel-body">

@@ -24,6 +24,7 @@
                     ?>
                 </header>
                 <div class="panel-body">
+                    <?php echo validation_errors(); ?>
                     <div class="adv-table editable-table ">
                         <style> 
                             form{
@@ -187,7 +188,7 @@
                                         <select class="form-control m-bot15  add_payer" id="company" name="company_id" value=''>
                                             <?php if (!empty($payment)) { ?>
                                                 <option value="<?php echo $company->id; ?>" selected="selected"><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
-                                            <?php } ?>
+                                            <?php }?>
                                         </select>
                                     </div>
                                 </div>                                

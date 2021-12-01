@@ -7,13 +7,15 @@
             <header class="panel-heading">
                   <?php echo lang('expense'); ?> 
                 <div class="col-md-4 no-print pull-right"> 
-                    <a  href="finance/addExpenseView">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('add_expense'); ?>
-                            </button>
-                        </div>
-                    </a>
+                    <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
+                        <a  href="finance/addExpenseView">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_expense'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <div class="panel-body">

@@ -75,7 +75,9 @@
                                         <?php } ?>
                                     </div>
                                     <div class="flex-grow-1 mr-3">
-                                        <a href="finance/addPaymentView" class="btn btn-primary pull-right"><i class="fe fe-plus"></i><span class="button-text"> <?php echo lang('add_new_invoice'); ?></span></a>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
+                                            <a href="finance/addPaymentView" class="btn btn-primary pull-right"><i class="fe fe-plus"></i><span class="button-text"> <?php echo lang('add_new_invoice'); ?></span></a>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>

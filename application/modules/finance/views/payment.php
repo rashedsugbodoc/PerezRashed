@@ -8,13 +8,15 @@
             <header class="panel-heading">
                 <?php echo lang('invoices'); ?>
                 <div class="col-md-4 clearfix no-print pull-right">
-                    <a href="finance/addPaymentView"> 
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('add_new_invoice'); ?>
-                            </button>
-                        </div>
-                    </a> 
+                    <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
+                        <a href="finance/addPaymentView"> 
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_new_invoice'); ?>
+                                </button>
+                            </div>
+                        </a> 
+                    <?php } ?>
                 </div>
             </header>
 
