@@ -17,7 +17,7 @@ class Company extends MX_Controller {
         $this->load->model('schedule/schedule_model');
         $this->load->module('patient');
         $this->load->module('sms');
-        if (!$this->ion_auth->in_group(array('admin','CompanyUser'))) {
+        if (!$this->ion_auth->in_group(array('admin','CompanyUser','Receptionist','Accountant'))) {
             redirect('home/permission');
         }
     }
