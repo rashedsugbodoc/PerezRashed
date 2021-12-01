@@ -59,12 +59,14 @@
                                 <td> <?php echo $category->c_price; ?></td>
                                 <td> <?php echo $category->d_commission; ?> %</td>
                                 <td> <?php echo $this->finance_model->getServiceCategoryById($category->category_id)->category;?></td>
-                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
-                                    <td class="no-print">
+                                <td class="no-print">
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                         <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editPaymentCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"> </i></a>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                                         <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deletePaymentCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                    </td>
-                                <?php } ?>
+                                    <?php } ?>
+                                </td>
                             </tr>
                         <?php } ?>
                         </tbody>
