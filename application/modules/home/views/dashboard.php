@@ -280,7 +280,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                 ?></p>
                                         </li>
                                         <li>
-                                            <a href="finance/payment"><p class="purple"> <?php echo lang('see_all_payments'); ?></p></a>
+                                            <a href="finance/invoices"><p class="purple"> <?php echo lang('see_all_payments'); ?></p></a>
                                         </li>
                                     </ul>
                                 </li>
@@ -764,7 +764,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
 
-                                        <li><a  href="finance/payment"><i class="fa fa-money-check"></i> <?php echo lang('invoices'); ?></a></li>
+                                        <li><a  href="finance/invoices"><i class="fa fa-money-check"></i> <?php echo lang('invoices'); ?></a></li>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
                                             <li><a  href="finance/addPaymentView"><i class="fa fa-plus"></i><?php echo lang('add_invoice'); ?></a></li>
                                         <?php } ?>
@@ -1149,7 +1149,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li>
-                                            <a href="finance/payment" >
+                                            <a href="finance/invoices" >
                                                 <i class="fa fa-money-check"></i>
                                                 <span> <?php echo lang('invoices'); ?> </span>
                                             </a>
@@ -1169,7 +1169,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li>
-                                            <a href="finance/payment" >
+                                            <a href="finance/invoices" >
                                                 <i class="fa fa-money-check"></i>
                                                 <span> <?php echo lang('invoices'); ?> </span>
                                             </a>

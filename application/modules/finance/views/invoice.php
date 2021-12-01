@@ -270,7 +270,7 @@
 
         <section class="col-md-6">
             <div class="col-md-5 no-print" style="margin-top: 20px;">
-                <a href="finance/payment" class="btn btn-info btn-sm info pull-left"><i class="fa fa-arrow-circle-left"></i>  <?php echo lang('back_to_payment_modules'); ?> </a>
+                <a href="finance/invoices" class="btn btn-info btn-sm info pull-left"><i class="fa fa-arrow-circle-left"></i>  <?php echo lang('back_to_payment_modules'); ?> </a>
                 <div class="text-center col-md-12 row">
                     <a class="btn btn-info btn-sm invoice_button pull-left" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>
                     <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>

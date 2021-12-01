@@ -411,7 +411,7 @@
                         <?php if (in_array('finance', $this->modules)) { ?>
                             <div class="col-lg-3 col-sm-6">
                                 <?php if ($this->ion_auth->in_group('admin')) { ?>
-                                    <a href="finance/payment">
+                                    <a href="finance/invoices">
                                     <?php } ?>
                                     <section class="panel home_sec_yellow">
                                         <div class="symbol yellow">

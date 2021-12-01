@@ -354,7 +354,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('financial_activities'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
 
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
+                                        <li><a href="finance/invoices" class="slide-item"><?php echo lang('invoices'); ?></a></li>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
                                             <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
                                         <?php } ?>
@@ -643,7 +643,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="side-menu__icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                                     <span class="side-menu__label"><?php echo lang('invoices'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
+                                        <li><a href="finance/invoices" class="slide-item"><?php echo lang('invoices'); ?></a></li>
                                     </ul>
                                 </li>                                                                                                                                                             
                             <?php } ?>
@@ -656,7 +656,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="side-menu__icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                                     <span class="side-menu__label"><?php echo lang('invoices'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
+                                        <li><a href="finance/invoices" class="slide-item"><?php echo lang('invoices'); ?></a></li>
                                         <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
                                         <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('service_listing'); ?></a></li>
                                     </ul>
@@ -1050,7 +1050,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                             ?>
                                                         </a>
                                                     </div>
-                                                    <a href="finance/payment" class="dropdown-item d-flex pb-3">
+                                                    <a href="finance/invoices" class="dropdown-item d-flex pb-3">
                                                         <div class="notifyimg bg-info">
                                                             <i class="fe fe-eye"></i>
                                                         </div>

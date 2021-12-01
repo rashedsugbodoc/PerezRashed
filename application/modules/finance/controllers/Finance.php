@@ -29,7 +29,7 @@ class Finance extends MX_Controller {
         redirect('finance/financial_report');
     }
 
-    public function payment() {
+    public function invoices() {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -589,8 +589,8 @@ class Finance extends MX_Controller {
 
             $this->finance_model->deletePayment($id);
             $this->finance_model->deleteDepositByInvoiceId($id);
-            $this->session->set_flashdata('error', lang('record_deleted'));
-            redirect('finance/payment');
+            $this->session->set_flashdata('success', lang('record_deleted'));
+            redirect('finance/invoices');
         } else {
             redirect('home/permission');
         }
@@ -971,6 +971,7 @@ class Finance extends MX_Controller {
 
         $id = $this->input->get('id');
         $this->finance_model->deletePaymentCategory($id);
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('finance/paymentCategory');
     }
 
@@ -1099,6 +1100,7 @@ class Finance extends MX_Controller {
             }
         }
 
+        $this->session->set_flashdata('success', lang('record_deleted'));
         $this->finance_model->deleteExpense($id);
         redirect('finance/expense');
     }
@@ -1197,6 +1199,7 @@ class Finance extends MX_Controller {
             }
         }
 
+        $this->session->set_flashdata('success', lang('record_deleted'));
         $this->finance_model->deleteExpenseCategory($id);
         redirect('finance/expenseCategory');
     }
@@ -1295,6 +1298,7 @@ class Finance extends MX_Controller {
             }
         }
 
+        $this->session->set_flashdata('success', lang('record_deleted'));
         $this->finance_model->deleteServiceCategory($id);
         redirect('finance/serviceCategory');
     }
@@ -1595,6 +1599,7 @@ class Finance extends MX_Controller {
 
         $this->finance_model->deleteDeposit($id);
 
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('finance/patientPaymentHistory?patient=' . $patient);
     }
 
