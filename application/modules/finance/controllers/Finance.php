@@ -865,6 +865,9 @@ class Finance extends MX_Controller {
     }
 
     public function paymentCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -976,6 +979,9 @@ class Finance extends MX_Controller {
     }
 
     public function expense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -1106,6 +1112,9 @@ class Finance extends MX_Controller {
     }
 
     public function expenseCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -1206,6 +1215,9 @@ class Finance extends MX_Controller {
 
     //start service category
     public function serviceCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -1997,9 +2009,9 @@ class Finance extends MX_Controller {
             $data['settings'] = $this->settings_model->getSettings();
             $data['date_from'] = $date_from;
             $data['date_to'] = $date_to;
-            $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($user, $date_from, $date_to);
-            $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyIdByDate($user, $date_from, $date_to);
-            $data['deposits'] = $this->finance_model->getDepositByCompanyIdByDate($user, $date_from, $date_to);
+            $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($account, $date_from, $date_to);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyIdByDate($account, $date_from, $date_to);
+            $data['deposits'] = $this->finance_model->getDepositByCompanyIdByDate($account, $date_from, $date_to);
 
             $this->load->view('home/dashboard'); // just the header file
             $this->load->view('account_activity_report', $data);
