@@ -9,12 +9,15 @@ class Bed extends MX_Controller {
         parent::__construct();
         $this->load->model('bed_model');
         $this->load->model('patient/patient_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Accountant'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data['beds'] = $this->bed_model->getBed();
         $data['categories'] = $this->bed_model->getBedCategory();
         $this->load->view('home/dashboard'); // just the header file
@@ -23,6 +26,9 @@ class Bed extends MX_Controller {
     }
 
     public function addBedView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['categories'] = $this->bed_model->getBedCategory();
         $this->load->view('home/dashboard'); // just the header file
@@ -31,6 +37,9 @@ class Bed extends MX_Controller {
     }
 
     public function addBed() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $number = $this->input->post('number');
         $description = $this->input->post('description');
@@ -86,6 +95,9 @@ class Bed extends MX_Controller {
     }
 
     function editBed() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['categories'] = $this->bed_model->getBedCategory();
         $id = $this->input->get('id');
@@ -102,6 +114,9 @@ class Bed extends MX_Controller {
     }
 
     function delete() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $this->session->set_flashdata('success', lang('record_deleted'));
         $id = $this->input->get('id');
         $this->bed_model->deleteBed($id);
@@ -109,6 +124,9 @@ class Bed extends MX_Controller {
     }
 
     public function bedCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -119,12 +137,18 @@ class Bed extends MX_Controller {
     }
 
     public function addCategoryView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('add_category_view');
         $this->load->view('home/footer'); // just the header file
     }
 
     public function addCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $category = $this->input->post('category');
         $description = $this->input->post('description');
@@ -168,6 +192,9 @@ class Bed extends MX_Controller {
     }
 
     function editCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $id = $this->input->get('id');
         $data['bed'] = $this->bed_model->getBedCategoryById($id);
@@ -183,6 +210,9 @@ class Bed extends MX_Controller {
     }
 
     function deleteBedCategory() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $this->bed_model->deleteBedCategory($id);
         $this->session->set_flashdata('success', lang('record_deleted'));
@@ -190,6 +220,9 @@ class Bed extends MX_Controller {
     }
 
     function bedAllotment() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -203,6 +236,9 @@ class Bed extends MX_Controller {
     }
 
     function addAllotmentView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['beds'] = $this->bed_model->getBed();
         $data['patients'] = $this->patient_model->getPatient();
@@ -212,6 +248,9 @@ class Bed extends MX_Controller {
     }
 
     function addAllotment() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $patient = $this->input->post('patient');
         $a_time = $this->input->post('a_time');
@@ -280,6 +319,9 @@ class Bed extends MX_Controller {
     }
 
     function editAllotment() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['beds'] = $this->bed_model->getBed();
         $data['patients'] = $this->patient_model->getPatient();
@@ -298,6 +340,9 @@ class Bed extends MX_Controller {
     }
 
     function deleteAllotment() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $this->bed_model->deleteBedAllotment($id);
         $this->session->set_flashdata('success', lang('record_deleted'));
@@ -330,9 +375,13 @@ class Bed extends MX_Controller {
         foreach ($data['beds'] as $bed) {
             $i = $i + 1;
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $bed->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+                $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $bed->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
+            }
+            if ($this->ion_auth->in_group(array('admin'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="bed/delete?id=' . $bed->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+            }
 
-            $option2 = '<a class="btn btn-danger btn-xs" href="bed/delete?id=' . $bed->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             $last_a_time = explode('-', $bed->last_a_time);
             $last_d_time = explode('-', $bed->last_d_time);
             if (!empty($last_d_time[1])) {
@@ -411,9 +460,12 @@ class Bed extends MX_Controller {
         foreach ($data['beds'] as $bed) {
             $i = $i + 1;
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $bed->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
-
-            $option2 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="bed/deleteAllotment?id=' . $bed->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+                $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $bed->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
+            }
+            if ($this->ion_auth->in_group(array('admin'))) {
+                $option2 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="bed/deleteAllotment?id=' . $bed->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+            }
 
             $patientdetails = $this->patient_model->getPatientById($bed->patient);
             if (!empty($patientdetails)) {
