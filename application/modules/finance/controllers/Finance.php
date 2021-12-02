@@ -30,6 +30,9 @@ class Finance extends MX_Controller {
     }
 
     public function invoices() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'CompanyUser'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
