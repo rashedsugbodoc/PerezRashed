@@ -1000,7 +1000,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) { ?>
                             <?php if (in_array('bed', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -1249,7 +1249,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group('Nurse')) { ?>
+                        <?php if ($this->ion_auth->in_group(array('Nurse', 'Doctor'))) { ?>
                             <?php if (in_array('bed', $this->modules)) { ?>
                                 <li>
                                     <a href="bed" >
@@ -1265,7 +1265,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                                 <li>
                                     <a href="bed/bedAllotment" >
-                                        <i class="fa fa-plus"></i>
+                                        <i class="fa fa-bed"></i>
                                         <span> <?php echo lang('bed_allotments'); ?> </span>
                                     </a>
                                 </li>
