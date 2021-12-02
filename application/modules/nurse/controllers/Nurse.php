@@ -144,7 +144,7 @@ class Nurse extends MX_Controller {
                     $id_info = array('ion_user_id' => $ion_user_id);
                     $this->nurse_model->updateNurse($nurse_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                    $this->session->set_flashdata('notice', lang('record_added'));
+                    $this->session->set_flashdata('success', lang('record_added'));
                     redirect('nurse');
                 }
             } else { // Updating Nurse
