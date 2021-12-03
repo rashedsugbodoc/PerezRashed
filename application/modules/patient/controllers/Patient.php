@@ -22,13 +22,13 @@ class Patient extends MX_Controller {
         $this->load->model('medicine/medicine_model');
         $this->load->model('doctor/doctor_model');
         $this->load->module('paypal');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if ($this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'CompanyUser'))) {
             redirect('home/permission');
         }
         $data['doctors'] = $this->doctor_model->getDoctor();
@@ -40,6 +40,9 @@ class Patient extends MX_Controller {
     }
 
     public function calendar() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('calendar', $data);
@@ -47,6 +50,9 @@ class Patient extends MX_Controller {
     }
 
     public function addNewView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         if ($this->ion_auth->in_group(array('Patient'))) {
             redirect('home/permission');
         }
@@ -59,8 +65,7 @@ class Patient extends MX_Controller {
     }
 
     public function addNew() {
-
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
             redirect('home/permission');
         }
 
@@ -73,6 +78,7 @@ class Patient extends MX_Controller {
                 $this->session->set_flashdata('warning', lang('patient_limit_exceed'));
                 redirect('patient');
             }
+            
         }
 
 
@@ -406,6 +412,9 @@ class Patient extends MX_Controller {
     }
 
     function editPatient() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $id = $this->input->get('id');
         $data['patient'] = $this->patient_model->getPatientById($id);
@@ -505,6 +514,9 @@ class Patient extends MX_Controller {
     }
 
     function patientPayments() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['settings'] = $this->settings_model->getSettings();
         $data['doctors'] = $this->doctor_model->getDoctor();
@@ -514,6 +526,9 @@ class Patient extends MX_Controller {
     }
 
     function caseList() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
+            redirect('home/permission');
+        }
         $data['settings'] = $this->settings_model->getSettings();
         $data['patients'] = $this->patient_model->getPatient();
         $data['medical_histories'] = $this->patient_model->getMedicalHistory();
@@ -523,6 +538,9 @@ class Patient extends MX_Controller {
     }
 
     function documents() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data['patients'] = $this->patient_model->getPatient();
         $data['files'] = $this->patient_model->getPatientMaterial();
         $this->load->view('home/dashboard'); // just the header file
@@ -630,7 +648,7 @@ class Patient extends MX_Controller {
             $patient_details = $this->patient_model->getPatientByIonUserId($patient_ion_id);
             $patient = $patient_details->id;
         } else {
-            $this->session->set_flashdata('feedback', lang('undefined_patient_id'));
+            $this->session->set_flashdata('error', lang('undefined_patient_id'));
             redirect('patient/myPaymentsHistory');
         }
 
@@ -644,7 +662,7 @@ class Patient extends MX_Controller {
         $deposit_type = $this->input->post('deposit_type');
 
         if ($deposit_type != 'Card') {
-            $this->session->set_flashdata('feedback', lang('undefined_payment_type'));
+            $this->session->set_flashdata('error', lang('undefined_payment_type'));
             redirect('patient/myPaymentsHistory');
         }
 
@@ -833,6 +851,9 @@ class Patient extends MX_Controller {
     }
 
     function addMedicalHistory() {
+        if (!$this->ion_auth->in_group(array('Doctor'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $patient_id = $this->input->post('patient_id');
 
@@ -848,7 +869,7 @@ class Patient extends MX_Controller {
 
         $description = $this->input->post('description');
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger" style="margin-top:15px;">', '</div>');
 
         $redirect = $this->input->post('redirect');
         if (empty($redirect)) {
@@ -946,6 +967,9 @@ class Patient extends MX_Controller {
             $id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
         }
 
+        if ($this->ion_auth->in_group(array('Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser'))) {
+            redirect('home/permission');
+        }
 
         $patient_hospital_id = $this->patient_model->getPatientById($id)->hospital_id;
         if ($patient_hospital_id != $this->session->userdata('hospital_id')) {
@@ -1301,6 +1325,10 @@ class Patient extends MX_Controller {
     }
 
     function deleteCaseHistory() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->get('id');
         $redirect = $this->input->get('redirect');
         $case_history = $this->patient_model->getMedicalHistoryById($id);
@@ -1331,6 +1359,9 @@ class Patient extends MX_Controller {
     }
 
     function delete() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $id = $this->input->get('id');
 
@@ -1376,14 +1407,16 @@ class Patient extends MX_Controller {
 
         foreach ($data['patients'] as $patient) {
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
                 $options1 = ' <a type="button" class="btn btn-info editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
             $options2 = '<a class="btn btn-info" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
-            $options3 = '<a class="btn btn-secondary" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
+            if (!$this->ion_auth->in_group(array('Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser'))) {
+                $options3 = '<a class="btn btn-secondary" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
+            }
 
             $options4 = '<a class="btn btn-success" title="' . lang('payment') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
 
@@ -1550,12 +1583,16 @@ class Patient extends MX_Controller {
 
         foreach ($data['cases'] as $case) {
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('Doctor'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
                 $options1 = ' <a type="button" class="btn btn-info btn-xs btn_width editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"> </i> </a>';
             }
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+
+            if ($this->ion_auth->in_group(array('admin'))) {
                 $options2 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="' . lang('delete') . '" href="patient/deleteCaseHistory?id=' . $case->id . '&redirect=case" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>';
+            }
+
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
                 $options3 = ' <a type="button" class="btn btn-info btn-xs case" title="' . lang('case') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-file"> </i> </a>';
             }
 
@@ -2024,8 +2061,8 @@ class Patient extends MX_Controller {
                 $patient_documents = $patient_material->title;
             }
 
-
-            $patient_material = '
+            if ($this->ion_auth->in_group(array('admin', 'Patient'))) {
+                $patient_material = '
                 <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
                     <div class="post-info">
                         <img src="' . $patient_material->url . '" height="100" width="100">
@@ -2042,6 +2079,25 @@ class Patient extends MX_Controller {
                     <hr>
 
                 </div>';
+            } else {
+                $patient_material = '
+                <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
+                    <div class="post-info">
+                        <img src="' . $patient_material->url . '" height="100" width="100">
+                    </div>
+                    <div class="post-info">
+                        ' . $patient_documents . '
+                    </div>
+                    <p></p>
+                    <div class="post-info">
+                        <a class="btn btn-info btn-xs btn_width" href="' . $patient_material->url . '" download> ' . lang("download") . ' </a>
+                    </div>
+
+                    <hr>
+
+                </div>';
+            }
+            
             $all_material .= $patient_material;
         }
 
