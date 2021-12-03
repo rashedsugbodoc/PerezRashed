@@ -22,7 +22,7 @@ class Patient extends MX_Controller {
         $this->load->model('medicine/medicine_model');
         $this->load->model('doctor/doctor_model');
         $this->load->module('paypal');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser'))) {
             redirect('home/permission');
         }
     }
