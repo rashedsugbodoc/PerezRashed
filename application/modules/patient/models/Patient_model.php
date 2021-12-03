@@ -118,6 +118,7 @@ class Patient_model extends CI_model {
     }
 
     function getMedicalHistoryByPatientId($id) {
+        $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('patient_id', $id);
         $query = $this->db->get('medical_history');
