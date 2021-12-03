@@ -81,13 +81,14 @@
                         <div class="tab-content">
                             <div id="appointments" class="tab-pane active">
                                 <div class="">
-                                    <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
-                                    <?php } else { ?>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group('Patient')) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?> 
@@ -102,7 +103,7 @@
                                                     <th><?php echo lang('time_slot'); ?></th>
                                                     <th><?php echo lang('doctor'); ?></th>
                                                     <th><?php echo lang('status'); ?></th>
-                                                    <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                     <?php } ?>
                                                 </tr>
@@ -125,10 +126,12 @@
                                                             ?>
                                                         </td>
                                                         <td><?php echo $appointment->status; ?></td>
-                                                        <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                             <td class="no-print">
                                                                 <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                                                <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                <?php if ($this->ion_auth->in_group('admin')) { ?>
+                                                                    <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                <?php } ?>
                                                             </td>
                                                         <?php } ?>
                                                     </tr>
@@ -141,7 +144,7 @@
                             <div id="home" class="tab-pane">
                                 <div class="">
 
-                                    <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
@@ -158,7 +161,7 @@
                                                     <th><?php echo lang('date'); ?></th>
                                                     <th><?php echo lang('title'); ?></th>
                                                     <th><?php echo lang('description'); ?></th>
-                                                    <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                     <?php } ?>
                                                 </tr>
@@ -171,10 +174,16 @@
                                                         <td><?php echo $medical_history->title; ?></td>
                                                         <td><?php echo $medical_history->description; ?></td>
                                                         <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                            <td class="no-print">
-                                                                <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                                                <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                            </td>
+                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                <td class="no-print">
+                                                                    <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>
+                                                                </td>
+                                                            <?php } ?>
+                                                            <?php if ($this->ion_auth->in_group('admin')) { ?>   
+                                                                <td class="no-print">
+                                                                    <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                </td>
+                                                            <?php } ?>
                                                         <?php } ?>
                                                     </tr>
                                                 <?php } ?>
@@ -275,8 +284,12 @@
                                                                 $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
                                                                 if ($prescription->doctor == $doctor_table_id) {
                                                                     ?>
-                                                                    <a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
-                                                                    <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                        <a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
+                                                                    <?php } ?>
+                                                                    <?php if ($this->ion_auth->in_group('admin')) { ?> 
+                                                                        <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                    <?php } ?>
                                                                     <?php
                                                                 }
                                                             }
@@ -338,11 +351,19 @@
                                             <?php foreach ($patient_materials as $patient_material) { ?>
                                                 <div class="panel col-md-3"  style="width: 200px ;height: 200px; margin: 10px; padding: 5px;">
 
-                                                    <div class="panel-body text-center">
-                                                        <a class="example-image-link" href="<?php echo $patient_material->url; ?>" data-lightbox="example-1">
-                                                            <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" width="120" height="120"/></a>
-                                  <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
-                                                    </div>
+                                                    <?php if (pathinfo($patient_material->url, PATHINFO_EXTENSION) === 'pdf'){ ?>
+                                                        <div class="panel-body text-center">
+                                                            <a class="example-image-link" href="<?php echo $patient_material->url; ?>" target="_blank">
+                                                                <img class="example-image" src="uploads/PDF_DefaultImage.png" alt="image-1" width="120" height="120"/></a>
+                                      <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <div class="panel-body text-center">
+                                                            <a class="example-image-link" href="<?php echo $patient_material->url; ?>" data-lightbox="example-1">
+                                                                <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" width="120" height="120"/></a>
+                                      <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
+                                                        </div>
+                                                    <?php } ?>
                                                     <div class="panel-body text-center">
                                                         <?php
                                                         if (!empty($patient_material->title)) {
@@ -354,7 +375,7 @@
                                                     
                                                     <div class="text-center" style="vertical-align: bottom;">
                                                         <a class="btn btn-info btn-xs btn_width" href="<?php echo $patient_material->url; ?>" download> <?php echo lang('download'); ?> </a>
-                                                        <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
                                                             <a class="btn btn-danger btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                         <?php } ?>
 
