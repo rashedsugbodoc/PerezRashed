@@ -24,7 +24,7 @@ class Donor extends MX_Controller {
     }
 
     public function addDonorView() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -35,7 +35,7 @@ class Donor extends MX_Controller {
     }
 
     public function addDonor() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -110,6 +110,10 @@ class Donor extends MX_Controller {
     }
 
     function editDonor() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
         $data['groups'] = $this->donor_model->getBloodBank();
         $id = $this->input->get('id');
@@ -126,6 +130,10 @@ class Donor extends MX_Controller {
     }
 
     function delete() {
+        if (!$this->ion_auth->in_group('admin')) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->get('id');
         $this->donor_model->deleteDonor($id);
         $this->session->set_flashdata('success', lang('record_deleted'));
@@ -136,6 +144,11 @@ class Donor extends MX_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
+
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse'))) {
+            redirect('home/permission');
+        }
+
         $data['groups'] = $this->donor_model->getBloodBank();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('blood_bank', $data);
@@ -143,12 +156,20 @@ class Donor extends MX_Controller {
     }
 
     public function updateView() {
+        if (!$this->ion_auth->in_group('admin')) {
+            redirect('home/permission');
+        }
+
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('update_blood_bank');
         $this->load->view('home/footer'); // just the header file
     }
 
     public function updateBloodBank() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->post('id');
         $group = $this->input->post('group');
         $status = $this->input->post('status');
