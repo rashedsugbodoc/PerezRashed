@@ -76,7 +76,7 @@
 
                 <?php } ?>
 
-                <?php if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) { ?>
+                <?php if ($this->ion_auth->in_group(array('CompanyUser', 'Accountant'))) { ?>
                     <section class="col-md-5 no-print row pull-left"> 
                         <a href="finance/accountActivityReport?account=<?php echo $company->id; ?>">
                             <div class="btn-group">
@@ -152,7 +152,7 @@
                 }
             </style>
             <div class="col-md-12">
-                <?php if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) { ?>
+                <?php if ($this->ion_auth->in_group(array('Receptionist'))) { ?>
 
 
                     <section class="col-md-6 no-print">
@@ -186,7 +186,7 @@
 
                 <?php } ?>
 
-                <?php if ($this->ion_auth->in_group(array('admin')) || $this->ion_auth->get_user_id() == '341') { ?>
+                <?php if ($this->ion_auth->in_group(array('admin', 'CompanyUser', 'Accountant')) || $this->ion_auth->get_user_id() == '341') { ?>
                     <div class="row">
                         <section class="col-md-12 no-print">
                             <form role="form" class="f_report" action="finance/allAccountActivityReportDateWise" method="post" enctype="multipart/form-data">
