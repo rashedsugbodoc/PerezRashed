@@ -40,7 +40,7 @@ class Patient extends MX_Controller {
     }
 
     public function calendar() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Patient'))) {
             redirect('home/permission');
         }
         $data['settings'] = $this->settings_model->getSettings();
