@@ -17,7 +17,7 @@ class Company extends MX_Controller {
         $this->load->model('schedule/schedule_model');
         $this->load->module('patient');
         $this->load->module('sms');
-        if (!$this->ion_auth->in_group(array('admin','CompanyUser','Receptionist','Accountant'))) {
+        if (!$this->ion_auth->in_group(array('admin','CompanyUser','Accountant'))) {
             redirect('home/permission');
         }
     }
@@ -33,6 +33,10 @@ class Company extends MX_Controller {
     }
 
     public function addNewView() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
         $data['departments'] = $this->department_model->getDepartment();
         $this->load->view('home/dashboard'); // just the header file
@@ -41,6 +45,9 @@ class Company extends MX_Controller {
     }
 
     public function addNew() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
 
         $id = $this->input->post('id');
         
@@ -228,6 +235,10 @@ class Company extends MX_Controller {
     }
 
     function editCompany() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
         $data['types'] = $this->company_model->getCompanyType();
         $data['classifications'] = $this->company_model->getCompanyClassification();
@@ -268,6 +279,7 @@ class Company extends MX_Controller {
     }
 
     function editCompanyByJason() {
+
         $id = $this->input->get('id');
         $data['company'] = $this->company_model->getCompanyById($id);
         $data['types'] = $this->company_model->getCompanyType();
@@ -280,7 +292,7 @@ class Company extends MX_Controller {
 
     function delete() {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin'))) {
             redirect('home/permission');
         }
 
@@ -320,12 +332,12 @@ class Company extends MX_Controller {
         //  $data['companies'] = $this->company_model->getCompany();
 
         foreach ($data['companies'] as $company) {
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+            if ($this->ion_auth->in_group(array('admin'))) {
                 $options1 = '<a type="button" class="btn btn-info btn-xs btn_width editbutton" title="' . lang('edit') . '" data-toggle="modal" data-id="' . $company->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
                 
             }
             $options2 = '<a class="btn btn-info btn-xs" title="' . lang('account_reports') . '"  href="finance/allAccountActivityReport?account=' . $company->id . '"> <i class="fa fa-calendar"> </i> ' . lang('account_reports') . '</a>';
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+            if ($this->ion_auth->in_group(array('admin'))) {
                 $options3 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="' . lang('delete') . '" href="company/delete?id=' . $company->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             }
 
@@ -334,8 +346,9 @@ class Company extends MX_Controller {
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
                 $options4 = '<a href="schedule/holidays?company=' . $company->id . '" class="btn btn-info btn-xs" data-toggle="modal" data-id="' . $company->id . '"><i class="fa fa-book"></i> ' . lang('holiday') . '</a>';
                 $options5 = '<a href="schedule/timeSchedule?company=' . $company->id . '" class="btn btn-info btn-xs" data-toggle="modal" data-id="' . $company->id . '"><i class="fa fa-book"></i> ' . lang('time_schedule') . '</a>';
-                $options6 = '<a type="button" class="btn btn-info btn-xs btn_width inffo" title="' . lang('info') . '" data-toggle="modal" data-id="' . $company->id . '"><i class="fa fa-info"> </i> ' . lang('info') . '</a>';
             }
+
+            $options6 = '<a type="button" class="btn btn-info btn-xs btn_width inffo" title="' . lang('info') . '" data-toggle="modal" data-id="' . $company->id . '"><i class="fa fa-info"> </i> ' . lang('info') . '</a>';
 
 
             $typename = $this->company_model->getCompanyTypeById($company->type_id)->name;
@@ -351,7 +364,7 @@ class Company extends MX_Controller {
                 $classificationname,
                 $company->profile,
                 //  $options1 . ' ' . $options2 . ' ' . $options3,
-                '<div class="btn-list">'. $options6 . ' ' . $options1 . ' ' . $options2 . ' '  . $options3 . '</div>',
+                '<div class="btn-list">' . $options6 . ' ' . $options1 . ' ' . $options2 . ' '  . $options3 . '</div>',
                     //  $options2
             );
         }
