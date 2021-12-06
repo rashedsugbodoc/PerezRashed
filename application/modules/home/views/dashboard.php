@@ -570,7 +570,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'CompanyUser'))) { ?>
                             <?php if (in_array('company', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -1271,12 +1271,14 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                             <?php if (in_array('donor', $this->modules)) { ?>
-                                <li>
-                                    <a href="donor" >
-                                        <i class="fa fa-medkit"></i>
-                                        <span> <?php echo lang('donor'); ?> </span>
-                                    </a>
-                                </li>
+                                <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                    <li>
+                                        <a href="donor" >
+                                            <i class="fa fa-medkit"></i>
+                                            <span> <?php echo lang('donor'); ?> </span>
+                                        </a>
+                                    </li>
+                                <?php } ?>
                                 <li>
                                     <a href="donor/bloodBank" >
                                         <i class="fa fa-tint"></i>
