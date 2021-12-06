@@ -46,7 +46,7 @@
                     <div class=" panel-body">
                         <div class="adv-table editable-table ">
                             <section class="col-md-12 no-print row">
-                                <form role="form" class="f_report" action="/finance/patientPaymentHistory" method="post" enctype="multipart/form-data">
+                                <form role="form" class="f_report" action="finance/patientPaymentHistory?patient=<?php echo $patient->id; ?>" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <!--     <label class="control-label col-md-3">Date Range</label> -->
                                         <div class="col-md-8">
