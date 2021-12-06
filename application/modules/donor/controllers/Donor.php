@@ -16,6 +16,9 @@ class Donor extends MX_Controller {
     }
 
     public function index() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data['donors'] = $this->donor_model->getDonor();
         $data['groups'] = $this->donor_model->getBloodBank();
         $this->load->view('home/dashboard'); // just the header file
