@@ -19,6 +19,8 @@ function required() {
     $RTR = & load_class('Router');
     if ($RTR->class != "frontend" && $RTR->class != "request" && $RTR->class != "auth") {
         if (!$CI->ion_auth->logged_in()) {
+            $CI->load->helper('url');
+            $CI->session->set_userdata('last_page', current_url());
             redirect('auth/login');
         }
     }

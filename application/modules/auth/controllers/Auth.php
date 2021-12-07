@@ -63,8 +63,14 @@ class Auth extends MX_Controller {
 			if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
 			{
 				//if the login is successful
-				//redirect them back to the home page
+				//check if the login was redirected from an originally requested URL and redirect to that if true
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				if ($this->session->userdata('last_page')) {
+					$redirectURL = $this->session->userdata('last_page');
+					$this->session->unset_userdata('last_page');
+					redirect($redirectURL);
+				}
+				//or else redirect them back to the home page				
 				redirect('home', 'refresh');
 			}
 			else
