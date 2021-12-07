@@ -8,13 +8,15 @@
             <header class="panel-heading">
                 <?php echo lang('birth_report'); ?>
                 <div class="col-md-4 no-print pull-right"> 
-                    <a data-toggle="modal" href="#myModal">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('add_new_report'); ?>
-                            </button>
-                        </div>
-                    </a>
+                    <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                        <a data-toggle="modal" href="#myModal">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_new_report'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <div class="panel-body">
@@ -27,7 +29,9 @@
                                 <th><?php echo lang('description'); ?></th>
                                 <th><?php echo lang('doctor'); ?></th>
                                 <th><?php echo lang('date'); ?></th>
-                                <th class="no-print"><?php echo lang('options'); ?></th>
+                                <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                    <th class="no-print"><?php echo lang('options'); ?></th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,10 +54,12 @@
                                 <td> <?php echo $report->description; ?></td>
                                 <td><?php echo $report->doctor; ?></td>
                                 <td class="center"><?php echo $report->date; ?></td>
-                                <td class="no-print">
-                                    <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $report->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                    <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="report/delete?id=<?php echo $report->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                </td>
+                                <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                    <td class="no-print">
+                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $report->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                        <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="report/delete?id=<?php echo $report->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                    </td>
+                                <?php } ?>
                             </tr>
                         <?php } ?>
 
