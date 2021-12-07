@@ -278,6 +278,8 @@ class Finance extends MX_Controller {
                     $hospital_amount = $gross_total;
                 }
             }
+
+            $unpaid_total = $gross_total - $amount_received;
             $data = array();
 
             if (!empty($patient)) {
@@ -341,6 +343,7 @@ class Finance extends MX_Controller {
                     'lastname' => $name1[1],
                     'name' => $patient_name,
                     'amount' => number_format($gross_total,2),
+                    'unpaid_amount' => number_format($unpaid_total,2),
                     'date' => date('F j, Y',$date),
                     'hospital_name' => $set['settings']->title,
                     'hospital_contact' => $set['settings']->phone,
