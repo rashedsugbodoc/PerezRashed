@@ -868,7 +868,7 @@ class Finance extends MX_Controller {
     }
 
     public function paymentCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -982,7 +982,7 @@ class Finance extends MX_Controller {
     }
 
     public function expense() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -1115,7 +1115,7 @@ class Finance extends MX_Controller {
     }
 
     public function expenseCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -1218,7 +1218,7 @@ class Finance extends MX_Controller {
 
     //start service category
     public function serviceCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
