@@ -1676,6 +1676,9 @@ class Finance extends MX_Controller {
     }
 
     function doctorsCommission() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $date_from = strtotime($this->input->post('date_from'));
         $date_to = strtotime($this->input->post('date_to'));
         if (!empty($date_to)) {
@@ -1717,6 +1720,9 @@ class Finance extends MX_Controller {
     }
 
     function financialReport() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $date_from = strtotime($this->input->post('date_from'));
         $date_to = strtotime($this->input->post('date_to'));
         if (!empty($date_to)) {
@@ -1896,7 +1902,7 @@ class Finance extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        if ($this->ion_auth->in_group(array('Doctor', 'Receptionist', 'Nurse', 'Laboratorist', 'Patient'))) {
+        if ($this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Laboratorist', 'Patient', 'CompanyUser'))) {
             redirect('home/permission');
         }
 
@@ -2048,6 +2054,9 @@ class Finance extends MX_Controller {
     }
 
     function AllUserActivityReport() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -2301,6 +2310,9 @@ class Finance extends MX_Controller {
     }
 
     function daily() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $year = $this->input->get('year');
         $month = $this->input->get('month');
@@ -2338,6 +2350,9 @@ class Finance extends MX_Controller {
     }
 
     function dailyExpense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $year = $this->input->get('year');
         $month = $this->input->get('month');
@@ -2377,6 +2392,9 @@ class Finance extends MX_Controller {
     }
 
     function monthly() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $year = $this->input->get('year');
 
@@ -2410,6 +2428,9 @@ class Finance extends MX_Controller {
     }
 
     function monthlyExpense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $year = $this->input->get('year');
 
