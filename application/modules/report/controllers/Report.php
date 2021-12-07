@@ -26,7 +26,7 @@ class Report extends MX_Controller {
     }
 
     function birth() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -42,7 +42,7 @@ class Report extends MX_Controller {
     }
 
     function operation() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -58,7 +58,7 @@ class Report extends MX_Controller {
     }
 
     function expire() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -74,7 +74,7 @@ class Report extends MX_Controller {
     }
 
     public function addReportView() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group('Doctor')) {
             redirect('home/permission');
         }
         $data = array();
@@ -86,7 +86,7 @@ class Report extends MX_Controller {
     }
 
     public function addReport() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group('Doctor')) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -162,7 +162,7 @@ class Report extends MX_Controller {
     }
 
     function editReport() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group('Doctor')) {
             redirect('home/permission');
         }
         $data = array();
@@ -198,7 +198,7 @@ class Report extends MX_Controller {
     }
 
     function delete() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group('Doctor')) {
             redirect('home/permission');
         }
         $id = $this->input->get('id');
