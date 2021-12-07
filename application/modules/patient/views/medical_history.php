@@ -287,13 +287,13 @@
                                                                     <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
                                                                         <a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
                                                                     <?php } ?>
-                                                                    <?php if ($this->ion_auth->in_group('admin')) { ?> 
-                                                                        <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
-                                                                    <?php } ?>
                                                                     <?php
                                                                 }
                                                             }
                                                             ?>
+                                                            <?php if ($this->ion_auth->in_group('admin')) { ?> 
+                                                                <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                            <?php } ?>
                                                             <a class="btn btn-info btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i> <?php echo lang('print'); ?></a>
                                                         </td>
                                                     </tr>
