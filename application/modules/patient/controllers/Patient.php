@@ -1913,31 +1913,63 @@ class Patient extends MX_Controller {
 
 
         $all_appointments = '';
-        foreach ($appointments as $appointment) {
 
-            $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
-            if (!empty($doctor_details)) {
-                $appointment_doctor = $doctor_details->name;
-            } else {
-                $appointment_doctor = "";
+        if ($this->ion_auth->in_group(array('admin'))) {
+            foreach ($appointments as $appointment) {
+
+                $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
+                if (!empty($doctor_details)) {
+                    $appointment_doctor = $doctor_details->name;
+                } else {
+                    $appointment_doctor = "";
+                }
+
+
+
+                $patient_appointments = '<tr class = "">
+
+            <td>' . date("d-m-Y", $appointment->date) . '
+            </td>
+            <td>' . $appointment->time_slot . '</td>
+            <td>'
+                        . $appointment_doctor . '
+            </td>
+            <td>' . $appointment->status . '</td>
+            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '">' . lang('edit') . '</a>
+                <a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>
+            </td>
+            </tr>';
+
+                $all_appointments .= $patient_appointments;
             }
+        } else {
+            foreach ($appointments as $appointment) {
+
+                $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
+                if (!empty($doctor_details)) {
+                    $appointment_doctor = $doctor_details->name;
+                } else {
+                    $appointment_doctor = "";
+                }
 
 
 
-            $patient_appointments = '<tr class = "">
+                $patient_appointments = '<tr class = "">
 
-        <td>' . date("d-m-Y", $appointment->date) . '
-        </td>
-        <td>' . $appointment->time_slot . '</td>
-        <td>'
-                    . $appointment_doctor . '
-        </td>
-        <td>' . $appointment->status . '</td>
-        <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '">' . lang('edit') . '</a></td>
+            <td>' . date("d-m-Y", $appointment->date) . '
+            </td>
+            <td>' . $appointment->time_slot . '</td>
+            <td>'
+                        . $appointment_doctor . '
+            </td>
+            <td>' . $appointment->status . '</td>
+            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '">' . lang('edit') . '</a>
+                <a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>
+            </td>
+            </tr>';
 
-        </tr>';
-
-            $all_appointments .= $patient_appointments;
+                $all_appointments .= $patient_appointments;
+            }
         }
 
 
@@ -1951,14 +1983,29 @@ class Patient extends MX_Controller {
 
         $all_case = '';
 
-        foreach ($medical_histories as $medical_history) {
-            $patient_case = ' <tr class="">
-                                    <td>' . date("d-m-Y", $medical_history->date) . '</td>
-                                    <td>' . $medical_history->title . '</td>
-                                    <td>' . $medical_history->description . '</td>
-                                </tr>';
+        if ($this->ion_auth->in_group(array('admin'))) {
+            foreach ($medical_histories as $medical_history) {
+                $patient_case = ' <tr class="">
+                                        <td>' . date("d-m-Y", $medical_history->date) . '</td>
+                                        <td>' . $medical_history->title . '</td>
+                                        <td>' . $medical_history->description . '</td>
+                                        <td>
+                                            <a class="btn btn-danger" title="' . lang('delete') . '" href="patient/deleteCaseHistory?id=' . $medical_history->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>
+                                        </td>
+                                    </tr>';
 
-            $all_case .= $patient_case;
+                $all_case .= $patient_case;
+            }
+        } else {
+            foreach ($medical_histories as $medical_history) {
+                $patient_case = ' <tr class="">
+                                        <td>' . date("d-m-Y", $medical_history->date) . '</td>
+                                        <td>' . $medical_history->title . '</td>
+                                        <td>' . $medical_history->description . '</td>
+                                    </tr>';
+
+                $all_case .= $patient_case;
+            }
         }
 
 
@@ -1992,12 +2039,18 @@ class Patient extends MX_Controller {
                 $medicinelist = '';
             }
 
-            $option1 = '<a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' . lang('view') . '</a>';
+            $option1Prescription = '<a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' . lang('view') . '</a>';
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                $option2Prescription = '<a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id='. $prescription->id .'"><i class="fa fa-edit"></i>' . lang('edit') . '</a>';
+            }
+            if ($this->ion_auth->in_group(array('admin'))) {
+                $option3Prescription = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
             $prescription_case = ' <tr class="">
                                                     <td>' . date('d/m/Y', strtotime($prescription->date)) . '</td>
                                                     <td>' . $prescription_doctor . '</td>
                                                     <td>' . $medicinelist . '</td>
-                                                         <td>' . $option1 . '</td>
+                                                         <td>' . $option1Prescription . ' ' . $option2Prescription . ' ' . $option3Prescription . '</td>
                                                 </tr>';
 
             $all_prescription .= $prescription_case;
@@ -2018,12 +2071,18 @@ class Patient extends MX_Controller {
             } else {
                 $lab_doctor = "";
             }
-            $option1 = '<a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-eye"></i>' .' '. lang('report') . '</a>';
+            $option1Lab = '<a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-eye"></i>' .' '. lang('report') . '</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+                $option2Lab = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="lab?id=' . $lab->id . '"><i class="fa fa-edit"> </i> ' . lang('') . '</a>';
+            }
+            if ($this->ion_auth->in_group(array('admin'))) {
+                $option3Lab = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="lab/delete?id=' . $lab->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>' . lang('') . '</a>';
+            }
             $lab_class = ' <tr class="">
                                                     <td>' . $lab->id . '</td>
                                                     <td>' . date("d/m/Y", $lab->date) . '</td>
                                                     <td>' . $lab_doctor . '</td>
-                                                         <td>' . $option1 . '</td>
+                                                         <td>' . $option1Lab . '  ' . $option2Lab . '  ' . $option3Lab . '</td>
                                                 </tr>';
 
             $all_lab .= $lab_class;
@@ -2038,11 +2097,17 @@ class Patient extends MX_Controller {
         foreach ($beds as $bed) {
 
 
+            
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+                $option1Bed = '<a class="btn btn-info btn-xs editbutton" href="bed/editAllotment?id=' . $bed->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $option2Bed = '<a class="btn btn-danger btn-xs btn_width delete_button" href="bed/deleteAllotment?id=' . $bed->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+            }
+
             $bed_case = ' <tr class="">
                                                     <td>' . $bed->bed_id . '</td>
                                                     <td>' . $bed->a_time . '</td>
                                                     <td>' . $bed->d_time . '</td>
-                                                         
+                                                    <td>' . $option1Bed . ' ' . $option2Bed . '</td>
                                                 </tr>';
 
             $all_bed .= $bed_case;
@@ -2061,7 +2126,7 @@ class Patient extends MX_Controller {
                 $patient_documents = $patient_material->title;
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Patient'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) {
                 $patient_material = '
                 <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
                     <div class="post-info">
@@ -2073,7 +2138,7 @@ class Patient extends MX_Controller {
                     <p></p>
                     <div class="post-info">
                         <a class="btn btn-info btn-xs btn_width" href="' . $patient_material->url . '" download> ' . lang("download") . ' </a>
-                        <a class="btn btn-info btn-xs btn_width" title="' . lang("delete") . '" href="patient/deletePatientMaterial?id=' . $patient_material->id . '"onclick="return confirm("Are you sure you want to delete this item?");"> X </a>
+                        <a class="btn btn-danger btn-xs btn_width" title="' . lang("delete") . '" href="patient/deletePatientMaterial?id=' . $patient_material->id . '"onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i></a>
                     </div>
 
                     <hr>
