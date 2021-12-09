@@ -22,6 +22,11 @@ class Doctor_model extends CI_model {
         return $query->result();
     }
 
+    function getAllDoctor() {
+        $query = $this->db->get('doctor');
+        return $query->result();
+    }
+
     function getDoctorCount() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('doctor');

@@ -718,6 +718,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php if ($this->ion_auth->in_group(array('Patient'))) { ?>
                             <?php if (in_array('appointment', $this->modules)) { ?>
                                 <li><a href="appointment/myTodays"><i class="fa fa-headphones"></i><?php echo lang('todays'); ?> <?php echo lang('appointment'); ?></a></li>
+                                <li><a href="patient/findDoctors"><i class="fa fa-user-md"></i><?php echo lang('find_doctors'); ?></a></li>
                             <?php } ?>
                         <?php } ?>
 

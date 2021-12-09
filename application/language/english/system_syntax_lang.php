@@ -87,6 +87,7 @@ $lang['print'] = 'Print';
 $lang['doctors'] = 'Doctors';
 $lang['add_doctor'] = 'Add Doctor';
 $lang['edit_doctor'] = 'Edit Doctor';
+$lang['find_doctors'] = 'Find Doctor';
 $lang['image'] = 'Image';
 $lang['email'] = 'Email';
 $lang['address'] = 'Address';

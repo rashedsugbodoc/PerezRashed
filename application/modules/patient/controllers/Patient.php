@@ -21,6 +21,7 @@ class Patient extends MX_Controller {
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->model('medicine/medicine_model');
         $this->load->model('doctor/doctor_model');
+        $this->load->model('department/department_model');
         $this->load->module('paypal');
         if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser'))) {
             redirect('home/permission');
@@ -37,6 +38,15 @@ class Patient extends MX_Controller {
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('patient', $data);
         $this->load->view('home/footer'); // just the header file
+    }
+
+    public function findDoctors(){
+        $data['departments'] = $this->department_model->getDepartment();
+        // $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['doctors'] = $this->doctor_model->getAllDoctor();
+        $data['settings'] = $this->settings_model->getSettings();
+        $this->load->view('home/dashboardv2');
+        $this->load->view('find_doctors', $data);
     }
 
     public function calendar() {
