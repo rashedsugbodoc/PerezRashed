@@ -75,11 +75,11 @@
                                         <!-- <button type="button" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></button> -->
                                         <!--a href="prescription/editPrescription?id=<?php echo $prescription->id;?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></a-->
                                     </div>
-                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
-                                        <div class="flex-grow-1 mr-3">
+                                    <div class="flex-grow-1 mr-3">
+                                        <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                             <a href="prescription/addPrescriptionView" class="btn btn-primary pull-right"><i class="fe fe-plus"></i><span class="button-text">  <?php echo lang('add_prescription'); ?></span></a>
-                                        </div>
-                                    <?php } ?>
+                                        <?php } ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
