@@ -6,6 +6,34 @@
     <section class="wrapper site-min-height">
         <!-- page start-->
         <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+                            <div class="col-md-4 text-center">
+                                <a href="patient/findDoctors">
+                                    <i class="fa fa-search fa-5x"></i>
+                                    <p style="margin-bottom: 0px;"><label class="form-label">Find Doctors</label></p>
+                                </a>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <a data-toggle="modal" href="#addAppointmentModal">
+                                    <i class="fa fa-calendar fa-5x"></i>
+                                    <p style="margin-bottom: 0px;"><label class="form-label">Book Appointment</label></p>
+                                </a>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <a>
+                                    <i class="fa fa-home fa-5x"></i>
+                                    <p style="margin-bottom: 0px;"><label class="form-label">Find Hospital/Clinic</label></p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <section class="col-md-3">
                 <div class="panel">
                     <header class="panel-heading clearfix">
@@ -63,15 +91,19 @@
                                 <li class="">
                                     <a data-toggle="tab" href="#about"><?php echo lang('prescription'); ?></a>
                                 </li>
-                                <li class="">
-                                    <a data-toggle="tab" href="#lab"><?php echo lang('lab'); ?></a>
-                                </li>
+                                <?php if (in_array('lab', $this->modules)) { ?>
+                                    <li class="">
+                                        <a data-toggle="tab" href="#lab"><?php echo lang('lab'); ?></a>
+                                    </li>
+                                <?php } ?>
                                 <li class="">
                                     <a data-toggle="tab" href="#profile"><?php echo lang('documents'); ?></a>
                                 </li>
-                                <li class="">
-                                    <a data-toggle="tab" href="#contact"><?php echo lang('bed'); ?></a>
-                                </li>
+                                <?php if (in_array('bed', $this->modules)) { ?>
+                                    <li class="">
+                                        <a data-toggle="tab" href="#contact"><?php echo lang('bed'); ?></a>
+                                    </li>
+                                <?php } ?>
                                 <li class="">
                                     <a data-toggle="tab" href="#timeline"><?php echo lang('timeline'); ?></a> 
                                 </li>
@@ -303,43 +335,45 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="lab" class="tab-pane"> <div class="">
-                                    <div class="adv-table editable-table ">
-                                        <table class="table table-striped table-hover table-bordered" id="">
-                                            <thead>
-                                                <tr>
-                                                    <th><?php echo lang('id'); ?></th>
-                                                    <th><?php echo lang('date'); ?></th>
-                                                    <th><?php echo lang('doctor'); ?></th>
-                                                    <th class="no-print"><?php echo lang('options'); ?></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($labs as $lab) { ?>
-                                                    <tr class="">
-                                                        <td><?php echo $lab->id; ?></td>
-                                                        <td><?php echo date('m/d/Y', $lab->date); ?></td>
-                                                        <td>
-                                                            <?php
-                                                            $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
-                                                            if (!empty($doctor_details)) {
-                                                                $lab_doctor = $doctor_details->name;
-                                                            } else {
-                                                                $lab_doctor = '';
-                                                            }
-                                                            echo $lab_doctor;
-                                                            ?>
-                                                        </td>
-                                                        <td class="no-print">
-                                                            <a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=<?php echo $lab->id; ?>"><i class="fa fa-eye"> <?php echo lang('report'); ?> </i></a>   
-                                                        </td>
+                            <?php if (in_array('lab', $this->modules)) { ?>
+                                <div id="lab" class="tab-pane"> <div class="">
+                                        <div class="adv-table editable-table ">
+                                            <table class="table table-striped table-hover table-bordered" id="">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('id'); ?></th>
+                                                        <th><?php echo lang('date'); ?></th>
+                                                        <th><?php echo lang('doctor'); ?></th>
+                                                        <th class="no-print"><?php echo lang('options'); ?></th>
                                                     </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($labs as $lab) { ?>
+                                                        <tr class="">
+                                                            <td><?php echo $lab->id; ?></td>
+                                                            <td><?php echo date('m/d/Y', $lab->date); ?></td>
+                                                            <td>
+                                                                <?php
+                                                                $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
+                                                                if (!empty($doctor_details)) {
+                                                                    $lab_doctor = $doctor_details->name;
+                                                                } else {
+                                                                    $lab_doctor = '';
+                                                                }
+                                                                echo $lab_doctor;
+                                                                ?>
+                                                            </td>
+                                                            <td class="no-print">
+                                                                <a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=<?php echo $lab->id; ?>"><i class="fa fa-eye"> <?php echo lang('report'); ?> </i></a>   
+                                                            </td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php } ?>
                             <div id="profile" class="tab-pane"> <div class="">
                                     <div class=" no-print">
                                         <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal1">
@@ -389,50 +423,52 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="contact" class="tab-pane"> 
-                                <div class="">
-                                    <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
-                                        <div class=" no-print">
-                                            <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModa3">
-                                                <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                            </a>
+                            <?php if (in_array('bed', $this->modules)) { ?>
+                                <div id="contact" class="tab-pane"> 
+                                    <div class="">
+                                        <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                            <div class=" no-print">
+                                                <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModa3">
+                                                    <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                </a>
+                                            </div>
+                                        <?php } ?>
+                                        <div class="adv-table editable-table ">
+                                            <table class="table table-striped table-hover table-bordered" id="">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('bed_id'); ?></th>
+                                                        <th><?php echo lang('alloted_time'); ?></th>
+                                                        <th><?php echo lang('discharge_time'); ?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <style>
+
+                                                    .img_url{
+                                                        height:20px;
+                                                        width:20px;
+                                                        background-size: contain; 
+                                                        max-height:20px;
+                                                        border-radius: 100px;
+                                                    }
+
+                                                </style>
+
+                                                <?php foreach ($beds as $bed) { ?>
+                                                    <tr class="">
+                                                        <td><?php echo $bed->bed_id; ?></td>            
+                                                        <td><?php echo $bed->a_time; ?></td>
+                                                        <td><?php echo $bed->d_time; ?></td>
+                                                    </tr>
+                                                <?php } ?>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    <?php } ?>
-                                    <div class="adv-table editable-table ">
-                                        <table class="table table-striped table-hover table-bordered" id="">
-                                            <thead>
-                                                <tr>
-                                                    <th><?php echo lang('bed_id'); ?></th>
-                                                    <th><?php echo lang('alloted_time'); ?></th>
-                                                    <th><?php echo lang('discharge_time'); ?></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            <style>
-
-                                                .img_url{
-                                                    height:20px;
-                                                    width:20px;
-                                                    background-size: contain; 
-                                                    max-height:20px;
-                                                    border-radius: 100px;
-                                                }
-
-                                            </style>
-
-                                            <?php foreach ($beds as $bed) { ?>
-                                                <tr class="">
-                                                    <td><?php echo $bed->bed_id; ?></td>            
-                                                    <td><?php echo $bed->a_time; ?></td>
-                                                    <td><?php echo $bed->d_time; ?></td>
-                                                </tr>
-                                            <?php } ?>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
-                            </div>
+                            <?php } ?>
                             <div id="timeline" class="tab-pane"> 
                                 <div class="">
                                     <div class="">
