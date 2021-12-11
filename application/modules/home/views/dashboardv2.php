@@ -129,7 +129,11 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <link href="<?php echo base_url('public/assets/plugins/notify/css/notifIt.css'); ?>" rel="stylesheet" />
 
         <!-- News-Ticker css-->
-        <link href="<?php echo base_url('public/assets/plugins/newsticker/newsticker.css') ?>" rel="stylesheet" />                
+        <link href="<?php echo base_url('public/assets/plugins/newsticker/newsticker.css') ?>" rel="stylesheet" />  
+
+        <!-- Accordion Css -->
+        <link href="<?php echo base_url('public/assets/plugins/accordion/accordion.css'); ?>" rel="stylesheet" />              
+        
         <!-- INTERNAL CSS END -->
 
         <style>
@@ -275,7 +279,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             <li><a href="patient/patientPayments" class="slide-item"><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
                                         <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist'))) { ?>
-                                        <li><a href="patient/caseList" class="slide-item"><?php echo lang('case'); ?> <?php echo lang('manager'); ?></a></li>
+                                        <li><a href="patient/caseList" class="slide-item"><?php echo lang('case'); ?> <?php echo lang('history'); ?></a></li>
                                         <?php } ?>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                             <li><a href="patient/documents" class="slide-item"><?php echo lang('documents'); ?></a></li>
