@@ -625,7 +625,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             <li><a href="patient/patientPayments"><i class="fa fa-money-check"></i><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
                                         <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist'))) { ?>
-                                            <li><a href="patient/caseList"><i class="fa fa-book"></i><?php echo lang('case'); ?> <?php echo lang('manager'); ?></a></li>
+                                            <li><a href="patient/caseList"><i class="fa fa-book"></i><?php echo lang('case'); ?> <?php echo lang('history'); ?></a></li>
                                         <?php } ?>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                             <li><a href="patient/documents"><i class="fa fa-file"></i><?php echo lang('documents'); ?></a></li>
