@@ -54,9 +54,9 @@ class Meeting extends MX_Controller {
     function jitsiLive() {
         $appointment_id = $this->input->get('id');
         $data['appointmentid'] = $appointment_id;
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('jitsi', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('jitsiv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function jitsi() {
