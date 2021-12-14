@@ -839,20 +839,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         }
                         ?>                        
 
-                        <?php
-                        if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) {
-                            ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>
-                                <li>
-                                    <a href="finance/UserActivityReport">
-                                        <i class="fa fa-file-user"></i>
-                                        <span><?php echo lang('user_activity_report'); ?></span>
-                                    </a>
-                                </li>
-                            <?php } ?>
-                            <?php
-                        }
-                        ?>
+                        
 
 
 
@@ -1160,22 +1147,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         
 
 
-                        <?php if ($this->ion_auth->in_group('Accountant')) { ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>
-                                <li>
-                                    <a href="finance/doctorsCommission" >
-                                        <i class="fa fa-edit"></i>
-                                        <span> <?php echo lang('doctors_commission'); ?> </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="finance/financialReport" >
-                                        <i class="fa fa-book"></i>
-                                        <span> <?php echo lang('financial_report'); ?> </span>
-                                    </a>
-                                </li>
-                            <?php } ?>
-                        <?php } ?>
+                        
 
                         <?php if ($this->ion_auth->in_group('Pharmacist')) { ?>
                             <?php if (in_array('medicine', $this->modules)) { ?>
