@@ -178,30 +178,30 @@
 
 <script src="common/js/coderygel.min.js"></script>
 <script type="text/javascript">
-                                    $(document).ready(function () {
-                                        $(".editbutton").click(function (e) {
-                                            e.preventDefault(e);
-                                            // Get the record's ID via attribute  
-                                            var iid = $(this).attr('data-id');
-                                            $('#editNurseForm').trigger("reset");
-                                            $.ajax({
-                                                url: 'nurse/editNurseByJason?id=' + iid,
-                                                method: 'GET',
-                                                data: '',
-                                                dataType: 'json',
-                                            }).success(function (response) {
-                                                // Populate the form fields with the data returned from server
-                                                $('#editNurseForm').find('[name="id"]').val(response.nurse.id).end()
-                                                $('#editNurseForm').find('[name="name"]').val(response.nurse.name).end()
-                                                $('#editNurseForm').find('[name="password"]').val(response.nurse.password).end()
-                                                $('#editNurseForm').find('[name="email"]').val(response.nurse.email).end()
-                                                $('#editNurseForm').find('[name="address"]').val(response.nurse.address).end()
-                                                $('#editNurseForm').find('[name="phone"]').val(response.nurse.phone).end()
-                                                $('#myModal2').modal('show');
-                                            });
+    $(document).ready(function () {
+        $(".editbutton").click(function (e) {
+            e.preventDefault(e);
+            // Get the record's ID via attribute  
+            var iid = $(this).attr('data-id');
+            $('#editNurseForm').trigger("reset");
+            $.ajax({
+                url: 'nurse/editNurseByJason?id=' + iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+            }).success(function (response) {
+                // Populate the form fields with the data returned from server
+                $('#editNurseForm').find('[name="id"]').val(response.nurse.id).end()
+                $('#editNurseForm').find('[name="name"]').val(response.nurse.name).end()
+                $('#editNurseForm').find('[name="password"]').val(response.nurse.password).end()
+                $('#editNurseForm').find('[name="email"]').val(response.nurse.email).end()
+                $('#editNurseForm').find('[name="address"]').val(response.nurse.address).end()
+                $('#editNurseForm').find('[name="phone"]').val(response.nurse.phone).end()
+                $('#myModal2').modal('show');
+            });
 
-                                        });
-                                    });
+        });
+    });
 </script>
 <script>
     $(document).ready(function () {
