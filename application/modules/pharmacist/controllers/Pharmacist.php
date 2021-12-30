@@ -14,16 +14,17 @@ class Pharmacist extends MX_Controller {
     }
 
     public function index() {
+        $this->db->order_by('id', 'desc');
         $data['pharmacists'] = $this->pharmacist_model->getPharmacist();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('pharmacist', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('pharmacistv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewView() {
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new');
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
@@ -64,16 +65,16 @@ class Pharmacist extends MX_Controller {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['pharmacist'] = $this->pharmacist_model->getPharmacistById($id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new');
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2');
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -130,9 +131,9 @@ class Pharmacist extends MX_Controller {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                     $data = array();
                     $data['pharmacist'] = $this->pharmacist_model->getPharmacistById($id);
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('add_new', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 7;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -153,9 +154,9 @@ class Pharmacist extends MX_Controller {
                         $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                         $data = array();
                         $data['pharmacist'] = $this->pharmacist_model->getPharmacistById($id);
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     } else {
                         $ion_user_id = $this->db->get_where('pharmacist', array('id' => $id))->row()->ion_user_id;
                         if (empty($password)) {
