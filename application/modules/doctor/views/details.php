@@ -46,7 +46,10 @@
                                                     <th><?php echo lang('date'); ?></th>
                                                     <th><?php echo lang('patient_id'); ?></th>
                                                     <th><?php echo lang('patient'); ?></th>
-                                                    <th><?php echo lang('status'); ?></th>
+                                                    <th><?php echo lang('appointment_type'); ?></th>
+                                                    <th><?php echo lang('appointment_status'); ?></th>
+                                                    <th><?php echo lang('queue_status'); ?></th>
+                                                    <th><?php echo lang('clinic'); ?></th>
                                                     <th class="no-print"><?php echo lang('options'); ?></th>
                                                 </tr>
                                             </thead>
@@ -61,7 +64,10 @@
                                                             <td><?php echo date('d-m-Y', $todays_appointment->date); ?></td>
                                                             <td><?php echo $todays_appointment->patient; ?></td>
                                                             <td><?php echo $patient_details->name; ?></td>
+                                                            <td><?php echo lang('appointment_type'); ?></td>
                                                             <td><?php echo $todays_appointment->status; ?></td>
+                                                            <th><?php echo lang('queue_status'); ?></th>
+                                                            <th><?php echo lang('clinic'); ?></th>
                                                             <td class="no-print">
                                                                 <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fa fa-edit"></i> </button>   
                                                                 <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $todays_appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
