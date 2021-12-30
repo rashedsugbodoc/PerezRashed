@@ -81,17 +81,19 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <!-- Data table css -->
         <link href="<?php echo base_url('public/assets/plugins/datatable/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" />
         <link href="<?php echo base_url('public/assets/plugins/datatable/css/buttons.bootstrap4.min.css'); ?>" rel="stylesheet">
-        <link href="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.css'); ?>" rel="stylesheet" />        
+        <link href="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.css'); ?>" rel="stylesheet" />  
 
-        <!--Daterangepicker css-->
-        <link href="<?php echo base_url('public/assets/plugins/bootstrap-daterangepicker/daterangepicker.css') ?>" rel="stylesheet" />
-        <!-- Fullcalendar css-->
-        <link href='<?php echo base_url('public/assets/plugins/fullcalendar/fullcalendar.css'); ?>' rel='stylesheet' />
         <!-- Slect2 css -->
-        <link href="<?php echo base_url('public/assets/plugins/select2/select2.min.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/select2/select2.min.css'); ?>" rel="stylesheet" />      
 
         <!-- File Uploads css -->
         <link href="<?php echo base_url('public/assets/plugins/fancyuploder/fancy_fileupload.css'); ?>" rel="stylesheet" />
+
+        <!--Daterangepicker css-->
+        <link href="<?php echo base_url('public/assets/plugins/bootstrap-daterangepicker/daterangepicker.css') ?>" rel="stylesheet" />
+
+        <!-- Fullcalendar css-->
+        <link href='<?php echo base_url('public/assets/plugins/fullcalendar/fullcalendar.css'); ?>' rel='stylesheet' />
 
         <!-- Time picker css -->
         <link href="<?php echo base_url('public/assets/plugins/time-picker/jquery.timepicker.css'); ?>" rel="stylesheet" />
@@ -101,6 +103,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
         <!-- File Uploads css-->
         <link href="<?php echo base_url('public/assets/plugins/fileupload/css/fileupload.css'); ?>" rel="stylesheet" type="text/css" />
+
         <!--Mutipleselect css-->
         <link rel="stylesheet" href="<?php echo base_url('public/assets/plugins/multipleselect/multiple-select.css'); ?>">
 
@@ -132,7 +135,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <link href="<?php echo base_url('public/assets/plugins/newsticker/newsticker.css') ?>" rel="stylesheet" />  
 
         <!-- Accordion Css -->
-        <link href="<?php echo base_url('public/assets/plugins/accordion/accordion.css'); ?>" rel="stylesheet" />              
+        <link href="<?php echo base_url('public/assets/plugins/accordion/accordion.css'); ?>" rel="stylesheet" />  
         
         <!-- INTERNAL CSS END -->
 
