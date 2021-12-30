@@ -222,6 +222,7 @@ $lang['donor_list'] = 'Donor List';
 $lang['add_donor'] = 'Add Donor';
 $lang['edit_donor'] = 'Edit Donor';
 $lang['age'] = 'Age';
+$lang['not_provided'] = 'Not Provided';
 $lang['yrs_old'] = 'year(s) old';
 $lang['not_given'] = 'Not Given';
 $lang['sex'] = 'Sex';

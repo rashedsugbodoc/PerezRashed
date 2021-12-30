@@ -662,16 +662,8 @@
                     $('.addressClass').append(response.patient.address).end()
                     $('.phoneClass').append(response.patient.phone).end()
                     $('.genderClass').append(response.patient.sex).end()
-                    $('.birthdateClass').append(response.patient.birthdate).end()
-                    if (response.patient.age !== null && response.patient.birthdate == null) {
-                        $('.ageClass').append(response.patient.age).end()
-                    }
-                    if (response.patient.age == null && response.patient.birthdate !== null) {
-                        $('.ageClass').append(response.age).end()
-                    }
-                    if (response.patient.age !== null && response.patient.birthdate !== null) {
-                        $('.ageClass').append(response.age).end()
-                    }
+                    $('.birthdateClass').append(response.birthdate).end()
+                    $('.ageClass').append(response.age).end()
                     $('.bloodgroupClass').append(response.patient.bloodgroup).end()
                     $('.patientidClass').append(response.patient.patient_id).end()
 

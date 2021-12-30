@@ -453,8 +453,19 @@ class Patient extends MX_Controller {
             $birthDate = date('m/d/Y', $birthDate);
             $birthDate = explode("/", $birthDate);
             $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
-            $data['age'] = $age . ' Year(s)';
+            $data['age'] = $age . ' ' . lang('years_old');
+            $data['birthdate'] = $data['patient']->birthdate;
+        } else if (!empty($data['patient']->age)) {
+            $data['age'] = $data['patient']->age . ' ' . lang('years_old');
+            $data['birthdate'] = lang('not_specified');
+        } else if (empty($data['patient']->age) && empty($data['patient']->birthdate)) {
+            $data['birthdate'] = lang('not_specified');
+            $data['age'] = lang('not_specified');
+        } else {
+            $data['birthdate'] = lang('not_specified');
         }
+
+
 
         echo json_encode($data);
     }
