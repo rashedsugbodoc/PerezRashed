@@ -17,15 +17,15 @@ class Receptionist extends MX_Controller {
 
         $data['receptionists'] = $this->receptionist_model->getReceptionist();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('receptionist', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('receptionistv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewView() {
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new');
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
@@ -66,17 +66,17 @@ class Receptionist extends MX_Controller {
                 $data = array();
                 // $id = $this->input->get('id');
                 $data['receptionist'] = $this->receptionist_model->getReceptionistById($id);
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new');
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_newv2');
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -135,9 +135,9 @@ class Receptionist extends MX_Controller {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                     $data = array();
                     $data['receptionist'] = $this->receptionist_model->getReceptionistById($id);
-                    $this->load->view('home/dashboard', $data); // just the header file
-                    $this->load->view('add_new', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2', $data); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 10;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -158,9 +158,9 @@ class Receptionist extends MX_Controller {
                         $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                         $data = array();
                         $data['receptionist'] = $this->receptionist_model->getReceptionistById($id);
-                        $this->load->view('home/dashboard', $data); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2', $data); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     } else {
                         $ion_user_id = $this->db->get_where('receptionist', array('id' => $id))->row()->ion_user_id;
                         if (empty($password)) {

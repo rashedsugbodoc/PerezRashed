@@ -18,6 +18,7 @@ class Receptionist_model extends CI_model {
 
     function getReceptionist() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
         $query = $this->db->get('receptionist');
         return $query->result();
     }
