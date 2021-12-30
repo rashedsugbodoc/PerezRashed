@@ -5,6 +5,7 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
+        <?php if ($this->ion_auth->in_group(array('Patient'))) { ?>
         <div class="row">
             <div class="col-md-12">
                 <div class="panel">
@@ -33,6 +34,7 @@
                 </div>
             </div>
         </div>
+        <?php } ?>
         <div class="row">
             <section class="col-md-3">
                 <div class="panel">
