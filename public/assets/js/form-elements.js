@@ -11,10 +11,10 @@ $(function() {
 	$('#ssnMask').mask('999-99-9999');
 	// Time Picker
 	$('#tpBasic').timepicker({ 'timeFormat': 'h:i A' });
+	$('#tpBasic2').timepicker({ 'timeFormat': 'h:i A' });
 	$('#tp2').timepicker({
 		'scrollDefault': 'now'
 	});
-	$('#tp3').timepicker({ 'timeFormat': 'h:i A' });
 	$('#setTimeButton').on('click', function() {
 		$('#tp3').timepicker('setTime', new Date());
 	});
