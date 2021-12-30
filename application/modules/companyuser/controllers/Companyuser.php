@@ -19,15 +19,15 @@ class Companyuser extends MX_Controller {
     public function index() {
         //$data['company'] = $this->company_model->getCompany();
         $data['companyusers'] = $this->companyuser_model->getCompanyUser();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('companyuser', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('companyuserv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewView() {
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new');
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
@@ -71,17 +71,17 @@ class Companyuser extends MX_Controller {
                 // $id = $this->input->get('id');
                 $data['companyusers'] = $this->companyuser_model->getCompanyUser();
                 $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['companyusers'] = $this->companyuser_model->getCompanyUser();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -143,9 +143,9 @@ class Companyuser extends MX_Controller {
                     $data = array();
                     $data['companyusers'] = $this->companyuser_model->getCompanyUser();
                     $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('add_new', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 12;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -167,9 +167,9 @@ class Companyuser extends MX_Controller {
                         $data = array();
                         $data['companyusers'] = $this->companyuser_model->getCompanyUser();
                         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     } else {
                         $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
                         if (empty($password)) {

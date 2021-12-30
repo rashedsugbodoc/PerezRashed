@@ -18,6 +18,7 @@ class CompanyUser_model extends CI_model {
 
     function getCompanyUser() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
         $query = $this->db->get('companyuser');
         return $query->result();
     }
