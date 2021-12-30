@@ -35,9 +35,9 @@ class Patient extends MX_Controller {
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('patient', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('patientv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function findDoctors(){
@@ -63,15 +63,12 @@ class Patient extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
             redirect('home/permission');
         }
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            redirect('home/permission');
-        }
         $data = array();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['groups'] = $this->donor_model->getBloodBank();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
@@ -170,18 +167,18 @@ class Patient extends MX_Controller {
                 $data['patient'] = $this->patient_model->getPatientById($id);
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['groups'] = $this->donor_model->getBloodBank();
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['groups'] = $this->donor_model->getBloodBank();
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -218,9 +215,9 @@ class Patient extends MX_Controller {
                     $data['patient'] = $this->patient_model->getPatientById($id);
                     $data['doctors'] = $this->doctor_model->getDoctor();
                     $data['groups'] = $this->donor_model->getBloodBank();
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('add_new', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
                 } else {
                     if ($this->upload->do_upload('img_url')) {
                         $path = $this->upload->data();
@@ -304,12 +301,13 @@ class Patient extends MX_Controller {
                         $this->session->set_flashdata('fileError', $fileError);
                         $this->session->set_flashdata('error', lang('validation_error'));
                         $data = array();
+                        $data['setval'] = 'setval';
                         $data['patient'] = $this->patient_model->getPatientById($id);
                         $data['doctors'] = $this->doctor_model->getDoctor();
                         $data['groups'] = $this->donor_model->getBloodBank();
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     }
                     
                 }
@@ -323,9 +321,9 @@ class Patient extends MX_Controller {
                         $data['patient'] = $this->patient_model->getPatientById($id);
                         $data['doctors'] = $this->doctor_model->getDoctor();
                         $data['groups'] = $this->donor_model->getBloodBank();
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     } else {
                         if ($this->upload->do_upload('img_url')) {
                             $path = $this->upload->data();
@@ -360,12 +358,13 @@ class Patient extends MX_Controller {
                             $this->session->set_flashdata('fileError', $fileError);
                             $this->session->set_flashdata('error', lang('validation_error'));
                             $data = array();
+                            $data['setval'] = 'setval';
                             $data['patient'] = $this->patient_model->getPatientById($id);
                             $data['doctors'] = $this->doctor_model->getDoctor();
                             $data['groups'] = $this->donor_model->getBloodBank();
-                            $this->load->view('home/dashboard'); // just the header file
-                            $this->load->view('add_new', $data);
-                            $this->load->view('home/footer'); // just the footer file
+                            $this->load->view('home/dashboardv2'); // just the header file
+                            $this->load->view('add_newv2', $data);
+                            // $this->load->view('home/footer'); // just the footer file
                         }
 
                     }
@@ -406,9 +405,9 @@ class Patient extends MX_Controller {
                         $data['patient'] = $this->patient_model->getPatientById($id);
                         $data['doctors'] = $this->doctor_model->getDoctor();
                         $data['groups'] = $this->donor_model->getBloodBank();
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     }
                 }
             }
@@ -938,14 +937,20 @@ class Patient extends MX_Controller {
             );
 
             if (empty($id)) {     // Adding New department
+                // $data['setval'] = 'setval';
                 $this->patient_model->insertMedicalHistory($data);
                 $this->session->set_flashdata('success', lang('record_added'));
+                // $lastId = $this->db->insert_id();
+                // $this->load->view('home/dashboardv2'); // just the header file
+                // $this->load->view('jitsiv2', $data);
             } else { // Updating department
                 $this->patient_model->updateMedicalHistory($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
+            // echo json_encode(array('last_id' => $lastId));
             redirect($redirect);
+            // redirect("form/addMedicalHistory?id=" . "$lastId");
         }
     }
 
@@ -1419,7 +1424,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a type="button" class="btn btn-info editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a class="btn btn-info editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
             $options2 = '<a class="btn btn-info" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
