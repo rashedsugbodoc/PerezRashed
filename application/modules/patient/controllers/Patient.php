@@ -457,12 +457,12 @@ class Patient extends MX_Controller {
             $data['birthdate'] = $data['patient']->birthdate;
         } else if (!empty($data['patient']->age)) {
             $data['age'] = $data['patient']->age . ' ' . lang('years_old');
-            $data['birthdate'] = lang('not_specified');
+            $data['birthdate'] = lang('not_provided');
         } else if (empty($data['patient']->age) && empty($data['patient']->birthdate)) {
-            $data['birthdate'] = lang('not_specified');
-            $data['age'] = lang('not_specified');
+            $data['birthdate'] = lang('not_provided');
+            $data['age'] = lang('not_provided');
         } else {
-            $data['birthdate'] = lang('not_specified');
+            $data['birthdate'] = lang('not_provided');
         }
 
 
