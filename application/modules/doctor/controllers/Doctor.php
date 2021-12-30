@@ -30,9 +30,9 @@ class Doctor extends MX_Controller {
 
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['departments'] = $this->department_model->getDepartment();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('doctor', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('doctorv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewView() {
@@ -42,9 +42,9 @@ class Doctor extends MX_Controller {
         
         $data = array();
         $data['departments'] = $this->department_model->getDepartment();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
@@ -106,17 +106,17 @@ class Doctor extends MX_Controller {
                 $data = array();
                 $data['departments'] = $this->department_model->getDepartment();
                 $data['doctor'] = $this->doctor_model->getDoctorById($id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['departments'] = $this->department_model->getDepartment();
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -156,9 +156,9 @@ class Doctor extends MX_Controller {
                     $data['patient'] = $this->patient_model->getPatientById($id);
                     $data['doctors'] = $this->doctor_model->getDoctor();
                     $data['groups'] = $this->donor_model->getBloodBank();
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('add_new', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
                 } else {
                     if ($this->upload->do_upload('img_url')) {
                         $path = $this->upload->data();
@@ -235,12 +235,14 @@ class Doctor extends MX_Controller {
                         $this->session->set_flashdata('fileError', $fileError);
                         $this->session->set_flashdata('error', lang('validation_error'));
                         $data = array();
+                        $data['setval'] = 'setval';
                         $data['patient'] = $this->patient_model->getPatientById($id);
                         $data['doctors'] = $this->doctor_model->getDoctor();
                         $data['groups'] = $this->donor_model->getBloodBank();
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $data['departments'] = $this->department_model->getDepartment();
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     }
 
                     
@@ -255,9 +257,9 @@ class Doctor extends MX_Controller {
                         $data['patient'] = $this->patient_model->getPatientById($id);
                         $data['doctors'] = $this->doctor_model->getDoctor();
                         $data['groups'] = $this->donor_model->getBloodBank();
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     } else {
                         if ($this->upload->do_upload('img_url')) {
                             $path = $this->upload->data();
@@ -291,9 +293,9 @@ class Doctor extends MX_Controller {
                             $data['patient'] = $this->patient_model->getPatientById($id);
                             $data['doctors'] = $this->doctor_model->getDoctor();
                             $data['groups'] = $this->donor_model->getBloodBank();
-                            $this->load->view('home/dashboard'); // just the header file
-                            $this->load->view('add_new', $data);
-                            $this->load->view('home/footer'); // just the footer file
+                            $this->load->view('home/dashboardv2'); // just the header file
+                            $this->load->view('add_newv2', $data);
+                            // $this->load->view('home/footer'); // just the footer file
                         }
                         
                     }
@@ -329,9 +331,9 @@ class Doctor extends MX_Controller {
                         $data = array();
                         $data['departments'] = $this->department_model->getDepartment();
                         $data['doctor'] = $this->doctor_model->getDoctorById($id);
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     }
                 }
             }
