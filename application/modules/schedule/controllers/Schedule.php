@@ -19,9 +19,9 @@ class Schedule extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['schedules'] = $this->schedule_model->getSchedule();
         $data['doctors'] = $this->doctor_model->getDoctor();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('schedule', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('schedulev2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function timeSchedule() {
@@ -64,21 +64,21 @@ class Schedule extends MX_Controller {
             if (!empty($check)) {
                 $this->session->set_flashdata('error', lang('schedule_already_exists'));
                 redirect($redirect);
-                die();
+                
             }
         }
 
-        if (empty($s_time)) {
+        if (empty($s_time) || empty($e_time)) {
             $this->session->set_flashdata('error', lang('fields_can_not_be_empty'));
             redirect($redirect);
-            die();
+            
         }
 
-        if (empty($e_time)) {
-            $this->session->set_flashdata('error', lang('fields_can_not_be_empty'));
-            redirect($redirect);
-            die();
-        }
+        // if (empty($e_time)) {
+        //     $this->session->set_flashdata('error', lang('fields_can_not_be_empty'));
+        //     redirect($redirect);
+            
+        // }
 
         $all_slot = array(
             0 => '12:00 PM',
@@ -1020,9 +1020,9 @@ class Schedule extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['holidays'] = $this->schedule_model->getHolidays();
         $data['doctors'] = $this->doctor_model->getDoctor();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('all_holidays', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('all_holidaysv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function holidays() {
@@ -1063,6 +1063,12 @@ class Schedule extends MX_Controller {
             die();
         }
 
+        if (empty($doctor)) {
+            $this->session->set_flashdata('error', lang('doctor_not_selected'));
+            redirect($redirect);
+            die();   
+        }
+
 
         if (empty($id)) {
             $is_exist = $this->schedule_model->getHolidayByDoctorByDate($doctor, $date);
@@ -1082,18 +1088,25 @@ class Schedule extends MX_Controller {
             }
         }
 // Validating Email Field
+        // $this->load->library('form_validation');
         $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        // $this->form_validation->set_rules('doctor', 'Doctor', 'trim|required|min_length[5]|max_length[100]|xss_clean');
 
 
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                redirect("schedule/editHoliday?id=$id");
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['holidays'] = $this->schedule_model->getHolidays();
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('all_holidaysv2', $data);
             } else {
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('timeslot');
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('all_holidaysv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
 
@@ -1152,7 +1165,7 @@ class Schedule extends MX_Controller {
         $this->db->where('id', $ion_user_id);
         $this->db->delete('users');
         $this->schedule_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('doctor');
     }
 

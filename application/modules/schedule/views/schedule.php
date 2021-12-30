@@ -332,27 +332,27 @@
 
 <script src="common/js/coderygel.min.js"></script>
 <script type="text/javascript">
-                                        $(document).ready(function () {
-                                            $(".editbutton").click(function (e) {
-                                                e.preventDefault(e);
-                                                // Get the record's ID via attribute  
-                                                var iid = $(this).attr('data-id');
-                                                $('#editTimeSlotForm').trigger("reset");
-                                                $('#myModal2').modal('show');
-                                                $.ajax({
-                                                    url: 'schedule/editScheduleByJason?id=' + iid,
-                                                    method: 'GET',
-                                                    data: '',
-                                                    dataType: 'json',
-                                                }).success(function (response) {
-                                                    // Populate the form fields with the data returned from server
-                                                    $('#editTimeSlotForm').find('[name="id"]').val(response.schedule.id).end()
-                                                    $('#editTimeSlotForm').find('[name="s_time"]').val(response.schedule.s_time).end()
-                                                    $('#editTimeSlotForm').find('[name="e_time"]').val(response.schedule.e_time).end()
-                                                    $('#editTimeSlotForm').find('[name="weekday"]').val(response.schedule.weekday).end()
-                                                });
-                                            });
-                                        });
+    $(document).ready(function () {
+        $(".editbutton").click(function (e) {
+            e.preventDefault(e);
+            // Get the record's ID via attribute  
+            var iid = $(this).attr('data-id');
+            $('#editTimeSlotForm').trigger("reset");
+            $('#myModal2').modal('show');
+            $.ajax({
+                url: 'schedule/editScheduleByJason?id=' + iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+            }).success(function (response) {
+                // Populate the form fields with the data returned from server
+                $('#editTimeSlotForm').find('[name="id"]').val(response.schedule.id).end()
+                $('#editTimeSlotForm').find('[name="s_time"]').val(response.schedule.s_time).end()
+                $('#editTimeSlotForm').find('[name="e_time"]').val(response.schedule.e_time).end()
+                $('#editTimeSlotForm').find('[name="weekday"]').val(response.schedule.weekday).end()
+            });
+        });
+    });
 </script>
 
 
