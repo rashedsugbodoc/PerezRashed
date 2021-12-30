@@ -18,6 +18,7 @@ class Nurse_model extends CI_model {
 
     function getNurse() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
         $query = $this->db->get('nurse');
         return $query->result();
     }

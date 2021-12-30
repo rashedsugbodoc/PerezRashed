@@ -15,15 +15,15 @@ class Nurse extends MX_Controller {
 
     public function index() {
         $data['nurses'] = $this->nurse_model->getNurse();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('nurse', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('nursev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewView() {
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new');
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
@@ -65,18 +65,18 @@ class Nurse extends MX_Controller {
                 $this->session->set_flashdata('fileError', $fileError);
                 $data = array();
                 $data['nurse'] = $this->nurse_model->getNurseById($id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
                 $this->session->set_flashdata('fileError', $fileError);
                 $data = array();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -132,9 +132,9 @@ class Nurse extends MX_Controller {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                     $data = array();
                     $data['nurse'] = $this->nurse_model->getNurseById($id);
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('add_new', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 6;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -155,9 +155,9 @@ class Nurse extends MX_Controller {
                         $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                         $data = array();
                         $data['nurse'] = $this->nurse_model->getNurseById($id);
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     } else {
                         $ion_user_id = $this->db->get_where('nurse', array('id' => $id))->row()->ion_user_id;
                         if (empty($password)) {
