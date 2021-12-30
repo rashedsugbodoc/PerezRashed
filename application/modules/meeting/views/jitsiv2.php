@@ -9,19 +9,7 @@
                             <section id="main-content">
                                 <section class="wrapper site-min-height">
 
-                                    <?php
-                                    $appointment_details = $this->appointment_model->getAppointmentById($appointmentid);
-                                    $doctor_details = $this->doctor_model->getDoctorById($appointment_details->doctor);
-                                    $doctor_name = $doctor_details->name;
-                                    $patient_details = $this->patient_model->getPatientById($appointment_details->patient);
-                                    $patient_name = $patient_details->name;
-                                    $patient_phone = $patient_details->phone;
-                                    $patient_id = $appointment_details->patient;
-
-                                    $display_name = $this->ion_auth->user()->row()->username;
-                                    $email = $this->ion_auth->user()->row()->email;
-                                    ?>
-
+                                    
 
                                     <!-- page start-->
                                     <div class="row">
@@ -56,20 +44,58 @@
                                                             <div id="collapseTwo30" class="panel-collapse collapse show" role="tabpanel" aria-labelledby="headingTwo30">
                                                                 <div class="card-body border-0 bg-white">
                                                                     <div class="d-flex align-items-center pb-2 border-bottom">
-                                                                        <div class="avatar avatar-lg brround d-block cover-image" data-image-src="<?php echo base_url('public/assets/images/users/7.jpg'); ?>" >
+                                                                        <div class="avatar avatar-lg brround d-block cover-image" data-image-src="
+                                                                        <?php 
+                                                                            if ($this->ion_auth->in_group('Doctor')) {
+                                                                                if(!empty($patient_details->img_url)) {
+                                                                                    echo $patient_details->img_url; 
+                                                                                } else {
+                                                                                    echo base_url('public/assets/images/users/7.jpg');
+                                                                                }
+                                                                            }
+                                                                            if ($this->ion_auth->in_group('Patient')) {
+                                                                                if(!empty($doctor_details->img_url)) {
+                                                                                    echo $doctor_details->img_url; 
+                                                                                } else {
+                                                                                    echo base_url('public/assets/images/users/7.jpg');
+                                                                                }
+                                                                            }
+                                                                        ?>
+                                                                        " >
                                                                         </div>
                                                                         <div class="wrapper ml-3">
                                                                             <p class="mb-0 mt-1 text-dark font-weight-semibold">
                                                                                 <?php
                                                                                     if ($this->ion_auth->in_group('Doctor')) {
-                                                                                        echo $patient_name; 
+                                                                                        if(!empty($patient_details->name)){
+                                                                                            echo $patient_details->name; 
+                                                                                        } else {
+                                                                                            echo lang('name') . ' ' . lang('not_specified');
+                                                                                        }
                                                                                     }
                                                                                     if ($this->ion_auth->in_group('Patient')) {
-                                                                                        echo $doctor_name;
+                                                                                        echo lang('dr') . '. ' . $doctor_details->name;
                                                                                     }
                                                                                 ?>
                                                                             </p>
-                                                                            <small class="text-muted">Project Manager</small>
+                                                                            <small class="text-muted">
+                                                                                <?php
+                                                                                    if ($this->ion_auth->in_group('Doctor')) {
+                                                                                        if(!empty($age)){
+                                                                                            echo $patient_details->sex . ', ' . $age . ' ' . lang('years_old');  
+                                                                                        } else {
+                                                                                            echo  lang('age') . ' ' . lang('not_specified');
+                                                                                        }
+                                                                                    }
+                                                                                    if ($this->ion_auth->in_group('Patient')) {
+                                                                                        if(!empty($doctor_details->department)){
+                                                                                            echo $doctor_details->department;
+                                                                                        } else {
+                                                                                            echo lang('department') . ' ' . lang('not_specified');
+                                                                                        }
+                                                                                    }
+                                                                                ?>
+                                                                            </small>
                                                                         </div>
                                                                     </div>
                                                                     <div class="d-flex mb-3 mt-3">
@@ -95,12 +121,12 @@
                                                                         <form role="form" id="myForm" action="" class="clearfix" method="post" enctype="multipart/form-data">
                                                                             <div class="form-group col-md-12" hidden>
                                                                                 <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
-                                                                                <input class="form-control mb-4" value='<?php echo date("m-d-Y"); ?>' type="text" name="date">
+                                                                                <input class="form-control mb-4" value='<?php echo date("d-m-Y"); ?>' type="text" name="date">
                                                                             </div>
                                                                             <div class="form-group col-md-12" hidden>
                                                                                 <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
                                                                                 <select class="form-control m-bot15 js-example-basic-single" name="patient_id" value=''>
-                                                                                    <option value="<?php echo $patient_id; ?>"> <?php echo $patient_name; ?> </option> 
+                                                                                    <option value="<?php echo $patient_details->id; ?>"> <?php echo $patient_details->name; ?> </option> 
                                                                                 </select>
                                                                             </div>
                                                                             <div class="form-group col-md-12">
@@ -118,17 +144,28 @@
                                                                             <div class="form-group col-md-12" hidden>
                                                                                 <textarea id="description" name="description" value="" readonly="" class="form-control" rows="4"></textarea>
                                                                             </div>
-                                                                            <input type="hidden" name="id" value=''>
+                                                                            <input type="text" id="noteId" name="id" class="noteId" hidden value=''>
                                                                             <input type="hidden" name="redirect" value='patient/caseList'>
                                                                             <div class="form-group col-md-12">
-                                                                                <button type="submit" name="submit" class="btn btn-primary pull-right" id="submitbtn" onclick="myFunction()"> <?php echo lang('submit'); ?></button>
+                                                                                <button type="submit" name="submit" class="btn btn-primary pull-right" id="submitbtn" onclick="myFunction()"> <?php echo lang('save_and_add_case'); ?></button>
                                                                             </div>
                                                                         </form>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         <?php } ?>
+
                                                     </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-1 mt-1">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <a href="" class="btn btn-success btn-md btn-block"><?php echo lang('bill'); ?> <?php echo lang('patient'); ?></a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <a href="appointment/todays" class="btn btn-info btn-md btn-block"><?php echo lang('back_to_appointment_list'); ?></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -218,6 +255,15 @@
         <!-- Custom js-->
         <script src="<?php echo base_url('public/assets/js/custom.js'); ?>"></script>
 
+        <!-- popover js -->
+        <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
+
+        <!-- Notifications js -->
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
         <!-- <script
             src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -265,14 +311,24 @@
                     data:data,
                     success:function(data){
                         var imp = document.getElementById('title').value;
-
-                        if (imp) {
-                            alert('Note Added');
+                        var desc = document.getElementById('description').value;
+                        if (imp && desc) {
                             var element = document.getElementsByClassName("ql-editor");
                             element[0].innerHTML = "";
                             document.getElementById('title').value = '';
+                            document.getElementById('noteId').value = '';
+
+                            event.preventDefault();
+                            event.stopPropagation();
+                            return $.growl.success({
+                                message: "<?php echo lang('record_added'); ?>"
+                            });
                         } else {
-                            alert('Clinic Impression Field is Empty');
+                            event.preventDefault();
+                            event.stopPropagation();
+                            return $.growl.error({
+                                message: "<?php echo lang('validation_error'); ?>"
+                            });
                         }
 
                         

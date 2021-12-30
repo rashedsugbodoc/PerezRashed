@@ -54,6 +54,21 @@ class Meeting extends MX_Controller {
     function jitsiLive() {
         $appointment_id = $this->input->get('id');
         $data['appointmentid'] = $appointment_id;
+        $data['appointment_details'] = $this->appointment_model->getAppointmentById($appointment_id);
+        $data['patient_details'] = $this->patient_model->getPatientById($data['appointment_details']->patient);
+        $data['doctor_details'] = $this->doctor_model->getDoctorById($data['appointment_details']->doctor);
+        $birthdate = $data['patient_details']->birthdate;
+        $patient_id = $data['patient_details']->id;
+        $doctor_id = $data['doctor_details']->id;       
+        $data['display_name'] = $this->ion_auth->user()->row()->username;
+        $data['email'] = $this->ion_auth->user()->row()->email;
+        $data['users_latest_note'] = $this->patient_model->getLatestMedicalHistoryByPatientId($patient_id);
+        $data['latest'] = $data['users_latest_note'][0];
+        if(!empty($birthdate)){
+            $data['age'] = computeAge($birthdate);
+        } else {
+            $data['age'] = NULL;
+        }
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('jitsiv2', $data);
         // $this->load->view('home/footer'); // just the header file
@@ -71,7 +86,7 @@ class Meeting extends MX_Controller {
             $doctor_details = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id);
             $doctor_id = $doctor_details->id;
             if ($doctor_id != $doctor) {
-                $this->session->set_flashdata('feedback', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
+                $this->session->set_flashdata('error', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
                 redirect('appointment');
             }
         } elseif ($this->ion_auth->in_group(array('Patient'))) {
@@ -79,7 +94,7 @@ class Meeting extends MX_Controller {
             $patient_details = $this->patient_model->getPatientByIonUserId($patient_ion_id);
             $patient_id = $patient_details->id;
             if ($patient_id != $patient) {
-                $this->session->set_flashdata('feedback', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
+                $this->session->set_flashdata('error', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
                 redirect('appointment');
             }
         }
