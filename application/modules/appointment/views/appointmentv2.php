@@ -24,7 +24,7 @@
                                     </div>
                                     <div class="card panel-body tabs-menu-body br-tl-0 border-top-0 p-6 w-100 shadow2 crypto-content">
                                         <div class="tab-content">
-                                            <div class="tab-pane active" id="pending">
+                                            <div class="tab-pane" id="pending">
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <label class="h3 pull-left"><?php echo lang('pending'); ?> <?php echo lang('appointment'); ?></label>
@@ -33,24 +33,26 @@
                                                 </div>
 
                                                 <div class="mb-0">
-                                                    <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons">
-                                                        <thead>
-                                                            <tr>
-                                                                <th> <?php echo lang('id'); ?></th>
-                                                                <th> <?php echo lang('patient'); ?></th>
-                                                                <th> <?php echo lang('doctor'); ?></th>
-                                                                <th> <?php echo lang('date-time'); ?></th>
-                                                                <th> <?php echo lang('remarks'); ?></th>
-                                                                <th> <?php echo lang('status'); ?></th>
-                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
-                                                                    <th> <?php echo lang('options'); ?></th>
-                                                                <?php } ?>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            
-                                                        </tbody>
-                                                    </table>
+                                                    <div class="table-responsive">
+                                                        <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th> <?php echo lang('id'); ?></th>
+                                                                    <th> <?php echo lang('patient'); ?></th>
+                                                                    <th> <?php echo lang('doctor'); ?></th>
+                                                                    <th> <?php echo lang('date-time'); ?></th>
+                                                                    <th> <?php echo lang('remarks'); ?> </th>
+                                                                    <th> <?php echo lang('status'); ?></th>
+                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                                                        <th> <?php echo lang('options'); ?></th>
+                                                                    <?php } ?>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="tab-pane" id="confirmed">
@@ -62,7 +64,7 @@
                                                 </div>
                                                 <div class="mb-0">
                                                     <div class="table-responsive">
-                                                        <table class="table table-bordered text-nowrap key-buttons" id="editable-sample2">
+                                                        <table class="table table-bordered text-nowrap key-buttons w-100" id="editable-sample2">
                                                             <thead>
                                                                 <tr>
                                                                     <th> <?php echo lang('id'); ?></th>
@@ -93,7 +95,7 @@
 
                                                 <div class="mb-0">
                                                     <div class="table-responsive">
-                                                        <table id="editable-sample3" class="table table-bordered text-nowrap key-buttons">
+                                                        <table id="editable-sample3" class="table table-bordered text-nowrap key-buttons w-100">
                                                             <thead>
                                                                 <tr>
                                                                     <th> <?php echo lang('id'); ?></th>
@@ -118,13 +120,13 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <label class="h3 pull-left"><?php echo lang('cancelled'); ?> <?php echo lang('appointment'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?>t</a>
+                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
 
                                                 <div class="mb-0">
                                                     <div class="table-responsive">
-                                                        <table id="editable-sample4" class="table table-bordered text-nowrap key-buttons">
+                                                        <table id="editable-sample4" class="table table-bordered text-nowrap key-buttons w-100">
                                                             <thead>
                                                                 <tr>
                                                                     <th> <?php echo lang('id'); ?></th>
@@ -146,7 +148,7 @@
 
                                                 </div>
                                             </div>
-                                            <div class="tab-pane" id="all">
+                                            <div class="tab-pane active" id="all">
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <label class="h3 pull-left"><?php echo lang('all'); ?> <?php echo lang('appointment'); ?></label>
@@ -156,7 +158,7 @@
 
                                                 <div class="mb-0">
                                                     <div class="table-responsive">
-                                                        <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons">
+                                                        <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100">
                                                             <thead>
                                                                 <tr>
                                                                     <th> <?php echo lang('id'); ?></th>
@@ -187,7 +189,7 @@
 
                                                 <div class="mb-0">
                                                     <div class="table-responsive">
-                                                        <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons">
+                                                        <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100">
                                                             <thead>
                                                                 <tr>
                                                                     <th> <?php echo lang('id'); ?></th>
@@ -303,7 +305,7 @@
                                                 <div class="col-sm-6 col-md-6">
                                                 <div class="form-group">
                                                     <label class="form-label"> <?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="date" readonly>
+                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" name="date" readonly>
                                                 </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
@@ -346,6 +348,89 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title">  <?php echo lang('edit_appointment'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form role="form" id="editAppointmentForm" action="appointment/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-sm-6 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('patient'); ?><span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search pos_select patient" name="patient" id="pos_select" data-placeholder="Choose One">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">  <?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search doctor" id="adoctors1" name="doctor" data-placeholder="Choose One">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"> <?php echo lang('date'); ?><span class="text-red">*</span></label>
+                                                    <input class="form-control fc-datepicker" name="date" id="date1" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Available Slot <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="time_slot" id="aslots1" value=''>
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?><span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="status" data-placeholder="Choose one">
+                                                            <option value="Pending Confirmation" <?php
+                                                                ?> > <?php echo lang('pending_confirmation'); ?> </option>
+                                                            <option value="Confirmed" <?php
+                                                                ?> > <?php echo lang('confirmed'); ?> </option>
+                                                            <option value="Treated" <?php
+                                                                ?> > <?php echo lang('treated'); ?> </option>
+                                                            <option value="Cancelled" <?php
+                                                                ?> > <?php echo lang('cancelled'); ?> </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Remarks <span class="text-red">*</span></label>
+                                                        <textarea class="form-control mb-4" name="remarks" placeholder="Purpose" rows="3" maxlength="500"></textarea>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="id" id="appointment_id" value=''>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <label class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
+                                                        <span class="custom-control-label">Send SMS</span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <button class="btn btn-primary pull-right" name="EditAppointment" type="submit">Submit</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -469,9 +554,9 @@
         <script src="<?php echo base_url('public/assets/plugins/multi/multi.min.js'); ?>"></script>
 
         <!-- Form Advanced Element -->
-        <script src="<?php echo base_url('public/assets/js/formelementadvnced.js'); ?>"></script>
+        <!-- <script src="<?php echo base_url('public/assets/js/formelementadvnced.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/form-elements.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/js/file-upload.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/file-upload.js'); ?>"></script> -->
 
         <!-- popover js -->
         <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
@@ -500,37 +585,43 @@
                     method: 'GET',
                     data: '',
                     dataType: 'json',
-                }).success(function (response) {
-                    var de = response.appointment.date * 1000;
-                    var d = new Date(de);
-                    var da = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
-                    // Populate the form fields with the data returned from server
-                    $('#editAppointmentForm').find('[name="id"]').val(response.appointment.id).end()
-                    $('#editAppointmentForm').find('[name="patient"]').val(response.appointment.patient).end()
-                    $('#editAppointmentForm').find('[name="doctor"]').val(response.appointment.doctor).end()
-                    $('#editAppointmentForm').find('[name="date"]').val(da).end()
-                    $('#editAppointmentForm').find('[name="status"]').val(response.appointment.status).end()
-                    $('#editAppointmentForm').find('[name="remarks"]').val(response.appointment.remarks).end()
+                    success: function (response) {
+                        var de = response.appointment.date * 1000;
+                        var d = new Date(de);
+                        var da = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+                        // Populate the form fields with the data returned from server
+                        $('#editAppointmentForm').find('[name="id"]').val(response.appointment.id).end()
+                        $('#editAppointmentForm').find('[name="patient"]').val(response.appointment.patient).end()
+                        $('#editAppointmentForm').find('[name="doctor"]').val(response.appointment.doctor).end()
+                        $('#editAppointmentForm').find('[name="date"]').val(da).end()
+                        $('#editAppointmentForm').find('[name="remarks"]').val(response.appointment.remarks).end()
 
-                    //$('.js-example-basic-single.doctor').val(response.appointment.doctor).trigger('change');
-                    // $('.js-example-basic-single.patient').val(response.appointment.patient).trigger('change');
-                    var option = new Option(response.patient.name + ' (ID: ' + response.patient.id + ')', response.patient.id, true, true);
-                    $('#editAppointmentForm').find('[name="patient"]').append(option).trigger('change');
-                    var option1 = new Option(response.doctor.name + ' (ID: ' + response.doctor.id + ')', response.doctor.id, true, true);
-                    $('#editAppointmentForm').find('[name="doctor"]').append(option1).trigger('change');
+                        $('#editAppointmentForm').find('[name="status"]').val(response.appointment.status).change();
+                        // $('#editAppointmentForm').find('[name="time_slot"]').val(response.appointment.time_slot).change();
+
+                        //$('.js-example-basic-single.doctor').val(response.appointment.doctor).trigger('change');
+                        // $('.js-example-basic-single.patient').val(response.appointment.patient).trigger('change');
+                        var option = new Option(response.patient.name + ' (ID: ' + response.patient.id + ')', response.patient.id, true, true);
+                        $('#editAppointmentForm').find('[name="patient"]').append(option).trigger('change');
+                        var option1 = new Option(response.doctor.name + ' (ID: ' + response.doctor.id + ')', response.doctor.id, true, true);
+                        $('#editAppointmentForm').find('[name="doctor"]').append(option1).trigger('change');
 
 
 
-                    var date = $('#date1').val();
-                    var doctorr = $('#adoctors1').val();
-                    var appointment_id = $('#appointment_id').val();
-                    // $('#default').trigger("reset");
-                    $.ajax({
-                        url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id,
-                        method: 'GET',
-                        data: '',
-                        dataType: 'json',
-                    }).success(function (response) {
+                        var date = $('#date1').val();
+                        var doctorr = $('#adoctors1').val();
+                        var appointment_id = $('#appointment_id').val();
+                        // $('#default').trigger("reset");
+
+                        
+                    }
+                });
+                $.ajax({
+                    url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
                         $('#aslots1').find('option').remove();
                         var slots = response.aslots;
                         $.each(slots, function (key, value) {
@@ -546,7 +637,7 @@
                         }
                         // Populate the form fields with the data returned from server
                         //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
-                    });
+                    }
                 });
             });
         });
@@ -643,19 +734,19 @@
                 method: 'GET',
                 data: '',
                 dataType: 'json',
-            }).success(function (response) {
-                var slots = response.aslots;
-                $.each(slots, function (key, value) {
-                    $('#aslots').append($('<option>').text(value).val(value)).end();
-                });
-                //   $("#default-step-1 .button-next").trigger("click");
-                if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
-                    $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                success: function (response) {
+                    var slots = response.aslots;
+                    $.each(slots, function (key, value) {
+                        $('#aslots').append($('<option>').text(value).val(value)).end();
+                    });
+                    //   $("#default-step-1 .button-next").trigger("click");
+                    if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+                        $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                    }
+                    // Populate the form fields with the data returned from server
+                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
-                // Populate the form fields with the data returned from server
-                //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
             });
-
         });
 
 
@@ -682,19 +773,20 @@
                 method: 'GET',
                 data: '',
                 dataType: 'json',
-            }).success(function (response) {
-                var slots = response.aslots;
-                $.each(slots, function (key, value) {
-                    $('#aslots').append($('<option>').text(value).val(value)).end();
-                });
-                //   $("#default-step-1 .button-next").trigger("click");
-                if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
-                    $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                success: function (response) {
+                    var slots = response.aslots;
+                    $.each(slots, function (key, value) {
+                        $('#aslots').append($('<option>').text(value).val(value)).end();
+                    });
+                    //   $("#default-step-1 .button-next").trigger("click");
+                    if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+                        $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                    }
+
+
+                    // Populate the form fields with the data returned from server
+                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
-
-
-                // Populate the form fields with the data returned from server
-                //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
             });
 
         }
@@ -729,17 +821,18 @@
                     method: 'GET',
                     data: '',
                     dataType: 'json',
-                }).success(function (response) {
-                    var slots = response.aslots;
-                    $.each(slots, function (key, value) {
-                        $('#aslots1').append($('<option>').text(value).val(value)).end();
-                    });
-                    //   $("#default-step-1 .button-next").trigger("click");
-                    if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
-                        $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                    success: function (response) {
+                        var slots = response.aslots;
+                        $.each(slots, function (key, value) {
+                            $('#aslots1').append($('<option>').text(value).val(value)).end();
+                        });
+                        //   $("#default-step-1 .button-next").trigger("click");
+                        if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
+                            $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                        }
+                        // Populate the form fields with the data returned from server
+                        //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                     }
-                    // Populate the form fields with the data returned from server
-                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 });
             });
         });
@@ -755,17 +848,18 @@
                 method: 'GET',
                 data: '',
                 dataType: 'json',
-            }).success(function (response) {
-                var slots = response.aslots;
-                $.each(slots, function (key, value) {
-                    $('#aslots1').append($('<option>').text(value).val(value)).end();
-                });
-                //   $("#default-step-1 .button-next").trigger("click");
-                if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
-                    $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                success: function (response) {
+                    var slots = response.aslots;
+                    $.each(slots, function (key, value) {
+                        $('#aslots1').append($('<option>').text(value).val(value)).end();
+                    });
+                    //   $("#default-step-1 .button-next").trigger("click");
+                    if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
+                        $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                    }
+                    // Populate the form fields with the data returned from server
+                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
-                // Populate the form fields with the data returned from server
-                //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
             });
 
         });
@@ -775,7 +869,7 @@
 
         $(document).ready(function () {
             $('#date1').datepicker({
-                format: "dd-mm-yyyy",
+                format: "mm-dd-yyyy",
                 autoclose: true,
             })
                     //Listen for the change even on the input
@@ -795,19 +889,20 @@
                 method: 'GET',
                 data: '',
                 dataType: 'json',
-            }).success(function (response) {
-                var slots = response.aslots;
-                $.each(slots, function (key, value) {
-                    $('#aslots1').append($('<option>').text(value).val(value)).end();
-                });
-                //   $("#default-step-1 .button-next").trigger("click");
-                if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
-                    $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                success: function (response) {
+                    var slots = response.aslots;
+                    $.each(slots, function (key, value) {
+                        $('#aslots1').append($('<option>').text(value).val(value)).end();
+                    });
+                    //   $("#default-step-1 .button-next").trigger("click");
+                    if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
+                        $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                    }
+
+
+                    // Populate the form fields with the data returned from server
+                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
-
-
-                // Populate the form fields with the data returned from server
-                //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
             });
 
         }
