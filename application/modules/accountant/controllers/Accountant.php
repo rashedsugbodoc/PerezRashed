@@ -18,15 +18,15 @@ class Accountant extends MX_Controller {
     public function index() {
 
         $data['accountants'] = $this->accountant_model->getAccountant();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('accountant', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('accountantv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewView() {
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new');
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
@@ -67,15 +67,15 @@ class Accountant extends MX_Controller {
                 $data = array();
                 // $id = $this->input->get('id');
                 $data['accountant'] = $this->accountant_model->getAccountantById($id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -134,9 +134,9 @@ class Accountant extends MX_Controller {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                     $data = array();
                     $data['accountant'] = $this->accountant_model->getAccountantById($id);
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('add_new', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 3;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -157,9 +157,9 @@ class Accountant extends MX_Controller {
                         $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                         $data = array();
                         $data['accountant'] = $this->accountant_model->getAccountantById($id);
-                        $this->load->view('home/dashboard'); // just the header file
-                        $this->load->view('add_new', $data);
-                        $this->load->view('home/footer'); // just the footer file
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
                     } else {
                         $ion_user_id = $this->db->get_where('accountant', array('id' => $id))->row()->ion_user_id;
                         if (empty($password)) {
