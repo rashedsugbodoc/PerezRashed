@@ -1902,7 +1902,7 @@ class Finance extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        if ($this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Laboratorist', 'Patient', 'CompanyUser'))) {
+        if ($this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Laboratorist', 'Patient'))) {
             redirect('home/permission');
         }
 
