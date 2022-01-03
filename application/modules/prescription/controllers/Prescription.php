@@ -46,9 +46,9 @@ class Prescription extends MX_Controller {
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['prescriptions'] = $this->prescription_model->getPrescription();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('all_prescription', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('all_prescriptionv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addPrescriptionView() {
