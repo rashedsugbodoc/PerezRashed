@@ -320,7 +320,6 @@
                             <div class="col-md-6 form-group">
                                 <label for="exampleInputEmail1">Available Slots</label>
                                 <select class="form-control" name="time_slot" id="aslots1" value=''> 
-
                                 </select>
                             </div>                            
                         </div>

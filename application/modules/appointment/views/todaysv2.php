@@ -5,212 +5,45 @@
                 <!--div class="app-content main-content"-->
                     <!--div class="side-app"-->
                         <!--Page header-->
-                        
-                        <div class="row mt-5">
-                            <div class="col-xl-12 col-sm-12 col-lg-12">
-                                <div class="panel panel-primary w-100">
-                                    <div class="tab-menu-heading crypto-tabs">
-                                        <div class="tabs-menu1">
-                                            <!-- Tabs -->
-                                            <ul class="nav panel-tabs">
-                                                <li class=""><a href="#all" class="active" data-toggle="tab"><?php echo lang('all'); ?></a></li>
-                                                <li><a href="#pending" data-toggle="tab" class=""><?php echo lang('pending_confirmation'); ?></a></li>
-                                                <li><a href="#confirmed" data-toggle="tab" class=""><?php echo lang('confirmed'); ?></a></li>
-                                                <li><a href="#treated" data-toggle="tab" class=""><?php echo lang('treated'); ?></a></li>
-                                                <li><a href="#cancelled" data-toggle="tab" class=""><?php echo lang('cancelled'); ?></a></li>
-                                                <li><a href="#requested" data-toggle="tab" class=""><?php echo lang('requested'); ?></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="card panel-body tabs-menu-body br-tl-0 border-top-0 p-6 w-100 shadow2 crypto-content">
-                                        <div class="tab-content">
-                                            <div class="tab-pane" id="pending">
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('pending'); ?> <?php echo lang('appointment'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?> </a>
-                                                    </div>
-                                                </div>
 
-                                                <div class="mb-0">
-                                                    <div class="table-responsive">
-                                                        <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?> </th>
-                                                                    <th> <?php echo lang('status'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
-                                                                        <th> <?php echo lang('options'); ?></th>
-                                                                    <?php } ?>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
+                        <div class="card mt-5">
+                            <div class="card-header">
+                                <div class="card-title">
+                                    <?php echo lang('todays_appointments'); ?>
+                                </div>
+                                <div class="card-options">
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                        <a data-toggle="modal" href="#myModal">
+                                            <div class="btn-group pull-right">
+                                                <button id="" class="btn btn-primary btn-xs pull-right">
+                                                    <i class="fa fa-plus"></i>   <?php echo lang('add_appointment'); ?> 
+                                                </button>
                                             </div>
-                                            <div class="tab-pane" id="confirmed">
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('confirmed'); ?> <?php echo lang('appointment'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
-                                                    </div>
-                                                </div>
-                                                <div class="mb-0">
-                                                    <div class="table-responsive">
-                                                        <table class="table table-bordered text-nowrap key-buttons w-100" id="editable-sample2">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
-                                                                        <th> <?php echo lang('options'); ?></th>
-                                                                    <?php } ?>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="treated">
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('treated'); ?> <?php echo lang('appointment'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-0">
-                                                    <div class="table-responsive">
-                                                        <table id="editable-sample3" class="table table-bordered text-nowrap key-buttons w-100">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
-                                                                        <th> <?php echo lang('options'); ?></th>
-                                                                    <?php } ?>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="cancelled">
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('cancelled'); ?> <?php echo lang('appointment'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-0">
-                                                    <div class="table-responsive">
-                                                        <table id="editable-sample4" class="table table-bordered text-nowrap key-buttons w-100">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
-                                                                        <th> <?php echo lang('options'); ?></th>
-                                                                    <?php } ?>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane active" id="all">
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('all'); ?> <?php echo lang('appointment'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-0">
-                                                    <div class="table-responsive">
-                                                        <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
-                                                                        <th> <?php echo lang('options'); ?></th>
-                                                                    <?php } ?>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="tab-pane" id="requested">
-                                                <div class="row mb-3">
-                                                    <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('requested'); ?> <?php echo lang('appointment'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('appointment'); ?></a>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-0">
-                                                    <div class="table-responsive">
-                                                        <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
-                                                                        <th> <?php echo lang('options'); ?></th>
-                                                                    <?php } ?>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </a>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="">
+                                    <div class="table-responsive">
+                                        <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons">
+                                            <thead>
+                                                <tr>
+                                                    <th> <?php echo lang('id'); ?></th>
+                                                    <th> <?php echo lang('patient'); ?></th>
+                                                    <th> <?php echo lang('doctor'); ?></th>
+                                                    <th> <?php echo lang('date-time'); ?></th>
+                                                    <th> <?php echo lang('remarks'); ?></th>
+                                                    <th> <?php echo lang('status'); ?></th>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                                        <th> <?php echo lang('options'); ?></th>
+                                                    <?php } ?>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
@@ -220,15 +53,16 @@
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content modal-content-demo">
                                     <div class="modal-header">
-                                        <h6 class="modal-title">  <?php echo lang('add_appointment'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                        <h6 class="modal-title"><?php echo lang('add_appointment'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <form role="form" action="appointment/addNew" method="post" class="clearfix" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"> <?php echo lang('patient'); ?><span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one">
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
@@ -237,19 +71,19 @@
                                                 <div class="row">
                                                     <div class="col-md-4 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
+                                                            <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
                                                             <input type="text" name="p_name" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
+                                                            <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
                                                             <input type="email" name="p_email" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
+                                                            <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
                                                             <form>
                                                                 <input id="phone" name="p_phone" value="+63" type="tel">
                                                              </form>
@@ -259,12 +93,12 @@
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
+                                                            <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
                                                             <input type="text" name="p_age" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('gender'); ?></label>
+                                                        <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('gender'); ?></label>
                                                         <select class="form-control select2-show-search" name="p_gender" data-placeholder="Choose one">
                                                             <option value="Male" <?php
                                                             if (!empty($patient->sex)) {
@@ -294,9 +128,8 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('doctor'); ?><span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="doctor" id="adoctors" data-placeholder="Choose one">
-                                                            
+                                                        <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" id="adoctors" name="doctor" data-placeholder="Choose one">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -304,8 +137,8 @@
                                             <div class="row">
                                                 <div class="col-sm-6 col-md-6">
                                                 <div class="form-group">
-                                                    <label class="form-label"> <?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" name="date" readonly>
+                                                    <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
+                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="date" id="date" type="text" readonly>
                                                 </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
@@ -320,7 +153,7 @@
                                             <div class="row">
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('appointment'); ?> <?php echo lang('status'); ?><span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('appointment'); ?> <?php echo lang('status'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search" name="status" data-placeholder="Choose one">
                                                             <option value="Pending Confirmation" <?php
                                                                 ?> > <?php echo lang('pending_confirmation'); ?> </option>
@@ -333,21 +166,21 @@
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"> <?php echo lang('remarks'); ?> <span class="text-red">*</span></label>
+                                                        <label class="form-label">Remarks <span class="text-red">*</span></label>
                                                         <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" rows="3" maxlength="500"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <!-- <label class="custom-control custom-checkbox">
+                                                    <label class="custom-control custom-checkbox">
                                                         <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
                                                         <span class="custom-control-label">Send SMS</span>
-                                                    </label> -->
+                                                    </label>
                                                     
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
-                                                    <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                    <button class="btn btn-primary pull-right" name="AddAppointment" type="submit">Submit</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -360,23 +193,23 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content modal-content-demo">
                                     <div class="modal-header">
-                                        <h6 class="modal-title">  <?php echo lang('edit_appointment'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                        <h6 class="modal-title"><?php echo lang('edit_appointment'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <form role="form" id="editAppointmentForm" action="appointment/addNew" class="clearfix" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"> <?php echo lang('patient'); ?><span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search pos_select patient" name="patient" id="pos_select" data-placeholder="Choose One">
+                                                        <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search pos_select patient" name="patient" data-placeholder="Choose One">
                                                             
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label">  <?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search doctor" id="adoctors1" name="doctor" data-placeholder="Choose One">
+                                                        <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" id="adoctors1" name="doctor" data-placeholder="Choose One">
                                                             
                                                         </select>
                                                     </div>
@@ -385,14 +218,14 @@
                                             <div class="row">
                                                 <div class="col-sm-6 col-md-6">
                                                 <div class="form-group">
-                                                    <label class="form-label"> <?php echo lang('date'); ?><span class="text-red">*</span></label>
-                                                    <input class="form-control fc-datepicker" name="date" id="date1" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                    <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
+                                                    <input class="form-control fc-datepicker" id="date1" name="date" placeholder="MM/DD/YYYY" type="text" readonly>
                                                 </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label">Available Slot <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="time_slot" id="aslots1">
+                                                        <select class="form-control select2-show-search" name="time_slot" id="aslots1" data-placeholder="No Further Time Slot">
                                                             
                                                         </select>
                                                     </div>
@@ -401,7 +234,7 @@
                                             <div class="row">
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?><span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('appointment'); ?> <?php echo lang('status'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search" name="status" data-placeholder="Choose one">
                                                             <option value="Pending Confirmation" <?php
                                                                 ?> > <?php echo lang('pending_confirmation'); ?> </option>
@@ -411,8 +244,6 @@
                                                                 ?> > <?php echo lang('treated'); ?> </option>
                                                             <option value="Cancelled" <?php
                                                                 ?> > <?php echo lang('cancelled'); ?> </option>
-                                                            <option value="Requested" <?php
-                                                                ?> > <?php echo lang('requested'); ?> </option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -422,8 +253,8 @@
                                                         <textarea class="form-control mb-4" name="remarks" placeholder="Purpose" rows="3" maxlength="500"></textarea>
                                                     </div>
                                                 </div>
-                                                <input type="hidden" name="id" id="appointment_id" value=''>
                                             </div>
+                                            <input type="hidden" name="id" id="appointment_id" value=''>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <label class="custom-control custom-checkbox">
@@ -432,7 +263,7 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
-                                                    <button class="btn btn-primary pull-right" name="EditAppointment" type="submit"><?php echo lang('submit'); ?></button>
+                                                    <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -441,16 +272,15 @@
                             </div>
                         </div>
 
-                    </div>
-                </div>
-            </div>
 
-            <!--Footer-->
+                    </div>
+                </div><!-- end app-content-->
+            </div>
             <footer class="footer">
                 <div class="container">
                     <div class="row align-items-center flex-row-reverse">
                         <div class="col-md-12 col-sm-12 mt-3 mt-lg-0 text-center">
-                            Copyright © 2021 <a href="#">Rygel Dash</a>. Deployed by <a href="#">Rygel Technology Solutions</a> All rights reserved.
+                            20<?php echo date('y'); ?> &copy; <?php echo $this->db->get('settings')->row()->system_vendor; ?> by Rygel Technology Solutions.
                         </div>
                     </div>
                 </div>
@@ -469,7 +299,6 @@
         <script src="<?php echo base_url('public/assets/js/vendors/jquery-3.5.1.min.js'); ?>"></script>
 
         <!-- Bootstrap4 js-->
-        <script src="<?php echo base_url('public/assets/plugins/bootstrap/popper.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/bootstrap/js/bootstrap.min.js'); ?>"></script>
 
         <!--Othercharts js-->
@@ -533,10 +362,6 @@
         <script src="<?php echo base_url('public/assets/plugins/fancyuploder/jquery.fancy-fileupload.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/fancyuploder/fancy-uploader.js'); ?>"></script>
 
-        <!-- File uploads js -->
-        <script src="<?php echo base_url('public/assets/plugins/fileupload/js/dropify.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/js/filupload.js'); ?>"></script>
-
         <!-- Multiple select js -->
         <script src="<?php echo base_url('public/assets/plugins/multipleselect/multiple-select.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/multipleselect/multi-select.js'); ?>"></script>
@@ -555,11 +380,6 @@
         <!--multi js-->
         <script src="<?php echo base_url('public/assets/plugins/multi/multi.min.js'); ?>"></script>
 
-        <!-- Form Advanced Element -->
-        <!-- <script src="<?php echo base_url('public/assets/js/formelementadvnced.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/js/form-elements.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/js/file-upload.js'); ?>"></script> -->
-
         <!-- popover js -->
         <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
 
@@ -575,7 +395,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $(".table").on("click", ".editbutton", function () {
-                // e.preventDefault(e);
+                //   e.preventDefault(e);
                 // Get the record's ID via attribute  
                 var iid = $(this).attr('data-id');
                 var id = $(this).attr('data-id');
@@ -590,31 +410,25 @@
                     success: function (response) {
                         var de = response.appointment.date * 1000;
                         var d = new Date(de);
-                        var da = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+                        var da = (d.getMonth() + 1) + '/' + d.getDate() + '/' +  d.getFullYear();
                         // Populate the form fields with the data returned from server
                         $('#editAppointmentForm').find('[name="id"]').val(response.appointment.id).end()
                         $('#editAppointmentForm').find('[name="patient"]').val(response.appointment.patient).end()
                         $('#editAppointmentForm').find('[name="doctor"]').val(response.appointment.doctor).end()
                         $('#editAppointmentForm').find('[name="date"]').val(da).end()
+                        $('#editAppointmentForm').find('[name="status"]').val(response.appointment.status).change();
                         $('#editAppointmentForm').find('[name="remarks"]').val(response.appointment.remarks).end()
 
-                        $('#editAppointmentForm').find('[name="status"]').val(response.appointment.status).change();
-                        // $('#editAppointmentForm').find('[name="time_slot"]').val(response.appointment.time_slot).change();
-
-                        //$('.js-example-basic-single.doctor').val(response.appointment.doctor).trigger('change');
-                        // $('.js-example-basic-single.patient').val(response.appointment.patient).trigger('change');
                         var option = new Option(response.patient.name + ' (ID: ' + response.patient.id + ')', response.patient.id, true, true);
                         $('#editAppointmentForm').find('[name="patient"]').append(option).trigger('change');
                         var option1 = new Option(response.doctor.name + ' (ID: ' + response.doctor.id + ')', response.doctor.id, true, true);
                         $('#editAppointmentForm').find('[name="doctor"]').append(option1).trigger('change');
 
 
-
                         var date = $('#date1').val();
                         var doctorr = $('#adoctors1').val();
                         var appointment_id = $('#appointment_id').val();
                         // $('#default').trigger("reset");
-
                         $.ajax({
                             url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id,
                             method: 'GET',
@@ -638,13 +452,12 @@
                                 //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                             }
                         });
-                        
                     }
                 });
-                
             });
         });
     </script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $(".table").on("click", ".history", function () {
@@ -670,8 +483,6 @@
         });
     </script>
 
-
-
     <script>
         $(document).ready(function () {
             $('.pos_client').hide();
@@ -686,18 +497,55 @@
             });
 
         });
-
-
     </script>
 
+    <script>
+        $(document).ready(function () {
+            var table = $('#editable-sample1').DataTable({
+                responsive: true,
+                //   dom: 'lfrBtip',
 
-
-
-
-
-
-
-
+                "processing": true,
+                "serverSide": true,
+                "searchable": true,
+                "ajax": {
+                    url: "appointment/getTodaysAppoinmentList",
+                    type: 'POST',
+                },
+                scroller: {
+                    loadingIndicator: true
+                },
+                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5',
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5],
+                        }
+                    },
+                ],
+                aLengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                iDisplayLength: 100,
+                "order": [[0, "desc"]],
+                "language": {
+                    "lengthMenu": "_MENU_",
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search...",
+                    "url": "common/assets/DataTables/languages/english.json"
+                },
+            });
+            table.buttons().container().appendTo('.custom_buttons');
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -721,6 +569,8 @@
                         if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
                             $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
                         }
+                        // Populate the form fields with the data returned from server
+                        //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                     }
                 });
             });
@@ -791,24 +641,8 @@
                     //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
             });
-
         }
-
-
-
-
     </script>
-
-
-
-
-
-
-
-
-
-
-
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -864,15 +698,11 @@
                     //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
             });
-
         });
-
-
-
 
         $(document).ready(function () {
             $('#date1').datepicker({
-                format: "mm-dd-yyyy",
+                format: "mm/dd/yyyy",
                 autoclose: true,
             })
                     //Listen for the change even on the input
@@ -907,321 +737,9 @@
                     //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
             });
-
         }
-
-
     </script>
 
-    <script>
-        $(document).ready(function () {
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                $.fn.dataTable
-                        .tables({visible: true, api: true})
-                        .columns.adjust()
-                        .responsive.recalc();
-            });
-        });
-    </script>
-
-
-    <script>
-
-
-        $(document).ready(function () {
-            var table = $('#editable-sample5').DataTable({
-                responsive: true,
-                //   dom: 'lfrBtip',
-
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
-                "ajax": {
-                    url: "appointment/getAppoinmentList",
-                    type: 'POST',
-                },
-                scroller: {
-                    loadingIndicator: true
-                },
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5],
-                        }
-                    },
-                ],
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                iDisplayLength: 100,
-                "order": [[0, "desc"]],
-                "language": {
-                    "lengthMenu": "_MENU_",
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search...",
-                    "url": "common/assets/DataTables/languages/english.json"
-                },
-            });
-            table.buttons().container().appendTo('.custom_buttons');
-        });
-    </script>
-    <script>
-
-
-        $(document).ready(function () {
-            var table = $('#editable-sample6').DataTable({
-                responsive: true,
-                //   dom: 'lfrBtip',
-
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
-                "ajax": {
-                    url: "appointment/getRequestedAppointmentList",
-                    type: 'POST',
-                },
-                scroller: {
-                    loadingIndicator: true
-                },
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5],
-                        }
-                    },
-                ],
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                iDisplayLength: 100,
-                "order": [[0, "desc"]],
-                "language": {
-                    "lengthMenu": "_MENU_",
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search...",
-                    "url": "common/assets/DataTables/languages/english.json"
-                },
-            });
-            table.buttons().container().appendTo('.custom_buttons');
-        });
-    </script>
-
-    <script>
-
-
-        $(document).ready(function () {
-            var table = $('#editable-sample1').DataTable({
-                responsive: true,
-                //   dom: 'lfrBtip',
-
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
-                "ajax": {
-                    url: "appointment/getPendingAppoinmentList",
-                    type: 'POST',
-                },
-                scroller: {
-                    loadingIndicator: true
-                },
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5],
-                        }
-                    },
-                ],
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                iDisplayLength: 100,
-                "order": [[0, "desc"]],
-                "language": {
-                    "lengthMenu": "_MENU_",
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search...",
-                    "url": "common/assets/DataTables/languages/english.json"
-                },
-            });
-            table.buttons().container().appendTo('.custom_buttons');
-        });
-    </script>
-    <script>
-
-
-        $(document).ready(function () {
-            var table = $('#editable-sample2').DataTable({
-                responsive: true,
-                //   dom: 'lfrBtip',
-
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
-                "ajax": {
-                    url: "appointment/getConfirmedAppoinmentList",
-                    type: 'POST',
-                },
-                scroller: {
-                    loadingIndicator: true
-                },
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5],
-                        }
-                    },
-                ],
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                iDisplayLength: 100,
-                "order": [[0, "desc"]],
-                "language": {
-                    "lengthMenu": "_MENU_",
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search...",
-                    "url": "common/assets/DataTables/languages/english.json"
-                },
-            });
-            table.buttons().container().appendTo('.custom_buttons');
-        });
-    </script>
-
-    <script>
-
-
-        $(document).ready(function () {
-            var table = $('#editable-sample3').DataTable({
-                responsive: true,
-                //   dom: 'lfrBtip',
-
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
-                "ajax": {
-                    url: "appointment/getTreatedAppoinmentList",
-                    type: 'POST',
-                },
-                scroller: {
-                    loadingIndicator: true
-                },
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5],
-                        }
-                    },
-                ],
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                iDisplayLength: 100,
-                "order": [[0, "desc"]],
-                "language": {
-                    "lengthMenu": "_MENU_",
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search...",
-                    "url": "common/assets/DataTables/languages/english.json"
-                },
-            });
-            table.buttons().container().appendTo('.custom_buttons');
-        });
-    </script>
-
-    <script>
-
-
-        $(document).ready(function () {
-            var table = $('#editable-sample4').DataTable({
-                responsive: true,
-                //   dom: 'lfrBtip',
-
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
-                "ajax": {
-                    url: "appointment/getCancelledAppoinmentList",
-                    type: 'POST',
-                },
-                scroller: {
-                    loadingIndicator: true
-                },
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5],
-                        }
-                    },
-                ],
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                iDisplayLength: 100,
-                "order": [[0, "desc"]],
-                "language": {
-                    "lengthMenu": "_MENU_",
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search...",
-                    "url": "common/assets/DataTables/languages/english.json"
-                },
-            });
-            table.buttons().container().appendTo('.custom_buttons');
-        });
-    </script>
 
     <script>
         $(document).ready(function () {
@@ -1251,7 +769,7 @@
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'patient/getPatientinfo',
+                    url: 'patient/getPatientinfoWithAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -1313,43 +831,6 @@
                 }
 
             });
-        });
-    </script>
-    
-
-    <script>
-        $(document).ready(function () {
-            var error = "<?php echo $_SESSION['error'] ?>";
-            var success = "<?php echo $_SESSION['success'] ?>";
-            var notice = "<?php echo $_SESSION['notice'] ?>";
-            var warning = "<?php echo $_SESSION['warning'] ?>";
-
-            if (success) {
-                return $.growl.success({
-                    message: success
-                });
-            }
-            if (error) {
-                return $.growl.error({
-                    message: error
-                });
-            }
-            if (warning) {
-                return $.growl.warning({
-                    message: warning
-                });
-            }
-            if (notice) {
-                return $.growl.notice({
-                    message: notice
-                });
-            }
-
-            var error = "<?php unset($_SESSION['error']); ?>";
-            var success = "<?php unset($_SESSION['success']); ?>";
-            var warning = "<?php unset($_SESSION['warning']); ?>";
-            var notice = "<?php unset($_SESSION['notice']); ?>";
-
         });
     </script>
 

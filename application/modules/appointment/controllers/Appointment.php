@@ -40,9 +40,9 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('appointment_request', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('appointment_requestv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function todays() {
@@ -54,9 +54,9 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('todays', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('todaysv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function upcoming() {
@@ -68,9 +68,9 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('upcoming', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('upcomingv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function myTodays() {
@@ -118,9 +118,9 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
@@ -233,17 +233,17 @@ class Appointment extends MX_Controller {
                 $data['appointment'] = $this->appointment_model->getAppointmentById($id);
                 $data['patients'] = $this->patient_model->getPatientById($data['appointment']->patient);
                 $data['doctors'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file 
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data['patients'] = $this->patient_model->getPatient();
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
 
@@ -946,9 +946,9 @@ class Appointment extends MX_Controller {
         $data['appointment'] = $this->appointment_model->getAppointmentById($id);
         $data['patients'] = $this->patient_model->getPatientById($data['appointment']->patient);
         $data['doctors'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the footer file 
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the footer file 
     }
 
     function editAppointmentByJason() {
