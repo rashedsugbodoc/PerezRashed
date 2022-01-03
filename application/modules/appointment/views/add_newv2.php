@@ -182,13 +182,11 @@
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('remarks'); ?><span class="text-red">*</span></label>
-                                                <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" rows="3" maxlength="500">
-                                                <?php
-                                                    if (!empty($appointment->remarks)) {
-                                                        echo $appointment->remarks;
-                                                    }
-                                                ?>
-                                                </textarea>
+                                                <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" rows="3" maxlength="500"><?php
+                                                if (!empty($appointment->remarks)) {
+                                                    echo $appointment->remarks;
+                                                }
+                                                ?></textarea>
                                             </div>
                                         </div>
                                     </div>
