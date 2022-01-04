@@ -348,7 +348,6 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 $(".editbutton").click(function (e) {
-                    e.preventDefault(e);
                     // Get the record's ID via attribute  
                     var iid = $(this).attr('data-id');
                     $('#editTimeSlotForm').trigger("reset");
@@ -358,12 +357,13 @@
                         method: 'GET',
                         data: '',
                         dataType: 'json',
-                    }).success(function (response) {
-                        // Populate the form fields with the data returned from server
-                        $('#editTimeSlotForm').find('[name="id"]').val(response.schedule.id).end()
-                        $('#editTimeSlotForm').find('[name="s_time"]').val(response.schedule.s_time).end()
-                        $('#editTimeSlotForm').find('[name="e_time"]').val(response.schedule.e_time).end()
-                        $('#editTimeSlotForm').find('[name="weekday"]').val(response.schedule.weekday).end()
+                        success: function (response) {
+                            // Populate the form fields with the data returned from server
+                            $('#editTimeSlotForm').find('[name="id"]').val(response.schedule.id).end()
+                            $('#editTimeSlotForm').find('[name="s_time"]').val(response.schedule.s_time).end()
+                            $('#editTimeSlotForm').find('[name="e_time"]').val(response.schedule.e_time).end()
+                            $('#editTimeSlotForm').find('[name="weekday"]').val(response.schedule.weekday).end()    
+                        }
                     });
                 });
             });
