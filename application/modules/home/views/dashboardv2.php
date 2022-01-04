@@ -146,6 +146,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
             .ui-timepicker-wrapper {
                 z-index: 10001 !important;
             }
+            .app-sidebar.app-sidebar2 {
+                z-index: 976 !important;
+            }
         </style>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
