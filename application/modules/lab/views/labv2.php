@@ -394,7 +394,7 @@
                         loadingIndicator: true
                     },
 
-                    dom: "<'row'<'col-sm-1 col-md-1'l><'col-sm-7 col-md-7 text-center'B><'col-sm-4 col-md-4 text-right'f>>" +
+                    dom: "<'row'<'col-sm-4 col-md-12'f><'col-sm-12 col-md-2'l><'col-sm-12 col-md-10 text-right'B>>" +
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                     buttons: [
