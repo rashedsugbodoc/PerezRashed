@@ -59,9 +59,9 @@ class Form extends MX_Controller {
         $data['categories'] = $this->form_model->getFormCategory();
 
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('form', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('formv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function form() {
@@ -92,13 +92,13 @@ class Form extends MX_Controller {
         $data['forms'] = $this->form_model->getForm();
 
         if (!empty($id)) {
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_form_view', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_form_viewv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         } else {
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('form', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('formv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
@@ -149,9 +149,9 @@ class Form extends MX_Controller {
         $data['categories'] = $this->form_model->getFormCategory();
         // $data['patients'] = $this->patient_model->getPatient();
         // $data['doctors'] = $this->doctor_model->getDoctor();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_form_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_form_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addForm() {
@@ -227,9 +227,9 @@ class Form extends MX_Controller {
                     $data['doctors'] = $this->doctor_model->getDoctor();
                     $data['form'] = $this->form_model->getFormById($id);
                     $data['templates'] = $this->form_model->getTemplate();
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('add_form_view', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_form_viewv2', $data);
+                    // $this->load->view('home/footer'); // just the header file
                 }
             } else {
                 $data = array();
@@ -238,9 +238,9 @@ class Form extends MX_Controller {
                 $data['patients'] = $this->patient_model->getPatient();
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['form'] = $this->form_model->getFormById($id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_form_view', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_form_viewv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             if (!empty($p_name)) {
@@ -249,6 +249,7 @@ class Form extends MX_Controller {
                     'patient_id' => $patient_id,
                     'name' => $p_name,
                     'email' => $p_email,
+                    'doctor' => $doctor,
                     'phone' => $p_phone,
                     'sex' => $p_gender,
                     'age' => $p_age,
@@ -382,9 +383,9 @@ class Form extends MX_Controller {
             $data['doctors'] = $this->doctor_model->getDoctor();
             $id = $this->input->get('id');
             $data['form'] = $this->form_model->getFormById($id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_form_view', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_form_viewv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
@@ -420,9 +421,9 @@ class Form extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['templates'] = $this->form_model->getTemplate();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('template', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('templatev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addTemplateView() {
@@ -437,9 +438,9 @@ class Form extends MX_Controller {
         }
 
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_template', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_templatev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function getTemplateByIdByJason() {
@@ -472,16 +473,16 @@ class Form extends MX_Controller {
                 $data['settings'] = $this->settings_model->getSettings();
                 $data['templates'] = $this->form_model->getTemplate($id);
 
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_template', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_templatev2', $data);
+                // $this->load->view('home/footer'); // just the header file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_template', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_templatev2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
             // redirect('form/addTemplate');
         } else {
@@ -515,9 +516,9 @@ class Form extends MX_Controller {
             $data['settings'] = $this->settings_model->getSettings();
             $id = $this->input->get('id');
             $data['template'] = $this->form_model->getTemplateById($id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_template', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_templatev2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
