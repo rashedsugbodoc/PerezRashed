@@ -6,9 +6,9 @@
                     <!--div class="side-app"-->
                         <!--Page header-->
 
-                        <div class="row">
+                        <div class="row mt-5">
                             <div class="col-md-12 col-sm-12 col-lg-5">
-                                <div class="card mt-5">
+                                <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
                                             <?php
@@ -223,7 +223,7 @@
                                 </div>
                             </div>
                             <div class="col-md-12 col-sm-12 col-lg-7">
-                                <div class="card mt-5">
+                                <div class="card">
                                     <div class="card-header">
                                         <div class="card-title"><?php echo lang('form_report'); ?></div>
                                         <div class="card-options">
@@ -287,6 +287,7 @@
         <script src="<?php echo base_url('public/assets/js/vendors/jquery-3.5.1.min.js'); ?>"></script>
 
         <!-- Bootstrap4 js-->
+        <script src="<?php echo base_url('public/assets/plugins/bootstrap/popper.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/bootstrap/js/bootstrap.min.js'); ?>"></script>
 
         <!--Othercharts js-->
@@ -360,6 +361,9 @@
         <!-- quill js -->
         <script src="<?php echo base_url('public/assets/plugins/quill/quill.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/form-editor2.js'); ?>"></script>
+
+        <!-- popover js -->
+        <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
 
         <!-- Notifications js -->
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
