@@ -55,9 +55,9 @@ class Lab extends MX_Controller {
         $data['categories'] = $this->lab_model->getLabCategory();
 
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('lab', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('labv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function lab() {
@@ -88,13 +88,13 @@ class Lab extends MX_Controller {
         $data['labs'] = $this->lab_model->getLab();
 
         if (!empty($id)) {
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_lab_view', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_lab_viewv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         } else {
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('lab', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('labv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
@@ -144,9 +144,9 @@ class Lab extends MX_Controller {
         $data['categories'] = $this->lab_model->getLabCategory();
         // $data['patients'] = $this->patient_model->getPatient();
         // $data['doctors'] = $this->doctor_model->getDoctor();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_lab_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_lab_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addLab() {
@@ -224,9 +224,9 @@ class Lab extends MX_Controller {
                     $data['doctors'] = $this->doctor_model->getDoctor();
                     // $id = $this->input->get('id');
                     $data['lab'] = $this->lab_model->getLabById($id);
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('add_lab_view', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_lab_viewv2', $data);
+                    // $this->load->view('home/footer'); // just the header file
                 }
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
@@ -236,9 +236,9 @@ class Lab extends MX_Controller {
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['lab'] = $this->lab_model->getLabById($id);
                 $data['templates'] = $this->lab_model->getTemplate();
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_lab_view', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_lab_viewv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
             
         } else {
@@ -248,6 +248,7 @@ class Lab extends MX_Controller {
                     'patient_id' => $patient_id,
                     'name' => $p_name,
                     'email' => $p_email,
+                    'doctor' => $doctor,
                     'phone' => $p_phone,
                     'sex' => $p_gender,
                     'age' => $p_age,
@@ -378,9 +379,9 @@ class Lab extends MX_Controller {
             $data['doctors'] = $this->doctor_model->getDoctor();
             $id = $this->input->get('id');
             $data['lab'] = $this->lab_model->getLabById($id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_lab_view', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_lab_viewv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
@@ -395,7 +396,7 @@ class Lab extends MX_Controller {
 
             $this->lab_model->deleteLab($id);
             $this->session->set_flashdata('success', lang('record_deleted'));
-            redirect('lab/lab');
+            redirect('lab');
         } else {
             redirect('home/permission');
         }
@@ -408,9 +409,9 @@ class Lab extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['templates'] = $this->lab_model->getTemplate();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('template', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('templatev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addTemplateView() {
@@ -421,9 +422,9 @@ class Lab extends MX_Controller {
         }
 
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_template', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_templatev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function getTemplateByIdByJason() {
@@ -452,16 +453,16 @@ class Lab extends MX_Controller {
                 $data = array();
                 $data['settings'] = $this->settings_model->getSettings();
                 $data['template'] = $this->lab_model->getTemplateById($id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_template', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_templatev2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_template', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_templatev2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             }
         } else {
             $data = array();
@@ -494,9 +495,9 @@ class Lab extends MX_Controller {
             $data['settings'] = $this->settings_model->getSettings();
             $id = $this->input->get('id');
             $data['template'] = $this->lab_model->getTemplateById($id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_template', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_templatev2', $data);
+            // $this->load->view('home/footer'); // just the footer file
         }
     }
 
