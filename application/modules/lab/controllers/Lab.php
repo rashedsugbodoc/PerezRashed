@@ -119,9 +119,9 @@ class Lab extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('lab_1', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('lab_1v2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addLabView() {
