@@ -30,9 +30,9 @@ class Prescription extends MX_Controller {
         }
         $data['prescriptions'] = $this->prescription_model->getPrescriptionByDoctorId($doctor_id);
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('prescription', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('prescriptionv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function all() {
