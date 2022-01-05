@@ -41,9 +41,9 @@ class Schedule extends MX_Controller {
         $data['doctorr'] = $doctor;
         $data['settings'] = $this->settings_model->getSettings();
         $data['schedules'] = $this->schedule_model->getScheduleByDoctor($doctor);
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('timeschedule', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('timeschedulev2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function addSchedule() {
@@ -1042,9 +1042,9 @@ class Schedule extends MX_Controller {
         $data['doctorr'] = $doctor;
         $data['settings'] = $this->settings_model->getSettings();
         $data['holidays'] = $this->schedule_model->getHolidaysByDoctor($doctor);
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('holidays', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('holidaysv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function addHoliday() {
