@@ -8,7 +8,7 @@ class Settings extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->library('sma');
-        $this->load->model('country/country_model');
+        $this->load->model('location/location_model');
         if (!$this->ion_auth->in_group(array('admin', 'superadmin'))) {
             redirect('home/permission');
         }
@@ -18,10 +18,46 @@ class Settings extends MX_Controller {
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
         $data['zones'] = timezone_identifiers_list();
-        $data['countries'] = $this->country_model->getCountry();
+        $data['countries'] = $this->location_model->getCountry();
+        $data['states'] = $this->location_model->getState();
+        $data['cities'] = $this->location_model->getCity();
+        $data['barangays'] = $this->location_model->getBarangay();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('settings', $data);
         $this->load->view('home/footer'); // just the footer file
+    }
+
+    public function getStateByCountryIdByJason() {
+        $data = array();
+        $country_id = $this->input->get('country');
+        $settings = $this->input->get('settings');
+
+        $data['state'] = $this->location_model->getStateByCountryId($country_id);
+        $data['settings_state_id'] = $this->settings_model->getSettingsByJason($settings);
+
+        echo json_encode($data);        
+    }
+
+    public function getCityByStateIdByJason() {
+        $data = array();
+        $state_id = $this->input->get('state');
+        $settings = $this->input->get('settings');
+
+        $data['city'] = $this->location_model->getCityByStateId($state_id);
+        $data['settings_city_id'] = $this->settings_model->getSettingsByJason($settings);
+
+        echo json_encode($data);        
+    }
+
+    public function getBarangayByCityIdByJason() {
+        $data = array();
+        $city_id = $this->input->get('city');
+        $settings = $this->input->get('settings');
+
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
+        $data['settings_barangay_id'] = $this->settings_model->getSettingsByJason($settings);
+
+        echo json_encode($data);        
     }
 
     function subscription() {
@@ -44,7 +80,11 @@ class Settings extends MX_Controller {
         $buyer = $this->input->post('buyer');
         $p_code = $this->input->post('p_code');
         $language = $this->input->post('language');
-        $country_id = $this->input->post('country_id');        
+        $country_id = $this->input->post('country_id');
+        $state_id = $this->input->post('state_id');
+        $city_id = $this->input->post('city_id');
+        $barangay_id = $this->input->post('barangay_id');
+        $postal = $this->input->post('postal');
         $company_name = $this->input->post('company_name');
         $company_vat_number = $this->input->post('company_vat_number');
         $timezone = $this->input->post('timezone');
@@ -63,6 +103,8 @@ class Settings extends MX_Controller {
             $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[1]|max_length[100]|xss_clean');
             // Validating Address Field    
             $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[1]|max_length[500]|xss_clean');
+            // Validating Postal Field           
+            $this->form_validation->set_rules('postal', 'Postal Code', 'trim|min_length[3]|alpha_numeric|max_length[50]|xss_clean');
             // Validating Phone Field           
             $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[1]|max_length[50]|xss_clean');
             // Validating Currency Field   
@@ -78,7 +120,7 @@ class Settings extends MX_Controller {
                 $data = array();
                 $data['settings'] = $this->settings_model->getSettings();
                 $data['zones'] = timezone_identifiers_list();
-                $data['countries'] = $this->country_model->getCountry();
+                $data['countries'] = $this->location_model->getCountry();
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('settings', $data);
                 $this->load->view('home/footer'); // just the footer file
@@ -124,6 +166,10 @@ class Settings extends MX_Controller {
                         'codec_purchase_code' => $p_code,
                         'logo' => $img_url,
                         'country_id' => $country_id,
+                        'state_id' => $state_id,
+                        'city_id' => $city_id,
+                        'barangay_id' => $barangay_id,
+                        'postal' => $postal,
                         'company_name' => $company_name,
                         'company_vat_number' => $company_vat_number,
                         'timezone' => $timezone,
@@ -143,6 +189,10 @@ class Settings extends MX_Controller {
                         'codec_username' => $buyer,
                         'codec_purchase_code' => $p_code,
                         'country_id' => $country_id,
+                        'state_id' => $state_id,
+                        'city_id' => $city_id,
+                        'barangay_id' => $barangay_id,
+                        'postal' => $postal,
                         'company_name' => $company_name,
                         'company_vat_number' => $company_vat_number,
                         'timezone' => $timezone,

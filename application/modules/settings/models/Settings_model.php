@@ -20,6 +20,13 @@ class Settings_model extends CI_model {
         return $query->row();
     }
 
+    function getSettingsByJason($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->Where('id', $id);
+        $query = $this->db->get('settings');
+        return $query->row();
+    }
+
     function updateSettings($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('settings', $data);
