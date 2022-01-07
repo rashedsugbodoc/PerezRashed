@@ -17,6 +17,7 @@ class Doctor extends MX_Controller {
         $this->load->model('schedule/schedule_model');
         $this->load->module('patient');
         $this->load->module('sms');
+        $this->load->model('location/location_model');
         if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist', 'Nurse', 'Laboratorist', 'Patient'))) {
             redirect('home/permission');
         }
@@ -30,6 +31,10 @@ class Doctor extends MX_Controller {
 
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['departments'] = $this->department_model->getDepartment();
+        $data['countries'] = $this->location_model->getCountry();
+        $data['states'] = $this->location_model->getState();
+        $data['cities'] = $this->location_model->getCity();
+        $data['barangays'] = $this->location_model->getBarangay();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('doctorv2', $data);
         // $this->load->view('home/footer'); // just the header file
@@ -71,6 +76,11 @@ class Doctor extends MX_Controller {
         $department = $this->input->post('department');
         $profile = $this->input->post('profile');
         $license = $this->input->post('license');
+        $country = $this->input->post('country_id');
+        $state = $this->input->post('state_id');
+        $city = $this->input->post('city_id');
+        $barangay = $this->input->post('barangay_id');
+        $postal = $this->input->post('postal');
 
         $emailById = $this->doctor_model->getDoctorById($id)->email;
 
@@ -91,6 +101,10 @@ class Doctor extends MX_Controller {
         $this->form_validation->set_message('is_unique',lang('this_email_address_is_already_registered'));
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[1]|max_length[500]|xss_clean');
+        // Validating Country Field   
+        $this->form_validation->set_rules('country', 'Country', 'trim|min_length[1]|max_length[500]|xss_clean');
+        // Validating Postal Field   
+        $this->form_validation->set_rules('postal', 'Postal', 'trim|alpha_numeric|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
         $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         // Validating Department Field   
@@ -169,6 +183,11 @@ class Doctor extends MX_Controller {
                             'name' => $name,
                             'email' => $email,
                             'address' => $address,
+                            'country_id' => $country,
+                            'state_id' => $state,
+                            'city_id' => $city,
+                            'barangay_id' => $barangay,
+                            'postal' => $postal,
                             'phone' => $phone,
                             'department' => $department,
                             'profile' => $profile,
@@ -270,6 +289,11 @@ class Doctor extends MX_Controller {
                                 'name' => $name,
                                 'email' => $email,
                                 'address' => $address,
+                                'country_id' => $country,
+                                'state_id' => $state,
+                                'city_id' => $city,
+                                'barangay_id' => $barangay,
+                                'postal' => $postal,
                                 'phone' => $phone,
                                 'department' => $department,
                                 'profile' => $profile,
@@ -309,6 +333,11 @@ class Doctor extends MX_Controller {
                             'name' => $name,
                             'email' => $email,
                             'address' => $address,
+                            'country_id' => $country,
+                            'state_id' => $state,
+                            'city_id' => $city,
+                            'barangay_id' => $barangay,
+                            'postal' => $postal,
                             'phone' => $phone,
                             'department' => $department,
                             'profile' => $profile,

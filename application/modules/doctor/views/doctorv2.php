@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-                            <div class="modal-dialog" role="document">
+                            <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content modal-content-demo">
                                     <div class="modal-header">
                                         <h6 class="modal-title">  <?php echo lang('add_new_doctor'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
@@ -62,7 +62,7 @@
                                                                 <input type="text" class="form-control" name="name" placeholder="Name" maxlength="100">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('email'); ?>: <span class="text-red">*</span></label>
                                                                 <input type="email" class="form-control" name="email" placeholder="Email">
@@ -90,6 +90,64 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('address'); ?>: <span class="text-red">*</span></label>
                                                                 <input type="text" class="form-control" placeholder="Address" name="address">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
+                                                                <select class="form-control select2-show-search" name="country_id" id="country">
+                                                                    <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
+                                                                    <?php foreach ($countries as $country) { ?>
+                                                                        <option value="<?php echo $country->id; ?>" <?php
+                                                                        if (!empty($setval)) {
+                                                                            if ($country->id == set_value('country_id')) {
+                                                                                echo 'selected';
+                                                                            }
+                                                                        }
+                                                                        if (!empty($settings->country_id)) {
+                                                                            if ($country->id == $settings->country_id) {
+                                                                                echo 'selected';
+                                                                            }
+                                                                        }
+                                                                        ?> > <?php echo $country->name; ?> </option>
+                                                                            <?php } ?>
+                                                                </select>      
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('state_province'); ?></label>
+                                                                <select class="form-control select2-show-search" name="state_id" id="state" value='' disabled>
+                                                                    <option disabled selected><?php echo lang("state_province_placeholder"); ?></option>
+                                                                </select>    
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('city_municipality'); ?></label>
+                                                                <select class="form-control select2-show-search" name="city_id" id="city" value='' disabled>
+                                                                    <option disabled selected><?php echo lang("city_municipality_placeholder"); ?></option>
+                                                                </select> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-6" id="barangayDiv" style="display: none;">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('barangay'); ?></label>
+                                                                <select class="form-control select2-show-search" name="barangay_id" id="barangay" value='' disabled>
+                                                                    <option disabled selected><?php echo lang("barangay_placeholder"); ?></option>
+                                                                </select>        
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('postal'); ?></label>
+                                                                <input type="text" name="postal" class="form-control" placeholder="<?php echo lang('postal_placeholder'); ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -294,6 +352,38 @@
                                                             <div class="form-group">
                                                                 <label class="form-label font-weight-bold"><?php echo lang('address'); ?>: </label>
                                                                 <label class="form-label addressClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('country'); ?>: </label>
+                                                                <label class="form-label countryClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('state_province'); ?>: </label>
+                                                                <label class="form-label stateClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('city'); ?>: </label>
+                                                                <label class="form-label cityClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('barangay'); ?>: </label>
+                                                                <label class="form-label barangayClass"></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -525,16 +615,41 @@
                         $('.nameClass').append(response.doctor.name).end()
                         $('.emailClass').append(response.doctor.email).end()
                         $('.addressClass').append(response.doctor.address).end()
+                        $('.countryClass').append(response.doctor.country_id).end()
+                        $('.stateClass').append(response.doctor.state_id).end()
+                        $('.cityClass').append(response.doctor.city_id).end()
+                        $('.barangayClass').append(response.doctor.barangay_id).end()
                         $('.phoneClass').append(response.doctor.phone).end()
                         $('.departmentClass').append(response.doctor.department).end()
                         $('.profileClass').append(response.doctor.profile).end()
                         $('.licenseClass').append(response.doctor.license).end()
 
+                        $country = response.doctor.country_id;
+                        $state = response.doctor.state_id;
+                        $city = response.doctor.city_id;
+                        $barangay = response.doctor.barangay_id;
+
                         if (typeof response.doctor.img_url !== 'undefined' && response.doctor.img_url != '') {
                             $("#img1").attr("src", response.doctor.img_url);
                         }
 
+                        // $.ajax({
+                        //     url: 'location/getLocation?country=' + country + '&state=' + state + '&city=' + city + '&barangay=' + barangay,
+                        //     method: 'GET',
+                        //     data: '',
+                        //     dataType: 'json',
+                        //     success: function (response) {
+                        //         $('.countryClass').append(response.country.country_id).end()
+                        //         $('.stateClass').append(response.state.state_id).end()
+                        //         $('.cityClass').append(response.city.city_id).end()
+                        //         $('.barangayClass').append(response.barangay.barangay_id).end()
+
+                        //     }
+                        // });
+
+
                         $('#infoModal').modal('show');
+                        
                     }
                 });
             });
@@ -592,6 +707,101 @@
             });
             table.buttons().container().appendTo('.custom_buttons');
         });
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#country").change(function () {
+                var country = $("#country").val();
+                var barangay = document.getElementById("barangayDiv");
+
+                $("#state").find('option').remove();
+                $("#city").find('option').remove();
+                $("#barangay").find('option').remove();
+
+                $("#state").attr("disabled", false);
+
+                if (country == "174") {
+                    barangay.style.display='block';
+                } else {
+                    barangay.style.display='none';
+                }
+
+                $.ajax({
+                    url: 'settings/getStateByCountryIdByJason?country=' + country,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var state = response.state;
+
+                        $('#state').append($('<option disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
+                        $("#city").attr("disabled", true).append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                        $("#barangay").attr("disabled", true).append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+
+                        $.each(state, function (key, value) {
+                            $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+
+            });
+
+            $("#state").change(function () {
+                var stateval = $("#state").val();
+                $("#city").find('option').remove();
+
+                $("#city").attr("disabled", false);
+
+                $.ajax({
+                    url: 'settings/getCityByStateIdByJason?state=' + stateval,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var city = response.city;
+
+                        $('#city').append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                        $.each(city, function (key, value) {
+                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+
+            });
+
+            $("#city").change(function () {
+                var cityval = $("#city").val();
+                $("#barangay").find('option').remove();
+
+                $("#barangay").attr("disabled", false);
+
+                $.ajax({
+                    url: 'settings/getBarangayByCityIdByJason?city=' + cityval,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var barangay = response.barangay;
+
+                        $('#barangay').append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+                        $.each(barangay, function (key, value) {
+                            $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+            });
+
+
+        });
+
     </script>
 
     <script>
