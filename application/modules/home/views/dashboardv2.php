@@ -302,8 +302,14 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 8h14V6H5z" opacity="1" /><path d="M7 11h2v2H7zm12-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-4 3h2v2h-2zm-4 0h2v2h-2z"  fill="currentColor"/></svg>
                                     <span class="side-menu__label"><?php echo lang('schedule'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
-                                        <li><a href="schedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
-                                        <li><a href="schedule/allHolidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist'))) { ?>
+                                            <li><a href="schedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
+                                            <li><a href="schedule/allHolidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                            <li><a href="schedule/timeSchedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
+                                            <li><a href="schedule/holidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                             <?php } ?>
