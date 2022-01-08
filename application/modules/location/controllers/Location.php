@@ -79,22 +79,6 @@ class Country extends MX_Controller {
         $this->load->view('country', $data);
     }
 
-    function getLocation() {
-        $data = array();
-
-        $country = $this->input->get('country');
-        $state = $this->input->get('state');
-        $city = $this->input->get('city');
-        $barangay = $this->input->get('barangay');
-
-        $data['country'] = $this->location_model->getCountryById($country);
-        $data['state'] = $this->location_model->getStateById($state);
-        $data['city'] = $this->location_model->getCountryById($city);
-        $data['barangay'] = $this->location_model->getCountryById($barangay);
-
-        echo json_encode($data);
-    }
-
     function editCountry() {
         $data = array();
         $id = $this->input->get('id');

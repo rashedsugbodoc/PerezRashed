@@ -412,6 +412,15 @@ class Doctor extends MX_Controller {
     function editDoctorByJason() {
         $id = $this->input->get('id');
         $data['doctor'] = $this->doctor_model->getDoctorById($id);
+        $country_id = $data['doctor']->country_id;
+        $state_id = $data['doctor']->state_id;
+        $city_id = $data['doctor']->city_id;
+        $barangay_id = $data['doctor']->barangay_id;
+
+        $data['country']= $this->location_model->getCountryById($country_id);
+        $data['state']= $this->location_model->getStateById($state_id);
+        $data['city']= $this->location_model->getCityById($city_id);
+        $data['barangay']= $this->location_model->getBarangayById($barangay_id);
         echo json_encode($data);
     }
 

@@ -600,6 +600,10 @@
                 $('.nameClass').html("").end()
                 $('.emailClass').html("").end()
                 $('.addressClass').html("").end()
+                $('.countryClass').html("").end()
+                $('.stateClass').html("").end()
+                $('.cityClass').html("").end()
+                $('.barangayClass').html("").end()
                 $('.phoneClass').html("").end()
                 $('.departmentClass').html("").end()
                 $('.profileClass').html("").end()
@@ -615,37 +619,39 @@
                         $('.nameClass').append(response.doctor.name).end()
                         $('.emailClass').append(response.doctor.email).end()
                         $('.addressClass').append(response.doctor.address).end()
-                        $('.countryClass').append(response.doctor.country_id).end()
-                        $('.stateClass').append(response.doctor.state_id).end()
-                        $('.cityClass').append(response.doctor.city_id).end()
-                        $('.barangayClass').append(response.doctor.barangay_id).end()
                         $('.phoneClass').append(response.doctor.phone).end()
                         $('.departmentClass').append(response.doctor.department).end()
                         $('.profileClass').append(response.doctor.profile).end()
                         $('.licenseClass').append(response.doctor.license).end()
 
-                        $country = response.doctor.country_id;
-                        $state = response.doctor.state_id;
-                        $city = response.doctor.city_id;
-                        $barangay = response.doctor.barangay_id;
+                        if (response.doctor.country_id !== null){
+                            $('.countryClass').append(response.country.name).end()
+                        } else {
+                            $('.countryClass').html("").end()
+                        }
+
+                        if (response.doctor.state_id !== null){
+                            $('.stateClass').append(response.state.name).end()
+                        } else {
+                            $('.stateClass').html("").end()
+                        }
+
+                        if (response.doctor.city_id !== null){
+                            $('.cityClass').append(response.city.name).end()
+                        } else {
+                            $('.cityClass').html("").end()
+                        }
+
+                        if (response.doctor.barangay_id !== null){
+                            $('.barangayClass').append(response.barangay.name).end()
+                        } else {
+                            $('.barangayClass').html("").end()
+                        }
+
 
                         if (typeof response.doctor.img_url !== 'undefined' && response.doctor.img_url != '') {
                             $("#img1").attr("src", response.doctor.img_url);
                         }
-
-                        // $.ajax({
-                        //     url: 'location/getLocation?country=' + country + '&state=' + state + '&city=' + city + '&barangay=' + barangay,
-                        //     method: 'GET',
-                        //     data: '',
-                        //     dataType: 'json',
-                        //     success: function (response) {
-                        //         $('.countryClass').append(response.country.country_id).end()
-                        //         $('.stateClass').append(response.state.state_id).end()
-                        //         $('.cityClass').append(response.city.city_id).end()
-                        //         $('.barangayClass').append(response.barangay.barangay_id).end()
-
-                        //     }
-                        // });
 
 
                         $('#infoModal').modal('show');
