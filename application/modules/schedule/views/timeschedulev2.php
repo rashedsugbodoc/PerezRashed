@@ -62,7 +62,7 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content modal-content-demo">
                                     <div class="modal-header">
-                                        <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('time_slots'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                        <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('schedule'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
                                     <form role="form" action="schedule/addSchedule" class="clearfix" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
