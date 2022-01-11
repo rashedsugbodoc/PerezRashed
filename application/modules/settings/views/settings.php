@@ -462,9 +462,6 @@
                     $('#city').append($('<option>').text(value.name).val(value.id)).end();
                 });
 
-                if ($('#city').has('option').length == 0) {                    //if it is blank. 
-                    $('#city').append($('<option>').text('<?php echo lang("city_municipality_institution_placeholder"); ?>').val('Not Selected')).end();
-                }
             });
         });
     });
@@ -488,9 +485,6 @@
                     $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
                 });
 
-                if ($('#barangay').has('option').length == 0) {                    //if it is blank. 
-                    $('#barangay').append($('<option>').text('<?php echo lang("barangay_institution_placeholder"); ?>').val('Not Selected')).end();
-                }
             });
         });
     });
