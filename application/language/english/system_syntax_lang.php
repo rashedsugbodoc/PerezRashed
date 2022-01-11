@@ -109,6 +109,7 @@ $lang['barangay_placeholder'] = 'Barangay';
 $lang['barangay_institution_placeholder'] = 'Barangay of HealthCare Institution';
 $lang['postal'] = 'Postal Code';
 $lang['postal_placeholder'] = 'Postal';
+$lang['not_available'] = 'Not Available';
 $lang['phone'] = 'Phone';
 $lang['tel'] = 'Tel';
 $lang['password'] = 'Password';
