@@ -98,7 +98,7 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
                                                                 <select class="form-control select2-show-search" name="country_id" id="country">
-                                                                    <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
+                                                                    <option value="0" disabled><?php echo lang('country_placeholder'); ?></option>
                                                                     <?php foreach ($countries as $country) { ?>
                                                                         <option value="<?php echo $country->id; ?>" <?php
                                                                         if (!empty($setval)) {
@@ -106,8 +106,8 @@
                                                                                 echo 'selected';
                                                                             }
                                                                         }
-                                                                        if (!empty($settings->country_id)) {
-                                                                            if ($country->id == $settings->country_id) {
+                                                                        if (!empty($doctors->country_id)) {
+                                                                            if ($country->id == $doctors->country_id) {
                                                                                 echo 'selected';
                                                                             }
                                                                         }
@@ -120,17 +120,13 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('state_province'); ?></label>
                                                                 <select class="form-control select2-show-search" name="state_id" id="state" value='' disabled>
-                                                                    <option disabled selected><?php echo lang("state_province_placeholder"); ?></option>
                                                                 </select>    
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('city_municipality'); ?></label>
                                                                 <select class="form-control select2-show-search" name="city_id" id="city" value='' disabled>
-                                                                    <option disabled selected><?php echo lang("city_municipality_placeholder"); ?></option>
                                                                 </select> 
                                                             </div>
                                                         </div>
@@ -138,12 +134,9 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('barangay'); ?></label>
                                                                 <select class="form-control select2-show-search" name="barangay_id" id="barangay" value='' disabled>
-                                                                    <option disabled selected><?php echo lang("barangay_placeholder"); ?></option>
                                                                 </select>        
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('postal'); ?></label>
@@ -179,7 +172,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
-                                                            <label class="form-label">Image Upload <span class="text-red">*</span></label>
+                                                            <label class="form-label"><?php echo lang('profile_picture'); ?>: <span class="text-red">*</span></label>
+                                                            <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
                                                             <input type="file" name="img_url" id="image" class="dropify"/>
                                                         </div>
                                                     </div>
@@ -197,7 +191,7 @@
                         </div>
 
                         <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
+                            <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content modal-content-demo">
                                     <div class="modal-header">
                                         <h6 class="modal-title"> <?php echo lang('edit_doctor'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
@@ -245,6 +239,57 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
+                                                                <select class="form-control select2-show-search" name="country_id" id="edit_country">
+                                                                    <option value="0" disabled><?php echo lang('country_placeholder'); ?></option>
+                                                                    <?php foreach ($countries as $country) { ?>
+                                                                        <option value="<?php echo $country->id; ?>" <?php
+                                                                        if (!empty($setval)) {
+                                                                            if ($country->id == set_value('country_id')) {
+                                                                                echo 'selected';
+                                                                            }
+                                                                        }
+                                                                        if (!empty($doctors->country_id)) {
+                                                                            if ($country->id == $doctors->country_id) {
+                                                                                echo 'selected';
+                                                                            }
+                                                                        }
+                                                                        ?> > <?php echo $country->name; ?> </option>
+                                                                    <?php } ?>
+                                                                </select>      
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('state_province'); ?></label>
+                                                                <select class="form-control select2-show-search" name="state_id" id="edit_state">
+                                                                </select>    
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('city_municipality'); ?></label>
+                                                                <select class="form-control select2-show-search" name="city_id" id="edit_city">
+                                                                </select> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-6" id="edit_barangayDiv">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('barangay'); ?></label>
+                                                                <select class="form-control select2-show-search" name="barangay_id" id="edit_barangay" value=''>
+                                                                </select>        
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('postal'); ?></label>
+                                                                <input type="text" name="postal" class="form-control" placeholder="<?php echo lang('postal_placeholder'); ?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('department'); ?> <span class="text-red">*</span></label>
@@ -282,7 +327,7 @@
                                                             <input type="file" name="img_url" id="img" class="dropify"/>
                                                         </div>
                                                     </div>
-                                                    <input type="hidden" name="id" value=''>
+                                                    <input type="hidden" name="id" id="doctor_id" value=''>
                                                     <div class="row">
                                                         <div class="col-sm-12 col-md-12">
                                                             <button class="btn btn-primary pull-right" name="AddPatient" type="submit">Save changes</button>
@@ -543,12 +588,16 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
-        
+        // debugger;
+
             $(".table").on("click", ".editbutton", function () {
                 // Get the record's ID via attribute  
                 var iid = $(this).attr('data-id');
                 $("#img").attr("src", "uploads/cardiology-patient-icon-vector-6244713.jpg");
                 $('#editDoctorForm').trigger("reset");
+                $("#edit_state").find('option').remove();
+                $("#edit_city").find('option').remove();
+                $("#edit_barangay").find('option').remove();
                 $.ajax({
                     url: 'doctor/editDoctorByJason?id=' + iid,
                     method: 'GET',
@@ -561,6 +610,17 @@
                         $('#editDoctorForm').find('[name="password"]').val(response.doctor.password).end()
                         $('#editDoctorForm').find('[name="email"]').val(response.doctor.email).end()
                         $('#editDoctorForm').find('[name="address"]').val(response.doctor.address).end()
+                        if (response.doctor.country_id == null){
+                            $("#edit_state").attr("disabled", true);
+                            $('#editDoctorForm').find('[name="country_id"]').val("0").change()
+                        } else {
+                            $("#edit_state").attr("disabled", false);
+                            $('#editDoctorForm').find('[name="country_id"]').val(response.doctor.country_id).change()
+                        }
+                        // $('#editDoctorForm').find('[name="state_id"]').val(response.doctor.state_id).change();
+                        // $('#editDoctorForm').find('[name="city_id"]').val(response.doctor.city_id).change();
+                        // $('#editDoctorForm').find('[name="barangay_id"]').val(response.doctor.barangay_id).change()
+                        $('#editDoctorForm').find('[name="postal"]').val(response.doctor.postal).end()
                         $('#editDoctorForm').find('[name="phone"]').val(response.doctor.phone).end()
                         $('#editDoctorForm').find('[name="department"]').val(response.doctor.department).end()
                         $('#editDoctorForm').find('[name="profile"]').val(response.doctor.profile).end()
@@ -583,12 +643,184 @@
                         $('.js-example-basic-single.department').val(response.doctor.department).trigger('change');
 
                         $('#myModal2').modal('show');
+
+                        var country = $("#edit_country").val();
+                        var doctor_id = $("#doctor_id").val();
+                        var country_id = response.doctor.country_id;
+                        var state_id = response.doctor.state_id;
+                        var city_id = response.doctor.city_id;
+                        var barangay_id = response.doctor.barangay_id;
+
+                        $.ajax({
+                            url: 'doctor/getStateByCountryIdByJason?country=' + country + '&doctor=' + doctor_id,
+                            method: 'GET',
+                            data: '',
+                            dataType: 'json',
+                            success: function (response) {
+                                $("#edit_state").find('option').remove();
+
+                                var state = response.state;
+                                var doctor_country = response.doctor.country_id;
+                                var doctor_state = response.doctor.state_id;
+
+                                $('#edit_state').append($('<option value="0" disabled><?php echo lang("state_province_placeholder"); ?></option>')).end();
+
+                                $.each(state, function (key, value) {
+                                    $('#edit_state').append($('<option>').text(value.name).val(value.id)).end();
+                                });
+
+                                if (doctor_state == null) {
+                                    // document.getElementById('state').value='0';
+                                    $("#edit_city").attr("disabled", true);
+                                    $("#edit_state").val("0");
+                                } else {
+                                    // document.getElementById('state').value=state_id;
+                                    $("#edit_city").attr("disabled", false);
+                                    $("#edit_state").val(doctor_state);
+                                }
+
+                                var stateval = $("#edit_state").val();
+
+                                $.ajax({
+                                    url: 'doctor/getCityByStateIdByJason?state=' + stateval + '&doctor=' + doctor_id,
+                                    method: 'GET',
+                                    data: '',
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        // $("#edit_city").find('option').remove();
+
+                                        var city = response.city;
+                                        var doctor_city = response.doctor.city_id;
+
+                                        $('#edit_city').append($('<option value="0" disabled><?php echo lang("city_municipality_placeholder"); ?></option>')).end();
+
+                                        $.each(city, function (key, value) {
+                                            $('#edit_city').append($('<option>').text(value.name).val(value.id)).end();
+                                        });
+
+
+                                        if (doctor_city == null) {
+                                            $("#edit_barangay").attr("disabled", true);
+                                            $("#edit_city").val("0");
+                                        } else {
+                                            $("#edit_city").attr("disabled", false);
+                                            $("#edit_city").val(doctor_city);
+                                        }
+
+                                        var cityval = $("#edit_city").val();
+
+                                        $.ajax({
+                                            url: 'doctor/getBarangayByCityIdByJason?city=' + cityval + '&doctor=' + doctor_id,
+                                            method: 'GET',
+                                            data: '',
+                                            dataType: 'json',
+                                            success: function (response) {
+                                                var barangay = response.barangay;
+                                                var doctor_barangay = response.doctor.barangay_id;
+
+                                                $.each(barangay, function (key, value) {
+                                                    $("#edit_barangay").append($('<option>').text(value.name).val(value.id)).end();
+                                                });
+
+                                                if (doctor_barangay == null) {
+                                                    $("#edit_barangay").val("0");
+                                                } else {
+                                                    $("#edit_barangay").attr("disabled", false);
+                                                    $("#edit_barangay").val(doctor_barangay);
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+
+                            }
+                        });
+
+                    }
+
+                });
+            });
+
+            $("#edit_country").change(function () {
+                var country = $("#edit_country").val();
+                var barangay = document.getElementById("edit_barangayDiv");
+                $("#edit_state").find('option').remove();
+                $("#edit_city").find('option').remove();
+                $("#edit_barangay").find('option').remove();
+
+                if (country == "174") {
+                    barangay.style.display='block';
+                    $('#edit_barangay').append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+                } else {
+                    barangay.style.display='none';
+                    $('#edit_barangay').append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+                }
+
+                $.ajax({
+                    url: 'settings/getStateByCountryIdByJason?country=' + country,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var state = response.state;
+
+                        $('#edit_state').append($('<option disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
+                        $.each(state, function (key, value) {
+                            $('#edit_state').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+                        $("#edit_city").attr("disabled", true);
+                        $("#edit_barangay").attr("disabled", true);
+                    }
+                });
+            });
+
+            $("#edit_state").change(function () {
+                var state = $("#edit_state").val();
+                $("#edit_city").find('option').remove();
+
+                $.ajax({
+                    url: 'settings/getCityByStateIdByJason?state=' + state,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var city = response.city;
+
+                        $('#edit_city').append($('<option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                        $.each(city, function (key, value) {
+                            $('#edit_city').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+                        $("#edit_city").attr("disabled", false);
+
+                    }
+                });
+            });
+
+            $("#edit_city").change(function () {
+                var city = $("#edit_city").val();
+                $("#edit_barangay").find('option').remove();
+
+                $.ajax({
+                    url: 'settings/getBarangayByCityIdByJason?city=' + city,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var barangay = response.barangay;
+
+                        $('#edit_barangay').append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+                        $.each(barangay, function (key, value) {
+                            $('#edit_barangay').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+                        $("#edit_barangay").attr("disabled", false);
                     }
                 });
             });
         
     </script>
-
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -662,10 +894,6 @@
         });
     </script>
 
-
-
-
-
     <script>
         $(document).ready(function () {
             var table = $('#editable-sample').DataTable({
@@ -682,7 +910,7 @@
                     loadingIndicator: true
                 },
 
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                dom: "<'row'<'col-sm-4 col-md-12 col-lg-12'f><'col-sm-12 col-md-12 col-lg-2'l><'col-sm-12 col-md-12 col-lg-10 text-right'B>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [

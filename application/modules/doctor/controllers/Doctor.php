@@ -40,6 +40,39 @@ class Doctor extends MX_Controller {
         // $this->load->view('home/footer'); // just the header file
     }
 
+    public function getStateByCountryIdByJason() {
+        $data = array();
+        $country_id = $this->input->get('country');
+        $doctor_id = $this->input->get('doctor');
+
+        $data['state'] = $this->location_model->getStateByCountryId($country_id);
+        $data['doctor'] = $this->doctor_model->getDoctorById($doctor_id);
+
+        echo json_encode($data);        
+    }
+
+    public function getCityByStateIdByJason() {
+        $data = array();
+        $state_id = $this->input->get('state');
+        $doctor_id = $this->input->get('doctor');
+
+        $data['city'] = $this->location_model->getCityByStateId($state_id);
+        $data['doctor'] = $this->doctor_model->getDoctorById($doctor_id);
+
+        echo json_encode($data);        
+    }
+
+    public function getBarangayByCityIdByJason() {
+        $data = array();
+        $city_id = $this->input->get('city');
+        $doctor_id = $this->input->get('doctor');
+
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
+        $data['doctor'] = $this->doctor_model->getDoctorById($doctor_id);
+
+        echo json_encode($data);        
+    }
+
     public function addNewView() {
         if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
             redirect('home/permission');
@@ -47,6 +80,11 @@ class Doctor extends MX_Controller {
         
         $data = array();
         $data['departments'] = $this->department_model->getDepartment();
+        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['countries'] = $this->location_model->getCountry();
+        $data['states'] = $this->location_model->getState();
+        $data['cities'] = $this->location_model->getCity();
+        $data['barangays'] = $this->location_model->getBarangay();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the header file
@@ -120,6 +158,11 @@ class Doctor extends MX_Controller {
                 $data = array();
                 $data['departments'] = $this->department_model->getDepartment();
                 $data['doctor'] = $this->doctor_model->getDoctorById($id);
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['countries'] = $this->location_model->getCountry();
+                $data['states'] = $this->location_model->getState();
+                $data['cities'] = $this->location_model->getCity();
+                $data['barangays'] = $this->location_model->getBarangay();
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_newv2', $data);
                 // $this->load->view('home/footer'); // just the footer file
@@ -128,6 +171,11 @@ class Doctor extends MX_Controller {
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['departments'] = $this->department_model->getDepartment();
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['countries'] = $this->location_model->getCountry();
+                $data['states'] = $this->location_model->getState();
+                $data['cities'] = $this->location_model->getCity();
+                $data['barangays'] = $this->location_model->getBarangay();
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_newv2', $data);
                 // $this->load->view('home/footer'); // just the header file
@@ -170,6 +218,10 @@ class Doctor extends MX_Controller {
                     $data['patient'] = $this->patient_model->getPatientById($id);
                     $data['doctors'] = $this->doctor_model->getDoctor();
                     $data['groups'] = $this->donor_model->getBloodBank();
+                    $data['countries'] = $this->location_model->getCountry();
+                    $data['states'] = $this->location_model->getState();
+                    $data['cities'] = $this->location_model->getCity();
+                    $data['barangays'] = $this->location_model->getBarangay();
                     $this->load->view('home/dashboardv2'); // just the header file
                     $this->load->view('add_newv2', $data);
                     // $this->load->view('home/footer'); // just the footer file
@@ -259,6 +311,10 @@ class Doctor extends MX_Controller {
                         $data['doctors'] = $this->doctor_model->getDoctor();
                         $data['groups'] = $this->donor_model->getBloodBank();
                         $data['departments'] = $this->department_model->getDepartment();
+                        $data['countries'] = $this->location_model->getCountry();
+                        $data['states'] = $this->location_model->getState();
+                        $data['cities'] = $this->location_model->getCity();
+                        $data['barangays'] = $this->location_model->getBarangay();
                         $this->load->view('home/dashboardv2'); // just the header file
                         $this->load->view('add_newv2', $data);
                         // $this->load->view('home/footer'); // just the footer file
@@ -276,6 +332,10 @@ class Doctor extends MX_Controller {
                         $data['patient'] = $this->patient_model->getPatientById($id);
                         $data['doctors'] = $this->doctor_model->getDoctor();
                         $data['groups'] = $this->donor_model->getBloodBank();
+                        $data['countries'] = $this->location_model->getCountry();
+                        $data['states'] = $this->location_model->getState();
+                        $data['cities'] = $this->location_model->getCity();
+                        $data['barangays'] = $this->location_model->getBarangay();
                         $this->load->view('home/dashboardv2'); // just the header file
                         $this->load->view('add_newv2', $data);
                         // $this->load->view('home/footer'); // just the footer file
@@ -317,6 +377,10 @@ class Doctor extends MX_Controller {
                             $data['patient'] = $this->patient_model->getPatientById($id);
                             $data['doctors'] = $this->doctor_model->getDoctor();
                             $data['groups'] = $this->donor_model->getBloodBank();
+                            $data['countries'] = $this->location_model->getCountry();
+                            $data['states'] = $this->location_model->getState();
+                            $data['cities'] = $this->location_model->getCity();
+                            $data['barangays'] = $this->location_model->getBarangay();
                             $this->load->view('home/dashboardv2'); // just the header file
                             $this->load->view('add_newv2', $data);
                             // $this->load->view('home/footer'); // just the footer file
@@ -360,6 +424,11 @@ class Doctor extends MX_Controller {
                         $data = array();
                         $data['departments'] = $this->department_model->getDepartment();
                         $data['doctor'] = $this->doctor_model->getDoctorById($id);
+                        $data['doctors'] = $this->doctor_model->getDoctor();
+                        $data['countries'] = $this->location_model->getCountry();
+                        $data['states'] = $this->location_model->getState();
+                        $data['cities'] = $this->location_model->getCity();
+                        $data['barangays'] = $this->location_model->getBarangay();
                         $this->load->view('home/dashboardv2'); // just the header file
                         $this->load->view('add_newv2', $data);
                         // $this->load->view('home/footer'); // just the footer file
@@ -375,6 +444,11 @@ class Doctor extends MX_Controller {
         $data['departments'] = $this->department_model->getDepartment();
         $id = $this->input->get('id');
         $data['doctor'] = $this->doctor_model->getDoctorById($id);
+        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['countries'] = $this->location_model->getCountry();
+        $data['states'] = $this->location_model->getState();
+        $data['cities'] = $this->location_model->getCity();
+        $data['barangays'] = $this->location_model->getBarangay();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('add_new', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -412,6 +486,7 @@ class Doctor extends MX_Controller {
     function editDoctorByJason() {
         $id = $this->input->get('id');
         $data['doctor'] = $this->doctor_model->getDoctorById($id);
+        $data['doctors'] = $this->doctor_model->getDoctor();
         $country_id = $data['doctor']->country_id;
         $state_id = $data['doctor']->state_id;
         $city_id = $data['doctor']->city_id;
