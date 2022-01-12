@@ -111,6 +111,7 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('state_province'); ?></label>
                                                         <select class="form-control select2-show-search" name="state_id" id="state" value='' disabled>
+                                                            <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
                                                         </select>    
                                                     </div>
                                                 </div>
@@ -118,6 +119,7 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('city_municipality'); ?></label>
                                                         <select class="form-control select2-show-search" name="city_id" id="city" value='' disabled>
+                                                            <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
                                                         </select> 
                                                     </div>
                                                 </div>
@@ -125,6 +127,7 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('barangay'); ?></label>
                                                         <select class="form-control select2-show-search" name="barangay_id" id="barangay" value='' disabled>
+                                                            <option value="0" disabled selected><?php echo lang('barangay_placeholder'); ?></option>
                                                         </select>        
                                                     </div>
                                                 </div>
@@ -163,7 +166,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1"><?php echo lang('department'); ?></label>
-                                                        <select class="form-control select2-show-search" name="department" value='' multiple="multiple">
+                                                        <select class="form-control select2-show-search" name="department" value=''>
                                                             <?php foreach ($departments as $department) { ?>
                                                                 <option value="<?php echo $department->name; ?>" <?php
                                                                 if (!empty($setval)) {
