@@ -137,6 +137,7 @@
                                                     <th><?php echo lang('time_slot'); ?></th>
                                                     <th><?php echo lang('doctor'); ?></th>
                                                     <th><?php echo lang('status'); ?></th>
+                                                    <th><?php echo lang('facility'); ?></th>
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                     <?php } ?>
@@ -160,6 +161,15 @@
                                                             ?>
                                                         </td>
                                                         <td><?php echo $appointment->status; ?></td>
+                                                        <td><?php
+                                                            $facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
+                                                            if (!empty($appointment->hospital_id)) {
+                                                                $appointment_facility = $facility->name;
+                                                            } else {
+                                                                $appointment_facility = '';
+                                                            }
+                                                            echo $appointment_facility;
+                                                        ?></td>
                                                         <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                             <td class="no-print">
                                                                 <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"></i> </button>   
@@ -195,6 +205,7 @@
                                                     <th><?php echo lang('date'); ?></th>
                                                     <th><?php echo lang('title'); ?></th>
                                                     <th><?php echo lang('description'); ?></th>
+                                                    <th><?php echo lang('facility'); ?></th>
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                     <?php } ?>
@@ -207,6 +218,15 @@
                                                         <td><?php echo date('d-m-Y', $medical_history->date); ?></td>
                                                         <td><?php echo $medical_history->title; ?></td>
                                                         <td><?php echo $medical_history->description; ?></td>
+                                                        <td><?php
+                                                            $facility = $this->hospital_model->getHospitalById($medical_history->hospital_id);
+                                                            if (!empty($medical_history->hospital_id)) {
+                                                                $case_facility = $facility->name;
+                                                            } else {
+                                                                $case_facility = '';
+                                                            }
+                                                            echo $case_facility;
+                                                        ?></td>
                                                         <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
                                                             <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
                                                                 <td class="no-print">
@@ -270,6 +290,7 @@
                                                     <th><?php echo lang('date'); ?></th>
                                                     <th><?php echo lang('doctor'); ?></th>
                                                     <th><?php echo lang('medicine'); ?></th>
+                                                    <th><?php echo lang('facility'); ?></th>
                                                     <th class="no-print"><?php echo lang('options'); ?></th>
                                                 </tr>
                                             </thead>
@@ -310,6 +331,15 @@
 
 
                                                         </td>
+                                                        <td><?php
+                                                            $facility = $this->hospital_model->getHospitalById($prescription->hospital_id);
+                                                            if (!empty($prescription->hospital_id)) {
+                                                                $prescription_facility = $facility->name;
+                                                            } else {
+                                                                $prescription_facility = '';
+                                                            }
+                                                            echo $prescription_facility;
+                                                        ?></td>
                                                         <td class="no-print">
                                                             <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?> </a> 
                                                             <?php
@@ -346,6 +376,7 @@
                                                         <th><?php echo lang('id'); ?></th>
                                                         <th><?php echo lang('date'); ?></th>
                                                         <th><?php echo lang('doctor'); ?></th>
+                                                        <th><?php echo lang('facility'); ?></th>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                     </tr>
                                                 </thead>
@@ -365,6 +396,15 @@
                                                                 echo $lab_doctor;
                                                                 ?>
                                                             </td>
+                                                            <td><?php
+                                                                $facility = $this->hospital_model->getHospitalById($lab->hospital_id);
+                                                                if (!empty($lab->hospital_id)) {
+                                                                    $lab_facility = $facility->name;
+                                                                } else {
+                                                                    $lab_facility = '';
+                                                                }
+                                                                echo $lab_facility;
+                                                            ?></td>
                                                             <td class="no-print">
                                                                 <a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=<?php echo $lab->id; ?>"><i class="fa fa-eye"> <?php echo lang('report'); ?> </i></a>   
                                                             </td>
@@ -401,6 +441,7 @@
                                                         </div>
                                                     <?php } ?>
                                                     <div class="panel-body text-center">
+                                                        <p class="text-muted"><?php echo lang('uploader'); ?>: (Test Name)</p>
                                                         <?php
                                                         if (!empty($patient_material->title)) {
                                                             echo $patient_material->title;
@@ -442,6 +483,7 @@
                                                         <th><?php echo lang('bed_id'); ?></th>
                                                         <th><?php echo lang('alloted_time'); ?></th>
                                                         <th><?php echo lang('discharge_time'); ?></th>
+                                                        <th><?php echo lang('facility'); ?></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -463,6 +505,15 @@
                                                         <td><?php echo $bed->bed_id; ?></td>            
                                                         <td><?php echo $bed->a_time; ?></td>
                                                         <td><?php echo $bed->d_time; ?></td>
+                                                        <td><?php
+                                                            $facility = $this->hospital_model->getHospitalById($bed->hospital_id);
+                                                            if (!empty($bed->hospital_id)) {
+                                                                $bed_facility = $facility->name;
+                                                            } else {
+                                                                $bed_facility = '';
+                                                            }
+                                                            echo $bed_facility;
+                                                        ?></td>
                                                     </tr>
                                                 <?php } ?>
                                                 </tbody>

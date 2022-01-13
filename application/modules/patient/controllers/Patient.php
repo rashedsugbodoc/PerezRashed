@@ -149,8 +149,9 @@ class Patient extends MX_Controller {
         $bloodgroup = $this->input->post('bloodgroup');
         $patient_id = $this->input->post('p_id');
         if (!empty($doctor)) {
-            $doctor_name = $this->doctor_model->getDoctorById($doctor)->name;
+            $data['doctorNames'] = implode(',', $doctor);
         }
+        $doctor = $data['doctorNames'];
         if (empty($patient_id)) {
             $patient_id = rand(10000, 1000000);
         }
@@ -527,7 +528,9 @@ class Patient extends MX_Controller {
     function editPatientByJason() {
         $id = $this->input->get('id');
         $data['patient'] = $this->patient_model->getPatientById($id);
-        $data['doctor'] = $this->doctor_model->getDoctorById($data['patient']->doctor);
+        $patient_doctor = $data['patient']->doctor;
+        // $data['doctor'] = $this->getDoctorName($patient_doctor);
+        $data['doctors'] = $this->getDoctorListArray($patient_doctor);
 
         $country_id = $data['patient']->country_id;
         $state_id = $data['patient']->state_id;
@@ -2532,6 +2535,38 @@ class Patient extends MX_Controller {
             foreach ($doctors as $doctor) {
                 $doctorName = $this->doctor_model->getDoctorById($doctor)->name;
                 $doctorListString .= '<p>' . $doctorName . '</p>';
+            }
+            return $doctorListString;
+        } else {
+            return '';
+        }
+
+
+    }
+
+        public function getDoctorListArray($doctorsString) {
+
+        if(!empty($doctorsString)) {
+            $doctors = explode(',', $doctorsString);
+            foreach ($doctors as $doctor) {
+                $doctorDictionary = $this->doctor_model->getDoctorById($doctor);
+                $doctorListArray[] = $doctorDictionary;
+            }
+            return $doctorListArray;
+        } else {
+            return '';
+        }
+
+
+    }
+
+    public function getDoctorName($doctorsString) {
+
+        if(!empty($doctorsString)) {
+            foreach ($doctorsString as $doctor) {
+                $doctorId = $this->doctor_model->getDoctorById($doctor)->id;
+                $doctorName = $this->doctor_model->getDoctorById($doctor)->name;
+                $doctorListString .= $doctorName . '-' . $doctorId . ',';
             }
             return $doctorListString;
         } else {

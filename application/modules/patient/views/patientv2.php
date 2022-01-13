@@ -219,7 +219,7 @@
                                                                     <div class="col-md-12 col-sm-12">
                                                                         <div class="form-group">
                                                                             <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
-                                                                            <select class="form-control select2-show-search" data-placeholder="Choose one" id="doctorchoose1" name="doctor" value=''>
+                                                                            <select class="form-control select2" data-placeholder="Choose one" id="doctorchoose1" name="doctor[]" value='' multiple>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -404,7 +404,7 @@
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
                                                                         <label class="form-label">Doctor <span class="text-red">*</span></label>
-                                                                        <select class="form-control select2-show-search" id="doctorchoose" name="doctor" data-placeholder="Choose one">
+                                                                        <select class="form-control select2" id="doctorchoose" name="doctor[]" data-placeholder="Choose Doctor(s)" multiple="multiple">
                                                                             
                                                                         </select>
                                                                     </div>
@@ -710,6 +710,7 @@
             var base_url = "<?php echo base_url() ?>";
             var iid = $(this).attr('data-id');
             
+            $('#doctorchoose').find('option').remove();
             $('#editPatientForm').trigger("reset");
             $.ajax({
                 url: 'patient/editPatientByJason?id=' + iid,
@@ -731,6 +732,7 @@
                         $("#edit_state").attr("disabled", false);
                         $('#editPatientForm').find('[name="country_id"]').val(response.patient.country_id).change()
                     }
+                    $('#editPatientForm').find('[name="postal"]').val(response.patient.postal).end()
                     $('#editPatientForm').find('[name="phone"]').val(response.patient.phone).end()
                     $('#editPatientForm').find('[name="birthdate"]').val(response.patient.birthdate).end()
                     $('#editPatientForm').find('[name="p_id"]').val(response.patient.patient_id).end()
@@ -754,16 +756,15 @@
                     $('#editPatientForm').find('[name="sex"]').val(response.patient.sex).change();
                     $('#editPatientForm').find('[name="bloodgroup"]').val(response.patient.bloodgroup).change();
 
+                    
+                    $.each(response.doctors, function(key, value) {
+                        $('#doctorchoose').append($('<option selected>').text(value.name + ' (' + '<?php echo lang('id') ?>' + ': ' + value.id + ')').val(value.id)).end();
+                    });
 
-                    if (response.doctor !== null) {
-                        var option1 = new Option(response.doctor.name + '-' + response.doctor.id, response.doctor.id, true, true);
-                    } else {
-                        var option1 = new Option(' ' + '-' + '', '', true, true);
-                    }
-                    $('#editPatientForm').find('[name="doctor"]').append(option1).trigger('change');
+                    
 
 
-                    $('.js-example-basic-single.doctor').val(response.patient.doctor).trigger('change');
+                    // $('.js-example-basic-single.doctor').val(response.patient.doctor).trigger('change');
 
                     $('#myModal2').modal('show');
 
@@ -1112,11 +1113,6 @@
     </script>
 
 
-
-
-
-
-
     <script>
         $(document).ready(function () {
             $("#doctorchoose").select2({
@@ -1133,6 +1129,7 @@
                         };
                     },
                     processResults: function (response) {
+                        console.log(response);
                         return {
                             results: response
                         };

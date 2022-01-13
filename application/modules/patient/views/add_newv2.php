@@ -247,16 +247,8 @@
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
                                                                         <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
-                                                                        <select class="form-control select2-show-search" data-placeholder="Choose one" id="doctorchoose1" name="doctor">
-                                                                            <?php foreach ($doctors as $doctor) { ?>
-                                                                                <option value="<?php echo $doctor->id; ?>" <?php
-                                                                                if (!empty($patient->doctor)) {
-                                                                                    if ($patient->doctor == $doctor->id) {
-                                                                                        echo 'selected';
-                                                                                    }
-                                                                                }
-                                                                                ?> ><?php echo $doctor->name; ?> </option>
-                                                                                    <?php } ?>
+                                                                        <select class="form-control select2" data-placeholder="Choose one" id="doctorchoose" name="doctor[]" multiple="multiple">
+                                                                            
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -457,6 +449,10 @@
                 } else {
                     $('#patientForm').find('[name="country_id"]').val(response.patient.country_id).change()
                 }
+
+                $.each(response.doctors, function(key, value) {
+                    $('#doctorchoose').append($('<option selected>').text(value.name + ' (' + '<?php echo lang('id') ?>' + ': ' + value.id + ')').val(value.id)).end();
+                });
 
                 // if (doctor_country == country){
                 //     $("#state").val(doctor_state);
@@ -821,6 +817,59 @@
 
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#doctorchoose").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'doctor/getDoctorinfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        console.log(response);
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+            $("#doctorchoose1").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'doctor/getDoctorInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+
+
+
+        });
     </script>
 
     <script>
