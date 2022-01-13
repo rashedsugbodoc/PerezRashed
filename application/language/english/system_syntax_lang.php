@@ -745,6 +745,7 @@ $lang['superadmin'] = 'Super Admin';
 $lang['hospital_statistics'] = 'Hospital Statistics';
 $lang['hospital'] = 'Hospital';
 $lang['facility'] = 'Facility';
+$lang['uploader'] = 'Uploader';
 $lang['summary'] = 'Summary';
 $lang['per_month_income_expense'] = 'Per Month Income / Expense';
 $lang['months'] = 'Months';
