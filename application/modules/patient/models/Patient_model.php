@@ -291,6 +291,7 @@ class Patient_model extends CI_model {
 
     function getPatientMaterialByPatientId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
         $this->db->where('patient', $id);
         $query = $this->db->get('patient_material');
         return $query->result();
