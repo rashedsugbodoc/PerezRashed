@@ -648,7 +648,7 @@
                                                                         <span class="input-icon-addon">
                                                                             <i class="fe fe-search"></i>
                                                                         </span>
-                                                                        <input type="text" class="form-control" placeholder="Search Files">
+                                                                        <input type="text" class="form-control searchbox-input" placeholder="Search Files">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -2223,6 +2223,17 @@
             }
         };
 
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+          $('.searchbox-input').on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $(".col-xl-3").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
     </script>
 
     </body>
