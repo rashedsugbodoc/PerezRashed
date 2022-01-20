@@ -28,7 +28,9 @@ class Frontend extends MX_Controller {
         $data['slides'] = $this->slide_model->getSlide();
         $data['services'] = $this->service_model->getService();
         $data['featureds'] = $this->featured_model->getFeatured();
+        $this->load->view('frontend/header');
         $this->load->view('frontendv2', $data);
+        $this->load->view('frontend/footer');
     }
 
     public function addNew() {
