@@ -654,6 +654,7 @@ $lang['block_1_text_under_title'] = 'Block 1 Text Under Title';
 $lang['service_block__text_under_title'] = 'Service Block Text Under Title';
 $lang['doctor_block__text_under_title'] = 'Doctor Block Text Under Title';
 $lang['facebook_id'] = 'Facebook ID';
+$lang['instagram_id'] = 'Instagram ID';
 $lang['twitter_id'] = 'Twitter ID';
 $lang['google_id'] = 'Google ID';
 $lang['youtube_id'] = 'Youtube ID';
