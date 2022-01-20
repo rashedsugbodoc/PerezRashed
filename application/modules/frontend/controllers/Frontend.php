@@ -33,6 +33,18 @@ class Frontend extends MX_Controller {
         $this->load->view('frontend/footer');
     }
 
+    public function terms_and_conditions() {
+        $this->load->view('frontend/header');
+        $this->load->view('frontend/terms');
+        $this->load->view('frontend/footer');
+    }
+
+    public function privacy_policy() {
+        $this->load->view('frontend/header');
+        $this->load->view('frontend/privacy');
+        $this->load->view('frontend/footer');
+    }    
+
     public function addNew() {
         $contact_name = $this->input->post('contact_name');
         $contact_phone = $this->input->post('contact_phone');
