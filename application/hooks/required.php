@@ -83,7 +83,7 @@ function required() {
     // Language
     
     // Currency
-    if ($RTR->class != "auth") {
+    if ($RTR->class != "frontend" && $RTR->class != "request" && $RTR->class != "auth") {
         if (!$CI->ion_auth->in_group(array('superadmin'))) {
             $CI->db->where('hospital_id', $CI->hospital_id);
             $CI->currency = $CI->db->get('settings')->row()->currency;
