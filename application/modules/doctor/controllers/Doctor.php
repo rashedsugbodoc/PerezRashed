@@ -478,9 +478,9 @@ class Doctor extends MX_Controller {
 
 
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('details', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('detailsv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function editDoctorByJason() {
