@@ -39,9 +39,9 @@ class Finance extends MX_Controller {
 
         $data['settings'] = $this->settings_model->getSettings();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('payment', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('paymentv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function amountDistribution() {
@@ -879,9 +879,9 @@ class Finance extends MX_Controller {
         }
         $data['categories'] = $this->finance_model->getPaymentCategory();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('payment_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('payment_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addPaymentCategoryView() {
@@ -994,9 +994,9 @@ class Finance extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['expenses'] = $this->finance_model->getExpense();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('expense', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('expensev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addExpenseView() {
@@ -1125,9 +1125,9 @@ class Finance extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
         $data['categories'] = $this->finance_model->getExpenseCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('expense_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('expense_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addExpenseCategoryView() {
@@ -1228,9 +1228,9 @@ class Finance extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
         $data['categories'] = $this->finance_model->getServiceCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('service_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('service_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addServiceCategoryView() {
@@ -2492,7 +2492,7 @@ class Finance extends MX_Controller {
                 $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editExpense?id=' . $expense->id . '"><i class="fa fa-edit"> </i></a>';
             }
 
-            $options2 = '<a class="btn btn-success btn-xs" title="' . lang('invoice') . '" style="color: #fff;" href="finance/expenseInvoice?id=' . $expense->id . '"><i class="fa fa-file-invoice"></i> </a>';
+            $options2 = '<a class="btn btn-info btn-xs" title="' . lang('invoice') . '" style="color: #fff;" href="finance/expenseInvoice?id=' . $expense->id . '"><i class="fa fa-file"></i> </a>';
             //$options4 = '<a class="btn btn-info btn-xs invoicebutton" title="' . lang('print') . '" style="color: #fff;" href="finance/printInvoice?id=' . $payment->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
             if ($this->ion_auth->in_group(array('admin'))) {
                 $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/deleteExpense?id=' . $expense->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> </a>';
