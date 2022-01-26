@@ -25,4 +25,48 @@ function getDoctorInfo() {
         return $year;
         
     }
+
+    function convertkgTolbs($weightKg) {
+        $weightLbs = $weightKg * 2.205;
+
+        return $weightLbs;
+    }
+
+    function convertlbsTokg($weightLbs) {
+        $weightKg = $weightLbs / 2.205;
+
+        return $weightKg;
+    }    
+
+    function convertcmToin($heightCm) {
+        $heightIn = $heightCm / 2.54;
+
+        return $heightIn;
+    }
+
+    function convertinTocm($heightIn) {
+        $heightCm = $heightIn * 2.54;
+
+        return $heightCm;
+    }
+
+    function computeBmi($heightCm, $weightKg) {
+        $meter = $heightCm / 100;
+        $m2 = pow($meter, 2);
+        $bmi = $weightKg / $m2;
+
+        return $bmi;
+    }
+
+    function convertcelsiusTofahrenheit($celsiusTemp) {
+        $fahrenheitTemp = ($celsiusTemp*9)/5+32;
+
+        return $fahrenheitTemp;
+    }
+
+    function convertfahrenheitTocelsius($fahrenheitTemp) {
+        $celsiusTemp = ($fahrenheitTemp-32)*5/9;
+
+        return $celsiusTemp;
+    }
 ?>
