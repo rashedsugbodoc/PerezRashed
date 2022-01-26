@@ -1006,9 +1006,9 @@ class Finance extends MX_Controller {
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getExpenseCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_expense_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_expense_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addExpense() {
@@ -1043,9 +1043,9 @@ class Finance extends MX_Controller {
                 $data['setval'] = 'setval';
                 $data['settings'] = $this->settings_model->getSettings();
                 $data['categories'] = $this->finance_model->getExpenseCategory();
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_expense_view', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_expense_viewv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
@@ -1094,9 +1094,9 @@ class Finance extends MX_Controller {
         }
 
         $data['expense'] = $this->finance_model->getExpenseById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_expense_view', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_expense_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function deleteExpense() {
