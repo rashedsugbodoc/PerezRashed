@@ -279,9 +279,9 @@ class Medicine extends MX_Controller {
             redirect('home/permission');
         }
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new_category_view');
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_new_category_viewv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewCategory() {
@@ -305,15 +305,15 @@ class Medicine extends MX_Controller {
                 // $id = $this->input->get('id');
                 $data['medicine'] = $this->medicine_model->getMedicineCategoryById($id);
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new_category_view', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_category_viewv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new_category_view');
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_category_viewv2');
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
@@ -339,9 +339,9 @@ class Medicine extends MX_Controller {
         $id = $this->input->get('id');
         $data['medicine'] = $this->medicine_model->getMedicineCategoryById($id);
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new_category_view', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_new_category_viewv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function editMedicineCategoryByJason() {
