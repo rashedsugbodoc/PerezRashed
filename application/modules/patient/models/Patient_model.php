@@ -385,4 +385,47 @@ class Patient_model extends CI_model {
         return $data;
     }
 
+    function getDocumentUploadCategory($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('document_upload_category')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $categories = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $fetched_records = $this->db->get('document_upload_category');
+            $categories = $fetched_records->result_array();
+        }
+
+        $display = ['' ,lang('valid_id'), lang('prescription'), lang('medical_certificate'), lang('vaccination_record'), lang('wound_injury_image'), lang('referral_provider'), lang('lab_result'), lang('radiology_result'), lang('charts'), lang('doctor_notes'), lang('nurse_notes'), lang('medical_history'), lang('insurance_policy'), lang('health_card'), lang('family_records'), lang('other_medical_documents')];
+
+        $data = array();
+        foreach ($categories as $category) {
+            $data[] = array("id" => $category['id'], "text" => $category['name']);
+        }
+        return $data;
+    }
+
+    function getPatientVitalById($id) {
+        $this->db->order_by('last_modified', 'asc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('patient_id', $id);
+        $query = $this->db->get('vital');
+        return $query->result();
+    }
+
+    function insertPatientVital($data) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('vital', $data2);
+    }
+
+    function getVitalById($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('id', $id);
+        $query = $this->db->get('vital');
+        return $query->row();
+    }
+
 }

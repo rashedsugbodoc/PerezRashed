@@ -653,9 +653,13 @@ class Patient extends MX_Controller {
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['settings'] = $this->settings_model->getSettings();
         $data['doctors'] = $this->doctor_model->getDoctor();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('patient_payments', $data);
-        $this->load->view('home/footer'); // just the header file
+        $data['countries'] = $this->location_model->getCountry();
+        $data['states'] = $this->location_model->getState();
+        $data['cities'] = $this->location_model->getCity();
+        $data['barangays'] = $this->location_model->getBarangay();
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('patient_paymentsv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function caseList() {
@@ -665,9 +669,9 @@ class Patient extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['patients'] = $this->patient_model->getPatient();
         $data['medical_histories'] = $this->patient_model->getMedicalHistory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('case_list', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('case_listv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function documents() {
@@ -676,9 +680,9 @@ class Patient extends MX_Controller {
         }
         $data['patients'] = $this->patient_model->getPatient();
         $data['files'] = $this->patient_model->getPatientMaterial();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('documents', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('documentsv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function myCaseList() {
@@ -983,10 +987,168 @@ class Patient extends MX_Controller {
         //$this->load->view('home/footer'); // just the footer fi
     }
 
+    public function addVitals() {
+        if (!$this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Doctor', 'DoctorAdmin', 'Patient', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
+
+        $data = array();
+
+        $data['settings'] = $this->settings_model->getSettings();
+        $id = $this->input->post('patient');
+        $patient_id = (int)$id;
+        $date_measured = $this->input->post('date');
+        $time_measured = $this->input->post('time');
+        $systolic = $this->input->post('systolic');
+        $diastolic = $this->input->post('diastolic');
+        $temperature = $this->input->post('temperature');
+        $temperatureUnit = $this->input->post('temperature_unit');
+        $heartrate = $this->input->post('heartrate');
+        $spo2 = $this->input->post('spo2');
+        $respiration_rate = $this->input->post('respiration_rate');
+        $current_user = (int)$this->ion_auth->get_user_id();
+        $date = date("Y-m-d H:i:s", now('UTC'));
+        $weightUnit = $this->input->post('weight_unit');
+        $heightUnit = $this->input->post('height_unit');
+        $temperature_site = $this->input->post('temp_site');
+        $weight = $this->input->post('weight');
+        $height = $this->input->post('height');
+        $note = $this->input->post('note');
+        $date_time_combined = strtotime($date_measured . ' ' . $time_measured);
+        $measured_at = date($data['settings']->date_format . ' ' . $data['settings']->time_format, $date_time_combined);
+        $measured_at_datetime = gmdate("Y-m-d H:i:s", strtotime('+1 hour', $date_time_combined));
+
+        if ($this->ion_auth->in_group(array('Doctor', 'DoctorAdmin'))) {
+            $doctor_id = (int)$this->doctor_model->getDoctorByIonUserId($current_user)->id;
+        }
+
+
+        //Reading Weight Unit Start
+
+            if ($weightUnit == 'kg') {
+                $weightKg = $weight;
+                $weightLbs = convertkgTolbs($weightKg);
+            } else if ($weightUnit == 'lbs') {
+                $weightLbs = $weight;
+                $weightKg = convertlbsTokg($weightLbs);
+            }
+
+        //Reading Weight Unit End
+
+        //Reading Height Unit Start
+
+            if ($heightUnit == 'cm') {
+                $heightCm = $height;
+                $heightIn = convertcmToin($heightCm);
+            } else if ($heightUnit == 'inches') {
+                $heightIn = $height;
+                $heightCm = convertinTocm($heightIn);
+            }
+
+        //Reading Height Unit End
+
+        //Computing BMI start
+            $bmi = computeBmi($heightCm, $weightKg);
+        //Computing BMI end
+
+        //Comvert C to F Start
+
+            if ($temperatureUnit == 'celsius') {
+                $celsiusTemp = $temperature;
+                $fahrenheitTemp = convertcelsiusTofahrenheit($celsiusTemp);
+            } else if ($temperatureUnit == 'fahrenheit') {
+                $fahrenheitTemp = $temperature;
+                $celsiusTemp = convertfahrenheitTocelsius($fahrenheitTemp);
+            }
+
+        //Comvert C to F End
+
+        //form validation start
+            $this->load->library('form_validation');
+            $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+            // Validating Date Measured Field
+            $this->form_validation->set_rules('date_measured', 'Date Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
+            // Validating Time Measured Field   
+            $this->form_validation->set_rules('time_measured', 'Time Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
+            // Validating Weight Field   
+            $this->form_validation->set_rules('weight', 'Weight', 'trim|numeric|min_length[1]|max_length[500]|xss_clean');
+            // Validating height Field           
+            $this->form_validation->set_rules('height', 'Height', 'trim|numeric|min_length[2]|max_length[50]|xss_clean');
+            // Validating systolic Field
+            $this->form_validation->set_rules('systolic', 'Systolic', 'trim|min_length[2]|max_length[100]|xss_clean');
+            // Validating diastolic Field   
+            $this->form_validation->set_rules('diastolic', 'Diastolic', 'trim|min_length[2]|max_length[500]|xss_clean');
+            // Validating temperature Field           
+            $this->form_validation->set_rules('temperature', 'Temperature', 'trim|min_length[1]|max_length[15]|xss_clean');
+            // Validating heartrate Field           
+            $this->form_validation->set_rules('heartrate', 'Heartrate', 'trim|min_length[1]|max_length[15]|xss_clean');
+            // Validating spo2 Field           
+            $this->form_validation->set_rules('spo2', 'Spo2', 'trim|min_length[1]|max_length[15]|xss_clean');
+            // Validating Respiration Field           
+            $this->form_validation->set_rules('respiration_rate', 'Respiration', 'trim|min_length[1]|max_length[15]|xss_clean');
+            // Validating Note Field           
+            $this->form_validation->set_rules('note', 'Note', 'trim|min_length[10]|max_length[1000]|xss_clean');
+        //form validation end
+
+
+        if ($this->form_validation->run() == FALSE) {
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                redirect('patient/medicalHistory?id=' . $id);
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                redirect('patient/medicalHistory?id=' . $id);
+            }
+        } else {
+            $data = array();
+
+            $data = array(
+                'recorded_user_id' => $current_user,
+                'patient_id' => $patient_id,
+                'doctor_id' => $doctor_id,
+                'last_modified' => $date,
+                'measured_at' => $measured_at_datetime,
+                'temperature_celsius' => $celsiusTemp,
+                'temperature_fahrenheit' => $fahrenheitTemp,
+                'systolic' => $systolic,
+                'diastolic' => $diastolic,
+                'heart_rate' => $heartrate,
+                'height_cm' => $heightCm,
+                'weight_kg' => $weightKg,
+                'temperature_site' => $temperature_site,
+                'height_in' => $heightIn,
+                'weight_lbs' => $weightLbs,
+                'respiration_rate' => $respiration_rate,
+                'created_at' => $date,
+                'bmi' => $bmi,
+                'spo2' => $spo2,
+                'note' => $note,
+            );
+
+            $this->patient_model->insertPatientVital($data);
+            $this->session->set_flashdata('success', lang('record_added'));
+            
+            redirect('patient/medicalHistory?id=' . $id);
+        }
+
+    }
+
+    function editVitalByJason() {
+        $id = $this->input->get('id');
+        $data['vital'] = $this->patient_model->getVitalById($id);
+        echo json_encode($data);
+    }
+
     function addMedicalHistory() {
         if (!$this->ion_auth->in_group(array('Doctor'))) {
             redirect('home/permission');
         }
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $current_doctor = $this->ion_auth->get_user_id();
+            $current_user = $this->doctor_model->getDoctorByIonUserId($current_doctor)->id;
+        }
+        
         $id = $this->input->post('id');
         $patient_id = $this->input->post('patient_id');
 
@@ -1019,9 +1181,7 @@ class Patient extends MX_Controller {
         $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         // Validating Password Field
-
         $this->form_validation->set_rules('description', 'Description', 'trim|required|max_length[10000]|xss_clean');
-
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
@@ -1058,6 +1218,7 @@ class Patient extends MX_Controller {
                 'patient_name' => $patient_name,
                 'patient_phone' => $patient_phone,
                 'patient_address' => $patient_address,
+                'doctor_id' => $current_user,
             );
 
             if (empty($id)) {     // Adding New department
@@ -1115,6 +1276,8 @@ class Patient extends MX_Controller {
             redirect('home/permission');
         }
 
+        $data['vitals'] = $this->patient_model->getPatientVitalById($id);
+        $data['settings'] = $this->settings_model->getSettings();
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['patient'] = $this->patient_model->getPatientById($id);
         $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
@@ -1141,11 +1304,11 @@ class Patient extends MX_Controller {
             }
             
 
-            $timeline[$appointment->date + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date('d-m-Y', $appointment->date) . '</span></li>
+            $timeline[$appointment->date + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $appointment->date) . '</span></li>
                                                 <li>
                                                     <i class="fa fa-download bg-success"></i>
                                                     <div class="timelineleft-item">
-                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i>' . $doctor_name . '</span>
+                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
                                                         <h3 class="timelineleft-header"><span>' . lang('appointment') . '</span></h3>
                                                         <div class="timelineleft-body">
                                                             <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
@@ -1165,10 +1328,10 @@ class Patient extends MX_Controller {
             }
             
 
-            $timeline[strtotime($prescription->date) + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date('d-m-Y', $prescription->date) . '</span></li>
+            $timeline[strtotime($prescription->date) + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $prescription->date) . '</span></li>
                                                     <li><i class="fa fa-download bg-cyan"></i>
                                                     <div class="timelineleft-item">
-                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i>' . $doctor_name . '</span>
+                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
                                                         <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                         <div class="timelineleft-body">
                                                             <h4><i class=" fa fa-calendar"></i>' . date('d-m-Y', strtotime($prescription->date)) . '</h4>
@@ -1189,17 +1352,17 @@ class Patient extends MX_Controller {
 
             
 
-            $timeline[$lab->date + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date('d-m-Y', $lab->date) . '</span></li>
+            $timeline[$lab->date + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $lab->date) . '</span></li>
                                         <li>
                                             <i class="fa fa-envelope bg-primary"></i>
                                             <div class="timelineleft-item">
-                                                <span class="time"><i class="fa fa-clock-o text-danger"></i>' . $lab_doctor . '</span>
+                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $lab_doctor . '</span>
                                                 <h3 class="timelineleft-header"><span>Lab</span></h3>
                                                 <div class="timelineleft-body">
                                                     <h4><i class=" fa fa-calendar"></i>' . date('d-m-Y', $lab->date) . '</h4>
                                                 </div>
                                                 <div class="timelineleft-footer">
-                                                    <a class="btn btn-xs btn-danger" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
+                                                    <a class="btn btn-xs btn-info" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
                                                 </div>
                                             </div>
                                         </li>';
@@ -1208,11 +1371,11 @@ class Patient extends MX_Controller {
         foreach ($data['medical_histories'] as $medical_history) {
             
 
-            $timeline[$medical_history->date + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date('d-m-Y', $medical_history->date) . '</span></li>
+            $timeline[$medical_history->date + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $medical_history->date) . '</span></li>
                                                     <li>
                                                         <i class="fa fa-download bg-info"></i>
                                                         <div class="timelineleft-item">
-                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i>' . date('d-m-Y', $medical_history->date) . '</span>
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', $medical_history->date) . '</span>
                                                             <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
                                                             <div class="timelineleft-body">
                                                                 <p>' . $medical_history->description . '</p>
@@ -1226,18 +1389,18 @@ class Patient extends MX_Controller {
         foreach ($data['patient_materials'] as $patient_material) {
             
 
-            $timeline[$patient_material->date + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date('d-m-Y', $patient_material->date) . ' </span></li>
+            $timeline[$patient_material->date + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $patient_material->date) . ' </span></li>
                                                         <li>
                                                             <i class="fa fa-download bg-secondary"></i>
                                                             <div class="timelineleft-item">
-                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i>' . date('d-m-Y', $patient_material->date) . ' </span>
+                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', $patient_material->date) . ' </span>
                                                                 <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
                                                                 <div class="timelineleft-body">
                                                                     <h4>' . $patient_material->title . '</h4>
                                                                 </div>
                                                                 <div class="timelineleft-footer">
-                                                                    <a class="btn btn-xs btn-purple" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
-                                                                    <a class="btn btn-xs btn-purple" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
+                                                                    <a class="btn btn-xs btn-info" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
+                                                                    <a class="btn btn-xs btn-info" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
                                                                 </div>
                                                             </div>
                                                         </li>';
@@ -1301,14 +1464,18 @@ class Patient extends MX_Controller {
         $title = $this->input->post('title');
         $patient_id = $this->input->post('patient');
         $img_url = $this->input->post('img_url');
-        $date = time();
+        $description = $this->input->post('description');
+        $category = $this->input->post('category');
         $redirect = $this->input->post('redirect');
+        $date = date("Y-m-d H:i:s", now('UTC'));
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             if (empty($patient_id)) {
                 $current_patient = $this->ion_auth->get_user_id();
                 $patient_id = $this->patient_model->getPatientByIonUserId($current_patient)->id;
             }
+        } else {
+            $current_user = $this->ion_auth->get_user_id();
         }
 
 
@@ -1388,20 +1555,22 @@ class Patient extends MX_Controller {
                 $img_url = "uploads/" . $path['file_name'];
                 $data = array();
                 $data = array(
-                    'date' => $date,
+                    'created_at' => $date,
                     'title' => $title,
+                    'category_id' => $category,
                     'url' => $img_url,
                     'patient' => $patient_id,
                     'patient_name' => $patient_name,
                     'patient_address' => $patient_address,
                     'patient_phone' => $patient_phone,
-                    'date_string' => date('d-m-y', $date),
+                    'created_user_id' => $current_user,
+                    'description' => $description,
                 );
 
                 $this->patient_model->insertPatientMaterial($data);
                 $this->session->set_flashdata('success', lang('record_added'));
 
-                redirect($redirect);
+                redirect('patient/documents');
             } else {
                 $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
                 $this->session->set_flashdata('fileError', $fileError);
@@ -1638,14 +1807,24 @@ class Patient extends MX_Controller {
 
             $due = $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id);
 
-            $info[] = array(
-                $patient->id,
-                $patient->name,
-                $patient->phone,
-                $due,
-                //  $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
-                $options4
-            );
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+                $info[] = array(
+                    $patient->id,
+                    $patient->name,
+                    $patient->phone,
+                    $due,
+                    //  $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
+                    $options4
+                );
+            } else {
+                $info[] = array(
+                    $patient->id,
+                    $patient->name,
+                    $patient->phone,
+                    //  $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
+                    $options4
+                );
+            }
         }
 
         if (!empty($data['patients'])) {
@@ -1786,18 +1965,20 @@ class Patient extends MX_Controller {
 
             if (pathinfo($document->url, PATHINFO_EXTENSION) === 'pdf'){
                 $info[] = array(
-                    date('d-m-y', $document->date),
+                    date('Y-m-d', $document->date),
                     $patient_details,
                     $document->title,
+                    $document->description,
                     '<a class="example-image-link" href="' . $document->url . '" data-title="' . $document->title . '" target="_blank"">' . '<img class="example-image" src="uploads/PDF_DefaultImage.png" width="auto" height="auto"alt="image-1"style="max-width:150px;max-height:150px">' . '</a>',
                     $options1 . ' ' . $options2
                         // $options4
                 );
             } else {
                 $info[] = array(
-                    date('d-m-y', $document->date),
+                    date('Y-m-d', $document->date),
                     $patient_details,
                     $document->title,
+                    $document->description,
                     '<a class="example-image-link" href="' . $document->url . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '" width="auto" height="auto"alt="image-1"style="max-width:150px;max-height:150px">' . '</a>',
                     $options1 . ' ' . $options2
                         // $options4
@@ -2542,6 +2723,16 @@ class Patient extends MX_Controller {
         }
 
 
+    }
+
+    public function getDocumentUploadCategory() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->patient_model->getDocumentUploadCategory($searchTerm);
+
+        echo json_encode($response);
     }
 
 }
