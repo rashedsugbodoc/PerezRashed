@@ -19,9 +19,9 @@ class Medicine extends MX_Controller {
         $data['categories'] = $this->medicine_model->getMedicineCategory();
         $data['settings'] = $this->settings_model->getSettings();
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('medicine', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('medicinev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function medicineByPageNumber() {
@@ -119,9 +119,9 @@ class Medicine extends MX_Controller {
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->medicine_model->getMedicineCategory();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new_medicine_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_new_medicine_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewMedicine() {
@@ -178,17 +178,17 @@ class Medicine extends MX_Controller {
                 // $id = $this->input->get('id');
                 $data['medicine'] = $this->medicine_model->getMedicineById($id);
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new_medicine_view', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_medicine_viewv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['categories'] = $this->medicine_model->getMedicineCategory();
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new_medicine_view', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_medicine_viewv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
@@ -224,9 +224,9 @@ class Medicine extends MX_Controller {
         $id = $this->input->get('id');
         $data['medicine'] = $this->medicine_model->getMedicineById($id);
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new_medicine_view', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_new_medicine_viewv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function load() {
@@ -269,9 +269,9 @@ class Medicine extends MX_Controller {
         }
         $data['categories'] = $this->medicine_model->getMedicineCategory();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('medicine_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('medicine_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addCategoryView() {
