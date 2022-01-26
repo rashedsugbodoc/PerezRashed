@@ -1237,9 +1237,9 @@ class Finance extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
             redirect('home/permission');
         }
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_service_category');
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_service_categoryv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addServiceCategory() {
@@ -1263,9 +1263,9 @@ class Finance extends MX_Controller {
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_service_category', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_service_categoryv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
@@ -1298,9 +1298,9 @@ class Finance extends MX_Controller {
         }
 
         $data['category'] = $this->finance_model->getServiceCategoryById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_service_category', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_service_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function deleteServiceCategory() {
