@@ -80,18 +80,26 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
         <!-- Data table css -->
         <link href="<?php echo base_url('public/assets/plugins/datatable/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" />
+        <!-- Data table css -->
+        <link href="<?php echo base_url('public/assets/plugins/datatable/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" />
         <link href="<?php echo base_url('public/assets/plugins/datatable/css/buttons.bootstrap4.min.css'); ?>" rel="stylesheet">
-        <link href="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.css'); ?>" rel="stylesheet" />        
+        <link href="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.css'); ?>" rel="stylesheet" />  
 
         <!--Daterangepicker css-->
         <link href="<?php echo base_url('public/assets/plugins/bootstrap-daterangepicker/daterangepicker.css') ?>" rel="stylesheet" />
         <!-- Fullcalendar css-->
         <link href='<?php echo base_url('public/assets/plugins/fullcalendar/fullcalendar.css'); ?>' rel='stylesheet' />
         <!-- Slect2 css -->
-        <link href="<?php echo base_url('public/assets/plugins/select2/select2.min.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/select2/select2.min.css'); ?>" rel="stylesheet" />      
 
         <!-- File Uploads css -->
         <link href="<?php echo base_url('public/assets/plugins/fancyuploder/fancy_fileupload.css'); ?>" rel="stylesheet" />
+
+        <!--Daterangepicker css-->
+        <link href="<?php echo base_url('public/assets/plugins/bootstrap-daterangepicker/daterangepicker.css') ?>" rel="stylesheet" />
+
+        <!-- Fullcalendar css-->
+        <link href='<?php echo base_url('public/assets/plugins/fullcalendar/fullcalendar.css'); ?>' rel='stylesheet' />
 
         <!-- Time picker css -->
         <link href="<?php echo base_url('public/assets/plugins/time-picker/jquery.timepicker.css'); ?>" rel="stylesheet" />
@@ -101,6 +109,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
         <!-- File Uploads css-->
         <link href="<?php echo base_url('public/assets/plugins/fileupload/css/fileupload.css'); ?>" rel="stylesheet" type="text/css" />
+
         <!--Mutipleselect css-->
         <link rel="stylesheet" href="<?php echo base_url('public/assets/plugins/multipleselect/multiple-select.css'); ?>">
 
@@ -131,17 +140,52 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <!-- News-Ticker css-->
         <link href="<?php echo base_url('public/assets/plugins/newsticker/newsticker.css') ?>" rel="stylesheet" />  
 
+        <!-- Prism Css -->
+        <link href="<?php echo base_url('public/assets/plugins/prism/prism.css'); ?>" rel="stylesheet">
+
         <!-- Accordion Css -->
-        <link href="<?php echo base_url('public/assets/plugins/accordion/accordion.css'); ?>" rel="stylesheet" />              
+        <link href="<?php echo base_url('public/assets/plugins/accordion/accordion.css'); ?>" rel="stylesheet" />  
         
         <!-- INTERNAL CSS END -->
 
         <style>
-            #ui-datepicker-div {
+            div#ui-datepicker-div {
+                z-index: 10001 !important;
+            }
+            div#ui-datepicker-div2 {
+                z-index: 10001 !important;
+            }
+            div#ui-datepicker-div3 {
                 z-index: 10001 !important;
             }
             .ui-timepicker-wrapper {
                 z-index: 10001 !important;
+            }
+            .app-sidebar.app-sidebar2 {
+                z-index: 976 !important;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility {
+                background-color: #ffffff;
+                color: #4454c3;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility:hover {
+                background-color: #ffffff;
+                color: #343a40;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility.active {
+                background-color: #4454c3;
+                color: #ffffff;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility.active:hover {
+                background-color: #4454c3;
+                color: #343a40;
+            }
+            .dt-button-collection.dropdown-menu{
+                border: solid 1px;
+                /*padding: 0px;*/
+                border-radius: 0px;
+                padding-top: 1px;
+                padding-bottom: 1px;
             }
         </style>
 
@@ -275,9 +319,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             <li><a href="patient/patientPayments" class="slide-item"><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
                                         <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist'))) { ?>
-                                        <li><a href="patient/caseList" class="slide-item"><?php echo lang('case'); ?> <?php echo lang('history'); ?></a></li>
+                                        <li><a href="patient/caseList" class="slide-item"><?php echo lang('case_notes'); ?></a></li>
                                         <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('DoctorAdmin', 'Doctor'))) { ?>
                                             <li><a href="patient/documents" class="slide-item"><?php echo lang('documents'); ?></a></li>
                                         <?php } ?>
                                     </ul>
@@ -292,8 +336,14 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 8h14V6H5z" opacity="1" /><path d="M7 11h2v2H7zm12-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-4 3h2v2h-2zm-4 0h2v2h-2z"  fill="currentColor"/></svg>
                                     <span class="side-menu__label"><?php echo lang('schedule'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
-                                        <li><a href="schedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
-                                        <li><a href="schedule/allHolidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist'))) { ?>
+                                            <li><a href="schedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
+                                            <li><a href="schedule/allHolidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                            <li><a href="schedule/timeSchedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
+                                            <li><a href="schedule/holidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                             <?php } ?>
