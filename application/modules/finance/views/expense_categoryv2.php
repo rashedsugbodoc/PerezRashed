@@ -123,6 +123,12 @@
         <script src="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.js') ?>"></script>
         <script src="<?php echo base_url('public/assets/js/datatables.js') ?>"></script>
 
+        <!-- Notifications js -->
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
 
@@ -162,6 +168,42 @@
             });
             table.buttons().container().appendTo('.custom_buttons');
             
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var error = "<?php echo $_SESSION['error'] ?>";
+            var success = "<?php echo $_SESSION['success'] ?>";
+            var notice = "<?php echo $_SESSION['notice'] ?>";
+            var warning = "<?php echo $_SESSION['warning'] ?>";
+
+            if (success) {
+                return $.growl.success({
+                    message: success
+                });
+            }
+            if (error) {
+                return $.growl.error({
+                    message: error
+                });
+            }
+            if (warning) {
+                return $.growl.warning({
+                    message: warning
+                });
+            }
+            if (notice) {
+                return $.growl.notice({
+                    message: notice
+                });
+            }
+
+            var error = "<?php unset($_SESSION['error']); ?>";
+            var success = "<?php unset($_SESSION['success']); ?>";
+            var warning = "<?php unset($_SESSION['warning']); ?>";
+            var notice = "<?php unset($_SESSION['notice']); ?>";
+
         });
     </script>
 
