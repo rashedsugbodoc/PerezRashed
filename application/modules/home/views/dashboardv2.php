@@ -80,6 +80,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
         <!-- Data table css -->
         <link href="<?php echo base_url('public/assets/plugins/datatable/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" />
+        <!-- Data table css -->
+        <link href="<?php echo base_url('public/assets/plugins/datatable/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" />
         <link href="<?php echo base_url('public/assets/plugins/datatable/css/buttons.bootstrap4.min.css'); ?>" rel="stylesheet">
         <link href="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.css'); ?>" rel="stylesheet" />  
 
@@ -134,13 +136,22 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <!-- News-Ticker css-->
         <link href="<?php echo base_url('public/assets/plugins/newsticker/newsticker.css') ?>" rel="stylesheet" />  
 
+        <!-- Prism Css -->
+        <link href="<?php echo base_url('public/assets/plugins/prism/prism.css'); ?>" rel="stylesheet">
+
         <!-- Accordion Css -->
         <link href="<?php echo base_url('public/assets/plugins/accordion/accordion.css'); ?>" rel="stylesheet" />  
         
         <!-- INTERNAL CSS END -->
 
         <style>
-            #ui-datepicker-div {
+            div#ui-datepicker-div {
+                z-index: 10001 !important;
+            }
+            div#ui-datepicker-div2 {
+                z-index: 10001 !important;
+            }
+            div#ui-datepicker-div3 {
                 z-index: 10001 !important;
             }
             .ui-timepicker-wrapper {
@@ -148,6 +159,29 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
             }
             .app-sidebar.app-sidebar2 {
                 z-index: 976 !important;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility {
+                background-color: #ffffff;
+                color: #4454c3;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility:hover {
+                background-color: #ffffff;
+                color: #343a40;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility.active {
+                background-color: #4454c3;
+                color: #ffffff;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility.active:hover {
+                background-color: #4454c3;
+                color: #343a40;
+            }
+            .dt-button-collection.dropdown-menu{
+                border: solid 1px;
+                /*padding: 0px;*/
+                border-radius: 0px;
+                padding-top: 1px;
+                padding-bottom: 1px;
             }
         </style>
 
@@ -285,9 +319,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             <li><a href="patient/patientPayments" class="slide-item"><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
                                         <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist'))) { ?>
-                                        <li><a href="patient/caseList" class="slide-item"><?php echo lang('case'); ?> <?php echo lang('history'); ?></a></li>
+                                        <li><a href="patient/caseList" class="slide-item"><?php echo lang('case_notes'); ?></a></li>
                                         <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('DoctorAdmin', 'Doctor'))) { ?>
                                             <li><a href="patient/documents" class="slide-item"><?php echo lang('documents'); ?></a></li>
                                         <?php } ?>
                                     </ul>
