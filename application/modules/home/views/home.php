@@ -807,7 +807,7 @@
 
             <section class="col-md-12">
                 <div class="col-lg-6 col-sm-6 row">
-                    <h1><span class="livee"><?php echo lang('live'); ?></span> <?php echo lang('hospitals'); ?></h1>
+                    <h1><?php echo lang('live'); ?> <?php echo lang('healthcare_providers'); ?></h1>
                 </div>
             </section>
             <?php foreach ($hospitals as $hospital) { ?>    
@@ -818,7 +818,7 @@
                         </div>
                         <div class="value super1 col-md-6"> 
                             <p class="">
-                                Email:   <?php echo $hospital->email; ?>
+                                Admin Email:   <?php echo $hospital->email; ?>
                             </p>
                             <p class="">
                                 Address:   <?php echo $hospital->address; ?>
