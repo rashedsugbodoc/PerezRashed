@@ -889,9 +889,9 @@ class Finance extends MX_Controller {
             redirect('home/permission');
         }
         $data['categories'] = $this->finance_model->getServiceCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_payment_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_payment_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addPaymentCategory() {
@@ -930,16 +930,16 @@ class Finance extends MX_Controller {
                 // $id = $this->input->get('id');
                 $data['service'] = $this->finance_model->getPaymentCategoryById($id);
                 $data['categories'] = $this->finance_model->getServiceCategory();
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_payment_category', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_payment_categoryv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['categories'] = $this->finance_model->getServiceCategory();
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_payment_category', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_payment_categoryv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
@@ -968,9 +968,9 @@ class Finance extends MX_Controller {
         $id = $this->input->get('id');
         $data['service'] = $this->finance_model->getPaymentCategoryById($id);
         $data['categories'] = $this->finance_model->getServiceCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_payment_category', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_payment_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function deletePaymentCategory() {
