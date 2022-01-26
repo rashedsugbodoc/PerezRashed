@@ -322,6 +322,12 @@ class Hospital_model extends CI_model {
             $this->db->insert('company_type', $data1);
         }
     }    
+
+    function getIonUserById($id){
+        $this->db->where('id', $id);
+        $query = $this->db->get('users');
+        return $query->row();
+    }
     
     
     
