@@ -462,7 +462,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php if ($this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Doctor'))) { ?>
                             <?php if (in_array('lab', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="lab/lab1">
+                                    <a class="side-menu__item" href="lab/lab1">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g fill="currentColor"><g><polygon opacity=".3" points="13,6 11,6 11,11.33 6,18 18,18 13,11.33"/><path d="M20.8,18.4L15,10.67V6.5l1.35-1.69C16.61,4.48,16.38,4,15.96,4H8.04C7.62,4,7.39,4.48,7.65,4.81L9,6.5v4.17L3.2,18.4 C2.71,19.06,3.18,20,4,20h16C20.82,20,21.29,19.06,20.8,18.4z M6,18l5-6.67V6h2v5.33L18,18H6z"/></g></g></svg>
                                     <span class="side-menu__label"><?php echo lang('lab_reports'); ?></span></a>
                                 </li>
@@ -743,17 +743,17 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php if ($this->ion_auth->in_group(array('Nurse', 'Doctor'))) { ?>
                             <?php if (in_array('bed', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="bed">
+                                    <a class="side-menu__item" href="bed">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                     <span class="side-menu__label"><?php echo lang('bed_list'); ?></span></a>
                                 </li>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="bed/bedCategory">
+                                    <a class="side-menu__item" href="bed/bedCategory">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                     <span class="side-menu__label"><?php echo lang('bed_category'); ?></span></a>
                                 </li>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="bed/bedAllotment">
+                                    <a class="side-menu__item" href="bed/bedAllotment">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                     <span class="side-menu__label"><?php echo lang('bed_allotments'); ?></span></a>
                                 </li>
