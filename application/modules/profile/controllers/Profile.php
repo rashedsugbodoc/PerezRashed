@@ -15,9 +15,9 @@ class Profile extends MX_Controller {
         $data = array();
         $id = $this->ion_auth->get_user_id();
         $data['profile'] = $this->profile_model->getProfileById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('profile', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('profilev2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     public function addNew() {
