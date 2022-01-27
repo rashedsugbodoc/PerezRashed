@@ -36,9 +36,9 @@ class Report extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['reports'] = $this->report_model->getReportByType($type);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('birth_report', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('birth_reportv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function operation() {
@@ -52,9 +52,9 @@ class Report extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['reports'] = $this->report_model->getReportByType($type);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('operation_report', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('operation_reportv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function expire() {
@@ -68,9 +68,9 @@ class Report extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['reports'] = $this->report_model->getReportByType($type);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('expire_report', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('expire_reportv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addReportView() {
