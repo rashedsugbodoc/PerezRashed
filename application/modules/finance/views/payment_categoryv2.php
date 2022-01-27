@@ -32,7 +32,7 @@
                                                             <th><?php echo lang('service'); ?> <?php echo lang('name'); ?></th>
                                                             <th><?php echo lang('description'); ?></th>
                                                             <th><?php echo lang('service'); ?> <?php echo lang('price'); ?> ( <?php echo $settings->currency; ?> )</th>
-                                                            <th><?php echo lang('doctors_commission'); ?></th>
+                                                            <th><?php echo lang('doctors_rebate'); ?></th>
                                                             <th><?php echo lang('category'); ?></th>
                                                             <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                                                 <th class="no-print"><?php echo lang('options'); ?></th>
