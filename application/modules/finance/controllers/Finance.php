@@ -1690,9 +1690,9 @@ class Finance extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['from'] = $this->input->post('date_from');
         $data['to'] = $this->input->post('date_to');
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('doctors_commission', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('doctors_commissionv2', $data);
+        // $this->load->view('home/footer'); // just the footer fi
     }
 
     function docComDetails() {
@@ -1955,9 +1955,9 @@ class Finance extends MX_Controller {
             $data['payments'] = $this->finance_model->getPaymentByDate($today, $today_last);
             $data['ot_payments'] = $this->finance_model->getOtPaymentByDate($today, $today_last);
             $data['deposits'] = $this->finance_model->getDepositsByDate($today, $today_last);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('all_account_activity_report', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('all_account_activity_reportv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
@@ -2115,9 +2115,9 @@ class Finance extends MX_Controller {
             $data['payments'] = $this->finance_model->getPaymentByDate($today, $today_last);
             $data['ot_payments'] = $this->finance_model->getOtPaymentByDate($today, $today_last);
             $data['deposits'] = $this->finance_model->getDepositsByDate($today, $today_last);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('all_user_activity_report', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('all_user_activity_reportv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
     function getPayment() {
@@ -2344,9 +2344,9 @@ class Finance extends MX_Controller {
         $data['last_minute'] = $last_minute;
         $data['all_payments'] = $all_payments;
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('daily', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('dailyv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function dailyExpense() {
@@ -2386,9 +2386,9 @@ class Finance extends MX_Controller {
 
 
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('daily_expense', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('daily_expensev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function monthly() {
@@ -2422,9 +2422,9 @@ class Finance extends MX_Controller {
         $data['last_minute'] = $last_minute;
         $data['all_payments'] = $all_payments;
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('monthly', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('monthlyv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function monthlyExpense() {
@@ -2458,9 +2458,9 @@ class Finance extends MX_Controller {
         $data['last_minute'] = $last_minute;
         $data['all_expenses'] = $all_expenses;
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('monthly_expense', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('monthly_expensev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function getExpense() {
