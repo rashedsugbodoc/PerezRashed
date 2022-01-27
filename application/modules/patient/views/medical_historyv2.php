@@ -169,7 +169,7 @@
                                                 <li><a href="#tab-10" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
                                                 <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li>
                                                 <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
-                                                <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('bed'); ?></a></li>
+                                                <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('admissions'); ?></a></li>
                                                 <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
                                             </ul>
                                         </div>
@@ -519,7 +519,7 @@
                                                                         <tr>
                                                                             <th class="w-15"><?php echo lang('date'); ?></th>
                                                                             <th class="w-15"><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></th>
-                                                                            <th class="w-45"><?php echo lang('description'); ?></th>
+                                                                            <th class="w-45"><?php echo lang('case'); ?> <?php echo lang('summary'); ?></th>
                                                                             <th class="w-20"><?php echo lang('facility'); ?></th>
                                                                             <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                                                 <th class="no-print w-5"><?php echo lang('options'); ?></th>
@@ -830,7 +830,7 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <div class="card-title">
-                                                             <?php echo lang('bed'); ?>
+                                                             <?php echo lang('admissions'); ?>
                                                         </div>
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
@@ -848,7 +848,7 @@
                                                                 <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th><?php echo lang('bed_id'); ?></th>
+                                                                            <th><?php echo lang('admission_id'); ?></th>
                                                                             <th><?php echo lang('alloted_time'); ?></th>
                                                                             <th><?php echo lang('discharge_time'); ?></th>
                                                                             <th><?php echo lang('facility'); ?></th>
@@ -1154,7 +1154,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label><?php echo lang('title'); ?></label>
+                                                            <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></label>
                                                             <input type="text" class="form-control" name="title" placeholder="Name">
                                                         </div>
                                                     </div>
@@ -1162,7 +1162,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label><?php echo lang('description'); ?></label>
+                                                            <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?></label>
                                                             <div class="">
                                                                 <textarea class="ckeditor form-control" name="description" value="" rows="10"></textarea>
                                                             </div>
@@ -1202,7 +1202,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label><?php echo lang('title'); ?></label>
+                                                            <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></label>
                                                             <input type="text" name="title" class="form-control" placeholder="Name">
                                                         </div>
                                                     </div>
@@ -1210,7 +1210,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label><?php echo lang('description'); ?></label>
+                                                            <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?></label>
                                                             <div class="">
                                                                 <textarea class="ckeditor form-control editor" id="editor" name="description" value="" rows="10"></textarea>
                                                             </div>
@@ -1316,17 +1316,17 @@
                                                     </div>
                                                     <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('remarks'); ?> <span class="text-red">*</span></label>
+                                                            <label class="form-label"><?php echo lang('complaint'); ?> <span class="text-red">*</span></label>
                                                             <textarea class="form-control mb-4" name="remarks" placeholder="Purpose" rows="3"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="custom-control custom-checkbox">
+                                                        <!-- <label class="custom-control custom-checkbox">
                                                             <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
                                                             <span class="custom-control-label"><?php echo lang('send_sms') ?></span>
-                                                        </label>
+                                                        </label> -->
                                                     </div>
                                                     <input type="hidden" name="redirect" value='patient/medicalHistory?id=<?php echo $patient->id; ?>'>
 
