@@ -516,31 +516,16 @@
                 dom: "<'row'<'col-sm-3'l><'col-sm-4 text-center'B><'col-sm-5'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                // buttons: [
-                //     'excelHtml5',
-                //     'csvHtml5',
-                //     'pdfHtml5',
-                //     {
-                //         extend: 'print',
-                //         exportOptions: {
-                //             columns: [0, 1, 2],
-                //         }
-                //     },
-                // ],
                 buttons: [
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5',
                     {
-                        extend: 'collection',
-                        text: '<?php echo lang('export_options'); ?>',
-                        autoclose: true,
-                        buttons: [
-                            { text: 'Copy', extend: 'copyHtml5' },
-                            { text: 'Excel', extend: 'excelHtml5'},
-                            { text: 'CSV', extend: 'csvHtml5'},
-                            { text: 'PDF', extend: 'pdfHtml5'},
-                            { text: 'Print', extend: 'print' }
-                        ],
-                        fade: true,
-                    }
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2],
+                        }
+                    },
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
