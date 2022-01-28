@@ -56,15 +56,43 @@
                                             <div class="row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                                     <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
+                                                        <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('name'); ?>: <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="name" placeholder="Name" maxlength="100">
+                                                                <label class="form-label"><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('email'); ?>: <span class="text-red">*</span></label>
+                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" name="m_name">
+                                                                    <div class="input-group-append br-tl-0 br-bl-0">
+                                                                        <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                                            <option selected disabled><?php echo lang('none'); ?></option>
+                                                                            <option value="jr"><?php echo lang('jr'); ?></option>
+                                                                            <option value="sr"><?php echo lang('sr'); ?></option>
+                                                                            <option value="i"><?php echo lang('i'); ?></option>
+                                                                            <option value="ii"><?php echo lang('ii'); ?></option>
+                                                                            <option value="iii"><?php echo lang('iii'); ?></option>
+                                                                            <option value="iv"><?php echo lang('iv'); ?></option>
+                                                                            <option value="v"><?php echo lang('v'); ?></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
                                                                 <input type="email" class="form-control" name="email" placeholder="Email">
                                                             </div>
                                                         </div>
@@ -150,13 +178,8 @@
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('department'); ?>: <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" name="department" data-placeholder="Choose one">
-                                                                    <option label="Choose one">
-                                                                    </option>
-                                                                    <?php foreach ($departments as $department) { ?>
-                                                                        <option value="<?php echo $department->name; ?>"> <?php echo $department->name; ?> </option>
-                                                                    <?php } ?>
+                                                                <label class="form-label"><?php echo lang('specialization'); ?>: <span class="text-red">*</span></label>
+                                                                <select class="form-control select2-show-search" id="specialtychoose" name="specialization[]" data-placeholder="Choose one" multiple="multiple">
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -204,16 +227,44 @@
                                             <div class="row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                                     <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
+                                                        <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('name'); ?>: <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="name" value="Evelyn Ang" placeholder="Name" maxlength="100">
+                                                                <label class="form-label"><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('email'); ?>: <span class="text-red">*</span></label>
-                                                                <input type="email" value="doctor14.sugbodoc@mailinator.com" class="form-control" name="email" placeholder="Email">
+                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" name="m_name">
+                                                                    <div class="input-group-append br-tl-0 br-bl-0">
+                                                                        <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                                            <option selected disabled><?php echo lang('none'); ?></option>
+                                                                            <option value="jr"><?php echo lang('jr'); ?></option>
+                                                                            <option value="sr"><?php echo lang('sr'); ?></option>
+                                                                            <option value="i"><?php echo lang('i'); ?></option>
+                                                                            <option value="ii"><?php echo lang('ii'); ?></option>
+                                                                            <option value="iii"><?php echo lang('iii'); ?></option>
+                                                                            <option value="iv"><?php echo lang('iv'); ?></option>
+                                                                            <option value="v"><?php echo lang('v'); ?></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
+                                                                <input type="email" class="form-control" name="email" placeholder="Email">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -295,19 +346,8 @@
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('department'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" name="department" data-placeholder="Choose one">
-                                                                    <option label="Choose one">
-                                                                    </option>
-                                                                    <?php foreach ($departments as $department) { ?>
-                                                                    <option value="<?php echo $department->name; ?>" <?php
-                                                                    if (!empty($doctor->department)) {
-                                                                        if ($department->name == $doctor->department) {
-                                                                            echo 'selected';
-                                                                        }
-                                                                    }
-                                                                    ?> > <?php echo $department->name; ?> </option>
-                                                                        <?php } ?> 
+                                                                <label class="form-label"><?php echo lang('specialization'); ?> <span class="text-red">*</span></label>
+                                                                <select class="form-control select2-show-search" id="specialtychoose2" name="specialization[]" data-placeholder="Choose one" multiple="multiple">
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -597,6 +637,7 @@
                 // Get the record's ID via attribute  
                 var iid = $(this).attr('data-id');
                 $("#img").attr("src", "uploads/cardiology-patient-icon-vector-6244713.jpg");
+                $('#specialtychoose2').find('option').remove();
                 $('#editDoctorForm').trigger("reset");
                 $("#edit_state").find('option').remove();
                 $("#edit_city").find('option').remove();
@@ -610,6 +651,9 @@
                         // Populate the form fields with the data returned from server
                         $('#editDoctorForm').find('[name="id"]').val(response.doctor.id).end()
                         $('#editDoctorForm').find('[name="name"]').val(response.doctor.name).end()
+                        $('#editDoctorForm').find('[name="f_name"]').val(response.doctor.firstname).end()
+                        $('#editDoctorForm').find('[name="l_name"]').val(response.doctor.lastname).end()
+                        $('#editDoctorForm').find('[name="m_name"]').val(response.doctor.middlename).end()
                         $('#editDoctorForm').find('[name="password"]').val(response.doctor.password).end()
                         $('#editDoctorForm').find('[name="email"]').val(response.doctor.email).end()
                         $('#editDoctorForm').find('[name="address"]').val(response.doctor.address).end()
@@ -625,11 +669,13 @@
                         // $('#editDoctorForm').find('[name="barangay_id"]').val(response.doctor.barangay_id).change()
                         $('#editDoctorForm').find('[name="postal"]').val(response.doctor.postal).end()
                         $('#editDoctorForm').find('[name="phone"]').val(response.doctor.phone).end()
-                        $('#editDoctorForm').find('[name="department"]').val(response.doctor.department).end()
+                        // $('#editDoctorForm').find('[name="department"]').val(response.doctor.department).end()
                         $('#editDoctorForm').find('[name="profile"]').val(response.doctor.profile).end()
                         $('#editDoctorForm').find('[name="license"]').val(response.doctor.license).end()
 
-                        $('#editDoctorForm').find('[name="department"]').val(response.doctor.department).change()
+                        $.each(response.specialties, function(key, value) {
+                            $('#specialtychoose2').append($('<option selected>').text(value.display_name_ph).val(value.id)).end();
+                        });
 
                         var imagenUrl = response.doctor.img_url;
                         var drEvent = $('#img').dropify(
@@ -1039,6 +1085,58 @@
 
         });
 
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#specialtychoose").select2({
+                placeholder: '<?php echo lang('select_specialty'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'doctor/getSpecialtyinfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        console.log(response);
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+
+            $("#specialtychoose2").select2({
+                placeholder: '<?php echo lang('select_specialty'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'doctor/getSpecialtyinfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        console.log(response);
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
     </script>
 
     <script>
