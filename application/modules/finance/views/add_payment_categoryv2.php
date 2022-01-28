@@ -99,7 +99,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('service_type'); ?></label>
-                                                        <select class="form-control select2-show-search" name="category_id">
+                                                        <select class="form-control select2-show-search">
                                                             <option value=""><?php echo lang('select_service_type');?></option>
                                                             
                                                         </select>
