@@ -2100,9 +2100,9 @@ class Finance extends MX_Controller {
             }
 
 
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('user_activity_report', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('user_activity_reportv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
 
         if (empty($user)) {
