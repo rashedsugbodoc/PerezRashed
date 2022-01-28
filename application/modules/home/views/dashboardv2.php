@@ -777,56 +777,56 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php if ($this->ion_auth->in_group('Patient')) { ?>
                             <?php if (in_array('lab', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="lab/myLab">
+                                    <a class="side-menu__item" href="lab/myLab">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g fill="currentColor"><g><polygon opacity=".3" points="13,6 11,6 11,11.33 6,18 18,18 13,11.33"/><path d="M20.8,18.4L15,10.67V6.5l1.35-1.69C16.61,4.48,16.38,4,15.96,4H8.04C7.62,4,7.39,4.48,7.65,4.81L9,6.5v4.17L3.2,18.4 C2.71,19.06,3.18,20,4,20h16C20.82,20,21.29,19.06,20.8,18.4z M6,18l5-6.67V6h2v5.33L18,18H6z"/></g></g></svg>
                                     <span class="side-menu__label"><?php echo lang('my'); ?><?php echo lang('diagnosis'); ?> <?php echo lang('reports'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('form', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="form/myForm">
+                                    <a class="side-menu__item" href="form/myForm">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><path d="M0,0h24v24H0V0z" fill="none"/></g><g fill="currentColor"><path d="M15,5H5v14h14V9h-4V5z M7,7h5v2H7V7z M17,17H7v-2h10V17z M17,11v2H7v-2H17z" opacity=".3"/><path d="M7,13h10v-2H7V13z M7,17h10v-2H7V17z M16,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V8L16,3z M19,19H5V5 h10v4h4V19z M12,7H7v2h5V7z"/></g></svg>
                                     <span class="side-menu__label"><?php echo lang('my'); ?> <?php echo lang('forms_reports'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('appointment', $this->modules)) { ?>                                                            
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="patient/calendar">
+                                    <a class="side-menu__item" href="patient/calendar">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 8h14V6H5z" opacity="1" /><path d="M7 11h2v2H7zm12-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-4 3h2v2h-2zm-4 0h2v2h-2z"  fill="currentColor"/></svg>
                                     <span class="side-menu__label"><?php echo lang('appointment'); ?> <?php echo lang('calendar'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('patient', $this->modules)) { ?>                                                               
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="patient/myCaseList">
+                                    <a class="side-menu__item" href="patient/myCaseList">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                     <span class="side-menu__label"><?php echo lang('cases'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('prescription', $this->modules)) { ?>                                                            
                                 <li class="slide">
-                                    <a class="side-menu__item"  href="patient/myPrescription">
+                                    <a class="side-menu__item" href="patient/myPrescription">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="24px" height="24px"><path fill="currentColor" d="M301.26 352l78.06-78.06c6.25-6.25 6.25-16.38 0-22.63l-22.63-22.63c-6.25-6.25-16.38-6.25-22.63 0L256 306.74l-83.96-83.96C219.31 216.8 256 176.89 256 128c0-53.02-42.98-96-96-96H16C7.16 32 0 39.16 0 48v256c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16v-80h18.75l128 128-78.06 78.06c-6.25 6.25-6.25 16.38 0 22.63l22.63 22.63c6.25 6.25 16.38 6.25 22.63 0L256 397.25l78.06 78.06c6.25 6.25 16.38 6.25 22.63 0l22.63-22.63c6.25-6.25 6.25-16.38 0-22.63L301.26 352zM64 96h96c17.64 0 32 14.36 32 32s-14.36 32-32 32H64V96z"></path></svg>
                                     <span class="side-menu__label"><?php echo lang('prescription'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('patient', $this->modules)) { ?>                                                           
                                 <li class="slide">
-                                    <a class="side-menu__item"  href="patient/myDocuments">
+                                    <a class="side-menu__item" href="patient/myDocuments">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                     <span class="side-menu__label"><?php echo lang('documents'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('finance', $this->modules)) { ?>                                                            
                                 <li class="slide">
-                                    <a class="side-menu__item"  href="patient/myPaymentHistory">
+                                    <a class="side-menu__item" href="patient/myPaymentHistory">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g fill="currentColor" ><rect fill="none" height="24" width="24"/><path d="M17,6H3v8h14V6z M10,13c-1.66,0-3-1.34-3-3s1.34-3,3-3s3,1.34,3,3S11.66,13,10,13z" opacity=".3"/><g><path d="M17,4H3C1.9,4,1,4.9,1,6v8c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V6C19,4.9,18.1,4,17,4L17,4z M3,14V6h14v8H3z"/><path d="M10,7c-1.66,0-3,1.34-3,3s1.34,3,3,3s3-1.34,3-3S11.66,7,10,7L10,7z"/></g><path d="M23,7v11c0,1.1-0.9,2-2,2H4c0-1,0-0.9,0-2h17V7C22.1,7,22,7,23,7z"/></g></svg>
                                     <span class="side-menu__label"><?php echo lang('bills_and_payments'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('report', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  href="report/myreports">
+                                    <a class="side-menu__item" href="report/myreports">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                     <span class="side-menu__label"><?php echo lang('other'); ?> <?php echo lang('reports'); ?></span></a>
                                 </li>
