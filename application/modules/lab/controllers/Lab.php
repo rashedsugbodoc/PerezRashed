@@ -794,9 +794,9 @@ class Lab extends MX_Controller {
 
         $data['settings'] = $this->settings_model->getSettings();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('my_lab', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('my_labv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function getMyLab() {

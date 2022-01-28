@@ -11,6 +11,7 @@ class Doctor extends MX_Controller {
         $this->load->model('doctor_model');
 
         $this->load->model('department/department_model');
+        $this->load->model('specialty/specialty_model');
         $this->load->model('appointment/appointment_model');
         $this->load->model('patient/patient_model');
         $this->load->model('prescription/prescription_model');
@@ -31,6 +32,7 @@ class Doctor extends MX_Controller {
 
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['departments'] = $this->department_model->getDepartment();
+        $data['specialties'] = $this->specialty_model->getSpecialty();
         $data['countries'] = $this->location_model->getCountry();
         $data['states'] = $this->location_model->getState();
         $data['cities'] = $this->location_model->getCity();
@@ -106,12 +108,15 @@ class Doctor extends MX_Controller {
         }
 
         
-        $name = $this->input->post('name');
+        $fname = $this->input->post('f_name');
+        $lname = $this->input->post('l_name');
+        $mname = $this->input->post('m_name');
+        $suffix = $this->input->post('suffix');
         $password = $this->input->post('password');
         $email = $this->input->post('email');
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
-        $department = $this->input->post('department');
+        $specialization = $this->input->post('specialization');
         $profile = $this->input->post('profile');
         $license = $this->input->post('license');
         $country = $this->input->post('country_id');
@@ -119,13 +124,21 @@ class Doctor extends MX_Controller {
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
+        $name = $fname . ' ' . $mname . ' ' . $lname . ' ' . $suffix;
+        $specialization = implode(',', $specialization);
 
         $emailById = $this->doctor_model->getDoctorById($id)->email;
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
-        // Validating Name Field
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('fname', 'First Name', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('lname', 'Last Name', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('mname', 'Middle Name', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('suffix', 'Suffix', 'trim|min_length[2]|max_length[100]|xss_clean');
         // Validating Password Field
         if (empty($id)) {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
@@ -207,7 +220,7 @@ class Doctor extends MX_Controller {
             $this->upload->initialize($config);
 
             
-            $username = $this->input->post('name');
+            $username = $name;
             if (empty($id)) {     // Adding New Doctor
                 $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
                 $this->session->set_flashdata('fileError', $fileError);
@@ -233,6 +246,10 @@ class Doctor extends MX_Controller {
                         $data = array(
                             'img_url' => $img_url,
                             'name' => $name,
+                            'firstname' => $fname,
+                            'lastname' => $lname,
+                            'middlename' => $mname,
+                            'suffix' => $suffix,
                             'email' => $email,
                             'address' => $address,
                             'country_id' => $country,
@@ -241,7 +258,7 @@ class Doctor extends MX_Controller {
                             'barangay_id' => $barangay,
                             'postal' => $postal,
                             'phone' => $phone,
-                            'department' => $department,
+                            'specialties' => $specialization,
                             'profile' => $profile,
                             'license' => $license
                         );
@@ -270,7 +287,7 @@ class Doctor extends MX_Controller {
                             'name' => $name,
                             'email' => $email,
                             'password' => $password,
-                            'department' => $department,
+                            'specialties' => $specialization,
                             'license' => $license,
                             'company' => $set['settings']->system_vendor,
                             'hospital_name' => $set['settings']->title,
@@ -347,6 +364,10 @@ class Doctor extends MX_Controller {
                             $data = array(
                                 'img_url' => $img_url,
                                 'name' => $name,
+                                'firstname' => $fname,
+                                'lastname' => $lname,
+                                'middlename' => $mname,
+                                'suffix' => $suffix,
                                 'email' => $email,
                                 'address' => $address,
                                 'country_id' => $country,
@@ -355,7 +376,7 @@ class Doctor extends MX_Controller {
                                 'barangay_id' => $barangay,
                                 'postal' => $postal,
                                 'phone' => $phone,
-                                'department' => $department,
+                                'specialties' => $specialization,
                                 'profile' => $profile,
                                 'license' => $license
                             );
@@ -395,6 +416,10 @@ class Doctor extends MX_Controller {
                         $data = array(
                             'img_url' => $img_url,
                             'name' => $name,
+                            'firstname' => $fname,
+                            'lastname' => $lname,
+                            'middlename' => $mname,
+                            'suffix' => $suffix,
                             'email' => $email,
                             'address' => $address,
                             'country_id' => $country,
@@ -403,7 +428,7 @@ class Doctor extends MX_Controller {
                             'barangay_id' => $barangay,
                             'postal' => $postal,
                             'phone' => $phone,
-                            'department' => $department,
+                            'specialties' => $specialization,
                             'profile' => $profile,
                             'license' => $license
                         );
@@ -486,6 +511,8 @@ class Doctor extends MX_Controller {
     function editDoctorByJason() {
         $id = $this->input->get('id');
         $data['doctor'] = $this->doctor_model->getDoctorById($id);
+        $doctor_specialty = $data['doctor']->specialties;
+        $data['specialties'] = $this->getSpecialtyListArray($doctor_specialty);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $country_id = $data['doctor']->country_id;
         $state_id = $data['doctor']->state_id;
@@ -602,6 +629,16 @@ class Doctor extends MX_Controller {
         echo json_encode($response);
     }
 
+    public function getSpecialtyInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->specialty_model->getSpecialtyInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
     public function getDoctorWithAddNewOption() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');
@@ -610,6 +647,22 @@ class Doctor extends MX_Controller {
         $response = $this->doctor_model->getDoctorWithAddNewOption($searchTerm);
 
         echo json_encode($response);
+    }
+
+    public function getSpecialtyListArray($specialtyString) {
+
+        if(!empty($specialtyString)) {
+            $doctors = explode(',', $specialtyString);
+            foreach ($doctors as $doctor) {
+                $specialtyDictionary = $this->specialty_model->getSpecialtyById($doctor);
+                $specialtyListArray[] = $specialtyDictionary;
+            }
+            return $specialtyListArray;
+        } else {
+            return '';
+        }
+
+
     }
 
 }

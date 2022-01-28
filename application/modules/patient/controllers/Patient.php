@@ -132,7 +132,10 @@ class Patient extends MX_Controller {
         if (empty($redirect)) {
             $redirect = $this->input->post('redirect');
         }
-        $name = $this->input->post('name');
+        $fname = $this->input->post('f_name');
+        $lname = $this->input->post('l_name');
+        $mname = $this->input->post('m_name');
+        $suffix = $this->input->post('suffix');
         $password = $this->input->post('password');
         $sms = $this->input->post('sms');
         $doctor = $this->input->post('doctor');
@@ -148,6 +151,8 @@ class Patient extends MX_Controller {
         $birthdate = $this->input->post('birthdate');
         $bloodgroup = $this->input->post('bloodgroup');
         $patient_id = $this->input->post('p_id');
+
+        $name = $fname . ' ' . $mname . ' ' . $lname . ' ' . $suffix;
         if (!empty($doctor)) {
             $data['doctorNames'] = implode(',', $doctor);
         }
@@ -176,8 +181,14 @@ class Patient extends MX_Controller {
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
-        // Validating Name Field
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('fname', 'First Name', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('lname', 'Last Name', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('mname', 'Middle Name', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('suffix', 'Suffix', 'trim|min_length[2]|max_length[100]|xss_clean');
         // Validating Password Field
         if (empty($id)) {
             $this->form_validation->set_rules('password', 'Password', 'trim|min_length[3]|max_length[100]|xss_clean');
@@ -262,7 +273,7 @@ class Patient extends MX_Controller {
             $this->load->library('Upload', $config);
             $this->upload->initialize($config);
 
-            $username = $this->input->post('name');
+            $username = $name;
 
             if (empty($id)) {     // Adding New Patient
                 if ($this->ion_auth->email_check($email)) {
@@ -287,6 +298,10 @@ class Patient extends MX_Controller {
                             'patient_id' => $patient_id,
                             'img_url' => $img_url,
                             'name' => $name,
+                            'firstname' => $fname,
+                            'lastname' => $lname,
+                            'middlename' => $mname,
+                            'suffix' => $suffix,
                             'email' => $email,
                             'address' => $address,
                             'country_id' => $country,
@@ -406,6 +421,10 @@ class Patient extends MX_Controller {
                                 'patient_id' => $patient_id,
                                 'img_url' => $img_url,
                                 'name' => $name,
+                                'firstname' => $fname,
+                                'lastname' => $lname,
+                                'middlename' => $mname,
+                                'suffix' => $suffix,
                                 'email' => $email,
                                 'address' => $address,
                                 'country_id' => $country,
@@ -459,6 +478,10 @@ class Patient extends MX_Controller {
                             'patient_id' => $patient_id,
                             'img_url' => $img_url,
                             'name' => $name,
+                            'firstname' => $fname,
+                            'lastname' => $lname,
+                            'middlename' => $mname,
+                            'suffix' => $suffix,
                             'email' => $email,
                             'address' => $address,
                             'country_id' => $country,
@@ -675,7 +698,7 @@ class Patient extends MX_Controller {
     }
 
     function documents() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient'))) {
             redirect('home/permission');
         }
         $data['patients'] = $this->patient_model->getPatient();
@@ -690,9 +713,9 @@ class Patient extends MX_Controller {
             $patient_ion_id = $this->ion_auth->get_user_id();
             $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
             $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($patient_id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('my_case_list', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('my_case_listv2', $data);
+            // $this->load->view('home/footer'); // just the footer file
         }
     }
 
@@ -701,9 +724,9 @@ class Patient extends MX_Controller {
             $patient_ion_id = $this->ion_auth->get_user_id();
             $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
             $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('my_documents', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('my_documentsv2', $data);
+            // $this->load->view('home/footer'); // just the footer file
         }
     }
 
@@ -714,9 +737,9 @@ class Patient extends MX_Controller {
             $data['doctors'] = $this->doctor_model->getDoctor();
             $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($patient_id);
             $data['settings'] = $this->settings_model->getSettings();
-            $this->load->view('home/dashboard', $data); // just the header file
-            $this->load->view('my_prescription', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2', $data); // just the header file
+            $this->load->view('my_prescriptionv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
@@ -1570,7 +1593,7 @@ class Patient extends MX_Controller {
                 $this->patient_model->insertPatientMaterial($data);
                 $this->session->set_flashdata('success', lang('record_added'));
 
-                redirect('patient/documents');
+                redirect($redirect);
             } else {
                 $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
                 $this->session->set_flashdata('fileError', $fileError);
@@ -1963,9 +1986,13 @@ class Patient extends MX_Controller {
                 $patient_details = '';
             }
 
+            $utcdate = date_create($document->created_at, timezone_open('UTC'));
+            date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
+            $created_at = date_format($utcdate, 'Y-m-d') . "\n";
+
             if (pathinfo($document->url, PATHINFO_EXTENSION) === 'pdf'){
                 $info[] = array(
-                    date('Y-m-d', $document->date),
+                    $created_at,
                     $patient_details,
                     $document->title,
                     $document->description,
@@ -1975,7 +2002,7 @@ class Patient extends MX_Controller {
                 );
             } else {
                 $info[] = array(
-                    date('Y-m-d', $document->date),
+                    $created_at,
                     $patient_details,
                     $document->title,
                     $document->description,
@@ -2693,7 +2720,7 @@ class Patient extends MX_Controller {
 
     }
 
-        public function getDoctorListArray($doctorsString) {
+    public function getDoctorListArray($doctorsString) {
 
         if(!empty($doctorsString)) {
             $doctors = explode(',', $doctorsString);
