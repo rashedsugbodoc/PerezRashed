@@ -223,24 +223,12 @@
                                 </div>
                                 <!-- <div class="row border-top">
                                 </div> -->
-                                <div class="row mt-5 border-bottom">
+                                <div class="row mt-5">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="form-label font-weight-bold"><?php echo lang('details'); ?></label>
                                             <label class="case_details"></label>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-5">
-                                    <div class="col-md-12">
-                                        <div class="form-group pull-right">
-                                            <?php echo $settings->title . '<br>' . $settings->address; ?>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-5">
-                                    <div class="col-md-12">
-                                        <button type="button" class="btn btn-info pull-right" onclick="javascript:window.print();" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fe fe-printer"></i>Print</button>
                                     </div>
                                 </div>
                             </form>

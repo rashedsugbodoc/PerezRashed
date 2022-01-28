@@ -68,6 +68,48 @@
                                                 <div class="row">
                                                     <div class="col-xl-12 col-lg-12 col-md-12">
                                                         <div class="row">
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
+                                                                    <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
+                                                                    <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                    <div class="input-group">
+                                                                        <input type="text" class="form-control" name="m_name">
+                                                                        <div class="input-group-append br-tl-0 br-bl-0">
+                                                                            <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                                                <option selected disabled><?php echo lang('none'); ?></option>
+                                                                                <option value="jr"><?php echo lang('jr'); ?></option>
+                                                                                <option value="sr"><?php echo lang('sr'); ?></option>
+                                                                                <option value="i"><?php echo lang('i'); ?></option>
+                                                                                <option value="ii"><?php echo lang('ii'); ?></option>
+                                                                                <option value="iii"><?php echo lang('iii'); ?></option>
+                                                                                <option value="iv"><?php echo lang('iv'); ?></option>
+                                                                                <option value="v"><?php echo lang('v'); ?></option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
+                                                                    <input type="email" class="form-control" name="email" placeholder="Email">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="row">
                                                             <div class="col-sm-6 col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label"><?php echo lang('name'); ?> <span class="text-red">*</span></label>
@@ -80,7 +122,7 @@
                                                                     <input type="email" class="form-control" name="email" placeholder="Email">
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> -->
                                                         <div class="row">
                                                             <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
@@ -259,7 +301,7 @@
                                         <form role="form" id="editPatientForm" action="patient/addNew" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <div class="col-xl-12 col-lg-12 col-md-12">
-                                                    <div class="row">
+                                                    <!-- <div class="row">
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('name'); ?> <span class="text-red">*</span></label>
@@ -269,6 +311,48 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">Email<span class="text-red">*</span></label>
+                                                                <input type="email" class="form-control" name="email" placeholder="Email">
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" name="m_name">
+                                                                    <div class="input-group-append br-tl-0 br-bl-0">
+                                                                        <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                                            <option selected disabled><?php echo lang('none'); ?></option>
+                                                                            <option value="jr"><?php echo lang('jr'); ?></option>
+                                                                            <option value="sr"><?php echo lang('sr'); ?></option>
+                                                                            <option value="i"><?php echo lang('i'); ?></option>
+                                                                            <option value="ii"><?php echo lang('ii'); ?></option>
+                                                                            <option value="iii"><?php echo lang('iii'); ?></option>
+                                                                            <option value="iv"><?php echo lang('iv'); ?></option>
+                                                                            <option value="v"><?php echo lang('v'); ?></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
                                                                 <input type="email" class="form-control" name="email" placeholder="Email">
                                                             </div>
                                                         </div>
@@ -721,7 +805,10 @@
                     // Populate the form fields with the data returned from server
 
                     $('#editPatientForm').find('[name="id"]').val(response.patient.id).end()
-                    $('#editPatientForm').find('[name="name"]').val(response.patient.name).end()
+                    $('#editPatientForm').find('[name="f_name"]').val(response.patient.firstname).end()
+                    $('#editPatientForm').find('[name="m_name"]').val(response.patient.middlename).end()
+                    $('#editPatientForm').find('[name="l_name"]').val(response.patient.lastname).end()
+                    $('#editPatientForm').find('[name="suffix"]').val(response.patient.suffix).change()
                     $('#editPatientForm').find('[name="password"]').val(response.patient.password).end()
                     $('#editPatientForm').find('[name="email"]').val(response.patient.email).end()
                     $('#editPatientForm').find('[name="address"]').val(response.patient.address).end()

@@ -762,7 +762,7 @@
                                                                     <div class="card-body p-0">
                                                                         <div class="todo-widget-header d-flex pb-2 p-4">
                                                                             <div class="">
-                                                                                <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-edit"></i></a>
+                                                                                <a class="btn btn-info" href="<?php echo $patient_material->url; ?>"><i class="fe fe-edit"></i></a>
                                                                                 <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
                                                                                 <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
@@ -1163,9 +1163,17 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?></label>
-                                                            <div class="">
-                                                                <textarea class="ckeditor form-control" name="description" value="" rows="10"></textarea>
+                                                            <div class="ql-wrapper ql-wrapper-demo bg-light">
+                                                                <div id="quillEditor" class="bg-white quillEditor">
+                                                                </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <textarea id="description" name="description" readonly="" hidden="" class="form-control" rows="4"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1211,9 +1219,18 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?></label>
-                                                            <div class="">
-                                                                <textarea class="ckeditor form-control editor" id="editor" name="description" value="" rows="10"></textarea>
+                                                            <div class="ql-wrapper ql-wrapper-demo bg-light">
+                                                                <div id="quillEditor2" class="bg-white">
+                                                                    
+                                                                </div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <textarea id="description2" name="description" readonly="" class="form-control" rows="4"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1761,6 +1778,20 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
+        function myFunction(){
+            var quill = document.getElementById('quillEditor').children[0].innerHTML;
+            // var cleanText = quill.replace(/<\/?[^>]+(>|$)/g, "");
+            document.getElementById('description').value = quill;
+        }
+
+        function myFunction2(){
+            var quill = document.getElementById('quillEditor2').children[0].innerHTML;
+            // var cleanText = quill.replace(/<\/?[^>]+(>|$)/g, "");
+            document.getElementById('description2').value = quill;
+        }
+    </script>
+
+    <script type="text/javascript">
         $(document).ready(function () {
             $(".editbutton").click(function () {
                 // e.preventDefault(e);
@@ -1781,7 +1812,7 @@
                         $('#medical_historyEditForm').find('[name="id"]').val(response.medical_history.id).end()
                         $('#medical_historyEditForm').find('[name="date"]').val(de).end()
                         $('#medical_historyEditForm').find('[name="title"]').val(response.medical_history.title).end()
-                        $('#medical_historyEditForm').find('[name="description"]').val(response.medical_history.description).end()
+                        document.getElementById('quillEditor2').children[0].innerHTML = response.medical_history.description;
 
                         // CKEDITOR.instances['editor'].setData(response.medical_history.description)
 

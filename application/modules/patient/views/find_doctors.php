@@ -53,11 +53,8 @@
                                             <p class="mb-0 mt-1 text-dark font-weight-semibold"><?php echo lang('dr') ?>. <?php echo $doctor->name; ?></p>
                                             <small class="text-muted"><?php echo $doctor->profile; ?></small>
                                             <small class="text-muted"><p><i class="fa fa-map-marker text-info"></i> Cebu City</p></small>
-                                        </div>
-                                        <div class="float-sm-right ml-auto mt-4 mt-sm-0">
                                             <a href="#" class="btn btn-primary btn-pill btn-sm d-xl-inline">Book</a>
                                             <a class="btn btn-white btn-pill btn-sm " data-target="#modaldemo3" data-toggle="modal" href="">Info</a>
-                                            <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
                                         </div>
                                     </div>
                                 </div>

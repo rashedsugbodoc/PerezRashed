@@ -192,9 +192,9 @@ class Report extends MX_Controller {
     function myreports() {
         $data['reports'] = $this->report_model->getReport();
         $data['user_id'] = $this->ion_auth->user()->row()->id;
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('myreports', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('myreportsv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function delete() {
