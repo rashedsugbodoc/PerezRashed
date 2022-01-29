@@ -698,7 +698,7 @@ class Patient extends MX_Controller {
     }
 
     function documents() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'DoctorAdmin'))) {
             redirect('home/permission');
         }
         $data['patients'] = $this->patient_model->getPatient();
@@ -770,7 +770,7 @@ class Patient extends MX_Controller {
         $date_from = strtotime($this->input->post('date_from'));
         $date_to = strtotime($this->input->post('date_to'));
         if (!empty($date_to)) {
-            $date_to = $date_to + 86399;
+            $date_to = $date_to;
         }
 
         $data['date_from'] = $date_from;
@@ -791,13 +791,21 @@ class Patient extends MX_Controller {
 
 
         $data['patient'] = $this->patient_model->getPatientByid($patient);
+        $country = $data['patient']->country_id;
+        $state = $data['patient']->state_id;
+        $city = $data['patient']->city_id;
+        $barangay = $data['patient']->barangay_id;
+        $data['patientCountry'] = $this->location_model->getCountryById($country);
+        $data['patientState'] = $this->location_model->getStateById($state);
+        $data['patientCity'] = $this->location_model->getCityById($city);
+        $data['patientBarangay'] = $this->location_model->getBarangayById($barangay);
         $data['settings'] = $this->settings_model->getSettings();
 
 
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('my_payments_history', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('my_payments_historyv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function deposit() {

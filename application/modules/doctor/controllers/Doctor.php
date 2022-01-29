@@ -138,7 +138,7 @@ class Doctor extends MX_Controller {
         // Validating Password Field
         $this->form_validation->set_rules('mname', 'Middle Name', 'trim|min_length[2]|max_length[100]|xss_clean');
         // Validating Password Field
-        $this->form_validation->set_rules('suffix', 'Suffix', 'trim|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('suffix', 'Suffix', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Password Field
         if (empty($id)) {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
