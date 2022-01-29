@@ -1141,10 +1141,10 @@
 
     <script>
         $(document).ready(function () {
-            var error = "<?php echo $_SESSION['error'] ?>";
-            var success = "<?php echo $_SESSION['success'] ?>";
-            var notice = "<?php echo $_SESSION['notice'] ?>";
-            var warning = "<?php echo $_SESSION['warning'] ?>";
+            var error = "<?php if(isset($_SESSION['error'])) echo $_SESSION['error']; ?>";
+            var success = "<?php if(isset($_SESSION['success'])) echo $_SESSION['success']; ?>";
+            var notice = "<?php if(isset($_SESSION['notice'])) echo $_SESSION['notice']; ?>";
+            var warning = "<?php if(isset($_SESSION['warning'])) echo $_SESSION['warning']; ?>";
 
             if (success) {
                 return $.growl.success({
