@@ -36,6 +36,15 @@ class Appointment extends MX_Controller {
         // $this->load->view('home/footer'); // just the header file
     }
 
+    public function bookConsultation() {
+        if (!$this->ion_auth->in_group(array('Patient'))) {
+            redirect('home/permission');
+        }
+
+        $this->load->view('home/dashboardv2');
+        $this->load->view('book_consultation');
+    }
+
     public function request() {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
