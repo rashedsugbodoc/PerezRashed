@@ -43,4 +43,10 @@ class Settings_model extends CI_model {
         return $query->row();
     }
 
+    function getEntityType() {
+        $this->db->order_by('name', 'asc');
+        $query = $this->db->get('entity_type');
+        return $query->result();
+    }
+
 }

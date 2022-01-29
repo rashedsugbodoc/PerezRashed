@@ -17,6 +17,7 @@ class Settings extends MX_Controller {
     public function index() {
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
+        $data['entities'] = $this->settings_model->getEntityType();
         $data['zones'] = timezone_identifiers_list();
         $data['countries'] = $this->location_model->getCountry();
         $data['states'] = $this->location_model->getState();
@@ -70,6 +71,7 @@ class Settings extends MX_Controller {
 
     public function update() {
         $id = $this->input->post('id');
+        $entity_type = $this->input->post('entity_type');
         $group_name = $this->input->post('group_name');
         $title = $this->input->post('title');
         $email = $this->input->post('email');
@@ -95,6 +97,8 @@ class Settings extends MX_Controller {
         if (!empty($email)) {
             $this->load->library('form_validation');
             $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+            // Validating Group Name Field
+            $this->form_validation->set_rules('entity_type', 'Healthcare Provider Type', 'trim|min_length[1]|max_length[100]|xss_clean');
             // Validating Group Name Field
             $this->form_validation->set_rules('group_name', 'Group Name', 'trim|min_length[1]|max_length[100]|xss_clean');
             // Validating Title Field
@@ -156,6 +160,7 @@ class Settings extends MX_Controller {
                     $img_url = "uploads/" . $path['file_name'];
                     $data = array();
                     $data = array(
+                        'entity_type_id' => $entity_type,
                         'group_name' => $group_name,
                         'title' => $title,
                         'address' => $address,
@@ -180,6 +185,7 @@ class Settings extends MX_Controller {
                 } else {
                     $data = array();
                     $data = array(
+                        'entity_type_id' => $entity_type,
                         'group_name' => $group_name,
                         'title' => $title,
                         'address' => $address,
