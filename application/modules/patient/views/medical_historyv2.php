@@ -86,8 +86,14 @@
                                                     <p style="margin-bottom: 0px;"><label class="form-label">Find Doctors</label></p>
                                                 </a>
                                             </div>
-                                            <div class="col-md-4 text-center">
+                                            <!-- <div class="col-md-4 text-center">
                                                 <a data-toggle="modal" href="#addAppointmentModal">
+                                                    <i class="fa fa-calendar fa-5x"></i>
+                                                    <p style="margin-bottom: 0px;"><label class="form-label">Book Appointment</label></p>
+                                                </a>
+                                            </div> -->
+                                            <div class="col-md-4 text-center">
+                                                <a href="appointment/bookConsultation">
                                                     <i class="fa fa-calendar fa-5x"></i>
                                                     <p style="margin-bottom: 0px;"><label class="form-label">Book Appointment</label></p>
                                                 </a>
@@ -103,10 +109,12 @@
                                 </div>
                             </div>
                         </div>
-                        <?php } ?>
+                        <div class="main-proifle d-print-none">
+                        <?php } else { ?>
 
                         <!--/app header-->
                         <div class="main-proifle mt-5 d-print-none">
+                        <?php } ?>
                             <div class="row">
                                 <div class="col-lg-10 col-sm-12 col-md-12">
                                     <div class="box-widget widget-user">
@@ -2682,7 +2690,7 @@
             });
 
             $("#category").select2({
-                placeholder: '<?php echo lang('select_doctor'); ?>',
+                placeholder: '<?php echo lang('select_category'); ?>',
                 allowClear: true,
                 ajax: {
                     url: 'patient/getDocumentUploadCategory',
