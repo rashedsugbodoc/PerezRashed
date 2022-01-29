@@ -23,6 +23,13 @@ class Patient_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientListByDoctorId($id) {
+        $this->db->where("FIND_IN_SET($id,doctor) > 0");
+        $this->db->order_by('id','asc');
+        $query = $this->db->get('patient');
+        return $query->result();
+    }
+
     function getPatientCount() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
