@@ -11,7 +11,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('todays_appointments'); ?>
+                                            <?php echo lang('my_reports'); ?>
                                         </div>
                                     </div>
                                     <div class="card-body">

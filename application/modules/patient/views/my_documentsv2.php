@@ -5,6 +5,11 @@
                 <!--div class="app-content main-content"-->
                     <!--div class="side-app"-->
                         <!--Page header-->
+                        <div class="page-header">
+                            <div class="page-leftheader">
+                                <h4 class="page-title"><?php echo lang('my'); ?> <?php echo lang('documents'); ?></h4>
+                            </div>
+                        </div>
 
                         <div class="row mt-5">
                             <div class="col-md-12 col-sm-12">
@@ -36,7 +41,7 @@
                                         <div class="card-body p-0">
                                             <div class="todo-widget-header d-flex pb-2 p-4">
                                                 <div class="">
-                                                    <a class="btn btn-info" href="<?php echo $file->url; ?>"><i class="fe fe-edit"></i></a>
+                                                    <a class="btn btn-info" href="<?php echo $file->url; ?>" target="_blank"><i class="fe fe-edit"></i></a>
                                                     <a class="btn btn-info" href="<?php echo $file->url; ?>" download><i class="fe fe-download"></i></a>
                                                     <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
@@ -80,7 +85,7 @@
                                                 <p class="text-muted">
                                                     <?php
                                                     if (!empty($file->created_at)) {
-                                                        $utcdate = date_create($document->created_at, timezone_open('UTC'));
+                                                        $utcdate = date_create($file->created_at, timezone_open('UTC'));
                                                         date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
                                                         echo date_format($utcdate, $settings->date_format . ' ' . $settings->date_format_long) . "\n";
                                                     } else {

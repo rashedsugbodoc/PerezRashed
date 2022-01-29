@@ -762,7 +762,7 @@
                                                                     <div class="card-body p-0">
                                                                         <div class="todo-widget-header d-flex pb-2 p-4">
                                                                             <div class="">
-                                                                                <a class="btn btn-info" href="<?php echo $patient_material->url; ?>"><i class="fe fe-edit"></i></a>
+                                                                                <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" target="_blank"><i class="fe fe-edit"></i></a>
                                                                                 <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
                                                                                 <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>

@@ -724,6 +724,7 @@ class Patient extends MX_Controller {
             $patient_ion_id = $this->ion_auth->get_user_id();
             $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
             $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
+            $data['settings'] = $this->settings_model->getSettings();
             $this->load->view('home/dashboardv2'); // just the header file
             $this->load->view('my_documentsv2', $data);
             // $this->load->view('home/footer'); // just the footer file
