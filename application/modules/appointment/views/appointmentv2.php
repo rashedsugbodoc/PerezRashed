@@ -16,7 +16,7 @@
                                                 <li class=""><a href="#all" class="active" data-toggle="tab"><?php echo lang('all'); ?></a></li>
                                                 <li><a href="#pending" data-toggle="tab" class=""><?php echo lang('pending_confirmation'); ?></a></li>
                                                 <li><a href="#confirmed" data-toggle="tab" class=""><?php echo lang('confirmed'); ?></a></li>
-                                                <li><a href="#treated" data-toggle="tab" class=""><?php echo lang('treated'); ?></a></li>
+                                                <li><a href="#treated" data-toggle="tab" class=""><?php echo lang('consulted'); ?></a></li>
                                                 <li><a href="#cancelled" data-toggle="tab" class=""><?php echo lang('cancelled'); ?></a></li>
                                                 <li><a href="#requested" data-toggle="tab" class=""><?php echo lang('requested'); ?></a></li>
                                             </ul>
@@ -27,7 +27,7 @@
                                             <div class="tab-pane" id="pending">
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('pending'); ?> <?php echo lang('appointment'); ?></label>
+                                                        <label class="h3 pull-left"><?php echo lang('pending'); ?> <?php echo lang('appointments'); ?></label>
                                                         <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?> </a>
                                                     </div>
                                                 </div>
@@ -58,7 +58,7 @@
                                             <div class="tab-pane" id="confirmed">
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('confirmed'); ?> <?php echo lang('appointment'); ?></label>
+                                                        <label class="h3 pull-left"><?php echo lang('confirmed'); ?> <?php echo lang('appointments'); ?></label>
                                                         <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
@@ -88,7 +88,7 @@
                                             <div class="tab-pane" id="treated">
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('treated'); ?> <?php echo lang('appointment'); ?></label>
+                                                        <label class="h3 pull-left"><?php echo lang('consulted'); ?> <?php echo lang('appointments'); ?></label>
                                                         <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
@@ -119,7 +119,7 @@
                                             <div class="tab-pane" id="cancelled">
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('cancelled'); ?> <?php echo lang('appointment'); ?></label>
+                                                        <label class="h3 pull-left"><?php echo lang('cancelled'); ?> <?php echo lang('appointments'); ?></label>
                                                         <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
@@ -151,7 +151,7 @@
                                             <div class="tab-pane active" id="all">
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('all'); ?> <?php echo lang('appointment'); ?></label>
+                                                        <label class="h3 pull-left"><?php echo lang('all'); ?> <?php echo lang('appointments'); ?></label>
                                                         <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
@@ -182,7 +182,7 @@
                                             <div class="tab-pane" id="requested">
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
-                                                        <label class="h3 pull-left"><?php echo lang('requested'); ?> <?php echo lang('appointment'); ?></label>
+                                                        <label class="h3 pull-left"><?php echo lang('requested'); ?> <?php echo lang('appointments'); ?></label>
                                                         <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('appointment'); ?></a>
                                                     </div>
                                                 </div>

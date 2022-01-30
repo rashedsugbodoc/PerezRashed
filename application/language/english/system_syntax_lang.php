@@ -727,6 +727,7 @@ $lang['requested'] = 'Requested';
 $lang['pending_confirmation'] = 'Pending Confirmation';
 $lang['confirmed'] = 'Confirmed';
 $lang['treated'] = 'Treated';
+$lang['consulted'] = 'Consulted';
 $lang['cancelled'] = 'Cancelled';
 $lang['items'] = 'Items';
 $lang['qty'] = 'Qty';
