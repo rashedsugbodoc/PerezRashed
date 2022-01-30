@@ -138,7 +138,7 @@ class Ion_auth {
 
             if ($user) {
                 $data = array(
-                    'identity' => $user->{$this->config->item('identity', 'ion_auth')},
+                    'identity' => $user->{$this->config->item('identity', 'ion_auth')},'username' => $user->username,
                     'forgotten_password_code' => $user->forgotten_password_code
                 );
 
@@ -154,7 +154,7 @@ class Ion_auth {
                     
                     $message = $this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_forgot_password', 'ion_auth'), $data, true);
                     $this->email->clear();
-                    $this->email->from($admin_email->admin_email, $admin_email->admin_email_display_name);
+                    $this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth') . ' ' . $this->lang->line('team'));
                     $this->email->to($user->email);
                     $this->email->subject($this->lang->line('email_forgotten_password_subject'));
                     $this->email->message($message);

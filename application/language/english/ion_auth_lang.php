@@ -67,8 +67,12 @@ $lang['email_activate_subheading'] = 'Please click this link to %s.';
 $lang['email_activate_link']       = 'Activate Your Account';
 
 // Forgot Password Email
-$lang['email_forgotten_password_subject']    = 'Forgotten Password Verification';
-$lang['email_forgot_password_heading']    = 'Reset Password for %s';
+$lang['email_forgotten_password_subject']    = 'Password Reset Request';
+$lang['email_forgot_password_heading']    = 'Reset Password';
+$lang['email_forgot_password_line1']    = 'We received a request to reset your password for (%s)';
+$lang['email_forgot_password_line2']    = 'Click the link below to reset your password.';
+$lang['email_forgot_password_line3']    = 'If you did not request a password reset, feel free to delete or ignore this email and carry on using our services.';
+$lang['email_forgot_password_complimentary_close']    = 'All the best';
 $lang['email_forgot_password_subheading'] = 'Please click this link to %s.';
 $lang['email_forgot_password_link']       = 'Reset Your Password';
 
@@ -76,3 +80,6 @@ $lang['email_forgot_password_link']       = 'Reset Your Password';
 $lang['email_new_password_subject']          = 'New Password';
 $lang['email_new_password_heading']    = 'New Password for %s';
 $lang['email_new_password_subheading'] = 'Your password has been reset to: %s';
+
+// General
+$lang['team']          = 'Team';
