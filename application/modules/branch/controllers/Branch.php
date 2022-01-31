@@ -109,9 +109,10 @@ class Branch extends MX_Controller {
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
 
-            redirect('branch');
+        redirect('branch');
         }
     }    
+
 
 }
 
