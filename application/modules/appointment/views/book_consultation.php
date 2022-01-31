@@ -27,34 +27,20 @@
                                                             <div class="col-md-12 col-sm-12">
                                                                 <div class="form-group">
                                                                     <label class="form-label"> I would like to request for a</label>
-                                                                    <select class="form-control select2-show-search" data-placeholder="Choose one (with searchbox)">
-                                                                        <option>
-                                                                            <label>Clinic Visit (Face to Face)</label>
-                                                                        </option>
-                                                                        <option>
-                                                                            <label>Virtual Consultation (Remote / Online Consultation)</label>
-                                                                        </option>
+                                                                    <select class="form-control select2-show-search" id="service_select" data-placeholder="Choose one (with searchbox)">
                                                                     </select>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="form-label"> Which Doctor do you wish to consult?</label>
-                                                            <select class="form-control select2-show-search pos_select" id="pos_select" data-placeholder="Choose one (with searchbox)">
+                                                            <select class="form-control select2-show-search pos_select" id="adoctors" name="doctor" data-placeholder="Choose one (with searchbox)">
                                                                 
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="form-label"> Which clinic and schedule do you prefer?</label>
-                                                            <select class="form-control select2-show-search pos_select" name="doctor" id="pos_select" data-placeholder="Choose one (with searchbox)">
-                                                                <option label="Choose one">
-                                                                </option>
-                                                                <option value="doctor1">
-                                                                    <label>Michael Rygel</label>
-                                                                </option>
-                                                                <option value="doctor2">
-                                                                    <label>Virtual Consultation (Remote / Online Consultation)</label>
-                                                                </option>
+                                                            <select class="form-control select2-show-search" name="branch" id="branch_select" data-placeholder="Choose one (with searchbox)">
                                                             </select>
                                                         </div>
                                                         <div class="row">
@@ -78,10 +64,10 @@
                                                                                     <i class="fa fa-map-marker fa-2x text-primary"></i>
                                                                                 </div>
                                                                                 <div class="media-body">
-                                                                                    <strong>Chonghua Hospital</strong>
+                                                                                    <strong class="displayHospitalName">Chonghua Hospital</strong>
                                                                                     <div class="row">
                                                                                         <div class="col-md-12 mb-3">
-                                                                                            <small>Fuente Osmena BLVD, Cebu City.</small>
+                                                                                            <small class="displayHospitalAddress">Fuente Osmena BLVD, Cebu City.</small>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row ml-0 mb-4">
@@ -89,27 +75,27 @@
                                                                                             <div class="row">Consultation Fee</div>
                                                                                         </div>
                                                                                         <div class="col-md-8">
-                                                                                            <div class="row">₱ 500</div>
+                                                                                            <div class="row displayHospitalFee">₱ 500</div>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row ml-0 mr-0">
-                                                                                        <div class="col-md-4 col-sm-4">
+                                                                                        <div class="col-md-4 col-sm-4 displayWeekDays">
                                                                                             <div class="row">Monday</div>
-                                                                                            <div class="row">Tuesday</div>
+                                                                                            <!-- <div class="row">Tuesday</div>
                                                                                             <div class="row">Wednesday</div>
                                                                                             <div class="row">Thursday</div>
                                                                                             <div class="row">Friday</div>
                                                                                             <div class="row">Saturday</div>
-                                                                                            <div class="row">Sunday</div>
+                                                                                            <div class="row">Sunday</div> -->
                                                                                         </div>
-                                                                                        <div class="col-md-8 col-sm-8">
+                                                                                        <div class="col-md-8 col-sm-8 displayTime">
                                                                                             <div class="row">8:00 am - 8:00 pm</div>
-                                                                                            <div class="row">8:00 am - 8:00 pm</div>
-                                                                                            <div class="row">8:00 am - 8:00 pm</div>
-                                                                                            <div class="row">8:00 am - 8:00 pm</div>
-                                                                                            <div class="row">8:00 am - 8:00 pm</div>
-                                                                                            <div class="row">8:00 am - 8:00 pm</div>
-                                                                                            <div class="row">8:00 am - 8:00 pm</div>
+                                                                                            <!-- <div class="row displayTuesday">8:00 am - 8:00 pm</div>
+                                                                                            <div class="row displayWednesday">8:00 am - 8:00 pm</div>
+                                                                                            <div class="row displayThursday">8:00 am - 8:00 pm</div>
+                                                                                            <div class="row displayFriday">8:00 am - 8:00 pm</div>
+                                                                                            <div class="row displaySaturday">8:00 am - 8:00 pm</div>
+                                                                                            <div class="row displaySunday">8:00 am - 8:00 pm</div> -->
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -125,19 +111,13 @@
                                                                 <div class="col-sm-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label">Scheduled On : </label>
-                                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="date" type="text" readonly>
+                                                                    <input class="form-control fc-datepicker" id="date" placeholder="MM/DD/YYYY" name="date" type="text" readonly>
                                                                 </div>
                                                                 </div>
                                                                 <div class="col-sm-12 col-md-6">
                                                                     <div class="form-group">
                                                                         <label class="form-label">Available Slot for Scheduled Day : </label>
-                                                                        <select class="form-control select2-show-search" name="slot" data-placeholder="Choose one">
-                                                                            <option label="Choose one">
-                                                                            </option>
-                                                                            <option>2:00PM - 2:15PM</option>
-                                                                            <option>2:15PM - 2:30PM</option>
-                                                                            <option>2:30PM - 2:45PM</option>
-                                                                            <option>2:45PM - 3:00PM</option>
+                                                                        <select class="form-control select2-show-search" name="time_slot" id="aslots" data-placeholder="Choose one">
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -402,7 +382,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#pos_select").select2({
+            $("#adoctors").select2({
                 placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
@@ -429,19 +409,190 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.pos_client').hide();
-            $(document.body).on('change', '#pos_select', function () {
+            $("#branch_select").select2({
+                placeholder: '<?php echo lang('select_branch'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'appointment/getBranchInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
 
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#service_select").select2({
+                placeholder: '<?php echo lang('select_service_type'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'appointment/getServiceCategoryGroupInfoForConsultation',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.pos_client').hide();
+            $(document.body).on('change', '#branch_select', function () {
+
+                $('.displayHospitalName').html("").end()
+                $('.displayHospitalAddress').html("").end()
+                $('.displayHospitalFee').html("").end()
+                $('.displayWeekDays').html("").end()
+                $('.displayTime').html("").end()
                 var v = $("select.pos_select option:selected").val()
                 document.getElementById('doctor').innerHTML = v;
-                if (v == '162') {
-                    $('.pos_client').show();
-                } else {
-                    $('.pos_client').hide();
-                }
+                $('.pos_client').show();
+                $.ajax({
+                    url: 'schedule/getScheduleByDoctor?doctor=' + v,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response.schedules);
+                        $.each(response.schedules, function(key, value) {
+                            $(".displayWeekDays").append($('<div class="row">').text(value.weekday)).end();
+                            $(".displayTime").append($('<div class="row">').text(value.s_time + ' - ' + value.e_time)).end();
+                        });
+                    }
+                });
             });
 
         });  
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#adoctors").change(function () {
+                // Get the record's ID via attribute  
+                var branch = $('#branch_select').val();
+                var iid = $('#date').val();
+                var doctorr = $('#adoctors').val();
+                $('#aslots').find('option').remove();
+                // $('#default').trigger("reset");
+                $.ajax({
+                    url: 'schedule/getAvailableSlotByDoctorByDateByLocationByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var slots = response.aslots;
+                        $.each(slots, function (key, value) {
+                            $('#aslots').append($('<option>').text(value).val(value)).end();
+                        });
+                        //   $("#default-step-1 .button-next").trigger("click");
+                        if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+                            $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                        }
+                    }
+                });
+            });
+
+        });
+
+        $(document).ready(function () {
+            var iid = $('#date').val();
+            var doctorr = $('#adoctors').val();
+            var branch = $('#branch_select').val();
+            $('#aslots').find('option').remove();
+            // $('#default').trigger("reset");
+            $.ajax({
+                url: 'schedule/getAvailableSlotByDoctorByDateByLocationByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var slots = response.aslots;
+                    $.each(slots, function (key, value) {
+                        $('#aslots').append($('<option>').text(value).val(value)).end();
+                    });
+                    //   $("#default-step-1 .button-next").trigger("click");
+                    if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+                        $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                    }
+                    // Populate the form fields with the data returned from server
+                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+                }
+            });
+        });
+
+
+
+
+        $(document).ready(function () {
+            $('#date').datepicker({
+                format: "dd-mm-yyyy",
+                autoclose: true,
+            })
+                    //Listen for the change even on the input
+                    .change(dateChanged)
+                    .on('changeDate', dateChanged);
+        });
+
+        function dateChanged() {
+            // Get the record's ID via attribute  
+            var iid = $('#date').val();
+            var doctorr = $('#adoctors').val();
+            var branch = $('#branch_select').val();
+            $('#aslots').find('option').remove();
+            // $('#default').trigger("reset");
+            $.ajax({
+                url: 'schedule/getAvailableSlotByDoctorByDateByLocationByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var slots = response.aslots;
+                    $.each(slots, function (key, value) {
+                        $('#aslots').append($('<option>').text(value).val(value)).end();
+                    });
+                    //   $("#default-step-1 .button-next").trigger("click");
+                    if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+                        $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                    }
+
+
+                    // Populate the form fields with the data returned from server
+                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+                }
+            });
+
+        }
+
+
+
+
     </script>
 
     </body>

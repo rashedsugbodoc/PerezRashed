@@ -7,7 +7,7 @@ class Appointment extends MX_Controller {
 
     function __construct() {
         parent::__construct();
-
+        $this->load->model('branch/branch_model');
         $this->load->model('appointment_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('patient/patient_model');
@@ -40,6 +40,8 @@ class Appointment extends MX_Controller {
         if (!$this->ion_auth->in_group(array('Patient'))) {
             redirect('home/permission');
         }
+
+        // $data['branches'] = $this->branch_model->getBranches();
 
         $this->load->view('home/dashboardv2');
         $this->load->view('book_consultation');
@@ -2080,6 +2082,26 @@ class Appointment extends MX_Controller {
         }
 
         echo json_encode($output);
+    }
+
+    public function getBranchInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->branch_model->getBranchInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getServiceCategoryGroupInfoForConsultation() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->appointment_model->getServiceCategoryGroupInfoForConsultation($searchTerm);
+
+        echo json_encode($response);
     }
 
 }
