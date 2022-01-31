@@ -16,6 +16,12 @@ class Schedule_model extends CI_model {
         return $query->result();
     }
 
+    function getLocationSchedule() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('time_schedule_location');
+        return $query->result();
+    }
+
     function getAvailableDoctorByDate($date) {
 
         $weekday = strftime("%A", $date);
@@ -132,6 +138,48 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         return $availableSlot;
     }
 
+    function getAvailableSlotByDoctorByDateByLocation($date, $doctor, $location) {
+        //$newDate = date("m-d-Y", strtotime($date));
+        $weekday = strftime("%A", $date);
+
+        $this->db->where('date', $date);
+        $this->db->where('doctor', $doctor);
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $holiday = $this->db->get('holidays')->result();
+
+        if (empty($holiday)) {
+            $this->db->where('date', $date);
+            $this->db->where('doctor', $doctor);
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $query = $this->db->get('appointment')->result();
+
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->where('doctor', $doctor);
+            $this->db->where('weekday', $weekday);
+            $this->db->where('location_id', $location);
+            $this->db->order_by('s_time_key', 'asc');
+            $query1 = $this->db->get('time_slot_location')->result();
+
+            $availabletimeSlot = array();
+            $bookedTimeSlot = array();
+
+            foreach ($query1 as $timeslot) {
+                $availabletimeSlot[] = $timeslot->s_time . ' To ' . $timeslot->e_time;
+            }
+            foreach ($query as $bookedTime) {
+                if ($bookedTime->status != 'Cancelled') {
+                    $bookedTimeSlot[] = $bookedTime->time_slot;
+                }
+            }
+
+            $availableSlot = array_diff($availabletimeSlot, $bookedTimeSlot);
+        } else {
+            $availableSlot = array();
+        }
+
+        return $availableSlot;
+    }
+
     function getAvailableSlotByDoctorByDateByAppointmentId($date, $doctor, $appointment_id) {
         //$newDate = date("m-d-Y", strtotime($date));
         $weekday = strftime("%A", $date);
@@ -199,6 +247,12 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->insert('time_slot', $data2);
     }
 
+    function insertTimeSlotForLocation($data) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('time_slot_location', $data2);
+    }
+
     function getTimeSlot() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('time_slot');
@@ -236,10 +290,23 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->insert('time_schedule', $data2);
     }
 
+    function insertScheduleForLocation($data) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('time_schedule_location', $data2);
+    }
+
     function getScheduleByDoctor($doctor) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor);
         $query = $this->db->get('time_schedule');
+        return $query->result();
+    }
+
+    function getLocationScheduleByDoctor($doctor) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('doctor', $doctor);
+        $query = $this->db->get('time_schedule_location');
         return $query->result();
     }
 
@@ -250,11 +317,27 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         return $query->row();
     }
 
+    function getLocationScheduleById($id) {
+        $this->db->where('id', $id);
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('time_schedule_location');
+        return $query->row();
+    }
+
     function getScheduleByDoctorByWeekday($doctor, $weekday) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor);
         $this->db->where('weekday', $weekday);
         $query = $this->db->get('time_schedule');
+        return $query->result();
+    }
+
+    function getScheduleByDoctorByWeekdayForLocation($doctor, $weekday, $location) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('doctor', $doctor);
+        $this->db->where('weekday', $weekday);
+        $this->db->where('location_id', $location);
+        $query = $this->db->get('time_schedule_location');
         return $query->result();
     }
 
@@ -267,9 +350,24 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         return $query->result();
     }
 
+    function getScheduleByDoctorByWeekdayByIdForLocation($doctor, $weekday, $id, $location) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where_not_in('id', $id);
+        $this->db->where('doctor', $doctor);
+        $this->db->where('weekday', $weekday);
+        $this->db->where('location_id', $location);
+        $query = $this->db->get('time_schedule_location');
+        return $query->result();
+    }
+
     function updateSchedule($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('time_schedule', $data);
+    }
+
+    function updateScheduleForLocation($id, $data, $location) {
+        $this->db->where('id', $id);
+        $this->db->update('time_schedule_location', $data);
     }
 
     function deleteSchedule($id) {
@@ -277,10 +375,22 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->delete('time_schedule');
     }
 
+    function deleteScheduleForLocation($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('time_schedule_location');
+    }
+
     function deleteTimeSlotByDoctorByWeekday($doctor, $weekday) {
         $this->db->where('doctor', $doctor);
         $this->db->where('weekday', $weekday);
         $this->db->delete('time_slot');
+    }
+
+    function deleteTimeSlotByDoctorByWeekdayForLocation($doctor, $weekday, $location) {
+        $this->db->where('doctor', $doctor);
+        $this->db->where('weekday', $weekday);
+        $this->db->where('location_id', $location);
+        $this->db->delete('time_slot_location');
     }
 
     function insertHoliday($data) {

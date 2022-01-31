@@ -58,6 +58,63 @@
                             </div>
                         </div>
 
+                        <?php
+                        foreach ($branches as $branch) { ?>
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <?php echo lang('time_schedule'); ?> (<?php echo $branch->display_name; ?>)
+                                    </div>
+                                    <div class="card-options">
+                                        <a data-toggle="modal" href="#myModal<?php echo $branch->id; ?>">
+                                            <div class="btn-group pull-right">
+                                                <button id="" class="btn btn-primary btn-xs">
+                                                    <i class="fa fa-plus"></i>  <?php echo lang('add_new'); ?> 
+                                                </button>
+                                            </div>
+                                        </a>  
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-bordered text-nowrap key-buttons w-100" id="editable-sample">
+                                        <thead>
+                                            <tr>
+                                                <th> # </th>
+                                                <th> <?php echo lang('weekday'); ?></th>
+                                                <th> <?php echo lang('start_time'); ?></th>
+                                                <th> <?php echo lang('end_time'); ?></th>
+                                                <th> <?php echo lang('duration'); ?></th>
+                                                <th> <?php echo lang('options'); ?></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $i = 0;
+                                            foreach ($location_schedules as $locationschedule) {
+                                                $i = $i + 1;
+                                                if ($branch->id == $locationschedule->location_id) {
+                                                ?>
+                                                <tr>
+                                                    <td style=""> <?php echo $i; ?></td> 
+                                                    <td> <?php echo $locationschedule->weekday; ?></td> 
+                                                    <td><?php echo $locationschedule->s_time; ?></td>
+                                                    <td><?php echo $locationschedule->e_time; ?></td>
+                                                    <td><?php echo $locationschedule->duration * 5 . ' ' . lang('minutes'); ?></td>
+                                                    <td>
+                                                        <!--
+                                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $schedule->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
+                                                        -->
+                                                        <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteScheduleForLocation?id=<?php echo $locationschedule->id; ?>&doctor=<?php echo $doctorr; ?>&weekday=<?php echo $locationschedule->weekday; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
+                                                    </td>
+                                                </tr>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        <?php } ?>
+
                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content modal-content-demo">
@@ -175,6 +232,139 @@
                                 </div>
                             </div>
                         </div>
+
+                        <?php foreach ($branches as $branch) { ?>
+                            <div class="modal fade" id="myModal<?php echo $branch->id; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content modal-content-demo">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('schedule'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <form role="form" action="schedule/addScheduleForLocation" class="clearfix" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <label class="form-label"><?php echo lang('location'); ?></label>
+                                                        <div class="form-group">
+                                                            <select class="form-control select2-show-search branch_select" data-placeholder="Choose one (with searchbox)" disabled>
+                                                                <?php if (!empty($branch->id)) { ?>
+                                                                    <option value="<?php echo $branch->id; ?>" selected="selected"><?php echo $branch->display_name; ?></option>  
+                                                                <?php } ?>
+                                                            </select>
+                                                            <input type="hidden"  name="branch" value="<?php echo $branch->id; ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <label class="form-label"><?php echo lang('weekday'); ?></label>
+                                                        <div class="form-group">
+                                                            <select class="form-control select2-show-search" id="weekday" name="weekday" value='' data-placeholder="Choose one">
+                                                                <option value="Friday"><?php echo lang('friday') ?></option>
+                                                                <option value="Saturday"><?php echo lang('saturday') ?></option>
+                                                                <option value="Sunday"><?php echo lang('sunday') ?></option>
+                                                                <option value="Monday"><?php echo lang('monday') ?></option>
+                                                                <option value="Tuesday"><?php echo lang('tuesday') ?></option>
+                                                                <option value="Wednesday"><?php echo lang('wednesday') ?></option>
+                                                                <option value="Thursday"><?php echo lang('thursday') ?></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        
+                                                        <div class="wd-150 mg-b-30">
+                                                            <label><?php echo lang('start_time'); ?></label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">
+                                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.25 12.15L11 13V7h1.5v5.25l4.5 2.67-.75 1.23z" opacity=".3"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                                                    </div><!-- input-group-text -->
+                                                                </div><!-- input-group-prepend -->
+                                                                <input class="form-control myTpBasic" placeholder="Set time" name="s_time" type="text">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        
+                                                        <div class="wd-150 mg-b-30">
+                                                            <label ><?php echo lang('end_time'); ?></label>
+                                                            <div class="input-group">
+                                                                <div class="input-group-prepend">
+                                                                    <div class="input-group-text">
+                                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.25 12.15L11 13V7h1.5v5.25l4.5 2.67-.75 1.23z" opacity=".3"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                                                    </div><!-- input-group-text -->
+                                                                </div><!-- input-group-prepend -->
+                                                                <input class="form-control myTpBasic" placeholder="Set time" name="e_time" type="text">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('appointment') ?> <?php echo lang('duration') ?></label>
+                                                            <select class="form-control select2-show-search" name="duration" data-placeholder="Choose one">
+                                                                <option value="3" <?php
+                                                                if (!empty($settings->duration)) {
+                                                                    if ($settings->duration == '3') {
+                                                                        echo 'selected';
+                                                                    }
+                                                                }
+                                                                ?> > 15 Minutes </option>
+
+                                                                <option value="4" <?php
+                                                                if (!empty($settings->duration)) {
+                                                                    if ($settings->duration == '4') {
+                                                                        echo 'selected';
+                                                                    }
+                                                                }
+                                                                ?> > 20 Minutes </option>
+
+                                                                <option value="6" <?php
+                                                                if (!empty($settings->duration)) {
+                                                                    if ($settings->duration == '6') {
+                                                                        echo 'selected';
+                                                                    }
+                                                                }
+                                                                ?> > 30 Minutes </option>
+
+                                                                <option value="9" <?php
+                                                                if (!empty($settings->duration)) {
+                                                                    if ($settings->duration == '9') {
+                                                                        echo 'selected';
+                                                                    }
+                                                                }
+                                                                ?> > 45 Minutes </option>
+
+                                                                <option value="12" <?php
+                                                                if (!empty($settings->duration)) {
+                                                                    if ($settings->duration == '12') {
+                                                                        echo 'selected';
+                                                                    }
+                                                                }
+                                                                ?> > 60 Minutes </option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="doctor" value='<?php echo $doctorr; ?>'>
+                                                <input type="hidden" name="redirect" value='schedule/timeSchedule?doctor=<?php echo $doctorr;?>'>
+                                                <input type="hidden" name="id" value=''>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
 
                     </div>
                 </div><!-- end app-content-->
@@ -367,11 +557,41 @@
         });
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".branch_select").select2({
+                placeholder: '<?php echo lang('select_branch'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'appointment/getBranchInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function () {
         $(".flashmessage").delay(3000).fadeOut(100);
         });
+    </script>
+
+    <script type="text/javascript">
+        $('.myTpBasic').timepicker({ 'timeFormat': 'h:i A' });
     </script>
 
     <script>
