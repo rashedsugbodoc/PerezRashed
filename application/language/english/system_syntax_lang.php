@@ -52,6 +52,7 @@ $lang['human_resources'] = 'Human Resources';
 $lang['financial_activities'] = 'Financial Activities';
 $lang['settings'] = 'Settings';
 $lang['locations'] = 'Locations';
+$lang['location'] = 'Location';
 $lang['profile'] = 'Profile';
 $lang['specialization'] = 'Specialization';
 $lang['my_profile'] = 'My Profile';
