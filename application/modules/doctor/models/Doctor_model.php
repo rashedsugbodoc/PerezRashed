@@ -146,6 +146,41 @@ class Doctor_model extends CI_model {
         return $data;
     }
 
+    function getDoctorInfoByCountry($searchTerm, $country_id) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('doctor')
+                    ->where('country_id', $country_id)
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where('country_id', $country_id);
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_ion_id = $this->ion_auth->get_user_id();
+            $this->db->select('*');
+            $this->db->where('country_id', $country_id);
+            $this->db->where('ion_user_id', $doctor_ion_id);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
+        }
+        return $data;
+    }
+
     function getDoctorWithAddNewOption($searchTerm) {
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')

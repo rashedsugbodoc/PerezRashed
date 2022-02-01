@@ -629,6 +629,17 @@ class Doctor extends MX_Controller {
         echo json_encode($response);
     }
 
+    public function getDoctorInfoByCountry() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+        $patient_ion_id = $this->ion_auth->get_user_id();
+        $country_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->country_id;
+// Get users
+        $response = $this->doctor_model->getDoctorInfoByCountry($searchTerm, $country_id);
+
+        echo json_encode($response);
+    }
+
     public function getSpecialtyInfo() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');
@@ -663,6 +674,17 @@ class Doctor extends MX_Controller {
         }
 
 
+    }
+
+    public function getDoctorById() {
+        $data = array();
+        $id = $this->input->get('id');
+
+        $data['doctor'] = $this->doctor_model->getDoctorById($id);
+        $doctor_specialty = $data['doctor']->specialties;
+        $data['specialties'] = $this->getSpecialtyListArray($doctor_specialty);
+
+        echo json_encode($data);        
     }
 
 }
