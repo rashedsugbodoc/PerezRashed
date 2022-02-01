@@ -587,7 +587,7 @@
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('remarks'); ?><span class="text-red"> *</span></label>
+                                                        <label class="form-label"><?php echo lang('chief_complaint'); ?><span class="text-red"> *</span></label>
                                                         <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" maxlength="500" rows="3"></textarea>
                                                     </div>
                                                 </div>

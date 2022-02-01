@@ -161,6 +161,7 @@ $lang['id'] = 'ID';
 $lang['date-time'] = 'Date - Time';
 $lang['remarks'] = 'Remarks';
 $lang['complaint'] = 'Chief Complaint';
+$lang['chief_complaint'] = 'Chief Complaint';
 $lang['add_appointment'] = 'Add Appointment';
 $lang['edit_appointment'] = 'Edit Appointment';
 $lang['add_nurse'] = 'Add Nurse';
