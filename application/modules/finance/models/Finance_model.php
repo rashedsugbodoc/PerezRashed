@@ -833,6 +833,47 @@ class Finance_model extends CI_model {
         return $query->row();
     }
 
+    function getServiceCategoryGroupByEntityType($searchTerm) {
+        $settings = $this->settings_model->getSettings()->entity_type_id;
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('service_category_group')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $this->db->where("FIND_IN_SET($settings, applicable_entity_type)");
+            $fetched_records = $this->db->get('service_category_group');
+            $users = $fetched_records->result_array();
+        }
+
+
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('*');
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get('doctor');
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['display_name']);
+        }
+        return $data;
+    }
+
+    function getServiceCategoryGroupById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('service_category_group');
+        return $query->row();
+    }
+
     function updateExpenseCategory($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('expense_category', $data);

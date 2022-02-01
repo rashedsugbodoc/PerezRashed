@@ -99,9 +99,15 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('service_type'); ?></label>
-                                                        <select class="form-control select2-show-search">
+                                                        <select class="form-control select2-show-search" id="service_select" name="service_type">
                                                             <option value=""><?php echo lang('select_service_type');?></option>
-                                                            
+                                                            <option value="<?php echo $service->service_category_group_id; ?>"
+                                                                <?php
+                                                                    if (!empty($service->service_category_group_id)) {
+                                                                        echo 'selected';
+                                                                    }
+                                                                ?>
+                                                                > <?php echo $this->finance_model->getServiceCategoryGroupById($service->service_category_group_id)->display_name; ?></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -186,6 +192,33 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#service_select").select2({
+                placeholder: '<?php echo lang('select_service_type'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'finance/getServiceCategoryGroupByEntityType',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function () {

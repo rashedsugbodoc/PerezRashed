@@ -899,6 +899,7 @@ class Finance extends MX_Controller {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
+        $service_type = $this->input->post('service_type');
         $name = $this->input->post('name');
         $category_id = $this->input->post('category_id');
         $description = $this->input->post('description');
@@ -947,7 +948,8 @@ class Finance extends MX_Controller {
                 'description' => $description,
                 'category_id' => $category_id,
                 'c_price' => $c_price,
-                'd_commission' => $d_commission
+                'd_commission' => $d_commission,
+                'service_category_group_id' => $service_type,
             );
             if (empty($id)) {
                 $this->finance_model->insertPaymentCategory($data);
@@ -2543,6 +2545,16 @@ class Finance extends MX_Controller {
 
 
         echo json_encode($output);
+    }
+
+    public function getServiceCategoryGroupByEntityType() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->finance_model->getServiceCategoryGroupByEntityType($searchTerm);
+
+        echo json_encode($response);
     }
 
 }
