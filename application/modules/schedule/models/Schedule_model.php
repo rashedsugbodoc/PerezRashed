@@ -303,6 +303,14 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         return $query->result();
     }
 
+    function getScheduleByDoctorForLocation($doctor, $location) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('doctor', $doctor);
+        $this->db->where('location_id', $location);
+        $query = $this->db->get('time_schedule_location');
+        return $query->result();
+    }
+
     function getLocationScheduleByDoctor($doctor) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor);

@@ -59,6 +59,15 @@ class Schedule extends MX_Controller {
         echo json_encode($data);
     }
 
+    function getScheduleByDoctorForLocation() {
+        $doctor = $this->input->get('doctor');
+        $location = $this->input->get('location');
+
+        $data['schedules'] = $this->schedule_model->getScheduleByDoctorForLocation($doctor, $location);
+
+        echo json_encode($data);
+    }
+
     function addSchedule() {
         $redirect = $this->input->post('redirect');
         if (empty($redirect)) {
