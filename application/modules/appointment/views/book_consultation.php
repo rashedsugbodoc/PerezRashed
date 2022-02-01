@@ -27,7 +27,7 @@
                                                             <div class="col-md-12 col-sm-12">
                                                                 <div class="form-group">
                                                                     <label class="form-label"> I would like to request for a</label>
-                                                                    <select class="form-control select2-show-search" id="service_select" data-placeholder="Choose one (with searchbox)">
+                                                                    <select class="form-control select2-show-search service_cat" id="service_select" data-placeholder="Choose one (with searchbox)">
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -39,8 +39,14 @@
                                                             </select>
                                                         </div>
                                                         <div class="form-group">
+                                                            <label class="form-label"> Which Specific Service do you need?</label>
+                                                            <select class="form-control select2-show-search sub_service" id="sub_service" name="sub_service" data-placeholder="Choose one (with searchbox)">
+                                                                
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
                                                             <label class="form-label"> Which clinic and schedule do you prefer?</label>
-                                                            <select class="form-control select2-show-search" name="branch" id="branch_select" data-placeholder="Choose one (with searchbox)">
+                                                            <select class="form-control select2-show-search branch" name="branch" id="branch_select" data-placeholder="Choose one (with searchbox)">
                                                             </select>
                                                         </div>
                                                         <div class="row">
@@ -117,7 +123,7 @@
                                                                 <div class="col-sm-12 col-md-6">
                                                                     <div class="form-group">
                                                                         <label class="form-label">Available Slot for Scheduled Day : </label>
-                                                                        <select class="form-control select2-show-search" name="time_slot" id="aslots" data-placeholder="Choose one">
+                                                                        <select class="form-control select2-show-search aslot" name="time_slot" id="aslots" data-placeholder="Choose one">
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -145,10 +151,10 @@
                                                                 <i class="fa fa-user-md fa-2x text-primary"></i>
                                                             </div>
                                                             <div class="media-body">
-                                                                <strong id="doctor"></strong>
+                                                                <strong id="summary_doctor"></strong>
                                                                 <div class="row">
                                                                     <div class="col-md-12 mb-3">
-                                                                        <small class="text-mutede">Cardiologist</small>
+                                                                        <small class="text-mutede" id="summary_specialties"></small>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -160,10 +166,10 @@
                                                                 <i class="fa fa-user-md fa-2x text-primary"></i>
                                                             </div>
                                                             <div class="media-body">
-                                                                <strong>Clinic Visit</strong>
+                                                                <strong id="summary_service_cat"></strong>
                                                                 <div class="row">
                                                                     <div class="col-md-12 mb-3">
-                                                                        <small class="text-mutede">Face to Face Consultation</small>
+                                                                        <small class="text-mutede" id="summary_sub_serv"></small>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -190,7 +196,7 @@
                                                                 <i class="fa fa-hospital-o fa-2x text-primary"></i>
                                                             </div>
                                                             <div class="media-body">
-                                                                <strong>Choghua Hospital</strong>
+                                                                <strong id="summary_branch"></strong>
                                                                 <div class="row">
                                                                     <div class="col-md-12 mb-3">
                                                                         <small class="text-mutede">Fuente Osmena Boulevard</small>
@@ -205,10 +211,10 @@
                                                                 <i class="fa fa-calendar fa-2x text-primary"></i>
                                                             </div>
                                                             <div class="media-body">
-                                                                <strong>October 22, 2022</strong>
+                                                                <strong id="summary_date"></strong>
                                                                 <div class="row">
                                                                     <div class="col-md-12 mb-3">
-                                                                        <small class="text-mutede">3:00 am - 3:15 pm</small>
+                                                                        <small class="text-mutede" id="summary_aslots"></small>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -382,11 +388,53 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $(".sw-btn-next").click(function () {
+                var doctor_id = $("#adoctors").val();
+                var services = $("#sub_service").val();
+
+
+                console.log(doctor_id + ' ' + services);
+                $.ajax({
+                    url: 'doctor/getDoctorById?id=' + doctor_id,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        $('#summary_specialties').find('span').remove();
+                        console.log(response.specialties);
+                        document.getElementById('summary_doctor').innerHTML = response.doctor.name;
+                        // document.getElementById('summary_specialties').innerHTML = response.doctor.specialties;
+                        if (response.specialties) {
+                            $.each(response.specialties, function(key, value) {
+                                $('#summary_specialties').append($('<span>').text(value.display_name_ph + ', ')).end();
+                            });
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".sw-btn-next").click(function () {
+                // document.getElementById('summary_doctor').innerHTML = $("select.pos_select option:selected").val();
+                document.getElementById('summary_service_cat').innerHTML = $("select.service_cat option:selected").text();
+                document.getElementById('summary_sub_serv').innerHTML = $("select.sub_service option:selected").text();
+                document.getElementById('summary_branch').innerHTML = $("select.branch option:selected").text();
+                document.getElementById('summary_date').innerHTML = $("#date").val();
+                document.getElementById('summary_aslots').innerHTML = $("select.aslot option:selected").text();
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             $("#adoctors").select2({
                 placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'doctor/getDoctorInfo',
+                    url: 'doctor/getDoctorInfoByCountry',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -461,6 +509,34 @@
         });
     </script>
 
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
+            var serviceType = $("#service_select").val();
+            $("#sub_service").select2({
+                placeholder: '<?php echo lang('select_services'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'appointment/getServicesByServiceCategoryGroup?serviceType=' + serviceType,
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script> -->
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('.pos_client').hide();
@@ -471,11 +547,11 @@
                 $('.displayHospitalFee').html("").end()
                 $('.displayWeekDays').html("").end()
                 $('.displayTime').html("").end()
-                var v = $("select.pos_select option:selected").val()
-                document.getElementById('doctor').innerHTML = v;
+                var v = $("select.pos_select option:selected").val();
+                var location = $("#branch_select").val();
                 $('.pos_client').show();
                 $.ajax({
-                    url: 'schedule/getScheduleByDoctor?doctor=' + v,
+                    url: 'schedule/getScheduleByDoctorForLocation?doctor=' + v + '&location=' + location,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -500,6 +576,9 @@
                 var iid = $('#date').val();
                 var doctorr = $('#adoctors').val();
                 $('#aslots').find('option').remove();
+                $('#branch_select').find('option').remove();
+                $('#date').val('');
+                
                 // $('#default').trigger("reset");
                 $.ajax({
                     url: 'schedule/getAvailableSlotByDoctorByDateByLocationByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
@@ -519,6 +598,47 @@
                 });
             });
 
+        });
+
+        $(document).ready(function () {
+            $("#adoctors").change(function () {
+                var doctor = $("#adoctors").val();
+                var service_type = $("#service_select").val();
+                $('#sub_service').find('option').remove();
+                $.ajax({
+                    url: 'appointment/getServicesByServiceCategoryGroupByDoctorHospital?servicecategorygroup=' + service_type + '&doctor=' + doctor,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response.services);
+                        $.each(response.services, function (key, value) {
+                            $('#sub_service').append($('<option>').text(value.description).val(value.id)).end();
+                        });
+                    }
+                })
+            });
+        });
+
+        $(document).ready(function () {
+            $("#service_select").change(function () {
+                var doctor = $("#adoctors").val();
+                var service_type = $("#service_select").val();
+                
+                $('#sub_service').find('option').remove();
+                $.ajax({
+                    url: 'appointment/getServicesByServiceCategoryGroupByDoctorHospital?servicecategorygroup=' + service_type + '&doctor=' + doctor,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response.services);
+                        $.each(response.services, function (key, value) {
+                            $('#sub_service').append($('<option>').text(value.description).val(value.id)).end();
+                        });
+                    }
+                })
+            });
         });
 
         $(document).ready(function () {

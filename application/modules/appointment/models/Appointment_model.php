@@ -901,9 +901,55 @@ class Appointment_model extends CI_model {
         // Initialize Array with fetched data
         $data = array();
         foreach ($users as $user) {
-            $data[] = array("id" => $user['id'], "text" => $user['display_name'] . ' (' . lang('id') . ': ' . $user['id'] . ')');
+            $data[] = array("id" => $user['id'], "text" => $user['display_name']);
         }
         return $data;
+    }
+
+    function getServicesByServiceCategoryGroupByDoctorHospital($serviceCategoryGroup, $doctorHospital) {
+        //$newDate = date("m-d-Y", strtotime($date));
+        // $weekday = strftime("%A", $date);
+
+        // $this->db->where('date', $date);
+        // $this->db->where('doctor', $doctor);
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $holiday = $this->db->get('holidays')->result();
+
+        // if (empty($holiday)) {
+        //     $this->db->where('date', $date);
+        //     $this->db->where('doctor', $doctor);
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $query = $this->db->get('appointment')->result();
+
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('doctor', $doctor);
+        //     $this->db->where('weekday', $weekday);
+        //     $this->db->where('location_id', $location);
+        //     $this->db->order_by('s_time_key', 'asc');
+        //     $query1 = $this->db->get('time_slot_location')->result();
+
+        //     $availabletimeSlot = array();
+        //     $bookedTimeSlot = array();
+
+        //     foreach ($query1 as $timeslot) {
+        //         $availabletimeSlot[] = $timeslot->s_time . ' To ' . $timeslot->e_time;
+        //     }
+        //     foreach ($query as $bookedTime) {
+        //         if ($bookedTime->status != 'Cancelled') {
+        //             $bookedTimeSlot[] = $bookedTime->time_slot;
+        //         }
+        //     }
+
+        //     $availableSlot = array_diff($availabletimeSlot, $bookedTimeSlot);
+        // } else {
+        //     $availableSlot = array();
+        // }
+
+        $this->db->where('service_category_group_id', $serviceCategoryGroup);
+        $this->db->where('hospital_id', $doctorHospital);
+        $services = $this->db->get('payment_category')->result();
+
+        return $services;
     }
 
 }

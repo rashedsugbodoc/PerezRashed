@@ -2104,6 +2104,31 @@ class Appointment extends MX_Controller {
         echo json_encode($response);
     }
 
+//     public function getServicesByServiceCategoryGroup() {
+// // Search term
+//         $searchTerm = $this->input->post('searchTerm');
+//         $serviceType = $this->input->get('serviceType');
+
+// // Get users
+//         $response = $this->appointment_model->getServicesByServiceCategoryGroup($searchTerm, $serviceType);
+
+//         echo json_encode($response);
+//     }
+
+    public function getServicesByServiceCategoryGroupByDoctorHospital() {
+        $data = array();
+        $serviceCategoryGroup = $this->input->get('servicecategorygroup');
+        $doctor = $this->input->get('doctor');
+        $doctorHospital = $this->doctor_model->getDoctorById($doctor)->hospital_id;
+        if (!empty($date)) {
+            $date = strtotime($date);
+        }
+        
+        $data['services'] = $this->appointment_model->getServicesByServiceCategoryGroupByDoctorHospital($serviceCategoryGroup, $doctorHospital);
+        // $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDateByLocation($date, $doctor, $location);
+        echo json_encode($data);
+    }
+
 }
 
 /* End of file appointment.php */
