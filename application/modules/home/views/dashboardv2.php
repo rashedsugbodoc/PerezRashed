@@ -146,6 +146,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <link href="<?php echo base_url('public/assets/plugins/formwizard/smart_wizard.css'); ?>" rel="stylesheet">
         <link href="<?php echo base_url('public/assets/plugins/formwizard/smart_wizard_theme_dots.css'); ?>" rel="stylesheet">
         
+        <!-- Image Editor -->
+        <link href="<?php echo base_url('public/assets/plugins/image-editor/styles.min.css'); ?>" rel="stylesheet" />    
+
         <!-- INTERNAL CSS END -->
 
         <style>

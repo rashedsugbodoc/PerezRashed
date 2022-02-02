@@ -146,6 +146,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <!-- Accordion Css -->
         <link href="<?php echo base_url('public/assets/plugins/accordion/accordion.css'); ?>" rel="stylesheet" />  
         
+        <!-- Image Editor -->
+        <link href="<?php echo base_url('public/assets/plugins/image-editor/styles.min.css'); ?>" rel="stylesheet" />    
+
         <!-- INTERNAL CSS END -->
 
         <style>
