@@ -49,6 +49,7 @@ class Package extends MX_Controller {
         $name = $this->input->post('name');
         $p_limit = $this->input->post('p_limit');
         $d_limit = $this->input->post('d_limit');
+        $loc_limit = $this->input->post('loc_limit');
         $module = $this->input->post('module');
         $price = $this->input->post('price');
 
@@ -70,6 +71,8 @@ class Package extends MX_Controller {
         $this->form_validation->set_rules('p_limit', 'Patient Limit', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Doctoor Limit Field
         $this->form_validation->set_rules('d_limit', 'Dooctor Limit', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+
+        $this->form_validation->set_rules('loc_limit', 'Location Limit', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Price Field
         $this->form_validation->set_rules('price', 'Price', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Show In Frontend Field
@@ -94,6 +97,7 @@ class Package extends MX_Controller {
                 'name' => $name,
                 'p_limit' => $p_limit,
                 'd_limit' => $d_limit,
+                'loc_limit' => $loc_limit,
                 'module' => $module,
                 'price' => $price,
                 'show_in_frontend' => $show_in_frontend,

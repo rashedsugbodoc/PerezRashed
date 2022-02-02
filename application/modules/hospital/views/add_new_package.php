@@ -55,7 +55,14 @@
                                     ?>' placeholder="" required="">
                                 </div>
 
-
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo lang('location'); ?> <?php echo lang('limit'); ?></label>
+                                    <input type="text" class="form-control" name="loc_limit" id="exampleInputEmail1" value='<?php
+                                    if (!empty($package->loc_limit)) {
+                                        echo $package->loc_limit;
+                                    }
+                                    ?>' placeholder="" required="">
+                                </div>
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('price'); ?> </label>

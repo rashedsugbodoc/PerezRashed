@@ -43,6 +43,7 @@
                                 <th> <?php echo lang('package'); ?> <?php echo lang('name'); ?></th>
                                 <th> <?php echo lang('patient'); ?> <?php echo lang('limit'); ?></th>
                                 <th> <?php echo lang('doctor'); ?> <?php echo lang('limit'); ?></th>
+                                <th> <?php echo lang('location'); ?> <?php echo lang('limit'); ?></th>
                                 <th> <?php echo lang('permitted_modules'); ?></th>
                                 <th> <?php echo lang('restricted_modules'); ?></th>
                                 <th class="no-print"> <?php echo lang('options'); ?></th>
@@ -69,6 +70,7 @@
                                 <td> <?php echo $package->name; ?></td>
                                 <td><?php echo $package->p_limit; ?></td>
                                 <td class="center"><?php echo $package->d_limit; ?></td>
+                                <td class="center"><?php echo $package->loc_limit; ?></td>
                                 <td class="center" style="text-transform: capitalize;"><?php
                                     $modules = explode(',', $package->module);
                                     foreach ($modules as $key => $value) {
