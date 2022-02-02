@@ -27,6 +27,26 @@
                             </div>
                             <form role="form" action="hospital/addNew" method="post" enctype="multipart/form-data">
                                 <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="exampleInputEmail1"><?php echo lang('healthcare_provider_type'); ?></label>
+                                        <select class="form-control" name="entity_type" id="entity_type" value=''>
+                                            <option value="0" disabled><?php echo lang('healthcare_provider_type_placeholder'); ?></option>
+                                            <?php foreach ($entities as $entity) { ?>
+                                                <option value="<?php echo $entity->id; ?>" <?php
+                                                if (!empty($setval)) {
+                                                    if ($entity->id == set_value('entity_type_id')) {
+                                                        echo 'selected';
+                                                    }
+                                                }
+                                                if (!empty($settings->entity_type_id)) {
+                                                    if ($entity->id == $settings->entity_type_id) {
+                                                        echo 'selected';
+                                                    }
+                                                }
+                                                ?> > <?php echo $entity->display_name; ?> </option>
+                                                    <?php } ?>
+                                        </select>   
+                                    </div>
                                     <div class="col-md-6 form-group">
                                         <label for="exampleInputEmail1"><?php echo lang('healthcare_institution_name'); ?></label>
                                         <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='<?php

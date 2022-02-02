@@ -30,6 +30,7 @@ class Hospital extends MX_Controller {
 
     public function addNewView() {
         $data['packages'] = $this->package_model->getPackage();
+        $data['entities'] = $this->settings_model->getEntityType();
         $data['zones'] = timezone_identifiers_list();
         $data['countries'] = $this->country_model->getCountry();
         $this->load->view('home/dashboard'); // just the header file
@@ -40,6 +41,7 @@ class Hospital extends MX_Controller {
     public function addNew() {
         $data['zones'] = timezone_identifiers_list();
         $id = $this->input->post('id');
+        $entity_type = $this->input->post('entity_type');
         $group_name = $this->input->post('group_name');
         $name = $this->input->post('name');
         $password = $this->input->post('password');
@@ -102,7 +104,7 @@ class Hospital extends MX_Controller {
         $this->form_validation->set_rules('country_id', 'Country ID', 'trim|required|min_length[1]|max_length[4]|xss_clean');
         $this->form_validation->set_rules('company_name', 'Company Name', 'trim|min_length[1]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('company_vat_number','Company VAT Number', 'trim|min_length[1]|max_length[100]|xss_clean');
-
+        $this->form_validation->set_rules('entity_type', 'Healthcare Provider Type', 'trim|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 redirect("hospital/editHospital?id=$id");
@@ -142,6 +144,7 @@ class Hospital extends MX_Controller {
                     $this->hospital_model->updateHospital($hospital_user_id, $id_info);
                     $hospital_settings_data = array();
                     $hospital_settings_data = array('hospital_id' => $hospital_user_id,
+                        'entity_type_id' => $entity_type,
                         'group_name' => $group_name,
                         'title' => $name,
                         'email' => $email,
@@ -245,6 +248,16 @@ class Hospital extends MX_Controller {
                     );
 
                     $this->pgateway_model->addPaymentGatewaySettings($data_pgateway_payumoney);
+
+                    $data_pgateway_paymongo = array(
+                        'name' => 'Paymongo', // Sandbox / testing mode option.
+                        'public_key' => 'Public Key', // Paymongo API username of the API caller
+                        'secret' => 'Secret Key', // Paymongo API password of the API caller
+                        'status' => 'test',
+                        'hospital_id' => $hospital_user_id
+                    );
+
+                    $this->pgateway_model->addPaymentGatewaySettings($data_pgateway_paymongo);                    
 
                     $data_email_settings = array(
                         'admin_email' => 'team@sugbodoc.com', // Sandbox / testing mode option.
