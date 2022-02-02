@@ -359,14 +359,13 @@
                   </div>
                   <div class="row">
                     <ul class="list-group">
+                      <li class="list-group-item">1 Doctor</li>
+                      <li class="list-group-item">Up to 4 Clinic Locations</li>
                       <li class="list-group-item">Appointment Calendar</li>
                       <li class="list-group-item">Electronic Medical Records</li>
                       <li class="list-group-item">Prescriptions</li>
                       <li class="list-group-item">Invoices</li>
-                      <li class="list-group-item">SMS Center</li>
-                      <li class="list-group-item">Up to 4 Doctors</li>
-                      <li class="list-group-item">2 Receptionists</li>
-                      <li class="list-group-item">2 Accountants</li>
+                      <li class="list-group-item">SMS Center</li>                      
                       <li class="list-group-item">Professional Billing</li>
                     </ul>
                   </div>
@@ -391,14 +390,13 @@
                   </div>
                   <div class="row">
                     <ul class="list-group">
+                      <li class="list-group-item">Up to 4 Doctors</li>
+                      <li class="list-group-item">Up to 4 Clinic Locations</li>
                       <li class="list-group-item">Appointment Calendar</li>
                       <li class="list-group-item">Electronic Medical Records</li>
                       <li class="list-group-item">Prescriptions</li>
                       <li class="list-group-item">Invoices</li>
                       <li class="list-group-item">SMS Center</li>
-                      <li class="list-group-item">Up to 10 Doctors</li>
-                      <li class="list-group-item">4 Receptionists</li>
-                      <li class="list-group-item">4 Accountants</li>
                       <li class="list-group-item">Professional Billing</li>
                     </ul>
                   </div>
