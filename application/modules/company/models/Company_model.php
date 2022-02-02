@@ -121,26 +121,24 @@ class Company_model extends CI_model {
     }
 
     function getCompanyType() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'asc');
         $query = $this->db->get('company_type');
         return $query->result();
     }
 
     function getCompanyTypeById($id) {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
         $query = $this->db->get('company_type');
         return $query->row();
     }
 
     function getCompanyClassification() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'asc');
         $query = $this->db->get('company_classification');
         return $query->result();
     }
 
     function getCompanyClassificationById($id) {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
         $query = $this->db->get('company_classification');
         return $query->row();
