@@ -24,6 +24,13 @@ class pgateway_model extends CI_model {
         return $query->row();
     }
 
+    function getPaymentGatewaySettingsByNameByHospitalId($name, $hospital_id) {
+         $this->db->where('hospital_id', $hospital_id);
+        $this->db->where('name', $name);
+        $query = $this->db->get('paymentGateway');
+        return $query->row();
+    }
+
     function getPaymentGatewayByUser($user) {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));

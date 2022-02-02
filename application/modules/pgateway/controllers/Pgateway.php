@@ -70,6 +70,12 @@ class pgateway extends MX_Controller {
             $this->form_validation->set_rules('secret', 'API Secret Key', 'required|trim|xss_clean');
             $this->form_validation->set_rules('publish', 'API Publish Key', 'required|trim|xss_clean');
         }
+        if ($pgateway->name == 'Paymongo') {
+            // Validating Name Field
+            $this->form_validation->set_rules('public_key', 'Public Key', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            // Validating Email Field
+            $this->form_validation->set_rules('secret', 'Secret key', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        }
         if ($pgateway->name == 'PayPal') {
             // Validating Name Field
             $this->form_validation->set_rules('APIUsername', 'API Username', 'trim|required|min_length[1]|max_length[100]|xss_clean');
@@ -111,6 +117,13 @@ class pgateway extends MX_Controller {
                     'status' => $status
                 );
             }
+            if ($pgateway->name == 'Paymongo') {
+                $data = array(
+                    'secret' => $secret,
+                    'public_key' => $public_key,
+                    'status' => $status
+                );
+            }            
             if ($pgateway->name == 'PayPal') {
                 $data = array(
                     'name' => $name,
