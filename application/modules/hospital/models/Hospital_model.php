@@ -275,7 +275,19 @@ class Hospital_model extends CI_model {
             $this->db->insert('company_classification', $data1);
         }
     }    
-    
+    function createPersonalAccount($hospital_id) {
+        $classification_id = $this->db->get_where('company_classification', array('name' => 'Personal'))->row()->id;  
+        $type_id = $this->db->get_where('company_type', array('name' => 'Personal'))->row()->id;
+            $data1 = array();
+            $data1 = array(
+                'name' => 'Personal',
+                'display_name' => 'Personal',
+                'classification_id' => $classification_id,
+                'type_id' => $type_id,
+                'hospital_id' => $hospital_id
+            );
+            $this->db->insert('company', $data1);
+    }
     function createCompanyType($hospital_id) {
         $data = array();
         $data = array('0' => array(
@@ -321,7 +333,9 @@ class Hospital_model extends CI_model {
             );
             $this->db->insert('company_type', $data1);
         }
-    }    
+    }
+
+
 
     function getIonUserById($id){
         $this->db->where('id', $id);

@@ -105,6 +105,8 @@ class Hospital extends MX_Controller {
         $this->form_validation->set_rules('company_name', 'Company Name', 'trim|min_length[1]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('company_vat_number','Company VAT Number', 'trim|min_length[1]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('entity_type', 'Healthcare Provider Type', 'trim|min_length[1]|max_length[100]|xss_clean');
+        
+        $country = $this->country_model->getCountryById($country_id);
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 redirect("hospital/editHospital?id=$id");
@@ -161,7 +163,8 @@ class Hospital extends MX_Controller {
                         'system_vendor' => 'SugboDoc',
                         'discount' => 'flat',
                         'sms_gateway' => 'Twilio',
-                        'currency' => '$'
+                        'currency' => $country->currency_symbol,
+                        'currency_code' => $country->currency
                     );
                     $this->settings_model->insertSettings($hospital_settings_data);
                     $hospital_blood_bank = array();
@@ -269,8 +272,8 @@ class Hospital extends MX_Controller {
 
                     $this->hospital_model->createAutoSmsTemplate($hospital_user_id);
                     $this->hospital_model->createAutoEmailTemplate($hospital_user_id);
-                    $this->hospital_model->createCompanyClassification($hospital_user_id);
-                    $this->hospital_model->createCompanyType($hospital_user_id);
+                    $this->hospital_model->createPersonalAccount($hospital_user_id);
+
 
                     $this->session->set_flashdata('feedback', lang('new_hospital_created'));
                     redirect('hospital');
