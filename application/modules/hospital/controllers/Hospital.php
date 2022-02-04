@@ -62,9 +62,11 @@ class Hospital extends MX_Controller {
             $module = $this->package_model->getPackageById($package)->module;
             $p_limit = $this->package_model->getPackageById($package)->p_limit;
             $d_limit = $this->package_model->getPackageById($package)->d_limit;
+            $loc_limit = $this->package_model->getPackageById($package)->loc_limit;
         } else {
             $p_limit = $this->input->post('p_limit');
             $d_limit = $this->input->post('d_limit');
+            $loc_limit = $this->input->post('loc_limit');
             $module = $this->input->post('module');
             if (!empty($module)) {
                 $module = implode(',', $module);
@@ -127,6 +129,7 @@ class Hospital extends MX_Controller {
                 'package' => $package,
                 'p_limit' => $p_limit,
                 'd_limit' => $d_limit,
+                'loc_limit' => $loc_limit,
                 'module' => $module
             );
 

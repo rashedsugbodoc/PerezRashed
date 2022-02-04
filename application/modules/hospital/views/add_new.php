@@ -395,6 +395,16 @@
                                             }
                                             ?>' placeholder="Example: 1000" required="">
                                         </div>
+                                        <div class="form-group pos_client">
+                                            <label for="exampleInputEmail1"><?php echo lang('location'); ?> <?php echo lang('limit'); ?></label>
+                                            <input type="text" class="form-control" name="d_limit" id="exampleInputEmail1" value='<?php
+                                            if (!empty($hospital->loc_limit)) {
+                                                echo $hospital->loc_limit;
+                                            } else {
+                                                echo '4';
+                                            }
+                                            ?>' placeholder="Example: 4" required="">
+                                        </div>
                                         <div class="form-group pos_client"> 
                                             <label for="exampleInputEmail1"> <?php echo lang('module_permission'); ?></label>
                                             <br>
