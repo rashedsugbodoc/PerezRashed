@@ -363,7 +363,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100">
+                                                                <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
                                                                     <thead>
                                                                         <tr>
                                                                             <th><?php echo lang('measured_at'); ?></th>
@@ -444,7 +444,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample2" class="table table-bordered text-nowrap key-buttons w-100">
+                                                                <table id="editable-sample2" class="table table-bordered text-nowrap key-buttons w-100 editable-sample2">
                                                                     <thead>
                                                                         <tr>
                                                                             <th><?php echo lang('date'); ?></th>
@@ -452,12 +452,55 @@
                                                                             <th><?php echo lang('doctor'); ?></th>
                                                                             <th><?php echo lang('status'); ?></th>
                                                                             <th><?php echo lang('facility'); ?></th>
+                                                                            <th><?php echo 'Service_type'; ?></th>
                                                                             <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                                 <th class="no-print"><?php echo lang('options'); ?></th>
                                                                             <?php } ?>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
+                                                                        <?php foreach ($appointments_location as $app_location) { ?>
+                                                                            <tr>
+                                                                                <td><?php echo date('Y-m-d', $app_location->date); ?></td>
+                                                                                <td><?php echo $app_location->time_slot; ?></td>
+                                                                                <td>
+                                                                                    <?php
+                                                                                    $doctor_details = $this->doctor_model->getDoctorById($app_location->doctor);
+                                                                                    if (!empty($doctor_details)) {
+                                                                                        $appointment_doctor = $doctor_details->name;
+                                                                                    } else {
+                                                                                        $appointment_doctor = '';
+                                                                                    }
+                                                                                    echo $appointment_doctor;
+                                                                                    ?>
+                                                                                </td>
+                                                                                <td><?php
+                                                                                    if (empty($app_location->status)) {
+                                                                                        if (!empty($app_location->request)) {
+                                                                                            echo "Requested";
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo $app_location->status;
+                                                                                    }
+                                                                                ?></td>
+                                                                                <td><?php
+                                                                                    $facility = $this->hospital_model->getHospitalById($app_location->hospital_id);
+                                                                                    if (!empty($app_location->hospital_id)) {
+                                                                                        $appointment_facility = $facility->name;
+                                                                                    } else {
+                                                                                        $appointment_facility = '';
+                                                                                    }
+                                                                                    echo $appointment_facility;?><br><?php
+                                                                                    echo '( ' . $this->branch_model->getBranchById($app_location->location_id)->display_name . ' )';
+                                                                                ?></td>
+                                                                                <td><?php echo $this->appointment_model->getServiceCategoryById($app_location->service_category_group_id)->display_name; ?></td>
+                                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                                                                    <td class="no-print">
+                                                                                        
+                                                                                    </td>
+                                                                                <?php } ?>
+                                                                            </tr>
+                                                                        <?php } ?>
                                                                         <?php foreach ($appointments as $appointment) { ?>
                                                                             <tr class="">
 
@@ -474,7 +517,15 @@
                                                                                     echo $appointment_doctor;
                                                                                     ?>
                                                                                 </td>
-                                                                                <td><?php echo $appointment->status; ?></td>
+                                                                                <td><?php
+                                                                                    if (empty($appointment->status)) {
+                                                                                        if (!empty($appointment->request)) {
+                                                                                            echo "Requested";
+                                                                                        }
+                                                                                    } else {
+                                                                                        echo $appointment->status;
+                                                                                    }
+                                                                                ?></td>
                                                                                 <td><?php
                                                                                     $facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
                                                                                     if (!empty($appointment->hospital_id)) {
@@ -482,8 +533,10 @@
                                                                                     } else {
                                                                                         $appointment_facility = '';
                                                                                     }
-                                                                                    echo $appointment_facility;
+                                                                                    echo $appointment_facility; ?><br><?php
+                                                                                    echo '(' . lang('online') . ')';
                                                                                 ?></td>
+                                                                                <td><?php echo $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name; ?></td>
                                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                                     <td class="no-print">
                                                                                         <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"></i> </button>   
@@ -522,7 +575,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample3" class="table table-bordered w-100">
+                                                                <table id="editable-sample3" class="table table-bordered w-100 editable-sample3">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="w-15"><?php echo lang('date'); ?></th>
@@ -592,7 +645,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample4" class="table table-bordered text-nowrap key-buttons w-100">
+                                                                <table id="editable-sample4" class="table table-bordered text-nowrap key-buttons w-100 editable-sample4">
                                                                     <thead>
                                                                         <tr>
                                                                             <th><?php echo lang('date'); ?></th>
@@ -689,7 +742,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100">
+                                                                <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100 editable-sample5">
                                                                     <thead>
                                                                         <tr>
                                                                             <th><?php echo lang('id'); ?></th>
@@ -853,7 +906,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100">
+                                                                <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100 editable-sample6">
                                                                     <thead>
                                                                         <tr>
                                                                             <th><?php echo lang('admission_id'); ?></th>
@@ -2127,7 +2180,7 @@
 
     <script>
         $(document).ready(function () {
-            $('#editable-sample').DataTable({
+            $('.editable-sample').DataTable({
                 responsive: true,
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -2177,7 +2230,7 @@
         });
 
         $(document).ready(function () {
-            $('#editable-sample2').DataTable({
+            $('.editable-sample2').DataTable({
                 responsive: true,
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -2205,7 +2258,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: -1,
+                iDisplayLength: 10,
                 "order": [[0, "desc"]],
                 "language": {
                     "lengthMenu": "_MENU_",
@@ -2217,7 +2270,7 @@
 
 
         $(document).ready(function () {
-            $('#editable-sample3').DataTable({
+            $('.editable-sample3').DataTable({
                 responsive: true,
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -2245,7 +2298,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: -1,
+                iDisplayLength: 10,
                 "order": [[0, "desc"]],
                 "language": {
                     "lengthMenu": "_MENU_",
@@ -2256,7 +2309,7 @@
         });
 
         $(document).ready(function () {
-            $('#editable-sample4').DataTable({
+            $('.editable-sample4').DataTable({
                 responsive: true,
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -2284,7 +2337,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: -1,
+                iDisplayLength: 10,
                 "order": [[0, "desc"]],
                 "language": {
                     "lengthMenu": "_MENU_",
@@ -2295,7 +2348,7 @@
         });
 
         $(document).ready(function () {
-            $('#editable-sample5').DataTable({
+            $('.editable-sample5').DataTable({
                 responsive: true,
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -2323,7 +2376,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: -1,
+                iDisplayLength: 10,
                 "order": [[0, "desc"]],
                 "language": {
                     "lengthMenu": "_MENU_",
@@ -2334,7 +2387,7 @@
         });
 
         $(document).ready(function () {
-            $('#editable-sample6').DataTable({
+            $('.editable-sample6').DataTable({
                 responsive: true,
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
@@ -2362,7 +2415,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: -1,
+                iDisplayLength: 10,
                 "order": [[0, "desc"]],
                 "language": {
                     "lengthMenu": "_MENU_",
