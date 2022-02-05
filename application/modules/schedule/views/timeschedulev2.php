@@ -8,7 +8,7 @@
 
                         <div class="card mt-5">
                             <div class="card-header">
-                                <div class="card-title"><?php echo lang('time_schedule'); ?> (<?php echo $this->db->get_where('doctor', array('id' => $doctorr))->row()->name; ?>)</div>
+                                <div class="card-title"><?php echo lang('time_schedule'); ?> (<?php echo lang('online') ?>)</div>
                                 <div class="card-options">
                                     <a data-toggle="modal" href="#myModal">
                                         <div class="btn-group pull-right">
@@ -25,6 +25,7 @@
                                         <thead>
                                             <tr>
                                                 <th> # </th>
+                                                <th> <?php echo lang('doctor'); ?></th>
                                                 <th> <?php echo lang('weekday'); ?></th>
                                                 <th> <?php echo lang('start_time'); ?></th>
                                                 <th> <?php echo lang('end_time'); ?></th>
@@ -37,9 +38,11 @@
                                             $i = 0;
                                             foreach ($schedules as $schedule) {
                                                 $i = $i + 1;
+                                                if (empty($schedule->location_id)) {
                                                 ?>
                                                 <tr>
                                                     <td style=""> <?php echo $i; ?></td> 
+                                                    <td> <?php echo $this->doctor_model->getDoctorById($schedule->doctor)->name; ?></td>
                                                     <td> <?php echo $schedule->weekday; ?></td> 
                                                     <td><?php echo $schedule->s_time; ?></td>
                                                     <td><?php echo $schedule->e_time; ?></td>
@@ -51,7 +54,7 @@
                                                         <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $doctorr; ?>&weekday=<?php echo $schedule->weekday; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
                                                     </td>
                                                 </tr>
-                                            <?php } ?>
+                                            <?php } } ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -81,6 +84,7 @@
                                             <tr>
                                                 <th> # </th>
                                                 <th> <?php echo lang('weekday'); ?></th>
+                                                <th> <?php echo lang('doctor') ?> </th>
                                                 <th> <?php echo lang('start_time'); ?></th>
                                                 <th> <?php echo lang('end_time'); ?></th>
                                                 <th> <?php echo lang('duration'); ?></th>
@@ -90,25 +94,25 @@
                                         <tbody>
                                             <?php
                                             $i = 0;
-                                            foreach ($location_schedules as $locationschedule) {
+                                            foreach ($schedules as $schedule) {
                                                 $i = $i + 1;
-                                                if ($branch->id == $locationschedule->location_id) {
+                                                if ($schedule->location_id == $branch->id) {
                                                 ?>
                                                 <tr>
                                                     <td style=""> <?php echo $i; ?></td> 
-                                                    <td> <?php echo $locationschedule->weekday; ?></td> 
-                                                    <td><?php echo $locationschedule->s_time; ?></td>
-                                                    <td><?php echo $locationschedule->e_time; ?></td>
-                                                    <td><?php echo $locationschedule->duration * 5 . ' ' . lang('minutes'); ?></td>
+                                                    <td> <?php echo $this->doctor_model->getDoctorById($schedule->doctor)->name; ?></td>
+                                                    <td> <?php echo $schedule->weekday; ?></td> 
+                                                    <td><?php echo $schedule->s_time; ?></td>
+                                                    <td><?php echo $schedule->e_time; ?></td>
+                                                    <td><?php echo $schedule->duration * 5 . ' ' . lang('minutes'); ?></td>
                                                     <td>
                                                         <!--
                                                         <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $schedule->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
                                                         -->
-                                                        <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteScheduleForLocation?id=<?php echo $locationschedule->id; ?>&doctor=<?php echo $locationschedule->doctor; ?>&weekday=<?php echo $locationschedule->weekday; ?>&location=<?php echo $locationschedule->location_id ?>&all=all" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
+                                                        <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $doctorr; ?>&weekday=<?php echo $schedule->weekday; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
                                                     </td>
                                                 </tr>
-                                                <?php } ?>
-                                            <?php } ?>
+                                            <?php } } ?>
                                         </tbody>
                                     </table>
                                 </div>

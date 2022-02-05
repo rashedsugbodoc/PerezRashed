@@ -43,7 +43,7 @@ class Schedule extends MX_Controller {
 
         $data['doctorr'] = $doctor;
         $data['settings'] = $this->settings_model->getSettings();
-        $data['schedules'] = $this->schedule_model->getScheduleByDoctor($doctor);
+        $data['schedules'] = $this->schedule_model->getScheduleByDoctor($doctor, $location);
         $data['location_schedules'] = $this->schedule_model->getLocationScheduleByDoctor($doctor);
         $data['branches'] = $this->branch_model->getBranches();
         $this->load->view('home/dashboardv2', $data); // just the header file
@@ -53,8 +53,9 @@ class Schedule extends MX_Controller {
 
     function getScheduleByDoctor() {
         $doctor = $this->input->get('doctor');
+        $location = $this->input->get('location');
 
-        $data['schedules'] = $this->schedule_model->getScheduleByDoctor($doctor);
+        $data['schedules'] = $this->schedule_model->getScheduleByDoctor($doctor, $location);
 
         echo json_encode($data);
     }
@@ -78,11 +79,12 @@ class Schedule extends MX_Controller {
         $s_time = $this->input->post('s_time');
         $e_time = $this->input->post('e_time');
         $weekday = $this->input->post('weekday');
+        $location = $this->input->post('branch');
 
         $duration = $this->input->post('duration');
 
         if (empty($id)) {
-            $check = $this->schedule_model->getScheduleByDoctorByWeekday($doctor, $weekday);
+            $check = $this->schedule_model->getScheduleByDoctorByWeekday($doctor, $weekday, $location);
             if (!empty($check)) {
                 $this->session->set_flashdata('error', lang('schedule_already_exists'));
                 redirect($redirect);
@@ -407,7 +409,7 @@ class Schedule extends MX_Controller {
         if (!empty($id)) {
             $previous_time = $this->schedule_model->getScheduleByDoctorByWeekdayById($doctor, $weekday, $id);
         } else {
-            $previous_time = $this->schedule_model->getScheduleByDoctorByWeekday($doctor, $weekday);
+            $previous_time = $this->schedule_model->getScheduleByDoctorByWeekday($doctor, $weekday, $location);
         }
 
         if (!empty($previous_time)) {
@@ -484,7 +486,8 @@ class Schedule extends MX_Controller {
                 'e_time' => $e_time,
                 'weekday' => $weekday,
                 's_time_key' => $key1,
-                'duration' => $duration
+                'duration' => $duration,
+                'location_id' => $location,
             );
             if (!empty($id)) {
                 $this->session->set_flashdata('success', lang('record_updated'));
@@ -509,7 +512,8 @@ class Schedule extends MX_Controller {
                                         's_time' => $p_slot_s_time,
                                         'e_time' => $p_slot_e_time,
                                         'weekday' => $weekday,
-                                        's_time_key' => $key_start
+                                        's_time_key' => $key_start,
+                                        'location_id' => $location,
                                     );
                                     $this->schedule_model->insertTimeSlot($slot_data);
                                 }
@@ -1006,7 +1010,8 @@ class Schedule extends MX_Controller {
 
         $doctor = $this->input->get('doctor');
         $weekday = $this->input->get('weekday');
-        $this->schedule_model->deleteTimeSlotByDoctorByWeekday($doctor, $weekday);
+        $location = $this->input->get('location');
+        $this->schedule_model->deleteTimeSlotByDoctorByWeekday($doctor, $weekday, $location);
         $this->schedule_model->deleteSchedule($id);
         $this->session->set_flashdata('success', lang('record_deleted'));
 
@@ -1502,11 +1507,17 @@ class Schedule extends MX_Controller {
     function getAvailableSlotByDoctorByDateByJason() {
         $data = array();
         $date = $this->input->get('date');
+        $location = $this->input->get('location');
+
+        if ($location == "null") {
+            $location = '';
+        }
+
         if (!empty($date)) {
             $date = strtotime($date);
         }
         $doctor = $this->input->get('doctor');
-        $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDate($date, $doctor);
+        $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDate($date, $doctor, $location);
         echo json_encode($data);
     }
 
@@ -1531,6 +1542,7 @@ class Schedule extends MX_Controller {
         }
         $doctor = $this->input->get('doctor');
         $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDateByAppointmentId($date, $doctor, $appointment_id);
+        // $data['aslotsLocation'] = $this->schedule_model->getAvailableSlotByDoctorByDateByAppointmentIdForLocation($date, $doctor, $appointment_id);
         $data['current_value'] = $this->appointment_model->getAppointmentById($appointment_id)->time_slot;
         echo json_encode($data);
     }

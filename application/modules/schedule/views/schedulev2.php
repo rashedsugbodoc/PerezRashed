@@ -35,6 +35,7 @@
                                                 $i = 0;
                                                 foreach ($schedules as $schedule) {
                                                     $i = $i + 1;
+                                                    if (empty($schedule->location_id)) {
                                                     ?>
                                                     <tr class="">
                                                         <td style=""> <?php echo $i; ?></td> 
@@ -52,7 +53,7 @@
                                                             </td>
                                                         <?php } ?>
                                                     </tr>
-                                                <?php } ?>
+                                                <?php } } ?>
                                             </tbody>
                                         </table>
                                     </div>
@@ -82,8 +83,8 @@
                                         <thead>
                                             <tr>
                                                 <th> # </th>
-                                                <th> <?php echo lang('weekday'); ?></th>
                                                 <th> <?php echo lang('doctor'); ?></th>
+                                                <th> <?php echo lang('weekday'); ?></th>
                                                 <th> <?php echo lang('start_time'); ?></th>
                                                 <th> <?php echo lang('end_time'); ?></th>
                                                 <th> <?php echo lang('duration'); ?></th>
@@ -93,26 +94,27 @@
                                         <tbody>
                                             <?php
                                             $i = 0;
-                                            foreach ($location_schedules as $locationschedule) {
+                                            foreach ($schedules as $schedule) {
                                                 $i = $i + 1;
-                                                if ($branch->id == $locationschedule->location_id) {
+                                                if ($schedule->location_id == $branch->id) {
                                                 ?>
-                                                <tr>
+                                                <tr class="">
                                                     <td style=""> <?php echo $i; ?></td> 
-                                                    <td> <?php echo $locationschedule->weekday; ?></td> 
-                                                    <td> <?php echo $this->doctor_model->getDoctorById($locationschedule->doctor)->name; ?></td>
-                                                    <td><?php echo $locationschedule->s_time; ?></td>
-                                                    <td><?php echo $locationschedule->e_time; ?></td>
-                                                    <td><?php echo $locationschedule->duration * 5 . ' ' . lang('minutes'); ?></td>
-                                                    <td>
-                                                        <!--
-                                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $schedule->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
-                                                        -->
-                                                        <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteScheduleForLocation?id=<?php echo $locationschedule->id; ?>&doctor=<?php echo $locationschedule->doctor; ?>&weekday=<?php echo $locationschedule->weekday; ?>&location=<?php echo $locationschedule->location_id ?>&all=all" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
-                                                    </td>
+                                                    <td> <?php echo $this->doctor_model->getDoctorById($schedule->doctor)->name; ?></td>
+                                                    <td> <?php echo $schedule->weekday; ?></td> 
+                                                    <td><?php echo $schedule->s_time; ?></td>
+                                                    <td><?php echo $schedule->e_time; ?></td>
+                                                    <td><?php echo $schedule->duration * 5 . ' ' . lang('minutes'); ?></td>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                                                        <td>
+                                                            <!--
+                                                            <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $schedule->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
+                                                            -->
+                                                            <a class="btn btn-danger btn-xs" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $schedule->doctor; ?>&weekday=<?php echo $schedule->weekday; ?>&all=all&location=<?php echo $schedule->location_id ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
+                                                        </td>
+                                                    <?php } ?>
                                                 </tr>
-                                                <?php } ?>
-                                            <?php } ?>
+                                            <?php } } ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -262,7 +264,7 @@
                                         <div class="modal-header">
                                             <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('schedule'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                         </div>
-                                        <form role="form" action="schedule/addScheduleForLocation" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" action="schedule/addSchedule" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
