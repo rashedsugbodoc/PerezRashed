@@ -16,10 +16,34 @@ class Appointment_model extends CI_model {
         $this->db->insert('appointment', $data2);
     }
 
+    function insertAppointmentForLocation($data) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('appointment_location', $data2);
+    }
+
     function getAppointment() {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('appointment');
+        return $query->result();
+
+        // $this->db->order_by('id', 'desc');
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $query = $this->db->get('appointment');
+        // $appointment_list1 = query->result();
+        // $this->db->order_by('id', 'desc');
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $query2 = $this->db->get('appointment_location');
+        // $appointment_list2 = query2->result();
+        // $mergedAppointments = array_merge($appointment_list1, $appointment_list2);
+        // return $mergedAppointments;
+    }
+
+    function getAppointmentForLocation() {
+        $this->db->order_by('id', 'desc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('appointment_location');
         return $query->result();
     }
 
@@ -173,6 +197,14 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
+    function getAppointmentByPatientForLocation($patient) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $patient);
+        $query = $this->db->get('appointment_location');
+        return $query->result();
+    }
+
     function getAppointmentByStatus($status) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
@@ -219,6 +251,11 @@ class Appointment_model extends CI_model {
     function updateAppointment($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('appointment', $data);
+    }
+
+    function updateAppointmentForLocation($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('appointment_location', $data);
     }
 
     function delete($id) {
@@ -906,6 +943,12 @@ class Appointment_model extends CI_model {
         return $data;
     }
 
+     function getServiceCategoryById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('service_category_group');
+        return $query->row();
+    }
+
     function getServicesByServiceCategoryGroupByDoctorHospital($serviceCategoryGroup, $doctorHospital) {
         //$newDate = date("m-d-Y", strtotime($date));
         // $weekday = strftime("%A", $date);
@@ -948,6 +991,13 @@ class Appointment_model extends CI_model {
         $this->db->where('service_category_group_id', $serviceCategoryGroup);
         $this->db->where('hospital_id', $doctorHospital);
         $services = $this->db->get('payment_category')->result();
+
+        return $services;
+    }
+
+    function getServicesByServiceId($services) {
+        $this->db->where('id', $services);
+        $services = $this->db->get('payment_category')->row();
 
         return $services;
     }

@@ -13,8 +13,8 @@ class Appointment extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('sms/sms_model');
         $this->load->module('sms');
-
-
+        $this->load->model('location/location_model');
+        $this->load->model('service/service_model');
         if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Patient', 'Receptionist'))) {
             redirect('home/permission');
         }
@@ -41,10 +41,24 @@ class Appointment extends MX_Controller {
             redirect('home/permission');
         }
 
+        $data['id'] = $this->input->get('id');
+
         // $data['branches'] = $this->branch_model->getBranches();
+        $data['settings'] = $this->settings_model->getSettings();
+        $barangay_id = $data['settings']->barangay_id;
+        $state_id = $data['settings']->state_id;
+        $city_id = $data['settings']->city_id;
+        $country_id = $data['settings']->country_id;
+
+        $data['state'] = $this->location_model->getStateById($state_id);
+        $data['city'] = $this->location_model->getCityById($city_id);
+        $data['barangay'] = $this->location_model->getBarangayById($barangay_id);
+        $data['country'] = $this->location_model->getCountryById($country_id);
+        $patient_ion_id = $this->ion_auth->get_user_id();
+        $data['patient_id'] = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
 
         $this->load->view('home/dashboardv2');
-        $this->load->view('book_consultation');
+        $this->load->view('book_consultation',$data);
     }
 
     public function request() {
@@ -143,6 +157,20 @@ class Appointment extends MX_Controller {
         $patient = $this->input->post('patient');
         $doctor = $this->input->post('doctor');
         $date = $this->input->post('date');
+        $service_category_group = $this->input->post('service_category_group');
+        $service = $this->input->post('service');
+        $location = $this->input->post('branch');
+        $appointment_registration = date('Y-m-d H:i:s', now('UTC'));
+
+        $virtual = $this->appointment_model->getServiceCategoryById($service_category_group)->is_virtual;
+
+        if (!empty($virtual)) {
+            $service_type = "Virtual";
+        } else {
+            $service_type = "Inperson";
+        }
+
+        $date1 = $date;
         if (!empty($date)) {
             $date = strtotime($date);
         }
@@ -155,6 +183,9 @@ class Appointment extends MX_Controller {
         $s_time = trim($time_slot_explode[0]);
         $e_time = trim($time_slot_explode[1]);
 
+        $date_time_combined = strtotime($date1 . ' ' . $s_time);
+
+        $appointment_date = gmdate('Y-m-d H:i:s', strtotime('+1 hour', $date_time_combined));
 
         $remarks = $this->input->post('remarks');
 
@@ -173,9 +204,9 @@ class Appointment extends MX_Controller {
 
         $user = $this->ion_auth->get_user_id();
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $user = '';
-        }
+        // if ($this->ion_auth->in_group(array('Patient'))) {
+        //     $user = '';
+        // }
 
 
 
@@ -321,16 +352,22 @@ class Appointment extends MX_Controller {
                 'date' => $date,
                 's_time' => $s_time,
                 'e_time' => $e_time,
-                'time_slot' => $time_slot,
                 'remarks' => $remarks,
+                'time_slot' => $time_slot,
                 'add_date' => $add_date,
                 'registration_time' => $registration_time,
+                'location_id' => $location,
                 'status' => $status,
                 's_time_key' => $s_time_key,
                 'user' => $user,
                 'request' => $request,
                 'room_id' => $room_id,
-                'live_meeting_link' => $live_meeting_link
+                'live_meeting_link' => $live_meeting_link,
+                'service_category_group_id' => $service_category_group,
+                'service_id' => $service,
+                'appointment_registration_time' => $appointment_registration,
+                'appointment_date' => $appointment_date,
+                'service_type' => $service_type,
             );
             $username = $this->input->post('name');
             if (empty($id)) {     // Adding New department
@@ -374,6 +411,240 @@ class Appointment extends MX_Controller {
                 redirect('appointment');
             }
         }
+    }
+
+    public function addNewBookConsultation() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient'))) {
+            redirect('home/permission');
+        }
+
+        $data['settings'] = $this->settings_model->getSettings();
+
+        $id = $this->input->post('id');
+        $id = $this->session->userdata('appointment_id');
+        $patient = $this->input->post('patient');
+        $doctor = $this->input->post('doctor');
+        $date = $this->input->post('date');
+        $service_category_group = $this->input->post('service_category_group');
+        $service = $this->input->post('service');
+        $location = $this->input->post('branch');
+        $appointment_registration = date('Y-m-d H:i:s', now('UTC'));
+
+        $virtual = $this->appointment_model->getServiceCategoryById($service_category_group)->is_virtual;
+
+        if (!empty($virtual)) {
+            $service_type = "Virtual";
+        } else {
+            $service_type = "Inperson";
+        }
+
+        $date1 = $date;
+        if (!empty($date)) {
+            $date = strtotime($date);
+        }
+
+
+        $time_slot = $this->input->post('time_slot');
+
+        $time_slot_explode = explode('To', $time_slot);
+
+        $s_time = trim($time_slot_explode[0]);
+        $e_time = trim($time_slot_explode[1]);
+
+        $date_time_combined = strtotime($date1 . ' ' . $s_time);
+
+        $appointment_date = gmdate('Y-m-d H:i:s', strtotime('+1 hour', $date_time_combined));
+
+        $remarks = $this->input->post('remarks');
+
+        $sms = $this->input->post('sms');
+
+        $status = $this->input->post('status');
+
+        $redirect = $this->input->post('redirect');
+
+        $request = $this->input->post('request');
+
+        if (empty($request)) {
+            $request = '';
+        }
+
+
+        $user = $this->ion_auth->get_user_id();
+
+        // if ($this->ion_auth->in_group(array('Patient'))) {
+        //     $user = '';
+        // }
+
+
+
+        if ((empty($id))) {
+            $add_date = date('m/d/y');
+            $registration_time = time();
+            $patient_add_date = $add_date;
+            $patient_registration_time = $registration_time;
+        } else {
+            $add_date = $this->appointment_model->getAppointmentById($id)->add_date;
+            $registration_time = $this->appointment_model->getAppointmentById($id)->registration_time;
+        }
+
+        $s_time_key = $this->getArrayKey($s_time);
+
+
+        $p_name = $this->input->post('p_name');
+        $p_email = $this->input->post('p_email');
+        if (empty($p_email)) {
+            $p_email = $p_name . '-' . rand(1, 1000) . '-' . $p_name . '-' . rand(1, 1000) . '@example.com';
+        }
+        if (!empty($p_name)) {
+            $password = $p_name . '-' . rand(1, 100000000);
+        }
+        $p_phone = $this->input->post('p_phone');
+        $p_age = $this->input->post('p_age');
+        $p_gender = $this->input->post('p_gender');
+        $patient_id = rand(10000, 1000000);
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('doctor', 'Doctor', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Email Field
+
+        if ($time_slot == 'Not Selected') {
+                $this->form_validation->set_rules('time_slot', 'Timeslot', 'trim|required|check_default|xss_clean');
+                $this->form_validation->set_message('check_default', lang('time_slot_not_selected_error'));
+        }
+
+        // Validating Email Field
+        $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Email Field
+        $this->form_validation->set_rules('s_time', 'Start Time', 'trim|min_length[1]|max_length[100]|xss_clean');
+        // Validating Email Field
+        $this->form_validation->set_rules('e_time', 'End Time', 'trim|min_length[1]|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('remarks', 'Remarks', 'trim|max_length[500]|xss_clean');
+
+        if ($this->form_validation->run() == FALSE) {
+            echo "failed";
+        } else {
+            if (empty($id)) {
+                $room_id = 'hms-meeting-' . $patient_phone . '-' . rand(10000, 1000000) . '-' . $this->hospital_id;
+                $live_meeting_link = 'https://meet.jit.si/' . $room_id;
+            } else {
+                $appointment_details = $this->appointment_model->getAppointmentById($id);
+                $room_id = $appointment_details->room_id;
+                $live_meeting_link = $appointment_details->live_meeting_link;
+            }
+
+            $patientname = $this->patient_model->getPatientById($patient)->name;
+            $doctorname = $this->doctor_model->getDoctorById($doctor)->name;
+
+            $data = array();
+            
+            $username = $this->input->post('name');
+
+            if (empty($id)) {
+                
+                $data = array(
+                    'patient' => $patient,
+                    'patientname' => $patientname,
+                    'doctor' => $doctor,
+                    'doctorname' => $doctorname,
+                    'date' => $date,
+                    's_time' => $s_time,
+                    'e_time' => $e_time,
+                    'time_slot' => $time_slot,
+                    'add_date' => $add_date,
+                    'registration_time' => $registration_time,
+                    'location_id' => $location,
+                    'status' => $status,
+                    's_time_key' => $s_time_key,
+                    'user' => $user,
+                    'request' => $request,
+                    'room_id' => $room_id,
+                    'live_meeting_link' => $live_meeting_link,
+                    'service_category_group_id' => $service_category_group,
+                    'service_id' => $service,
+                    'appointment_registration_time' => $appointment_registration,
+                    'appointment_date' => $appointment_date,
+                    'service_type' => $service_type,
+                );
+
+                $this->appointment_model->insertAppointment($data);
+                $inserted_id = $this->db->insert_id();
+                $data['appointment_id'] = $inserted_id;
+                $session_data = array('appointment_id' => $inserted_id);
+                $this->session->set_userdata($session_data);
+                $patient_doctor = $this->patient_model->getPatientById($patient)->doctor;
+
+                $patient_doctors = explode(',', $patient_doctor);
+
+
+
+                if (!in_array($doctor, $patient_doctors)) {
+                    $patient_doctors[] = $doctor;
+                    $doctorss = implode(',', $patient_doctors);
+                    $data_d = array();
+                    $data_d = array('doctor' => $doctorss);
+                    $this->patient_model->updatePatient($patient, $data_d);
+                }
+                $this->sendSmsDuringAppointment($id, $data, $patient, $doctor, $status);
+                $this->session->set_flashdata('success', lang('record_added'));
+                if (!empty($redirect)) {
+                    echo json_encode($data);
+                } else {
+                    redirect('appointment');
+                }
+
+                
+            } else {
+                $data = array(
+                    'patient' => $patient,
+                    'patientname' => $patientname,
+                    'doctor' => $doctor,
+                    'doctorname' => $doctorname,
+                    'date' => $date,
+                    's_time' => $s_time,
+                    'e_time' => $e_time,
+                    'time_slot' => $time_slot,
+                    'add_date' => $add_date,
+                    'registration_time' => $registration_time,
+                    'location_id' => $location,
+                    'status' => $status,
+                    's_time_key' => $s_time_key,
+                    'user' => $user,
+                    'request' => $request,
+                    'room_id' => $room_id,
+                    'live_meeting_link' => $live_meeting_link,
+                    'service_category_group_id' => $service_category_group,
+                    'service_id' => $service,
+                    'appointment_registration_time' => $appointment_registration,
+                    'appointment_date' => $appointment_date,
+                    'service_type' => $service_type,
+                    'remarks' => $remarks,
+                );
+
+                $this->appointment_model->updateAppointment($id, $data);
+
+                // if (!empty($virtual)) {
+                //     $this->appointment_model->updateAppointment($id, $data);
+                // } else {
+                //     $this->appointment_model->updateAppointmentForLocation($id, $data);
+                // }
+                
+            }
+        }
+
+        
+
+        if (!empty($redirect)) {
+            redirect($redirect);
+        } else {
+            redirect('appointment');
+        }
+        
     }
 
     function sendSmsDuringAppointment($id, $data, $patient, $doctor, $status) {
@@ -965,6 +1236,9 @@ class Appointment extends MX_Controller {
     function editAppointmentByJason() {
         $id = $this->input->get('id');
         $data['appointment'] = $this->appointment_model->getAppointmentById($id);
+        $data['service_category'] = $this->appointment_model->getServiceCategoryById($data['appointment']->service_category_group_id);
+        $data['services'] = $this->appointment_model->getServicesByServiceId($data['appointment']->service_id);
+        $data['branch'] = $this->branch_model->getBranchById($data['appointment']->location_id);
         $data['patient'] = $this->patient_model->getPatientById($data['appointment']->patient);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
         echo json_encode($data);
@@ -2126,6 +2400,22 @@ class Appointment extends MX_Controller {
         
         $data['services'] = $this->appointment_model->getServicesByServiceCategoryGroupByDoctorHospital($serviceCategoryGroup, $doctorHospital);
         // $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDateByLocation($date, $doctor, $location);
+        echo json_encode($data);
+    }
+
+    public function getServiceCategoryById() {
+        $data = array();
+        $service_category = $this->input->get('id');
+        $data['is_virtual'] = $this->appointment_model->getServiceCategoryById($service_category)->is_virtual;
+
+        echo json_encode($data);
+    }
+
+    public function getServicesByServiceId() {
+        $data = array();
+        $services = $this->input->get('id');
+        $data['services'] = $this->appointment_model->getServicesByServiceId($services);
+
         echo json_encode($data);
     }
 
