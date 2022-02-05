@@ -4,7 +4,7 @@
     <section class="wrapper site-min-height">
         <!-- page start-->
         <div class="col-md-8 row">
-            <section class="col-md-10 row">
+            <section class="panel col-md-10">
                 <header class="panel-heading">
                     <?php
                     if (!empty($settings->name)) {
