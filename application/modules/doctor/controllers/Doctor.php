@@ -499,7 +499,7 @@ class Doctor extends MX_Controller {
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['prescriptions'] = $this->prescription_model->getPrescriptionByDoctorId($id);
         $data['holidays'] = $this->schedule_model->getHolidaysByDoctor($id);
-        $data['schedules'] = $this->schedule_model->getScheduleByDoctor($id);
+        $data['schedules'] = $this->schedule_model->getScheduleByDoctor($id, $location);
 
 
 
