@@ -273,9 +273,9 @@
                                                                 <input type="file" name="img_url" id="image" class="dropify"/>
                                                             </div>
 
-                                                            <div class="col-sm-12 col-md-12">
+                                                            <!-- <div class="col-sm-12 col-md-12">
                                                                 <input type="checkbox" name="sms" value="sms"> <?php echo lang('send_sms') ?>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-sm-12 col-md-12">

@@ -24,6 +24,7 @@ class Patient extends MX_Controller {
         $this->load->model('department/department_model');
         $this->load->module('paypal');
         $this->load->model('location/location_model');
+        $this->load->model('branch/branch_model');
         if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser'))) {
             redirect('home/permission');
         }
@@ -1313,6 +1314,8 @@ class Patient extends MX_Controller {
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['patient'] = $this->patient_model->getPatientById($id);
         $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
+        $data['appointments_location'] = $this->appointment_model->getAppointmentByPatientForLocation($data['patient']->id);
+        // $data['service_category_group'] = $this->appointment_model->getServiceCategoryById($data['appointments_location']->service_category_group_id);
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
