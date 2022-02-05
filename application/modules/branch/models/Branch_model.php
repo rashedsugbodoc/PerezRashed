@@ -23,6 +23,13 @@ class Branch_model extends CI_model {
         $this->db->insert('location', $data2);
     }
 
+    function getBranchById($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('id', $id);
+        $query = $this->db->get('location');
+        return $query->row();
+    }
+
     function getBranchInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')
