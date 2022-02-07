@@ -1278,7 +1278,7 @@ class Appointment extends MX_Controller {
     }
 
     function delete() {
-        if (!$this->ion_auth->in_group(array('admin'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
             redirect('home/permission');
         }
 
