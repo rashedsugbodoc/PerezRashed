@@ -242,7 +242,7 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12 col-sm-12">
                                                                         <div class="form-group">
-                                                                            <label class="form-label"><?php echo lang('blood_group'); ?> <span class="text-red">*</span></label>
+                                                                            <label class="form-label"><?php echo lang('blood_group'); ?></label>
                                                                             <select class="form-control select2-show-search" name="bloodgroup" data-placeholder="Choose one">
                                                                                 <?php foreach ($groups as $group) { ?>
                                                                                 <option value="<?php echo $group->group; ?>" <?php
@@ -268,7 +268,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="col-sm-6 col-md-6">
-                                                                <label class="form-label">Image Upload <span class="text-red">*</span></label>
+                                                                <label class="form-label">Image Upload</label>
                                                                 <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
                                                                 <input type="file" name="img_url" id="image" class="dropify"/>
                                                             </div>
@@ -471,7 +471,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
-                                                                        <label class="form-label">Blood Group <span class="text-red">*</span></label>
+                                                                        <label class="form-label">Blood Group</label>
                                                                         <select class="form-control select2-show-search" name="bloodgroup" data-placeholder="Choose one">
                                                                             <?php foreach ($groups as $group) { ?>
                                                                             <option value="<?php echo $group->group; ?>" <?php
@@ -496,7 +496,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
-                                                            <label class="form-label">Image Upload <span class="text-red">*</span></label>
+                                                            <label class="form-label">Image Upload</label>
                                                             <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
                                                             <input type="file" name="img_url" id="img" class="dropify"/>
                                                         </div>
