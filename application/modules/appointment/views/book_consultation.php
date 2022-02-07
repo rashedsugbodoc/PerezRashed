@@ -273,6 +273,13 @@
                                                                                     <h6 class="mt-4 text-dark-50">The Doctor has been notified of your booking request.</h6>
                                                                                 </div>
                                                                             </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12 col-sm-12">
+                                                                                    <div class="form-group sessionId">
+                                                                                        
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                         <!-- <div class="col-xl-5 col-md-12 col-lg-6">
                                                                             <img class="mx-auto text-center w-90" alt="img" src="<?php echo base_url(''); ?>/public/assets/images/photos/award.png">
@@ -420,7 +427,7 @@
         // console.log(stepIndex);
         $(document).ready(function () {
             $('.finish').attr('disabled', true);
-            sessionStorage.removeItem('appointment_id');
+            
 
             $('.finish').click(function () {
                 var base_url='<?php echo base_url(); ?>';
@@ -454,10 +461,12 @@
                 $('#sub_service').find('option').remove();
                 $('#branch_select').find('option').remove();
                 $('#aslots').find('option').remove();
-                $('#date').value('');
-                $('#remarks').value('');
+                $('#date').val('');
+                $('#remarks').val('');
 
                 <?php unset($_SESSION['appointment_id']); ?>
+                
+                
             }
 
             $.ajax({
@@ -537,7 +546,10 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
-                        document.getElementById('summary_c_price').innerHTML = currency + ' ' + response.services.c_price;
+                        if (response.services.c_price != null) {
+                            document.getElementById('summary_c_price').innerHTML = currency + ' ' + response.services.c_price;
+                        }
+
                         document.getElementById('summary_address').innerHTML = street + ', ' + barangay + ', ' + city + ', ' + state + ', ' + country + ', ' + postal;
                     }
                 })

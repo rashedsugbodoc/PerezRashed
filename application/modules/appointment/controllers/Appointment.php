@@ -420,7 +420,7 @@ class Appointment extends MX_Controller {
 
         $data['settings'] = $this->settings_model->getSettings();
 
-        $id = $this->input->post('id');
+        // $id = $this->input->post('id');
         $id = $this->session->userdata('appointment_id');
         $patient = $this->input->post('patient');
         $doctor = $this->input->post('doctor');
