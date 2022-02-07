@@ -35,7 +35,7 @@
                                                     <div class="row mb-3">
                                                         <div class="col-md-12">
                                                             <label class="h3 pull-left"><?php echo lang('todays_appointments'); ?></label>
-                                                            <a class="btn btn-primary pull-right" data-target="#addAppointmentModal" data-toggle="modal" href="#addAppointmentModal"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
+                                                            <a class="btn btn-primary pull-right" data-target="#myModal" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
                                                         </div>
                                                     </div>
                                                     <div class="mb-0">
@@ -63,7 +63,7 @@
                                                                                 <td><?php echo $todays_appointment->status; ?></td>
                                                                                 <td>
                                                                                     <div class="btn-group mb-0">
-                                                                                        <a class="btn btn-info pull-right" data-target="#EditAppointment" data-toggle="modal" href=""><i class="fe fe-edit"></i></a>
+                                                                                        <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fe fe-edit"></i></button>
                                                                                     </div>
                                                                                     <div class="btn-group mb-0">
                                                                                         <a class="btn btn-danger" data-toggle="modal" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $todays_appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
@@ -467,19 +467,19 @@
                         <!--End Schedule Modal-->
 
                         <!--Add Appointment Modal-->
-                        <div class="modal fade" id="addAppointmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                             <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content modal-content-demo">
                                     <div class="modal-header">
-                                        <h6 class="modal-title"><?php echo lang('add_appointment'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                        <h6 class="modal-title">  <?php echo lang('add_appointment'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form role="form" action="appointment/addNew" class="clearfix" method="post" enctype="multipart/form-data">    
+                                    <form role="form" action="appointment/addNew" method="post" class="clearfix" enctype="multipart/form-data" onsubmit="submit.disabled = true; return true;">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('patient'); ?><span class="text-red"> *</span></label>
-                                                        <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" value=''>
+                                                        <label class="form-label"> <?php echo lang('patient'); ?><span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one">
                                                         </select>
                                                     </div>
                                                 </div>
@@ -488,19 +488,19 @@
                                                 <div class="row">
                                                     <div class="col-md-4 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
+                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
                                                             <input type="text" name="p_name" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
+                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
                                                             <input type="email" name="p_email" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
+                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
                                                             <form>
                                                                 <input id="phone" name="p_phone" value="+63" type="tel">
                                                              </form>
@@ -510,12 +510,12 @@
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
+                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
                                                             <input type="text" name="p_age" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="form-label"><?php echo lang('patient'); ?> <?php echo lang('gender'); ?></label>
+                                                        <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('gender'); ?></label>
                                                         <select class="form-control select2-show-search" name="p_gender" data-placeholder="Choose one">
                                                             <option value="Male" <?php
                                                             if (!empty($patient->sex)) {
@@ -545,10 +545,40 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('doctor'); ?><span class="text-red"> *</span></label>
+                                                        <label class="form-label"><?php echo lang('doctor'); ?><span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search" name="doctor" id="adoctors" data-placeholder="Choose one">
-                                                            <option value=""><?php echo lang('select'); ?> <?php echo lang('doctor'); ?></option>
-                                                             <option value="<?php echo $doctor->id; ?>"><?php echo $doctor->name; ?> </option>
+                                                            <option value="">Select .....</option>
+                                                            <option value="<?php echo $doctor->id; ?>"><?php echo $doctor->name; ?> </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('service_type'); ?></label>
+                                                        <select class="form-control select2-show-search service_cat" name="service_category_group" id="service_select" data-placeholder="Choose one (with searchbox)"  required="">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('service'); ?></label>
+                                                        <select class="form-control select2-show-search sub_service" id="sub_service" name="service" data-placeholder="Choose one (with searchbox)"  required="">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group branch_select">
+                                                        <label class="form-label"> <?php echo lang('location'); ?></label>
+                                                        <select class="form-control select2-show-search branch" name="branch" id="branch_select" data-placeholder="Choose one (with searchbox)">
+                                                            <option selected value="">Choose One</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -556,15 +586,15 @@
                                             <div class="row">
                                                 <div class="col-sm-6 col-md-6">
                                                 <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('date'); ?><span class="text-red"> *</span></label>
-                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" name="date" type="text" readonly>
+                                                    <label class="form-label"> <?php echo lang('date'); ?> <span class="text-red">*</span></label>
+                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" name="date" readonly>
                                                 </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('available_slots'); ?><span class="text-red"> *</span></label>
-                                                        <select class="form-control select2-show-search" name="time_slot" id="aslots" data-placeholder="Choose one">
-
+                                                        <label class="form-label">Available Slot <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search aslot" name="time_slot" id="aslots" data-placeholder="Choose one">
+                                                            
                                                         </select>
                                                     </div>
                                                 </div>
@@ -572,34 +602,153 @@
                                             <div class="row">
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('appointment'); ?> <?php echo lang('status'); ?><span class="text-red"> *</span></label>
+                                                        <label class="form-label"><?php echo lang('appointment'); ?> <?php echo lang('status'); ?><span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search" name="status" data-placeholder="Choose one">
                                                             <option value="Pending Confirmation" <?php
-                                                                    ?> > <?php echo lang('pending_confirmation'); ?> </option>
+                                                                ?> > <?php echo lang('pending_confirmation'); ?> </option>
                                                             <option value="Confirmed" <?php
-                                                                    ?> > <?php echo lang('confirmed'); ?> </option>
+                                                                ?> > <?php echo lang('confirmed'); ?> </option>
                                                             <option value="Treated" <?php
-                                                                    ?> > <?php echo lang('treated'); ?> </option>
-                                                            <option value="Cancelled" <?php
-                                                                    ?> > <?php echo lang('cancelled'); ?> </option>
+                                                                ?> > <?php echo lang('treated'); ?> </option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('chief_complaint'); ?><span class="text-red"> *</span></label>
-                                                        <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" maxlength="500" rows="3"></textarea>
+                                                        <label class="form-label"> <?php echo lang('complaint'); ?> <span class="text-red">*</span></label>
+                                                        <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" rows="3" maxlength="500"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="redirect" value='doctor/details'>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <!-- <label class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
+                                                        <span class="custom-control-label">Send SMS</span>
+                                                    </label> -->
+                                                    
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title">  <?php echo lang('edit_appointment'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form role="form" id="editAppointmentForm" action="appointment/addNew" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="submit.disabled = true; return true;">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-sm-6 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('patient'); ?><span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search pos_select patient" name="patient" id="pos_select" data-placeholder="Choose One">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">  <?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search doctor" id="adoctors1" name="doctor" data-placeholder="Choose One">
+                                                            
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    
-                                                    
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('service_type'); ?></label>
+                                                        <select class="form-control select2-show-search service_cat1" name="service_category_group" id="service_select1" data-placeholder="Choose one (with searchbox)"  required="">
+                                                            
+                                                        </select>
+                                                    </div>
                                                 </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('service'); ?></label>
+                                                        <select class="form-control select2-show-search sub_service1" id="sub_service1" name="service" data-placeholder="Choose one (with searchbox)"  required="">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group branch_select1">
+                                                        <label class="form-label"> <?php echo lang('location'); ?></label>
+                                                        <select class="form-control select2-show-search branch1" name="branch" id="branch_select1" data-placeholder="Choose one (with searchbox)">
+                                                            <option selected value="">Choose One</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6 col-md-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"> <?php echo lang('date'); ?><span class="text-red">*</span></label>
+                                                    <input class="form-control fc-datepicker" name="date" id="date1" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Available Slot <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="time_slot" id="aslots1">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?><span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="status" data-placeholder="Choose one">
+                                                            <option value="Pending Confirmation" <?php
+                                                                ?> > <?php echo lang('pending_confirmation'); ?> </option>
+                                                            <option value="Confirmed" <?php
+                                                                ?> > <?php echo lang('confirmed'); ?> </option>
+                                                            <option value="Treated" <?php
+                                                                ?> > <?php echo lang('treated'); ?> </option>
+                                                            <option value="Cancelled" <?php
+                                                                ?> > <?php echo lang('cancelled'); ?> </option>
+                                                            <option value="Requested" <?php
+                                                                ?> > <?php echo lang('requested'); ?> </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('remarks'); ?> <span class="text-red">*</span></label>
+                                                        <textarea class="form-control mb-4" name="remarks" placeholder="Purpose" rows="3" maxlength="500"></textarea>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="id" id="appointment_id" value=''>
                                                 <input type="hidden" name="redirect" value='doctor/details'>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                    <label class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
+                                                        <span class="custom-control-label">Send SMS</span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <button class="btn btn-primary pull-right" name="EditAppointment" type="submit"><?php echo lang('submit'); ?></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -786,6 +935,7 @@
         <!-- Notifications js -->
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
     <!-- INTERNAL JS INDEX END -->
@@ -909,16 +1059,14 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $(".editAppointmentButton").click(function (e) {
-                e.preventDefault(e);
+            $(".table").on("click", ".editbutton", function () {
+                // e.preventDefault(e);
                 // Get the record's ID via attribute  
                 var iid = $(this).attr('data-id');
                 var id = $(this).attr('data-id');
 
                 $('#editAppointmentForm').trigger("reset");
-                $('#patientregistration').css('display', 'none');
-                // $('.pos_client').hide();
-                $('#editAppointmentModal').modal('show');
+                $('#myModal2').modal('show');
                 $.ajax({
                     url: 'appointment/editAppointmentByJason?id=' + iid,
                     method: 'GET',
@@ -927,24 +1075,40 @@
                     success: function (response) {
                         var de = response.appointment.date * 1000;
                         var d = new Date(de);
-                        var da = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+                        var da = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
                         // Populate the form fields with the data returned from server
                         $('#editAppointmentForm').find('[name="id"]').val(response.appointment.id).end()
-                        // $('#editAppointmentForm').find('[name="patient"]').val(response.appointment.patient).end()
+                        $('#editAppointmentForm').find('[name="patient"]').val(response.appointment.patient).end()
                         $('#editAppointmentForm').find('[name="doctor"]').val(response.appointment.doctor).end()
-                        $('#editAppointmentForm').find('[name="date"]').val(da).end()
-                        $('#editAppointmentForm').find('[name="status"]').val(response.appointment.status).end()
+                        
                         $('#editAppointmentForm').find('[name="remarks"]').val(response.appointment.remarks).end()
-                        var option = new Option(response.patient.name + '-' + response.patient.id, response.patient.id, true, true);
-                        $('#editAppointmentForm').find('[name="patient"]').append(option).trigger('change');
-                        $('.js-example-basic-single.doctor').val(response.appointment.doctor).trigger('change');
-                        //  $('.js-example-basic-single.patient').val(response.appointment.patient).trigger('change');
 
+                        $('#editAppointmentForm').find('[name="status"]').val(response.appointment.status).change();
+                        // $('#editAppointmentForm').find('[name="time_slot"]').val(response.appointment.time_slot).change();
+                        
+                        //$('.js-example-basic-single.doctor').val(response.appointment.doctor).trigger('change');
+                        // $('.js-example-basic-single.patient').val(response.appointment.patient).trigger('change');
+                        var option = new Option(response.patient.name + ' (ID: ' + response.patient.id + ')', response.patient.id, true, true);
+                        $('#editAppointmentForm').find('[name="patient"]').append(option).trigger('change');
+                        var option1 = new Option(response.doctor.name + ' (ID: ' + response.doctor.id + ')', response.doctor.id, true, true);
+                        $('#editAppointmentForm').find('[name="doctor"]').append(option1).trigger('change');
+                        var option2 = new Option(response.service_category.display_name , response.service_category.id, true, true);
+                        $('#editAppointmentForm').find('[name="service_category_group"]').append(option2).trigger('change');
+                        var option3 = new Option(response.services.description , response.services.id, true, true);
+                        $('#editAppointmentForm').find('[name="service"]').append(option3).trigger('change');
+                        if (response.branch != null) {
+                            var option4 = new Option(response.branch.display_name , response.branch.id, true, true);
+                            $('#editAppointmentForm').find('[name="branch"]').append(option4).trigger('change');
+                        }
+                        $('#editAppointmentForm').find('[name="date"]').val(da).end()
+
+                        var service = response.appointment.service_id;
 
                         var date = $('#date1').val();
                         var doctorr = $('#adoctors1').val();
                         var appointment_id = $('#appointment_id').val();
                         // $('#default').trigger("reset");
+
                         $.ajax({
                             url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id,
                             method: 'GET',
@@ -952,6 +1116,7 @@
                             dataType: 'json',
                             success: function (response) {
                                 $('#aslots1').find('option').remove();
+
                                 var slots = response.aslots;
                                 $.each(slots, function (key, value) {
                                     $('#aslots1').append($('<option>').text(value).val(value)).end();
@@ -964,53 +1129,132 @@
                                 if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
                                     $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
                                 }
-                                // Populate the form fields with the data returned from server
-                                //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+                                
                             }
                         });
+                        
                     }
                 });
+                
             });
         });
     </script>
 
+<!-- jquery for service type, service, location dependencies start-->
+
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#adoctors").change(function () {
-                // Get the record's ID via attribute  
-                var iid = $('#date').val();
-                var doctorr = $('#adoctors').val();
+            $("#service_select").select2({
+                placeholder: '<?php echo lang('select_service_type'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'finance/getServiceCategoryGroupByEntityType',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#branch_select").select2({
+                placeholder: '<?php echo lang('select_branch'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'appointment/getBranchInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#service_select").change(function () {
+                var doctor = $("#adoctors").val();
+                var service_type = $("#service_select").val();
+
+                // console.log(is_virtual);
+                $('#sub_service').find('option').remove();
                 $('#aslots').find('option').remove();
-                // $('#default').trigger("reset");
+                $('#date').val('');
+                $('#branch_select').find('option').remove();
                 $.ajax({
-                    url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr,
+                    url: 'appointment/getServicesByServiceCategoryGroupByDoctorHospital?servicecategorygroup=' + service_type + '&doctor=' + doctor,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
                     success: function (response) {
-                        var slots = response.aslots;
-                        $.each(slots, function (key, value) {
-                            $('#aslots').append($('<option>').text(value).val(value)).end();
+                        // console.log(response.services);
+                        $.each(response.services, function (key, value) {
+                            $('#sub_service').append($('<option>').text(value.description).val(value.id)).end();
                         });
-                        //   $("#default-step-1 .button-next").trigger("click");
-                        if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
-                            $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
-                        }
-                        // Populate the form fields with the data returned from server
-                        //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+
                     }
                 });
-            });
 
+                var branch = $("branch_select").val;
+
+                $.ajax({
+                    url: 'appointment/getServiceCategoryById?id=' + service_type,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var is_virtual = response.is_virtual;
+                        
+                        if (is_virtual) {
+                            $(".branch_select").prop('hidden', true);
+                            console.log(branch);
+                        } else {
+                            $(".branch_select").attr('hidden', false);
+                            console.log('Not hidden');
+                        }
+                    }
+                });
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#branch_select").change(function () {
+                $('#aslots').find('option').remove();
+                $('#date').val('');
+            });
         });
 
         $(document).ready(function () {
             var iid = $('#date').val();
             var doctorr = $('#adoctors').val();
+            var branch = $('#branch_select').val();
             $('#aslots').find('option').remove();
             // $('#default').trigger("reset");
             $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr,
+                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
@@ -1027,8 +1271,10 @@
                     //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
             });
-
         });
+
+
+
 
         $(document).ready(function () {
             $('#date').datepicker({
@@ -1044,10 +1290,11 @@
             // Get the record's ID via attribute  
             var iid = $('#date').val();
             var doctorr = $('#adoctors').val();
+            var branch = $('#branch_select').val();
             $('#aslots').find('option').remove();
             // $('#default').trigger("reset");
             $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr,
+                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
@@ -1066,47 +1313,129 @@
                     //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
             });
+
         }
+
     </script>
+
+
+<!-- jquery for service type, service, location dependencies end-->
+
+<!-- jquery for edit service type, service, location dependencies start-->
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $("#adoctors1").change(function () {
-                // Get the record's ID via attribute 
-                var id = $('#appointment_id').val();
-                var date = $('#date1').val();
-                var doctorr = $('#adoctors1').val();
-                $('#aslots1').find('option').remove();
-                // $('#default').trigger("reset");
-                $.ajax({
-                    url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + id,
-                    method: 'GET',
-                    data: '',
+            $("#service_select1").select2({
+                placeholder: '<?php echo lang('select_service_type'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'finance/getServiceCategoryGroupByEntityType',
+                    type: "post",
                     dataType: 'json',
-                    success: function (response) {
-                        var slots = response.aslots;
-                        $.each(slots, function (key, value) {
-                            $('#aslots1').append($('<option>').text(value).val(value)).end();
-                        });
-                        //   $("#default-step-1 .button-next").trigger("click");
-                        if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
-                            $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
-                        }
-                        // Populate the form fields with the data returned from server
-                        //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
-                    }
-                });
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
             });
         });
 
         $(document).ready(function () {
-            var id = $('#appointment_id').val();
-            var date = $('#date1').val();
+            $("#branch_select1").select2({
+                placeholder: '<?php echo lang('select_branch'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'appointment/getBranchInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#service_select1").change(function () {
+                var doctor = $("#adoctors1").val();
+                var service_type = $("#service_select1").val();
+
+                // console.log(is_virtual);
+                $('#sub_service1').find('option').remove();
+                $('#aslots1').find('option').remove();
+                $('#date1').val('');
+                $('#branch_select1').find('option').remove();
+                $.ajax({
+                    url: 'appointment/getServicesByServiceCategoryGroupByDoctorHospital?servicecategorygroup=' + service_type + '&doctor=' + doctor,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        // console.log(response.services);
+                        $.each(response.services, function (key, value) {
+                            $('#sub_service1').append($('<option>').text(value.description).val(value.id)).end();
+                        });
+
+                    }
+                });
+
+                var branch = $("#branch_select1").val;
+
+                $.ajax({
+                    url: 'appointment/getServiceCategoryById?id=' + service_type,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var is_virtual = response.is_virtual;
+                        
+                        if (is_virtual) {
+                            $(".branch_select1").prop('hidden', true);
+                            console.log(branch);
+                        } else {
+                            $(".branch_select1").attr('hidden', false);
+                            console.log('Not hidden');
+                        }
+                    }
+                });
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#branch_select1").change(function () {
+                $('#aslots1').find('option').remove();
+                $('#date1').val('');
+            });
+        });
+
+        $(document).ready(function () {
+            var iid = $('#date1').val();
             var doctorr = $('#adoctors1').val();
+            var branch = $('#branch_select1').val();
             $('#aslots1').find('option').remove();
             // $('#default').trigger("reset");
             $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + id,
+                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
@@ -1123,7 +1452,6 @@
                     //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                 }
             });
-
         });
 
 
@@ -1141,13 +1469,13 @@
 
         function dateChanged1() {
             // Get the record's ID via attribute  
-            var id = $('#appointment_id').val();
             var iid = $('#date1').val();
             var doctorr = $('#adoctors1').val();
+            var branch = $('#branch_select1').val();
             $('#aslots1').find('option').remove();
             // $('#default').trigger("reset");
             $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + iid + '&doctor=' + doctorr + '&appointment_id=' + id,
+                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
@@ -1168,8 +1496,10 @@
             });
 
         }
+
     </script>
 
+<!-- jquery for edit service type, service, location dependencies end-->
 
 
     <script>
@@ -1412,6 +1742,42 @@
                 }
 
             });
+
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var error = "<?php echo $_SESSION['error'] ?>";
+            var success = "<?php echo $_SESSION['success'] ?>";
+            var notice = "<?php echo $_SESSION['notice'] ?>";
+            var warning = "<?php echo $_SESSION['warning'] ?>";
+
+            if (success) {
+                return $.growl.success({
+                    message: success
+                });
+            }
+            if (error) {
+                return $.growl.error({
+                    message: error
+                });
+            }
+            if (warning) {
+                return $.growl.warning({
+                    message: warning
+                });
+            }
+            if (notice) {
+                return $.growl.notice({
+                    message: notice
+                });
+            }
+
+            var error = "<?php unset($_SESSION['error']); ?>";
+            var success = "<?php unset($_SESSION['success']); ?>";
+            var warning = "<?php unset($_SESSION['warning']); ?>";
+            var notice = "<?php unset($_SESSION['notice']); ?>";
 
         });
     </script>
