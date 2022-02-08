@@ -1308,19 +1308,19 @@ class Patient extends MX_Controller {
         $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         // Validating Password Field
-        $this->form_validation->set_rules('description', 'Description', 'trim|required|max_length[10000]|xss_clean');
+        $this->form_validation->set_rules('description', 'Case', 'trim|required|max_length[10000]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 $this->session->set_flashdata('error', lang('validation_error'));
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('case_list');
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('case_listv2');
+                // $this->load->view('home/footer'); // just the header file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('case_list');
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('case_listv2');
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
 
