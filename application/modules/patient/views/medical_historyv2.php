@@ -357,7 +357,7 @@
                                                     <div class="card-header">
                                                         <h3 class="card-title"><?php echo lang('vital_signs') ?></h3>
                                                         <div class="card-options">
-                                                            <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
+                                                            <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -1107,7 +1107,7 @@
                                                 <div class="row pt-5">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <button class="btn btn-primary pull-right" name="submit"><?php echo lang('submit'); ?></button>
+                                                            <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1839,6 +1839,14 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
+        $(function() {
+            $("body").delegate(".fc-datepicker", "#addVitals", function() {
+                $(this).datepicker();
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
         function myFunction(){
             var quill = document.getElementById('quillEditor').children[0].innerHTML;
             // var cleanText = quill.replace(/<\/?[^>]+(>|$)/g, "");
@@ -2187,8 +2195,20 @@
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
                     'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                    },
                     {
                         extend: 'pdfHtml5',
                         exportOptions: {
@@ -2237,8 +2257,20 @@
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
                     'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('appointments'); ?>'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3, 4],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('appointments'); ?>'
+                    },
                     {
                         extend: 'pdfHtml5',
                         exportOptions: {
@@ -2277,8 +2309,20 @@
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
                     'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('case_history'); ?>'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('case_history'); ?>'
+                    },
                     {
                         extend: 'pdfHtml5',
                         exportOptions: {
@@ -2316,8 +2360,20 @@
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
                     'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('prescriptions'); ?>'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('prescriptions'); ?>'
+                    },
                     {
                         extend: 'pdfHtml5',
                         exportOptions: {
@@ -2355,8 +2411,20 @@
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
                     'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('lab_reports'); ?>'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('lab_reports'); ?>'
+                    },
                     {
                         extend: 'pdfHtml5',
                         exportOptions: {
@@ -2394,8 +2462,20 @@
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
                     'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
+                    },
                     {
                         extend: 'pdfHtml5',
                         exportOptions: {
