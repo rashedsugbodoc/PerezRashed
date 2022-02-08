@@ -207,11 +207,11 @@ class Patient extends MX_Controller {
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Address Field   
-        // $this->form_validation->set_rules('country', 'Country', 'trim|required|max_length[100]|xss_clean');
-        // // Validating Address Field   
-        // $this->form_validation->set_rules('state', 'State', 'trim|required|max_length[100]|xss_clean');
-        // // Validating Address Field   
-        // $this->form_validation->set_rules('city', 'City', 'trim|required|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('country', 'Country', 'trim|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('state', 'State', 'trim|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('city', 'City', 'trim|max_length[100]|xss_clean');
         // Validating Postal Field   
         $this->form_validation->set_rules('postal', 'Postal', 'trim|alpha_numeric|max_length[500]|xss_clean');
         // Validating Phone Field           
@@ -269,9 +269,10 @@ class Patient extends MX_Controller {
             }
             $config = array(
                 'file_name' => $new_file_name,
+                'encrypt_name' => True,
                 'upload_path' => "./uploads/",
                 'allowed_types' => "jpg|png|jpeg",
-                'overwrite' => True,
+                'overwrite' => False,
                 'max_size' => "2000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "10000",
                 'max_width' => "10000"
@@ -392,64 +393,82 @@ class Patient extends MX_Controller {
                         redirect('patient');
 
                     } else {
+                        //additional validation for uploading file in add modal
+                        if ($_FILES['img_url']['size'] > $config['max_size']) {
+                            $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                            $this->session->set_flashdata('fileError', $fileError);
+                            $this->session->set_flashdata('error', lang('validation_error'));
+                            $data = array();
+                            $data['setval'] = 'setval';
+                            $data['patient'] = $this->patient_model->getPatientById($id);
+                            $data['doctors'] = $this->doctor_model->getDoctor();
+                            $data['groups'] = $this->donor_model->getBloodBank();
+                            $data['countries'] = $this->location_model->getCountry();
+                            $data['states'] = $this->location_model->getState();
+                            $data['cities'] = $this->location_model->getCity();
+                            $data['barangays'] = $this->location_model->getBarangay();
+                            $this->load->view('home/dashboardv2'); // just the header file
+                            $this->load->view('add_newv2', $data);
+                            // $this->load->view('home/footer'); // just the footer file
+                        } else {
+                            $dfg = 5;
+                            $this->ion_auth->register($username, $password, $email, $dfg);
+                            $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
+                            $this->patient_model->insertPatient($data);
+                            $patient_user_id = $this->db->get_where('patient', array('email' => $email))->row()->id;
+                            $id_info = array('ion_user_id' => $ion_user_id);
+                            $this->patient_model->updatePatient($patient_user_id, $id_info);
+                            $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+                            //sms
+                            $set['settings'] = $this->settings_model->getSettings();
+                            $autosms = $this->sms_model->getAutoSmsByType('patient');
+                            $message = $autosms->message;
+                            $to = $phone;
+                            $name1 = explode(' ', $name);
+                            if (!isset($name1[1])) {
+                                $name1[1] = null;
+                            }
+                            $data1 = array(
+                                'firstname' => $name1[0],
+                                'lastname' => $name1[1],
+                                'name' => $name,
+                                'email' => $email,
+                                'password' => $password,
+                                'doctor' => $doctor_name,
+                                'company' => $set['settings']->system_vendor,
+                                'hospital_name' => $set['settings']->title,
+                                'hospital_contact' => $set['settings']->phone
+                            );
+                            //   if (!empty($sms)) {
+                            // $this->sms->sendSmsDuringPatientRegistration($patient_user_id);
+                            if ($autosms->status == 'Active') {
+                                $messageprint = $this->parser->parse_string($message, $data1);
+                                $data2[] = array($to => $messageprint);
+                                $this->sms->sendSms($to, $message, $data2);
+                            }
+                            //end
+                            //  }
+                            //email
 
-                        $dfg = 5;
-                        $this->ion_auth->register($username, $password, $email, $dfg);
-                        $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
-                        $this->patient_model->insertPatient($data);
-                        $patient_user_id = $this->db->get_where('patient', array('email' => $email))->row()->id;
-                        $id_info = array('ion_user_id' => $ion_user_id);
-                        $this->patient_model->updatePatient($patient_user_id, $id_info);
-                        $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                        //sms
-                        $set['settings'] = $this->settings_model->getSettings();
-                        $autosms = $this->sms_model->getAutoSmsByType('patient');
-                        $message = $autosms->message;
-                        $to = $phone;
-                        $name1 = explode(' ', $name);
-                        if (!isset($name1[1])) {
-                            $name1[1] = null;
+                            $autoemail = $this->email_model->getAutoEmailByType('patient');
+                            if ($autoemail->status == 'Active') {
+                                $emailSettings = $this->email_model->getEmailSettings();
+                                $message1 = $autoemail->message;
+                                $messageprint1 = $this->parser->parse_string($message1, $data1);
+                                $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                                $this->email->to($email);
+                                $this->email->subject(lang('welcome_to').$set['settings']->title);
+                                $this->email->message($messageprint1);
+                                $this->email->send();
+                            }
+
+                            //end
+
+
+
+                            $this->session->set_flashdata('success', lang('record_added'));
+                            redirect('patient');
                         }
-                        $data1 = array(
-                            'firstname' => $name1[0],
-                            'lastname' => $name1[1],
-                            'name' => $name,
-                            'email' => $email,
-                            'password' => $password,
-                            'doctor' => $doctor_name,
-                            'company' => $set['settings']->system_vendor,
-                            'hospital_name' => $set['settings']->title,
-                            'hospital_contact' => $set['settings']->phone
-                        );
-                        //   if (!empty($sms)) {
-                        // $this->sms->sendSmsDuringPatientRegistration($patient_user_id);
-                        if ($autosms->status == 'Active') {
-                            $messageprint = $this->parser->parse_string($message, $data1);
-                            $data2[] = array($to => $messageprint);
-                            $this->sms->sendSms($to, $message, $data2);
-                        }
-                        //end
-                        //  }
-                        //email
-
-                        $autoemail = $this->email_model->getAutoEmailByType('patient');
-                        if ($autoemail->status == 'Active') {
-                            $emailSettings = $this->email_model->getEmailSettings();
-                            $message1 = $autoemail->message;
-                            $messageprint1 = $this->parser->parse_string($message1, $data1);
-                            $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
-                            $this->email->to($email);
-                            $this->email->subject(lang('welcome_to').$set['settings']->title);
-                            $this->email->message($messageprint1);
-                            $this->email->send();
-                        }
-
-                        //end
-
-
-
-                        $this->session->set_flashdata('success', lang('record_added'));
-                        redirect('patient');
                     }
                     
                 }
@@ -485,21 +504,34 @@ class Patient extends MX_Controller {
                             $this->session->set_flashdata('success', lang('record_updated'));
                             redirect('patient');
                         } else {
-                            $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
-                            $this->session->set_flashdata('fileError', $fileError);
-                            $this->session->set_flashdata('error', lang('validation_error'));
-                            $data = array();
-                            $data['setval'] = 'setval';
-                            $data['patient'] = $this->patient_model->getPatientById($id);
-                            $data['doctors'] = $this->doctor_model->getDoctor();
-                            $data['groups'] = $this->donor_model->getBloodBank();
-                            $data['countries'] = $this->location_model->getCountry();
-                            $data['states'] = $this->location_model->getState();
-                            $data['cities'] = $this->location_model->getCity();
-                            $data['barangays'] = $this->location_model->getBarangay();
-                            $this->load->view('home/dashboardv2'); // just the header file
-                            $this->load->view('add_newv2', $data);
-                            // $this->load->view('home/footer'); // just the footer file
+                            //additional validation for uploading file in update modal if email not exist
+                            if ($_FILES['img_url']['size'] > $config['max_size']) {
+                                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                                $this->session->set_flashdata('fileError', $fileError);
+                                $this->session->set_flashdata('error', lang('validation_error'));
+                                $data = array();
+                                $data['setval'] = 'setval';
+                                $data['patient'] = $this->patient_model->getPatientById($id);
+                                $data['doctors'] = $this->doctor_model->getDoctor();
+                                $data['groups'] = $this->donor_model->getBloodBank();
+                                $data['countries'] = $this->location_model->getCountry();
+                                $data['states'] = $this->location_model->getState();
+                                $data['cities'] = $this->location_model->getCity();
+                                $data['barangays'] = $this->location_model->getBarangay();
+                                $this->load->view('home/dashboardv2'); // just the header file
+                                $this->load->view('add_newv2', $data);
+                                // $this->load->view('home/footer'); // just the footer file
+                            } else {
+                                $ion_user_id = $this->db->get_where('patient', array('id' => $id))->row()->ion_user_id;
+                                if (empty($password)) {
+                                    $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                                } else {
+                                    $password = $this->ion_auth_model->hash_password($password);
+                                }
+                                $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
+                                $this->patient_model->updatePatient($id, $data);
+                                $this->session->set_flashdata('success', lang('record_updated'));
+                            }
                         }
 
                     }
@@ -517,17 +549,35 @@ class Patient extends MX_Controller {
                         $this->session->set_flashdata('success', lang('record_updated'));
                         redirect('patient');
                     } else {
-                        
-                        $ion_user_id = $this->db->get_where('patient', array('id' => $id))->row()->ion_user_id;
-                        if (empty($password)) {
-                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        //additional validation for uploading file in update modal if email exist
+                        if ($_FILES['img_url']['size'] > $config['max_size']) {
+                            $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                            $this->session->set_flashdata('fileError', $fileError);
+                            $this->session->set_flashdata('error', lang('validation_error'));
+                            $data = array();
+                            $data['setval'] = 'setval';
+                            $data['patient'] = $this->patient_model->getPatientById($id);
+                            $data['doctors'] = $this->doctor_model->getDoctor();
+                            $data['groups'] = $this->donor_model->getBloodBank();
+                            $data['countries'] = $this->location_model->getCountry();
+                            $data['states'] = $this->location_model->getState();
+                            $data['cities'] = $this->location_model->getCity();
+                            $data['barangays'] = $this->location_model->getBarangay();
+                            $this->load->view('home/dashboardv2'); // just the header file
+                            $this->load->view('add_newv2', $data);
+                            // $this->load->view('home/footer'); // just the footer file
                         } else {
-                            $password = $this->ion_auth_model->hash_password($password);
+                            $ion_user_id = $this->db->get_where('patient', array('id' => $id))->row()->ion_user_id;
+                            if (empty($password)) {
+                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                            } else {
+                                $password = $this->ion_auth_model->hash_password($password);
+                            }
+                            $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
+                            $this->patient_model->updatePatient($id, $data);
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                            redirect('patient');
                         }
-                        $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
-                        $this->patient_model->updatePatient($id, $data);
-                        $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('patient');
                     }
                 }
             }
