@@ -332,7 +332,7 @@ class Prescription extends MX_Controller {
     }
 
     function delete() {
-        if (!$this->ion_auth->in_group(array('admin'))) {
+        if (!$this->ion_auth->in_group(array('Doctor'))) {
             redirect('home/permission');
         }
 
