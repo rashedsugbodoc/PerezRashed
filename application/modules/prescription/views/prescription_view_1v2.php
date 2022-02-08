@@ -368,7 +368,7 @@
 
                 var opt = {
                     margin: 0.2,
-                    filename: 'Prescription_ID_<?php echo $prescription->id; ?>.pdf',
+                    filename: '<?php echo $patient->name; ?> Prescription.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2 },
                     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
