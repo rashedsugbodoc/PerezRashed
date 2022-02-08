@@ -1794,18 +1794,38 @@ class Patient extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor = $this->doctor_model->getDoctorByIonUserId($this->session->userdata('user_id'))->id;
+        }
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['patients'] = $this->patient_model->getPatientBySearch($search);
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $data['patients'] = $this->patient_model->getPatientListBySearchByDoctorId($search, $doctor);
+                } else {
+                    $data['patients'] = $this->patient_model->getPatientBySearch($search);
+                }
             } else {
-                $data['patients'] = $this->patient_model->getPatient();
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $data['patients'] = $this->patient_model->getPatientListByDoctorId($doctor);
+                } else {
+                    $data['patients'] = $this->patient_model->getPatient();
+                }
             }
         } else {
             if (!empty($search)) {
-                $data['patients'] = $this->patient_model->getPatientByLimitBySearch($limit, $start, $search);
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $data['patients'] = $this->patient_model->getPatientByLimitBySearchByDoctorId($limit, $start, $search, $doctor);
+                } else {
+                    $data['patients'] = $this->patient_model->getPatientByLimitBySearch($limit, $start, $search);
+                }
             } else {
-                $data['patients'] = $this->patient_model->getPatientByLimit($limit, $start);
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $data['patients'] = $this->patient_model->getPatientByLimitByDoctorId($limit, $start, $doctor);
+                } else {
+                    $data['patients'] = $this->patient_model->getPatientByLimit($limit, $start);
+                }
+                
             }
         }
         //  $data['patients'] = $this->patient_model->getPatient();
@@ -1848,7 +1868,7 @@ class Patient extends MX_Controller {
                     $patient->phone,
                     $doctorNames,
                     $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
-                    $options1 . ' ' . $options6 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
+                    $options1 . ' ' . $options6 . ' ' . $options4 . ' ' . $options5,
                         //  $options2
                 );
             }

@@ -25,7 +25,7 @@ class Patient_model extends CI_model {
 
     function getPatientListByDoctorId($id) {
         $this->db->where("FIND_IN_SET($id,doctor) > 0");
-        $this->db->order_by('id','asc');
+        $this->db->order_by('id','desc');
         $query = $this->db->get('patient');
         return $query->result();
     }
@@ -57,6 +57,17 @@ class Patient_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientListBySearchByDoctorId($search, $id) {
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->select('*')
+                ->from('patient')
+                ->where("FIND_IN_SET($id,doctor) > 0")
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        ;
+        return $query->result();
+    }
+
     function getPatientBySearchCount($search) {
         $query = $this->db->select('id')
                 ->from('patient')
@@ -75,12 +86,31 @@ class Patient_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientByLimitByDoctorId($limit, $start, $id) {
+        $this->db->where("FIND_IN_SET($id,doctor) > 0");
+        $this->db->order_by('id','desc');
+        $query = $this->db->get('patient');
+        return $query->result();
+    }
+
     function getPatientByLimitBySearch($limit, $start, $search) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
                 ->from('patient')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        ;
+        return $query->result();
+    }
+
+    function getPatientByLimitBySearchByDoctorId($limit, $start, $search, $id) {
+        $this->db->order_by('id', 'desc');
+        $this->db->limit($limit, $start);
+        $query = $this->db->select('*')
+                ->from('patient')
+                ->where("FIND_IN_SET($id,doctor) > 0")
                 ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         ;
