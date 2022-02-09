@@ -178,17 +178,16 @@ class Patient extends MX_Controller {
         $emailById = $this->patient_model->getPatientById($id)->email;
 
 
-
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
-        // Validating Password Field
-        $this->form_validation->set_rules('fname', 'First Name', 'trim|min_length[2]|max_length[100]|xss_clean');
-        // Validating Password Field
-        $this->form_validation->set_rules('lname', 'Last Name', 'trim|min_length[2]|max_length[100]|xss_clean');
-        // Validating Password Field
-        $this->form_validation->set_rules('mname', 'Middle Name', 'trim|min_length[2]|max_length[100]|xss_clean');
-        // Validating Password Field
+        // Validating Fname Field
+        $this->form_validation->set_rules('f_name', 'First Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        // Validating Lname Field
+        $this->form_validation->set_rules('l_name', 'Last Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        // Validating Mname Field
+        $this->form_validation->set_rules('m_name', 'Middle Name', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Suffix Field
         $this->form_validation->set_rules('suffix', 'Suffix', 'trim|min_length[2]|max_length[100]|xss_clean');
         // Validating Password Field
         if (empty($id)) {
