@@ -33,7 +33,7 @@
                                             
                                             <div class="row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12">
-                                                    <div class="row">
+                                                    <!-- <div class="row">
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('name'); ?> <span class="text-red">*</span></label>
@@ -48,6 +48,76 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
+                                                                <input type="email" class="form-control" name="email" placeholder="Email" value="<?php
+                                                                if (!empty($setval)) {
+                                                                    echo set_value('email');
+                                                                }
+                                                                if (!empty($patient->email)) {
+                                                                    echo $patient->email;
+                                                                }
+                                                                ?>">
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100" value="<?php
+                                                                    if (!empty($setval)) {
+                                                                    echo set_value('f_name');
+                                                                    }
+                                                                    if (!empty($patient->firstname)) {
+                                                                        echo $patient->firstname;
+                                                                    }
+                                                                ?>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100" value="<?php
+                                                                    if (!empty($setval)) {
+                                                                    echo set_value('l_name');
+                                                                    }
+                                                                    if (!empty($patient->lastname)) {
+                                                                        echo $patient->lastname;
+                                                                    }
+                                                                ?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <div class="input-group">
+                                                                    <input type="text" class="form-control" name="m_name" value="<?php
+                                                                    if (!empty($setval)) {
+                                                                    echo set_value('m_name');
+                                                                    }
+                                                                    if (!empty($patient->middlename)) {
+                                                                        echo $patient->middlename;
+                                                                    }
+                                                                    ?>">
+                                                                    <div class="input-group-append br-tl-0 br-bl-0">
+                                                                        <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                                            <option selected disabled><?php echo lang('none'); ?></option>
+                                                                            <option value="jr"><?php echo lang('jr'); ?></option>
+                                                                            <option value="sr"><?php echo lang('sr'); ?></option>
+                                                                            <option value="i"><?php echo lang('i'); ?></option>
+                                                                            <option value="ii"><?php echo lang('ii'); ?></option>
+                                                                            <option value="iii"><?php echo lang('iii'); ?></option>
+                                                                            <option value="iv"><?php echo lang('iv'); ?></option>
+                                                                            <option value="v"><?php echo lang('v'); ?></option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
                                                                 <input type="email" class="form-control" name="email" placeholder="Email" value="<?php
