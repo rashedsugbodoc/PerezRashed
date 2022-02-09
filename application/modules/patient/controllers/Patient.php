@@ -816,6 +816,9 @@ class Patient extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
+        if (!$this->ion_auth->in_group(array('Patient'))) {
+            redirect('home/permission');
+        }
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             $patient_ion_id = $this->ion_auth->get_user_id();
