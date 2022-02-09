@@ -20,9 +20,9 @@ class Bed extends MX_Controller {
         }
         $data['beds'] = $this->bed_model->getBed();
         $data['categories'] = $this->bed_model->getBedCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('bed', $data);
-        $this->load->view('home/footer'); // just the header file  
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('bedv2', $data);
+        // $this->load->view('home/footer'); // just the header file  
     }
 
     public function addBedView() {
