@@ -867,7 +867,7 @@
                                                                                 if (!empty($patient_material->created_at)) {
                                                                                     $utcdate = date_create($document->created_at, timezone_open('UTC'));
                                                                                     date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
-                                                                                    echo date_format($utcdate, $settings->date_format . ' ' . $settings->date_format_long) . "\n";
+                                                                                    echo date_format($utcdate, $settings->date_format_long) . "\n";
                                                                                 } else {
                                                                                     echo '';
                                                                                 }
