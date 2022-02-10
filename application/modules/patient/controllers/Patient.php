@@ -60,9 +60,9 @@ class Patient extends MX_Controller {
             redirect('home/permission');
         }
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('calendar', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('calendarv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function getStateByCountryIdByJason() {
@@ -2179,6 +2179,7 @@ class Patient extends MX_Controller {
             $id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
         }
 
+        $settings = $this->settings_model->getSettings();
         $patient = $this->patient_model->getPatientById($id);
         $appointments = $this->appointment_model->getAppointmentByPatient($patient->id);
         $patients = $this->patient_model->getPatient();
@@ -2201,30 +2202,44 @@ class Patient extends MX_Controller {
                 $doctor_name = '';
             }
 
-            $timeline[$appointment->date + 1] = '<div class="panel-body profile-activity" >
-                <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('appointment') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $appointment->date) . '</h5>
-                                            <div class="activity terques">
-                                                <span>
-                                                    <i class="fa fa-stethoscope"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel col-md-12">
-                                                        <div class="panel-body">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $appointment->date) . '</h4>
-                                                            <p></p>
-                                                            <i class=" fa fa-user-md"></i>
-                                                                <h4>' . $doctor_name . '</h4>
-                                                                    <p></p>
-                                                                    <i class=" fa fa-clock"></i>
-                                                                <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
-                                                        </div>
+            $timeline[$appointment->date + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $appointment->date) . '</span></li>
+                                            <li>
+                                                <i class="fa fa-download bg-success"></i>
+                                                <div class="timelineleft-item">
+                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
+                                                    <h3 class="timelineleft-header"><span>' . lang('appointment') . '</span></h3>
+                                                    <div class="timelineleft-body">
+                                                        <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
+                                                    </div>
+                                                    <div class="timelineleft-footer">
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>';
+                                            </li>';
+
+            // $timeline[$appointment->date + 1] = '<div class="card-body profile-activity" >
+            //     <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('appointment') . '</span></h5>
+            //                                 <h5 class="pull-right">' . date('d-m-Y', $appointment->date) . '</h5>
+            //                                 <div class="activity terques">
+            //                                     <span>
+            //                                         <i class="fa fa-stethoscope"></i>
+            //                                     </span>
+            //                                     <div class="activity-desk">
+            //                                         <div class="card col-md-12">
+            //                                             <div class="card-body">
+            //                                                 <div class="arrow"></div>
+            //                                                 <i class=" fa fa-calendar"></i>
+            //                                                 <h4>' . date('d-m-Y', $appointment->date) . '</h4>
+            //                                                 <p></p>
+            //                                                 <i class=" fa fa-user-md"></i>
+            //                                                     <h4>' . $doctor_name . '</h4>
+            //                                                         <p></p>
+            //                                                         <i class=" fa fa-clock"></i>
+            //                                                     <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
+            //                                             </div>
+            //                                         </div>
+            //                                     </div>
+            //                                 </div>
+            //                             </div>';
         }
 
 
@@ -2235,28 +2250,40 @@ class Patient extends MX_Controller {
             } else {
                 $doctor_name = '';
             }
-            $timeline[strtotime($prescription->date) + 6] = '<div class="panel-body profile-activity" >
-                                           <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('prescription') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', strtotime($prescription->date)) . '</h5>
-                                            <div class="activity violet">
-                                                <span>
-                                                    <i class="fa fa-medkit"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel col-md-12">
-                                                        <div class="panel-body">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', strtotime($prescription->date)) . '</h4>
-                                                            <p></p>
-                                                            <i class=" fa fa-user-md"></i>
-                                                                <h4>' . $doctor_name . '</h4>
-                                                                    <a class="btn btn-primary btn-xs" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank">' . lang('view') . '</a>
+            $timeline[strtotime($prescription->date) + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $prescription->date) . '</span></li>
+                                                    <li><i class="fa fa-download bg-cyan"></i>
+                                                    <div class="timelineleft-item">
+                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
+                                                        <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
+                                                        <div class="timelineleft-body">
+                                                            <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($prescription->date)) . '</h4>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>';
+                                                        <div class="timelineleft-footer">
+                                                        </div>
+                                                    </div></li>';
+
+            // $timeline[strtotime($prescription->date) + 6] = '<div class="card-body profile-activity" >
+            //                                <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('prescription') . '</span></h5>
+            //                                 <h5 class="pull-right">' . date('d-m-Y', strtotime($prescription->date)) . '</h5>
+            //                                 <div class="activity violet">
+            //                                     <span>
+            //                                         <i class="fa fa-medkit"></i>
+            //                                     </span>
+            //                                     <div class="activity-desk">
+            //                                         <div class="card col-md-12">
+            //                                             <div class="card-body">
+            //                                                 <div class="arrow"></div>
+            //                                                 <i class=" fa fa-calendar"></i>
+            //                                                 <h4>' . date('d-m-Y', strtotime($prescription->date)) . '</h4>
+            //                                                 <p></p>
+            //                                                 <i class=" fa fa-user-md"></i>
+            //                                                     <h4>' . $doctor_name . '</h4>
+            //                                                         <a class="btn btn-primary btn-xs" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank">' . lang('view') . '</a>
+            //                                             </div>
+            //                                         </div>
+            //                                     </div>
+            //                                 </div>
+            //                             </div>';
         }
         foreach ($labs as $lab) {
 
@@ -2267,78 +2294,125 @@ class Patient extends MX_Controller {
                 $lab_doctor = '';
             }
 
-            $timeline[$lab->date + 3] = '<div class="panel-body profile-activity" >
-                                            <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('lab') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $lab->date) . '</h5>
-                                            <div class="activity pink">
-                                                <span>
-                                                    <i class="fa fa-flask"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel col-md-12">
-                                                        <div class="panel-body">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $lab->date) . '</h4>
-                                                            <p></p>
-                                                             <i class=" fa fa-user-md"></i>
-                                                                <h4>' . $lab_doctor . '</h4>
-                                                                    <a class="btn btn-xs btn-danger" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
-                                                        </div>
-                                                    </div> 
+            $timeline[$lab->date + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $lab->date) . '</span></li>
+                                        <li>
+                                            <i class="fa fa-envelope bg-primary"></i>
+                                            <div class="timelineleft-item">
+                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $lab_doctor . '</span>
+                                                <h3 class="timelineleft-header"><span>Lab</span></h3>
+                                                <div class="timelineleft-body">
+                                                    <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', $lab->date) . '</h4>
+                                                </div>
+                                                <div class="timelineleft-footer">
+                                                    <a class="btn btn-xs btn-info" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i> ' . lang('view') . '</a>
                                                 </div>
                                             </div>
-                                        </div>';
+                                        </li>';
+
+            // $timeline[$lab->date + 3] = '<div class="card-body profile-activity" >
+            //                                 <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('lab') . '</span></h5>
+            //                                 <h5 class="pull-right">' . date('d-m-Y', $lab->date) . '</h5>
+            //                                 <div class="activity pink">
+            //                                     <span>
+            //                                         <i class="fa fa-flask"></i>
+            //                                     </span>
+            //                                     <div class="activity-desk">
+            //                                         <div class="card col-md-12">
+            //                                             <div class="card-body">
+            //                                                 <div class="arrow"></div>
+            //                                                 <i class=" fa fa-calendar"></i>
+            //                                                 <h4>' . date('d-m-Y', $lab->date) . '</h4>
+            //                                                 <p></p>
+            //                                                  <i class=" fa fa-user-md"></i>
+            //                                                     <h4>' . $lab_doctor . '</h4>
+            //                                                         <a class="btn btn-xs btn-danger" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
+            //                                             </div>
+            //                                         </div> 
+            //                                     </div>
+            //                                 </div>
+            //                             </div>';
         }
 
         foreach ($medical_histories as $medical_history) {
-            $timeline[$medical_history->date + 4] = '<div class="panel-body profile-activity" >
-                                            <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('case_history') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $medical_history->date) . '</h5>
-                                            <div class="activity greenn">
-                                                <span>
-                                                    <i class="fa fa-file"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel col-md-12">
-                                                        <div class="panel-body">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $medical_history->date) . '</h4>
-                                                            <p></p>
-                                                             <i class=" fa fa-note"></i> 
+
+            $timeline[$medical_history->date + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $medical_history->date) . '</span></li>
+                                                    <li>
+                                                        <i class="fa fa-download bg-info"></i>
+                                                        <div class="timelineleft-item">
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', $medical_history->date) . '</span>
+                                                            <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
+                                                            <div class="timelineleft-body">
                                                                 <p>' . $medical_history->description . '</p>
+                                                            </div>
+                                                            <div class="timelineleft-footer">
+                                                            </div>
                                                         </div>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                        </div>';
+                                                    </li>';
+
+            // $timeline[$medical_history->date + 4] = '<div class="card-body profile-activity" >
+            //                                 <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('case_history') . '</span></h5>
+            //                                 <h5 class="pull-right">' . date('d-m-Y', $medical_history->date) . '</h5>
+            //                                 <div class="activity greenn">
+            //                                     <span>
+            //                                         <i class="fa fa-file"></i>
+            //                                     </span>
+            //                                     <div class="activity-desk">
+            //                                         <div class="card col-md-12">
+            //                                             <div class="card-body">
+            //                                                 <div class="arrow"></div>
+            //                                                 <i class=" fa fa-calendar"></i>
+            //                                                 <h4>' . date('d-m-Y', $medical_history->date) . '</h4>
+            //                                                 <p></p>
+            //                                                  <i class=" fa fa-note"></i> 
+            //                                                     <p>' . $medical_history->description . '</p>
+            //                                             </div>
+            //                                         </div> 
+            //                                     </div>
+            //                                 </div>
+            //                             </div>';
         }
 
         foreach ($patient_materials as $patient_material) {
-            $timeline[$patient_material->date + 5] = '<div class="panel-body profile-activity" >
-                                           <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('documents') . '</span></h5>
-                                            <h5 class="pull-right">' . date('d-m-Y', $patient_material->date) . '</h5>
-                                            <div class="activity purplee">
-                                                <span>
-                                                    <i class="fa fa-file"></i>
-                                                </span>
-                                                <div class="activity-desk">
-                                                    <div class="panel col-md-12">
-                                                        <div class="panel-body">
-                                                            <div class="arrow"></div>
-                                                            <i class=" fa fa-calendar"></i>
-                                                            <h4>' . date('d-m-Y', $patient_material->date) . ' </h4>
-                                                                <i class=" fa fa-book"></i>
-                                                                <h4>' . $patient_material->title . '</h4>
-                                                                <a class="btn btn-xs btn-purple" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
-                                                                <a class="btn btn-xs btn-purple" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . lang('download') . '</a>
+
+            $timeline[$patient_material->date + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $patient_material->date) . ' </span></li>
+                                                        <li>
+                                                            <i class="fa fa-download bg-secondary"></i>
+                                                            <div class="timelineleft-item">
+                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', $patient_material->date) . ' </span>
+                                                                <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
+                                                                <div class="timelineleft-body">
+                                                                    <h4>' . $patient_material->title . '</h4>
+                                                                </div>
+                                                                <div class="timelineleft-footer">
+                                                                    <a class="btn btn-xs btn-info" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
+                                                                    <a class="btn btn-xs btn-info" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
+                                                                </div>
+                                                            </div>
+                                                        </li>';
+
+            // $timeline[$patient_material->date + 5] = '<div class="card-body profile-activity" >
+            //                                <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('documents') . '</span></h5>
+            //                                 <h5 class="pull-right">' . date('d-m-Y', $patient_material->date) . '</h5>
+            //                                 <div class="activity purplee">
+            //                                     <span>
+            //                                         <i class="fa fa-file"></i>
+            //                                     </span>
+            //                                     <div class="activity-desk">
+            //                                         <div class="card col-md-12">
+            //                                             <div class="card-body">
+            //                                                 <div class="arrow"></div>
+            //                                                 <i class=" fa fa-calendar"></i>
+            //                                                 <h4>' . date('d-m-Y', $patient_material->date) . ' </h4>
+            //                                                     <i class=" fa fa-book"></i>
+            //                                                     <h4>' . $patient_material->title . '</h4>
+            //                                                     <a class="btn btn-xs btn-purple" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
+            //                                                     <a class="btn btn-xs btn-purple" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . lang('download') . '</a>
                                                                 
-                                                        </div>
-                                                    </div> 
-                                                </div>
-                                            </div>
-                                        </div>';
+            //                                             </div>
+            //                                         </div> 
+            //                                     </div>
+            //                                 </div>
+            //                             </div>';
         }
 
 
@@ -2361,6 +2435,8 @@ class Patient extends MX_Controller {
             foreach ($appointments as $appointment) {
 
                 $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
+                $facility = $this->hospital_model->getHospitalById($appointment->hospital_id)->name;
+                $branch = $this->branch_model->getBranchById($appointment->location_id)->display_name;
                 if (!empty($doctor_details)) {
                     $appointment_doctor = $doctor_details->name;
                 } else {
@@ -2371,15 +2447,18 @@ class Patient extends MX_Controller {
 
                 $patient_appointments = '<tr class = "">
 
-            <td>' . date("d-m-Y", $appointment->date) . '
+            <td>' . date("Y-m-d", $appointment->date) . '
             </td>
             <td>' . $appointment->time_slot . '</td>
             <td>'
                         . $appointment_doctor . '
             </td>
             <td>' . $appointment->status . '</td>
-            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '">' . lang('edit') . '</a>
-                <a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>
+            <td>'.
+            $facility .'<br>'.'( '. $branch .' )'
+            .'</td>
+            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>
             </td>
             </tr>';
 
@@ -2389,6 +2468,8 @@ class Patient extends MX_Controller {
             foreach ($appointments as $appointment) {
 
                 $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
+                $facility = $this->hospital_model->getHospitalById($appointment->hospital_id)->name;
+                $branch = $this->branch_model->getBranchById($appointment->location_id)->display_name;
                 if (!empty($doctor_details)) {
                     $appointment_doctor = $doctor_details->name;
                 } else {
@@ -2399,15 +2480,18 @@ class Patient extends MX_Controller {
 
                 $patient_appointments = '<tr class = "">
 
-            <td>' . date("d-m-Y", $appointment->date) . '
+            <td>' . date("Y-m-d", $appointment->date) . '
             </td>
             <td>' . $appointment->time_slot . '</td>
             <td>'
                         . $appointment_doctor . '
             </td>
             <td>' . $appointment->status . '</td>
-            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '">' . lang('edit') . '</a>
-                <a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>
+            <td>'.
+            $facility .'<br>'.'( '. $branch .' )'
+            .'</td>
+            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>
             </td>
             </tr>';
 
@@ -2428,12 +2512,14 @@ class Patient extends MX_Controller {
 
         if ($this->ion_auth->in_group(array('admin'))) {
             foreach ($medical_histories as $medical_history) {
+                $doctor_details = $this->doctor_model->getDoctorById($medical_history->doctor_id);
                 $patient_case = ' <tr class="">
-                                        <td>' . date("d-m-Y", $medical_history->date) . '</td>
+                                        <td>' . date("Y-m-d", $medical_history->date) . '</td>
+                                        <td>' . $doctor_details->name . '</td>
                                         <td>' . $medical_history->title . '</td>
                                         <td>' . $medical_history->description . '</td>
                                         <td>
-                                            <a class="btn btn-danger" title="' . lang('delete') . '" href="patient/deleteCaseHistory?id=' . $medical_history->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>
+                                            <a class="btn btn-danger" title="' . lang('delete') . '" href="patient/deleteCaseHistory?id=' . $medical_history->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>';
 
@@ -2441,8 +2527,10 @@ class Patient extends MX_Controller {
             }
         } else {
             foreach ($medical_histories as $medical_history) {
+                $doctor_details = $this->doctor_model->getDoctorById($medical_history->doctor_id);
                 $patient_case = ' <tr class="">
-                                        <td>' . date("d-m-Y", $medical_history->date) . '</td>
+                                        <td>' . date("Y-m-d", $medical_history->date) . '</td>
+                                        <td>' . $doctor_details->name . '</td>
                                         <td>' . $medical_history->title . '</td>
                                         <td>' . $medical_history->description . '</td>
                                     </tr>';
@@ -2482,7 +2570,7 @@ class Patient extends MX_Controller {
                 $medicinelist = '';
             }
 
-            $option1Prescription = '<a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' . lang('view') . '</a>';
+            $option1Prescription = '<a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i></a>';
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 $option2Prescription = '<a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id='. $prescription->id .'"><i class="fa fa-edit"></i>' . lang('edit') . '</a>';
             }
@@ -2490,7 +2578,7 @@ class Patient extends MX_Controller {
                 $option3Prescription = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
             $prescription_case = ' <tr class="">
-                                                    <td>' . date('d/m/Y', strtotime($prescription->date)) . '</td>
+                                                    <td>' . date('Y-m-d', strtotime($prescription->date)) . '</td>
                                                     <td>' . $prescription_doctor . '</td>
                                                     <td>' . $medicinelist . '</td>
                                                          <td>' . $option1Prescription . ' ' . $option2Prescription . ' ' . $option3Prescription . '</td>
@@ -2514,7 +2602,7 @@ class Patient extends MX_Controller {
             } else {
                 $lab_doctor = "";
             }
-            $option1Lab = '<a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-eye"></i>' .' '. lang('report') . '</a>';
+            $option1Lab = '<a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-eye"></i></a>';
             if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
                 $option2Lab = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="lab?id=' . $lab->id . '"><i class="fa fa-edit"> </i> ' . lang('') . '</a>';
             }
@@ -2523,7 +2611,7 @@ class Patient extends MX_Controller {
             }
             $lab_class = ' <tr class="">
                                                     <td>' . $lab->id . '</td>
-                                                    <td>' . date("d/m/Y", $lab->date) . '</td>
+                                                    <td>' . date("Y-m-d", $lab->date) . '</td>
                                                     <td>' . $lab_doctor . '</td>
                                                          <td>' . $option1Lab . '  ' . $option2Lab . '  ' . $option3Lab . '</td>
                                                 </tr>';
@@ -2542,16 +2630,16 @@ class Patient extends MX_Controller {
 
             
             if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) {
-                $option1Bed = '<a class="btn btn-info btn-xs editbutton" href="bed/editAllotment?id=' . $bed->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
-                $option2Bed = '<a class="btn btn-danger btn-xs btn_width delete_button" href="bed/deleteAllotment?id=' . $bed->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+                $option1Bed = '<a class="btn btn-info btn-xs editbutton" href="bed/editAllotment?id=' . $bed->id . '"><i class="fa fa-edit"> </i></a>';
+                $option2Bed = '<a class="btn btn-danger btn-xs btn_width delete_button" href="bed/deleteAllotment?id=' . $bed->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 
-            $bed_case = ' <tr class="">
-                                                    <td>' . $bed->bed_id . '</td>
-                                                    <td>' . $bed->a_time . '</td>
-                                                    <td>' . $bed->d_time . '</td>
-                                                    <td>' . $option1Bed . ' ' . $option2Bed . '</td>
-                                                </tr>';
+            $bed_case = '<tr class="">
+                            <td>' . $bed->bed_id . '</td>
+                            <td>' . $bed->a_time . '</td>
+                            <td>' . $bed->d_time . '</td>
+                            <td>' . $option1Bed . ' ' . $option2Bed . '</td>
+                        </tr>';
 
             $all_bed .= $bed_case;
         }
@@ -2568,28 +2656,94 @@ class Patient extends MX_Controller {
             if (!empty($patient_material->title)) {
                 $patient_documents = $patient_material->title;
             }
+            $ext = pathinfo($patient_material->url, PATHINFO_EXTENSION);
+            if ($ext === 'pdf'){
+                $image = '
+                        <div class="panel-body text-center">
+                            <a class="example-image-link" href="' . $patient_material->url . '" target="_blank">
+                                <img class="example-image" src="uploads/PDF_DefaultImage.png" alt="image-1" width="120" height="120"/>
+                            </a>
+                        </div>';
+            } else {
+                $image = '
+                        <div class="panel-body text-center">
+                            <a class="example-image-link" href="' . $patient_material->url . '" target="_blank">
+                                <img class="example-image" src="' . $patient_material->url . '" alt="image-1" width="120" height="120"/>
+                            </a>
+                        </div>';
+            }
+
+            $utcdate = date_create($document->created_at, timezone_open('UTC'));
+            date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
+
+            $documentInputFilter = '<script type="text/javascript">
+            
+                                        var uploadField = document.getElementById("document");
+
+                                        uploadField.onchange = function() {
+                                            if(this.files[0].size > 2e+6){
+                                               not2();
+                                               this.value = "";
+                                            }else{
+
+                                            }
+                                        };
+
+                                    </script>
+
+                                    <script type="text/javascript">
+                                        $(document).ready(function(){
+                                          $(".searchbox-input").on("keyup", function() {
+                                            var value = $(this).val().toLowerCase();
+                                            $(".items").filter(function() {
+                                              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                                            });
+                                          });
+                                        });
+                                    </script>';
 
             if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) {
-                $patient_material = '
-                <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
-                    <div class="post-info">
-                        <img src="' . $patient_material->url . '" height="100" width="100">
-                    </div>
-                    <div class="post-info">
-                        ' . $patient_documents . '
-                    </div>
-                    <p></p>
-                    <div class="post-info">
-                        <a class="btn btn-info btn-xs btn_width" href="' . $patient_material->url . '" download> ' . lang("download") . ' </a>
-                        <a class="btn btn-danger btn-xs btn_width" title="' . lang("delete") . '" href="patient/deletePatientMaterial?id=' . $patient_material->id . '"onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i></a>
-                    </div>
+                $patient_material = '<div class="col-lg-4 col-md-6 items">
+                                        <div class="card">
+                                            <div class="card-body p-0">
+                                                <div class="todo-widget-header d-flex pb-2 p-4">
+                                                    <div class="">
+                                                        <a class="btn btn-info" href="'. $patient_material->url .'" target="_blank"><i class="fe fe-edit"></i></a>
+                                                        <a class="btn btn-info" href="'. $patient_material->url .'" download><i class="fe fe-download"></i></a>
+                                                        <a class="btn btn-danger ml-5" data-target="#Delete" data-toggle="modal"  href="patient/deletePatientMaterial?id='. $patient_material->id .'"onclick="return confirm("Are you sure you want to delete this item?");"><i class="fe fe-trash-2"></i></a>
+                                                    </div>
+                                                </div>
+                                                <div class="px-5 pb-5 text-center">
+                                                    '. $image .'
+                                                    <h6 class="mb-1 font-weight-bold mt-4">' . $patient_material->title . '</h6>
+                                                    <p class="text-dark">'.  lang('uploader') . ': ' . $this->hospital_model->getIonUserById($patient_material->created_user_id)->username .'</p>
+                                                    <p class="text-muted">
+                                                        '. date_format($utcdate, $settings->date_format_long) .'
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
+                // $patient_material = '
+                // <div class="card col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
+                //     <div class="post-info">
+                //         <img src="' . $patient_material->url . '" height="100" width="100">
+                //     </div>
+                //     <div class="post-info">
+                //         ' . $patient_documents . '
+                //     </div>
+                //     <p></p>
+                //     <div class="post-info">
+                //         <a class="btn btn-info btn-xs btn_width" href="' . $patient_material->url . '" download> ' . lang("download") . ' </a>
+                //         <a class="btn btn-danger btn-xs btn_width" title="' . lang("delete") . '" href="patient/deletePatientMaterial?id=' . $patient_material->id . '"onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i></a>
+                //     </div>
 
-                    <hr>
+                //     <hr>
 
-                </div>';
+                // </div>';
             } else {
                 $patient_material = '
-                <div class="panel col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
+                <div class="card col-md-3"  style="height: 200px; margin-right: 10px; margin-bottom: 36px; background: #f1f1f1; padding: 34px;">
                     <div class="post-info">
                         <img src="' . $patient_material->url . '" height="100" width="100">
                     </div>
@@ -2622,191 +2776,387 @@ class Patient extends MX_Controller {
             $profile_image = '';
         }
 
-
-
         $data['view'] = '
-        <section class="col-md-4 col-sm-12">
-            <header class="panel-heading clearfix">
-                <div class="">
-                ' . lang("patient") . ' ' . lang("info") . ' 
-                </div>
-            </header> 
-            <aside class="profile-nav">
-                <section class="">
-                    <div class="user-heading round">
-                        ' . $profile_image . '
-                        <h1>' . $patient->name . '</h1>
-                        <p> ' . $patient->email . ' </p>
-                    </div>
-
-                    <ul class="nav nav-pills nav-stacked">
-                        <li class="active"> ' . lang("patient") . ' ' . lang("name") . '<span class="label pull-right r-activity">' . $patient->name . '</span></li>
-                        <li>  ' . lang("patient_id") . ' <span class="label pull-right r-activity">' . $patient->id . '</span></li>
-                        <li>  ' . lang("phone") . '<span class="label pull-right r-activity">' . $patient->phone . '</span></li>
-                        <li>  ' . lang("email") . '<span class="label pull-right r-activity">' . $patient->email . '</span></li>
-                        <li>  ' . lang("gender") . '<span class="label pull-right r-activity">' . $patient->sex . '</span></li>
-                        <li>  ' . lang("birth_date") . '<span class="label pull-right r-activity">' . $patient->birthdate . '</span></li>
-                        <li style="height: 200px;">  ' . lang("address") . '<span class="pull-right r-activity" style="height: 200px;">' . $patient->address . '</span></li>
-                    </ul>
-                </section>
-            </aside>
-        </section>
-
-        <section class="col-md-8 col-sm-12">
-            <header class="panel-heading clearfix">
-                <div class="col-md-7">
-                    ' . lang("history") . ' | ' . $patient->name . '
-                </div>
-            </header>
-            <section class="panel-body">   
-                <header class="panel-heading tab-bg-dark-navy-blueee">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a data-toggle="tab" href="#appointments">' . lang("appointments") . '</a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#home">' . lang("case_history") . '</a>
-                        </li>
-                         <li class="">
-                            <a data-toggle="tab" href="#prescription">' . lang("prescription") . '</a>
-                        </li>
-                        
-                        <li class="">
-                            <a data-toggle="tab" href="#lab">' . lang("lab") . '</a>
-                        </li>
-                        
-                        <li class="">
-                            <a data-toggle="tab" href="#profile">' . lang("documents") . '</a>
-                        </li>
-                         <li class="">
-                            <a data-toggle="tab" href="#bed">' . lang("bed") . '</a>
-                        </li>
-                        <li class="">
-                            <a data-toggle="tab" href="#timeline">' . lang("timeline") . '</a> 
-                        </li>
-                    </ul>
-                </header>
-                
-                <div class="tab-content">
-                    <div id="appointments" class="tab-pane active">
-                        <div class="">
-                            <div class="adv-table editable-table ">
-                                <table class="table table-striped table-hover table-bordered" id="">
-                                    <thead>
-                                        <tr>
-                                            <th>' . lang("date") . '</th>
-                                            <th>' . lang("time_slot") . '</th>
-                                            <th>' . lang("doctor") . '</th>
-                                            <th>' . lang("status") . '</th>
-                                            <th>' . lang("option") . '</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ' . $all_appointments . '
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="home" class="tab-pane">
-                        <div class="">
-                            <div class="adv-table editable-table ">
-                                <table class="table table-striped table-hover table-bordered" id="">
-                                    <thead>
-                                        <tr>
-                                            <th>' . lang("date") . '</th>
-                                            <th>' . lang("title") . '</th>
-                                            <th>' . lang("description") . '</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ' . $all_case . '
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="prescription" class="tab-pane">
-                        <div class="">
-                            <div class="adv-table editable-table ">
-                                <table class="table table-striped table-hover table-bordered" id="">
-                                    <thead>
-                                        <tr>
-                                            <th>' . lang("date") . '</th>
-                                            <th>' . lang("doctor") . '</th>
-                                            <th>' . lang("medicine") . '</th>
-                                            <th>' . lang("options") . '</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        ' . $all_prescription . '
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="lab" class="tab-pane"> 
-                        <div class="">
-                            <div class="adv-table editable-table ">
-                                <table class="table table-striped table-hover table-bordered" id="">
-                                    <thead>
-                                        <tr>
-                                            <th>' . lang("id") . '</th>
-                                            <th>' . lang("date") . '</th>
-                                            <th>' . lang("doctor") . '</th>
-                                            <th>' . lang("options") . '</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>'
-                                        . $all_lab .
-                                    '</tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="bed" class="tab-pane"> 
-                        <div class="">
-                            <div class="adv-table editable-table ">
-                                <table class="table table-striped table-hover table-bordered" id="">
-                                    <thead>
-                                        <tr>
-                                            <th>' . lang("bed_id") . '</th>
-                                            <th>' . lang("alloted_time") . '</th>
-                                            <th>' . lang("discharge_time") . '</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>'
-                                        . $all_bed .
-                                    '</tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="profile" class="tab-pane"> 
-                        <div class="">
-                            <div class="adv-table editable-table ">
-                                <div class="">
-                                    ' . $all_material . '
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12">
+                                <div class="box-widget widget-user">
+                                    <div class="widget-user-image d-lg-flex">
+                                        <img alt="User Avatar" class="rounded-circle p-1" src="' . $patient->img_url . '" style="width: 150px; height: 150px;" width="auto" height="auto">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12 col-lg-5 pr-0 d-lg-flex">
+                                                <div class="ml-sm-4 ml-md-4 mt-md-4 mt-sm-1 mr-lg-3 mr-mb-0 mr-sm-0">
+                                                    <h4 class="pro-user-username mb-3 mt-1 font-weight-bold h-6">' . $patient->name . '</h4>
+                                                    <div class="d-flex mb-1">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5.08 8h2.95c.32-1.25.78-2.45 1.38-3.56-1.84.63-3.37 1.9-4.33 3.56zm2.42 4c0-.68.06-1.34.14-2H4.26c-.16.64-.26 1.31-.26 2s.1 1.36.26 2h3.38c-.08-.66-.14-1.32-.14-2zm-2.42 4c.96 1.66 2.49 2.93 4.33 3.56-.6-1.11-1.06-2.31-1.38-3.56H5.08zM12 4.04c-.83 1.2-1.48 2.53-1.91 3.96h3.82c-.43-1.43-1.08-2.76-1.91-3.96zM18.92 8c-.96-1.65-2.49-2.93-4.33-3.56.6 1.11 1.06 2.31 1.38 3.56h2.95zM12 19.96c.83-1.2 1.48-2.53 1.91-3.96h-3.82c.43 1.43 1.08 2.76 1.91 3.96zm2.59-.4c1.84-.63 3.37-1.91 4.33-3.56h-2.95c-.32 1.25-.78 2.45-1.38 3.56zM19.74 10h-3.38c.08.66.14 1.32.14 2s-.06 1.34-.14 2h3.38c.16-.64.26-1.31.26-2s-.1-1.36-.26-2zM9.66 10c-.09.65-.16 1.32-.16 2s.07 1.34.16 2h4.68c.09-.66.16-1.32.16-2s-.07-1.35-.16-2H9.66z" opacity=".3"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1">' . $patient->id . '</div>
+                                                    </div>
+                                                    <div class="d-flex mb-1">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 8l-8 5-8-5v10h16zm0-2H4l8 4.99z" opacity=".3"/><path d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM20 6l-8 4.99L4 6h16zM4 8l8 5 8-5v10H4V8z"/></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1">' . $patient->sex . '</div>
+                                                    </div>
+                                                    <div class="d-flex">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.2 18.21c1.21.41 2.48.67 3.8.76v-1.5c-.88-.07-1.75-.22-2.6-.45l-1.2 1.19zM6.54 5h-1.5c.09 1.32.35 2.59.75 3.79l1.2-1.21c-.24-.83-.39-1.7-.45-2.58zM14 8h5V5h-5z" opacity=".3"/><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.1-.03-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.58l2.2-2.21c.28-.27.36-.66.25-1.01C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1zM5.03 5h1.5c.07.88.22 1.75.46 2.59L5.79 8.8c-.41-1.21-.67-2.48-.76-3.8zM19 18.97c-1.32-.09-2.6-.35-3.8-.76l1.2-1.2c.85.24 1.72.39 2.6.45v1.51zM12 3v10l3-3h6V3h-9zm7 5h-5V5h5v3z"/></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1">' . $patient->birthdate . '</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 col-lg-7 mt-md-0 mt-lg-8 pr-0 d-lg-flex">
+                                                <div class="ml-sm-4 mt-md-0 mt-sm-1 mr-lg-0 mr-mb-0 mr-sm-0">
+                                                    <div class="d-flex mb-1">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5.08 8h2.95c.32-1.25.78-2.45 1.38-3.56-1.84.63-3.37 1.9-4.33 3.56zm2.42 4c0-.68.06-1.34.14-2H4.26c-.16.64-.26 1.31-.26 2s.1 1.36.26 2h3.38c-.08-.66-.14-1.32-.14-2zm-2.42 4c.96 1.66 2.49 2.93 4.33 3.56-.6-1.11-1.06-2.31-1.38-3.56H5.08zM12 4.04c-.83 1.2-1.48 2.53-1.91 3.96h3.82c-.43-1.43-1.08-2.76-1.91-3.96zM18.92 8c-.96-1.65-2.49-2.93-4.33-3.56.6 1.11 1.06 2.31 1.38 3.56h2.95zM12 19.96c.83-1.2 1.48-2.53 1.91-3.96h-3.82c.43 1.43 1.08 2.76 1.91 3.96zm2.59-.4c1.84-.63 3.37-1.91 4.33-3.56h-2.95c-.32 1.25-.78 2.45-1.38 3.56zM19.74 10h-3.38c.08.66.14 1.32.14 2s-.06 1.34-.14 2h3.38c.16-.64.26-1.31.26-2s-.1-1.36-.26-2zM9.66 10c-.09.65-.16 1.32-.16 2s.07 1.34.16 2h4.68c.09-.66.16-1.32.16-2s-.07-1.35-.16-2H9.66z" opacity=".3"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1">' . $patient->phone . '</div>
+                                                    </div>
+                                                    <div class="d-flex mb-1 pr-0">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 8l-8 5-8-5v10h16zm0-2H4l8 4.99z" opacity=".3"/><path d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM20 6l-8 4.99L4 6h16zM4 8l8 5 8-5v10H4V8z"/></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1">' . $patient->email . '</div>
+                                                    </div>
+                                                    <div class="d-flex">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.2 18.21c1.21.41 2.48.67 3.8.76v-1.5c-.88-.07-1.75-.22-2.6-.45l-1.2 1.19zM6.54 5h-1.5c.09 1.32.35 2.59.75 3.79l1.2-1.21c-.24-.83-.39-1.7-.45-2.58zM14 8h5V5h-5z" opacity=".3"/><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.1-.03-.21-.05-.31-.05-.26 0-.51.1-.71.29l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.58l2.2-2.21c.28-.27.36-.66.25-1.01C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1zM5.03 5h1.5c.07.88.22 1.75.46 2.59L5.79 8.8c-.41-1.21-.67-2.48-.76-3.8zM19 18.97c-1.32-.09-2.6-.35-3.8-.76l1.2-1.2c.85.24 1.72.39 2.6.45v1.51zM12 3v10l3-3h6V3h-9zm7 5h-5V5h5v3z"/></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1">' . $patient->address . '</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div id="timeline" class="tab-pane"> 
-                        <div class="">
-                            <div class="">
-                                <section class="">
-                                    <header class="panel-heading">
-                                        ' . lang("timeline") . '
-                                    </header>
-                                    ' . $timeline_value . '
-                                </section>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="panel panel-primary">
+                                    <div class=" tab-menu-heading p-0 bg-light">
+                                        <div class="tabs-menu1 ">
+                                            <!-- Tabs -->
+                                            <ul class="nav panel-tabs">
+                                                <li class=""><a href="#tab5" class="active" data-toggle="tab">' . lang('appointments') . '</a></li>
+                                                <li><a href="#tab6" data-toggle="tab">' . lang('case_history') . '</a></li>
+                                                <li><a href="#tab7" data-toggle="tab">' . lang('prescription') . '</a></li>
+                                                <li><a href="#tab8" data-toggle="tab">' . lang('lab') . '</a></li>
+                                                <li><a href="#tab9" data-toggle="tab">' . lang('documents') . '</a></li>
+                                                <li><a href="#tab10" data-toggle="tab">' . lang('bed') . '</a></li>
+                                                <li><a href="#tab11" data-toggle="tab">' . lang('timeline') . '</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body tabs-menu-body">
+                                        <div class="tab-content">
+                                            <div class="tab-pane active " id="tab5">
+                                                <div class="table-responsive">
+                                                    <div class="adv-table editable-table">
+                                                        <table id="" class="table table-hover table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>' . lang("date") . '</th>
+                                                                    <th>' . lang("time_slot") . '</th>
+                                                                    <th>' . lang("doctor") . '</th>
+                                                                    <th>' . lang("status") . '</th>
+                                                                    <th>' . lang("facility") . '</th>
+                                                                    <th>' . lang("option") . '</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                    ' . $all_appointments . '
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane " id="tab6">
+                                                <div class="table-responsive">
+                                                    <div class="adv-table editable-table ">
+                                                        <table class="table table-hover table-bordered" id="">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="w-15">' . lang("date") . '</th>
+                                                                    <th class="w-10">' . lang("doctor") . '</th>
+                                                                    <th class="w-15">' . lang("title") . '</th>
+                                                                    <th class="w-50">' . lang("description") . '</th>
+                                                                    <th class="w-10">' . lang("option") . '</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                ' . $all_case . '
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane " id="tab7">
+                                                <div class="table-responsive">
+                                                    <div class="adv-table editable-table ">
+                                                        <table class="table table-hover table-bordered" id="">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>' . lang("date") . '</th>
+                                                                    <th>' . lang("doctor") . '</th>
+                                                                    <th>' . lang("medicine") . '</th>
+                                                                    <th>' . lang("options") . '</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                ' . $all_prescription . '
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane " id="tab8">
+                                                <div class="table-responsive">
+                                                    <div class="adv-table editable-table ">
+                                                        <table class="table table-hover table-bordered" id="">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>' . lang("id") . '</th>
+                                                                    <th>' . lang("date") . '</th>
+                                                                    <th>' . lang("doctor") . '</th>
+                                                                    <th>' . lang("options") . '</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>'
+                                                                . $all_lab .
+                                                            '</tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane " id="tab9">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="row">
+                                                            <div class="col-lg-8 col-md-8 col-sm-5 mb-4">
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 col-sm-7 mb-4">
+                                                                <div class="form-group">
+                                                                    <div class="input-icon">
+                                                                        <span class="input-icon-addon">
+                                                                            <i class="fe fe-search"></i>
+                                                                        </span>
+                                                                        <input type="text" class="form-control searchbox-input" placeholder="Search Files">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    ' . $all_material . '
+                                                </div>
+                                                ' . $documentInputFilter . '
+                                            </div>
+                                            <div class="tab-pane " id="tab10">
+                                                <div class="table-responsive">
+                                                    <div class="adv-table editable-table ">
+                                                        <table class="table table-hover table-bordered" id="">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>' . lang("bed_id") . '</th>
+                                                                    <th>' . lang("alloted_time") . '</th>
+                                                                    <th>' . lang("discharge_time") . '</th>
+                                                                    <th>' . lang("options") . '</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>'
+                                                                . $all_bed .
+                                                            '</tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane " id="tab11">
+                                                <ul class="timelineleft pb-5">
+                                                    ' . $timeline_value . '
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
+                        ';
 
-    </section>';
+    //     $data['view'] = '
+    //     <section class="col-md-4 col-sm-12">
+    //         <header class="card-heading clearfix">
+    //             <div class="">
+    //             ' . lang("patient") . ' ' . lang("info") . ' 
+    //             </div>
+    //         </header> 
+    //         <aside class="profile-nav">
+    //             <section class="">
+    //                 <div class="user-heading round">
+    //                     ' . $profile_image . '
+    //                     <h1>' . $patient->name . '</h1>
+    //                     <p> ' . $patient->email . ' </p>
+    //                 </div>
+
+    //                 <ul class="nav nav-pills nav-stacked">
+    //                     <li class="active"> ' . lang("patient") . ' ' . lang("name") . '<span class="label pull-right r-activity">' . $patient->name . '</span></li>
+    //                     <li>  ' . lang("patient_id") . ' <span class="label pull-right r-activity">' . $patient->id . '</span></li>
+    //                     <li>  ' . lang("phone") . '<span class="label pull-right r-activity">' . $patient->phone . '</span></li>
+    //                     <li>  ' . lang("email") . '<span class="label pull-right r-activity">' . $patient->email . '</span></li>
+    //                     <li>  ' . lang("gender") . '<span class="label pull-right r-activity">' . $patient->sex . '</span></li>
+    //                     <li>  ' . lang("birth_date") . '<span class="label pull-right r-activity">' . $patient->birthdate . '</span></li>
+    //                     <li style="height: 200px;">  ' . lang("address") . '<span class="pull-right r-activity" style="height: 200px;">' . $patient->address . '</span></li>
+    //                 </ul>
+    //             </section>
+    //         </aside>
+    //     </section>
+
+    //     <section class="col-md-8 col-sm-12">
+    //         <header class="card-heading clearfix">
+    //             <div class="col-md-7">
+    //                 ' . lang("history") . ' | ' . $patient->name . '
+    //             </div>
+    //         </header>
+    //         <section class="card-body">   
+    //             <header class="card-heading tab-bg-dark-navy-blueee">
+    //                 <ul class="nav nav-tabs">
+    //                     <li class="active">
+    //                         <a data-toggle="tab" href="#appointments">' . lang("appointments") . '</a>
+    //                     </li>
+    //                     <li class="">
+    //                         <a data-toggle="tab" href="#home">' . lang("case_history") . '</a>
+    //                     </li>
+    //                      <li class="">
+    //                         <a data-toggle="tab" href="#prescription">' . lang("prescription") . '</a>
+    //                     </li>
+                        
+    //                     <li class="">
+    //                         <a data-toggle="tab" href="#lab">' . lang("lab") . '</a>
+    //                     </li>
+                        
+    //                     <li class="">
+    //                         <a data-toggle="tab" href="#profile">' . lang("documents") . '</a>
+    //                     </li>
+    //                      <li class="">
+    //                         <a data-toggle="tab" href="#bed">' . lang("bed") . '</a>
+    //                     </li>
+    //                     <li class="">
+    //                         <a data-toggle="tab" href="#timeline">' . lang("timeline") . '</a> 
+    //                     </li>
+    //                 </ul>
+    //             </header>
+                
+    //             <div class="tab-content">
+    //                 <div id="appointments" class="tab-pane active">
+    //                     <div class="">
+    //                         <div class="adv-table editable-table ">
+    //                             <table class="table table-striped table-hover table-bordered" id="">
+    //                                 <thead>
+    //                                     <tr>
+    //                                         <th>' . lang("date") . '</th>
+    //                                         <th>' . lang("time_slot") . '</th>
+    //                                         <th>' . lang("doctor") . '</th>
+    //                                         <th>' . lang("status") . '</th>
+    //                                         <th>' . lang("option") . '</th>
+    //                                     </tr>
+    //                                 </thead>
+    //                                 <tbody>
+    //                                     ' . $all_appointments . '
+    //                                 </tbody>
+    //                             </table>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //                 <div id="home" class="tab-pane">
+    //                     <div class="">
+    //                         <div class="adv-table editable-table ">
+    //                             <table class="table table-striped table-hover table-bordered" id="">
+    //                                 <thead>
+    //                                     <tr>
+    //                                         <th>' . lang("date") . '</th>
+    //                                         <th>' . lang("title") . '</th>
+    //                                         <th>' . lang("description") . '</th>
+    //                                     </tr>
+    //                                 </thead>
+    //                                 <tbody>
+    //                                     ' . $all_case . '
+    //                                 </tbody>
+    //                             </table>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //                 <div id="prescription" class="tab-pane">
+    //                     <div class="">
+    //                         <div class="adv-table editable-table ">
+    //                             <table class="table table-striped table-hover table-bordered" id="">
+    //                                 <thead>
+    //                                     <tr>
+    //                                         <th>' . lang("date") . '</th>
+    //                                         <th>' . lang("doctor") . '</th>
+    //                                         <th>' . lang("medicine") . '</th>
+    //                                         <th>' . lang("options") . '</th>
+    //                                     </tr>
+    //                                 </thead>
+    //                                 <tbody>
+    //                                     ' . $all_prescription . '
+    //                                 </tbody>
+    //                             </table>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //                 <div id="lab" class="tab-pane"> 
+    //                     <div class="">
+    //                         <div class="adv-table editable-table ">
+    //                             <table class="table table-striped table-hover table-bordered" id="">
+    //                                 <thead>
+    //                                     <tr>
+    //                                         <th>' . lang("id") . '</th>
+    //                                         <th>' . lang("date") . '</th>
+    //                                         <th>' . lang("doctor") . '</th>
+    //                                         <th>' . lang("options") . '</th>
+    //                                     </tr>
+    //                                 </thead>
+    //                                 <tbody>'
+    //                                     . $all_lab .
+    //                                 '</tbody>
+    //                             </table>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //                 <div id="bed" class="tab-pane"> 
+    //                     <div class="">
+    //                         <div class="adv-table editable-table ">
+    //                             <table class="table table-striped table-hover table-bordered" id="">
+    //                                 <thead>
+    //                                     <tr>
+    //                                         <th>' . lang("bed_id") . '</th>
+    //                                         <th>' . lang("alloted_time") . '</th>
+    //                                         <th>' . lang("discharge_time") . '</th>
+    //                                     </tr>
+    //                                 </thead>
+    //                                 <tbody>'
+    //                                     . $all_bed .
+    //                                 '</tbody>
+    //                             </table>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //                 <div id="profile" class="tab-pane"> 
+    //                     <div class="">
+    //                         <div class="adv-table editable-table ">
+    //                             <div class="">
+    //                                 ' . $all_material . '
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //                 <div id="timeline" class="tab-pane"> 
+    //                     <div class="">
+    //                         <div class="">
+    //                             <section class="">
+    //                                 <header class="card-heading">
+    //                                     ' . lang("timeline") . '
+    //                                 </header>
+    //                                 ' . $timeline_value . '
+    //                             </section>
+    //                         </div>
+    //                     </div>
+    //                 </div>
+    //             </div>
+    //         </section>
+
+    // </section>';
 
 
         echo json_encode($data);
