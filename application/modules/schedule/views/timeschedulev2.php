@@ -244,7 +244,7 @@
                                         <div class="modal-header">
                                             <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('schedule'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                         </div>
-                                        <form role="form" action="schedule/addScheduleForLocation" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" action="schedule/addSchedule" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">

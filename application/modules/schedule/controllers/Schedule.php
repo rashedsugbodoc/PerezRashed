@@ -538,7 +538,12 @@ class Schedule extends MX_Controller {
         }
         $id = $this->input->post('id');
         $location = $this->input->post('branch');
-        $doctor = $this->input->post('doctor');
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_ion_id = $this->ion_auth->get_user_id();
+            $doctor = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->id;
+        } else {
+            $doctor = $this->input->post('doctor');
+        }
         $s_time = $this->input->post('s_time');
         $e_time = $this->input->post('e_time');
         $weekday = $this->input->post('weekday');
