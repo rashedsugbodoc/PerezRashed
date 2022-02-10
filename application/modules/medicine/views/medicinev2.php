@@ -63,7 +63,13 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('name'); ?></label>
+                                                        <label class="form-label"><?php echo lang('generic_name'); ?></label>
+                                                        <input type="text" class="form-control" name="generic" id="exampleInputEmail1" value='' placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('brand_name'); ?></label>
                                                         <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='' placeholder="">
                                                     </div>
                                                 </div>
@@ -103,20 +109,20 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('generic_name'); ?></label>
-                                                        <input type="text" class="form-control" name="generic" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('uses'); ?></label>
+                                                        <input type="text" class="form-control" name="uses" id="exampleInputEmail1" value='' placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('side_effects'); ?></label>
+                                                        <input type="text" class="form-control" name="effects" id="exampleInputEmail1" value='' placeholder="">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('company'); ?></label>
                                                         <input type="text" class="form-control" name="company" id="exampleInputEmail1" value='' placeholder="">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('effects'); ?></label>
-                                                        <input type="text" class="form-control" name="effects" id="exampleInputEmail1" value='' placeholder="">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">

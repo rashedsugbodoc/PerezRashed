@@ -137,6 +137,7 @@ class Medicine extends MX_Controller {
         $s_price = $this->input->post('s_price');
         $quantity = $this->input->post('quantity');
         $generic = $this->input->post('generic');
+        $uses = $this->input->post('uses');
         $company = $this->input->post('company');
         $effects = $this->input->post('effects');
         $e_date = $this->input->post('e_date');
@@ -168,6 +169,8 @@ class Medicine extends MX_Controller {
         $this->form_validation->set_rules('effects', 'Effects', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Expire Date Field
         $this->form_validation->set_rules('e_date', 'Expire Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Uses Field
+        $this->form_validation->set_rules('uses', 'Uses', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
