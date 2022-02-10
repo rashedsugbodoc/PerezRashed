@@ -90,7 +90,7 @@
                                                 <div class="tab-pane" id="patient">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <label class="h3 pull-left"><?php echo lang('all_patient'); ?></label>
+                                                            <label class="h3 pull-left"><?php echo lang('all_patient') . ' ' . lang('with') . ' ' . lang('upcoming') . ' ' . lang('appointments');?></label>
                                                         </div>
                                                     </div>
                                                     <div class="mb-0">
