@@ -60,9 +60,29 @@ class Hospital_model extends CI_model {
         $this->db->insert('hospital', $data);
     }
 
+    function insertHospitalAdmin($data) {
+        $this->db->insert('admin', $data);
+    }    
+
     function getHospital() {
         $query = $this->db->get('hospital');
         return $query->result();
+    }
+
+    function getActivePublicHospital() {
+        $this->db->select('*');
+        $this->db->from('hospital');
+        $this->db->join('settings','hospital.id = settings.hospital_id','left');
+        $this->db->where('settings.is_active',1);
+        $this->db->where('settings.is_public',1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function getHospitalAdminByHospitalId($hospital_id) {
+        $this->db->where('hospital_id', $hospital_id);
+        $query = $this->db->get('admin');
+        return $query->row();
     }
 
     function getHospitalById($id) {
@@ -75,6 +95,11 @@ class Hospital_model extends CI_model {
         $this->db->where('id', $id);
         $this->db->update('hospital', $data);
     }
+
+    function updateHospitalAdmin($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('admin', $data);
+    }    
 
     function updateHospitalByIonId($id, $data) {
         $this->db->where('ion_user_id', $id);
