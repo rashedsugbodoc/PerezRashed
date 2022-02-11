@@ -15,7 +15,7 @@ class Hospital extends MX_Controller {
         $this->load->model('pgateway/pgateway_model');
         $this->load->model('sms/sms_model');
         $this->load->model('email/email_model');
-        if (!$this->ion_auth->in_group('superadmin')) {
+        if (!$this->ion_auth->in_group(array('superadmin', 'admin'))) {
             redirect('home/permission');
         }
     }
@@ -392,6 +392,26 @@ class Hospital extends MX_Controller {
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('disable_hospital', $data);
         $this->load->view('home/footer'); // just the header file
+    }
+
+    public function getProviderInfoWithAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->hospital_model->getProviderInfoWithAddNewOption($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getProviderInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->hospital_model->getProviderInfo($searchTerm);
+
+        echo json_encode($response);
     }
 
 }

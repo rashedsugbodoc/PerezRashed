@@ -342,6 +342,47 @@ class Hospital_model extends CI_model {
         $query = $this->db->get('users');
         return $query->row();
     }
+
+    function getProviderinfoWithAddNewOption($searchTerm) {
+        if (!empty($searchTerm)) {
+            $this->db->select('*');
+            $this->db->where("name like '%" . $searchTerm . "%' OR id like '%" . $searchTerm . "%'");
+            $fetched_records = $this->db->get('hospital');
+            $users = $fetched_records->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('hospital');
+            $users = $fetched_records->result_array();
+        }
+        // Initialize Array with fetched data
+        $data = array();
+        $data[] = array("id" => 'add_new', "text" => lang('add_new'));
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['name'] . ' (' . lang('id') . ': ' . $user['id'] . ')');
+        }
+        return $data;
+    }
+
+    function getProviderinfo($searchTerm) {
+        if (!empty($searchTerm)) {
+            $this->db->select('*');
+            $this->db->where("name like '%" . $searchTerm . "%' OR id like '%" . $searchTerm . "%'");
+            $fetched_records = $this->db->get('hospital');
+            $users = $fetched_records->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('hospital');
+            $users = $fetched_records->result_array();
+        }
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['name'] . ' (' . lang('id') . ': ' . $user['id'] . ')');
+        }
+        return $data;
+    }
     
     
     
