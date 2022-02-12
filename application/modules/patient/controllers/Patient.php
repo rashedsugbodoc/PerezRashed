@@ -25,6 +25,7 @@ class Patient extends MX_Controller {
         $this->load->module('paypal');
         $this->load->model('location/location_model');
         $this->load->model('branch/branch_model');
+        $this->load->model('encounter/encounter_model');
         if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser'))) {
             redirect('home/permission');
         }
@@ -1078,7 +1079,7 @@ class Patient extends MX_Controller {
     }
 
     public function addVitals() {
-        if (!$this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Doctor', 'DoctorAdmin', 'Patient', 'Laboratorist'))) {
+        if (!$this->ion_auth->in_group(array('Receptionist', 'Nurse', 'admin', 'Doctor', 'DoctorAdmin', 'Patient', 'Laboratorist'))) {
             redirect('home/permission');
         }
 
@@ -1086,6 +1087,8 @@ class Patient extends MX_Controller {
 
         $data['settings'] = $this->settings_model->getSettings();
         $id = $this->input->post('patient');
+        $encounter_id = $this->input->post('encounter_id');
+        $encounter_row = $this->encounter_model->getEncounterById($encounter_id);
         $patient_id = (int)$id;
         $date_measured = $this->input->post('date');
         $time_measured = $this->input->post('time');
@@ -1151,6 +1154,10 @@ class Patient extends MX_Controller {
             $doctor_id = (int)$this->doctor_model->getDoctorByIonUserId($current_user)->id;
         }
 
+        if (empty($doctor_id)) {
+            $doctor_id = (int)$encounter_row->rendering_staff_id;
+        }
+
 
         //Reading Weight Unit Start
 
@@ -1197,9 +1204,9 @@ class Patient extends MX_Controller {
             $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
             // Validating Date Measured Field
-            $this->form_validation->set_rules('date_measured', 'Date Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('date', 'Date Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
             // Validating Time Measured Field   
-            $this->form_validation->set_rules('time_measured', 'Time Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('time', 'Time Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
             // Validating Weight Field   
             $this->form_validation->set_rules('weight', 'Weight', 'trim|numeric|max_length[500]|xss_clean');
             // Validating height Field           
@@ -1256,7 +1263,20 @@ class Patient extends MX_Controller {
             );
 
             $this->patient_model->insertPatientVital($data);
+            $inserted_id = $this->db->insert_id();
             $this->session->set_flashdata('success', lang('record_added'));
+
+            $vital_exist = $this->encounter_model->getEncounterByVitalId($inserted_id)->start_vital_id;
+
+            if (empty($vital_exist)) {
+                $data_vital = array(
+                    'start_vital_id' => $inserted_id,
+                );
+
+                $this->encounter_model->updateEncounter($encounter_id, $data_vital);
+
+                redirect('encounter');
+            }
             
             redirect('patient/medicalHistory?id=' . $id);
         }
