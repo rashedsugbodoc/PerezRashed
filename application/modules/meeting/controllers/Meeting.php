@@ -13,6 +13,7 @@ class Meeting extends MX_Controller {
         $this->load->model('doctor/doctor_model');
         $this->load->model('patient/patient_model');
         $this->load->model('sms/sms_model');
+        $this->load->model('encounter/encounter_model');
         $this->load->module('sms');
 
 
@@ -64,6 +65,13 @@ class Meeting extends MX_Controller {
         $data['email'] = $this->ion_auth->user()->row()->email;
         $data['users_latest_note'] = $this->patient_model->getLatestMedicalHistoryByPatientId($patient_id);
         $data['latest'] = $data['users_latest_note'][0];
+
+        $patient = $data['appointment_details']->patient;
+        $doctor = $data['appointment_details']->doctor;
+        $remarks = $data['appointment_details']->remarks;
+
+        $this->createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor);
+
         if(!empty($birthdate)){
             $data['age'] = computeAge($birthdate);
         } else {
@@ -100,6 +108,40 @@ class Meeting extends MX_Controller {
         }
         $this->sendSmsDuringMeeting($patient, $doctor, $start_date, $appointment_details);
         redirect('meeting/jitsiLive?id=' . $appointment_id);
+    }
+
+    function createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor) {
+        $appointment_exist = $this->encounter_model->getEncounterByAppointmentId($appointment_id)->appointment_id;
+
+        if(empty($appointment_exist)) {
+            $encounter_type_name = "virtual_consult";
+
+            $encounter_type_id = $this->encounter_model->getEncounterTypeIdByName($encounter_type_name)->id;
+
+            $date = date("Y-m-d H:i:s", now('UTC'));
+            $user = $this->session->userdata('user_id');
+
+            $data_encounter = array(
+                'encounter_type_id' => $encounter_type_id,
+                'appointment_id' => $appointment_id,
+                'patient_id' => $patient,
+                'rendering_staff_id' => $doctor,
+                'created_at' => $date,
+                'created_user_id' => $user,
+                'reason' => $remarks,
+            );
+
+            $this->encounter_model->insertEncounter($data_encounter);
+            $inserted_id = $this->db->insert_id();
+
+            $encounter_number = date('ymd').format_number_with_digits($inserted_id, 3);
+
+            $data_encounter = array(
+                'encounter_number' => $encounter_number,
+            );
+
+            $this->encounter_model->updateEncounter($inserted_id, $data_encounter);
+        }
     }
 
     function instantLive() {
