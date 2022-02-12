@@ -2368,6 +2368,16 @@ class Appointment extends MX_Controller {
         echo json_encode($response);
     }
 
+    public function getBranchInfoWithHospital() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->branch_model->getBranchInfoWithHospital($searchTerm);
+
+        echo json_encode($response);
+    }
+
     public function getServiceCategoryGroupInfoForConsultation() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');
