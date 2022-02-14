@@ -65,12 +65,13 @@ class Hospital_model extends CI_model {
     }    
 
     function getHospital() {
+        $this->db->order_by('id', 'desc');
         $query = $this->db->get('hospital');
         return $query->result();
     }
 
     function getActivePublicHospital() {
-        $this->db->select('*');
+        $this->db->select('hospital.id, hospital.name, hospital.email, settings.address, settings.barangay_id, settings.city_id, settings.state_id, settings.country_id, hospital.phone, hospital.package, hospital.ion_user_id, settings.is_active');
         $this->db->from('hospital');
         $this->db->join('settings','hospital.id = settings.hospital_id','left');
         $this->db->where('settings.is_active',1);
@@ -78,6 +79,24 @@ class Hospital_model extends CI_model {
         $query = $this->db->get();
         return $query->result();
     }
+
+    function getActiveHospital() {
+        $this->db->select('hospital.id, hospital.name, hospital.email, settings.address, settings.barangay_id, settings.city_id, settings.state_id, settings.country_id, hospital.phone, hospital.package, hospital.ion_user_id, settings.is_active');
+        $this->db->from('hospital');
+        $this->db->join('settings','hospital.id = settings.hospital_id','left');
+        $this->db->where('settings.is_active',1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function getDeactivatedHospital() {
+        $this->db->select('hospital.id, hospital.name, hospital.email, settings.address, settings.barangay_id, settings.city_id, settings.state_id, settings.country_id, hospital.phone, hospital.package, hospital.ion_user_id, settings.is_active');
+        $this->db->from('hospital');
+        $this->db->join('settings','hospital.id = settings.hospital_id','left');
+        $this->db->where('settings.is_active !=',1);
+        $query = $this->db->get();
+        return $query->result();
+    }    
 
     function getHospitalAdminByHospitalId($hospital_id) {
         $this->db->where('hospital_id', $hospital_id);
@@ -107,17 +126,26 @@ class Hospital_model extends CI_model {
     }
 
     function activate($id, $data) {
+        $this->db->where('hospital_id', $id);
+        $this->db->update('settings', $data);
+    }
+
+    function deactivate($id, $data) {
+        $this->db->where('hospital_id', $id);
+        $this->db->update('settings', $data);
+    }
+
+    function enablelogin($id, $data) {
         $this->db->where('id', $id);
         $this->db->or_where('hospital_ion_id', $id);
         $this->db->update('users', $data);
     }
 
-    function deactivate($id, $data) {
+    function disablelogin($id, $data) {
         $this->db->where('hospital_ion_id', $id);
         $this->db->or_where('id', $id);
         $this->db->update('users', $data);
     }
-
     function delete($id) {
         $this->db->where('id', $id);
         $this->db->delete('hospital');
