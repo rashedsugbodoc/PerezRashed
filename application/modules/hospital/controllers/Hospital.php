@@ -14,8 +14,10 @@ class Hospital extends MX_Controller {
         $this->load->model('donor/donor_model');
         $this->load->model('pgateway/pgateway_model');
         $this->load->model('sms/sms_model');
+        $this->load->model('location/location_model');
+        $this->load->model('settings/settings_model');
         $this->load->model('email/email_model');
-        if (!$this->ion_auth->in_group(array('superadmin', 'admin'))) {
+        if (!$this->ion_auth->in_group('superadmin')) {
             redirect('home/permission');
         }
     }
@@ -39,15 +41,25 @@ class Hospital extends MX_Controller {
     }
 
     public function addNew() {
+        $data['packages'] = $this->package_model->getPackage();
         $data['zones'] = timezone_identifiers_list();
+        $data['entities'] = $this->settings_model->getEntityType();
+        $data['countries'] = $this->country_model->getCountry();
         $id = $this->input->post('id');
         $entity_type = $this->input->post('entity_type');
         $group_name = $this->input->post('group_name');
+        $title = $this->input->post('title');
         $name = $this->input->post('name');
+        $firstname = $this->input->post('firstname');
+        $middlename = $this->input->post('middlename');
+        $lastname = $this->input->post('lastname');
         $password = $this->input->post('password');
-        $email = $this->input->post('email');
-        $address = $this->input->post('address');
-        $phone = $this->input->post('phone');
+        $provider_email = $this->input->post('provider_email');
+        $admin_email = $this->input->post('admin_email');
+        $provider_address = $this->input->post('provider_address');
+        $admin_address = $this->input->post('admin_address');
+        $provider_phone = $this->input->post('provider_phone');
+        $admin_phone = $this->input->post('admin_phone');
         $package = $this->input->post('package');
         $language = $this->input->post('language');
         $country_id = $this->input->post('country_id');
@@ -57,24 +69,27 @@ class Hospital extends MX_Controller {
         $time_format = $this->input->post('time_format');
         $date_format = $this->input->post('date_format');
         $date_format_long = $this->input->post('date_format_long');
+        $is_public = $this->input->post('is_public');
 
         if (!empty($package)) {
             $module = $this->package_model->getPackageById($package)->module;
             $p_limit = $this->package_model->getPackageById($package)->p_limit;
             $d_limit = $this->package_model->getPackageById($package)->d_limit;
             $loc_limit = $this->package_model->getPackageById($package)->loc_limit;
+            $platform_percent_fee = $this->package_model->getPackageById($package)->platform_percent_fee;
+            $platform_flat_fee = $this->package_model->getPackageById($package)->platform_flat_fee;
+
         } else {
             $p_limit = $this->input->post('p_limit');
             $d_limit = $this->input->post('d_limit');
             $loc_limit = $this->input->post('loc_limit');
+            $platform_percent_fee = $this->input->post('platform_percent_fee');
+            $platform_flat_fee = $this->input->post('platform_flat_fee');
             $module = $this->input->post('module');
             if (!empty($module)) {
                 $module = implode(',', $module);
             }
         }
-
-
-
 
         $language_array = array('english', 'arabic', 'spanish', 'french', 'italian', 'portuguese');
 
@@ -84,18 +99,34 @@ class Hospital extends MX_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
-        // Validating Name Field
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[5]|max_length[100]|xss_clean');
-        // Validating Password Field
+        // Validating Healthcare Provider Name Field
+        $this->form_validation->set_rules('name', 'Healthcare Provider Name', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        // Validating Healthcare Provider Display Name Field
+        $this->form_validation->set_rules('title', 'Healthcare Provider Display Name', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        // Validating Healthcare Provider Email Field
+        $this->form_validation->set_rules('provider_email', 'Healthcare Provider Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');  
+        // Validating Provider Address Field   
+        $this->form_validation->set_rules('provider_address', 'Healthcare Provider Street Address', 'trim|required|min_length[5]|max_length[500]|xss_clean');
+        // Validating Healthcare Provider Phone Field           
+        $this->form_validation->set_rules('provider_phone', 'Phone', 'trim|required|min_length[5]|max_length[50]|xss_clean');        
+        // Validating Administrator First Name Field
+        $this->form_validation->set_rules('firstname', 'Administrator First Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Administrator Middle Name Field
+        $this->form_validation->set_rules('middlename', 'Administrator Middle Name', 'trim|min_length[1]|max_length[100]|xss_clean');
+        // Validating Administrator Last Name Field
+        $this->form_validation->set_rules('lastname', 'Administrator Last Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+
+        // Validating Administrator Password Field
         if (empty($id)) {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         }
-        // Validating Email Field
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');
-        // Validating Address Field   
-        $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[5]|max_length[500]|xss_clean');
-        // Validating Phone Field           
-        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[5]|max_length[50]|xss_clean');
+        // Validating Administrator Email Field
+        $this->form_validation->set_rules('admin_email', 'Administrator Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        // Validating Admin Address Field   
+        $this->form_validation->set_rules('admin_address', 'Administrator Street Address', 'trim|required|min_length[5]|max_length[500]|xss_clean');        
+
+        // Validating Administrator Phone Field           
+        $this->form_validation->set_rules('admin_phone', 'Phone', 'trim|required|min_length[5]|max_length[50]|xss_clean');        
 
         // Validating Phone Field           
         $this->form_validation->set_rules('p_limit', 'Patient Limit', 'trim|required|min_length[1]|max_length[100]|xss_clean');
@@ -123,9 +154,9 @@ class Hospital extends MX_Controller {
             $data = array();
             $data = array(
                 'name' => $name,
-                'email' => $email,
-                'address' => $address,
-                'phone' => $phone,
+                'email' => $provider_email,
+                'address' => $provider_address,
+                'phone' => $provider_phone,
                 'package' => $package,
                 'p_limit' => $p_limit,
                 'd_limit' => $d_limit,
@@ -133,28 +164,54 @@ class Hospital extends MX_Controller {
                 'module' => $module
             );
 
-            $username = $this->input->post('name');
+            $fullname = $firstname . ' ' . $middlename . ' ' . $lastname;
+            $data_admin = array();
+            $data_admin = array(
+                'name' => $fullname,
+                'firstname' => $firstname,
+                'middlename' => $middlename,
+                'lastname' => $lastname,
+                'email' => $admin_email,
+                'address' => $admin_address,
+                'country_id' => $country_id,
+                'phone' => $admin_phone
+            );
 
             if (empty($id)) {     // Adding New Hospital
-                if ($this->ion_auth->email_check($email)) {
-                    $this->session->set_flashdata('feedback', lang('payment_failed_no_gateway_selected'));
+                if ($this->ion_auth->email_check($provider_email) || $this->ion_auth->email_check($admin_email)) {
+                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
                     redirect('hospital/addNewView');
                 } else {
-                    $dfg = 11;
-                    $this->ion_auth->register($username, $password, $email, $dfg);
-                    $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
-                    $this->hospital_model->insertHospital($data);
-                    $hospital_user_id = $this->db->get_where('hospital', array('email' => $email))->row()->id;
-                    $id_info = array('ion_user_id' => $ion_user_id);
+                    $dfg = 14;
+                    $this->ion_auth->register($name, $password, $provider_email, $dfg);
+                    $hospital_ion_user_id = $this->db->get_where('users', array('email' => $provider_email))->row()->id;
+                    $data_with_date = array_merge(array('created_at' => gmdate('Y-m-d H:i:s')), $data);
+                    $this->hospital_model->insertHospital($data_with_date);
+                    $hospital_user_id = $this->db->get_where('hospital', array('email' => $provider_email))->row()->id;
+                    $id_info = array('ion_user_id' => $hospital_ion_user_id);
                     $this->hospital_model->updateHospital($hospital_user_id, $id_info);
+
+                    $dfg = 11;
+                    $this->ion_auth->register($fullname, $password, $admin_email, $dfg);
+                    $admin_ion_user_id = $this->db->get_where('users', array('email' => $admin_email))->row()->id;
+                    $data_admin_with_date = array_merge(array('created_at' => gmdate('Y-m-d H:i:s')), $data_admin);
+                    $this->hospital_model->insertHospitalAdmin($data_admin_with_date);
+                    $admin_user_id = $this->db->get_where('admin', array('email' => $admin_email))->row()->id;
+                    $id_info = array(
+                        'ion_user_id' => $admin_ion_user_id,
+                        'hospital_id' => $hospital_user_id
+                    );
+                    $this->hospital_model->updateHospitalAdmin($admin_user_id, $id_info);
+                    $this->hospital_model->addHospitalIdToIonUser($admin_ion_user_id, $hospital_user_id);
+
                     $hospital_settings_data = array();
                     $hospital_settings_data = array('hospital_id' => $hospital_user_id,
                         'entity_type_id' => $entity_type,
                         'group_name' => $group_name,
-                        'title' => $name,
-                        'email' => $email,
-                        'address' => $address,
-                        'phone' => $phone,
+                        'title' => $title,
+                        'email' => $provider_email,
+                        'address' => $provider_address,
+                        'phone' => $provider_phone,
                         'language' => $language,
                         'country_id' => $country_id,
                         'company_name' => $company_name,
@@ -164,10 +221,13 @@ class Hospital extends MX_Controller {
                         'date_format' => $date_format,
                         'date_format_long' => $date_format_long,
                         'system_vendor' => 'SugboDoc',
-                        'discount' => 'flat',
-                        'sms_gateway' => 'Twilio',
+                        'sms_gateway' => 'Semaphore',
                         'currency' => $country->currency_symbol,
-                        'currency_code' => $country->currency
+                        'currency_code' => $country->currency,
+                        'platform_percent_fee' => $platform_percent_fee,
+                        'platform_flat_fee' => $platform_flat_fee,
+                        'is_public' => $is_public,
+                        'created_at' => gmdate('Y-m-d H:i:s')
                     );
                     $this->settings_model->insertSettings($hospital_settings_data);
                     $hospital_blood_bank = array();
@@ -282,17 +342,55 @@ class Hospital extends MX_Controller {
                     redirect('hospital');
                 }
             } else { // Updating Hospital
-                $ion_user_id = $this->db->get_where('hospital', array('id' => $id))->row()->ion_user_id;
+                $hospital = $this->db->get_where('hospital', array('id' => $id))->row();
+                $admin_user = $this->db->get_where('admin', array('hospital_id' => $id))->row();
+                if ($admin_user->email != $admin_email || $hospital->email != $provider_email) {
+                    if ($this->ion_auth->email_check($provider_email) || $this->ion_auth->email_check($admin_email)) {
+                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    redirect('hospital/editHospital?id=' . $id);
+                    }    
+                }
+                
+                $hospital_ion_user_id = $hospital->ion_user_id;
                 if (empty($password)) {
-                    $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                    $password = $this->db->get_where('users', array('id' => $hospital_ion_user_id))->row()->password;
                 } else {
                     $password = $this->ion_auth_model->hash_password($password);
                 }
-                $this->hospital_model->updateIonUser($username, $email, $password, $ion_user_id);
-                $this->hospital_model->updateHospital($id, $data);
+                $this->hospital_model->updateIonUser($name, $provider_email, $password, $hospital_ion_user_id);
+                $data_with_date = array_merge(array('updated_at' => gmdate('Y-m-d H:i:s')), $data);
+                $this->hospital_model->updateHospital($id, $data_with_date);
+
+                //start of updating admin
+                $data_admin_with_date = array_merge(array('updated_at' => gmdate('Y-m-d H:i:s')), $data_admin);
+                if (empty($admin_user)) {
+                    $dfg = 11;
+                    $this->ion_auth->register($fullname, $password, $admin_email, $dfg);
+                    $admin_ion_user_id = $this->db->get_where('users', array('email' => $admin_email))->row()->id;
+                    $data_admin_with_date = array_merge(array('created_at' => gmdate('Y-m-d H:i:s')), $data_admin);
+                    $this->hospital_model->insertHospitalAdmin($data_admin_with_date);
+                    $admin_user_id = $this->db->get_where('admin', array('email' => $admin_email))->row()->id;
+                    $id_info = array(
+                        'ion_user_id' => $admin_ion_user_id,
+                        'hospital_id' => $id
+                    );
+                    $this->hospital_model->updateHospitalAdmin($admin_user_id, $id_info);
+                    $this->hospital_model->addHospitalIdToIonUser($admin_ion_user_id, $id);
+                } else {
+                    $this->hospital_model->updateHospitalAdmin($admin_user->id, $data_admin_with_date);
+                    $this->hospital_model->updateIonUser($fullname, $admin_email, $password, $admin_user->ion_user_id);
+                }
+                
+
 
                 $hospital_settings_data = array();
                 $hospital_settings_data = array(
+                    'entity_type_id' => $entity_type,
+                    'group_name' => $group_name,
+                    'title' => $title,
+                    'email' => $provider_email,
+                    'address' => $provider_address,
+                    'phone' => $provider_phone,
                     'language' => $language,
                     'country_id' => $country_id,
                     'company_name' => $company_name,
@@ -300,7 +398,15 @@ class Hospital extends MX_Controller {
                     'timezone' => $timezone,
                     'time_format' => $time_format,
                     'date_format' => $date_format,
-                    'date_format_long' => $date_format_long
+                    'date_format_long' => $date_format_long,
+                    'system_vendor' => 'SugboDoc',
+                    'sms_gateway' => 'Semaphore',
+                    'currency' => $country->currency_symbol,
+                    'currency_code' => $country->currency,
+                    'platform_percent_fee' => $platform_percent_fee,
+                    'platform_flat_fee' => $platform_flat_fee,
+                    'is_public' => $is_public,
+                    'updated_at' => gmdate('Y-m-d H:i:s')
                 );
                 $this->settings_model->updateHospitalSettings($id, $hospital_settings_data);
 
@@ -320,13 +426,13 @@ class Hospital extends MX_Controller {
     function activate() {
         $hospital_id = $this->input->get('hospital_id');
          $redirect = $this->input->get('redirect');
-        $data = array('active' => 1);
+        $data = array('is_active' => 1, 'updated_at' => gmdate('Y-m-d H:i:s'));
         $this->hospital_model->activate($hospital_id, $data);
         $this->session->set_flashdata('feedback', lang('activated'));
-         if ($redirect == 'deactive') {
-            redirect('hospital/disable');
-        } elseif ($redirect == 'active') {
-            redirect('hospital/active');
+         if ($redirect == 'deactivated') {
+            redirect('hospital/deactivated');
+        } elseif ($redirect == 'activated') {
+            redirect('hospital/activated');
         } else {
             redirect('hospital');
         }
@@ -336,13 +442,44 @@ class Hospital extends MX_Controller {
     function deactivate() {
         $hospital_id = $this->input->get('hospital_id');
         $redirect = $this->input->get('redirect');
-        $data = array('active' => 0);
+        $data = array('is_active' => 0, 'updated_at' => gmdate('Y-m-d H:i:s'));
         $this->hospital_model->deactivate($hospital_id, $data);
         $this->session->set_flashdata('feedback', lang('deactivated'));
-        if ($redirect == 'deactive') {
-            redirect('hospital/disable');
-        } elseif ($redirect == 'active') {
-            redirect('hospital/active');
+        if ($redirect == 'deactivated') {
+            redirect('hospital/deactivated');
+        } elseif ($redirect == 'activated') {
+            redirect('hospital/activated');
+        } else {
+            redirect('hospital');
+        }
+    }
+
+    function enablelogin() {
+        $hospital_id = $this->input->get('hospital_id');
+         $redirect = $this->input->get('redirect');
+        $data = array('active' => 1, 'updated_at' => gmdate('Y-m-d H:i:s'));
+        $this->hospital_model->enablelogin($hospital_id, $data);
+        $this->session->set_flashdata('feedback', lang('login_enabled'));
+         if ($redirect == 'deactivated') {
+            redirect('hospital/deactivated');
+        } elseif ($redirect == 'activated') {
+            redirect('hospital/activated');
+        } else {
+            redirect('hospital');
+        }
+        
+    }
+
+    function disablelogin() {
+        $hospital_id = $this->input->get('hospital_id');
+        $redirect = $this->input->get('redirect');
+        $data = array('active' => 0, 'updated_at' => gmdate('Y-m-d H:i:s'));
+        $this->hospital_model->disablelogin($hospital_id, $data);
+        $this->session->set_flashdata('feedback', lang('login_disabled'));
+        if ($redirect == 'deactivated') {
+            redirect('hospital/deactivated');
+        } elseif ($redirect == 'activated') {
+            redirect('hospital/activated');
         } else {
             redirect('hospital');
         }
@@ -355,6 +492,10 @@ class Hospital extends MX_Controller {
         $data['countries'] = $this->country_model->getCountry();
         $data['packages'] = $this->package_model->getPackage();
         $data['hospital'] = $this->hospital_model->getHospitalById($id);
+        $data['entities'] = $this->settings_model->getEntityType();
+        $data['settings'] = $this->settings_model->getSettingsByHospitalId($id);
+        $data['admin'] = $this->hospital_model->getHospitalAdminByHospitalId($id);
+
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('add_new', $data);
         $this->load->view('home/footer'); // just the footer file
@@ -378,40 +519,20 @@ class Hospital extends MX_Controller {
         redirect('hospital');
     }
 
-    public function active() {
-        $data['hospitals'] = $this->hospital_model->getHospital();
+    public function activated() {
+        $data['hospitals'] = $this->hospital_model->getActiveHospital();
         $data['packages'] = $this->package_model->getPackage();
         $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('active_hospital', $data);
+        $this->load->view('activated_hospital', $data);
         $this->load->view('home/footer'); // just the header file
     }
 
-    public function disable() {
-        $data['hospitals'] = $this->hospital_model->getHospital();
+    public function deactivated() {
+        $data['hospitals'] = $this->hospital_model->getDeactivatedHospital();
         $data['packages'] = $this->package_model->getPackage();
         $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('disable_hospital', $data);
+        $this->load->view('deactivated_hospital', $data);
         $this->load->view('home/footer'); // just the header file
-    }
-
-    public function getProviderInfoWithAddNewOption() {
-// Search term
-        $searchTerm = $this->input->post('searchTerm');
-
-// Get users
-        $response = $this->hospital_model->getProviderInfoWithAddNewOption($searchTerm);
-
-        echo json_encode($response);
-    }
-
-    public function getProviderInfo() {
-// Search term
-        $searchTerm = $this->input->post('searchTerm');
-
-// Get users
-        $response = $this->hospital_model->getProviderInfo($searchTerm);
-
-        echo json_encode($response);
     }
 
 }
