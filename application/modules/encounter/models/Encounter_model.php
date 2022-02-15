@@ -41,6 +41,13 @@ class Encounter_model extends CI_model {
         return $query->row();
     }
 
+    function getEncounterByInvoiceId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('invoice_id', $id);
+        $query = $this->db->get('encounter');
+        return $query->row();
+    }
+
     function getEncounterByAppointmentId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('appointment_id', $id);
@@ -57,6 +64,12 @@ class Encounter_model extends CI_model {
 
     function getEncounterTypeIdByName($name) {
         $this->db->where('name', $name);
+        $query = $this->db->get('encounter_type');
+        return $query->row();
+    }
+
+    function getEncounterTypeById($id) {
+        $this->db->where('id', $id);
         $query = $this->db->get('encounter_type');
         return $query->row();
     }
@@ -103,6 +116,29 @@ class Encounter_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('encounter');
         return $query->num_rows();
+    }
+
+    function getEncounterInfo($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('encounter')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR encounter_number LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(100);
+            $fetched_records = $this->db->get('encounter');
+            $users = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $encounter_type_name = $this->getEncounterTypeById($user['encounter_type_id']);
+            $data[] = array("id" => $user['id'], "text" => $user['encounter_number'] . ' - ' . $encounter_type_name->display_name . ' - ' . $user['created_at']);
+        }
+        return $data;
     }
 
     function getEncounterTypeInfo($searchTerm) {

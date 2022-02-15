@@ -135,6 +135,7 @@ class Encounter extends MX_Controller {
                 'referral_facility_name' => $provider_name,
                 'referral_staff_id' => $ref_doctor_id,
                 'referral_staff_name' => $ref_name,
+                'waiting_started' => $date,
                 'created_at' => $date,
                 'created_user_id' => $user,
                 'encounter_status' => $encounter_status,
@@ -201,7 +202,7 @@ class Encounter extends MX_Controller {
                 } else {
                     $option3 = '<button type="button" class="btn btn-secondary btn-xs btn_width"><i class="fa fa-camera"></i>'. ' ' . lang('vitals_captured') .'</button>';
                 }
-                $option4 = '<button type="button" class="btn btn-info btn-xs btn_width billbutton" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-money"> </i>'. ' ' . lang('bill') . ' ' . lang('patient') .'</button>';
+                $option4 = '<a class="btn btn-info btn-xs btn_width billbutton" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"> </i>'. ' ' . lang('generate_bill') . '</a>';
                 $option5 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             }
             $info[] = array(
@@ -273,6 +274,15 @@ class Encounter extends MX_Controller {
         echo json_encode($data);
     }
 
+    public function getEncounterById() {
+        $data = array();
+        $id = $this->input->get('id');
+
+        $data['encounter'] = $this->encounter_model->getEncounterById($id);
+
+        echo json_encode($data);
+    }
+
     public function getProviderInfoWithAddNewOption() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');
@@ -289,6 +299,16 @@ class Encounter extends MX_Controller {
 
 // Get users
         $response = $this->encounter_model->getProviderInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    function getEncounterInfo() {
+        // Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->encounter_model->getEncounterInfo($searchTerm);
 
         echo json_encode($response);
     }
