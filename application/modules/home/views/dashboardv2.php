@@ -148,6 +148,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         
         <!-- Image Editor -->
         <link href="<?php echo base_url('public/assets/plugins/image-editor/styles.min.css'); ?>" rel="stylesheet" />    
+        <link rel="stylesheet" type="text/css" href="common/assets/jquery-multi-select/css/multi-select.css" />
 
         <!-- INTERNAL CSS END -->
 
