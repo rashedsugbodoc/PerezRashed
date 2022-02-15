@@ -8,6 +8,7 @@ class Finance extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('finance_model');
+        $this->load->model('encounter/encounter_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('patient/patient_model');
         $this->load->model('finance/pharmacy_model');
@@ -61,15 +62,21 @@ class Finance extends MX_Controller {
             redirect('home/permission');
         }
         $data = array();
+        $id = $this->input->get('id');
+        $data['id'] = $id;
+        $data['encounter'] = $this->encounter_model->getEncounterById($id);
+        $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+        $data['doctorr'] = $this->doctor_model->getDoctorById($data['encounter']->rendering_staff_id);
+        $data['patientt'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getPaymentCategory();
         $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_payment_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_payment_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addPayment() {
@@ -81,6 +88,8 @@ class Finance extends MX_Controller {
         $quantity = array();
         $category_selected = array();
         // $amount_by_category = $this->input->post('category_amount');
+        $payment_status = $this->input->post('payment_status');
+        $encounter = $this->input->post('encounter');
         $category_selected = $this->input->post('category_name');
         $item_selected = $this->input->post('category_id');
         $quantity = $this->input->post('quantity');
@@ -329,6 +338,19 @@ class Finance extends MX_Controller {
                 $this->finance_model->insertPayment($data);
                 $inserted_id = $this->db->insert_id();
 
+                $encounter_data = $this->encounter_model->getEncounterById($encounter);
+                $encounter_payment_status = $encounter_data->payment_status;
+                $encounter_invoice_id = $encounter_data->invoice_id;
+
+                if (empty($encounter_invoice_id)) {
+                    $finance_encounter = array(
+                        'payment_status' => $payment_status,
+                        'invoice_id' => $inserted_id,
+                    );
+
+                    $this->encounter_model->updateEncounter($encounter, $finance_encounter);
+                }
+
                 //sms
                 $set['settings'] = $this->settings_model->getSettings();
                 $autosms = $this->sms_model->getAutoSmsByType('bill');
@@ -483,6 +505,7 @@ class Finance extends MX_Controller {
                     $this->finance_model->updatePayment($inserted_id, $data_payment);
 
                     $this->session->set_flashdata('success', lang('record_added'));
+
                     redirect("finance/invoice?id=" . "$inserted_id");
                 }
             } else {
@@ -1329,6 +1352,7 @@ class Finance extends MX_Controller {
         $id = $this->input->get('id');
         $data['payment'] = $this->finance_model->getPaymentById($id);
         $data['patient'] = $this->patient_model->getPatientById($data['payment']->patient);
+        $data['encounter'] = $this->encounter_model->getEncounterByInvoiceId($id);
         $patient_hospital_id = $data['patient']->hospital_id;
 
         if (!empty($data['patient']->birthdate)) {
@@ -2555,6 +2579,19 @@ class Finance extends MX_Controller {
         $response = $this->finance_model->getServiceCategoryGroupByEntityType($searchTerm);
 
         echo json_encode($response);
+    }
+
+    public function getInvoiceStatusByCompanyClassificationName() {
+        $data = array();
+        $id = $this->input->get('id');
+
+        $companyId = $this->company_model->getClassificationByCompanyId($id);
+        $companyClassificationName = $this->company_model->getCompanyClassificationById($companyId->classification_id);
+        $current_user = $this->ion_auth->get_users_groups()->row()->name;
+        $data['name'] = $this->finance_model->getInvoiceStatusByCompanyClassificationName($companyClassificationName->name, $current_user);
+        
+
+        echo json_encode($data);        
     }
 
 }

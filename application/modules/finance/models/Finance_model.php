@@ -1232,4 +1232,13 @@ class Finance_model extends CI_model {
         return $query->row();
     }
 
+    function getInvoiceStatusByCompanyClassificationName($name, $user) {
+        $this->db->where('applicable_account_classification', $name);
+        $this->db->where("FIND_IN_SET('".$user."', applicable_user_group)");
+        $this->db->order_by('id', 'asc');
+        $query = $this->db->get('invoice_payment_status');
+        return $query->result();
+
+    }
+
 }

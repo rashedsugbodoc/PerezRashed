@@ -147,13 +147,13 @@
                                                                 </td>
                                                                 <td></td>
                                                                 <td class="w-15 p-0">
-                                                                    <span class="pull-right"><?php echo lang('invoice');?> <?php echo lang('id');?></span>
+                                                                    <span class="pull-right"><?php echo lang('encounter');?> <?php echo lang('id');?></span>
                                                                 </td>
                                                                 <td class="w-7 p-0">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span><?php echo $payment->id;?></span>
+                                                                    <span><?php echo $encounter->encounter_number;?></span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
@@ -174,15 +174,13 @@
                                                                 </td>
                                                                 <td></td>
                                                                 <td class="w-15 p-0">
-                                                                    <span class="pull-right"><?php echo lang('facility'); ?> <?php echo lang('id');?></span>
+                                                                    <span class="pull-right"><?php echo lang('invoice');?> <?php echo lang('id');?></span>
                                                                 </td>
                                                                 <td class="w-7 p-0">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span>
-                                                                        <?php echo $payment->hospital_id;?>
-                                                                    </span>
+                                                                    <span><?php echo $payment->id;?></span>
                                                                 </td>
                                                             </tr>                                                        
                                                             <tr class="p-0">
@@ -193,6 +191,35 @@
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0"><span><?php if (!empty($age)) { echo $age .' '. lang('yrs_old');} else {echo lang('not_given');}?></span></td>
+                                                                <td></td>
+                                                                <td class="w-15 p-0">
+                                                                    <span class="pull-right"><?php echo lang('facility'); ?> <?php echo lang('id');?></span>
+                                                                </td>
+                                                                <td class="w-7 p-0">
+                                                                    <span>: </span>
+                                                                </td>
+                                                                <td class="w-63 p-0">
+                                                                    <span>
+                                                                        <?php echo $payment->hospital_id;?>
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="p-0">
+                                                                <td class="w-15 p-0">
+                                                                    <span><?php echo lang('address'); ?> </span>
+                                                                </td>
+                                                                <td class="w-7 p-0">
+                                                                    <span>: </span>
+                                                                </td>
+                                                                <td class="w-63 p-0">
+                                                                    <span>
+                                                                        <?php
+                                                                        if (!empty($patient)) {
+                                                                            echo $patient->address . ' <br>';
+                                                                        }
+                                                                        ?>                                                                    
+                                                                    </span>
+                                                                </td>
                                                                 <td></td>
                                                                 <td class="w-15 p-0">
                                                                     <span class="pull-right"><?php echo lang('doctor'); ?></span>
@@ -217,20 +244,12 @@
                                                             </tr>
                                                             <tr class="p-0">
                                                                 <td class="w-15 p-0">
-                                                                    <span><?php echo lang('address'); ?> </span>
+                                                                    <span><?php echo lang('remarks');?> </span>
                                                                 </td>
                                                                 <td class="w-7 p-0">
                                                                     <span>: </span>
                                                                 </td>
-                                                                <td class="w-63 p-0">
-                                                                    <span>
-                                                                        <?php
-                                                                        if (!empty($patient)) {
-                                                                            echo $patient->address . ' <br>';
-                                                                        }
-                                                                        ?>                                                                    
-                                                                    </span>
-                                                                </td>
+                                                                <td class="w-63 p-0"><span><?php echo $payment->remarks;?></span></td>
                                                                 <td></td>
                                                                 <td class="w-15 p-0">
                                                                     <span class="pull-right"><?php echo lang('payer_account'); ?></span>
@@ -243,8 +262,13 @@
                                                                         <?php
                                                                         if (!empty($payment->company_id)) {
                                                                             $company_details = $this->company_model->getCompanyById($payment->company_id);
+                                                                            $classification = $this->company_model->getCompanyClassificationById($company_details->classification_id);
                                                                             if (!empty($company_details)) {
-                                                                                echo substr(str_repeat(0, 5).$company_details->id, - 5) . ' - '.$company_details->display_name .' <br>';
+                                                                                if ($classification->id == 1) {
+                                                                                    echo $classification->display_name;
+                                                                                } else {
+                                                                                    echo $classification->display_name . ' - '.$company_details->display_name .' <br>';
+                                                                                }
                                                                             } else {
                                                                                 echo lang('none');
                                                                             }
@@ -257,12 +281,22 @@
                                                             </tr>
                                                             <tr class="p-0">
                                                                 <td class="w-15 p-0">
-                                                                    <span><?php echo lang('remarks');?> </span>
+                                                                    
+                                                                </td>
+                                                                <td class="w-7 p-0">
+                                                                    
+                                                                </td>
+                                                                <td class="w-63 p-0"><span></span></td>
+                                                                <td></td>
+                                                                <td class="w-15 p-0">
+                                                                    <span class="pull-right"><?php echo lang('invoice'). ' ' . lang('status'); ?></span>
                                                                 </td>
                                                                 <td class="w-7 p-0">
                                                                     <span>: </span>
                                                                 </td>
-                                                                <td class="w-63 p-0"><span><?php echo $payment->remarks;?></span></td>
+                                                                <td class="w-63 p-0">
+                                                                    <span><?php echo $encounter->payment_status;?></span>
+                                                                </td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
