@@ -144,6 +144,12 @@ class Company_model extends CI_model {
         return $query->row();
     }
 
+    function getClassificationByCompanyId($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('company');
+        return $query->row();
+    }
+
     function getCompanyWithAddNewOption($searchTerm) {
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')
