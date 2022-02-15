@@ -417,7 +417,7 @@ class Patient_model extends CI_model {
         $data = array();
         $data[] = array("id" => 'add_new', "text" => lang('add_new'));
         foreach ($users as $user) {
-            $data[] = array("id" => $user['id'], "text" => $user['name'] . ' (' . lang('id') . ': ' . $user['id'] . ')');
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
         }
         return $data;
     }
