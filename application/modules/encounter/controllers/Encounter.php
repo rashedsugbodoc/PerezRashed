@@ -20,6 +20,7 @@ class Encounter extends MX_Controller {
         $data['encounter_types'] = $this->encounter_model->getEncounterType();
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['staffs'] = $this->encounter_model->getUser();
         $data['providers'] = $this->hospital_model->getHospital();
 
         $this->load->view('home/dashboardv2'); // just the header file
@@ -74,24 +75,24 @@ class Encounter extends MX_Controller {
         $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         if ($rendering_doctor_id == null) {
             // Validating Fname Field
-            $this->form_validation->set_rules('render_name', 'Rendering Doctor', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('render_name', 'Rendering Doctor', 'trim|min_length[1]|max_length[100]|xss_clean');
         } else {
             // Validating Fname Field
-            $this->form_validation->set_rules('rendering_doctor', 'Rendering Doctor', 'trim|required|min_length[1]|max_length[10]|xss_clean');
+            $this->form_validation->set_rules('rendering_doctor', 'Rendering Doctor', 'trim|min_length[1]|max_length[10]|xss_clean');
         }
         if ($ref_doctor_id == null) {
             // Validating Fname Field
-            $this->form_validation->set_rules('ref_name', 'Refferal Doctor', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('ref_name', 'Refferal Doctor', 'trim|min_length[1]|max_length[100]|xss_clean');
         } else {
             // Validating Fname Field
-            $this->form_validation->set_rules('ref_doctor', 'Refferal Doctor', 'trim|required|min_length[1]|max_length[10]|xss_clean');
+            $this->form_validation->set_rules('ref_doctor', 'Refferal Doctor', 'trim|min_length[1]|max_length[10]|xss_clean');
         }
         if ($provider_id == null) {
             // Validating Fname Field
-            $this->form_validation->set_rules('provider_name', 'Provider', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('provider_name', 'Provider', 'trim|min_length[1]|max_length[100]|xss_clean');
         } else {
             // Validating Fname Field
-            $this->form_validation->set_rules('provider', 'Provider', 'trim|required|min_length[1]|max_length[10]|xss_clean');
+            $this->form_validation->set_rules('provider', 'Provider', 'trim|min_length[1]|max_length[10]|xss_clean');
         }
         // Validating Fname Field
         $this->form_validation->set_rules('reason', 'Reason', 'trim|required|min_length[1]|max_length[100]|xss_clean');
@@ -309,6 +310,27 @@ class Encounter extends MX_Controller {
 
 // Get users
         $response = $this->encounter_model->getEncounterInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getUserByApplicableUserGroupWithAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->encounter_model->getUserByApplicableUserGroupWithAddNewOption($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getUserWithAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+
+        $response = $this->encounter_model->getUserWithAddNewOption($searchTerm);
 
         echo json_encode($response);
     }

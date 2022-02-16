@@ -18,7 +18,9 @@ class Encounter_model extends CI_model {
     }
 
     function getEncounterType() {
+        $settings = $this->settings_model->getSettings();
         $this->db->order_by('id', 'asc');
+        $this->db->where("FIND_IN_SET($settings->entity_type_id, applicable_entity_type)");
         $query = $this->db->get('encounter_type');
         return $query->result();
     }
@@ -142,14 +144,17 @@ class Encounter_model extends CI_model {
     }
 
     function getEncounterTypeInfo($searchTerm) {
+        $settings = $this->settings_model->getSettings();
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')
                     ->from('encounter_type')
                     ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->where("FIND_IN_SET($settings->entity_type_id, applicable_entity_type)")
                     ->get();
             $users = $query->result_array();
         } else {
             $this->db->select('*');
+            $this->db->where("FIND_IN_SET($settings->entity_type_id, applicable_entity_type)");
             $this->db->limit(10);
             $fetched_records = $this->db->get('encounter_type');
             $users = $fetched_records->result_array();
@@ -215,6 +220,137 @@ class Encounter_model extends CI_model {
         $data = array();
         foreach ($users as $user) {
             $data[] = array("id" => $user['id'], "text" => $user['name'] . ' (' . lang('id') . ': ' . $user['id'] . ')');
+        }
+        return $data;
+    }
+
+    function getUserByApplicableUserGroupWithAddNewOption($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('doctor')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_ion_id = $this->ion_auth->get_user_id();
+            $this->db->select('*');
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->where('ion_user_id', $doctor_ion_id);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        $data[] = array("id" => 'add_new', "text" => lang('add_new'));
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['ion_user_id'], "text" => $user['name']);
+        }
+        return $data;
+    }
+
+    function getUsersByValidUsers($valid_users) {
+        $this->db->select('a.user_id, a.group_id, b.username, c.name');
+        $this->db->from('users_groups a');
+        $this->db->join('users b', 'b.id=a.user_id', 'left');
+        $this->db->join('groups c', 'c.id=a.group_id', 'left');
+        // $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+        $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+        // $this->db->where('c.id', 5);
+        $query = $this->db->get();
+        return $query->result_array();
+
+        // if (!empty($searchTerm)) {
+        //     $query = $this->db->select('a.user_id, a.group_id, b.username, c.name')
+        //             ->from('users_groups a');
+        //             ->join('users b', 'b.id=a.user_id', 'left')
+        //             ->join('users b', 'b.id=a.user_id', 'left')
+        //             ->where("FIND_IN_SET(c.id, '".$valid_users."')")
+        //             ->where("(a.user_id LIKE '%" . $searchTerm . "%' OR b.username LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+        //             ->get();
+        //     $users = $query->result_array();
+        // } else {
+        //     $this->db->select('a.user_id, a.group_id, b.username, c.name');
+        //     $this->db->from('users_groups a');
+        //     $this->db->join('users b', 'b.id=a.user_id', 'left');
+        //     $this->db->join('groups c', 'c.id=a.group_id', 'left');
+        //     $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+        //     $this->db->limit(10);
+        //     $fetched_records = $this->db->get();
+        //     $users = $fetched_records->result_array();
+        // }
+    }
+
+
+    function getUser() { 
+        // Valid Users is comma separated ids of user groups example; 4,6,11
+        $valid_users = '4';
+
+        $this->db->select('a.user_id, a.group_id, b.username, c.name');
+        $this->db->from('users_groups a');
+        $this->db->join('users b', 'b.id=a.user_id', 'left');
+        $this->db->join('groups c', 'c.id=a.group_id', 'left');
+        $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+        $this->db->limit(10);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    function getUserWithAddNewOption($searchTerm) {
+        $valid_users = '4';
+        // $user_groups = $this->getUsersByValidUsers($valid_users);
+
+        if (!empty($searchTerm)) {
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->where("(a.user_id LIKE '%" . $searchTerm . "%' OR b.username LIKE '%" . $searchTerm . "%')", NULL, FALSE);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        } else {
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->limit(10);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        }
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_ion_id = $this->ion_auth->get_user_id();
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->where('ion_user_id', $doctor_ion_id);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        $data[] = array("id" => 'add_new', "text" => lang('add_new'));
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['user_id'], "text" => $user['username']);
         }
         return $data;
     }

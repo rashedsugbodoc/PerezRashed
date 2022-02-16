@@ -83,7 +83,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('rendering'). ' ' .lang('provider'); ?></label>
+                                                                <label class="form-label"><?php echo lang('rendering'). ' ' .lang('doctor'); ?></label>
                                                                 <select class="select2-show-search form-control rendering_doctor_select" name="rendering_doctor" id="pos_rendering_doctor">
                                                                     
                                                                 </select>
@@ -103,7 +103,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('referred_by'). ' ' . lang('healthcare_provider')?></label>
+                                                                <label class="form-label"><?php echo lang('referred_by'). ' ' . lang('doctor')?></label>
                                                                 <select class="select2-show-search form-control ref_doctor_select" name="ref_doctor" id="pos_ref_doctor">
                                                                     
                                                                 </select>
@@ -225,8 +225,8 @@
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
                                                                 <select class="select2-show-search form-control rendering_doctor_select2" name="rendering_doctor" id="pos_rendering_doctor2">
                                                                     <option value="add_new"><?php echo lang('add_new'); ?></option>
-                                                                    <?php foreach ($doctors as $doctor) { ?>
-                                                                        <option value="<?php echo $doctor->id ?>"> <?php echo $doctor->name ?> </option>
+                                                                    <?php foreach ($staffs as $staff) { ?>
+                                                                        <option value="<?php echo $staff->user_id ?>"> <?php echo $staff->username ?> </option>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
@@ -248,8 +248,8 @@
                                                                 <label class="form-label"><?php echo lang('refd_by_doctor') ?></label>
                                                                 <select class="select2-show-search form-control ref_doctor_select2" name="ref_doctor" id="pos_ref_doctor2">
                                                                     <option value="add_new"><?php echo lang('add_new'); ?></option>
-                                                                    <?php foreach ($doctors as $doctor) { ?>
-                                                                        <option value="<?php echo $doctor->id ?>"> <?php echo $doctor->name ?> </option>
+                                                                    <?php foreach ($staffs as $staff) { ?>
+                                                                        <option value="<?php echo $staff->user_id ?>"> <?php echo $staff->username ?> </option>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
@@ -643,10 +643,15 @@
                 data: '',
                 dataType: 'json',
                 success: function (response) {
+                    console.log(response.encounter.encounter_type_id);
                     $('#editEncounterForm').find('[name="encounter_id"]').val(response.encounter.id).end()
-                    $('#editEncounterForm').find('[name="type"]').val(response.encounter.encounter_type_id).change()
+                    
                     $('#editEncounterForm').find('[name="reason"]').val(response.encounter.reason).end()
                     $('#editEncounterForm').find('[name="patient"]').val(response.encounter.patient_id).change()
+                    
+                    if (response.encounter.encounter_type_id) {
+                        $('#editEncounterForm').find('[name="type"]').val(response.encounter.encounter_type_id).change()
+                    }
                     
                     if (response.encounter.rendering_staff_id == null) {
                         $('.rendering_doctor_client2').show();
@@ -786,10 +791,10 @@
 
         $(document).ready(function () {
             $("#pos_ref_doctor").select2({
-                placeholder: '<?php echo lang('select_patient'); ?>',
+                placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'doctor/getDoctorWithAddNewOption',
+                    url: 'encounter/getUserWithAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -811,10 +816,10 @@
 
         $(document).ready(function () {
             $("#pos_rendering_doctor").select2({
-                placeholder: '<?php echo lang('select_patient'); ?>',
+                placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'doctor/getDoctorWithAddNewOption',
+                    url: 'encounter/getUserWithAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
