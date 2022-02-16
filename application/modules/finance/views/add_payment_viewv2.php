@@ -151,11 +151,11 @@
                                                                 <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor">
                                                                     <option selected disabled>Search Doctor</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
-                                                                    <?php foreach ($doctors as $doctor) { ?>
+                                                                    <?php foreach ($staffs as $staff) { ?>
                                                                         <?php if (!empty($payment)) { ?>
-                                                                            <option value="<?php echo $doctor->id ?>" selected="selected"><?php echo $doctor->name ?></option>
+                                                                            <option value="<?php echo $staff->user_id ?>" selected="selected"><?php echo $staff->username ?></option>
                                                                         <?php } else { ?>
-                                                                            <option value="<?php echo $doctor->id ?>"><?php echo $doctor->name ?></option>
+                                                                            <option value="<?php echo $staff->user_id ?>"><?php echo $staff->username ?></option>
                                                                         <?php } ?>
                                                                         <?php if (!empty($encounter->id)) { ?>
                                                                             <option value="<?php echo $doctorr->id; ?>" selected><?php echo $doctorr->name ?></option>

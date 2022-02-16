@@ -64,6 +64,7 @@ class Finance extends MX_Controller {
         $data = array();
         $id = $this->input->get('id');
         $data['id'] = $id;
+        $data['staffs'] = $this->encounter_model->getUser();
         $data['encounter'] = $this->encounter_model->getEncounterById($id);
         $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
         $data['doctorr'] = $this->doctor_model->getDoctorById($data['encounter']->rendering_staff_id);
