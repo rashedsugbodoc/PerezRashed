@@ -262,7 +262,7 @@
                                                                             <td><?php echo date('Y-m-d', $holiday->date); ?></td>
                                                                             <td>
                                                                                 <div class="btn-group mb-0">
-                                                                                    <a class="btn btn-info pull-right" data-target="#editHolidayModal" data-toggle="modal" data-id="<?php echo $holiday->id; ?>" href=""><i class="fe fe-edit"></i> <?php echo lang('edit'); ?></a>
+                                                                                    <a class="btn btn-info pull-right editHoliday" data-toggle="modal" data-id="<?php echo $holiday->id; ?>" href=""><i class="fe fe-edit"></i> <?php echo lang('edit'); ?></a>
                                                                                 </div>
                                                                                 <div class="btn-group mb-0">
                                                                                     <a class="btn btn-danger" href="schedule/deleteHoliday?id=<?php echo $holiday->id; ?>&doctor=<?php echo $doctor->id; ?>&redirect=doctor/details" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i> <?php echo lang('delete'); ?></a>
