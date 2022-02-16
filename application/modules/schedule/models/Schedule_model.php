@@ -390,6 +390,8 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('weekday', $weekday);
         if(!empty($location)) {
             $this->db->where('location_id', $location);
+        } else {
+            $this->db->where('location_id', null);
         }
         $query = $this->db->get('time_schedule');
         return $query->result();
@@ -404,11 +406,16 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         return $query->result();
     }
 
-    function getScheduleByDoctorByWeekdayById($doctor, $weekday, $id) {
+    function getScheduleByDoctorByWeekdayById($doctor, $weekday, $id, $location) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where_not_in('id', $id);
         $this->db->where('doctor', $doctor);
         $this->db->where('weekday', $weekday);
+        if (!empty($location)) {
+            $this->db->where('location_id', $location);
+        } else {
+            $this->db->where('location_id', null);
+        }
         $query = $this->db->get('time_schedule');
         return $query->result();
     }

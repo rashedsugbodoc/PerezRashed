@@ -407,7 +407,7 @@ class Schedule extends MX_Controller {
         }
 
         if (!empty($id)) {
-            $previous_time = $this->schedule_model->getScheduleByDoctorByWeekdayById($doctor, $weekday, $id);
+            $previous_time = $this->schedule_model->getScheduleByDoctorByWeekdayById($doctor, $weekday, $id, $location);
         } else {
             $previous_time = $this->schedule_model->getScheduleByDoctorByWeekday($doctor, $weekday, $location);
         }
