@@ -418,7 +418,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 <?php echo lang("instruction"); ?> \n\
 </label>\n\
 </div>\n\
-<div class=col-md-12><input class = "potency medi_div quantity" id="quantity' + count + '" name = "instruction[]" value = "" placeholder="After Food" required>\n\
+<div class=col-md-12><input class = "potency medi_div quantity" id="quantity' + count + '" name = "instruction[]" value = "" placeholder="After Food">\n\
 </div>\n\
 </div>\n\
 \n\

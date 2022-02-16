@@ -130,6 +130,7 @@ class Medicine extends MX_Controller {
         }
 
         $id = $this->input->post('id');
+        $form = $this->input->post('form');
         $name = $this->input->post('name');
         $category = $this->input->post('category');
         $price = $this->input->post('price');
@@ -151,6 +152,8 @@ class Medicine extends MX_Controller {
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
         $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        // Validating Name Field
+        $this->form_validation->set_rules('form', 'Form', 'trim|required|min_length[2]|max_length[500]|xss_clean');
         // Validating Category Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Purchase Price Field
@@ -166,11 +169,11 @@ class Medicine extends MX_Controller {
         // Validating Company Name Field
         $this->form_validation->set_rules('company', 'Company', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Effects Field
-        $this->form_validation->set_rules('effects', 'Effects', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('effects', 'Effects', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
         // Validating Expire Date Field
         $this->form_validation->set_rules('e_date', 'Expire Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Uses Field
-        $this->form_validation->set_rules('uses', 'Uses', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('uses', 'Uses', 'trim|required|min_length[1]|max_length[1000]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -195,7 +198,8 @@ class Medicine extends MX_Controller {
             }
         } else {
             $data = array();
-            $data = array('name' => $name,
+            $data = array(
+                'name' => $name,
                 'category' => $category,
                 'price' => $price,
                 'box' => $box,
@@ -206,6 +210,8 @@ class Medicine extends MX_Controller {
                 'effects' => $effects,
                 'add_date' => $add_date,
                 'e_date' => $e_date,
+                'form' => $form,
+                'uses' => $uses,
             );
             if (empty($id)) {
                 $this->medicine_model->insertMedicine($data);
@@ -405,14 +411,16 @@ class Medicine extends MX_Controller {
             }
             $info[] = array(
                 $i,
+                $medicine->generic,
                 $medicine->name,
+                $medicine->form,
                 $medicine->category,
                 $medicine->box,
                 $settings->currency . $medicine->price,
                 $settings->currency . $medicine->s_price,
                 $quan . '<br>' . $load,
-                $medicine->generic,
                 $medicine->company,
+                $medicine->uses,
                 $medicine->effects,
                 $medicine->e_date,
                 $option1 . ' ' . $option2
