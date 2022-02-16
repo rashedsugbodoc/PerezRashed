@@ -122,6 +122,36 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label"><?php echo lang('service_type'); ?></label>
+                                                <select class="form-control select2-show-search service_cat" name="service_category_group" id="service_select" data-placeholder="Choose one (with searchbox)"  required="">
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label"> <?php echo lang('service'); ?></label>
+                                                <select class="form-control select2-show-search sub_service" id="sub_service" name="service" data-placeholder="Choose one (with searchbox)"  required="">
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="form-group branch_select">
+                                                <label class="form-label"> <?php echo lang('location'); ?></label>
+                                                <select class="form-control select2-show-search branch" name="branch" id="branch_select" data-placeholder="Choose one (with searchbox)">
+                                                    <option selected value="">Choose One</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-sm-12 col-md-12">
                                         <div class="form-group">
                                             <label class="form-label"><?php echo lang('date'); ?><span class="text-red">*</span></label>
@@ -181,7 +211,7 @@
                                         </div>
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('remarks'); ?><span class="text-red">*</span></label>
+                                                <label class="form-label"><?php echo lang('complaint'); ?><span class="text-red">*</span></label>
                                                 <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" rows="3" maxlength="500"><?php
                                                 if (!empty($appointment->remarks)) {
                                                     echo $appointment->remarks;
@@ -313,11 +343,300 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
+        <script>
+            $(document).ready(function () {
+                $('.pos_client').hide();
+                $(document.body).on('change', '#pos_select', function () {
+
+                    var v = $("select.pos_select option:selected").val()
+                    if (v == 'add_new') {
+                        $('.pos_client').show();
+                    } else {
+                        $('.pos_client').hide();
+                    }
+                });
+
+            });
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $("#pos_select").select2({
+                    placeholder: '<?php echo lang('select_patient'); ?>',
+                    allowClear: true,
+                    ajax: {
+                        url: 'patient/getPatientinfoWithAddNewOption',
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
+
+                });
+                $(".patient").select2({
+                    placeholder: '<?php echo lang('select_patient'); ?>',
+                    allowClear: true,
+                    ajax: {
+                        url: 'patient/getPatientinfo',
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
+
+                });
+                $("#adoctors").select2({
+                    placeholder: '<?php echo lang('select_doctor'); ?>',
+                    allowClear: true,
+                    ajax: {
+                        url: 'doctor/getDoctorInfo',
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
+
+                });
+                $("#adoctors1").select2({
+                    placeholder: '<?php echo lang('select_doctor'); ?>',
+                    allowClear: true,
+                    ajax: {
+                        url: 'doctor/getDoctorInfo',
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
+
+                });
+            });
+        </script>
+
+        <!-- jquery for service type, service, location dependencies start-->
+
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#service_select").select2({
+                        placeholder: '<?php echo lang('select_service_type'); ?>',
+                        allowClear: true,
+                        ajax: {
+                            url: 'finance/getServiceCategoryGroupByEntityType',
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
+                });
+
+                $(document).ready(function () {
+                    $("#branch_select").select2({
+                        placeholder: '<?php echo lang('select_branch'); ?>',
+                        allowClear: true,
+                        ajax: {
+                            url: 'appointment/getBranchInfo',
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
+                });
+
+                $(document).ready(function () {
+                    $("#service_select").change(function () {
+                        var doctor = $("#adoctors").val();
+                        var service_type = $("#service_select").val();
+
+                        // console.log(is_virtual);
+                        $('#sub_service').find('option').remove();
+                        $('#aslots').find('option').remove();
+                        $('#date').val('');
+                        $('#branch_select').find('option').remove();
+                        $.ajax({
+                            url: 'appointment/getServicesByServiceCategoryGroupByDoctorHospital?servicecategorygroup=' + service_type + '&doctor=' + doctor,
+                            method: 'GET',
+                            data: '',
+                            dataType: 'json',
+                            success: function (response) {
+                                // console.log(response.services);
+                                $.each(response.services, function (key, value) {
+                                    $('#sub_service').append($('<option>').text(value.description).val(value.id)).end();
+                                });
+
+                            }
+                        });
+
+                        var branch = $("branch_select").val;
+
+                        $.ajax({
+                            url: 'appointment/getServiceCategoryById?id=' + service_type,
+                            method: 'GET',
+                            data: '',
+                            dataType: 'json',
+                            success: function (response) {
+                                var is_virtual = response.is_virtual;
+                                
+                                if (is_virtual) {
+                                    $(".branch_select").prop('hidden', true);
+                                    console.log(branch);
+                                } else {
+                                    $(".branch_select").attr('hidden', false);
+                                    console.log('Not hidden');
+                                }
+                            }
+                        });
+
+                    });
+                });
+
+                $(document).ready(function () {
+                    $("#branch_select").change(function () {
+                        $('#aslots').find('option').remove();
+                        $('#date').val('');
+                    });
+                });
+
+                $(document).ready(function () {
+                    var iid = $('#date').val();
+                    var doctorr = $('#adoctors').val();
+                    var branch = $('#branch_select').val();
+                    $('#aslots').find('option').remove();
+                    // $('#default').trigger("reset");
+                    $.ajax({
+                        url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+                            var slots = response.aslots;
+                            $.each(slots, function (key, value) {
+                                $('#aslots').append($('<option>').text(value).val(value)).end();
+                            });
+                            //   $("#default-step-1 .button-next").trigger("click");
+                            if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+                                $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                            }
+                            // Populate the form fields with the data returned from server
+                            //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+                        }
+                    });
+                });
+
+
+
+
+                $(document).ready(function () {
+                    $('#date').datepicker({
+                        format: "dd-mm-yyyy",
+                        autoclose: true,
+                    })
+                            //Listen for the change even on the input
+                            .change(dateChanged)
+                            .on('changeDate', dateChanged);
+                });
+
+                function dateChanged() {
+                    // Get the record's ID via attribute  
+                    var iid = $('#date').val();
+                    var doctorr = $('#adoctors').val();
+                    var branch = $('#branch_select').val();
+                    $('#aslots').find('option').remove();
+                    // $('#default').trigger("reset");
+                    $.ajax({
+                        url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+                            var slots = response.aslots;
+                            $.each(slots, function (key, value) {
+                                $('#aslots').append($('<option>').text(value).val(value)).end();
+                            });
+                            //   $("#default-step-1 .button-next").trigger("click");
+                            if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+                                $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                            }
+
+
+                            // Populate the form fields with the data returned from server
+                            //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+                        }
+                    });
+
+                }
+
+            </script>
+
+
+        <!-- jquery for service type, service, location dependencies end-->
         
 
         <!-- <script src="common/js/coderygel.min.js"></script> -->
 
-        <script>
+        <!-- <script>
             $(document).ready(function () {
                 $('.pos_client').hide();
                 $(document.body).on('change', '#pos_select', function () {
@@ -599,7 +918,7 @@
                 });
 
             });
-        </script>
+        </script> -->
 
         <script>
             $(document).ready(function () {

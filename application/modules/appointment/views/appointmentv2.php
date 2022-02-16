@@ -41,7 +41,7 @@
                                                                     <th> <?php echo lang('patient'); ?></th>
                                                                     <th> <?php echo lang('doctor'); ?></th>
                                                                     <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?> </th>
+                                                                    <th> <?php echo lang('complaint'); ?> </th>
                                                                     <th> <?php echo lang('status'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
@@ -71,7 +71,7 @@
                                                                     <th> <?php echo lang('patient'); ?></th>
                                                                     <th> <?php echo lang('doctor'); ?></th>
                                                                     <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
+                                                                    <th> <?php echo lang('complaint'); ?></th>
                                                                     <th> <?php echo lang('status'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
@@ -102,7 +102,7 @@
                                                                     <th> <?php echo lang('patient'); ?></th>
                                                                     <th> <?php echo lang('doctor'); ?></th>
                                                                     <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
+                                                                    <th> <?php echo lang('complaint'); ?></th>
                                                                     <th> <?php echo lang('status'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
@@ -133,7 +133,7 @@
                                                                     <th> <?php echo lang('patient'); ?></th>
                                                                     <th> <?php echo lang('doctor'); ?></th>
                                                                     <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
+                                                                    <th> <?php echo lang('complaint'); ?></th>
                                                                     <th> <?php echo lang('status'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
@@ -165,7 +165,7 @@
                                                                     <th> <?php echo lang('patient'); ?></th>
                                                                     <th> <?php echo lang('doctor'); ?></th>
                                                                     <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
+                                                                    <th> <?php echo lang('complaint'); ?></th>
                                                                     <th> <?php echo lang('status'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
@@ -196,7 +196,7 @@
                                                                     <th> <?php echo lang('patient'); ?></th>
                                                                     <th> <?php echo lang('doctor'); ?></th>
                                                                     <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('remarks'); ?></th>
+                                                                    <th> <?php echo lang('complaint'); ?></th>
                                                                     <th> <?php echo lang('status'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
@@ -478,7 +478,7 @@
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('remarks'); ?> <span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('complaint'); ?> <span class="text-red">*</span></label>
                                                         <textarea class="form-control mb-4" name="remarks" placeholder="Purpose" rows="3" maxlength="500"></textarea>
                                                     </div>
                                                 </div>
