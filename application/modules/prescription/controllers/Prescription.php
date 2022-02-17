@@ -63,9 +63,9 @@ class Prescription extends MX_Controller {
         $data['doctors'] = $this->doctor_model->getDoctor();
 
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new_prescription_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_new_prescription_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewPrescription() {
@@ -91,6 +91,9 @@ class Prescription extends MX_Controller {
         $frequency = $this->input->post('frequency');
         $days = $this->input->post('days');
         $instruction = $this->input->post('instruction');
+        $quantity = $this->input->post('qty');
+        $uses = $this->input->post('uses');
+        $form = $this->input->post('form');
         $laboratory = $this->input->post('laboratory');
         $admin = $this->input->post('admin');
 
@@ -102,10 +105,10 @@ class Prescription extends MX_Controller {
         if (!empty($medicine)) {
             foreach ($medicine as $key => $value) {
                 $report[$value] = array(
-                    'dosage' => $dosage[$key],
-                    'frequency' => $frequency[$key],
-                    'days' => $days[$key],
+                    'form' => $form[$key],
+                    'qty' => $quantity[$key],
                     'instruction' => $instruction[$key],
+                    'uses' => $uses[$key],
                 );
 
                 // }
@@ -138,7 +141,7 @@ class Prescription extends MX_Controller {
         $this->form_validation->set_rules('laboratory', 'Laboratory', 'trim|min_length[1]|max_length[2000]|xss_clean');
 
         // Validating Medicine Category
-        $this->form_validation->set_rules('category', 'Medicine', 'trim|required|max_length[2000]|xss_clean');
+        $this->form_validation->set_rules('category', 'Medicine', 'trim|required|max_length[1000]|xss_clean');
 
         // Validating Advice Field
         $this->form_validation->set_rules('advice', 'Advice', 'trim|min_length[1]|max_length[1000]|xss_clean');

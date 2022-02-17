@@ -211,24 +211,29 @@
                                                             if (!empty($prescription->medicine)) {
                                                             ?>
                                                             <table class="table">
-                                                                <thead>
+                                                                <!-- <thead>
                                                                     <tr>
                                                                         <th class="pl-0 td"><?php echo lang('medicine'); ?></th>
                                                                         <th class="pl-0 td"><?php echo lang('instruction'); ?></th>
-                                                                        <th class="pl-0 td"><?php echo lang('frequency'); ?></th>
+                                                                        <th class="pl-0 td"><?php echo lang('quantity'); ?></th>
                                                                     </tr>
-                                                                </thead>
+                                                                </thead> -->
                                                                 <tbody>
                                                                     <?php
                                                                     $medicine = $prescription->medicine;
                                                                     $medicine = explode('###', $medicine);
+                                                                    $i = 0;
                                                                     foreach ($medicine as $key => $value) {
                                                                     ?>
                                                                     <tr>
                                                                         <?php $single_medicine = explode('***', $value); ?>
-                                                                        <td class="pl-0"><?php echo $this->medicine_model->getMedicineById($single_medicine[0])->name . ' - ' . $single_medicine[1]; ?></td>
-                                                                        <td class="pl-0"><?php echo $single_medicine[3] . ' - ' . $single_medicine[4]; ?></td>
-                                                                        <td class="pl-0"><?php echo $single_medicine[2] ?></td>
+                                                                        <td><h4><?php echo $i += 1; ?></h4></td>
+                                                                        <td class="pl-0">
+                                                                            <h4><strong><p><?php echo $this->medicine_model->getMedicineById($single_medicine[0])->generic ?></strong> ( <?php echo $this->medicine_model->getMedicineById($single_medicine[0])->name; ?> ) <?php echo $single_medicine[1]; ?></p>
+                                                                            <p>Sig: <?php echo $single_medicine[3] ?></p>
+                                                                            <p>( <?php echo $single_medicine[4] ?> )</p></h4>
+                                                                        </td>
+                                                                        <td class="pl-0"><h4><p>#<?php echo $single_medicine[2] ?></p></h4></td>
                                                                     </tr>
 
                                                                     <?php
@@ -242,7 +247,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row mt-8">
+                                        <!-- <div class="row mt-8">
                                             <div class="col-md-12">
                                                 <div class="row">
                                                     <div class="col-md-12 pl-0">
@@ -269,7 +274,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <div class="row mt-8"></div>
                                         <div class="row mt-8"></div>
                                         <div class="row mt-6"></div>
@@ -284,10 +289,30 @@
                                             <div class="col-md-8 text-right">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h3 class="mb-1"><?php echo $settings->title; ?></h3>
+                                                        <h3 class="mb-1 pull-right border-top border-dark"><?php echo $doctor->name; ?></h3>
                                                     </div>
                                                 </div>
                                                 <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="mb-1"><?php echo lang('license') ?>: <?php echo $doctor->license; ?></label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="mb-1"><?php echo lang('tin') ?>: <?php echo $doctor->tax_number; ?></label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="mb-1"><?php echo lang('ptr') ?>: <?php echo $doctor->tax_receipt_number; ?></label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="mb-1"><?php echo lang('s2') ?>: <?php echo $doctor->secondary_license_number; ?></label>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="row">
                                                     <div class="col-md-12">
                                                         <label class="mb-1"><?php echo $settings->address; ?></label>
                                                     </div>
@@ -296,7 +321,7 @@
                                                     <div class="col-md-12">
                                                         <label class="mb-1"><?php echo $settings->phone; ?></label>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
