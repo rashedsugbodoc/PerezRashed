@@ -197,6 +197,32 @@
                                                                 <input type="text" name="license" class="form-control">
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('tin') ?></label>
+                                                                <input type="text" name="tin" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label"><?php echo lang('ptr') ?></label>
+                                                                        <input type="text" name="ptr" class="form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label"><?php echo lang('s2') ?></label>
+                                                                        <input type="text" name="s2" class="form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                         <div class="col-sm-6 col-md-6">
                                                             <label class="form-label"><?php echo lang('profile_picture'); ?>: <span class="text-red">*</span></label>
                                                             <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
@@ -362,7 +388,33 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('license'); ?>: <span class="text-red">*</span></label>
-                                                                <input type="text" name="license" value="LN123456789" class="form-control">
+                                                                <input type="text" name="license" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('tin') ?></label>
+                                                                <input type="text" name="tin" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label"><?php echo lang('ptr') ?></label>
+                                                                        <input type="text" name="ptr" class="form-control">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="form-label"><?php echo lang('s2') ?></label>
+                                                                        <input type="text" name="s2" class="form-control">
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
@@ -672,6 +724,9 @@
                         // $('#editDoctorForm').find('[name="department"]').val(response.doctor.department).end()
                         $('#editDoctorForm').find('[name="profile"]').val(response.doctor.profile).end()
                         $('#editDoctorForm').find('[name="license"]').val(response.doctor.license).end()
+                        $('#editDoctorForm').find('[name="tin"]').val(response.doctor.tax_number).end()
+                        $('#editDoctorForm').find('[name="ptr"]').val(response.doctor.tax_receipt_number).end()
+                        $('#editDoctorForm').find('[name="s2"]').val(response.doctor.secondary_license_number).end()
 
                         $.each(response.specialties, function(key, value) {
                             $('#specialtychoose2').append($('<option selected>').text(value.display_name_ph).val(value.id)).end();

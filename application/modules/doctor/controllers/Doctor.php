@@ -120,6 +120,9 @@ class Doctor extends MX_Controller {
         $specialization = $this->input->post('specialization');
         $profile = $this->input->post('profile');
         $license = $this->input->post('license');
+        $tin = $this->input->post('tin');
+        $ptr = $this->input->post('ptr');
+        $s2 = $this->input->post('s2');
         $country = $this->input->post('country_id');
         $state = $this->input->post('state_id');
         $city = $this->input->post('city_id');
@@ -164,6 +167,9 @@ class Doctor extends MX_Controller {
         // Validating Phone Field           
         $this->form_validation->set_rules('profile', 'Profile', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('license', 'License Number', 'trim|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('tin', 'TIN Number', 'trim|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('ptr', 'PTR Number', 'trim|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('s2', 'S2 Number', 'trim|min_length[1]|max_length[50]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -248,7 +254,10 @@ class Doctor extends MX_Controller {
                 'phone' => $phone,
                 'specialties' => $specialization,
                 'profile' => $profile,
-                'license' => $license
+                'license' => $license,
+                'tax_number' => $tin,
+                'tax_receipt_number' => $ptr,
+                'secondary_license_number' => $s2,
             );
 
             if (empty($id)) {     // Adding New Doctor
