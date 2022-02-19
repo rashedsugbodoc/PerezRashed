@@ -113,6 +113,16 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label"><?php echo lang('status'); ?></label>
+                                                <select class="select2-show-search form-control encounter_status" name="encounter_status" id="encounter_status">
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
@@ -259,6 +269,27 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#encounter_type").change(function () {
+                var encounter_type = $("#encounter_type").val();
+                $("#encounter_status").find('option').remove();
+
+                $.ajax({
+                    url: 'encounter/getStatusByEncounterType?id=' + encounter_type,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var status = response.status;
+
+                        $.each(status, function (key, value) {
+                            $('#encounter_status').append($('<option>').text(value.display_name).val(value.id)).end();
+                        });
+                    }
+                });
+            });
+        });
+        
+        $(document).ready(function () {
             $("#pos_ref_provider").select2({
                 placeholder: '<?php echo lang('select_provider'); ?>',
                 allowClear: true,
@@ -288,7 +319,7 @@
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'doctor/getDoctorWithAddNewOption',
+                    url: 'encounter/getUserWithAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -313,7 +344,7 @@
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'doctor/getDoctorWithAddNewOption',
+                    url: 'encounter/getUserWithAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,

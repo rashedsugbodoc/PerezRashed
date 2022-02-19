@@ -459,7 +459,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="text" name="patient" hidden value='<?php echo $patient->id; ?>'>
+                                            <input type="hidden" name="patient" hidden value='<?php echo $patient->id; ?>'>
                                             <input type="text" name="encounter_id">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
