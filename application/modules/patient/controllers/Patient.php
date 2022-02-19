@@ -1751,6 +1751,42 @@ class Patient extends MX_Controller {
         }
     }
 
+    function editUpload() {
+        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser'))) {
+            redirect('home/permission');
+        }
+        $document_id = $this->input->get('id');
+        $data['document'] = $this->patient_model->getPatientMaterialById($document_id);
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('edit_uploadv2', $data);
+        // $this->load->view('home/footer'); // just the header file
+    }
+
+    function saveUploadEditChanges() {
+        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser'))) {
+            redirect('home/permission');
+        }
+        $image_json_str = file_get_contents('php://input');
+        $image_json_obj = json_decode($image_json_str, true);
+        $image_data = $image_json_obj['data'];
+        $document_id = $image_json_obj['id'];
+        $data['document'] = $this->patient_model->getPatientMaterialById($document_id);
+        list($type, $image_data) = explode(';', $image_data);
+        list(, $image_data)      = explode(',', $image_data);
+        $image_data = base64_decode($image_data);
+
+        if (file_put_contents($data['document']->url, $image_data)) {
+            $data = array('last_modified' => gmdate('Y-m-d H:i:s'));
+            $this->patient_model->updatePatientMaterial($document_id, $data);
+            $this->session->set_flashdata('success', lang('record_deleted'));
+        }
+        redirect('patient/editUpload?id=' . $document_id);
+        
+        //$this->load->view('home/dashboardv2'); // just the header file
+        //$this->load->view('edit_uploadv2', $data);
+        // $this->load->view('home/footer'); // just the header file
+    }    
+
     function deleteCaseHistory() {
         if (!$this->ion_auth->in_group(array('admin'))) {
             redirect('home/permission');
@@ -2144,7 +2180,7 @@ class Patient extends MX_Controller {
                     $patient_details,
                     $document->title,
                     $document->description,
-                    '<a class="example-image-link" href="' . $document->url . '" data-title="' . $document->title . '" target="_blank"">' . '<img class="example-image" src="uploads/PDF_DefaultImage.png" width="auto" height="auto"alt="image-1"style="max-width:150px;max-height:150px">' . '</a>',
+                    '<a class="example-image-link" href="' . $document->url . '" data-title="' . $document->title . '" target="_blank"">' . '<img class="example-image" src="uploads/PDF_DefaultImage.png" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
                     $options1 . ' ' . $options2
                         // $options4
                 );
@@ -2154,7 +2190,7 @@ class Patient extends MX_Controller {
                     $patient_details,
                     $document->title,
                     $document->description,
-                    '<a class="example-image-link" href="' . $document->url . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '" width="auto" height="auto"alt="image-1"style="max-width:150px;max-height:150px">' . '</a>',
+                    '<a class="example-image-link" href="' . $document->url . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
                     $options1 . ' ' . $options2
                         // $options4
                 );
@@ -2681,14 +2717,14 @@ class Patient extends MX_Controller {
                 $image = '
                         <div class="panel-body text-center">
                             <a class="example-image-link" href="' . $patient_material->url . '" target="_blank">
-                                <img class="example-image" src="uploads/PDF_DefaultImage.png" alt="image-1" width="120" height="120"/>
+                                <img class="example-image" src="uploads/PDF_DefaultImage.png" alt="image-1" max-width="120" max-height="120"/>
                             </a>
                         </div>';
             } else {
                 $image = '
                         <div class="panel-body text-center">
                             <a class="example-image-link" href="' . $patient_material->url . '" target="_blank">
-                                <img class="example-image" src="' . $patient_material->url . '" alt="image-1" width="120" height="120"/>
+                                <img class="example-image" src="' . $patient_material->url . '" alt="image-1" max-width="120" max-height="120"/>
                             </a>
                         </div>';
             }
