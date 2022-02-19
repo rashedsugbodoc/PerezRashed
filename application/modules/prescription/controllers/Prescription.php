@@ -11,6 +11,9 @@ class Prescription extends MX_Controller {
         $this->load->model('medicine/medicine_model');
         $this->load->model('patient/patient_model');
         $this->load->model('doctor/doctor_model');
+        $this->load->model('location/location_model');
+        $this->load->model('branch/branch_model');
+        $this->load->model('specialty/specialty_model');
         if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
@@ -85,7 +88,7 @@ class Prescription extends MX_Controller {
         $patient = $this->input->post('patient');
         $doctor = $this->input->post('doctor');
         $symptom = $this->input->post('symptom');
-        $medicine = $this->input->post('medicine');
+        $medicine = $this->input->post('meds');
         $category = $this->input->post('category');
         $dosage = $this->input->post('dosage');
         $frequency = $this->input->post('frequency');
@@ -225,6 +228,18 @@ class Prescription extends MX_Controller {
 
         $id = $this->input->get('id');
         $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
+        $data['doctor'] = $this->doctor_model->getDoctorById($data['prescription']->doctor);
+        $data['patient'] = $this->patient_model->getPatientById($data['prescription']->patient);
+        $data['signature'] = $this->doctor_model->getUserSignatureByUserId($data['doctor']->ion_user_id);
+        $specializations = explode(',', $data['doctor']->specialties);
+        $limit = 3;
+        $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
+        foreach ($specializations as $specialization) {
+            $specialties = $this->specialty_model->getSpecialtyById($specialization)->display_name;
+            $specialty[] = $specialties;
+        }
+        $data['spec'] = implode(', ', $specialty);
+        // $data['specification'] = $this->doctor->getSpecialtyListArray($data['doctor']->specialties);
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             $current_patient = $this->ion_auth->get_user_id();
@@ -308,9 +323,9 @@ class Prescription extends MX_Controller {
                 $this->load->view('home/permission');
             } else {
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new_prescription_view', $data);
-                $this->load->view('home/footer'); // just the footer file 
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_prescription_viewv2', $data);
+                // $this->load->view('home/footer'); // just the footer file 
             }
         } else {
             $this->load->view('home/permission');

@@ -122,7 +122,7 @@
                                                                 $prescription_medicine_extended = explode('***', $value);
                                                                 $medicine = $this->medicine_model->getMedicineById($prescription_medicine_extended[0]);
                                                                 ?>
-                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name; ?>"  <?php echo 'data-dosage="' . $prescription_medicine_extended[1] . '"' . 'data-frequency="' . $prescription_medicine_extended[2] . '"data-days="' . $prescription_medicine_extended[3] . '"data-instruction="' . $prescription_medicine_extended[4] . '"'; ?> selected="selected">
+                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name; ?>"  <?php echo 'data-form="' . $prescription_medicine_extended[1] . '"' . 'data-qty="' . $prescription_medicine_extended[2] . '"data-instruction="' . $prescription_medicine_extended[3] . '"data-uses="' . $prescription_medicine_extended[4] . '"'; ?> selected="selected">
                                                                     <?php echo $medicine->name; ?>
                                                                 </option>                
                                                                 <?php
@@ -337,10 +337,10 @@
                 var med_name = res[1];
                 var med_uses = res[2];
                 var med_form = res[3];
-                var dosage = $(this).data('dosage');
-                var frequency = $(this).data('frequency');
-                var days = $(this).data('days');
+                var form = $(this).data('form');
+                var qty = $(this).data('qty');
                 var instruction = $(this).data('instruction');
+                var uses = $(this).data('uses');
                 if ($('#med_id-' + id).length)
                 {
 
@@ -361,32 +361,33 @@
                                                 <div class="form-group">\n\
                                                     <input class = "form-control medi_div" name = "med_id[]" value = "' + med_name + '" placeholder="" required disabled>\n\
                                                     <input type="hidden" id="med_id-' + id + '" class = "medi_div" name = "medicine[]" value = "' + med_id + '" placeholder="" required disabled>\n\
+                                                    <input class = "form-control medi_div" name = "meds[]" hidden value = "' + med_id + '" placeholder="" required>\n\
                                                 </div>\n\
                                             </div>\n\
                                             <div class="col-sm-2">\n\
                                                 <div class="form-group">\n\
-                                                    <input type="text" class="form-control" name="qty[]" required>\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0"># &nbsp</label><input type="text" class="form-control" name="qty[]" value="' + qty + '" required></div>\n\
                                                 </div>\n\
                                             </div>\n\
                                         </div>\n\
                                         <div class="row">\n\
                                             <div class="col-sm-12">\n\
                                                 <div class="form-group">\n\
-                                                    <input type="text" class="form-control" name="instruction[]" required>\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0">Sig &nbsp</label><input type="text" class="form-control" name="instruction[]" value="' + instruction + '" required></div>\n\
                                                 </div>\n\
                                             </div>\n\
                                         </div>\n\
                                         <div class="row">\n\
                                             <div class="col-sm-12">\n\
                                                 <div class="form-group">\n\
-                                                    <input type="text" class="form-control" name="uses[]" value="' + med_uses + '">\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0">Uses &nbsp</label><input type="text" class="form-control" name="uses[]" value="' + uses + '"></div>\n\
                                                 </div>\n\
                                             </div>\n\
                                         </div>\n\
                                         <div class="row">\n\
                                             <div class="col-sm-12">\n\
                                                 <div class="form-group">\n\
-                                                    <input type="hidden" class="form-control" name="form[]" value="' + med_form + '">\n\
+                                                    <input type="hidden" class="form-control" name="form[]" value="' + form + '">\n\
                                                 </div>\n\
                                             </div>\n\
                                         </div>\n\
@@ -514,25 +515,26 @@
                                                     <div class="form-group">\n\
                                                         <input class = "form-control medi_div" name = "med_id[]" value = "' + med_name + '" placeholder="" required disabled>\n\
                                                         <input type="hidden" id="med_id-' + id + '" class = "medi_div" name = "medicine[]" value = "' + med_id + '" placeholder="" required disabled>\n\
+                                                        <input class = "form-control medi_div" name = "meds[]" hidden value = "' + med_id + '" placeholder="" required>\n\
                                                     </div>\n\
                                                 </div>\n\
                                                 <div class="col-sm-2">\n\
                                                     <div class="form-group">\n\
-                                                        <input type="text" class="form-control" name="qty[]" required>\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0"># &nbsp</label><input type="text" class="form-control" name="qty[]" required></div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\
                                             <div class="row">\n\
                                                 <div class="col-sm-12">\n\
                                                     <div class="form-group">\n\
-                                                        <input type="text" class="form-control" name="instruction[]" required>\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0">Sig &nbsp</label><input type="text" class="form-control" name="instruction[]" required></div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\
                                             <div class="row">\n\
                                                 <div class="col-sm-12">\n\
                                                     <div class="form-group">\n\
-                                                        <input type="text" class="form-control" name="uses[]" value="' + med_uses + '">\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0">Uses &nbsp</label><input type="text" class="form-control" name="uses[]" value="' + med_uses + '"></div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\

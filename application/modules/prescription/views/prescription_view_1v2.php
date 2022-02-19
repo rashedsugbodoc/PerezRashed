@@ -38,6 +38,39 @@
                                         color: black;
                                     }
 
+                                    * {box-sizing: border-box;}
+
+                                    .container {
+                                      position: relative;
+                                      width: 50%;
+                                      max-width: 300px;
+                                    }
+
+                                    .image {
+                                      display: block;
+                                      width: 100%;
+                                      height: auto;
+                                    }
+
+                                    .overlay {
+                                      position: absolute; 
+                                      bottom: 0; 
+                                      background: rgb(0, 0, 0);
+                                      background: rgba(0, 0, 0, 0.5); /* Black see-through */
+                                      color: #f1f1f1; 
+                                      width: 100%;
+                                      transition: .5s ease;
+                                      opacity:0;
+                                      color: white;
+                                      font-size: 20px;
+                                      padding: 20px;
+                                      text-align: center;
+                                    }
+
+                                    .container:hover .overlay {
+                                      opacity: 1;
+                                    }
+
 
                                     /* @media (min-width: 768px) {
                                      .new-pull-left {
@@ -47,8 +80,8 @@
                                 </style>
 
                         <?php
-                        $doctor = $this->doctor_model->getDoctorById($prescription->doctor);
-                        $patient = $this->patient_model->getPatientById($prescription->patient);
+                        
+                        
                         ?>
                         <div class="page-header d-print-none">
                             <div class="page-leftheader">
@@ -89,123 +122,153 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row mb-1">
-                                            <div class="col-md-6">
+                                            <div class="col-md-12">
                                                 <div class="row">
-                                                    <h2><?php
-                                                    if (!empty($doctor)) {
-                                                        echo $doctor->name;
-                                                    } 
-                                                        ?>
-                                                    </h2>
+                                                    <div class="col-md-12 col-sm-12 text-center">
+                                                        <h3 class="mb-2"><?php
+                                                        if (!empty($doctor)) {
+                                                            echo $doctor->professional_display_name;
+                                                        } 
+                                                            ?>
+                                                        </h3>
+                                                    </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-12 col-sm-12 pl-0">
-                                                        <h4 class="mb-1"><?php
+                                                    <div class="col-md-12 col-sm-12 pl-0 text-center">
+                                                        <h5 class="mb-1"><?php
                                                         if (!empty($doctor)) {
-                                                            echo $doctor->profile;
+                                                            echo $spec;
                                                         }
                                                         ?>
-                                                        </h4>
+                                                        </h5>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <!-- <div class="col-md-6">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 header-brand pl-0">
                                                         <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-lgo pull-right" style="height: 60px;" alt="<?php echo $settings->title;?>">
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
-                                        <?php if (!empty($doctor->license)) { ?>
+                                        <!-- <?php if (!empty($doctor->license)) { ?>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12 pl-0">
-                                                    <i class="fa fa-stethoscope"></i>  <?php echo lang('license');?> # : <?php echo $doctor->license; ?>
+                                                <div class="col-md-12 col-sm-12 pl-0 text-center">
+                                                    <i class="fa fa-stethoscope"></i>  <?php echo lang('license');?> # : <span class="h4"><?php echo $doctor->license; ?></span>
                                                 </div>
                                             </div>
-                                        <?php } ?>
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12 pl-0">
-                                                <i class="fe fe-mail"></i>  <?php echo $settings->address; ?>
+                                        <?php } ?> -->
+                                        <!-- <div class="row mb-5">
+                                            <div class="col-md-12 col-sm-12 pl-0 text-center">
+                                                <h5 class="mb-1"><i class="fa fa-map-marker"></i> <?php echo $settings->address; ?></h5>
+                                                <h5 class="mb-1"><?php echo $this->location_model->getBarangayById($settings->barangay_id)->name; ?>, <?php echo $this->location_model->getCityById($settings->city_id)->name; ?></h5>
+                                                <h5 class="mb-1"><i class="fe fe-phone"></i> <?php echo $doctor->phone; ?></h5>
+                                                <h5 class="mb-1"><i class="fe fe-mail"></i> <?php echo $doctor->email; ?></h5>
                                             </div>
-                                        </div>                                        
-                                        <div class="row mb-5">
-                                            <div class="col-md-12 col-sm-12 pl-0">
-                                                <i class="fe fe-phone"></i>  <?php echo $settings->phone; ?>
+                                        </div>        -->         
+                                        <div class="row mb-2">
+                                            <div class="col-md-12 pl-0 text-center">
+                                                <h6 class="mb-1"><i class="fe fe-phone"></i> <?php echo $doctor->phone; ?></h6>
+                                                <h6 class="mb-1"><i class="fe fe-mail"></i> <?php echo $doctor->email; ?></h6>
+                                            </div>
+                                        </div>            
+                                        <div class="row mb-2">
+                                            <?php foreach($branches as $branch) { ?>
+                                                <div class="col-md col-sm text-center">
+                                                    <p class="h6"><i class="fa fa-hospital-o"></i> <strong><?php echo $branch->display_name; ?></strong></p>
+                                                    <p class="h6"><i class="fa fa-map-marker"></i> <?php echo $branch->street_address; ?></p>
+                                                    <p class="h6"><?php echo $this->location_model->getBarangayById($branch->barangay_id)->name; ?>, <?php echo $this->location_model->getCityById($settings->city_id)->name; ?></p>
+                                                    <p class="h6"><i class="fe fe-phone"></i> <?php echo $branch->phone; ?></p>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                        <!-- <div class="row mb-5">
+                                            <div class="col-md-12 col-sm-12 pl-0 text-center">
+                                                <i class="fe fe-phone"></i> <span class="h4"><?php echo $settings->phone; ?></span>
+                                            </div>
+                                        </div> -->
+                                        <div class="row border-bottom border-dark">
+                                            
+                                        </div>
+                                        <div class="row border-top border-dark pt-3">
+                                            <div class="col-md-6 col-sm-6 p-0">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><?php echo lang('patient'); ?>: 
+                                                    <strong>
+                                                        <span class="h5">
+                                                            <?php
+                                                            if (!empty($patient)) {
+                                                                echo $patient->name;
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                    </strong>
+                                                    
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 p-0">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><?php echo lang('age'); ?>: 
+                                                    <strong>
+                                                        <span class="h5">
+                                                            <?php
+                                                            if (!empty($patient)) {
+                                                                $birthDate = strtotime($patient->birthdate);
+                                                                $birthDate = date('m/d/Y', $birthDate);
+                                                                $birthDate = explode("/", $birthDate);
+                                                                $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
+                                                                echo $age . ' Year(s)';
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                    </strong>
+                                                    
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 p-0">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><?php echo lang('gender'); ?>: <strong><span class="h5"><?php echo $patient->sex; ?></span></strong></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-3 border-bottom border-dark pb-3">
+                                            <div class="col-md-6 col-sm-6 p-0">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><?php echo lang('address');?> : <strong><span class="h5"><?php echo $patient->address;?></span></strong></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 p-0">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <strong><span class="h5"><?php echo $prescription->id; ?></span></strong></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 p-0">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><?php echo lang('date');?> : <strong><span class="h5"><?php echo date($settings->date_format_long?$settings->date_format_long:'F j, Y',strtotime($prescription->date)); ?></span></strong></label>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="row border-bottom border-dark">
                                             
                                         </div>
-                                        <div class="row border-top border-dark pt-3">
-                                            <div class="col-md-3 p-0">
-                                                <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('patient'); ?>: <?php
-                                                    if (!empty($patient)) {
-                                                        echo $patient->name;
-                                                    }
-                                                    ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 p-0">
-                                                <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('patient_id'); ?>: <?php
-                                                    if (!empty($patient)) {
-                                                        echo $patient->id;
-                                                    }
-                                                    ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 p-0">
-                                                <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('age'); ?>: <?php
-                                                    if (!empty($patient)) {
-                                                        $birthDate = strtotime($patient->birthdate);
-                                                        $birthDate = date('m/d/Y', $birthDate);
-                                                        $birthDate = explode("/", $birthDate);
-                                                        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
-                                                        echo $age . ' Year(s)';
-                                                    }
-                                                    ?>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 p-0">
-                                                <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('gender'); ?>: <?php echo $patient->sex; ?></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row pt-3">
-                                            <div class="col-md-6 p-0">
-                                                <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('address');?> : <?php echo $patient->address;?></label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 p-0">
-                                                <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <?php echo $prescription->id; ?></label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3 p-0">
-                                                <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('date');?> : <?php echo date($settings->date_format_long?$settings->date_format_long:'F j, Y',strtotime($prescription->date)); ?></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
+                                        <div class="row mt-3">
                                             <div class="col-md-12">
-                                                <div class="row">
+                                                <!-- <div class="row">
                                                     <div class="col-md-12 pl-0 mt-5">
                                                         <div class="form-group">
                                                             <h1>Rx</h1>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="row">
-                                                    <div class="col-md-12 pl-0">
+                                                    <div class="col-md-1 col-sm-1">
+                                                        <!-- <h1><strong>℞</strong></h1> -->
+                                                        <h1 class="fs-50">&#8478;</h1>
+                                                    </div>
+                                                    <div class="col-md-11 col-sm-11 pl-0">
                                                         <div class="form-group">
                                                             <?php
                                                             if (!empty($prescription->medicine)) {
@@ -229,9 +292,9 @@
                                                                         <?php $single_medicine = explode('***', $value); ?>
                                                                         <td><h4><?php echo $i += 1; ?></h4></td>
                                                                         <td class="pl-0">
-                                                                            <h4><strong><p><?php echo $this->medicine_model->getMedicineById($single_medicine[0])->generic ?></strong> ( <?php echo $this->medicine_model->getMedicineById($single_medicine[0])->name; ?> ) <?php echo $single_medicine[1]; ?></p>
-                                                                            <p>Sig: <?php echo $single_medicine[3] ?></p>
-                                                                            <p>( <?php echo $single_medicine[4] ?> )</p></h4>
+                                                                            <h4><p class="mb-2"><strong><?php echo $this->medicine_model->getMedicineById($single_medicine[0])->generic ?></strong> ( <?php echo $this->medicine_model->getMedicineById($single_medicine[0])->name; ?> ) <?php echo $single_medicine[1]; ?></p>
+                                                                            <p class="mb-2">Sig: <?php echo $single_medicine[3] ?></p>
+                                                                            <p class="mb-2">(<?php echo $single_medicine[4] ?>)</p></h4>
                                                                         </td>
                                                                         <td class="pl-0"><h4><p>#<?php echo $single_medicine[2] ?></p></h4></td>
                                                                     </tr>
@@ -279,37 +342,46 @@
                                         <div class="row mt-8"></div>
                                         <div class="row mt-6"></div>
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-7 col-sm-7">
                                                 <div class="form-group">
-                                                    <label class="form-label border-top">
+                                                    <!-- <label class="form-label border-top">
                                                         <?php echo lang('eprescription_label');?>
-                                                    </label>
+                                                    </label> -->
                                                 </div>
                                             </div>
-                                            <div class="col-md-8 text-right">
+                                            <div class="col-md-5 col-sm-5">
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <h3 class="mb-1 pull-right border-top border-dark"><?php echo $doctor->name; ?></h3>
+                                                        <div class="row border-bottom border-dark text-center">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <img src="<?php echo $signature->signature; ?>" width="auto" height="auto" style="max-width:200px;max-height:200px; margin-bottom:-30px;"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <h5 class="mb-1 pt-3"><strong><?php echo $doctor->firstname . ' ' . $doctor->middlename . ' ' . $doctor->lastname; ?>, M.D.</strong></h5>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <label class="mb-1"><?php echo lang('license') ?>: <?php echo $doctor->license; ?></label>
+                                                        <label class="mb-1 h5"><?php echo lang('license') ?>: <?php echo $doctor->license; ?></label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <label class="mb-1"><?php echo lang('tin') ?>: <?php echo $doctor->tax_number; ?></label>
+                                                        <label class="mb-1 h5"><?php echo lang('tin') ?>: <?php echo $doctor->tax_number; ?></label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <label class="mb-1"><?php echo lang('ptr') ?>: <?php echo $doctor->tax_receipt_number; ?></label>
+                                                        <label class="mb-1 h5"><?php echo lang('ptr') ?>: <?php echo $doctor->tax_receipt_number; ?></label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <label class="mb-1"><?php echo lang('s2') ?>: <?php echo $doctor->secondary_license_number; ?></label>
+                                                        <label class="mb-1 h5"><?php echo lang('s2') ?>: <?php echo $doctor->secondary_license_number; ?></label>
                                                     </div>
                                                 </div>
                                                 <!-- <div class="row">
@@ -387,12 +459,15 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
         <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 
+        <script src="<?php echo base_url('public/assets/plugins/signature/signature_plugin.min.js'); ?>"></script>
+
+
         <script>
             document.getElementById('create_pdf').onclick = function() {
                 var element = document.getElementById('content');
 
                 var opt = {
-                    margin: 0.2,
+                    margin: 0.1,
                     filename: '<?php echo $patient->name; ?> Prescription.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2 },
