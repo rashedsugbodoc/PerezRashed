@@ -30,7 +30,21 @@
 
                                                 }
                                             ?>
-                                            
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label><?php echo lang('professional_display_name'); ?></label>
+                                                        <input type="text" name="professional_display_name" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('professional_display_name');
+                                                        }
+                                                        if (!empty($doctor->professional_display_name)) {
+                                                            echo $doctor->professional_display_name;
+                                                        }
+                                                        ?>">
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -165,22 +179,22 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo lang('department'); ?></label>
-                                                        <select class="form-control select2-show-search" name="department" value=''>
-                                                            <?php foreach ($departments as $department) { ?>
-                                                                <option value="<?php echo $department->name; ?>" <?php
+                                                        <label for="exampleInputEmail1"><?php echo lang('specialization'); ?></label>
+                                                        <select class="form-control select2-show-search" name="specialization[]" id="specialtychoose" multiple="multiple">
+                                                            <!-- <?php foreach ($specialties as $specialty) { ?>
+                                                                <option value="<?php echo $specialty->display_name; ?>" <?php
                                                                 if (!empty($setval)) {
-                                                                    if ($department->name == set_value('department')) {
+                                                                    if ($specialty->display_name == set_value('department')) {
                                                                         echo 'selected';
                                                                     }
                                                                 }
-                                                                if (!empty($doctor->department)) {
-                                                                    if ($department->name == $doctor->department) {
+                                                                if (!empty($doctor->specialties)) {
+                                                                    if ($specialty->display_name == $doctor->specialties) {
                                                                         echo 'selected';
                                                                     }
                                                                 }
-                                                                ?> > <?php echo $department->name; ?> </option>
-                                                                    <?php } ?> 
+                                                                ?> > <?php echo $specialty->display_name; ?> </option>
+                                                                    <?php } ?>  -->
                                                         </select>
                                                     </div>
                                                 </div>
@@ -204,7 +218,59 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('license'); ?>: <span class="text-red">*</span></label>
-                                                        <input type="text" name="license" class="form-control">
+                                                        <input type="text" name="license" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('license');
+                                                        }
+                                                        if (!empty($doctor->license)) {
+                                                            echo $doctor->license;
+                                                        }
+                                                        ?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('tin'); ?>: <span class="text-red">*</span></label>
+                                                        <input type="text" name="tin" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('tin');
+                                                        }
+                                                        if (!empty($doctor->tax_number)) {
+                                                            echo $doctor->tax_number;
+                                                        }
+                                                        ?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('ptr'); ?>: <span class="text-red">*</span></label>
+                                                        <input type="text" name="ptr" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('ptr');
+                                                        }
+                                                        if (!empty($doctor->tax_receipt_number)) {
+                                                            echo $doctor->tax_receipt_number;
+                                                        }
+                                                        ?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('s2'); ?>: <span class="text-red">*</span></label>
+                                                        <input type="text" name="s2" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('s2');
+                                                        }
+                                                        if (!empty($doctor->secondary_license_number)) {
+                                                            echo $doctor->secondary_license_number;
+                                                        }
+                                                        ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -391,6 +457,10 @@
                 } else {
                     $('#doctorForm').find('[name="country_id"]').val(response.doctor.country_id).change()
                 }
+
+                $.each(response.specialties, function(key, value) {
+                    $('#specialtychoose').append($('<option selected>').text(value.display_name_ph).val(value.id)).end();
+                });
 
                 // if (doctor_country == country){
                 //     $("#state").val(doctor_state);
@@ -755,6 +825,34 @@
 
         });
 
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#specialtychoose").select2({
+                placeholder: '<?php echo lang('select_specialty'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'doctor/getSpecialtyinfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        console.log(response);
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
     </script>
 
     <script>

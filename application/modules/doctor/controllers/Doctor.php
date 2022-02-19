@@ -108,10 +108,10 @@ class Doctor extends MX_Controller {
             }
         }
 
-        
         $fname = $this->input->post('f_name');
         $lname = $this->input->post('l_name');
         $mname = $this->input->post('m_name');
+        $professional_display_name = $this->input->post('professional_display_name');
         $suffix = $this->input->post('suffix');
         $password = $this->input->post('password');
         $email = $this->input->post('email');
@@ -133,6 +133,11 @@ class Doctor extends MX_Controller {
 
         $emailById = $this->doctor_model->getDoctorById($id)->email;
 
+        $signature = $this->input->post('signature-result');
+        $encoded_image = explode(",", $signature)[1];
+        $decoded_image = base64_decode($encoded_image);
+        file_put_contents("signature.txt", $decoded_image);
+
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Password Field
@@ -141,6 +146,8 @@ class Doctor extends MX_Controller {
         $this->form_validation->set_rules('l_name', 'Last Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Password Field
         $this->form_validation->set_rules('m_name', 'Middle Name', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('professional_display_name', 'Professional Display Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Password Field
         $this->form_validation->set_rules('suffix', 'Suffix', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Password Field
@@ -161,7 +168,7 @@ class Doctor extends MX_Controller {
         // Validating Postal Field   
         $this->form_validation->set_rules('postal', 'Postal', 'trim|alpha_numeric|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
-        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[11]|max_length[50]|xss_clean');
         // Validating Department Field   
         $this->form_validation->set_rules('department', 'Department', 'trim|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
@@ -176,6 +183,7 @@ class Doctor extends MX_Controller {
             if (!empty($id)) {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
+                $data['specialties'] = $this->specialty_model->getSpecialty();
                 $data['departments'] = $this->department_model->getDepartment();
                 $data['doctor'] = $this->doctor_model->getDoctorById($id);
                 $data['doctors'] = $this->doctor_model->getDoctor();
@@ -190,6 +198,7 @@ class Doctor extends MX_Controller {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
+                $data['specialties'] = $this->specialty_model->getSpecialty();
                 $data['departments'] = $this->department_model->getDepartment();
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['countries'] = $this->location_model->getCountry();
@@ -243,6 +252,7 @@ class Doctor extends MX_Controller {
                 'firstname' => $fname,
                 'lastname' => $lname,
                 'middlename' => $mname,
+                'professional_display_name' => $professional_display_name,
                 'suffix' => $suffix,
                 'email' => $email,
                 'address' => $address,
@@ -284,6 +294,7 @@ class Doctor extends MX_Controller {
                         $this->ion_auth->register($username, $password, $email, $dfg);
                         $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
                         $this->doctor_model->insertDoctor($data);
+                        $inserted_id = $this->db->insert_id();
                         $doctor_user_id = $this->db->get_where('doctor', array('email' => $email))->row()->id;
                         $id_info = array('ion_user_id' => $ion_user_id);
                         $this->doctor_model->updateDoctor($doctor_user_id, $id_info);
@@ -334,6 +345,14 @@ class Doctor extends MX_Controller {
                         //end
 
                         $this->session->set_flashdata('success', lang('record_added'));
+                        
+                        $userId = $this->doctor_model->getDoctorById($inserted_id)->ion_user_id;
+                        $signature = array(
+                            'user_id' => $userId,
+                            'signature' => $signature,
+                        );
+
+                        $this->doctor_model->insertUserSignatureByUserId($signature);
                         redirect('doctor');
                     } else {
                         //additional validation for uploading file in add modal
@@ -357,6 +376,7 @@ class Doctor extends MX_Controller {
                             $this->ion_auth->register($username, $password, $email, $dfg);
                             $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
                             $this->doctor_model->insertDoctor($data);
+                            $inserted_id = $this->db->insert_id();
                             $doctor_user_id = $this->db->get_where('doctor', array('email' => $email))->row()->id;
                             $id_info = array('ion_user_id' => $ion_user_id);
                             $this->doctor_model->updateDoctor($doctor_user_id, $id_info);
@@ -407,6 +427,15 @@ class Doctor extends MX_Controller {
                             //end
 
                             $this->session->set_flashdata('success', lang('record_added'));
+
+                            $userId = $this->doctor_model->getDoctorById($inserted_id)->ion_user_id;
+                            $signature = array(
+                                'user_id' => $userId,
+                                'signature' => $signature,
+                            );
+
+                            $this->doctor_model->insertUserSignatureByUserId($signature);
+
                             redirect('doctor');
                         }
 

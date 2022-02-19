@@ -5,6 +5,27 @@
                 <!--div class="app-content main-content"-->
                     <!--div class="side-app"-->
                         <!--Page header-->
+                            <!-- <style>
+                                .wrapper {
+                                    position: relative;
+                                    width: 400px;
+                                    height: 200px;
+                                    -moz-user-select: none;
+                                    -webkit-user-select: none;
+                                    -ms-user-select: none;
+                                    user-select: none;
+                                    border: solid 1px #ddd;
+                                    margin: 10px 0px;
+                                }
+                                .signature-pad {
+                                    position: absolute;
+                                    left: 0;
+                                    top: 0;
+                                    width:400px;
+                                    height:200px;
+                                }
+                            </style> -->
+
                         <div class="content mt-5">
                             <section id="main-content">
                                 <section class="wrapper site-min-height">
@@ -56,13 +77,13 @@
                                             <div class="row">
                                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                                     <div class="row">
-                                                        <div class="col-md-6 col-sm-6">
+                                                        <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
                                                                 <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6 col-sm-6">
+                                                        <div class="col-md-6 col-sm12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
                                                                 <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
@@ -70,7 +91,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-md-6 col-sm-6">
+                                                        <div class="col-md-6 col-sm12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
                                                                 <div class="input-group">
@@ -90,34 +111,40 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6 col-sm-6">
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('professional_display_name') ?><span class="text-red">*</span></label>
+                                                                <input type="text" name="professional_display_name" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
                                                                 <input type="email" class="form-control" name="email" placeholder="Email">
                                                             </div>
                                                         </div>
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('password'); ?>: <span class="text-red">*</span></label>
+                                                                <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('password'); ?>: <span class="text-red">*</span></label>
-                                                            <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255">
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('address'); ?>: <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" placeholder="Address" name="address">
+                                                            </div>
                                                         </div>
-                                                        </div>
-                                                        <div class="col-sm-6 col-md-6">
+                                                        <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('phone'); ?>: <span class="text-red">*</span></label>
                                                                 <form>
                                                                     <input id="phone" name="phone" value="+63" class="form-control" type="tel" maxlength="20">
                                                                  </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('address'); ?>: <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" placeholder="Address" name="address">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -206,19 +233,41 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('ptr') ?></label>
+                                                                <input type="text" name="ptr" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('s2') ?></label>
+                                                                <input type="text" name="s2" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
-                                                                        <label class="form-label"><?php echo lang('ptr') ?></label>
-                                                                        <input type="text" name="ptr" class="form-control">
+                                                                        <label class="form-label">Signature</label>
+                                                                        <canvas id="signature-pad" class="signature-pad border border-dark" width=300 height=200></canvas>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
-                                                                        <label class="form-label"><?php echo lang('s2') ?></label>
-                                                                        <input type="text" name="s2" class="form-control">
+                                                                        <button id="clear" class="btn btn-sm btn-secondary">Clear</button>
+                                                                        <button id="save" class="btn btn-sm btn-success">Save</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <textarea type="hidden" id='signature-result' class="form-control" name="signature-result"></textarea>
+                                                                        <img src="" id="signature-img-result" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -287,19 +336,33 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('professional_display_name') ?><span class="text-red">*</span></label>
+                                                                <input type="text" name="professional_display_name" class="form-control" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
                                                                 <input type="email" class="form-control" name="email" placeholder="Email">
                                                             </div>
                                                         </div>
+                                                        <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('password'); ?>: <span class="text-red">*</span></label>
+                                                                <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255">
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('password'); ?>: <span class="text-red">*</span></label>
-                                                            <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255">
-                                                        </div>
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('address'); ?>: <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" value="V-Road Cebu City" placeholder="Address" name="address">
+                                                            </div>
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
@@ -307,14 +370,6 @@
                                                                 <form>
                                                                     <input id="phone2" class="form-control" name="phone" value="+639105233217" type="tel" maxlength="20">
                                                                  </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('address'); ?>: <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" value="V-Road Cebu City" placeholder="Address" name="address">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -400,22 +455,21 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-12">
-                                                            <div class="row">
-                                                                <div class="col-md-12 col-sm-12">
-                                                                    <div class="form-group">
-                                                                        <label class="form-label"><?php echo lang('ptr') ?></label>
-                                                                        <input type="text" name="ptr" class="form-control">
-                                                                    </div>
-                                                                </div>
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('ptr') ?></label>
+                                                                <input type="text" name="ptr" class="form-control">
                                                             </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12 col-sm-12">
-                                                                    <div class="form-group">
-                                                                        <label class="form-label"><?php echo lang('s2') ?></label>
-                                                                        <input type="text" name="s2" class="form-control">
-                                                                    </div>
-                                                                </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('s2') ?></label>
+                                                                <input type="text" name="s2" class="form-control">
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
+                                                            
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
                                                             <label class="form-label">Image Upload <span class="text-red">*</span></label>
@@ -469,8 +523,32 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('tin'); ?>: </label>
+                                                                <label class="form-label taxNumberClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('ptr'); ?>: </label>
+                                                                <label class="form-label taxReceiptNumberClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('professional_display_name'); ?>: </label>
+                                                                <label class="form-label professionalDisplayNameClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
@@ -682,6 +760,42 @@
 
     <!-- INTERNAL JS INDEX END -->
 
+    <script src="<?php echo base_url('public/assets/plugins/signature/signature_plugin.min.js'); ?>"></script>
+    <script>
+    $(function() {
+        // init signaturepad
+        var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+                backgroundColor: 'rgba(255, 255, 255, 0)',
+        penColor: 'rgb(0, 0, 0)'
+        });
+
+        // get image data and put to hidden input field
+        function getSignaturePad() {
+            var imageData = signaturePad.toDataURL('image/png');
+            // var output = document.getElementById("signature-result");
+            // output.value = "";
+            // for (i=0; i < imageData.length; i++) {
+            //     output.value += imageData[i].charCodeAt(0).toString(2) + " ";
+            // }
+            $('#signature-result').val(imageData)
+            $('#signature-img-result').attr('src',"data:"+imageData);
+        }
+
+        // form action
+        $('#save').click(function() {
+            getSignaturePad();
+            return false; // set true to submits the form.
+        });
+
+        // action on click button clea
+        $('#clear').click(function(e) {
+            e.preventDefault();
+            $("#signature-result").val('');
+            signaturePad.clear();
+        })
+    });
+    </script>
+
     <script type="text/javascript">
         // debugger;
 
@@ -702,6 +816,7 @@
                     success: function (response) {
                         // Populate the form fields with the data returned from server
                         $('#editDoctorForm').find('[name="id"]').val(response.doctor.id).end()
+                        $('#editDoctorForm').find('[name="professional_display_name"]').val(response.doctor.professional_display_name).end()
                         $('#editDoctorForm').find('[name="name"]').val(response.doctor.name).end()
                         $('#editDoctorForm').find('[name="f_name"]').val(response.doctor.firstname).end()
                         $('#editDoctorForm').find('[name="l_name"]').val(response.doctor.lastname).end()
@@ -944,6 +1059,9 @@
                 $('.departmentClass').html("").end()
                 $('.profileClass').html("").end()
                 $('.licenseClass').html("").end()
+                $('.professionalDisplayNameClass').html("").end()
+                $('.taxNumberClass').html("").end()
+                $('.taxReceiptNumberClass').html("").end()
                 $.ajax({
                     url: 'doctor/editDoctorByJason?id=' + iid,
                     method: 'GET',
@@ -959,6 +1077,9 @@
                         $('.departmentClass').append(response.doctor.department).end()
                         $('.profileClass').append(response.doctor.profile).end()
                         $('.licenseClass').append(response.doctor.license).end()
+                        $('.professionalDisplayNameClass').append(response.doctor.professional_display_name).end()
+                        $('.taxNumberClass').append(response.doctor.tax_number).end()
+                        $('.taxReceiptNumberClass').append(response.doctor.tax_receipt_number).end()
 
                         if (response.doctor.country_id !== null){
                             $('.countryClass').append(response.country.name).end()

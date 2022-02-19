@@ -16,6 +16,19 @@ class Doctor_model extends CI_model {
         $this->db->insert('doctor', $data2);
     }
 
+    function insertUserSignatureByUserId($signature) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($signature, $data1);
+        $this->db->insert('user_signature', $data2);
+    }
+
+    function getUserSignatureByUserId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('user_id', $id);
+        $query = $this->db->get('user_signature');
+        return $query->row();
+    }
+
     function getDoctor() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('doctor');
