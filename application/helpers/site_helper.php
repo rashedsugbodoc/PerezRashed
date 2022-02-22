@@ -69,4 +69,16 @@ function getDoctorInfo() {
 
         return $celsiusTemp;
     }
+
+    function convertMgtoMmol($mg) {
+        $mmol = $mg / 18;
+
+        return $mmol;
+    }
+
+    function convertMmoltoMg($mmol) {
+        $mg = 18 * $mmol;
+
+        return $mg;
+    }
 ?>
