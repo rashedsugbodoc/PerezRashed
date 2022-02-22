@@ -521,6 +521,7 @@ $lang['to'] = 'to';
 $lang['due'] = 'Due';
 $lang['case_history'] = 'Case History';
 $lang['case_notes'] = 'Case Notes';
+$lang['image_saved'] = 'Image is Saved';
 $lang['save_and_add_case'] = 'Save and Add New Case';
 $lang['patient_list'] = 'Patient List';
 $lang['documents'] = 'Documents';
