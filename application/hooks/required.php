@@ -32,34 +32,48 @@ function required() {
         if (!$CI->ion_auth->in_group(array('superadmin'))) {
             if ($CI->ion_auth->in_group(array('admin'))) {
                 $current_user_id = $CI->ion_auth->user()->row()->id;
-                $CI->hospital_id = $CI->db->get_where('hospital', array('ion_user_id' => $current_user_id))->row()->id;
+                $CI->hospital_id = $CI->db->get_where('admin', array('ion_user_id' => $current_user_id))->row()->hospital_id;
+                $CI->timezone = $CI->db->get_where('settings', array('hospital_id' => $CI->hospital_id))->row()->timezone;
                 if (!empty($CI->hospital_id)) {
                     $newdata = array(
                         'hospital_id' => $CI->hospital_id,
                     );
                     $CI->session->set_userdata($newdata);
                 }
+                if (!empty($CI->timezone)) {
+                    date_default_timezone_set($CI->timezone);
+                }
+
+
             } else {
                 $current_user_id = $CI->ion_auth->user()->row()->id;
                 $group_id = $CI->db->get_where('users_groups', array('user_id' => $current_user_id))->row()->group_id;
                 $group_name = $CI->db->get_where('groups', array('id' => $group_id))->row()->name;
                 $group_name = strtolower($group_name);
                 $CI->hospital_id = $CI->db->get_where($group_name, array('ion_user_id' => $current_user_id))->row()->hospital_id;
+                $CI->timezone = $CI->db->get_where('settings', array('hospital_id' => $CI->hospital_id))->row()->timezone;
                 if (!empty($CI->hospital_id)) {
                     $newdata = array(
                         'hospital_id' => $CI->hospital_id,
                     );
                     $CI->session->set_userdata($newdata);
                 }
+                if (!empty($CI->timezone)) {
+                    date_default_timezone_set($CI->timezone);
+                }
             }
         } else {
             $CI->hospital_id = 'superadmin';
+            $CI->timezone = 'Asia/Manila';
             if (!empty($CI->hospital_id)) {
                 $newdata = array(
                     'hospital_id' => $CI->hospital_id,
                 );
                 $CI->session->set_userdata($newdata);
             }
+            if (!empty($CI->timezone)) {
+                date_default_timezone_set($CI->timezone);
+            }            
         }
     }
 
@@ -99,7 +113,8 @@ function required() {
         if (!$CI->ion_auth->in_group(array('superadmin'))) {
             if ($CI->ion_auth->in_group(array('admin'))) {
                 $current_user_id = $CI->ion_auth->user()->row()->id;
-                $modules = $CI->db->get_where('hospital', array('ion_user_id' => $current_user_id))->row()->module;
+                $hospital_id = $CI->db->get_where('admin', array('ion_user_id' => $current_user_id))->row()->hospital_id;
+                $modules = $CI->db->get_where('hospital', array('id' => $hospital_id))->row()->module;
                 $CI->modules = explode(',', $modules);
             } else {
                 $current_user_id = $CI->ion_auth->user()->row()->id;
