@@ -264,6 +264,11 @@ class Patient_model extends CI_model {
         $this->db->insert('patient_material', $data2);
     }
 
+    function updatePatientMaterial($id, $data) {
+        $this->db->where('id',$id);
+        $this->db->update('patient_material', $data);
+    }
+
     function getPatientMaterial() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
