@@ -15,18 +15,26 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" action="branch/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="branchForm" action="branch/addNew" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('display_name'); ?></label>
-                                                        <input type="text" name="display_name" class="form-control">
+                                                        <input type="text" name="display_name" class="form-control" value="<?php
+                                                        if (!empty($branch->display_name)) {
+                                                            echo $branch->display_name;
+                                                        }
+                                                        ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('address'); ?></label>
-                                                        <input type="text" name="address" class="form-control">
+                                                        <input type="text" name="address" class="form-control" value="<?php
+                                                        if (!empty($branch->street_address)) {
+                                                            echo $branch->street_address;
+                                                        }
+                                                        ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
@@ -36,18 +44,16 @@
                                                             <option value="0" selected disabled><?php echo lang('country_placeholder'); ?></option>
                                                             <?php foreach ($countries as $country) { ?>
                                                                 <option value="<?php echo $country->id; ?>" <?php
-                                                                if (!empty($setval)) {
-                                                                    if ($country->id == set_value('country_id')) {
-                                                                        echo 'selected';
+
+                                                                    if (!empty($branch->country_id)) {
+                                                                        if ($country->id == $branch->country_id) {
+                                                                            echo 'selected';
+                                                                        }
                                                                     }
-                                                                }
-                                                                if (!empty($doctors->country_id)) {
-                                                                    if ($country->id == $doctors->country_id) {
-                                                                        echo 'selected';
-                                                                    }
-                                                                }
-                                                                ?> > <?php echo $country->name; ?> </option>
-                                                                    <?php } ?>
+
+                                                                    ?> > <?php echo $country->name; ?>
+                                                                </option>
+                                                            <?php } ?>
                                                         </select>      
                                                     </div>
                                                 </div>
@@ -78,9 +84,26 @@
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('postal'); ?></label>
-                                                        <input type="text" name="postal" class="form-control" placeholder="<?php echo lang('postal_placeholder'); ?>">
+                                                        <input type="text" name="postal" class="form-control" placeholder="<?php echo lang('postal_placeholder'); ?>" value='<?php
+                                                        if (!empty($branch->postal_code)) {
+                                                            echo $branch->postal_code;
+                                                        }
+                                                        ?>'>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('number'); ?></label>
+                                                        <input id="phone" name="phone" class="form-control" type="tel" maxlength="20" value="<?php
+                                                            if (!empty($branch->phone)) {
+                                                                echo $branch->phone;
+                                                            } else {
+                                                                echo '+63';
+                                                            }
+                                                        ?>">
+                                                    </div>
+                                                </div>
+                                                <input type="text" hidden name="id" id="id" value="<?php echo $id ?>">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <button class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
@@ -203,7 +226,7 @@
 
     <!-- INTERNAL JS INDEX END -->
 
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
         $("#edit_country").change(function () {
             var country = $("#edit_country").val();
             var barangay = document.getElementById("edit_barangayDiv");
@@ -293,7 +316,176 @@
                 }
             });
         });
+    </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var country = $("#country").val();
+            var iid = $("#id").val();
+
+            $.ajax({
+                url: 'branch/editBranchByJason?id=' + iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    // $('#doctorForm').find('[name="country_id"]').val(response.doctor.country_id).change()
+                    
+                    var branch_country = response.branch.country_id;
+                    var branch_state = response.branch.state_id;
+                    var branch_city = response.branch.city_id;
+                    var branch_barangay = response.branch.barangay_id;
+
+                    $("#state").find('option').remove();
+                    
+
+                    if (branch_country == null) {
+                        $("#state").attr("disabled", false);
+                    } else {
+                        $("#state").attr("disabled", true);
+                    }
+
+                    if (branch_country == null) {
+                        $('#branchForm').find('[name="country_id"]').val("0").change()
+                    } else {
+                        $('#branchForm').find('[name="country_id"]').val(response.branch.country_id).change()
+                    }
+                    console.log(response.branch.country_id);
+
+                    
+
+                    // if (doctor_country == country){
+                    //     $("#state").val(doctor_state);
+                    //     // $("#city").val(doctor_city);
+                    //     // $("#barangay").val(doctor_barangay);
+                    // } else {
+                    //     $("#state").val("0");
+                    //     $("#city").val("0");
+                    //     $("#barangay").val("0");
+                    // }
+
+                    if (branch_country == "174") {
+                        barangay.style.display='block';
+                    } else {
+                        barangay.style.display='none';
+                    }
+
+                    $.ajax({
+                        url: 'branch/getStateByIdByJason?id=' + branch_state,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+
+
+                            var branch_state_result = response.state.id;
+                            console.log(branch_state_result);
+
+                            if (branch_state_result == null) {
+                                $("#city").attr("disabled", false);
+                            } else {
+                                $("#city").attr("disabled", true);
+                            }
+
+                            if (branch_state_result == null) {
+                                $('#branchForm').find('[name="state_id"]').val("0").change()
+                            } else {
+                                $('#branchForm').find('[name="state_id"]').val(branch_state_result).change()
+                            }
+
+                            $.ajax({
+                                url: 'branch/getCityByIdByJason?id=' + branch_city,
+                                method: 'GET',
+                                data: '',
+                                dataType: 'json',
+                                success: function (response) {
+                                    var branch_city_result = response.city.id;
+                                    console.log(branch_city_result);
+
+                                    if (branch_city_result == null) {
+                                        $("#barangay").attr("disabled", false);
+                                    } else {
+                                        $("#barangay").attr("disabled", true);
+                                    }
+
+                                    if (branch_city_result == null) {
+                                        $('#branchForm').find('[name="city_id"]').val("0").change()
+                                    } else {
+                                        $('#branchForm').find('[name="city_id"]').val(branch_city_result).change()
+                                    }
+
+                                    $.ajax({
+                                        url: 'branch/getBarangayByIdByJason?id=' + branch_barangay,
+                                        method: 'GET',
+                                        data: '',
+                                        dataType: 'json',
+                                        success: function (response) {
+                                            var branch_barangay_result = response.barangay.id;
+                                            console.log(branch_barangay_result);
+
+                                            if (branch_barangay_result == null) {
+                                                $('#branchForm').find('[name="barangay_id"]').val("0").change()
+                                            } else {
+                                                $('#branchForm').find('[name="barangay_id"]').val(branch_barangay_result).change()
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                            
+                        }
+                    });
+
+                }
+            });
+        });
     </script>
+
+    <!-- <script type="text/javascript">
+        $("#country").change(function () {
+            var country = $("#country").val();
+            var iid = $("#id").val();
+
+            $.ajax({
+                url: 'branch/getStateByCountryIdByJason?country=' + country + '&id=' + iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var state = response.state;
+                    var branch_state = response.branch.state_id;
+                    var branch_country = response.branch.country_id;
+
+                    console.log(state);
+
+                    $('#city').attr("disabled", true);
+                    $('#city').append($('<option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                    $('#barangay').attr("disabled", true);
+                    $('#barangay').append($('<option value="0" disabled selected><?php echo lang("barangay_placeholder"); ?></option>')).end();
+
+                    $.each(state, function (key, value) {
+                        $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                    });
+
+                    if (branch_state == null) {
+                        $("#state").val("0");
+                    } else {
+                        $("#state").val(branch_state);
+                    }
+
+                    if (branch_country == country){
+                        $("#state").val(branch_state);
+                        // $("#city").val(doctor_city);
+                        // $("#barangay").val(doctor_barangay);
+                    } else {
+                        $("#state").val("0");
+                        $("#city").val("0");
+                        $("#barangay").val("0");
+                    }
+                }
+            });
+        });
+    </script> -->
 
     <script type="text/javascript">
 

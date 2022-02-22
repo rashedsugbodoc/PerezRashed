@@ -17,24 +17,16 @@ class Branch extends MX_Controller {
 
     public function index() {
         $data['branches'] = $this->branch_model->getBranches();
-        // $country_id = $data['branches']->country_id;
-        // $state_id = $data['branches']->state_id;
-        // $city_id = $data['branches']->city_id;
-        // $barangay_id = $data['branches']->barangay_id;
-
-        // $data['country'] = $this->location_model->getCountryById($country_id);
-        // $data['state'] = $this->location_model->getStateById($state_id);
-        // $data['city'] = $this->location_model->getCityById($city_id);
-        // $data['barangay'] = $this->location_model->getBarangayById($barangay_id);
         $this->load->view('home/dashboardv2');
         $this->load->view('branch', $data);
     }
 
     public function addNewView() {
+        $data['id'] = $this->input->get('id');
+        if (!empty($data['id'])) {
+            $data['branch'] = $this->branch_model->getBranchById($data['id']);
+        }
         $data['countries'] = $this->location_model->getCountry();
-        $data['states'] = $this->location_model->getState();
-        $data['cities'] = $this->location_model->getCity();
-        $data['barangays'] = $this->location_model->getBarangay();
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
     }
@@ -48,6 +40,7 @@ class Branch extends MX_Controller {
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
+        $phone = $this->input->post('phone');
         $status = 'Active';
 
         $this->load->library('form_validation');
@@ -67,6 +60,8 @@ class Branch extends MX_Controller {
         $this->form_validation->set_rules('barangay', 'Barangay', 'trim|min_length[2]|max_length[8]|xss_clean');
         // Validating Password Field
         $this->form_validation->set_rules('postal', 'Postal', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[11]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
@@ -99,19 +94,66 @@ class Branch extends MX_Controller {
                 'city_id' => $city,
                 'barangay_id' => $barangay,
                 'postal_code' => $postal,
+                'phone' => $phone,
                 'status' => $status,
             );
             if (empty($id)) {
                 $this->branch_model->insertBranch($data);
                 $this->session->set_flashdata('success', lang('record_added'));
             } else {
-                $this->branch_model->updateBranch($data);
+                $this->branch_model->updateBranch($data, $id);
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
 
         redirect('branch');
         }
     }    
+
+    public function editBranchByJason() {
+        $id = $this->input->get('id');
+        $data['branch'] = $this->branch_model->getBranchById($id);
+
+        echo json_encode($data);
+    }
+
+    public function getStateByIdByJason() {
+        $id = $this->input->get('id');
+        $data['state'] = $this->location_model->getStateById($id);
+
+        echo json_encode($data);
+    }
+
+    public function getStateByCountryIdByJason() {
+        $country = $this->input->get('country');
+        $id = $this->input->get('id');
+        $data['state'] = $this->location_model->getStateByCountryId($country);
+        $data['branch'] = $this->branch_model->getBranchById($id);
+
+        echo json_encode($data);
+    }
+
+    public function getCityByIdByJason() {
+        $id = $this->input->get('id');
+        $data['city'] = $this->location_model->getCityById($id);
+
+        echo json_encode($data);
+    }
+
+    public function getCityByStateIdByJason() {
+        $state = $this->input->get('state');
+        $id = $this->input->get('id');
+        $data['city'] = $this->location_model->getCityByStateId($state);
+        $data['branch'] = $this->branch_model->getBranchById($id);
+
+        echo json_encode($data);
+    }
+
+    public function getBarangayByIdByJason() {
+        $id = $this->input->get('id');
+        $data['barangay'] = $this->location_model->getBarangayById($id);
+
+        echo json_encode($data);
+    }
 
 
 }

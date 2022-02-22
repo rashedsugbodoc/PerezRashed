@@ -17,10 +17,23 @@ class Branch_model extends CI_model {
         return $query->result();
     }
 
+    function getBranchesByLimit($limit) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'asc');
+        $this->db->limit($limit);
+        $query = $this->db->get('location');
+        return $query->result();
+    }
+
     function insertBranch($data) {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
         $this->db->insert('location', $data2);
+    }
+
+    function updateBranch($data, $id) {
+        $this->db->where('id', $id);
+        $this->db->update('location', $data);
     }
 
     function getBranchById($id) {

@@ -19,12 +19,14 @@
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered border-top table-vcenter text-nowrap mb-0">
+                                            <table class="table table-bordered border-top table-vcenter text-nowrap mb-0" id="editable-sample">
                                                 <thead>
                                                     <tr>
                                                         <th class="border-bottom-0"><?php echo lang('name'); ?></th>
                                                         <th class="border-bottom-0"><?php echo lang('address'); ?></th>
+                                                        <th class="border-bottom-0"><?php echo lang('phone'); ?></th>
                                                         <th class="border-bottom-0"><?php echo lang('status'); ?></th>
+                                                        <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -36,7 +38,9 @@
                                                                 <?php echo $this->location_model->getBarangayById($branch->barangay_id)->name; ?>, <?php echo $this->location_model->getCityById($branch->city_id)->name; ?><br>
                                                                 <?php echo $this->location_model->getStateById($branch->state_id)->name; ?>, <?php echo $this->location_model->getCountryById($branch->country_id)->name; ?> 
                                                             </td>
+                                                            <td><?php echo $branch->phone; ?></td>
                                                             <td><?php echo $branch->status; ?></td>
+                                                            <td><a href="branch/addNewView?id=<?php echo $branch->id; ?>" class="btn btn-info"><i class="fe fe-edit"></i> <?php echo lang('edit'); ?></a></td>
                                                         </tr>
                                                     <?php } ?>
                                                 </tbody>
@@ -63,6 +67,11 @@
                 </div>
             </footer>
             <!-- End Footer-->
+
+            <!-- Back to top -->
+            <a href="#top" id="back-to-top">
+                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
+            </a>
         </div>
 
     <!-- INTERNAL JS INDEX START -->
@@ -147,7 +156,7 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 iDisplayLength: -1,
-                "order": [[0, "desc"]],
+                "order": [[0, "asc"]],
 
                 "language": {
                     "lengthMenu": "_MENU_",
