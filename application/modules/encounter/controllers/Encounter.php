@@ -60,7 +60,7 @@ class Encounter extends MX_Controller {
 
         $user = $this->session->userdata('user_id');
 
-        $date = date("Y-m-d H:i:s", now('UTC'));
+        $data = gmdate('Y-m-d H:i:s');
 
         $encounter_status = $this->input->post('encounter_status');
 
@@ -207,7 +207,7 @@ class Encounter extends MX_Controller {
                 $option5 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             }
             $info[] = array(
-                $encounter->created_at,
+                date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')),
                 $encounter->encounter_number,
                 $patient,
                 $doctor,
