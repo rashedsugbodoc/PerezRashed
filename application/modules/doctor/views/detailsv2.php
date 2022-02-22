@@ -874,7 +874,7 @@
         <!-- Full-calendar js-->
         <script src='<?php echo base_url('public/assets/plugins/fullcalendar/moment.min.js'); ?>'></script>
         <script src='<?php echo base_url('public/assets/plugins/fullcalendar/fullcalendar.min.js'); ?>'></script>
-        <script src="<?php echo base_url('public/assets/js/app-calendar-events.js'); ?>"></script>
+        <!-- <script src="<?php echo base_url('public/assets/js/app-calendar-events.js'); ?>"></script> -->
         <script src="<?php echo base_url('public/assets/js/app-calendar.js'); ?>"></script>
 
         <!--Select2 js -->
@@ -940,6 +940,78 @@
 
     <!-- INTERNAL JS INDEX END -->
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#calendar').fullCalendar({
+                lang: 'en',
+                events: 'appointment/getAppointmentByJason',
+                header:
+                        {
+                            left: 'prev,next today',
+                            center: 'title',
+                            right: 'month,basicWeek,basicDay',
+                        },
+                /*    timeFormat: {// for event elements
+                 'month': 'h:mm TT A {h:mm TT}', // default
+                 'week': 'h:mm TT A {h:mm TT}', // default
+                 'day': 'h:mm TT A {h:mm TT}'  // default
+                 },
+                 
+                 */
+                timeFormat: 'h(:mm) A',
+                eventRender: function (event, element) {
+                    element.find('.fc-time').html(element.find('.fc-time').text());
+                    element.find('.fc-title').html(element.find('.fc-title').text());
+
+                },
+                eventClick: function (event) {
+                    $('#medical_history').html("");
+                    if (event.id) {
+                        $.ajax({
+                            url: 'patient/getMedicalHistoryByJason?id=' + event.id + '&from_where=calendar',
+                            method: 'GET',
+                            data: '',
+                            dataType: 'json',
+                            success: function (response) {
+                                // Populate the form fields with the data returned from server
+                                $('#medical_history').html("");
+                                $('#medical_history').append(response.view);
+                            }
+                        });
+                        //alert(event.id);
+
+                    }
+
+                    $('#cmodal').modal('show');
+                },
+
+                /*   eventMouseover: function (calEvent, domEvent) {
+                 var layer = "<div id='events-layer' class='fc-transparent' style='position:absolute; width:100%; height:100%; top:-1px; text-align:right; z-index:100'>Description</div>";
+                 $(this).append(layer);
+                 },
+                 
+                 eventMouseout: function (calEvent, domEvent) {
+                 $(this).append(layer);
+                 },
+                 
+                 */
+
+                slotDuration: '00:5:00',
+                businessHours: false,
+                slotEventOverlap: false,
+                editable: false,
+                selectable: false,
+                lazyFetching: true,
+                minTime: "6:00:00",
+                maxTime: "24:00:00",
+                defaultView: 'month',
+                allDayDefault: false,
+                displayEventEnd: true,
+                timezone: false,
+
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
