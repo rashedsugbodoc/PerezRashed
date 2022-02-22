@@ -465,4 +465,15 @@ class Patient_model extends CI_model {
         return $query->row();
     }
 
+    function updatePatientVital($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('vital', $data);
+    }
+
+    function deleteVital($id, $user) {
+        $this->db->where('id', $id);
+        $this->db->where('recorded_user_id', $user);
+        $this->db->delete('vital');
+    }
+
 }

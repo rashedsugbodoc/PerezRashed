@@ -39,9 +39,6 @@ class Patient extends MX_Controller {
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['settings'] = $this->settings_model->getSettings();
         $data['countries'] = $this->location_model->getCountry();
-        $data['states'] = $this->location_model->getState();
-        $data['cities'] = $this->location_model->getCity();
-        $data['barangays'] = $this->location_model->getBarangay();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('patientv2', $data);
         // $this->load->view('home/footer'); // just the header file
@@ -234,9 +231,6 @@ class Patient extends MX_Controller {
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['groups'] = $this->donor_model->getBloodBank();
                 $data['countries'] = $this->location_model->getCountry();
-                $data['states'] = $this->location_model->getState();
-                $data['cities'] = $this->location_model->getCity();
-                $data['barangays'] = $this->location_model->getBarangay();
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_newv2', $data);
                 // $this->load->view('home/footer'); // just the footer file
@@ -247,9 +241,6 @@ class Patient extends MX_Controller {
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['groups'] = $this->donor_model->getBloodBank();
                 $data['countries'] = $this->location_model->getCountry();
-                $data['states'] = $this->location_model->getState();
-                $data['cities'] = $this->location_model->getCity();
-                $data['barangays'] = $this->location_model->getBarangay();
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_newv2', $data);
                 // $this->load->view('home/footer'); // just the header file
@@ -324,9 +315,6 @@ class Patient extends MX_Controller {
                     $data['doctors'] = $this->doctor_model->getDoctor();
                     $data['groups'] = $this->donor_model->getBloodBank();
                     $data['countries'] = $this->location_model->getCountry();
-                    $data['states'] = $this->location_model->getState();
-                    $data['cities'] = $this->location_model->getCity();
-                    $data['barangays'] = $this->location_model->getBarangay();
                     $this->load->view('home/dashboardv2'); // just the header file
                     $this->load->view('add_newv2', $data);
                     // $this->load->view('home/footer'); // just the footer file
@@ -404,9 +392,6 @@ class Patient extends MX_Controller {
                             $data['doctors'] = $this->doctor_model->getDoctor();
                             $data['groups'] = $this->donor_model->getBloodBank();
                             $data['countries'] = $this->location_model->getCountry();
-                            $data['states'] = $this->location_model->getState();
-                            $data['cities'] = $this->location_model->getCity();
-                            $data['barangays'] = $this->location_model->getBarangay();
                             $this->load->view('home/dashboardv2'); // just the header file
                             $this->load->view('add_newv2', $data);
                             // $this->load->view('home/footer'); // just the footer file
@@ -483,9 +468,6 @@ class Patient extends MX_Controller {
                         $data['doctors'] = $this->doctor_model->getDoctor();
                         $data['groups'] = $this->donor_model->getBloodBank();
                         $data['countries'] = $this->location_model->getCountry();
-                        $data['states'] = $this->location_model->getState();
-                        $data['cities'] = $this->location_model->getCity();
-                        $data['barangays'] = $this->location_model->getBarangay();
                         $this->load->view('home/dashboardv2'); // just the header file
                         $this->load->view('add_newv2', $data);
                         // $this->load->view('home/footer'); // just the footer file
@@ -515,9 +497,6 @@ class Patient extends MX_Controller {
                                 $data['doctors'] = $this->doctor_model->getDoctor();
                                 $data['groups'] = $this->donor_model->getBloodBank();
                                 $data['countries'] = $this->location_model->getCountry();
-                                $data['states'] = $this->location_model->getState();
-                                $data['cities'] = $this->location_model->getCity();
-                                $data['barangays'] = $this->location_model->getBarangay();
                                 $this->load->view('home/dashboardv2'); // just the header file
                                 $this->load->view('add_newv2', $data);
                                 // $this->load->view('home/footer'); // just the footer file
@@ -560,9 +539,6 @@ class Patient extends MX_Controller {
                             $data['doctors'] = $this->doctor_model->getDoctor();
                             $data['groups'] = $this->donor_model->getBloodBank();
                             $data['countries'] = $this->location_model->getCountry();
-                            $data['states'] = $this->location_model->getState();
-                            $data['cities'] = $this->location_model->getCity();
-                            $data['barangays'] = $this->location_model->getBarangay();
                             $this->load->view('home/dashboardv2'); // just the header file
                             $this->load->view('add_newv2', $data);
                             // $this->load->view('home/footer'); // just the footer file
@@ -1085,6 +1061,9 @@ class Patient extends MX_Controller {
 
         $data = array();
 
+        $redirect = $this->input->post('redirect');
+
+        $vital_id = $this->input->post('id');
         $data['settings'] = $this->settings_model->getSettings();
         $id = $this->input->post('patient');
         $encounter_id = $this->input->post('encounter_id');
@@ -1093,6 +1072,7 @@ class Patient extends MX_Controller {
         $date_measured = $this->input->post('date');
         $time_measured = $this->input->post('time');
         $systolic = $this->input->post('systolic');
+        $pain = $this->input->post('pain_level');
         if(empty($systolic)) {
             $systolic = null;
         }
@@ -1121,7 +1101,8 @@ class Patient extends MX_Controller {
             $respiration_rate = null;
         }
         $current_user = (int)$this->ion_auth->get_user_id();
-        $date = date("Y-m-d H:i:s", now('UTC'));
+        // $date = date("Y-m-d H:i:s", now('UTC'));
+        $date = gmdate('Y-m-d H:i:s');
         $weightUnit = $this->input->post('weight_unit');
         if(empty($weightUnit)) {
             $weightUnit = null;
@@ -1146,9 +1127,18 @@ class Patient extends MX_Controller {
         if(empty($note)) {
             $note = null;
         }
+        $blood_sugar = $this->input->post('blood_sugar');
+        if(empty($blood_sugar)) {
+            $blood_sugar = null;
+        }
+        $blood_sugar_unit = $this->input->post('blood_sugar_unit');
+        if(empty($blood_sugar_unit)) {
+            $blood_sugar_unit = null;
+        }
+        $blood_sugar_timing = $this->input->post('blood_sugar_timing');
+
         $date_time_combined = strtotime($date_measured . ' ' . $time_measured);
-        $measured_at = date($data['settings']->date_format . ' ' . $data['settings']->time_format, $date_time_combined);
-        $measured_at_datetime = gmdate("Y-m-d H:i:s", strtotime('+1 hour', $date_time_combined));
+        $datetime_measured = gmdate('Y-m-d H:i:s', $date_time_combined);
 
         if ($this->ion_auth->in_group(array('Doctor', 'DoctorAdmin'))) {
             $doctor_id = (int)$this->doctor_model->getDoctorByIonUserId($current_user)->id;
@@ -1197,6 +1187,14 @@ class Patient extends MX_Controller {
                 $celsiusTemp = convertfahrenheitTocelsius($fahrenheitTemp);
             }
 
+            if ($blood_sugar_unit == 'mg_dl') {
+                $mg = $blood_sugar;
+                $mmol = convertMgtoMmol($mg);
+            } else if ($blood_sugar_unit == 'mmol') {
+                $mmol = $blood_sugar;
+                $mg = convertMmoltoMg($mmol);
+            }
+
         //Comvert C to F End
 
         //form validation start
@@ -1223,8 +1221,14 @@ class Patient extends MX_Controller {
             $this->form_validation->set_rules('spo2', 'Spo2', 'trim|max_length[15]|xss_clean');
             // Validating Respiration Field           
             $this->form_validation->set_rules('respiration_rate', 'Respiration', 'trim|max_length[15]|xss_clean');
+            // Validating Blood Sugar Field           
+            $this->form_validation->set_rules('blood_sugar', 'Blood Sugar', 'trim|max_length[50]|xss_clean');
+            // Validating Respiration Field           
+            $this->form_validation->set_rules('blood_sugar_timing', 'Blood Sugar Timing', 'trim|max_length[50]|xss_clean');
             // Validating Note Field           
             $this->form_validation->set_rules('note', 'Note', 'trim|max_length[1000]|xss_clean');
+            // Validating Note Field           
+            $this->form_validation->set_rules('pain_level', 'Pain Level', 'trim|max_length[1000]|xss_clean');
         //form validation end
 
 
@@ -1244,7 +1248,7 @@ class Patient extends MX_Controller {
                 'patient_id' => $patient_id,
                 'doctor_id' => $doctor_id,
                 'last_modified' => $date,
-                'measured_at' => $measured_at_datetime,
+                'measured_at' => $datetime_measured,
                 'temperature_celsius' => $celsiusTemp,
                 'temperature_fahrenheit' => $fahrenheitTemp,
                 'systolic' => $systolic,
@@ -1260,25 +1264,38 @@ class Patient extends MX_Controller {
                 'bmi' => $bmi,
                 'spo2' => $spo2,
                 'note' => $note,
+                'blood_sugar_mg' => $mg,
+                'blood_sugar_mmol' => $mmol,
+                'blood_sugar_timing' => $blood_sugar_timing,
+                'pain' => $pain,
             );
 
-            $this->patient_model->insertPatientVital($data);
-            $inserted_id = $this->db->insert_id();
-            $this->session->set_flashdata('success', lang('record_added'));
+            if (empty($vital_id)) {
+                $this->patient_model->insertPatientVital($data);
+                $inserted_id = $this->db->insert_id();
+                $this->session->set_flashdata('success', lang('record_added'));
 
-            $vital_exist = $this->encounter_model->getEncounterByVitalId($inserted_id)->start_vital_id;
+                $vital_exist = $this->encounter_model->getEncounterByVitalId($inserted_id)->start_vital_id;
 
-            if (empty($vital_exist)) {
-                $data_vital = array(
-                    'start_vital_id' => $inserted_id,
-                );
+                if (empty($vital_exist)) {
+                    $data_vital = array(
+                        'start_vital_id' => $inserted_id,
+                    );
 
-                $this->encounter_model->updateEncounter($encounter_id, $data_vital);
+                    $this->encounter_model->updateEncounter($encounter_id, $data_vital);
 
-                redirect('encounter');
+                }
+            } else {
+                $this->patient_model->updatePatientVital($vital_id, $data);
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             
-            redirect('patient/medicalHistory?id=' . $id);
+            if (empty($redirect)) {
+                redirect('patient/medicalHistory?id=' . $id);
+            } else {
+                redirect($redirect);
+            }
+
         }
 
     }
@@ -1286,7 +1303,25 @@ class Patient extends MX_Controller {
     function editVitalByJason() {
         $id = $this->input->get('id');
         $data['vital'] = $this->patient_model->getVitalById($id);
+        $data['date'] = date('m/d/Y' ,strtotime($data['vital']->measured_at.' UTC'));
+        $data['time'] = date('h:i A' ,strtotime($data['vital']->measured_at.' UTC'));
         echo json_encode($data);
+    }
+
+    public function deleteVital() {
+        if (!$this->ion_auth->in_group(array('Doctor'))) {
+            redirect('home/permission');
+        }
+
+        $id = $this->input->get('id');
+        $user = $this->ion_auth->get_user_id();
+        $patient_id = $this->patient_model->getVitalById($id)->patient_id;
+
+        $this->patient_model->deleteVital($id, $user);
+
+        $this->session->set_flashdata('success', lang('record_added'));
+
+        redirect('patient/medicalHistory?id=' . $patient_id);
     }
 
     function addMedicalHistory() {
@@ -1618,7 +1653,7 @@ class Patient extends MX_Controller {
         $description = $this->input->post('description');
         $category = $this->input->post('category');
         $redirect = $this->input->post('redirect');
-        $date = date("Y-m-d H:i:s", now('UTC'));
+        $date = gmdate('Y-m-d H:i:s');
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             if (empty($patient_id)) {

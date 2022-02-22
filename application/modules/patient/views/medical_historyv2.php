@@ -376,13 +376,13 @@
                                                                             <th><?php echo lang('spo2'); ?></th>
                                                                             <th><?php echo lang('respiration_rate'); ?></th>
                                                                             <th><?php echo lang('note'); ?></th>
-                                                                            <!-- <th><?php echo lang('actions'); ?></th> -->
+                                                                            <th><?php echo lang('actions'); ?></th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         <?php foreach ($vitals as $vital) { ?>
                                                                             <tr>
-                                                                                <td><?php echo $vital->measured_at; ?></td>
+                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($vital->measured_at.' UTC')); ?></td>
                                                                                 <td><?php echo $vital->heart_rate; ?></td>
                                                                                 <td><?php echo $vital->height_cm; ?></td>
                                                                                 <td><?php echo $vital->weight_kg; ?></td>
@@ -392,10 +392,10 @@
                                                                                 <td><?php echo $vital->spo2; ?></td>
                                                                                 <td><?php echo $vital->respiration_rate; ?></td>
                                                                                 <td><?php echo $vital->note; ?></td>
-                                                                                <!-- <td>
-                                                                                    <button type="button" class="btn btn-info editVital" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                                                                    <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                                                                                </td> -->
+                                                                                <td>
+                                                                                    <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
+                                                                                    <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                                </td>
                                                                             </tr>
                                                                         <?php } ?>
                                                                     </tbody>
@@ -452,7 +452,7 @@
                                                                             <th><?php echo lang('doctor'); ?></th>
                                                                             <th><?php echo lang('status'); ?></th>
                                                                             <th><?php echo lang('facility'); ?></th>
-                                                                            <th><?php echo 'Service_type'; ?></th>
+                                                                            <th><?php echo lang('service_type'); ?></th>
                                                                             <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                                 <th class="no-print"><?php echo lang('options'); ?></th>
                                                                             <?php } ?>
@@ -710,7 +710,7 @@
                                                                                         if ($prescription->doctor == $doctor_table_id) {
                                                                                             ?>
                                                                                             <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                                <a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i></a>   
+                                                                                                <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i></a>   
                                                                                                 <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
                                                                                             <?php } ?>
                                                                                             <?php
@@ -865,9 +865,11 @@
                                                                             <p class="text-muted">
                                                                                 <?php
                                                                                 if (!empty($patient_material->created_at)) {
-                                                                                    $utcdate = date_create($document->created_at, timezone_open('UTC'));
-                                                                                    date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
-                                                                                    echo date_format($utcdate, $settings->date_format_long) . "\n";
+                                                                                    // $utcdate = date_create($document->created_at, timezone_open('UTC'));
+                                                                                    // date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
+                                                                                    // echo date_format($utcdate, $settings->date_format_long) . "\n";
+                                                                                    $utcdate = date($settings->date_format_long, strtotime($document->created_at.' UTC'));
+                                                                                    echo $utcdate;
                                                                                 } else {
                                                                                     echo '';
                                                                                 }
@@ -959,7 +961,7 @@
                         <!-- //Add Vitals Modal Start -->
 
                             <div class="modal" id="AddVital">
-                                <div class="modal-dialog" role="document">
+                                <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content modal-content-demo">
                                         <div class="modal-header">
                                             <h6 class="modal-title"><?php echo lang('add_vitals'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
@@ -1037,6 +1039,47 @@
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
                                                         <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('heart_rate'); ?></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" name="heartrate">
+                                                                <label class="p-2 text-muted align-self-center"><?php echo lang('bpm'); ?></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('blood_sugar'); ?></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" name="blood_sugar">
+                                                                <div class="input-group-append br-tl-0 br-bl-0">
+                                                                    <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="blood_sugar_unit">
+                                                                        <option value="mg_dl"><?php echo lang('mg_dl'); ?></option>
+                                                                        <option value="mmol"><?php echo lang('mmol'); ?></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label><?php echo lang('blood_sugar_measured') . ' ' . lang('during');?></label>
+                                                            <div class="input-group">
+                                                                <select class="form-control select2-show-search" name="blood_sugar_timing" data-placeholder="Choose one">
+                                                                    <option label="Choose one"></option>
+                                                                    <option value="fasting"><?php echo lang('fasting'); ?> (<?php echo lang('upon_first_waking_up'); ?>)</option>
+                                                                    <option value="before_meal"><?php echo lang('before_meal'); ?></option>
+                                                                    <option value="after_meal"><?php echo lang('after_meal'); ?></option>
+                                                                    <option value="bed_time"><?php echo lang('bed_time'); ?></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
                                                             <label class="form-label"><?php echo lang('temperature'); ?></label>
                                                             <div class="input-group">
                                                                 <input type="text" class="form-control" name="temperature">
@@ -1049,29 +1092,18 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <div class="form-group">
                                                             <label><?php echo lang('temperature_site') ?></label>
                                                             <div class="input-group">
                                                                 <select class="form-control select2-show-search" name="temp_site" data-placeholder="Choose one">
                                                                     <option label="Choose one"></option>
-                                                                    <option class="anus"><?php echo lang('anus'); ?></option>
-                                                                    <option class="armpit"><?php echo lang('armpit'); ?></option>
-                                                                    <option class="ear"><?php echo lang('ear'); ?></option>
-                                                                    <option class="forehead"><?php echo lang('forehead'); ?></option>
-                                                                    <option class="mouth"><?php echo lang('mouth'); ?></option>
+                                                                    <option value="anus"><?php echo lang('anus'); ?></option>
+                                                                    <option value="armpit"><?php echo lang('armpit'); ?></option>
+                                                                    <option value="ear"><?php echo lang('ear'); ?></option>
+                                                                    <option value="forehead"><?php echo lang('forehead'); ?></option>
+                                                                    <option value="mouth"><?php echo lang('mouth'); ?></option>
                                                                 </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('heart_rate'); ?></label>
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control" name="heartrate">
-                                                                <label class="p-2 text-muted align-self-center"><?php echo lang('bpm'); ?></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1090,6 +1122,14 @@
                                                         <label class="form-label"><?php echo lang('respiration_rate'); ?></label>
                                                         <div class="input-icon">
                                                             <input type="text" name="respiration_rate" class="form-control" placeholder="<?php echo lang('breaths_per_min'); ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('pain_level'); ?></label>
+                                                            <input class="myrangeslider1" data-extra-classes="irs-outline" name="pain_level" type="text">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1115,16 +1155,195 @@
                                 </div>
                             </div>
 
-                            <div class="modal fade" id="editVitalModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                <div class="modal-dialog" role="document">
+                            <div class="modal fade" id="editVitalModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content modal-content-demo">
                                         <div class="modal-header">
                                             <h6 class="modal-title"><?php echo lang('edit_vital'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                         </div>
-                                        <form role="form" id="editVitalForm" class="clearfix" action="patient/addVital" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="editVitalForm" class="clearfix" action="patient/addVitals" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('date'); ?> <?php echo lang('measured'); ?></label>
+                                                            <input class="form-control fc-datepicker" readonly name="date" placeholder="MM/DD/YYYY" type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('time'); ?> <?php echo lang('measured'); ?></label>
+                                                            <div class="wd-150 mg-b-30">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <div class="input-group-text">
+                                                                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.25 12.15L11 13V7h1.5v5.25l4.5 2.67-.75 1.23z" opacity=".3"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
+                                                                        </div><!-- input-group-text -->
+                                                                    </div><!-- input-group-prepend -->
+                                                                    <input class="form-control" id="tpBasic2" name="time" placeholder="Set time" type="text">
+                                                                </div>
+                                                            </div><!-- wd-150 -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('weight'); ?></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" name="weight">
+                                                                <div class="input-group-append br-tl-0 br-bl-0">
+                                                                    <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="weight_unit" id="weight_unit">
+                                                                        <option value="kg"><?php echo lang('kg'); ?></option>
+                                                                        <option value="lbs"><?php echo lang('lbs'); ?></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('height'); ?></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" name="height">
+                                                                <div class="input-group-append br-tl-0 br-bl-0">
+                                                                    <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="height_unit" id="height_unit">
+                                                                        <option value="cm"><?php echo lang('cm'); ?></option>
+                                                                        <option value="inches"><?php echo lang('inches'); ?></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('blood_pressure'); ?></label>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <div class="input-group">
+                                                                        <input type="text" name="systolic" class="form-control" placeholder="<?php echo lang('systolic'); ?>">
+                                                                        <label class="p-2 text-muted align-self-center">/</label>
+                                                                        <input type="text" name="diastolic" class="form-control"  placeholder="<?php echo lang('diastolic'); ?>">
+                                                                        <label class="p-2 text-muted align-self-center"><?php echo lang('mmhg'); ?></label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('heart_rate'); ?></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" name="heartrate">
+                                                                <label class="p-2 text-muted align-self-center"><?php echo lang('bpm'); ?></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('blood_sugar'); ?></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" name="blood_sugar">
+                                                                <div class="input-group-append br-tl-0 br-bl-0">
+                                                                    <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="blood_sugar_unit">
+                                                                        <option value="mg_dl"><?php echo lang('mg_dl'); ?></option>
+                                                                        <option value="mmol"><?php echo lang('mmol'); ?></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label><?php echo lang('blood_sugar_measured') . ' ' . lang('during');?></label>
+                                                            <div class="input-group">
+                                                                <select class="form-control select2-show-search" name="blood_sugar_timing" data-placeholder="Choose one">
+                                                                    <option label="Choose one"></option>
+                                                                    <option value="fasting"><?php echo lang('fasting'); ?> (<?php echo lang('upon_first_waking_up'); ?>)</option>
+                                                                    <option value="before_meal"><?php echo lang('before_meal'); ?></option>
+                                                                    <option value="after_meal"><?php echo lang('after_meal'); ?></option>
+                                                                    <option value="bed_time"><?php echo lang('bed_time'); ?></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('temperature'); ?></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" name="temperature">
+                                                                <div class="input-group-append br-tl-0 br-bl-0">
+                                                                    <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="temperature_unit">
+                                                                        <option value="celsius"><?php echo lang('celsius'); ?></option>
+                                                                        <option value="fahrenheit"><?php echo lang('fahrenheit'); ?></option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label><?php echo lang('temperature_site') ?></label>
+                                                            <div class="input-group">
+                                                                <select class="form-control select2-show-search" name="temp_site" data-placeholder="Choose one">
+                                                                    <option label="Choose one"></option>
+                                                                    <option value="anus"><?php echo lang('anus'); ?></option>
+                                                                    <option value="armpit"><?php echo lang('armpit'); ?></option>
+                                                                    <option value="ear"><?php echo lang('ear'); ?></option>
+                                                                    <option value="forehead"><?php echo lang('forehead'); ?></option>
+                                                                    <option value="mouth"><?php echo lang('mouth'); ?></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('spo2'); ?></label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control" name="spo2">
+                                                                <label class="p-2 text-muted align-self-center"><?php echo lang('percentage_symbol'); ?></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <label class="form-label"><?php echo lang('respiration_rate'); ?></label>
+                                                        <div class="input-icon">
+                                                            <input type="text" name="respiration_rate" class="form-control" placeholder="<?php echo lang('breaths_per_min'); ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('pain_level'); ?></label>
+                                                            <input class="myrangeslider1" data-extra-classes="irs-outline" name="pain_level" type="text">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input type="text" name="patient" hidden value='<?php echo $patient->id; ?>'>
+                                                <input type="text" name="id" hidden>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('note'); ?></label>
+                                                            <textarea class="form-control" name="note" rows="2"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row pt-5">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </form>
@@ -1834,7 +2053,26 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- ion.rangeSlider.min js -->
+        <script src="<?php echo base_url('public/assets/plugins/ion-rangeslider/js/ion.rangeSlider.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/rangeslider.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <!-- <script type="text/javascript">
+        $(".myrangeslider1").change(function (){
+            var slider = $(".myrangeslider1").val();
+            console.log(slider);
+        });
+    </script> -->
+
+    <script type="text/javascript">
+        $('.myrangeslider1').ionRangeSlider({
+            min: 0,
+            max: 10,
+            from: 0
+        });
+    </script>
 
     <script type="text/javascript">
         $(function() {
@@ -1917,6 +2155,59 @@
         });
     </script>
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document.body).on("click", ".editVitals", function () {
+                
+                // Get the record's ID via attribute  
+                var iid = $(this).attr('data-id');
+
+                $('#editVitalForm').trigger("reset");
+                $('#editVitalModal').modal('show');
+                $.ajax({
+                    url: 'patient/editVitalByJason?id=' + iid,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var vital = response.vital;
+                        var weight_unit = document.getElementById("weight_unit").value;
+                        var height_unit = document.getElementById("height_unit").value;
+                        // var date = vital.measured_at.split(" ");
+                        console.log(date);
+                        $('#editVitalForm').find('[name="id"]').val(vital.id).end()
+                        $('#editVitalForm').find('[name="date"]').val(response.date).end()
+                        $('#editVitalForm').find('[name="time"]').val(response.time).end()
+                        $('#editVitalForm').find('[name="weight"]').val(vital.weight_kg).end()
+                        $('#editVitalForm').find('[name="height"]').val(vital.height_cm).end()
+
+                        // if (weight_unit == 'kg') {
+                        //     $('#editVitalForm').find('[name="weight"]').val(vital.weight_kg).end()
+                        // } else {
+                        //     $('#editVitalForm').find('[name="weight"]').val(vital.weight_lbs).end()
+                        // }
+
+                        // if (height_unit == 'cm') {
+                        //     $('#editVitalForm').find('[name="height"]').val(vital.height_cm).end()
+                        // } else {
+                        //     $('#editVitalForm').find('[name="height"]').val(vital.height_in).end()
+                        // }
+
+                        $('#editVitalForm').find('[name="systolic"]').val(vital.systolic).end()
+                        $('#editVitalForm').find('[name="diastolic"]').val(vital.diastolic).end()
+                        $('#editVitalForm').find('[name="heartrate"]').val(vital.heart_rate).end()
+                        $('#editVitalForm').find('[name="blood_sugar"]').val(vital.blood_sugar_mg).end()
+                        $('#editVitalForm').find('[name="blood_sugar_timing"]').val(vital.blood_sugar_timing).change()
+                        $('#editVitalForm').find('[name="temperature"]').val(vital.temperature_celsius).end()
+                        $('#editVitalForm').find('[name="temp_site"]').val(vital.temperature_site).change()
+                        $('#editVitalForm').find('[name="spo2"]').val(vital.spo2).end()
+                        $('#editVitalForm').find('[name="respiration_rate"]').val(vital.respiration_rate).end()
+                        $('#editVitalForm').find('[name="note"]').val(vital.note).end()
+                    }
+                });
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -2142,10 +2433,9 @@
             });
         });
 
-
         $(document).ready(function () {
             $('#date1').datepicker({
-                format: "dd-mm-yyyy",
+                format: "yyyy-mm-dd",
                 autoclose: true,
             })
                     //Listen for the change even on the input
@@ -2234,17 +2524,6 @@
 
 
             });
-        });
-
-        $(".editVital").click(function () {
-                
-            // Get the record's ID via attribute  
-            var iid = $(this).attr('data-id');
-            var id = $(this).attr('data-id');
-
-            $('#editVitalForm').trigger("reset");
-            $('#editVitalModal').modal('show');
-            console.log('a');
         });
 
         $(document).ready(function () {
