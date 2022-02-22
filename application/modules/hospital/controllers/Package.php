@@ -52,6 +52,8 @@ class Package extends MX_Controller {
         $loc_limit = $this->input->post('loc_limit');
         $module = $this->input->post('module');
         $price = $this->input->post('price');
+        $platform_percent_fee = $this->input->post('platform_percent_fee');
+        $platform_flat_fee = $this->input->post('platform_flat_fee');
 
         if (!empty($module)) {
             $module = implode(',', $module);
@@ -75,6 +77,10 @@ class Package extends MX_Controller {
         $this->form_validation->set_rules('loc_limit', 'Location Limit', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Price Field
         $this->form_validation->set_rules('price', 'Price', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Platform Percent Fee Field
+        $this->form_validation->set_rules('platform_percent_fee', 'Platform Percent Fee', 'required|less_than_equal_to[100]|xss_clean');
+        // Validating Platform Percent Fee Field
+        $this->form_validation->set_rules('platform_flat_fee', 'Platform Flat Fee', 'required|numeric|xss_clean');        
         // Validating Show In Frontend Field
         $this->form_validation->set_rules('show_in_frontend', 'Show In Frontend', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Doctoor Limit Field
@@ -100,6 +106,8 @@ class Package extends MX_Controller {
                 'loc_limit' => $loc_limit,
                 'module' => $module,
                 'price' => $price,
+                'platform_percent_fee' => $platform_percent_fee,
+                'platform_flat_fee' => $platform_flat_fee,
                 'show_in_frontend' => $show_in_frontend,
                 'set_as_default' => $set_as_default
             );
