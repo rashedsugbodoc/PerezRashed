@@ -160,7 +160,7 @@ class Appointment extends MX_Controller {
         $service_category_group = $this->input->post('service_category_group');
         $service = $this->input->post('service');
         $location = $this->input->post('branch');
-        $appointment_registration = date('Y-m-d H:i:s', now('UTC'));
+        $appointment_registration = gmdate('Y-m-d H:i:s');
 
         $virtual = $this->appointment_model->getServiceCategoryById($service_category_group)->is_virtual;
 
@@ -185,7 +185,7 @@ class Appointment extends MX_Controller {
 
         $date_time_combined = strtotime($date1 . ' ' . $s_time);
 
-        $appointment_date = gmdate('Y-m-d H:i:s', strtotime('+1 hour', $date_time_combined));
+        $appointment_date = gmdate('Y-m-d H:i:s', $date_time_combined);
 
         $remarks = $this->input->post('remarks');
 
@@ -453,7 +453,7 @@ class Appointment extends MX_Controller {
 
         $date_time_combined = strtotime($date1 . ' ' . $s_time);
 
-        $appointment_date = gmdate('Y-m-d H:i:s', strtotime('+1 hour', $date_time_combined));
+        $appointment_date = gmdate('Y-m-d H:i:s', $date_time_combined);
 
         $remarks = $this->input->post('remarks');
 
