@@ -43,7 +43,7 @@ class Profile extends MX_Controller {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         }
         // Validating Email Field
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|xss_clean|is_unique[users.email]');
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', lang('validation_error'));
             $data = array();
@@ -71,11 +71,12 @@ class Profile extends MX_Controller {
             }
             $this->profile_model->updateIonUser($username, $email, $password, $ion_user_id);
             if (!$this->ion_auth->in_group(array('superadmin'))) {
-                if ($this->ion_auth->in_group(array('admin'))) {
-                    $this->hospital_model->updateHospitalByIonId($ion_user_id, $data);
-                } else {
-                    $this->profile_model->updateProfile($ion_user_id, $data, $group_name);
-                }
+                $this->profile_model->updateProfile($ion_user_id, $data, $group_name);
+                // if ($this->ion_auth->in_group(array('admin'))) {
+                //     $this->hospital_model->updateHospitalByIonId($ion_user_id, $data);
+                // } else {
+                //     $this->profile_model->updateProfile($ion_user_id, $data, $group_name);
+                // }
             }
             $this->session->set_flashdata('success', lang('record_updated'));
 
