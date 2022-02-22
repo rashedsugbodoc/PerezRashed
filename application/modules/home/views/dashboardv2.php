@@ -150,6 +150,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <link href="<?php echo base_url('public/assets/plugins/image-editor/styles.min.css'); ?>" rel="stylesheet" />    
         <link rel="stylesheet" type="text/css" href="common/assets/jquery-multi-select/css/multi-select.css" />
 
+        <!-- ion.rangeSlider css -->
+        <link href="<?php echo base_url('public/assets/plugins/ion-rangeslider/css/ion.rangeSlider.css'); ?>" rel="stylesheet">
+        <link href="<?php echo base_url('public/assets/plugins/ion-rangeslider/css/ion.rangeSlider.skinFlat.css'); ?>" rel="stylesheet">
+
         <!-- INTERNAL CSS END -->
 
         <style>
