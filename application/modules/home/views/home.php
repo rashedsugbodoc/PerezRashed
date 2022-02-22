@@ -810,7 +810,10 @@
                     <h1><?php echo lang('live'); ?> <?php echo lang('healthcare_providers'); ?></h1>
                 </div>
             </section>
-            <?php foreach ($hospitals as $hospital) { ?>    
+            <?php foreach ($hospitals as $hospital) {
+                $this->db->where('hospital_id', $hospital->id);
+                $admin = $this->db->get('admin')->row(); 
+            ?>      
                 <div class="col-lg-6 col-sm-6">
                     <section class="row panel col-md-12">   
                         <div class="row symbol super col-md-6">
@@ -818,13 +821,13 @@
                         </div>
                         <div class="value super1 col-md-6"> 
                             <p class="">
-                                Admin Email:   <?php echo $hospital->email; ?>
+                                Admin Email:   <?php echo $admin->email; ?>
                             </p>
                             <p class="">
-                                Address:   <?php echo $hospital->address; ?>
+                                Provider Address:   <?php echo $hospital->address; ?>
                             </p>
                             <p class="">
-                                Phone:  <?php echo $hospital->phone; ?>
+                                Provider Phone:  <?php echo $hospital->phone; ?>
                             </p>
                         </div>
                     </section>
