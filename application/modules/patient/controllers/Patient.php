@@ -1813,7 +1813,7 @@ class Patient extends MX_Controller {
         if (file_put_contents($data['document']->url, $image_data)) {
             $data = array('last_modified' => gmdate('Y-m-d H:i:s'));
             $this->patient_model->updatePatientMaterial($document_id, $data);
-            $this->session->set_flashdata('success', lang('record_deleted'));
+            $this->session->set_flashdata('success', lang('image_saved'));
         }
         redirect('patient/editUpload?id=' . $document_id);
         
