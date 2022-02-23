@@ -2343,13 +2343,13 @@ class Patient extends MX_Controller {
             } else {
                 $doctor_name = '';
             }
-            $timeline[strtotime($prescription->date) + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $prescription->date) . '</span></li>
+            $timeline[strtotime($prescription->date) + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($prescription->prescription_date.' UTC')) . '</span></li>
                                                     <li><i class="fa fa-download bg-cyan"></i>
                                                     <div class="timelineleft-item">
                                                         <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
                                                         <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                         <div class="timelineleft-body">
-                                                            <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($prescription->date)) . '</h4>
+                                                            <h4><i class=" fa fa-calendar"></i> ' . date($settings->date_format, strtotime($prescription->prescription_date.' UTC')) . '</h4>
                                                         </div>
                                                         <div class="timelineleft-footer">
                                                         </div>
