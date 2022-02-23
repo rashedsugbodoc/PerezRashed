@@ -11,6 +11,7 @@ class Encounter extends MX_Controller {
         $this->load->model('branch/branch_model');
         $this->load->model('patient/patient_model');
         $this->load->model('doctor/doctor_model');
+        $this->load->model('profile/profile_model');
     }
 
     function index() {
@@ -188,10 +189,10 @@ class Encounter extends MX_Controller {
         $i = 0;
         foreach ($data['encounters'] as $encounter) {
             $patient = $this->patient_model->getPatientById($encounter->patient_id)->name;
-            $doctor = $this->doctor_model->getDoctorById($encounter->doctor_id)->name;
+            $user = $this->profile_model->getProfileById($encounter->rendering_staff_id)->username;
             $encounter_status = $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
-            if (empty($doctor)) {
-                $doctor = $encounter->doctor_name;
+            if (empty($user)) {
+                $user = $encounter->rendering_staff_name;
             }
             $i = $i + 1;
             $settings = $this->settings_model->getSettings();
@@ -210,7 +211,7 @@ class Encounter extends MX_Controller {
                 date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')),
                 $encounter->encounter_number,
                 $patient,
-                $doctor,
+                $user,
                 $encounter_status,
                 $option1 . ' ' . $option2 . ' ' . $option3 . ' ' . $option4 . ' ' . $option5
                     //  $options2
