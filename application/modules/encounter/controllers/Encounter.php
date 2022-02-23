@@ -60,7 +60,7 @@ class Encounter extends MX_Controller {
 
         $user = $this->session->userdata('user_id');
 
-        $data = gmdate('Y-m-d H:i:s');
+        $date = gmdate('Y-m-d H:i:s');
 
         $encounter_status = $this->input->post('encounter_status');
 
