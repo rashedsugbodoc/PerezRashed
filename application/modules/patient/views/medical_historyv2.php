@@ -376,7 +376,9 @@
                                                                             <th><?php echo lang('spo2'); ?></th>
                                                                             <th><?php echo lang('respiration_rate'); ?></th>
                                                                             <th><?php echo lang('note'); ?></th>
-                                                                            <th><?php echo lang('actions'); ?></th>
+                                                                            <?php if ($vital->recorded_user_id == $current_user) { ?>
+                                                                                <th><?php echo lang('actions'); ?></th>
+                                                                            <?php } ?>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -393,8 +395,10 @@
                                                                                 <td><?php echo $vital->respiration_rate; ?></td>
                                                                                 <td><?php echo $vital->note; ?></td>
                                                                                 <td>
-                                                                                    <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
-                                                                                    <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                                    <?php if ($vital->recorded_user_id == $current_user) { ?>
+                                                                                        <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
+                                                                                        <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                                    <?php } ?>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php } ?>
