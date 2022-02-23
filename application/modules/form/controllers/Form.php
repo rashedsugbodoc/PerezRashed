@@ -199,6 +199,7 @@ class Form extends MX_Controller {
         $date = $this->input->post('date');
         if (!empty($date)) {
             $date = strtotime($date);
+            $date = gmdate('Y-m-d H:i:s', $date);
         } else {
             $date = time();
         }
@@ -336,7 +337,7 @@ class Form extends MX_Controller {
                     'name' => $form_name,
                     'report' => $report,
                     'patient' => $patient,
-                    'date' => $date,
+                    'form_date' => $date,
                     'doctor' => $doctor,
                     'user' => $user,
                     'patient_name' => $patient_name,
@@ -769,7 +770,7 @@ class Form extends MX_Controller {
                 $form->id,
                 $form->name,
                 $patient_details,
-                $date,
+                date('Y-m-d', strtotime($form->form_date.' UTC')),
                 $options1 . ' ' . $options2 . ' ' . $options3,
                     // $options2 . ' ' . $options3
             );
