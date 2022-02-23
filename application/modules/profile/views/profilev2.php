@@ -42,7 +42,7 @@
                                                         if (!empty($profile->email)) {
                                                             echo $profile->email;
                                                         }
-                                                        ?>">
+                                                        ?>" readonly>
                                                     </div>
                                                 </div>
                                             </div>
