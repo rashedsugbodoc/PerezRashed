@@ -1228,7 +1228,7 @@ class Patient extends MX_Controller {
             // Validating Note Field           
             $this->form_validation->set_rules('note', 'Note', 'trim|max_length[1000]|xss_clean');
             // Validating Note Field           
-            $this->form_validation->set_rules('pain_level', 'Pain Level', 'trim|max_length[1000]|xss_clean');
+            $this->form_validation->set_rules('pain_level', 'Pain Level', 'trim|numeric|max_length[10]|xss_clean');
         //form validation end
 
 
@@ -1460,6 +1460,7 @@ class Patient extends MX_Controller {
             redirect('home/permission');
         }
 
+        $data['current_user'] = (int)$this->ion_auth->get_user_id();
         $data['vitals'] = $this->patient_model->getPatientVitalById($id);
         $data['settings'] = $this->settings_model->getSettings();
         $data['groups'] = $this->donor_model->getBloodBank();
