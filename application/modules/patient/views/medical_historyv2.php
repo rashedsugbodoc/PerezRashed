@@ -658,7 +658,7 @@
                                                                     <tbody>
                                                                         <?php foreach ($prescriptions as $prescription) { ?>
                                                                             <tr class="">
-                                                                                <td><?php echo date('Y-m-d', strtotime($prescription->date)); ?></td>
+                                                                                <td><?php echo date('Y-m-d', strtotime($prescription->prescription_date.' UTC')); ?></td>
                                                                                 <td>
                                                                                     <?php
                                                                                     $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);
@@ -1324,7 +1324,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('pain_level'); ?></label>
-                                                            <input class="myrangeslider1" data-extra-classes="irs-outline" name="pain_level" type="text">
+                                                            <input class="myrangeslider2" data-extra-classes="irs-outline" name="pain_level" type="text">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2068,9 +2068,12 @@
 
     <script type="text/javascript">
         $('.myrangeslider1').ionRangeSlider({
+            grid: true,
             min: 0,
             max: 10,
-            from: 0
+            from: 0,
+            prettify_enabled: true,
+            // prettify_separator: ",",
         });
     </script>
 
@@ -2180,6 +2183,7 @@
                         $('#editVitalForm').find('[name="time"]').val(response.time).end()
                         $('#editVitalForm').find('[name="weight"]').val(vital.weight_kg).end()
                         $('#editVitalForm').find('[name="height"]').val(vital.height_cm).end()
+                        // $('#editVitalForm').find('[name="pain_level"]').val(vital.pain).end()
 
                         // if (weight_unit == 'kg') {
                         //     $('#editVitalForm').find('[name="weight"]').val(vital.weight_kg).end()
@@ -2203,6 +2207,11 @@
                         $('#editVitalForm').find('[name="spo2"]').val(vital.spo2).end()
                         $('#editVitalForm').find('[name="respiration_rate"]').val(vital.respiration_rate).end()
                         $('#editVitalForm').find('[name="note"]').val(vital.note).end()
+                        $('.myrangeslider2').ionRangeSlider({
+                            min: 0,
+                            max: 10,
+                            from: vital.pain,
+                        });
                     }
                 });
             });

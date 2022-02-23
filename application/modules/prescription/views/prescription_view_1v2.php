@@ -247,7 +247,7 @@
                                             </div>
                                             <div class="col-md-3 col-sm-3 p-0">
                                                 <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('date');?> : <strong><span class="h5"><?php echo date($settings->date_format_long?$settings->date_format_long:'F j, Y',strtotime($prescription->date)); ?></span></strong></label>
+                                                    <label class="form-label mb-0"><?php echo lang('date');?> : <strong><span class="h5"><?php echo date($settings->date_format_long?$settings->date_format_long:'F j, Y',strtotime($prescription->prescription_date.' UTC')); ?></span></strong></label>
                                                 </div>
                                             </div>
                                         </div>

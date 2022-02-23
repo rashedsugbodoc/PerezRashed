@@ -36,8 +36,8 @@
                                                     if (!empty($setval)) {
                                                         echo set_value('date');
                                                     }
-                                                    if (!empty($prescription->date)) {
-                                                        echo date('d-m-Y', strtotime($prescription->date));
+                                                    if (!empty($prescription->prescription_date)) {
+                                                        echo date('m/d/Y', strtotime($prescription->prescription_date.' UTC'));
                                                     }
                                                 ?>">
                                             </div>

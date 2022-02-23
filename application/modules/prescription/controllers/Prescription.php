@@ -82,7 +82,8 @@ class Prescription extends MX_Controller {
         $date = $this->input->post('date');
         if (!empty($date)) {
             $date = strtotime($date);
-            $date = date("Y-m-d", $date);
+            // $date = date("Y-m-d", $date);
+            $date = gmdate('Y-m-d H:i:s', $date);
         }
 
         $patient = $this->input->post('patient');
@@ -194,7 +195,7 @@ class Prescription extends MX_Controller {
             $data = array();
             $patientname = $this->patient_model->getPatientById($patient)->name;
             $doctorname = $this->doctor_model->getDoctorById($doctor)->name;
-            $data = array('date' => $date,
+            $data = array('prescription_date' => $date,
                 'patient' => $patient,
                 'doctor' => $doctor,
                 'symptom' => $symptom,
