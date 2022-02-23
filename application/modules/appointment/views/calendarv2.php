@@ -8,7 +8,7 @@
 
                         <div class="card mt-5">
                             <div class="card-header">
-                                <?php echo lang('appointment'); ?> <?php echo lang('calendar'); ?>
+                                <div class="card-title"><?php echo lang('appointment'); ?> <?php echo lang('calendar'); ?></div>
                             </div>
                             <div class="card-body">
                                 <div id="calendar" class="has-toolbar calendar_view"></div>

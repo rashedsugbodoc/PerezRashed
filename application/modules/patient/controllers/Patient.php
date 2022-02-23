@@ -2428,11 +2428,11 @@ class Patient extends MX_Controller {
 
         foreach ($medical_histories as $medical_history) {
 
-            $timeline[$medical_history->date + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $medical_history->date) . '</span></li>
+            $timeline[$medical_history->date + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($medical_history->case_date.' UTC')) . '</span></li>
                                                     <li>
                                                         <i class="fa fa-download bg-info"></i>
                                                         <div class="timelineleft-item">
-                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', $medical_history->date) . '</span>
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($medical_history->case_date.' UTC')) . '</span>
                                                             <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
                                                             <div class="timelineleft-body">
                                                                 <p>' . $medical_history->description . '</p>
@@ -2467,11 +2467,11 @@ class Patient extends MX_Controller {
 
         foreach ($patient_materials as $patient_material) {
 
-            $timeline[$patient_material->date + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $patient_material->date) . ' </span></li>
+            $timeline[$patient_material->date + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($patient_material->created_at.' UTC')) . ' </span></li>
                                                         <li>
                                                             <i class="fa fa-download bg-secondary"></i>
                                                             <div class="timelineleft-item">
-                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', $patient_material->date) . ' </span>
+                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($patient_material->created_at.' UTC')) . ' </span>
                                                                 <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
                                                                 <div class="timelineleft-body">
                                                                     <h4>' . $patient_material->title . '</h4>
@@ -2607,7 +2607,7 @@ class Patient extends MX_Controller {
             foreach ($medical_histories as $medical_history) {
                 $doctor_details = $this->doctor_model->getDoctorById($medical_history->doctor_id);
                 $patient_case = ' <tr class="">
-                                        <td>' . date("Y-m-d", $medical_history->date) . '</td>
+                                        <td>' . date("Y-m-d", strtotime($medical_history->case_date.' UTC')) . '</td>
                                         <td>' . $doctor_details->name . '</td>
                                         <td>' . $medical_history->title . '</td>
                                         <td>' . $medical_history->description . '</td>
@@ -2622,7 +2622,7 @@ class Patient extends MX_Controller {
             foreach ($medical_histories as $medical_history) {
                 $doctor_details = $this->doctor_model->getDoctorById($medical_history->doctor_id);
                 $patient_case = ' <tr class="">
-                                        <td>' . date("Y-m-d", $medical_history->date) . '</td>
+                                        <td>' . date("Y-m-d", strtotime($medical_history->case_date.' UTC')) . '</td>
                                         <td>' . $doctor_details->name . '</td>
                                         <td>' . $medical_history->title . '</td>
                                         <td>' . $medical_history->description . '</td>
@@ -2671,7 +2671,7 @@ class Patient extends MX_Controller {
                 $option3Prescription = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
             $prescription_case = ' <tr class="">
-                                                    <td>' . date('Y-m-d', strtotime($prescription->date)) . '</td>
+                                                    <td>' . date('Y-m-d', strtotime($prescription->prescription_date.' UTC')) . '</td>
                                                     <td>' . $prescription_doctor . '</td>
                                                     <td>' . $medicinelist . '</td>
                                                          <td>' . $option1Prescription . ' ' . $option2Prescription . ' ' . $option3Prescription . '</td>
@@ -2704,7 +2704,7 @@ class Patient extends MX_Controller {
             }
             $lab_class = ' <tr class="">
                                                     <td>' . $lab->id . '</td>
-                                                    <td>' . date("Y-m-d", $lab->date) . '</td>
+                                                    <td>' . date("Y-m-d", $lab->lab_date.' UTC') . '</td>
                                                     <td>' . $lab_doctor . '</td>
                                                          <td>' . $option1Lab . '  ' . $option2Lab . '  ' . $option3Lab . '</td>
                                                 </tr>';
@@ -2766,9 +2766,6 @@ class Patient extends MX_Controller {
                         </div>';
             }
 
-            $utcdate = date_create($document->created_at, timezone_open('UTC'));
-            date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
-
             $documentInputFilter = '<script type="text/javascript">
             
                                         var uploadField = document.getElementById("document");
@@ -2811,7 +2808,7 @@ class Patient extends MX_Controller {
                                                     <h6 class="mb-1 font-weight-bold mt-4">' . $patient_material->title . '</h6>
                                                     <p class="text-dark">'.  lang('uploader') . ': ' . $this->hospital_model->getIonUserById($patient_material->created_user_id)->username .'</p>
                                                     <p class="text-muted">
-                                                        '. date_format($utcdate, $settings->date_format_long) .'
+                                                        '. date($settings->date_format_long . ' ' . $settings->time_format, strtotime($patient_material->created_at.' UTC')) .'
                                                     </p>
                                                 </div>
                                             </div>

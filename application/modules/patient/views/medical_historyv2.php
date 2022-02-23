@@ -394,12 +394,12 @@
                                                                                 <td><?php echo $vital->spo2; ?></td>
                                                                                 <td><?php echo $vital->respiration_rate; ?></td>
                                                                                 <td><?php echo $vital->note; ?></td>
-                                                                                <td>
-                                                                                    <?php if ($vital->recorded_user_id == $current_user) { ?>
+                                                                                <?php if ($vital->recorded_user_id == $current_user) { ?>
+                                                                                    <td>
                                                                                         <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
                                                                                         <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
-                                                                                    <?php } ?>
-                                                                                </td>
+                                                                                    </td>
+                                                                                <?php } ?>
                                                                             </tr>
                                                                         <?php } ?>
                                                                     </tbody>
@@ -869,7 +869,7 @@
                                                                             <p class="text-muted">
                                                                                 <?php
                                                                                 if (!empty($patient_material->created_at)) {
-                                                                                    $utcdate = date($settings->date_format_long, strtotime($document->created_at.' UTC'));
+                                                                                    $utcdate = date($settings->date_format_long . ' ' . $settings->time_format, strtotime($patient_material->created_at.' UTC'));
                                                                                     echo $utcdate;
                                                                                 } else {
                                                                                     echo '';
@@ -2115,11 +2115,13 @@
                     dataType: 'json',
                     success: function (response) {
                         // Populate the form fields with the data returned from server
-                        var date = new Date(response.medical_history.date * 1000);
-                        var de = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+                        // var date = new Date(response.medical_history.date * 1000);
+                        // var de = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+
+                        var date = response.date;
 
                         $('#medical_historyEditForm').find('[name="id"]').val(response.medical_history.id).end()
-                        $('#medical_historyEditForm').find('[name="date"]').val(de).end()
+                        $('#medical_historyEditForm').find('[name="date"]').val(date).end()
                         $('#medical_historyEditForm').find('[name="title"]').val(response.medical_history.title).end()
                         document.getElementById('quillEditor2').children[0].innerHTML = response.medical_history.description;
 
