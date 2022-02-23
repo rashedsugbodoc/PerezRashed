@@ -1342,6 +1342,7 @@ class Patient extends MX_Controller {
 
         if (!empty($date)) {
             $date = strtotime($date);
+            $date = gmdate('Y-m-d H:i:s', $date);
         } else {
             $date = time();
         }
@@ -1396,7 +1397,7 @@ class Patient extends MX_Controller {
             $data = array();
             $data = array(
                 'patient_id' => $patient_id,
-                'date' => $date,
+                'case_date' => $date,
                 'title' => $title,
                 'description' => $description,
                 'patient_name' => $patient_name,
@@ -1605,6 +1606,7 @@ class Patient extends MX_Controller {
     function editMedicalHistoryByJason() {
         $id = $this->input->get('id');
         $data['medical_history'] = $this->patient_model->getMedicalHistoryById($id);
+        $data['date'] = date('m/d/Y' ,strtotime($data['medical_history']->case_date.' UTC'));
         $data['patient'] = $this->patient_model->getPatientById($data['medical_history']->patient_id);
         echo json_encode($data);
     }
@@ -1612,6 +1614,7 @@ class Patient extends MX_Controller {
     function getCaseDetailsByJason() {
         $id = $this->input->get('id');
         $data['case'] = $this->patient_model->getMedicalHistoryById($id);
+        $data['date'] = date('F d, Y' ,strtotime($data['case']->case_date.' UTC'));
         $patient = $data['case']->patient_id;
         $data['patient'] = $this->patient_model->getPatientById($patient);
         echo json_encode($data);
@@ -2137,7 +2140,7 @@ class Patient extends MX_Controller {
             }
 
             $info[] = array(
-                date('d-m-Y', $case->date),
+                date('Y-m-d', strtotime($case->case_date.' UTC')),
                 $patient_details,
                 $case->title,
                 $options3 . ' ' . $options1 . ' ' . $options2

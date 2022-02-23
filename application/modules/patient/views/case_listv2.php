@@ -369,11 +369,14 @@
                 dataType: 'json',
                 success: function (response) {
                     // Populate the form fields with the data returned from server
-                    var de = response.medical_history.date * 1000;
-                    var d = new Date(de);
-                    var da = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+                    // var de = response.medical_history.date * 1000;
+                    // var d = new Date(de);
+                    // var da = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+
+                    var date = response.date;
+
                     $('#medical_historyEditForm').find('[name="id"]').val(response.medical_history.id).end()
-                    $('#medical_historyEditForm').find('[name="date"]').val(da).end()
+                    $('#medical_historyEditForm').find('[name="date"]').val(date).end()
                     //   $('#medical_historyEditForm').find('[name="patient"]').val(response.medical_history.patient_id).end()
                     $('#medical_historyEditForm').find('[name="title"]').val(response.medical_history.title).end()
                     var option = new Option(response.patient.name + '-' + response.patient.id, response.patient.id, true, true);
@@ -404,25 +407,28 @@
                 dataType: 'json',
                 success: function (response) {
                     // Populate the form fields with the data returned from server
-                    var de = response.case.date * 1000;
-                    var d = new Date(de);
+
+                    // var de = response.case.date * 1000;
+                    // var d = new Date(de);
 
 
-                    var monthNames = [
-                        "January", "February", "March",
-                        "April", "May", "June", "July",
-                        "August", "September", "October",
-                        "November", "December"
-                    ];
+                    // var monthNames = [
+                    //     "January", "February", "March",
+                    //     "April", "May", "June", "July",
+                    //     "August", "September", "October",
+                    //     "November", "December"
+                    // ];
 
-                    var day = d.getDate();
-                    var monthIndex = d.getMonth();
-                    var year = d.getFullYear();
+                    // var day = d.getDate();
+                    // var monthIndex = d.getMonth();
+                    // var year = d.getFullYear();
 
-                    var da = day + ' ' + monthNames[monthIndex] + ', ' + year;
+                    // var da = day + ' ' + monthNames[monthIndex] + ', ' + year;
+
+                    var date = response.date;
 
 
-                    $('.case_date').append(da).end()
+                    $('.case_date').append(date).end()
                     $('.case_patient').append(response.patient.name).end()
                     $('.case_patient_id').append('ID: ' + response.patient.id).end()
                     $('.case_title').append(response.case.title).end()
