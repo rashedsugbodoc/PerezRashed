@@ -58,9 +58,9 @@
                                                         <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
                                                         <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly value="<?php
                                                         if (!empty($lab->date)) {
-                                                            echo date('d-m-Y', $lab->date);
+                                                            echo date('m/d/Y', $lab->lab_date.' UTC');
                                                         } else {
-                                                            echo date('d-m-Y');
+                                                            echo date('m/d/Y');
                                                         }
                                                         ?>">
                                                     </div>

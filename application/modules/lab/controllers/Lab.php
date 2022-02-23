@@ -193,6 +193,7 @@ class Lab extends MX_Controller {
         $date = $this->input->post('date');
         if (!empty($date)) {
             $date = strtotime($date);
+            $date = gmdate('Y-m-d H:i:s', $date);
         } else {
             $date = time();
         }
@@ -335,7 +336,7 @@ class Lab extends MX_Controller {
                     // 'category_name' => $category_name,
                     'report' => $report,
                     'patient' => $patient,
-                    'date' => $date,
+                    'lab_date' => $date,
                     'doctor' => $doctor,
                     'user' => $user,
                     'patient_name' => $patient_name,
@@ -752,7 +753,7 @@ class Lab extends MX_Controller {
             $info[] = array(
                 $lab->id,
                 $patient_details,
-                $date,
+                date('Y-m-d', strtotime($lab->lab_date.' UTC')),
                 $options1 . ' ' . $options2 . ' ' . $options3,
                     // $options2 . ' ' . $options3
             );

@@ -30,7 +30,7 @@
                                                         <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
                                                         <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly value="<?php
                                                         if (!empty($lab_single->date)) {
-                                                            echo date('m/d/Y', $lab_single->date);
+                                                            echo date('m/d/Y', $lab_single->lab_date);
                                                         } else {
                                                             echo date('m/d/Y');
                                                         }
