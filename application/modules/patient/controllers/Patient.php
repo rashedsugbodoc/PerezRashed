@@ -1516,13 +1516,13 @@ class Patient extends MX_Controller {
             }
             
 
-            $timeline[strtotime($prescription->date) + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $prescription->date) . '</span></li>
+            $timeline[strtotime($prescription->date) + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($prescription->prescription_date.' UTC')) . '</span></li>
                                                     <li><i class="fa fa-download bg-cyan"></i>
                                                     <div class="timelineleft-item">
                                                         <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
                                                         <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                         <div class="timelineleft-body">
-                                                            <h4><i class=" fa fa-calendar"></i>' . date('d-m-Y', strtotime($prescription->date)) . '</h4>
+                                                            <h4><i class=" fa fa-calendar"></i> ' . date('m-d-Y', strtotime($prescription->prescription_date.' UTC')) . '</h4>
                                                         </div>
                                                         <div class="timelineleft-footer">
                                                         </div>
@@ -1540,14 +1540,14 @@ class Patient extends MX_Controller {
 
             
 
-            $timeline[$lab->date + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $lab->date) . '</span></li>
+            $timeline[$lab->date + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($lab->lab_date.' UTC')) . '</span></li>
                                         <li>
                                             <i class="fa fa-envelope bg-primary"></i>
                                             <div class="timelineleft-item">
                                                 <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $lab_doctor . '</span>
                                                 <h3 class="timelineleft-header"><span>Lab</span></h3>
                                                 <div class="timelineleft-body">
-                                                    <h4><i class=" fa fa-calendar"></i>' . date('d-m-Y', $lab->date) . '</h4>
+                                                    <h4><i class=" fa fa-calendar"></i> ' . date('m-d-Y', strtotime($lab->lab_date.' UTC')) . '</h4>
                                                 </div>
                                                 <div class="timelineleft-footer">
                                                     <a class="btn btn-xs btn-info" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
@@ -1559,11 +1559,11 @@ class Patient extends MX_Controller {
         foreach ($data['medical_histories'] as $medical_history) {
             
 
-            $timeline[$medical_history->date + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $medical_history->date) . '</span></li>
+            $timeline[$medical_history->date + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($medical_history->case_date.' UTC')) . '</span></li>
                                                     <li>
                                                         <i class="fa fa-download bg-info"></i>
                                                         <div class="timelineleft-item">
-                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', $medical_history->date) . '</span>
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($medical_history->case_date.' UTC')) . '</span>
                                                             <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
                                                             <div class="timelineleft-body">
                                                                 <p>' . $medical_history->description . '</p>
@@ -1577,11 +1577,11 @@ class Patient extends MX_Controller {
         foreach ($data['patient_materials'] as $patient_material) {
             
 
-            $timeline[$patient_material->date + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $patient_material->date) . ' </span></li>
+            $timeline[$patient_material->date + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($patient_material->created_at.' UTC')) . ' </span></li>
                                                         <li>
                                                             <i class="fa fa-download bg-secondary"></i>
                                                             <div class="timelineleft-item">
-                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', $patient_material->date) . ' </span>
+                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($patient_material->created_at.' UTC')) . ' </span>
                                                                 <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
                                                                 <div class="timelineleft-body">
                                                                     <h4>' . $patient_material->title . '</h4>
