@@ -85,9 +85,8 @@
                                                 <p class="text-muted">
                                                     <?php
                                                     if (!empty($file->created_at)) {
-                                                        $utcdate = date_create($file->created_at, timezone_open('UTC'));
-                                                        date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
-                                                        echo date_format($utcdate, $settings->date_format . ' ' . $settings->date_format_long) . "\n";
+                                                        $utcdate = date($settings->date_format_long, strtotime($file->created_at.' UTC'));
+                                                        echo $utcdate;
                                                     } else {
                                                         echo '';
                                                     }

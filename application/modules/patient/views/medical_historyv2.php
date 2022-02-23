@@ -595,7 +595,7 @@
                                                                         <?php foreach ($medical_histories as $medical_history) { ?>
                                                                             <tr class="">
 
-                                                                                <td><?php echo date('Y-m-d', $medical_history->date); ?></td>
+                                                                                <td><?php echo date('Y-m-d', strtotime($medical_history->case_date.' UTC')); ?></td>
                                                                                 <td><?php echo $medical_history->title; ?></td>
                                                                                 <td><?php echo $medical_history->description; ?></td>
                                                                                 <td><?php
@@ -758,7 +758,7 @@
                                                                         <?php foreach ($labs as $lab) { ?>
                                                                             <tr class="">
                                                                                 <td><?php echo $lab->id; ?></td>
-                                                                                <td><?php echo date('Y-m-d', $lab->date); ?></td>
+                                                                                <td><?php echo date('Y-m-d', strtotime($lab->lab_date.' UTC')); ?></td>
                                                                                 <td>
                                                                                     <?php
                                                                                     $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
@@ -869,9 +869,6 @@
                                                                             <p class="text-muted">
                                                                                 <?php
                                                                                 if (!empty($patient_material->created_at)) {
-                                                                                    // $utcdate = date_create($document->created_at, timezone_open('UTC'));
-                                                                                    // date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
-                                                                                    // echo date_format($utcdate, $settings->date_format_long) . "\n";
                                                                                     $utcdate = date($settings->date_format_long, strtotime($document->created_at.' UTC'));
                                                                                     echo $utcdate;
                                                                                 } else {

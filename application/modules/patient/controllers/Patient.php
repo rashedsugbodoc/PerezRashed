@@ -2209,9 +2209,7 @@ class Patient extends MX_Controller {
                 $patient_details = '';
             }
 
-            $utcdate = date_create($document->created_at, timezone_open('UTC'));
-            date_timezone_set($utcdate, timezone_open($this->settings_model->getSettings()->timezone));
-            $created_at = date_format($utcdate, 'Y-m-d') . "\n";
+            $created_at = date('Y-m-d', strtotime($document->created_at.' UTC'));
 
             if (pathinfo($document->url, PATHINFO_EXTENSION) === 'pdf'){
                 $info[] = array(
