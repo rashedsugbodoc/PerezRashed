@@ -376,9 +376,7 @@
                                                                             <th><?php echo lang('spo2'); ?></th>
                                                                             <th><?php echo lang('respiration_rate'); ?></th>
                                                                             <th><?php echo lang('note'); ?></th>
-                                                                            <?php if ($vital->recorded_user_id == $current_user) { ?>
-                                                                                <th><?php echo lang('actions'); ?></th>
-                                                                            <?php } ?>
+                                                                            <th><?php echo lang('actions'); ?></th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
