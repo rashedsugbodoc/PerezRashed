@@ -375,8 +375,11 @@
                                                                             <th><?php echo lang('temperature'); ?></th>
                                                                             <th><?php echo lang('spo2'); ?></th>
                                                                             <th><?php echo lang('respiration_rate'); ?></th>
+                                                                            <th><?php echo lang('pain_level'); ?></th>
                                                                             <th><?php echo lang('note'); ?></th>
-                                                                            <th><?php echo lang('actions'); ?></th>
+                                                                            <?php if ($vital->recorded_user_id == $current_user) { ?>
+                                                                                <th><?php echo lang('actions'); ?></th>
+                                                                            <?php } ?>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -391,6 +394,13 @@
                                                                                 <td><?php echo $vital->temperature_celsius; ?></td>
                                                                                 <td><?php echo $vital->spo2; ?></td>
                                                                                 <td><?php echo $vital->respiration_rate; ?></td>
+                                                                                <td><?php
+                                                                                if (!empty($vital->pain)) {
+                                                                                    echo $vital->pain; 
+                                                                                } else {
+                                                                                    echo '0';
+                                                                                }
+                                                                                ?></td>
                                                                                 <td><?php echo $vital->note; ?></td>
                                                                                 <?php if ($vital->recorded_user_id == $current_user) { ?>
                                                                                     <td>
@@ -1323,7 +1333,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('pain_level'); ?></label>
-                                                            <input class="myrangeslider2" data-extra-classes="irs-outline" name="pain_level" type="text">
+                                                            <input class="myrangeslider2" data-extra-classes="irs-outline" name="pain_level" id="pain_level" type="input">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2166,6 +2176,8 @@
                 // Get the record's ID via attribute  
                 var iid = $(this).attr('data-id');
 
+
+                document.getElementById("editVitalForm").reset();
                 $('#editVitalForm').trigger("reset");
                 $('#editVitalModal').modal('show');
                 $.ajax({
