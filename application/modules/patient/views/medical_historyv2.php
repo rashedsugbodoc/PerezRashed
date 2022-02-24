@@ -587,7 +587,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample3" class="table table-bordered w-100 editable-sample3">
+                                                                <table id="editable-sample3" class="table table-bordered text-nowrap key-buttons w-100 editable-sample3">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="w-15"><?php echo lang('date'); ?></th>

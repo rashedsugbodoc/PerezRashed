@@ -1500,7 +1500,16 @@ class Patient extends MX_Controller {
                                                         <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
                                                         <h3 class="timelineleft-header"><span>' . lang('appointment') . '</span></h3>
                                                         <div class="timelineleft-body">
-                                                            <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
+                                                            <div class="d-flex align-items-center mt-auto">
+                                                                <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
+                                                                <div>
+                                                                    <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
+                                                                    <small class="d-block text-muted">' . $appointment->s_time . ' - ' . $appointment->e_time . '</small>
+                                                                </div>
+                                                                <div class="ml-auto text-muted">
+                                                                    <span class="badge badge-pill badge-primary">'. $appointment->status .'</span>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                         <div class="timelineleft-footer">
                                                         </div>
@@ -1515,19 +1524,46 @@ class Patient extends MX_Controller {
             } else {
                 $doctor_name = '';
             }
+
+            if (!empty($prescription->medicine)) {
+                $medicine = explode('###', $prescription->medicine);
+                $medss = '';
+                foreach($medicine as $key => $value) {
+                    $single_medicine = explode('***', $value);
+                    $med_model = $this->medicine_model->getMedicineById($single_medicine[0]);
+                        $meds = '
+                            <div class="row mb-5">
+                                <div class="col-md-8 col-sm-12">
+                                    <p class="mb-0"><strong>'. $med_model->generic .'</strong> ( '. $med_model->name .' ) '. $single_medicine[1] .'</p>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    Quantity: '. $single_medicine[2] .'
+                                </div>
+                            </div>';
+                        $medss .= $meds;
+                }
+                $all_meds = $medss;
+            } else {
+                $all_meds = '';
+            }
             
 
-            $timeline[strtotime($prescription->date) + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($prescription->prescription_date.' UTC')) . '</span></li>
-                                                    <li><i class="fa fa-download bg-cyan"></i>
-                                                    <div class="timelineleft-item">
-                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
-                                                        <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
-                                                        <div class="timelineleft-body">
-                                                            <h4><i class=" fa fa-calendar"></i> ' . date('m-d-Y', strtotime($prescription->prescription_date.' UTC')) . '</h4>
-                                                        </div>
-                                                        <div class="timelineleft-footer">
-                                                        </div>
-                                                    </div></li>';
+            if (!empty($prescription->prescription_date)) {
+                $timeline[strtotime($prescription->prescription_date.' UTC') + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($prescription->prescription_date.' UTC')) . '</span></li>
+                                                        <li><i class="fa fa-download bg-cyan"></i>
+                                                        <div class="timelineleft-item">
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
+                                                            <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
+                                                            <div class="timelineleft-body">
+
+                                                                '. $all_meds .'
+                                                            </div>
+                                                            <div class="timelineleft-footer">
+                                                            </div>
+                                                        </div></li>';
+            } else {
+                '';
+            }
         }
 
         foreach ($data['labs'] as $lab) {
@@ -1540,59 +1576,95 @@ class Patient extends MX_Controller {
             }
 
             
-
-            $timeline[$lab->date + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($lab->lab_date.' UTC')) . '</span></li>
-                                        <li>
-                                            <i class="fa fa-envelope bg-primary"></i>
-                                            <div class="timelineleft-item">
-                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $lab_doctor . '</span>
-                                                <h3 class="timelineleft-header"><span>Lab</span></h3>
-                                                <div class="timelineleft-body">
-                                                    <h4><i class=" fa fa-calendar"></i> ' . date('m-d-Y', strtotime($lab->lab_date.' UTC')) . '</h4>
+            if (!empty($lab->lab_date)) {
+                $timeline[strtotime($lab->lab_date.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($lab->lab_date.' UTC')) . '</span></li>
+                                            <li>
+                                                <i class="fa fa-envelope bg-primary"></i>
+                                                <div class="timelineleft-item">
+                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $lab_doctor . '</span>
+                                                    <h3 class="timelineleft-header"><span>Lab</span></h3>
+                                                    <div class="timelineleft-body">
+                                                        <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($lab->lab_date.' UTC')) . '</h4>
+                                                    </div>
+                                                    <div class="timelineleft-footer">
+                                                        <a class="btn btn-xs btn-info" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i> ' . lang('view') . '</a>
+                                                    </div>
                                                 </div>
-                                                <div class="timelineleft-footer">
-                                                    <a class="btn btn-xs btn-info" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
-                                                </div>
-                                            </div>
-                                        </li>';
+                                            </li>';
+            } else {
+                '';
+            }
         }
 
         foreach ($data['medical_histories'] as $medical_history) {
-            
+            $case_doctor = $this->doctor_model->getDoctorById($medical_history->doctor_id);
+            $doctor_specialty_explode = explode(',', $case_doctor->specialties);
+            foreach($doctor_specialty_explode as $doctor_specialty) {
+                $specialties = $this->specialty_model->getSpecialtyById($doctor_specialty)->display_name_ph;
+                $specialty[] = '<span class="badge badge-light badge-pill">'. $specialties .'</span>';
+            }
 
-            $timeline[$medical_history->date + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($medical_history->case_date.' UTC')) . '</span></li>
-                                                    <li>
-                                                        <i class="fa fa-download bg-info"></i>
-                                                        <div class="timelineleft-item">
-                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($medical_history->case_date.' UTC')) . '</span>
-                                                            <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
-                                                            <div class="timelineleft-body">
-                                                                <p>' . $medical_history->description . '</p>
+            $spec = implode(' ', $specialty);
+
+
+            if (!empty($case_doctor)) {
+                $doctor_name = $case_doctor->name;
+            } else {
+                $doctor_name = '';
+            }
+            
+            if (!empty($medical_history->case_date)) {
+                $timeline[strtotime($medical_history->case_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($medical_history->case_date.' UTC')) . '</span></li>
+                                                        <li>
+                                                            <i class="fa fa-download bg-info"></i>
+                                                            <div class="timelineleft-item">
+                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($medical_history->case_date.' UTC')) . '</span>
+                                                                <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
+                                                                <div class="timelineleft-body">
+                                                                    <div class="d-flex align-items-center mb-5">
+                                                                        <div class="d-flex align-items-center mt-auto">
+                                                                            <div class="avatar  brround avatar-md mr-3" style="background-image: url('. $case_doctor->img_url .')"></div>
+                                                                            <div>
+                                                                                <p class="font-weight-semibold mb-1">'. lang('dr') . '. ' . $doctor_name .'</p>
+                                                                                <small class="d-block text-muted">'. $spec .'</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <h6>'. lang('clinical') . ' ' . lang('impression') .' / '. lang('diagnosis') .'</h6>
+                                                                    <div class="text-muted h6 mb-5">'. $medical_history->title .'</div>
+                                                                    <h6>'. lang('case') . ' ' . lang('summary') .'</h6>
+                                                                    <div class="text-muted h6">'. $medical_history->description .'</div>
+                                                                </div>
+                                                                <div class="timelineleft-footer">
+                                                                </div>
                                                             </div>
-                                                            <div class="timelineleft-footer">
-                                                            </div>
-                                                        </div>
-                                                    </li>';
+                                                        </li>';
+            } else {
+                '';
+            }
         }
 
         foreach ($data['patient_materials'] as $patient_material) {
             
-
-            $timeline[$patient_material->date + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($patient_material->created_at.' UTC')) . ' </span></li>
-                                                        <li>
-                                                            <i class="fa fa-download bg-secondary"></i>
-                                                            <div class="timelineleft-item">
-                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($patient_material->created_at.' UTC')) . ' </span>
-                                                                <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
-                                                                <div class="timelineleft-body">
-                                                                    <h4>' . $patient_material->title . '</h4>
+            if (!empty($patient_material->created_at)) {
+                $timeline[strtotime($patient_material->created_at.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($patient_material->created_at.' UTC')) . ' </span></li>
+                                                            <li>
+                                                                <i class="fa fa-download bg-secondary"></i>
+                                                                <div class="timelineleft-item">
+                                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($patient_material->created_at.' UTC')) . ' </span>
+                                                                    <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
+                                                                    <div class="timelineleft-body">
+                                                                        <h4>' . $patient_material->title . '</h4>
+                                                                    </div>
+                                                                    <div class="timelineleft-footer">
+                                                                        <a class="btn btn-xs btn-info" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
+                                                                        <a class="btn btn-xs btn-info" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="timelineleft-footer">
-                                                                    <a class="btn btn-xs btn-info" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
-                                                                    <a class="btn btn-xs btn-info" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
-                                                                </div>
-                                                            </div>
-                                                        </li>';
+                                                            </li>';
+            } else {
+                '';
+            }
 
         }
 
