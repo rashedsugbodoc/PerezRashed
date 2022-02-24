@@ -175,10 +175,11 @@
                                                 <li><a href="#tab-8" data-toggle="tab" class=""><?php echo lang('appointments'); ?></a></li>
                                                 <li><a href="#tab-9" data-toggle="tab" class=""><?php echo lang('case_notes'); ?></a></li>
                                                 <li><a href="#tab-10" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
-                                                <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li>
-                                                <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
-                                                <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('admissions'); ?></a></li>
-                                                <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
+                                                <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
+                                                <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li>
+                                                <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
+                                                <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('admissions'); ?></a></li>
+                                                <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -746,6 +747,52 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <div class="card-title">
+                                                            <?php echo lang('forms')?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="">
+                                                            <div class="table-responsive">
+                                                                <table id="editable-sample7" class="table table-bordered text-nowrap key-buttons w-100 editable-sample7">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th><?php echo lang('id') ?></th>
+                                                                            <th><?php echo lang('name') ?></th>
+                                                                            <th><?php echo lang('patient') ?></th>
+                                                                            <th><?php echo lang('date') ?></th>
+                                                                            <th><?php echo lang('actions') ?></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php foreach($forms as $form) { ?>
+                                                                            <tr>
+                                                                                <td><?php echo $form->id; ?></td>
+                                                                                <td><?php echo $form->name; ?></td>
+                                                                                <td>
+                                                                                    <?php
+                                                                                    $patient_details = $this->patient_model->getPatientById($form->patient)->name;
+                                                                                    echo $patient_details;
+                                                                                    ?>
+                                                                                </td>
+                                                                                <td><?php echo date('Y-m-d', strtotime($form->form_date.' UTC')); ?></td>
+                                                                                <td>
+                                                                                    <a href="form?id=<?php echo $form->id; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php } ?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-12">
+                                            <div class="mb-0 border">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="card-title">
                                                             <?php echo lang('lab')?>
                                                         </div>
                                                     </div>
@@ -800,7 +847,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="tab-12">
+                                        <div class="tab-pane" id="tab-13">
                                             <div class="card p-5">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
@@ -895,7 +942,7 @@
                                             </div>
                                         </div>
                                         <?php if (in_array('bed', $this->modules)) { ?>
-                                        <div class="tab-pane" id="tab-13">
+                                        <div class="tab-pane" id="tab-14">
                                             <div class="mb-0 border">
                                                 <div class="card">
                                                     <div class="card-header">
@@ -950,7 +997,7 @@
                                             </div>
                                         </div>
                                         <?php } ?>
-                                        <div class="tab-pane" id="tab-14">
+                                        <div class="tab-pane" id="tab-15">
                                             <ul class="timelineleft pb-5">
                                                 <?php
                                                 if (!empty($timeline)) {
@@ -2755,6 +2802,57 @@
 
         $(document).ready(function () {
             $('.editable-sample6').DataTable({
+                responsive: true,
+                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    'copyHtml5',
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: [0, 1, 2, 3],
+                        },
+                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
+                    },
+                ],
+                aLengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                iDisplayLength: 10,
+                "order": [[0, "desc"]],
+                "language": {
+                    "lengthMenu": "_MENU_",
+                }
+
+
+            });
+        });
+
+        $(document).ready(function () {
+            $('.editable-sample7').DataTable({
                 responsive: true,
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +

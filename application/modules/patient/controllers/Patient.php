@@ -8,6 +8,7 @@ class Patient extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('patient_model');
+        $this->load->model('form/form_model');
         $this->load->model('donor/donor_model');
         $this->load->model('specialty/specialty_model');
         $this->load->model('appointment/appointment_model');
@@ -1473,6 +1474,7 @@ class Patient extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
+        $data['forms'] = $this->form_model->getFormByPatientId($id);
         $data['labs'] = $this->lab_model->getLabByPatientId($id);
         $data['beds'] = $this->bed_model->getBedAllotmentsByPatientId($id);
         $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
