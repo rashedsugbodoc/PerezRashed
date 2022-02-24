@@ -1870,6 +1870,9 @@ class Patient extends MX_Controller {
             redirect('home/permission');
         }
         $document_id = $this->input->get('id');
+        if (empty($document_id)) {
+            redirect('home/permission');
+        }
         $data['document'] = $this->patient_model->getPatientMaterialById($document_id);
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('edit_uploadv2', $data);
