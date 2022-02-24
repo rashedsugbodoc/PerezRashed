@@ -2387,14 +2387,14 @@ class Patient extends MX_Controller {
                 $lab_doctor = '';
             }
 
-            $timeline[$lab->date + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $lab->date) . '</span></li>
+            $timeline[$lab->date + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($lab->lab_date.' UTC')) . '</span></li>
                                         <li>
                                             <i class="fa fa-envelope bg-primary"></i>
                                             <div class="timelineleft-item">
                                                 <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $lab_doctor . '</span>
                                                 <h3 class="timelineleft-header"><span>Lab</span></h3>
                                                 <div class="timelineleft-body">
-                                                    <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', $lab->date) . '</h4>
+                                                    <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($lab->lab_date.' UTC')) . '</h4>
                                                 </div>
                                                 <div class="timelineleft-footer">
                                                     <a class="btn btn-xs btn-info" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i> ' . lang('view') . '</a>
@@ -2704,7 +2704,7 @@ class Patient extends MX_Controller {
             }
             $lab_class = ' <tr class="">
                                                     <td>' . $lab->id . '</td>
-                                                    <td>' . date("Y-m-d", $lab->lab_date.' UTC') . '</td>
+                                                    <td>' . date("Y-m-d", strtotime($lab->lab_date.' UTC')) . '</td>
                                                     <td>' . $lab_doctor . '</td>
                                                          <td>' . $option1Lab . '  ' . $option2Lab . '  ' . $option3Lab . '</td>
                                                 </tr>';
