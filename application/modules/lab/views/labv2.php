@@ -6,227 +6,224 @@
                     <!--div class="side-app"-->
                         <!--Page header-->
 
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 col-lg-5">
-                                <div class="card mt-5">
-                                    <div class="card-header">
-                                        <div class="card-title">
-                                            <?php
-                                            if (!empty($lab_single->id))
-                                                echo lang('edit_lab_report');
-                                            else
-                                                echo lang('add_lab_report');
-                                            ?>
+
+                        <?php echo validation_errors(); ?>
+                        <div class="row mt-5">
+                            <?php if ($this->ion_auth->in_group(array('Laboratorist'))) { ?>
+                            <div class="col-md-12 col-sm-12 col-lg-12" id="addCase">
+                                <div class="panel-group panel-group-primary mb-5"  role="tablist" aria-multiselectable="true" id="accordion3">
+                                    <div class="panel panel-default active">
+                                        <div class="panel-heading" role="tab" id="headingOne31">
+                                            <h4 class="panel-title">
+                                                <a class="collapsed" id="accordHeader" role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne31" aria-expanded="true" aria-controls="collapseOne31">
+                                                    <?php
+                                                    if (!empty($lab_single->id))
+                                                        echo lang('edit_lab_report');
+                                                    else
+                                                        echo lang('add_lab_report');
+                                                    ?>
+                                                </a>
+                                            </h4>
+                                        </div>
+                                        <div id="collapseOne31" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne31">
+                                            <div class="panel-body border-0 bg-white">
+                                                <form role="form" action="lab/addLab" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();" id="casebody">
+                                                    <div class="row">
+                                                        <div class="form-group col-md-12">
+                                                            <?php echo validation_errors(); ?>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
+                                                                <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly value="<?php
+                                                                if (!empty($lab_single->date)) {
+                                                                    echo date('m/d/Y', $lab_single->lab_date);
+                                                                } else {
+                                                                    echo date('m/d/Y');
+                                                                }
+                                                                ?>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
+                                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one">
+                                                                    <?php if (!empty($lab_single->patient)) { ?>
+                                                                        <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pos_client clearfix">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
+                                                                    <input type="text" name="p_name" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
+                                                                    <input id="phone" name="p_phone" class="form-control" value="+63" type="tel">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
+                                                                    <input type="email" name="p_email" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
+                                                                    <input type="text" name="p_age" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('gender'); ?></label>
+                                                                <select class="form-control select2-show-search" name="p_gender" data-placeholder="Choose one">
+                                                                    <option value="Male" <?php
+                                                                    if (!empty($patient->sex)) {
+                                                                        if ($patient->sex == 'Male') {
+                                                                            echo 'selected';
+                                                                        }
+                                                                    }
+                                                                    ?> > Male </option>   
+                                                                    <option value="Female" <?php
+                                                                    if (!empty($patient->sex)) {
+                                                                        if ($patient->sex == 'Female') {
+                                                                            echo 'selected';
+                                                                        }
+                                                                    }
+                                                                    ?> > Female </option>
+                                                                    <option value="Others" <?php
+                                                                    if (!empty($patient->sex)) {
+                                                                        if ($patient->sex == 'Others') {
+                                                                            echo 'selected';
+                                                                        }
+                                                                    }
+                                                                    ?> > Others </option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('template'); ?> <span class="text-red">*</span></label>
+                                                                <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one">
+                                                                    <option value="">Select .....</option>
+                                                                    <?php foreach ($templates as $template) { ?>
+                                                                        <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('refd_by_doctor'); ?> <span class="text-red">*</span></label>
+                                                                <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one">
+                                                                    <?php if (!empty($lab_single->doctor)) { ?>
+                                                                        <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="pos_doctor clearfix">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?></label>
+                                                                    <input type="text" name="d_name" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"> <?php echo lang('doctor'); ?> <?php echo lang('phone'); ?></label>
+                                                                    <input id="phone2" name="d_phone" class="form-control" value="+63" type="tel">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"> <?php echo lang('doctor'); ?> <?php echo lang('email'); ?></label>
+                                                                    <input type="email" name="d_email" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <label class="form-label"><?php echo lang('report'); ?> <span class="text-red">*</span></label>
+                                                            <div class="ql-wrapper ql-wrapper-demo bg-light">
+                                                                <div id="quillEditor" class="bg-white">
+                                                                    <span id="editor">asdasd</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <textarea id="report" name="report" readonly="" class="form-control" rows="4"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                    <div class="row">
+                                                        <div class="col-md-12 form-group">
+                                                            <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
+                                                            <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10"><?php
+                                                                if (!empty($setval)) {
+                                                                    echo set_value('report');
+                                                                }
+                                                                if (!empty($lab_single->report)) {
+                                                                    echo $lab_single->report;
+                                                                }
+                                                                ?>
+                                                            </textarea>
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" name="redirect" value="<?php
+                                                    if (!empty($lab_single)) {
+                                                        echo 'lab?id=' . $lab_single->id;
+                                                    } else {
+                                                        echo 'lab';
+                                                    }
+                                                    ?>">
+                                                    <input type="hidden" name="id" value='<?php
+                                                    if (!empty($lab_single->id)) {
+                                                        echo $lab_single->id;
+                                                    }
+                                                    ?>'>
+                                                    <div class="row mt-5">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
-                                    <form role="form" id="editLabForm" class="clearfix" action="lab/addLab" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="form-group col-md-12">
-                                                    <?php echo validation_errors(); ?>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly value="<?php
-                                                        if (!empty($lab_single->date)) {
-                                                            echo date('m/d/Y', $lab_single->lab_date);
-                                                        } else {
-                                                            echo date('m/d/Y');
-                                                        }
-                                                        ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one">
-                                                            <?php if (!empty($lab_single->patient)) { ?>
-                                                                <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="pos_client clearfix">
-                                                <div class="row">
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('name'); ?></label>
-                                                            <input type="text" name="p_name" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('phone'); ?></label>
-                                                            <form>
-                                                                <input id="phone" name="p_phone" class="form-control" value="+63" type="tel">
-                                                             </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('email'); ?></label>
-                                                            <input type="email" name="p_email" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('age'); ?></label>
-                                                            <input type="text" name="p_age" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <label class="form-label"> <?php echo lang('patient'); ?> <?php echo lang('gender'); ?></label>
-                                                        <select class="form-control select2-show-search" name="p_gender" data-placeholder="Choose one">
-                                                            <option value="Male" <?php
-                                                            if (!empty($patient->sex)) {
-                                                                if ($patient->sex == 'Male') {
-                                                                    echo 'selected';
-                                                                }
-                                                            }
-                                                            ?> > Male </option>   
-                                                            <option value="Female" <?php
-                                                            if (!empty($patient->sex)) {
-                                                                if ($patient->sex == 'Female') {
-                                                                    echo 'selected';
-                                                                }
-                                                            }
-                                                            ?> > Female </option>
-                                                            <option value="Others" <?php
-                                                            if (!empty($patient->sex)) {
-                                                                if ($patient->sex == 'Others') {
-                                                                    echo 'selected';
-                                                                }
-                                                            }
-                                                            ?> > Others </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('template'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one">
-                                                            <option value="">Select .....</option>
-                                                            <?php foreach ($templates as $template) { ?>
-                                                                <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('refd_by_doctor'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one">
-                                                            <?php if (!empty($lab_single->doctor)) { ?>
-                                                                <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="pos_doctor clearfix">
-                                                <div class="row">
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('doctor'); ?> <?php echo lang('name'); ?></label>
-                                                            <input type="text" name="d_name" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('doctor'); ?> <?php echo lang('phone'); ?></label>
-                                                            <form>
-                                                                <input id="phone2" name="d_phone" class="form-control" value="+63" type="tel">
-                                                             </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('doctor'); ?> <?php echo lang('email'); ?></label>
-                                                            <input type="email" name="d_email" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <label class="form-label"><?php echo lang('report'); ?> <span class="text-red">*</span></label>
-                                                    <div class="ql-wrapper ql-wrapper-demo bg-light">
-                                                        <div id="quillEditor" class="bg-white">
-                                                            <span id="editor">asdasd</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <textarea id="report" name="report" readonly="" class="form-control" rows="4"></textarea>
-                                                    </div>
-                                                </div>
-                                            </div> -->
-                                            <div class="row">
-                                                <div class="col-md-12 form-group">
-                                                    <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
-                                                    <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10"><?php
-                                                        if (!empty($setval)) {
-                                                            echo set_value('report');
-                                                        }
-                                                        if (!empty($lab_single->report)) {
-                                                            echo $lab_single->report;
-                                                        }
-                                                        ?>
-                                                    </textarea>
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="redirect" value="<?php
-                                            if (!empty($lab_single)) {
-                                                echo 'lab?id=' . $lab_single->id;
-                                            } else {
-                                                echo 'lab';
-                                            }
-                                            ?>">
-                                            <input type="hidden" name="id" value='<?php
-                                            if (!empty($lab_single->id)) {
-                                                echo $lab_single->id;
-                                            }
-                                            ?>'>
-                                            <div class="row mt-5">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                    
                                 </div>
                             </div>
-                            <div class="col-md-12 col-sm-12 col-lg-7">
-                                <div class="card mt-5">
+                            <div class="col-md-12 col-sm-12 col-lg-12" id="caselist">
+                            <?php } ?>
+                            <?php if (!$this->ion_auth->in_group(array('Laboratorist'))) { ?>
+                            <div class="col-md-12 col-sm-12 col-lg-12">
+                            <?php } ?>
+                                <div class="card">
                                     <div class="card-header">
-                                        <div class="card-title"><?php echo lang('lab_report'); ?></div>
-                                        <div class="card-options">
-                                            <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
-                                                <a href="lab/addLabView">
-                                                    <div class="btn-group pull-right">
-                                                        <button id="" class="btn btn-primary btn-xs">
-                                                            <i class="fa fa-plus"></i> <?php echo lang('add_lab_report'); ?>
-                                                        </button>
-                                                    </div>
-                                                </a>
-                                            <?php } ?>
-                                        </div>
+                                        <div class="card-title"><?php echo lang('all'); ?> <?php echo lang('lab'); ?></div>
                                     </div>
                                     <div class="card-body">
                                         <div class="">
@@ -247,7 +244,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>                          
+                                </div>
                             </div>
                         </div>
 
@@ -358,6 +355,13 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- Prism js -->
+        <script src="<?php echo base_url('public/assets/plugins/prism/prism.js'); ?>"></script>
+
+        <!-- Accordion js-->
+        <script src="<?php echo base_url('public/assets/plugins/accordion/accordion.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/accordion.js'); ?>"></script>
 
         <script type="text/javascript" src="common/assets/ckeditor/ckeditor.js"></script>
     <!-- INTERNAL JS INDEX END -->
@@ -546,6 +550,42 @@
 
                 });
              
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#screensize").click(function () {
+                    x = document.getElementById("addCase");
+
+                    if (x.className === "col-md-12 col-sm-12 col-lg-12") {
+                        x.className = "col-md-12 col-sm-12 col-lg-12";
+                        document.getElementById("caselist").className = "col-md-12 col-sm-12 col-lg-12";
+                        document.getElementById("screensize").className = "fa fa-compress text-dark"
+                        $("#casebody").attr("hidden", false);
+                    } else {
+                        x.className = "col-md-12 col-sm-12 col-lg-12";
+                        document.getElementById("caselist").className = "col-md-12 col-sm-12 col-lg-12";
+                        document.getElementById("screensize").className = "fa fa-expand text-dark"
+                        $("#casebody").attr("hidden", true);
+                    }
+                })
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#accordHeader").click(function () {
+                    var z = document.getElementById("accordHeader");
+
+                    if (z.className === "collapsed") {
+                        z.className = "collapsed text-dark border-bottom";
+                        z.style.backgroundColor = "#fff";
+                    } else {
+                        z.className = "collapsed";
+                        z.style.backgroundColor = "";
+                    }
+                });
             });
         </script>
 
