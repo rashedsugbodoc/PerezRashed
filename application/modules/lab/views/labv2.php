@@ -178,6 +178,21 @@
                                                         </div>
                                                     </div> -->
                                                     <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('name') ?></label>
+                                                                <input type="text" name="name" class="form-control" value="<?php
+                                                                    if (!empty($setval)) {
+                                                                        echo set_value('name');
+                                                                    }
+                                                                    if (!empty($lab_single->name)) {
+                                                                        echo $lab_single->name;
+                                                                    }
+                                                                ?>">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
                                                         <div class="col-md-12 form-group">
                                                             <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
                                                             <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10"><?php

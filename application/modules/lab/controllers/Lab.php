@@ -160,6 +160,7 @@ class Lab extends MX_Controller {
         $patient = $this->input->post('patient');
 
         $redirect = $this->input->post('redirect');
+        $name = $this->input->post('name');
 
         $p_name = $this->input->post('p_name');
         $p_email = $this->input->post('p_email');
@@ -214,6 +215,7 @@ class Lab extends MX_Controller {
 // Validating Price Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('report', 'Report', 'trim|required|max_length[10000]|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[100]|xss_clean');
 // Validating Price Field
         $this->form_validation->set_rules('discount', 'Discount', 'trim|min_length[1]|max_length[100]|xss_clean');
 
@@ -347,6 +349,7 @@ class Lab extends MX_Controller {
                     'patient_phone' => $patient_phone,
                     'patient_address' => $patient_address,
                     'doctor_name' => $doctor_name,
+                    'name' => $name,
                 );
 
 
@@ -367,6 +370,7 @@ class Lab extends MX_Controller {
                     'patient_phone' => $patient_details->phone,
                     'patient_address' => $patient_details->address,
                     'doctor_name' => $doctor_details->name,
+                    'name' => $name,
                 );
                 $this->lab_model->updateLab($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
