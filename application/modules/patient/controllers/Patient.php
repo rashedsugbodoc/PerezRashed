@@ -2404,6 +2404,7 @@ class Patient extends MX_Controller {
         $settings = $this->settings_model->getSettings();
         $patient = $this->patient_model->getPatientById($id);
         $appointments = $this->appointment_model->getAppointmentByPatient($patient->id);
+        $forms = $this->form_model->getFormByPatientId($id);
         $patients = $this->patient_model->getPatient();
         $doctors = $this->doctor_model->getDoctor();
         $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
@@ -2595,7 +2596,55 @@ class Patient extends MX_Controller {
             //                             </div>';
         }
 
+        foreach ($forms as $form) {
+            $form_specialty = [];
+            $form_doctor = $this->doctor_model->getDoctorById($form->doctor);
+            $form_doctor_specialty_explode = explode(',', $form_doctor->specialties);
+            foreach($form_doctor_specialty_explode as $form_doctor_specialty) {
+                $form_specialties = $this->specialty_model->getSpecialtyById($form_doctor_specialty)->display_name_ph;
+                $form_specialty[] = '<span class="badge badge-light badge-pill">'. $form_specialties .'</span>';
+            }
+
+            $form_spec = implode(' ', $form_specialty);
+
+
+            if (!empty($form_doctor)) {
+                $form_doctor_name = $form_doctor->name;
+            } else {
+                $form_doctor_name = '';
+            }
+
+            if (!empty($form_doctor)) {
+                $timeline[strtotime($form->form_date.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($form->form_date.' UTC')) . '</span></li>
+                                                        <li>
+                                                            <i class="fa fa-download bg-info"></i>
+                                                            <div class="timelineleft-item">
+                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($form->form_date.' UTC')), 3) . '</span>
+                                                                <h3 class="timelineleft-header"><span>' . lang('form') . '</span></h3>
+                                                                <div class="timelineleft-body">
+                                                                    <div class="d-flex align-items-center mb-5">
+                                                                        <div class="d-flex align-items-center mt-auto">
+                                                                            <div class="avatar  brround avatar-md mr-3" style="background-image: url('. $form_doctor->img_url .')"></div>
+                                                                            <div>
+                                                                                <p class="font-weight-semibold mb-1">'. lang('dr') . '. ' . $form_doctor_name .'</p>
+                                                                                <small class="d-block text-muted">'. $form_spec .'</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <h6>'. lang('form') . ' ' . lang('name') .'</h6>
+                                                                    <div class="text-muted h6 mb-5">'. $form->name .'</div>
+                                                                </div>
+                                                                <div class="timelineleft-footer">
+                                                                </div>
+                                                            </div>
+                                                        </li>';
+            } else {
+                '';
+            }
+        }
+
         foreach ($medical_histories as $medical_history) {
+            $specialty = [];
             $case_doctor = $this->doctor_model->getDoctorById($medical_history->doctor_id);
             $doctor_specialty_explode = explode(',', $case_doctor->specialties);
             foreach($doctor_specialty_explode as $doctor_specialty) {
@@ -2613,7 +2662,7 @@ class Patient extends MX_Controller {
             }
 
             if (!empty($medical_history->case_date)) {
-                $timeline[strtotime($medical_history->case_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($medical_history->case_date.' UTC')) . '</span></li>
+                $timeline[strtotime($medical_history->case_date.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($medical_history->case_date.' UTC')) . '</span></li>
                                                         <li>
                                                             <i class="fa fa-download bg-info"></i>
                                                             <div class="timelineleft-item">
@@ -2668,7 +2717,7 @@ class Patient extends MX_Controller {
         foreach ($patient_materials as $patient_material) {
 
             if (!empty($patient_material->created_at)) {
-                $timeline[strtotime($patient_material->created_at.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($patient_material->created_at.' UTC')) . ' </span></li>
+                $timeline[strtotime($patient_material->created_at.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($patient_material->created_at.' UTC')) . ' </span></li>
                                                             <li>
                                                                 <i class="fa fa-download bg-secondary"></i>
                                                                 <div class="timelineleft-item">
@@ -2889,6 +2938,28 @@ class Patient extends MX_Controller {
             $all_prescription = '';
         }
 
+        $all_form = '';
+
+        foreach ($forms as $form) {
+            $form_doctor_details = $this->doctor_model->getDoctorById($form->doctor);
+            if(!empty($form_doctor_details)) {
+                $form_doctor_name = $form_doctor_details->name;
+            } else {
+                $form_doctor_name = "";
+            }
+            $form_class = ' <tr class="">
+                                <td>' . $form->id . '</td>
+                                <td>' . $form->name . '</td>
+                                <td>' . $form_doctor_name . '</td>
+                                <td>' . date("Y-m-d", strtotime($form->form_date.' UTC')) . '</td>
+                            </tr>';
+
+            $all_form .= $form_class;
+        }
+
+        if (empty($all_form)) {
+            $all_form = '';
+        }
 
         $all_lab = '';
 
@@ -3125,10 +3196,11 @@ class Patient extends MX_Controller {
                                                 <li class=""><a href="#tab5" class="active" data-toggle="tab">' . lang('appointments') . '</a></li>
                                                 <li><a href="#tab6" data-toggle="tab">' . lang('case_history') . '</a></li>
                                                 <li><a href="#tab7" data-toggle="tab">' . lang('prescription') . '</a></li>
-                                                <li><a href="#tab8" data-toggle="tab">' . lang('lab') . '</a></li>
-                                                <li><a href="#tab9" data-toggle="tab">' . lang('documents') . '</a></li>
-                                                <li><a href="#tab10" data-toggle="tab">' . lang('bed') . '</a></li>
-                                                <li><a href="#tab11" data-toggle="tab">' . lang('timeline') . '</a></li>
+                                                <li><a href="#tab8" data-toggle="tab">' . lang('form') . '</a></li>
+                                                <li><a href="#tab9" data-toggle="tab">' . lang('lab') . '</a></li>
+                                                <li><a href="#tab10" data-toggle="tab">' . lang('documents') . '</a></li>
+                                                <li><a href="#tab11" data-toggle="tab">' . lang('bed') . '</a></li>
+                                                <li><a href="#tab12" data-toggle="tab">' . lang('timeline') . '</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -3201,6 +3273,25 @@ class Patient extends MX_Controller {
                                                             <thead>
                                                                 <tr>
                                                                     <th>' . lang("id") . '</th>
+                                                                    <th>' . lang("name") . '</th>
+                                                                    <th>' . lang("doctor") . '</th>
+                                                                    <th>' . lang("date") . '</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                ' . $all_form . '
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane " id="tab9">
+                                                <div class="table-responsive">
+                                                    <div class="adv-table editable-table ">
+                                                        <table class="table table-hover table-bordered" id="">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>' . lang("id") . '</th>
                                                                     <th>' . lang("date") . '</th>
                                                                     <th>' . lang("doctor") . '</th>
                                                                     <th>' . lang("options") . '</th>
@@ -3213,7 +3304,7 @@ class Patient extends MX_Controller {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane " id="tab9">
+                                            <div class="tab-pane " id="tab10">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="row">
@@ -3237,7 +3328,7 @@ class Patient extends MX_Controller {
                                                 </div>
                                                 ' . $documentInputFilter . '
                                             </div>
-                                            <div class="tab-pane " id="tab10">
+                                            <div class="tab-pane " id="tab11">
                                                 <div class="table-responsive">
                                                     <div class="adv-table editable-table ">
                                                         <table class="table table-hover table-bordered" id="">
@@ -3256,7 +3347,7 @@ class Patient extends MX_Controller {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane " id="tab11">
+                                            <div class="tab-pane " id="tab12">
                                                 <ul class="timelineleft pb-5">
                                                     ' . $timeline_value . '
                                                 </ul>
