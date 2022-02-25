@@ -1529,16 +1529,20 @@ class Patient extends MX_Controller {
 
             if (!empty($prescription->medicine)) {
                 $medicine = explode('###', $prescription->medicine);
+                $i = 0;
                 $medss = '';
                 foreach($medicine as $key => $value) {
                     $single_medicine = explode('***', $value);
+                    $i += 1;
                     $med_model = $this->medicine_model->getMedicineById($single_medicine[0]);
                         $meds = '
                             <div class="row mb-5">
+                                <div class="col-md-1 col-sm-12">'. $i .'.</div>
                                 <div class="col-md-8 col-sm-12">
                                     <p class="mb-0"><strong>'. $med_model->generic .'</strong> ( '. $med_model->name .' ) '. $single_medicine[1] .'</p>
+                                    <p class="mb-0"> Sig: '.  $single_medicine[3] .'</p>
                                 </div>
-                                <div class="col-md-4 col-sm-12">
+                                <div class="col-md-3 col-sm-12">
                                     Quantity: '. $single_medicine[2] .'
                                 </div>
                             </div>';
@@ -1712,7 +1716,7 @@ class Patient extends MX_Controller {
                                                                             <div class="text-muted h6 mb-5">'. $form->name .'</div>
                                                                         </div>
                                                                         <div class="timelineleft-footer">
-                                                                            
+                                                                            <a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
                                                                         </div>
                                                                     </div>
                                                                 </li>';
@@ -2635,6 +2639,7 @@ class Patient extends MX_Controller {
                                                                     <div class="text-muted h6 mb-5">'. $form->name .'</div>
                                                                 </div>
                                                                 <div class="timelineleft-footer">
+                                                                    <a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
                                                                 </div>
                                                             </div>
                                                         </li>';
