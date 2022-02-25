@@ -198,6 +198,10 @@ class Form extends MX_Controller {
         $doctor = $this->input->post('doctor');
         $date = $this->input->post('date');
         if (!empty($date)) {
+            if(empty($id)) {
+                $time = date('H:i:s');
+                $date = $date .' '. $time;
+            }
             $date = strtotime($date);
             $date = gmdate('Y-m-d H:i:s', $date);
         } else {
@@ -344,7 +348,6 @@ class Form extends MX_Controller {
                     'patient_phone' => $patient_phone,
                     'patient_address' => $patient_address,
                     'doctor_name' => $doctor_name,
-                    'date_string' => $date_string
                 );
 
 
