@@ -1499,7 +1499,7 @@ class Patient extends MX_Controller {
                                                 <li>
                                                     <i class="fa fa-download bg-success"></i>
                                                     <div class="timelineleft-item">
-                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
+                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($appointment->appointment_registration_time.' UTC')), 3) . '</span>
                                                         <h3 class="timelineleft-header"><span>' . lang('appointment') . '</span></h3>
                                                         <div class="timelineleft-body">
                                                             <div class="d-flex align-items-center mt-auto">
@@ -1554,13 +1554,14 @@ class Patient extends MX_Controller {
                 $timeline[strtotime($prescription->prescription_date.' UTC') + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($prescription->prescription_date.' UTC')) . '</span></li>
                                                         <li><i class="fa fa-download bg-cyan"></i>
                                                         <div class="timelineleft-item">
-                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($prescription->prescription_date.' UTC')), 3) . '</span>
                                                             <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                             <div class="timelineleft-body">
 
                                                                 '. $all_meds .'
                                                             </div>
                                                             <div class="timelineleft-footer">
+                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
                                                             </div>
                                                         </div></li>';
             } else {
@@ -1583,7 +1584,7 @@ class Patient extends MX_Controller {
                                             <li>
                                                 <i class="fa fa-envelope bg-primary"></i>
                                                 <div class="timelineleft-item">
-                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $lab_doctor . '</span>
+                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($lab->lab_date.' UTC')), 3) . '</span>
                                                     <h3 class="timelineleft-header"><span>Lab</span></h3>
                                                     <div class="timelineleft-body">
                                                         <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($lab->lab_date.' UTC')) . '</h4>
@@ -1599,6 +1600,7 @@ class Patient extends MX_Controller {
         }
 
         foreach ($data['medical_histories'] as $medical_history) {
+            $specialty = [];
             $case_doctor = $this->doctor_model->getDoctorById($medical_history->doctor_id);
             $doctor_specialty_explode = explode(',', $case_doctor->specialties);
             foreach($doctor_specialty_explode as $doctor_specialty) {
@@ -1620,7 +1622,7 @@ class Patient extends MX_Controller {
                                                         <li>
                                                             <i class="fa fa-download bg-info"></i>
                                                             <div class="timelineleft-item">
-                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($medical_history->case_date.' UTC')) . '</span>
+                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($medical_history->case_date.' UTC')), 3) . '</span>
                                                                 <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
                                                                 <div class="timelineleft-body">
                                                                     <div class="d-flex align-items-center mb-5">
@@ -1653,7 +1655,7 @@ class Patient extends MX_Controller {
                                                             <li>
                                                                 <i class="fa fa-download bg-secondary"></i>
                                                                 <div class="timelineleft-item">
-                                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($patient_material->created_at.' UTC')) . ' </span>
+                                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($patient_material->created_at.' UTC')), 3) . ' </span>
                                                                     <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
                                                                     <div class="timelineleft-body">
                                                                         <h4>' . $patient_material->title . '</h4>
@@ -1668,6 +1670,55 @@ class Patient extends MX_Controller {
                 '';
             }
 
+        }
+
+        foreach ($data['forms'] as $form) {
+
+            $formspecialty = [];
+            $form_doctor = $this->doctor_model->getDoctorById($form->doctor);
+            $form_doctor_specialty_explode = explode(',', $form_doctor->specialties);
+            foreach($form_doctor_specialty_explode as $form_doctor_specialty) {
+                $formspecialties = $this->specialty_model->getSpecialtyById($form_doctor_specialty)->display_name_ph;
+                $formspecialty[] = '<span class="badge badge-light badge-pill">'. $formspecialties .'</span>';
+            }
+
+            $formspec = implode(' ', $formspecialty);
+
+
+            if (!empty($form_doctor)) {
+                $doctor_name = $form_doctor->name;
+            } else {
+                $doctor_name = '';
+            }
+
+            if (!empty($form->form_date)) {
+                $timeline[strtotime($form->form_date.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($form->form_date.' UTC')) . ' </span></li>
+                                                                <li>
+                                                                    <i class="fa fa-download bg-secondary"></i>
+                                                                    <div class="timelineleft-item">
+                                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($form->form_date.' UTC')), 3) . ' </span>
+                                                                        <h3 class="timelineleft-header"><span>' . lang('forms') . '</span></h3>
+                                                                        <div class="timelineleft-body">
+                                                                            <div class="d-flex align-items-center mb-5">
+                                                                                <div class="d-flex align-items-center mt-auto">
+                                                                                    <div class="avatar  brround avatar-md mr-3" style="background-image: url('. $form_doctor->img_url .')"></div>
+                                                                                    <div>
+                                                                                        <p class="font-weight-semibold mb-1">'. lang('dr') . '. ' . $doctor_name .'</p>
+                                                                                        <small class="d-block text-muted">'. $formspec .'</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <h6>'. lang('form') . ' ' . lang('name') .'</h6>
+                                                                            <div class="text-muted h6 mb-5">'. $form->name .'</div>
+                                                                        </div>
+                                                                        <div class="timelineleft-footer">
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                </li>';
+            } else {
+                '';
+            }
         }
 
         if (!empty($timeline)) {
@@ -2377,7 +2428,7 @@ class Patient extends MX_Controller {
                                             <li>
                                                 <i class="fa fa-download bg-success"></i>
                                                 <div class="timelineleft-item">
-                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
+                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($appointment->appointment_registration_time.' UTC')), 3) . '</span>
                                                     <h3 class="timelineleft-header"><span>' . lang('appointment') . '</span></h3>
                                                     <div class="timelineleft-body">
                                                         <div class="d-flex align-items-center mt-auto">
@@ -2456,7 +2507,7 @@ class Patient extends MX_Controller {
                 $timeline[strtotime($prescription->prescription_date.' UTC') + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($prescription->prescription_date.' UTC')) . '</span></li>
                                                         <li><i class="fa fa-download bg-cyan"></i>
                                                         <div class="timelineleft-item">
-                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $doctor_name . '</span>
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($prescription->prescription_date.' UTC')), 3) . '</span>
                                                             <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                             <div class="timelineleft-body">
 
@@ -2506,7 +2557,7 @@ class Patient extends MX_Controller {
                                             <li>
                                                 <i class="fa fa-envelope bg-primary"></i>
                                                 <div class="timelineleft-item">
-                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . $lab_doctor . '</span>
+                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($lab->lab_date.' UTC')), 3) . '</span>
                                                     <h3 class="timelineleft-header"><span>Lab</span></h3>
                                                     <div class="timelineleft-body">
                                                         <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($lab->lab_date.' UTC')) . '</h4>
@@ -2566,7 +2617,7 @@ class Patient extends MX_Controller {
                                                         <li>
                                                             <i class="fa fa-download bg-info"></i>
                                                             <div class="timelineleft-item">
-                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($medical_history->case_date.' UTC')) . '</span>
+                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($medical_history->case_date.' UTC')), 3) . '</span>
                                                                 <h3 class="timelineleft-header"><span>' . lang('case_note') . '</span></h3>
                                                                 <div class="timelineleft-body">
                                                                     <div class="d-flex align-items-center mb-5">
@@ -2621,7 +2672,7 @@ class Patient extends MX_Controller {
                                                             <li>
                                                                 <i class="fa fa-download bg-secondary"></i>
                                                                 <div class="timelineleft-item">
-                                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . date('d-m-Y', strtotime($patient_material->created_at.' UTC')) . ' </span>
+                                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($patient_material->created_at.' UTC')), 3) . ' </span>
                                                                     <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
                                                                     <div class="timelineleft-body">
                                                                         <h4>' . $patient_material->title . '</h4>
