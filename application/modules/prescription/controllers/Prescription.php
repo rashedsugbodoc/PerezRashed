@@ -81,8 +81,11 @@ class Prescription extends MX_Controller {
         $tab = $this->input->post('tab');
         $date = $this->input->post('date');
         if (!empty($date)) {
+            if(empty($id)) {
+                $time = date('H:i:s');
+                $date = $date .' '. $time;
+            }
             $date = strtotime($date);
-            // $date = date("Y-m-d", $date);
             $date = gmdate('Y-m-d H:i:s', $date);
         }
 
