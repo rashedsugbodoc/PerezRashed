@@ -213,7 +213,7 @@
                                                         echo 'lab';
                                                     }
                                                     ?>">
-                                                    <input type="hidden" name="id" value='<?php
+                                                    <input type="hidden" name="id" id="lab_id" value='<?php
                                                     if (!empty($lab_single->id)) {
                                                         echo $lab_single->id;
                                                     }
@@ -601,6 +601,26 @@
                         z.style.backgroundColor = "";
                     }
                 });
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var lab_id = $("#lab_id").val();
+                var z = document.getElementById("accordHeader");
+                var x = document.getElementById("collapseOne31");
+                if (lab_id !== "") {
+                    z.className = "collapsed text-dark border-bottom";
+                    z.style.backgroundColor = "#fff";
+                    x.className = "panel-collapse collapse show";
+                    $("#accordHeader").attr("aria-expanded", true);
+
+                    /*USE THIS TO GET THE ID ON URL*/
+                        // var baseUrl = (window.location).href;
+                        // var koopId = baseUrl.substring(baseUrl.lastIndexOf('=') + 1);
+                        // alert(koopId)
+                    /*END*/
+                }
             });
         </script>
 
