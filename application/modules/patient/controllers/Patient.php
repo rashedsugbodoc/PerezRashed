@@ -1477,6 +1477,7 @@ class Patient extends MX_Controller {
         $data['forms'] = $this->form_model->getFormByPatientId($id);
         $data['labs'] = $this->lab_model->getLabByPatientId($id);
         $data['beds'] = $this->bed_model->getBedAllotmentsByPatientId($id);
+        $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
         $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
         $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
         $data['countries'] = $this->location_model->getCountry();
@@ -1488,6 +1489,21 @@ class Patient extends MX_Controller {
 
         foreach ($data['appointments'] as $appointment) {
             $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
+            $hospital_details = $this->hospital_model->getHospitalById($appointment->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            $service_category_group = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $services = $this->finance_model->getPaymentCategoryById($appointment->service_id)->description;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
+            $appointment_specialty = [];
+            $appointment_doctor_specialty_explode = explode(',', $doctor_details->specialties);
+            foreach($appointment_doctor_specialty_explode as $appointment_doctor_specialty) {
+                $appointment_specialties = $this->specialty_model->getSpecialtyById($appointment_doctor_specialty)->display_name_ph;
+                $appointment_specialty[] = '<span class="badge badge-light badge-pill">'. $appointment_specialties .'</span>';
+            }
+
+            $appointment_spec = implode(' ', $appointment_specialty);
             if (!empty($doctor_details)) {
                 $doctor_name = $doctor_details->name;
             } else {
@@ -1502,18 +1518,75 @@ class Patient extends MX_Controller {
                                                         <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($appointment->appointment_registration_time.' UTC')), 3) . '</span>
                                                         <h3 class="timelineleft-header"><span>' . lang('appointment') . '</span></h3>
                                                         <div class="timelineleft-body">
+                                                            <div class="form-group">
+                                                                <div class="media mr-4 mb-4">
+                                                                    <div class="mr-3 mt-1 ml-3">
+                                                                        <i class="fa fa-calendar fa-2x text-primary"></i>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <strong>' . date($data['settings']->date_format_long, $appointment->date) . '</strong>
+                                                                        <div class="row">
+                                                                            <div class="col-md-10 mb-3">
+                                                                                <small class="text-muted">' . $appointment->s_time . ' - ' . $appointment->e_time . '</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ml-auto mt-1 mr-3">
+                                                                        <span class="badge badge-pill badge-primary">'. $appointment->status .'</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="media mr-4 mb-4">
+                                                                    <div class="mr-3 mt-1 ml-3">
+                                                                        <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <strong>' . $service_category_group . '</strong>
+                                                                        <div class="row">
+                                                                            <div class="col-md-10 mb-3">
+                                                                                <small class="text-muted">' . $services . '</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="media mr-4 mb-4">
+                                                                    <div class="mr-3 mt-1 ml-3">
+                                                                        <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <strong>' . $appointment->remarks . '</strong>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="timelineleft-footer border-top bg-light">
                                                             <div class="d-flex align-items-center mt-auto">
                                                                 <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
                                                                 <div>
                                                                     <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
-                                                                    <small class="d-block text-muted">' . $appointment->s_time . ' - ' . $appointment->e_time . '</small>
+                                                                    <small class="d-block text-muted">' . $appointment_spec . '</small>
                                                                 </div>
-                                                                <div class="ml-auto text-muted">
-                                                                    <span class="badge badge-pill badge-primary">'. $appointment->status .'</span>
+                                                                <div class="ml-auto mr-3 text-right">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 col-sm-12">
+                                                                            <strong>'. $hospital_details->name .'</strong>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 col-sm-12">
+                                                                            <small>'. $branch_name .'</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <div>
+                                                                        <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="timelineleft-footer">
                                                         </div>
                                                     </div>
                                                 </li>';
@@ -1736,6 +1809,35 @@ class Patient extends MX_Controller {
                                                                         </div>
                                                                     </div>
                                                                 </li>';
+            } else {
+                '';
+            }
+        }
+
+        foreach ($data['encounters'] as $encounter) {
+
+            $doctor_details = $this->doctor_model->getDoctorById($encounter->doctor);
+            if (!empty($doctor_details)) {
+                $lab_doctor = $doctor_details->name;
+            } else {
+                $lab_doctor = '';
+            }
+
+            
+            if (!empty($encounter->created_at)) {
+                $timeline[strtotime($encounter->created_at.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($encounter->created_at.' UTC')) . '</span></li>
+                                            <li>
+                                                <i class="fa fa-envelope bg-primary"></i>
+                                                <div class="timelineleft-item">
+                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($encounter->created_at.' UTC')), 3) . '</span>
+                                                    <h3 class="timelineleft-header"><span>' . lang('encounter') . '</span></h3>
+                                                    <div class="timelineleft-body">
+                                                        <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($encounter->created_at.' UTC')) . '</h4>
+                                                    </div>
+                                                    <div class="timelineleft-footer">
+                                                    </div>
+                                                </div>
+                                            </li>';
             } else {
                 '';
             }

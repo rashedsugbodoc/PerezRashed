@@ -178,7 +178,7 @@
                                                 <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
                                                 <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li>
                                                 <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
-                                                <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('admissions'); ?></a></li>
+                                                <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('encounters'); ?></a></li>
                                                 <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
                                             </ul>
                                         </div>
@@ -950,12 +950,12 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <div class="card-title">
-                                                             <?php echo lang('admissions'); ?>
+                                                             <?php echo lang('encounters'); ?>
                                                         </div>
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModa3">
+                                                                    <a class="btn btn-primary btn_width btn-xs" href="encounter/addNewView">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                                                     </a>
                                                                 </div>
@@ -968,26 +968,32 @@
                                                                 <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100 editable-sample6">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th><?php echo lang('admission_id'); ?></th>
-                                                                            <th><?php echo lang('alloted_time'); ?></th>
-                                                                            <th><?php echo lang('discharge_time'); ?></th>
+                                                                            <th><?php echo lang('date'); ?></th>
+                                                                            <th><?php echo lang('encounter') . ' ' . lang('id'); ?></th>
+                                                                            <th><?php echo lang('type'); ?></th>
                                                                             <th><?php echo lang('facility'); ?></th>
+                                                                            <th><?php echo lang('status'); ?></th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach ($beds as $bed) { ?>
+                                                                        <?php foreach ($encounters as $encounter) { ?>
                                                                             <tr class="">
-                                                                                <td><?php echo $bed->bed_id; ?></td>            
-                                                                                <td><?php echo $bed->a_time; ?></td>
-                                                                                <td><?php echo $bed->d_time; ?></td>
+                                                                                <td><?php echo date('Y-m-d', strtotime($encounter->created_at.' UTC')); ?></td>            
+                                                                                <td><?php echo $encounter->encounter_number; ?></td>
+                                                                                <td><?php echo $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name; ?></td>
                                                                                 <td><?php
-                                                                                    $facility = $this->hospital_model->getHospitalById($bed->hospital_id);
-                                                                                    if (!empty($bed->hospital_id)) {
-                                                                                        $bed_facility = $facility->name;
+                                                                                    if (!empty($encounter->location_id)) {
+                                                                                        echo $this->branch_model->getBranchById($encounter->location_id)->display_name;
                                                                                     } else {
-                                                                                        $bed_facility = '';
+                                                                                        echo "N/A";
                                                                                     }
-                                                                                    echo $bed_facility;
+                                                                                ?></td>
+                                                                                <td><?php
+                                                                                    if (!empty($encounter->encounter_status)) {
+                                                                                        echo $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
+                                                                                    } else {
+                                                                                        echo "N/A";
+                                                                                    }
                                                                                 ?></td>
                                                                             </tr>
                                                                         <?php } ?>
