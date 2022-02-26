@@ -17,7 +17,13 @@
                                         <div class="panel-heading" role="tab" id="headingOne31">
                                             <h4 class="panel-title">
                                                 <a class="collapsed" id="accordHeader" role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne31" aria-expanded="true" aria-controls="collapseOne31">
-                                                    <?php echo lang('add'); ?> <?php echo lang('form'); ?>
+                                                    <?php
+                                                    if (!empty($form_single->id)) {
+                                                        echo lang('edit') . ' ' . lang('form');
+                                                    } else {
+                                                        echo lang('add') . ' ' . lang('form');
+                                                    }
+                                                    ?>
                                                 </a>
                                             </h4>
                                         </div>
@@ -204,7 +210,7 @@
                                                         echo 'form';
                                                     }
                                                     ?>">
-                                                    <input type="hidden" name="id" value='<?php
+                                                    <input type="hidden" id="form_id" name="id" value='<?php
                                                     if (!empty($form_single->id)) {
                                                         echo $form_single->id;
                                                     }
@@ -572,6 +578,26 @@
                     z.style.backgroundColor = "";
                 }
             });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var form_id = $("#form_id").val();
+            var z = document.getElementById("accordHeader");
+            var x = document.getElementById("collapseOne31");
+            if (form_id !== "") {
+                z.className = "collapsed text-dark border-bottom";
+                z.style.backgroundColor = "#fff";
+                x.className = "panel-collapse collapse show";
+                $("#accordHeader").attr("aria-expanded", true);
+
+                /*USE THIS TO GET THE ID ON URL*/
+                    // var baseUrl = (window.location).href;
+                    // var koopId = baseUrl.substring(baseUrl.lastIndexOf('=') + 1);
+                    // alert(koopId)
+                /*END*/
+            }
         });
     </script>
 
