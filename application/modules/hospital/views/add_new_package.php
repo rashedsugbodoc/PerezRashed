@@ -367,17 +367,7 @@
                                     ?> required=""> <?php echo lang('pharmacist'); ?>
 
                                     <br>
-                                    <input type='checkbox' value = "prescription" name="module[]" <?php
-                                    if (!empty($package->id)) {
-                                        if (in_array('prescription', $modules1)) {
-                                            echo 'checked';
-                                        }
-                                    } else {
-                                        echo 'checked';
-                                    }
-                                    ?>> <?php echo lang('prescription'); ?>
 
-                                    <br>
                                     <input type='checkbox' value = "pharmacy" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('pharmacy', $modules1)) {
@@ -388,7 +378,18 @@
                                     }
                                     ?>> <?php echo lang('pharmacy'); ?>
 
-                                    <br>                                    
+                                    <br>
+                                    <input type='checkbox' value = "prescription" name="module[]" <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('prescription', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('prescription'); ?>
+
+                                    <br>                                                                        
                                     <input type='checkbox' value = "receptionist" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('receptionist', $modules1)) {
