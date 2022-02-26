@@ -14,7 +14,7 @@
                   <span class="btn-inner--icon"><i class="fas fa-shopping-cart"></i></span>
                   <span class="btn-inner--text">Request A Demo</span>
                 </a>
-                <a href="https://sugbodoc.com" class="btn btn-outline-primary btn-icon mb-3 mb-sm-0" target="_blank">
+                <a href="auth/login" class="btn btn-outline-primary btn-icon mb-3 mb-sm-0" target="_blank">
                   <span class="btn-inner--icon"><i class="fas fa-shopping-cart"></i></span>
                   <span class="btn-inner--text">Login</span>
                 </a>
