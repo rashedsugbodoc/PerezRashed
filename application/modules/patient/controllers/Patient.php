@@ -1521,6 +1521,14 @@ class Patient extends MX_Controller {
 
         foreach ($data['prescriptions'] as $prescription) {
             $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);
+            $prescription_specialty = [];
+            $prescription_doctor_specialty_explode = explode(',', $doctor_details->specialties);
+            foreach($prescription_doctor_specialty_explode as $prescription_doctor_specialty) {
+                $prescription_specialties = $this->specialty_model->getSpecialtyById($prescription_doctor_specialty)->display_name_ph;
+                $prescription_specialty[] = '<span class="badge badge-light badge-pill">'. $prescription_specialties .'</span>';
+            }
+
+            $prescription_spec = implode(' ', $prescription_specialty);
             if (!empty($doctor_details)) {
                 $doctor_name = $doctor_details->name;
             } else {
@@ -1561,7 +1569,15 @@ class Patient extends MX_Controller {
                                                             <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($prescription->prescription_date.' UTC')), 3) . '</span>
                                                             <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                             <div class="timelineleft-body">
-
+                                                                <div class="d-flex align-items-center mb-5">
+                                                                    <div class="d-flex align-items-center mt-auto">
+                                                                        <div class="avatar  brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
+                                                                        <div>
+                                                                            <p class="font-weight-semibold mb-1">'. lang('dr') . '. ' . $doctor_name .'</p>
+                                                                            <small class="d-block text-muted">'. $prescription_spec .'</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 '. $all_meds .'
                                                             </div>
                                                             <div class="timelineleft-footer">
@@ -2507,7 +2523,7 @@ class Patient extends MX_Controller {
                         $meds = '
                             <div class="row mb-5">
                                 <div class="col-md-1 col-sm-12">
-                                    '. $i .'
+                                    '. $i .'.
                                 </div>
                                 <div class="col-md-8 col-sm-12">
                                     <p class="mb-0"><strong>'. $med_model->generic .'</strong> ( '. $med_model->name .' ) '. $single_medicine[1] .'</p>
