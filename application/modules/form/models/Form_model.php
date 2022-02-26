@@ -135,6 +135,8 @@ class Form_model extends CI_model {
 
     function getFormCategory() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->or_where('hospital_id', null);
+        // $this->db->limit(10);
         $query = $this->db->get('form_category');
         return $query->result();
     }

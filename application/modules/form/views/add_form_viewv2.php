@@ -67,6 +67,17 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('template'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one">
+                                                            <option value="">Select .....</option>
+                                                            <?php foreach ($templates as $template) { ?>
+                                                                <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one">
                                                             <?php if (!empty($form->patient)) { ?>
@@ -75,8 +86,18 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?></label>
+                                                        <select class="select2-show-search form-control" name="category" data-placeholder="Choose one">
+                                                            <?php foreach ($categories as $category) { ?>
+                                                                <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="pos_client clearfix">
+                                            <!-- <div class="pos_client clearfix">
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <div class="form-group">
@@ -153,19 +174,8 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('template'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one">
-                                                            <option value="">Select .....</option>
-                                                            <?php foreach ($templates as $template) { ?>
-                                                                <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
-                                                            <?php } ?>
-                                                        </select>
-                                                    </div>
-                                                </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('refd_by_doctor'); ?> <span class="text-red">*</span></label>
@@ -177,7 +187,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="pos_doctor clearfix">
+                                            <!-- <div class="pos_doctor clearfix">
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <div class="form-group">
@@ -216,7 +226,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <!-- <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -231,8 +241,8 @@
                                             <div class="row">
                                                 <div class="form-group col-md-12">
                                                     <label for="exampleInputEmail1"><?php echo lang('name'); ?></label>
-                                                    <input type="text" class="form-control" name="form_name" placeholder="<?php echo lang('form_report_name'); ?>" value='<?php if (!empty($form->name)) {echo $form->name;} ?>
-                                                    '>
+                                                    <input type="text" class="form-control" name="form_name" placeholder="<?php echo lang('form_report_name'); ?>" value='<?php if (!empty($form->name)) {echo $form->name;} 
+                                                    ?>'>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -642,7 +652,7 @@
         });
     </script>
 
-    <script>
+    <!-- <script>
         $(document).ready(function () {
             $('.pos_client').hide();
             $(document.body).on('change', '#pos_select', function () {
@@ -676,7 +686,7 @@
         });
 
 
-    </script>
+    </script> -->
 
 
     <script type="text/javascript">
@@ -707,7 +717,7 @@
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'patient/getPatientinfoWithAddNewOption',
+                    url: 'patient/getPatientinfo',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -730,7 +740,7 @@
                 placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'doctor/getDoctorWithAddNewOption',
+                    url: 'doctor/getDoctorInfo',
                     type: "post",
                     dataType: 'json',
                     delay: 250,

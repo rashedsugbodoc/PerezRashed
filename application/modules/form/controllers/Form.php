@@ -164,36 +164,37 @@ class Form extends MX_Controller {
         $report = $this->input->post('report');
 
         $patient = $this->input->post('patient');
+        $category = $this->input->post('category');
 
         $redirect = $this->input->post('redirect');
 
-        $p_name = $this->input->post('p_name');
-        $p_email = $this->input->post('p_email');
-        if (empty($p_email)) {
-            $p_email = $p_name . '-' . rand(1, 1000) . '-' . $p_name . '-' . rand(1, 1000) . '@example.com';
-        }
-        if (!empty($p_name)) {
-            $password = $p_name . '-' . rand(1, 100000000);
-        }
-        $p_phone = $this->input->post('p_phone');
-        $p_age = $this->input->post('p_age');
-        $p_gender = $this->input->post('p_gender');
+        // $p_name = $this->input->post('p_name');
+        // $p_email = $this->input->post('p_email');
+        // if (empty($p_email)) {
+        //     $p_email = $p_name . '-' . rand(1, 1000) . '-' . $p_name . '-' . rand(1, 1000) . '@example.com';
+        // }
+        // if (!empty($p_name)) {
+        //     $password = $p_name . '-' . rand(1, 100000000);
+        // }
+        // $p_phone = $this->input->post('p_phone');
+        // $p_age = $this->input->post('p_age');
+        // $p_gender = $this->input->post('p_gender');
         $add_date = date('m/d/y');
 
 
-        $patient_id = rand(10000, 1000000);
+        // $patient_id = rand(10000, 1000000);
 
 
 
-        $d_name = $this->input->post('d_name');
-        $d_email = $this->input->post('d_email');
-        if (empty($d_email)) {
-            $d_email = $d_name . '-' . rand(1, 1000) . '-' . $d_name . '-' . rand(1, 1000) . '@example.com';
-        }
-        if (!empty($d_name)) {
-            $password = $d_name . '-' . rand(1, 100000000);
-        }
-        $d_phone = $this->input->post('d_phone');
+        // $d_name = $this->input->post('d_name');
+        // $d_email = $this->input->post('d_email');
+        // if (empty($d_email)) {
+        //     $d_email = $d_name . '-' . rand(1, 1000) . '-' . $d_name . '-' . rand(1, 1000) . '@example.com';
+        // }
+        // if (!empty($d_name)) {
+        //     $password = $d_name . '-' . rand(1, 100000000);
+        // }
+        // $d_phone = $this->input->post('d_phone');
 
         $doctor = $this->input->post('doctor');
         $date = $this->input->post('date');
@@ -248,91 +249,91 @@ class Form extends MX_Controller {
                 // $this->load->view('home/footer'); // just the header file
             }
         } else {
-            if (!empty($p_name)) {
+//             if (!empty($p_name)) {
 
-                $data_p = array(
-                    'patient_id' => $patient_id,
-                    'name' => $p_name,
-                    'email' => $p_email,
-                    'doctor' => $doctor,
-                    'phone' => $p_phone,
-                    'sex' => $p_gender,
-                    'age' => $p_age,
-                    'add_date' => $add_date,
-                    'how_added' => 'from_pos'
-                );
-                $username = $this->input->post('p_name');
-// Adding New Patient
-                if ($this->ion_auth->email_check($p_email)) {
-                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
-                } else {
-                    $dfg = 5;
-                    $this->ion_auth->register($username, $password, $p_email, $dfg);
-                    $ion_user_id = $this->db->get_where('users', array('email' => $p_email))->row()->id;
-                    $this->patient_model->insertPatient($data_p);
-                    $patient_user_id = $this->db->get_where('patient', array('email' => $p_email))->row()->id;
-                    $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->patient_model->updatePatient($patient_user_id, $id_info);
-                    $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                }
-//    }
-            }
+//                 $data_p = array(
+//                     'patient_id' => $patient_id,
+//                     'name' => $p_name,
+//                     'email' => $p_email,
+//                     'doctor' => $doctor,
+//                     'phone' => $p_phone,
+//                     'sex' => $p_gender,
+//                     'age' => $p_age,
+//                     'add_date' => $add_date,
+//                     'how_added' => 'from_pos'
+//                 );
+//                 $username = $this->input->post('p_name');
+// // Adding New Patient
+//                 if ($this->ion_auth->email_check($p_email)) {
+//                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+//                 } else {
+//                     $dfg = 5;
+//                     $this->ion_auth->register($username, $password, $p_email, $dfg);
+//                     $ion_user_id = $this->db->get_where('users', array('email' => $p_email))->row()->id;
+//                     $this->patient_model->insertPatient($data_p);
+//                     $patient_user_id = $this->db->get_where('patient', array('email' => $p_email))->row()->id;
+//                     $id_info = array('ion_user_id' => $ion_user_id);
+//                     $this->patient_model->updatePatient($patient_user_id, $id_info);
+//                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+//                 }
+// //    }
+//             }
 
-            if (!empty($d_name)) {
+//             if (!empty($d_name)) {
 
-                $limit = $this->doctor_model->getLimit();
-                if ($limit <= 0) {
-                    $this->session->set_flashdata('warning', lang('doctor_limit_exceed'));
-                    redirect('doctor');
-                }
+//                 $limit = $this->doctor_model->getLimit();
+//                 if ($limit <= 0) {
+//                     $this->session->set_flashdata('warning', lang('doctor_limit_exceed'));
+//                     redirect('doctor');
+//                 }
 
-                $data_d = array(
-                    'name' => $d_name,
-                    'email' => $d_email,
-                    'phone' => $d_phone,
-                );
-                $username = $this->input->post('d_name');
-// Adding New Patient
-                if ($this->ion_auth->email_check($d_email)) {
-                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
-                } else {
-                    $dfgg = 4;
-                    $this->ion_auth->register($username, $password, $d_email, $dfgg);
-                    $ion_user_id = $this->db->get_where('users', array('email' => $d_email))->row()->id;
-                    $this->doctor_model->insertDoctor($data_d);
-                    $doctor_user_id = $this->db->get_where('doctor', array('email' => $d_email))->row()->id;
-                    $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->doctor_model->updateDoctor($doctor_user_id, $id_info);
-                    $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                }
-            }
+//                 $data_d = array(
+//                     'name' => $d_name,
+//                     'email' => $d_email,
+//                     'phone' => $d_phone,
+//                 );
+//                 $username = $this->input->post('d_name');
+// // Adding New Patient
+//                 if ($this->ion_auth->email_check($d_email)) {
+//                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+//                 } else {
+//                     $dfgg = 4;
+//                     $this->ion_auth->register($username, $password, $d_email, $dfgg);
+//                     $ion_user_id = $this->db->get_where('users', array('email' => $d_email))->row()->id;
+//                     $this->doctor_model->insertDoctor($data_d);
+//                     $doctor_user_id = $this->db->get_where('doctor', array('email' => $d_email))->row()->id;
+//                     $id_info = array('ion_user_id' => $ion_user_id);
+//                     $this->doctor_model->updateDoctor($doctor_user_id, $id_info);
+//                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+//                 }
+//             }
 
 
-            if ($patient == 'add_new') {
-                $patient = $patient_user_id;
-            }
+//             if ($patient == 'add_new') {
+//                 $patient = $patient_user_id;
+//             }
 
-            if ($doctor == 'add_new') {
-                $doctor = $doctor_user_id;
-            }
+//             if ($doctor == 'add_new') {
+//                 $doctor = $doctor_user_id;
+//             }
 
-            if (!empty($patient)) {
-                $patient_details = $this->patient_model->getPatientById($patient);
-                $patient_name = $patient_details->name;
-                $patient_phone = $patient_details->phone;
-                $patient_address = $patient_details->address;
-            } else {
-                $patient_name = 0;
-                $patient_phone = 0;
-                $patient_address = 0;
-            }
+//             if (!empty($patient)) {
+//                 $patient_details = $this->patient_model->getPatientById($patient);
+//                 $patient_name = $patient_details->name;
+//                 $patient_phone = $patient_details->phone;
+//                 $patient_address = $patient_details->address;
+//             } else {
+//                 $patient_name = 0;
+//                 $patient_phone = 0;
+//                 $patient_address = 0;
+//             }
 
-            if (!empty($doctor)) {
-                $doctor_details = $this->doctor_model->getDoctorById($doctor);
-                $doctor_name = $doctor_details->name;
-            } else {
-                $doctor_name = 0;
-            }
+//             if (!empty($doctor)) {
+//                 $doctor_details = $this->doctor_model->getDoctorById($doctor);
+//                 $doctor_name = $doctor_details->name;
+//             } else {
+//                 $doctor_name = 0;
+//             }
 
             $data = array();
 
@@ -340,6 +341,7 @@ class Form extends MX_Controller {
                 $data = array(
                     'name' => $form_name,
                     'report' => $report,
+                    'category_id' => $category,
                     'patient' => $patient,
                     'form_date' => $date,
                     'doctor' => $doctor,
@@ -360,6 +362,7 @@ class Form extends MX_Controller {
                 $data = array(
                     'name' => $form_name,
                     'report' => $report,
+                    'category_id' => $category,
                     'patient' => $patient,
                     'doctor' => $doctor,
                     'user' => $user,
