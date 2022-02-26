@@ -57,19 +57,19 @@ $title = explode(' ', $settings->title);
         </div>
         <ul class="navbar-nav navbar-nav-hover align-items-lg-center ml-lg-auto">
           <li class="nav-item">
-            <a href="/" class="nav-link" role="button">
+            <a href="" class="nav-link" role="button">
               <i class="ni ni-app d-lg-none"></i>
               <span class="nav-link-inner--text">Home</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="/#features" class="nav-link" role="button">
+            <a href="#features" class="nav-link" role="button">
               <i class="ni ni-single-copy-04 d-lg-none"></i>
               <span class="nav-link-inner--text">Features</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="/#pricing" class="nav-link" role="button">
+            <a href="#pricing" class="nav-link" role="button">
               <i class="ni ni-tablet-button d-lg-none"></i>
               <span class="nav-link-inner--text">Pricing</span>
             </a>
