@@ -37,10 +37,22 @@ class Profile_model extends CI_model {
         return $query;
     }
 
+    function getUsersGroupsById($id) {
+        $this->db->where('user_id', $id);
+        $query = $this->db->get('users_groups');
+        return $query->row();
+    }
+
     function getGroups($group_id) {
         $this->db->where('id', $group_id);
         $query = $this->db->get('groups');
         return $query;
+    }
+
+    function getGroupsById($group_id) {
+        $this->db->where('id', $group_id);
+        $query = $this->db->get('groups');
+        return $query->row();
     }
 
 }
