@@ -1695,7 +1695,11 @@ class Patient extends MX_Controller {
                 $lab_specialty[] = '<span class="badge badge-light badge-pill">'. $lab_specialties .'</span>';
             }
 
-            $lab_spec = implode(' ', $lab_specialty);
+            if (!empty($lab_specialty)) {
+                $lab_spec = implode(' ', $lab_specialty);
+            } else {
+                $lab_spec = "N/A";
+            }
             if (!empty($doctor_details)) {
                 $lab_doctor = $doctor_details->name;
             } else {
@@ -1844,7 +1848,13 @@ class Patient extends MX_Controller {
 
             $formspecialty = [];
             $form_doctor = $this->doctor_model->getDoctorById($form->doctor);
+            $form_category = $this->form_model->getFormCategoryById($form->category_id)->name;
             $form_doctor_specialty_explode = explode(',', $form_doctor->specialties);
+            $hospital_details = $this->hospital_model->getHospitalById($medical_history->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($medical_history->location_id)->display_name;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
             foreach($form_doctor_specialty_explode as $form_doctor_specialty) {
                 $formspecialties = $this->specialty_model->getSpecialtyById($form_doctor_specialty)->display_name_ph;
                 $formspecialty[] = '<span class="badge badge-light badge-pill">'. $formspecialties .'</span>';
@@ -1867,20 +1877,48 @@ class Patient extends MX_Controller {
                                                                         <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($form->form_date.' UTC')), 3) . ' </span>
                                                                         <h3 class="timelineleft-header"><span>' . lang('forms') . '</span></h3>
                                                                         <div class="timelineleft-body">
-                                                                            <div class="d-flex align-items-center mb-5">
-                                                                                <div class="d-flex align-items-center mt-auto">
-                                                                                    <div class="avatar  brround avatar-md mr-3" style="background-image: url('. $form_doctor->img_url .')"></div>
+                                                                            <div class="form-group">
+                                                                                <div class="media mr-4 mb-4">
+                                                                                    <div class="mr-3 mt-1 ml-3">
+                                                                                        <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                                    </div>
+                                                                                    <div class="media-body">
+                                                                                        <strong>' . $form->name . '</strong>
+                                                                                        <div class="row">
+                                                                                            <div class="col-md-10 mb-3">
+                                                                                                <small class="text-muted">' . $form_category . '</small>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="ml-3"><a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a></div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="timelineleft-footer border-top bg-light">
+                                                                            <div class="d-flex align-items-center mt-auto">
+                                                                                <div class="avatar brround avatar-md mr-3" style="background-image: url('. $form_doctor->img_url .')"></div>
+                                                                                <div>
+                                                                                    <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
+                                                                                    <small class="d-block text-muted">' . $formspec . '</small>
+                                                                                </div>
+                                                                                <div class="ml-auto mr-3 text-right">
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12 col-sm-12">
+                                                                                            <strong>'. $hospital_details->name .'</strong>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12 col-sm-12">
+                                                                                            <small>'. $branch_name .'</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div>
                                                                                     <div>
-                                                                                        <p class="font-weight-semibold mb-1">'. lang('dr') . '. ' . $doctor_name .'</p>
-                                                                                        <small class="d-block text-muted">'. $formspec .'</small>
+                                                                                        <i class="fa fa-hospital-o fa-2x text-primary"></i>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <h6>'. lang('form') . ' ' . lang('name') .'</h6>
-                                                                            <div class="text-muted h6 mb-5">'. $form->name .'</div>
-                                                                        </div>
-                                                                        <div class="timelineleft-footer">
-                                                                            <a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
                                                                         </div>
                                                                     </div>
                                                                 </li>';
