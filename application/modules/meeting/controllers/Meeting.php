@@ -126,8 +126,9 @@ class Meeting extends MX_Controller {
                 'appointment_id' => $appointment_id,
                 'patient_id' => $patient,
                 'rendering_staff_id' => $doctor,
-                'started_at' => $date,
                 'created_at' => $date,
+                'waiting_started' => $date,
+                'encounter_status' => 1,
                 'created_user_id' => $user,
                 'reason' => $remarks,
             );

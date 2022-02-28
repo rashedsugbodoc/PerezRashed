@@ -1929,11 +1929,46 @@ class Patient extends MX_Controller {
 
         foreach ($data['encounters'] as $encounter) {
 
-            $doctor_details = $this->doctor_model->getDoctorById($encounter->doctor);
-            if (!empty($doctor_details)) {
-                $lab_doctor = $doctor_details->name;
+            $encounter_doctor_details = $this->doctor_model->getDoctorById($encounter->rendering_staff_id);
+            $encounter_appointment = $this->appointment_model->getAppointmentById($encounter->appointment_id);
+            $encounter_appointment_time = date('H:i', strtotime($encounter->waiting_started.' UTC'));
+            
+
+            $hospital_details = $this->hospital_model->getHospitalById($encounter->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
+            $encounter_specialty = [];
+            $encounter_doctor_specialty_explode = explode(',', $encounter_doctor_details->specialties);
+            foreach($encounter_doctor_specialty_explode as $encounter_doctor_specialty) {
+                $encounter_specialties = $this->specialty_model->getSpecialtyById($encounter_doctor_specialty)->display_name_ph;
+                $encounter_specialty[] = '<span class="badge badge-light badge-pill">'. $encounter_specialties .'</span>';
+            }
+
+            $encounter_spec = implode(' ', $encounter_specialty);
+            
+            
+            if (!empty($encounter_appointment)) {
+                $encounter_appointment_service_group = $this->appointment_model->getServiceCategoryById($encounter_appointment->service_category_group_id)->display_name;
+                $encounter_services = $this->finance_model->getPaymentCategoryById($encounter_appointment->service_id)->description;
+                $encounter_appointment_date = date($data['settings']->date_format_long, strtotime($encounter_appointment->appointment_date.' UTC'));
+                if (!empty($encounter->ended_at)) {
+                    $encounter_ending_time = date('H:i', strtotime($encounter->ended_at.' UTC'));
+                } else {
+                    $encounter_ending_time = 'to _______';
+                }
             } else {
-                $lab_doctor = '';
+                $encounter_appointment_service_group = "No Appointment";
+                $encounter_services = "No Appointment";
+                $encounter_appointment_date = "No Appointment";
+                $encounter_appointment_time = "No Appointment";
+                // $encounter_ending_time = 'to _______';
+            }
+            if (!empty($encounter_doctor_details)) {
+                $encounter_doctor = $encounter_doctor_details->name;
+            } else {
+                $encounter_doctor = '';
             }
 
             
@@ -1945,9 +1980,75 @@ class Patient extends MX_Controller {
                                                     <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($encounter->created_at.' UTC')), 3) . '</span>
                                                     <h3 class="timelineleft-header"><span>' . lang('encounter') . '</span></h3>
                                                     <div class="timelineleft-body">
-                                                        <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($encounter->created_at.' UTC')) . '</h4>
+                                                        <div class="form-group">
+                                                            <div class="media mr-4 mb-4">
+                                                                <div class="mr-3 mt-1 ml-3">
+                                                                    <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <strong>'. $encounter_appointment_service_group .'</strong>
+                                                                    <div class="row">
+                                                                        <div class="col-md-10 mb-3">
+                                                                            <small class="text-muted">' . $encounter_services . '</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="ml-auto mt-1 mr-3">
+                                                                    <span class="badge badge-pill badge-primary"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="media mr-4 mb-4">
+                                                                <div class="mr-3 mt-1 ml-3">
+                                                                    <i class="fa fa-calendar fa-2x text-primary"></i>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <strong>' . $encounter_appointment_date . '</strong>
+                                                                    <div class="row">
+                                                                        <div class="col-md-10 mb-3">
+                                                                            <small class="text-muted">'. $encounter_appointment_time . ' ' . $encounter_ending_time .'</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="media mr-4 mb-4">
+                                                                <div class="mr-3 mt-1 ml-3">
+                                                                    <i class="fa fa-file fa-2x text-primary"></i>
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    <strong>'. $encounter->reason .'</strong>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="timelineleft-footer">
+                                                    <div class="timelineleft-footer border-top bg-light">
+                                                        <div class="d-flex align-items-center mt-auto">
+                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $encounter_doctor_details->img_url .')"></div>
+                                                            <div>
+                                                                <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
+                                                                <small class="d-block text-muted">' . $encounter_spec . '</small>
+                                                            </div>
+                                                            <div class="ml-auto mr-3 text-right">
+                                                                <div class="row">
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <strong>'. $hospital_details->name .'</strong>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <small>'. $branch_name .'</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div>
+                                                                    <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </li>';
