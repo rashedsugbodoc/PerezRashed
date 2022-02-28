@@ -1751,6 +1751,11 @@ class Patient extends MX_Controller {
             $specialty = [];
             $case_doctor = $this->doctor_model->getDoctorById($medical_history->doctor_id);
             $doctor_specialty_explode = explode(',', $case_doctor->specialties);
+            $hospital_details = $this->hospital_model->getHospitalById($medical_history->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($medical_history->location_id)->display_name;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
             foreach($doctor_specialty_explode as $doctor_specialty) {
                 $specialties = $this->specialty_model->getSpecialtyById($doctor_specialty)->display_name_ph;
                 $specialty[] = '<span class="badge badge-light badge-pill">'. $specialties .'</span>';
@@ -1773,21 +1778,36 @@ class Patient extends MX_Controller {
                                                                 <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($medical_history->case_date.' UTC')), 3) . '</span>
                                                                 <h3 class="timelineleft-header"><span>' . lang('case_history') . '</span></h3>
                                                                 <div class="timelineleft-body">
-                                                                    <div class="d-flex align-items-center mb-5">
-                                                                        <div class="d-flex align-items-center mt-auto">
-                                                                            <div class="avatar  brround avatar-md mr-3" style="background-image: url('. $case_doctor->img_url .')"></div>
-                                                                            <div>
-                                                                                <p class="font-weight-semibold mb-1">'. lang('dr') . '. ' . $doctor_name .'</p>
-                                                                                <small class="d-block text-muted">'. $spec .'</small>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
                                                                     <h6>'. lang('clinical') . ' ' . lang('impression') .' / '. lang('diagnosis') .'</h6>
                                                                     <div class="text-muted h6 mb-5">'. $medical_history->title .'</div>
                                                                     <h6>'. lang('case') . ' ' . lang('summary') .'</h6>
                                                                     <div class="text-muted h6">'. $medical_history->description .'</div>
                                                                 </div>
-                                                                <div class="timelineleft-footer">
+                                                                <div class="timelineleft-footer border-top bg-light">
+                                                                    <div class="d-flex align-items-center mt-auto">
+                                                                        <div class="avatar brround avatar-md mr-3" style="background-image: url('. $case_doctor->img_url .')"></div>
+                                                                        <div>
+                                                                            <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
+                                                                            <small class="d-block text-muted">' . $spec . '</small>
+                                                                        </div>
+                                                                        <div class="ml-auto mr-3 text-right">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12 col-sm-12">
+                                                                                    <strong>'. $hospital_details->name .'</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12 col-sm-12">
+                                                                                    <small>'. $branch_name .'</small>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div>
+                                                                                <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </li>';
