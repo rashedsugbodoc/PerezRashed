@@ -7,6 +7,7 @@ class Patient extends MX_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->model('profile/profile_model');
         $this->load->model('patient_model');
         $this->load->model('form/form_model');
         $this->load->model('donor/donor_model');
@@ -1646,7 +1647,7 @@ class Patient extends MX_Controller {
                                                             <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                             <div class="timelineleft-body">
                                                                 '. $all_meds .'
-                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
+                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
                                                             </div>
                                                             <div class="timelineleft-footer border-top bg-light">
                                                                 <div class="d-flex align-items-center mt-auto">
@@ -1821,20 +1822,102 @@ class Patient extends MX_Controller {
         }
 
         foreach ($data['patient_materials'] as $patient_material) {
-            
+            $document_uploader = $this->profile_model->getProfileById($patient_material->created_user_id)->username;
+            $uploader_user_group = $this->profile_model->getUsersGroupsById($patient_material->created_user_id);
+            $uploader_acc_type = $this->profile_model->getGroupsById($uploader_user_group->group_id)->name;
+            $hospital_details = $this->hospital_model->getHospitalById($patient_material->hospital_id);
+
+            if ($uploader_acc_type === 'Doctor') {
+                $user_details = $this->doctor_model->getDoctorByIonUserId($patient_material->created_user_id);
+                $user_specialty = [];
+                $material_doctor_specialty_explode = explode(',', $user_details->specialties);
+                
+                foreach($material_doctor_specialty_explode as $material_doctor_specialty) {
+                    $material_specialties = $this->specialty_model->getSpecialtyById($material_doctor_specialty)->display_name_ph;
+                    $user_specialty[] = '<span class="badge badge-light badge-pill">'. $material_specialties .'</span>';
+                }
+
+                if (!empty($user_specialty)) {
+                    $user_spec = implode(' ', $user_specialty);
+                } else {
+                    $user_spec = "N/A";
+                }
+            } else {
+                $user_spec = $uploader_acc_type;
+            }
+
+            if ($uploader_acc_type === 'Patient') {
+                $hospital = '';
+            } else {
+                $hospital = '<div class="ml-auto mr-3 text-right">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12">
+                                        <strong>'. $hospital_details->name .'</strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                </div>
+                            </div>';
+            }
+
+            $document_date_time = $patient_material->last_modified;
+            if (empty($document_date_time)) {
+                $document_date_time = $patient_material->created_at;
+            }
             if (!empty($patient_material->created_at)) {
-                $timeline[strtotime($patient_material->created_at.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($patient_material->created_at.' UTC')) . ' </span></li>
+                $timeline[strtotime($document_date_time.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($document_date_time.' UTC')) . ' </span></li>
                                                             <li>
                                                                 <i class="fa fa-download bg-secondary"></i>
                                                                 <div class="timelineleft-item">
-                                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($patient_material->created_at.' UTC')), 3) . ' </span>
+                                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($document_date_time.' UTC')), 3) . ' </span>
                                                                     <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
                                                                     <div class="timelineleft-body">
                                                                         <h4>' . $patient_material->title . '</h4>
-                                                                    </div>
-                                                                    <div class="timelineleft-footer">
+                                                                        <div class="form-group">
+                                                                            <div class="media mr-4 mb-4">
+                                                                                <div class="mr-3 mt-1 ml-3">
+                                                                                    <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                                </div>
+                                                                                <div class="media-body">
+                                                                                    <strong>' . $patient_material->title . '</strong>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-10 mb-3">
+                                                                                            <small class="text-muted">' . $this->patient_model->getDocumentCategory($patient_material->category_id)->name . '</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <div class="media mr-4 mb-4">
+                                                                                <div class="mr-3 mt-1 ml-3">
+                                                                                    <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                                </div>
+                                                                                <div class="media-body">
+                                                                                    <strong>' . $patient_material->description . '</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div class="media mr-4 mb-4">
+                                                                                <img src="'. $patient_material->url .'" width="150" height="150"/>
+                                                                            </div>
+                                                                        </div>
                                                                         <a class="btn btn-xs btn-info" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
                                                                         <a class="btn btn-xs btn-info" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
+                                                                    </div>
+                                                                    <div class="timelineleft-footer border-top bg-light">
+                                                                        <div class="d-flex align-items-center mt-auto">
+                                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url()"></div>
+                                                                            <div>
+                                                                                <p class="font-weight-semibold mb-1">'. $document_uploader .'</p>
+                                                                                <small class="d-block text-muted">'. $user_spec .'</small>
+                                                                            </div>
+                                                                            '. $hospital .'
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </li>';
