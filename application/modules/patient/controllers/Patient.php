@@ -1596,6 +1596,11 @@ class Patient extends MX_Controller {
             $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);
             $prescription_specialty = [];
             $prescription_doctor_specialty_explode = explode(',', $doctor_details->specialties);
+            $hospital_details = $this->hospital_model->getHospitalById($prescription->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
             foreach($prescription_doctor_specialty_explode as $prescription_doctor_specialty) {
                 $prescription_specialties = $this->specialty_model->getSpecialtyById($prescription_doctor_specialty)->display_name_ph;
                 $prescription_specialty[] = '<span class="badge badge-light badge-pill">'. $prescription_specialties .'</span>';
@@ -1610,15 +1615,13 @@ class Patient extends MX_Controller {
 
             if (!empty($prescription->medicine)) {
                 $medicine = explode('###', $prescription->medicine);
-                $i = 0;
                 $medss = '';
                 foreach($medicine as $key => $value) {
                     $single_medicine = explode('***', $value);
-                    $i += 1;
                     $med_model = $this->medicine_model->getMedicineById($single_medicine[0]);
                         $meds = '
                             <div class="row mb-5">
-                                <div class="col-md-1 col-sm-12">'. $i .'.</div>
+                                <div class="col-md-1 col-sm-12"><i class="fa fa-medkit fa-2x"></i></div>
                                 <div class="col-md-8 col-sm-12">
                                     <p class="mb-0"><strong>'. $med_model->generic .'</strong> ( '. $med_model->name .' ) '. $single_medicine[1] .'</p>
                                     <p class="mb-0"> Sig: '.  $single_medicine[3] .'</p>
@@ -1642,19 +1645,34 @@ class Patient extends MX_Controller {
                                                             <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($prescription->prescription_date.' UTC')), 3) . '</span>
                                                             <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                             <div class="timelineleft-body">
-                                                                <div class="d-flex align-items-center mb-5">
-                                                                    <div class="d-flex align-items-center mt-auto">
-                                                                        <div class="avatar  brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
+                                                                '. $all_meds .'
+                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
+                                                            </div>
+                                                            <div class="timelineleft-footer border-top bg-light">
+                                                                <div class="d-flex align-items-center mt-auto">
+                                                                    <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
+                                                                    <div>
+                                                                        <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
+                                                                        <small class="d-block text-muted">' . $prescription_spec . '</small>
+                                                                    </div>
+                                                                    <div class="ml-auto mr-3 text-right">
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <strong>'. $hospital_details->name .'</strong>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <small>'. $branch_name .'</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
                                                                         <div>
-                                                                            <p class="font-weight-semibold mb-1">'. lang('dr') . '. ' . $doctor_name .'</p>
-                                                                            <small class="d-block text-muted">'. $prescription_spec .'</small>
+                                                                            <i class="fa fa-hospital-o fa-2x text-primary"></i>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                '. $all_meds .'
-                                                            </div>
-                                                            <div class="timelineleft-footer">
-                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
                                                             </div>
                                                         </div></li>';
             } else {
@@ -1665,6 +1683,19 @@ class Patient extends MX_Controller {
         foreach ($data['labs'] as $lab) {
 
             $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
+            $lab_specialty = [];
+            $lab_doctor_specialty_explode = explode(',', $doctor_details->specialties);
+            $hospital_details = $this->hospital_model->getHospitalById($prescription->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
+            foreach($lab_doctor_specialty_explode as $lab_doctor_specialty) {
+                $lab_specialties = $this->specialty_model->getSpecialtyById($lab_doctor_specialty)->display_name_ph;
+                $lab_specialty[] = '<span class="badge badge-light badge-pill">'. $lab_specialties .'</span>';
+            }
+
+            $lab_spec = implode(' ', $lab_specialty);
             if (!empty($doctor_details)) {
                 $lab_doctor = $doctor_details->name;
             } else {
@@ -1681,9 +1712,33 @@ class Patient extends MX_Controller {
                                                     <h3 class="timelineleft-header"><span>Lab</span></h3>
                                                     <div class="timelineleft-body">
                                                         <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($lab->lab_date.' UTC')) . '</h4>
-                                                    </div>
-                                                    <div class="timelineleft-footer">
                                                         <a class="btn btn-xs btn-info" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i> ' . lang('view') . '</a>
+                                                    </div>
+                                                    <div class="timelineleft-footer border-top bg-light">
+                                                        <div class="d-flex align-items-center mt-auto">
+                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
+                                                            <div>
+                                                                <p class="font-weight-semibold mb-1">'. $lab_doctor .'</p>
+                                                                <small class="d-block text-muted">' . $lab_spec . '</small>
+                                                            </div>
+                                                            <div class="ml-auto mr-3 text-right">
+                                                                <div class="row">
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <strong>'. $hospital_details->name .'</strong>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <small>'. $branch_name .'</small>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <div>
+                                                                    <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </li>';
