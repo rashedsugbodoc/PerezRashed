@@ -228,7 +228,7 @@ class Medicine_model extends CI_model {
         // Initialize Array with fetched data
         $data = array();
         foreach ($users as $user) {
-            $data[] = array("id" => $user['id'] . '*' . $user['name'] . '*' . $user['uses'] . '*' . $user['form'], "text" => $user['name']);
+            $data[] = array("id" => $user['id'] . '*' . $user['name'] . '*' . $user['uses'] . '*' . $user['form'] . '*' . $user['generic'], "text" => $user['generic'] . ' ( ' . $user['name'] . ' ) ' . $user['form']);
         }
         return $data;
     }
