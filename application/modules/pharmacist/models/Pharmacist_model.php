@@ -49,4 +49,11 @@ class Pharmacist_model extends CI_model {
         $this->db->update('users', $uptade_ion_user);
     }
 
+    function getPharmacistByIonUserId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('ion_user_id', $id);
+        $query = $this->db->get('pharmacist');
+        return $query->row();
+    }
+
 }

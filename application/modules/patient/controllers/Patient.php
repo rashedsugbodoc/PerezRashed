@@ -1625,7 +1625,7 @@ class Patient extends MX_Controller {
                                 <div class="col-md-1 col-sm-12"><i class="fa fa-medkit fa-2x"></i></div>
                                 <div class="col-md-8 col-sm-12">
                                     <p class="mb-0"><strong>'. $med_model->generic .'</strong> ( '. $med_model->name .' ) '. $single_medicine[1] .'</p>
-                                    <p class="mb-0"> Sig: '.  $single_medicine[3] .'</p>
+                                    <p class="mb-0 text-muted"> Sig: '.  $single_medicine[3] .'</p>
                                 </div>
                                 <div class="col-md-3 col-sm-12">
                                     Quantity: '. $single_medicine[2] .'
@@ -1826,9 +1826,11 @@ class Patient extends MX_Controller {
             $uploader_user_group = $this->profile_model->getUsersGroupsById($patient_material->created_user_id);
             $uploader_acc_type = $this->profile_model->getGroupsById($uploader_user_group->group_id)->name;
             $hospital_details = $this->hospital_model->getHospitalById($patient_material->hospital_id);
+            $img = $this->getUploaderImage($uploader_acc_type, $patient_material->created_user_id);
 
             if ($uploader_acc_type === 'Doctor') {
                 $user_details = $this->doctor_model->getDoctorByIonUserId($patient_material->created_user_id);
+                $img = $user_details->img_url;
                 $user_specialty = [];
                 $material_doctor_specialty_explode = explode(',', $user_details->specialties);
                 
@@ -1911,7 +1913,7 @@ class Patient extends MX_Controller {
                                                                     </div>
                                                                     <div class="timelineleft-footer border-top bg-light">
                                                                         <div class="d-flex align-items-center mt-auto">
-                                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url()"></div>
+                                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $img .')"></div>
                                                                             <div>
                                                                                 <p class="font-weight-semibold mb-1">'. $document_uploader .'</p>
                                                                                 <small class="d-block text-muted">'. $user_spec .'</small>
@@ -2146,6 +2148,28 @@ class Patient extends MX_Controller {
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('medical_historyv2', $data);
         // $this->load->view('home/footer'); // just the footer file
+    }
+    
+    function getUploaderImage($uploader_acc_type, $user_id) {
+        if ($uploader_acc_type === "Doctor") {
+            $image = $this->doctor_model->getDoctorByIonUserId($user_id)->img_url;
+        } else if ($uploader_acc_type === "Nurse") {
+            $image = $this->nurse_model->getNurseByIonUserId($user_id)->img_url;
+        } else if ($uploader_acc_type === "Pharmacist") {
+            $image = $this->pharmacist_model->getPharmacistByIonUserId($user_id)->img_url;
+        } else if ($uploader_acc_type === "Laboratorist") {
+            $image = $this->laboratorist_model->getLaboratoristByIonUserId($user_id)->img_url;
+        } else if ($uploader_acc_type === "Accountant") {
+            $image = $this->accountant_model->getAccountantByIonUserId($user_id)->img_url;
+        } else if ($uploader_acc_type === "Receptionist") {
+            $image = $this->receptionist_model->getReceptionistByIonUserId($user_id)->img_url;
+        } else if ($uploader_acc_type === "CompanyUser") {
+            $image = $this->companyuser_model->getCompanyUserByIonUserId($user_id)->img_url;
+        } else if ($uploader_acc_type === "Patient") {
+            $image = $this->patient_model->getPatientByIonUserId($user_id)->img_url;
+        }
+
+        return $image;
     }
 
     function editMedicalHistoryByJason() {

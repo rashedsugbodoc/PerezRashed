@@ -50,4 +50,11 @@ class Nurse_model extends CI_model {
         $this->db->update('users', $uptade_ion_user);
     }
 
+    function getNurseByIonUserId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('ion_user_id', $id);
+        $query = $this->db->get('nurse');
+        return $query->row();
+    }
+
 }
