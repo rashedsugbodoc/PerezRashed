@@ -124,6 +124,11 @@
                                         <div class="row mb-1">
                                             <div class="col-md-12">
                                                 <div class="row">
+                                                    <!-- <div class="col-md-1">
+                                                        <div class="form-group text-center">
+                                                            <img src="<?php echo base_url('uploads/sugbodoc-square.png'); ?>" width="auto" height="auto" style="max-width: 100px;max-height: 100px;">
+                                                        </div>
+                                                    </div> -->
                                                     <div class="col-md-12 col-sm-12 text-center">
                                                         <h3 class="mb-2"><?php
                                                         if (!empty($doctor)) {
@@ -342,12 +347,16 @@
                                         <div class="row mt-8"></div>
                                         <div class="row mt-6"></div>
                                         <div class="row">
-                                            <div class="col-md-7 col-sm-7">
-                                                <div class="form-group">
-                                                    <!-- <label class="form-label border-top">
-                                                        <?php echo lang('eprescription_label');?>
-                                                    </label> -->
+                                            <div class="col-md-3 col-sm-3">
+                                                <div class="row">
+                                                    <div class="form-group text-center">
+                                                        <img src="<?php echo $settings->logo; ?>" width="auto" height="auto" style="max-width: 200px;max-height: 200px;margin-top: 160px;">
+                                                        <h4 class="text-primary">www.sugbodoc.com</h4>
+                                                    </div>
                                                 </div>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4">
+                                                
                                             </div>
                                             <div class="col-md-5 col-sm-5">
                                                 <div class="row">

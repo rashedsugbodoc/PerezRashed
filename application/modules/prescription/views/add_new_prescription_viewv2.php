@@ -122,8 +122,8 @@
                                                                 $prescription_medicine_extended = explode('***', $value);
                                                                 $medicine = $this->medicine_model->getMedicineById($prescription_medicine_extended[0]);
                                                                 ?>
-                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name; ?>"  <?php echo 'data-form="' . $prescription_medicine_extended[1] . '"' . 'data-qty="' . $prescription_medicine_extended[2] . '"data-instruction="' . $prescription_medicine_extended[3] . '"data-uses="' . $prescription_medicine_extended[4] . '"'; ?> selected="selected">
-                                                                    <?php echo $medicine->name; ?>
+                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name; ?>"  <?php echo 'data-form="' . $prescription_medicine_extended[1] . '"' . 'data-qty="' . $prescription_medicine_extended[2] . '"data-instruction="' . $prescription_medicine_extended[3] . '"data-uses="' . $prescription_medicine_extended[4] . '"data-generic="' . $medicine->generic . '"'; ?> selected="selected">
+                                                                    <?php echo $medicine->generic . ' ( ' . $medicine->name . ' ) ' . $medicine->form; ?>
                                                                 </option>                
                                                                 <?php
                                                             }
@@ -337,10 +337,13 @@
                 var med_name = res[1];
                 var med_uses = res[2];
                 var med_form = res[3];
+                var med_generic = res[4];
                 var form = $(this).data('form');
                 var qty = $(this).data('qty');
                 var instruction = $(this).data('instruction');
                 var uses = $(this).data('uses');
+                var generic = $(this).data('generic');
+                var form = $(this).data('form');
                 if ($('#med_id-' + id).length)
                 {
 
@@ -359,7 +362,7 @@
                                         <div class="row">\n\
                                             <div class="col-sm-10">\n\
                                                 <div class="form-group">\n\
-                                                    <input class = "form-control medi_div" name = "med_id[]" value = "' + med_name + '" placeholder="" required disabled>\n\
+                                                    <input class = "form-control medi_div" name = "med_id[]" value = "' + generic + ' ( ' + med_name + ' ) ' + form +'" placeholder="" required disabled>\n\
                                                     <input type="hidden" id="med_id-' + id + '" class = "medi_div" name = "medicine[]" value = "' + med_id + '" placeholder="" required disabled>\n\
                                                     <input class = "form-control medi_div" name = "meds[]" hidden value = "' + med_id + '" placeholder="" required>\n\
                                                 </div>\n\
@@ -484,7 +487,7 @@
                     var med_name = res[1];
                     var med_uses = res[2];
                     var med_form = res[3];
-
+                    var med_generic = res[4];
                     console.log(res);
                     if ($('#med_id-' + id).length)
                     {
@@ -513,7 +516,7 @@
                                             <div class="row">\n\
                                                 <div class="col-sm-10">\n\
                                                     <div class="form-group">\n\
-                                                        <input class = "form-control medi_div" name = "med_id[]" value = "' + med_name + '" placeholder="" required disabled>\n\
+                                                        <input class = "form-control medi_div" name = "med_id[]" value = "' + med_generic + ' ( ' + med_name + ' ) ' + med_form + '" placeholder="" required disabled>\n\
                                                         <input type="hidden" id="med_id-' + id + '" class = "medi_div" name = "medicine[]" value = "' + med_id + '" placeholder="" required disabled>\n\
                                                         <input class = "form-control medi_div" name = "meds[]" hidden value = "' + med_id + '" placeholder="" required>\n\
                                                     </div>\n\
