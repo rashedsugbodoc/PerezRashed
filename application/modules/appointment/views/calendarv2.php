@@ -19,7 +19,7 @@
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <div class="modal fade" tabindex="-1" role="dialog" id="cmodal">
-                                    <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-dialog modal-xl" role="document">
                                         <div class="modal-content modal-content-demo">
                                             <div class="modal-header">
                                                 <h6 class="modal-title"><?php echo lang('patient') . " " . lang('history'); ?></h6>
