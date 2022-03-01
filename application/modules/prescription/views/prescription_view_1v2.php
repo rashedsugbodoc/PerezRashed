@@ -179,12 +179,17 @@
                                             </div>
                                         </div>            
                                         <div class="row mb-2">
-                                            <?php foreach($branches as $branch) { ?>
+                                            <?php foreach($branches as $branch) { 
+                                                $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
+                                                $city_name = $this->location_model->getCityById($settings->city_id)->name;
+                                            ?>
                                                 <div class="col-md col-sm text-center">
                                                     <p class="h6"><i class="fa fa-hospital-o"></i> <strong><?php echo $branch->display_name; ?></strong></p>
                                                     <p class="h6"><i class="fa fa-map-marker"></i> <?php echo $branch->street_address; ?></p>
-                                                    <p class="h6"><?php echo $this->location_model->getBarangayById($branch->barangay_id)->name; ?>, <?php echo $this->location_model->getCityById($settings->city_id)->name; ?></p>
+                                                    <p class="h6"><?php echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></p>
+                                                    <?php if(!empty($branch->phone)) {?>
                                                     <p class="h6"><i class="fe fe-phone"></i> <?php echo $branch->phone; ?></p>
+                                                    <?php } ?>
                                                 </div>
                                             <?php } ?>
                                         </div>
@@ -295,7 +300,7 @@
                                                                     ?>
                                                                     <tr>
                                                                         <?php $single_medicine = explode('***', $value); ?>
-                                                                        <td><h4><?php echo $i += 1; ?></h4></td>
+                                                                        <td><h4><?php echo $i += 1; ?>.</h4></td>
                                                                         <td class="pl-0">
                                                                             <h4><p class="mb-2"><strong><?php echo $this->medicine_model->getMedicineById($single_medicine[0])->generic ?></strong> ( <?php echo $this->medicine_model->getMedicineById($single_medicine[0])->name; ?> ) <?php echo $single_medicine[1]; ?></p>
                                                                             <p class="mb-2">Sig: <?php echo $single_medicine[3] ?></p>
@@ -375,7 +380,7 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12">
-                                                        <label class="mb-1 h5"><?php echo lang('license') ?>: <?php echo $doctor->license; ?></label>
+                                                        <label class="mb-1 h5"><?php echo lang('license').' #'; ?>: <?php echo $doctor->license; ?></label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -388,11 +393,13 @@
                                                         <label class="mb-1 h5"><?php echo lang('ptr') ?>: <?php echo $doctor->tax_receipt_number; ?></label>
                                                     </div>
                                                 </div>
+                                                <?php if (!empty($doctor->secondary_license_number)) { ?>
                                                 <div class="row">
                                                     <div class="col-md-12">
                                                         <label class="mb-1 h5"><?php echo lang('s2') ?>: <?php echo $doctor->secondary_license_number; ?></label>
                                                     </div>
                                                 </div>
+                                                <?php } ?>
                                                 <!-- <div class="row">
                                                     <div class="col-md-12">
                                                         <label class="mb-1"><?php echo $settings->address; ?></label>
