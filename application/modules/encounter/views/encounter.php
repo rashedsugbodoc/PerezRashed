@@ -615,6 +615,13 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- Clipboard js -->
+        <script src="<?php echo base_url('public/assets/plugins/clipboard/clipboard.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/clipboard/clipboard.js'); ?>"></script>
+
+        <!-- Prism js -->
+        <script src="<?php echo base_url('public/assets/plugins/prism/prism.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->

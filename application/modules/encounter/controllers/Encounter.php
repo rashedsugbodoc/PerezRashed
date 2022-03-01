@@ -197,15 +197,27 @@ class Encounter extends MX_Controller {
             $i = $i + 1;
             $settings = $this->settings_model->getSettings();
             if ($this->ion_auth->in_group(array('admin'))) {
-                $option1 = '<button type="button" class="btn btn-info btn-xs btn_width view_button" data-toggle="modal" data-id="'. $encounter->id .'"><i class="fa fa-eye"></i></button>';
-                $option2 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-edit"> </i></button>';                
+                $option1 = '<button type="button" class="btn btn-info btn-xs view_button" data-toggle="modal" data-id="'. $encounter->id .'"><i class="fa fa-eye"></i>  '. lang('view') . lang('encounter') .'</button>';
+                $option2 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-edit"> </i>  '. lang('edit') .'</button>';                
                 if (empty($encounter->start_vital_id)) {
-                    $option3 = '<button type="button" class="btn btn-info btn-xs btn_width vitalbutton" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-camera"> </i>'. ' ' . lang('capture_vitals') .'</button>';
+                    $option3 = '<button type="button" class="vitalbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-camera"> </i>'. '  ' . lang('capture_vitals') .'</button>';
                 } else {
-                    $option3 = '<button type="button" class="btn btn-secondary btn-xs btn_width"><i class="fa fa-camera"></i>'. ' ' . lang('vitals_captured') .'</button>';
+                    $option3 = '<button type="button" class="dropdown-item bg-secondary text-light"><i class="fa fa-camera"></i>'. '  ' . lang('vitals_captured') .'</button>';
                 }
-                $option4 = '<a class="btn btn-info btn-xs btn_width billbutton" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"> </i>'. ' ' . lang('generate_bill') . '</a>';
-                $option5 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+                $option4 = '<a class="btn btn-info btn-xs billbutton" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"> </i>'. ' ' . lang('generate_bill') . '</a>';
+                $option5 = '<a class="btn btn-danger btn-xs delete_button" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+                $option6 = '<div class="dropdown">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-caret-down mr-2"></i>'. lang('actions') .'
+                                </button>
+                                <div class="dropdown-menu">
+                                    <button type="button" class="view_button dropdown-item bg-info text-light" data-toggle="modal" data-id="'. $encounter->id .'"><i class="fa fa-eye"></i>  '. lang('view') . ' ' . lang('encounter') .'</button>
+                                    <button type="button" class="editbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-edit"> </i>  '. lang('edit') . ' ' . lang('encounter') .'</button>
+                                    '.$option3.'
+                                    <a class="billbutton dropdown-item bg-info text-light" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('generate_bill') . '</a>
+                                    <a class="delete_button dropdown-item bg-danger text-light" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>  ' . lang('delete') . '</a>
+                                </div>
+                            </div>';
             }
             $info[] = array(
                 date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')),
@@ -213,7 +225,7 @@ class Encounter extends MX_Controller {
                 $patient,
                 $user,
                 $encounter_status,
-                $option1 . ' ' . $option2 . ' ' . $option3 . ' ' . $option4 . ' ' . $option5
+                $option6
                     //  $options2
             );
         }
