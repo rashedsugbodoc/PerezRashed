@@ -4593,6 +4593,10 @@ button.close {
   .modal-lg {
     max-width: 800px; } }
 
+@media (min-width: 1100px) {
+  .modal-xl {
+    max-width: 1040px; } }
+
 .modal.animated .modal-dialog {
   transform: translate(0, 0); }
 
