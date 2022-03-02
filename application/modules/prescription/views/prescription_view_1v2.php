@@ -204,7 +204,7 @@
                                         <div class="row border-top border-dark pt-3">
                                             <div class="col-md-6 col-sm-6 p-0">
                                                 <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('patient'); ?>: 
+                                                    <label class="form-label mb-0"><?php echo lang('name'); ?>: 
                                                     <strong>
                                                         <span class="h5">
                                                             <?php
