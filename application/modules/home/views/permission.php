@@ -9,7 +9,7 @@
         <meta name="keywords" content="Hospital Information System, Clinic, Management, Software, Finance"/>
 
         <!-- Title -->
-        <title>Rygel Dash - Bootstrap Theme</title>
+        <title><?php echo lang('access_is_denied');?></title>
 
         <!--Favicon -->
         <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>" type="image/x-icon"/>
@@ -43,9 +43,9 @@
             <div class="page-content">
                 <div class="container text-center  relative">
                     <div class="fs-100  mb-5 text-white font-weight-normal h1"><i class="fa fa-lock"></i></div>
-                    <h1 class="h1  mb-3 font-weight-bold text-white">Access Is Denied</h1>
-                    <p class="h5 font-weight-normal mb-7 leading-normal text-white-80">You do not have enough permissions to see this page</p>
-                    <a class="btn btn-secondary" href="<?php echo base_url('home'); ?>"><i class="fe fe-arrow-left-circle mr-1"></i>Back to Home</a>
+                    <h1 class="h1  mb-3 font-weight-bold text-white"><?php echo lang('access_is_denied');?></h1>
+                    <p class="h5 font-weight-normal mb-7 leading-normal text-white-80"><?php echo lang('you_do_not_have_enough_permissions');?></p>
+                    <a class="btn btn-secondary" href="<?php echo base_url('home'); ?>"><i class="fe fe-arrow-left-circle mr-1"></i><?php echo lang('back_to_home');?></a>
                 </div>
             </div>
         </div>
