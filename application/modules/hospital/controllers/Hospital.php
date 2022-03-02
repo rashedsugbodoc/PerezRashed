@@ -17,6 +17,7 @@ class Hospital extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('settings/settings_model');
         $this->load->model('email/email_model');
+        $this->load->helper(array('string','language'));
         if (!$this->ion_auth->in_group('superadmin')) {
             redirect('home/permission');
         }
@@ -63,8 +64,13 @@ class Hospital extends MX_Controller {
         $package = $this->input->post('package');
         $language = $this->input->post('language');
         $country_id = $this->input->post('country_id');
+        $state_id = $this->input->post('state_id');
+        $city_id = $this->input->post('city_id');
+        $barangay_id = $this->input->post('barangay_id');
+        $postal = $this->input->post('postal');
         $company_name = $this->input->post('company_name');
         $company_vat_number = $this->input->post('company_vat_number');
+        $currency = $this->input->post('currency');
         $timezone = $this->input->post('timezone');
         $time_format = $this->input->post('time_format');
         $date_format = $this->input->post('date_format');
@@ -104,7 +110,7 @@ class Hospital extends MX_Controller {
         // Validating Healthcare Provider Display Name Field
         $this->form_validation->set_rules('title', 'Healthcare Provider Display Name', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         // Validating Healthcare Provider Email Field
-        $this->form_validation->set_rules('provider_email', 'Healthcare Provider Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');  
+        $this->form_validation->set_rules('provider_email', 'Healthcare Provider Email', 'trim|required|valid_email|xss_clean|is_unique[users.email]');
         // Validating Provider Address Field   
         $this->form_validation->set_rules('provider_address', 'Healthcare Provider Street Address', 'trim|required|min_length[5]|max_length[500]|xss_clean');
         // Validating Healthcare Provider Phone Field           
@@ -121,7 +127,7 @@ class Hospital extends MX_Controller {
             $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         }
         // Validating Administrator Email Field
-        $this->form_validation->set_rules('admin_email', 'Administrator Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('admin_email', 'Administrator Email', 'trim|required|valid_email|xss_clean|is_unique[users.email]');
         // Validating Admin Address Field   
         $this->form_validation->set_rules('admin_address', 'Administrator Street Address', 'trim|required|min_length[5]|max_length[500]|xss_clean');        
 
@@ -137,9 +143,10 @@ class Hospital extends MX_Controller {
         $this->form_validation->set_rules('country_id', 'Country ID', 'trim|required|min_length[1]|max_length[4]|xss_clean');
         $this->form_validation->set_rules('company_name', 'Company Name', 'trim|min_length[1]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('company_vat_number','Company VAT Number', 'trim|min_length[1]|max_length[100]|xss_clean');
-        $this->form_validation->set_rules('entity_type', 'Healthcare Provider Type', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('entity_type', 'Healthcare Provider Type', 'trim|required|xss_clean');
         
         $country = $this->country_model->getCountryById($country_id);
+        $hospital_password = $this->ion_auth->hash_code(random_string('alnum', 8));
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 redirect("hospital/editHospital?id=$id");
@@ -183,7 +190,7 @@ class Hospital extends MX_Controller {
                     redirect('hospital/addNewView');
                 } else {
                     $dfg = 14;
-                    $this->ion_auth->register($name, $password, $provider_email, $dfg);
+                    $this->ion_auth->register($name, $hospital_password, $provider_email, $dfg);
                     $hospital_ion_user_id = $this->db->get_where('users', array('email' => $provider_email))->row()->id;
                     $data_with_date = array_merge(array('created_at' => gmdate('Y-m-d H:i:s')), $data);
                     $this->hospital_model->insertHospital($data_with_date);
@@ -214,6 +221,10 @@ class Hospital extends MX_Controller {
                         'phone' => $provider_phone,
                         'language' => $language,
                         'country_id' => $country_id,
+                        'state_id' => $state_id,
+                        'city_id' => $city_id,
+                        'barangay_id' => $barangay_id,
+                        'postal' => $postal,
                         'company_name' => $company_name,
                         'company_vat_number' => $company_vat_number,
                         'timezone' => $timezone,
@@ -344,18 +355,26 @@ class Hospital extends MX_Controller {
             } else { // Updating Hospital
                 $hospital = $this->db->get_where('hospital', array('id' => $id))->row();
                 $admin_user = $this->db->get_where('admin', array('hospital_id' => $id))->row();
-                if ($admin_user->email != $admin_email || $hospital->email != $provider_email) {
-                    if ($this->ion_auth->email_check($provider_email) || $this->ion_auth->email_check($admin_email)) {
+                if ($hospital->email != $provider_email) {
+                    if ($this->ion_auth->email_check($provider_email)) {
                     $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
                     redirect('hospital/editHospital?id=' . $id);
                     }    
+                }
+                if (!empty($admin_user)) {
+                    if ($admin_user->email != $admin_email) {
+                        if ($this->ion_auth->email_check($admin_email)) {
+                        $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                        redirect('hospital/editHospital?id=' . $id);
+                        }
+                    }
                 }
                 
                 $hospital_ion_user_id = $hospital->ion_user_id;
                 if (empty($password)) {
                     $password = $this->db->get_where('users', array('id' => $hospital_ion_user_id))->row()->password;
                 } else {
-                    $password = $this->ion_auth_model->hash_password($password);
+                    $password = $this->ion_auth->hash_password($hospital_password);
                 }
                 $this->hospital_model->updateIonUser($name, $provider_email, $password, $hospital_ion_user_id);
                 $data_with_date = array_merge(array('updated_at' => gmdate('Y-m-d H:i:s')), $data);
@@ -393,6 +412,10 @@ class Hospital extends MX_Controller {
                     'phone' => $provider_phone,
                     'language' => $language,
                     'country_id' => $country_id,
+                    'state_id' => $state_id,
+                    'city_id' => $city_id,
+                    'barangay_id' => $barangay_id,
+                    'postal' => $postal,
                     'company_name' => $company_name,
                     'company_vat_number' => $company_vat_number,
                     'timezone' => $timezone,
