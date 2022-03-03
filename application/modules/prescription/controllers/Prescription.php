@@ -239,7 +239,7 @@ class Prescription extends MX_Controller {
         $limit = 3;
         $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
         foreach ($specializations as $specialization) {
-            $specialties = $this->specialty_model->getSpecialtyById($specialization)->display_name;
+            $specialties = $this->specialty_model->getSpecialtyById($specialization)->display_name_ph;
             $specialty[] = $specialties;
         }
         $data['spec'] = implode(', ', $specialty);
