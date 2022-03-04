@@ -1884,7 +1884,6 @@ class Patient extends MX_Controller {
                                                                     <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($document_date_time.' UTC')), 3) . ' </span>
                                                                     <h3 class="timelineleft-header"><span>' . lang('documents') . '</span></h3>
                                                                     <div class="timelineleft-body">
-                                                                        <h4>' . $patient_material->title . '</h4>
                                                                         <div class="form-group">
                                                                             <div class="media mr-4 mb-4">
                                                                                 <div class="mr-3 mt-1 ml-3">
@@ -1915,8 +1914,8 @@ class Patient extends MX_Controller {
                                                                                 <img src="'. $patient_material->url .'" width="150" height="150"/>
                                                                             </div>
                                                                         </div>
-                                                                        <a class="btn btn-xs btn-info" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
-                                                                        <a class="btn btn-xs btn-info" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
+                                                                        <a class="btn btn-sm btn-primary" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
+                                                                        <a class="btn btn-sm btn-outline-primary text-primary" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
                                                                     </div>
                                                                     <div class="timelineleft-footer border-top bg-light">
                                                                         <div class="d-flex align-items-center mt-auto">
