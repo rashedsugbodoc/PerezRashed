@@ -105,7 +105,7 @@ class Schedule extends MX_Controller {
         // }
 
         $all_slot = array(
-            0 => '12:00 PM',
+            0 => '12:00 AM',
             1 => '12:05 AM',
             2 => '12:10 AM',
             3 => '12:15 AM',
@@ -249,7 +249,7 @@ class Schedule extends MX_Controller {
             141 => '11:45 AM',
             142 => '11:50 AM',
             143 => '11:55 AM',
-            144 => '12:00 AM',
+            144 => '12:00 PM',
             145 => '12:05 PM',
             146 => '12:10 PM',
             147 => '12:15 PM',
@@ -572,7 +572,7 @@ class Schedule extends MX_Controller {
         // }
 
         $all_slot = array(
-            0 => '12:00 PM',
+            0 => '12:00 AM',
             1 => '12:05 AM',
             2 => '12:10 AM',
             3 => '12:15 AM',
@@ -716,7 +716,7 @@ class Schedule extends MX_Controller {
             141 => '11:45 AM',
             142 => '11:50 AM',
             143 => '11:55 AM',
-            144 => '12:00 AM',
+            144 => '12:00 PM',
             145 => '12:05 PM',
             146 => '12:10 PM',
             147 => '12:15 PM',
@@ -1115,7 +1115,7 @@ class Schedule extends MX_Controller {
          */
 
         $all_slot = array(
-            0 => '12:00 PM',
+            0 => '12:00 AM',
             1 => '12:05 AM',
             2 => '12:10 AM',
             3 => '12:15 AM',
@@ -1259,7 +1259,7 @@ class Schedule extends MX_Controller {
             141 => '11:45 AM',
             142 => '11:50 AM',
             143 => '11:55 AM',
-            144 => '12:00 AM',
+            144 => '12:00 PM',
             145 => '12:05 PM',
             146 => '12:10 PM',
             147 => '12:15 PM',
