@@ -82,7 +82,7 @@
                                         footer {
                                             display: flex;
                                             position: fixed;
-                                            bottom: 0;
+                                            bottom: -28px;
                                             width: 100% !important;
                                         }
                                         header {
@@ -93,7 +93,7 @@
 
                                         .content-block-body {
                                             position: relative;
-                                            top: 20em !important;
+                                            top: 18.5em !important;
                                         }
 
                                         .content-block-item {
@@ -259,24 +259,52 @@
                                                         <h5 class="mb-1"><i class="fe fe-mail"></i> <?php echo $doctor->email; ?></h5>
                                                     </div>
                                                 </div>        -->         
-                                                <div class="row mb-2">
+                                                <div class="row mb-1">
                                                     <div class="col-md-12 pl-0 text-center">
                                                         <h6 class="mb-1"><i class="fe fe-phone text-primary"></i> &nbsp;&nbsp;<?php echo $doctor->phone; ?></h6>
                                                         <h6 class="mb-1"><i class="fe fe-mail text-primary"></i> &nbsp;&nbsp;<?php echo $doctor->email; ?></h6>
                                                     </div>
                                                 </div>            
-                                                <div class="row mb-2">
+                                                <div class="row mb-1">
                                                     <?php foreach($branches as $branch) { 
                                                         $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
                                                         $city_name = $this->location_model->getCityById($settings->city_id)->name;
                                                     ?>
                                                         <div class="col-md col-sm pl-0">
-                                                            <p class="h6"><i class="fa fa-hospital-o text-primary"></i> &nbsp;&nbsp;<strong><?php echo $branch->display_name; ?></strong></p>
-                                                            <p class="h6"><i class="fa fa-map-marker text-primary"></i> &nbsp;&nbsp;<?php echo $branch->street_address; ?></p>
-                                                            <p class="h6"><?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></p>
-                                                            <?php if(!empty($branch->phone)) {?>
-                                                            <p class="h6"><i class="fe fe-phone text-primary"></i> &nbsp;&nbsp;<?php echo $branch->phone; ?></p>
-                                                            <?php } ?>
+                                                            <div class="row">
+                                                                <div class="col-md-1 col-sm-1 mb-0">
+                                                                    <i class="fa fa-hospital-o text-primary"></i>
+                                                                </div>
+                                                                <div class="col-md-11 col-sm-11 pl-0">
+                                                                    <span class="h6 mb-1 align-baseline"><strong><?php echo $branch->display_name; ?></strong></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-1 col-sm-1 mb-0">
+                                                                    <i class="fa fa-map-marker text-primary"></i>
+                                                                </div>
+                                                                <div class="col-md-11 col-sm-11 pl-0">
+                                                                    <span class="h6 mb-1"><?php echo $branch->street_address; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-1 col-sm-1 mb-0">
+                                                                    
+                                                                </div>
+                                                                <div class="col-md-11 col-sm-11 pl-0">
+                                                                    <span class="h6 mb-1"><?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-1 col-sm-1 mb-0">
+                                                                    <i class="fe fe-phone text-primary"></i>
+                                                                </div>
+                                                                <div class="col-md-11 col-sm-11 pl-0">
+                                                                    <?php if(!empty($branch->phone)) {?>
+                                                                    <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     <?php } ?>
                                                 </div>
@@ -288,12 +316,12 @@
                                                 <div class="row border-bottom border-dark">
                                                     
                                                 </div>
-                                                <div class="row border-top border-dark pt-3">
+                                                <div class="row border-top border-dark pt-2">
                                                     
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-6 p-0">
+                                                <div class="col-md-6 col-sm-6 pb-1">
                                                     <div class="form-group mb-0">
                                                         <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('name'); ?>: </span>
                                                         <strong>
@@ -309,24 +337,31 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-3 p-0">
+                                                <div class="col-md-3 col-sm-3 pb-1">
                                                     <div class="form-group mb-0 prescription-opacity">
                                                         <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <strong><span class="h5"><?php echo $prescription->id; ?></span></strong></label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-3 p-0">
+                                                <div class="col-md-3 col-sm-3 pb-1">
                                                     <div class="form-group mb-0">
                                                         <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('date');?> : </span><strong><span class="h5 prescription-opacity"><?php echo date('M j, Y',strtotime($prescription->prescription_date.' UTC')); ?></span></strong></label>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row pt-3 pb-3">
-                                                <div class="col-md-6 col-sm-6 p-0">
+                                            <div class="row pb-2">
+                                                <div class="col-md-6 col-sm-6 pt-1">
                                                     <div class="form-group mb-0">
-                                                        <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('address');?> : </span><strong><span class="h5 prescription-opacity"><?php echo $patient->address;?></span></strong></label>
+                                                        <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('address');?> : </span><strong><span class="h5 prescription-opacity"><?php
+                                                            if (!empty($patient->barangay_id)) {
+                                                                echo $this->location_model->getBarangayById($patient->barangay_id)->name . ', ';
+                                                            }
+                                                            if (!empty($patient->city_id)) {
+                                                                echo $this->location_model->getCityById($patient->city_id)->name;
+                                                            }
+                                                        ?></span></strong></label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-3 p-0">
+                                                <div class="col-md-3 col-sm-3 pt-1">
                                                     <div class="form-group mb-0">
                                                         <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('age'); ?>: </span>
                                                         <strong>
@@ -346,7 +381,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-3 p-0">
+                                                <div class="col-md-3 col-sm-3 pt-1">
                                                     <div class="form-group mb-0">
                                                         <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('sex'); ?>: </span><strong><span class="h5 prescription-opacity"><?php echo $patient->sex; ?></span></strong></label>
                                                     </div>
@@ -355,7 +390,7 @@
                                             <div class="row border-bottom border-dark template-opacity">
                                                 
                                             </div>
-                                            <div class="row border-top border-dark pt-3 template-opacity">
+                                            <div class="row border-top border-dark template-opacity">
                                                     
                                             </div>
                                         </header>
@@ -373,7 +408,7 @@
                                                             <?php
                                                             if (!empty($prescription->medicine)) {
                                                             ?>
-                                                            <table class="table">
+                                                            <table class="table prescription-table">
                                                                 <tbody>
                                                                     <?php
                                                                     $medicine = $prescription->medicine;
@@ -383,16 +418,16 @@
                                                                     ?>
                                                                     <tr class="content-block-item">
                                                                         <?php $single_medicine = explode('***', $value); ?>
-                                                                        <td class="pb-0"><h4><?php echo $i += 1; ?>.</h4></td>
-                                                                        <td class="pl-0 pb-0">
-                                                                            <h4><p class="mb-1"><strong><?php echo $this->medicine_model->getMedicineById($single_medicine[0])->generic ?></strong> ( <?php echo $this->medicine_model->getMedicineById($single_medicine[0])->name; ?> ) <?php echo $single_medicine[1]; ?></p>
-                                                                            <p class="mb-1">Sig: <?php echo $single_medicine[3] ?></p>
-                                                                            <p class="mb-1">(<?php echo $single_medicine[4] ?>)</p></h4>
+                                                                        <td class="pb-0 pt-2"><h4><?php echo $i += 1; ?>.</h4></td>
+                                                                        <td class="pl-0 pb-0 pt-2">
+                                                                            <h4><p class="mb-2"><strong><?php echo $this->medicine_model->getMedicineById($single_medicine[0])->generic ?></strong> ( <?php echo $this->medicine_model->getMedicineById($single_medicine[0])->name; ?> ) <?php echo $single_medicine[1]; ?></p>
+                                                                            <p class="mb-2">Sig: <?php echo $single_medicine[3] ?></p>
+                                                                            <p class="mb-2">(<?php echo $single_medicine[4] ?>)</p></h4>
                                                                         </td>
-                                                                        <td class="pl-0 pb-0"><h4><p>#<?php echo $single_medicine[2] ?></p></h4></td>
+                                                                        <td class="pl-0 pb-0 pt-2"><h4><p>#<?php echo $single_medicine[2] ?></p></h4></td>
                                                                     </tr>
                                                                     <?php if ($i % 5 === 0) {?>
-                                                                        <!-- <tr class="html2pdf__page-break"></tr> --><!-- Page Break for html2pdf -->
+                                                                        <!-- <tr class="html2pdf__page-break"></tr> -->
                                                                         <tr class="footer-area-height">
                                                                             <td class="p-0"></td>
                                                                             <td class="p-0"></td>
@@ -409,6 +444,9 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row white_space">
+                                            
                                         </div>
                                         <div class="clearfix">
                                             <footer>
@@ -434,7 +472,7 @@
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col-md-12 col-sm-12">
-                                                                        <h5 class="mb-1 pt-3"><strong><?php echo $doctor->firstname . ' ' . $doctor->middlename . ' ' . $doctor->lastname; ?>, M.D.</strong></h5>
+                                                                        <h4 class="mb-1 pt-3"><strong><?php echo $doctor->firstname . ' ' . $doctor->middlename . ' ' . $doctor->lastname; ?>, M.D.</strong></h4>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -532,17 +570,53 @@
         <script>
             document.getElementById('create_pdf').onclick = function() {
                 var element = document.getElementById('content');
+                var items = <?php echo $i ?>;
+                
+                    var sixTr = document.querySelector('.prescription-table').offsetHeight;
+                var peritem_height = 96;
+                var items_height = peritem_height * items;
 
+                var table_size_left = 520 - items_height;
+                $(".white_space").css("height", table_size_left);
+                console.log(peritem_height);
+                console.log(items_height);
+                console.log(table_size_left);
                 var opt = {
-                    margin: [0, 0.2, 0, 0.3],
+                    margin: [0, 0.2, 0, 0.2],
                     filename: '<?php echo $patient->name; ?> Prescription.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2, scrollY: 0 },
-                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+                    pdfCallback: pdfCallback
                 };
 
-                html2pdf(element, opt);
+                html2pdf(element, opt).set({
+                    pagebreak: {avoid: 'footer'}
+                });
+                console.log(items);
             };
+
+            function pdfCallback(pdfObject) {
+                var number_of_pages = pdfObject.internal.getNumberOfPages()
+                var pdf_pages = pdfObject.internal.pages
+                var myFooter = "Footer info"
+                for (var i = 1; i < pdf_pages.length; i++) {
+                    // We are telling our pdfObject that we are now working on this page
+                    pdfObject.setPage(i)
+                    // The 10,200 value is only for A4 landscape. You need to define your own for other page sizes
+                    pdfObject.text(myFooter, 10, 10)
+                }
+            }
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("table").each(function () {
+                    $("tr:gt(0)", this).addClass("tr5-height");
+                    var items = <?php echo $i ?>;
+                    console.log(items);
+                });
+            });
         </script>
 
         <script type="text/javascript">
