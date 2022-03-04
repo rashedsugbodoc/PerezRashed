@@ -369,10 +369,8 @@
                                                                 <?php
                                                                 if (!empty($patient)) {
                                                                     $birthDate = strtotime($patient->birthdate);
-                                                                    $birthDate = date('m/d/Y', $birthDate);
-                                                                    $birthDate = explode("/", $birthDate);
-                                                                    $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
-                                                                    echo $age . ' Year(s)';
+                                                                    $age = time_elapsed_string(date('d-m-Y H:i:s', $birthDate),2,"short_age");
+                                                                    echo $age;
                                                                 }
                                                                 ?>
                                                             </span>

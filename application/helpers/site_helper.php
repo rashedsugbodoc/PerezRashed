@@ -82,7 +82,7 @@ function getDoctorInfo() {
         return $mg;
     }
 
-    function time_elapsed_string($datetime, $level = 7) {
+    function time_elapsed_string($datetime, $level = 7, $type = "time_elapsed") {
         $now = new DateTime;
         $ago = new DateTime($datetime);
         $diff = $now->diff($ago);
@@ -90,25 +90,73 @@ function getDoctorInfo() {
         $diff->w = floor($diff->d / 7);
         $diff->d -= $diff->w * 7;
 
-        $string = array(
-            'y' => 'year',
-            'm' => 'month',
-            'w' => 'week',
-            'd' => 'day',
-            'h' => 'hour',
-            'i' => 'minute',
-            's' => 'second',
-        );
-        foreach ($string as $k => &$v) {
-            if ($diff->$k) {
-                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
-            } else {
-                unset($string[$k]);
+        if ($type === "full_age") {
+            $string = array(
+                'y' => 'Year',
+                'm' => 'Month',
+                'w' => 'Week',
+                'd' => 'Day',
+                'h' => 'Hour',
+                'i' => 'Minute',
+                's' => 'Second',
+            );
+        } else if ($type === "short_age") {
+            $string = array(
+                'y' => 'Yr',
+                'm' => 'Mth',
+                'w' => 'Wk',
+                'd' => 'Day',
+                'h' => 'Hr',
+                'i' => 'min',
+                's' => 'sec',
+            );
+        } else if ($type === "time_elapsed") {
+            $string = array(
+                'y' => 'year',
+                'm' => 'month',
+                'w' => 'week',
+                'd' => 'day',
+                'h' => 'hour',
+                'i' => 'minute',
+                's' => 'second',
+            );
+        } else {
+            $string = array(
+                'y' => 'year',
+                'm' => 'month',
+                'w' => 'week',
+                'd' => 'day',
+                'h' => 'hour',
+                'i' => 'minute',
+                's' => 'second',
+            );
+        }
+
+        if ($type !== "short_age") {
+            foreach ($string as $k => &$v) {
+                if ($diff->$k) {
+                    $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+                } else {
+                    unset($string[$k]);
+                }
+            }
+        } else {
+            foreach ($string as $k => &$v) {
+                if ($diff->$k) {
+                    $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+                } else {
+                    unset($string[$k]);
+                }
             }
         }
 
         $string = array_slice($string, 0, $level);
-        return $string ? implode(', ', $string) . ' ago' : 'just now';
+
+        if ($type === "short_age" || $type === "full_age") {
+            return $string ? implode(', ', $string) . '' : 'just now';
+        } else {
+            return $string ? implode(', ', $string) . ' ago' : 'just now';
+        }
     }
 
 ?>
