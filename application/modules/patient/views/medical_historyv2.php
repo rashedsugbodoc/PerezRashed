@@ -887,7 +887,7 @@
                                                                                 <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
                                                                                 <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
-                                                                                    <a class="btn btn-danger ml-5" data-target="#Delete" data-toggle="modal"  href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
+                                                                                    <a class="btn btn-danger ml-5" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
                                                                                 <?php } ?>
                                                                             </div>
                                                                         </div>
