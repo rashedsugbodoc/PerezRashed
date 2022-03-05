@@ -5,6 +5,16 @@
                 <!--div class="app-content main-content"-->
                     <!--div class="side-app"-->
                         <!--Page header-->
+                        <style type="text/css">
+                            .remove1 {
+                                display: inline !important;
+                            }
+
+                            .remove {
+                                position: absolute !important;
+                                right: 0px !important;
+                            }
+                        </style>
 
                         <!--Page header-->
                         <div class="page-header">
@@ -217,7 +227,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group"> 
                                                         <label for="exampleInputEmail1"> <?php echo lang('select'); ?></label>
-                                                        <select name="category_name[]" class="multi-selection" multiple="multiple" id="my_multi_select3">
+                                                        <select name="category_name[]" class="multi-selection" multiple="" id="my_multi_select3">
                                                             <?php foreach ($categories as $category) { ?>
                                                                 <option class="ooppttiioonn" data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->category; ?>" 
                                                                         <?php
@@ -260,10 +270,10 @@
                                                 <div class="card-body">
                                                     <div class="col-md-12 qfloww">
                                                         <div class="row">
-                                                            <div class="col-md-10 remove1">
+                                                            <div class="col-md-11 col-sm-11 remove1">
                                                                 <label class="pull-left"><?php echo lang('items') ?></label>
                                                             </div>
-                                                            <div class="col-md-2 remove">
+                                                            <div class="col-md-1 col-sm-1 remove">
                                                                 <label class="pull-right"><?php echo lang('qty') ?></label>
                                                             </div>
                                                         </div>
@@ -666,6 +676,7 @@
                 $('#id-div' + idd).remove();
                 $('#idinput-' + idd).remove();
                 $('#categoryinput-' + idd).remove();
+                $('.br').remove();
 
             });
             $.each($('select.multi-selection option:selected'), function () {
@@ -700,6 +711,10 @@
                         id: 'categoryinput-' + idd,
                         name: 'category_id[]',
                         value: idd,
+                    }).appendTo('#editPaymentForm .qfloww');
+
+                    $('<br>').attr({
+                        class: "br"
                     }).appendTo('#editPaymentForm .qfloww');
                 }
 
@@ -801,7 +816,7 @@
                     $('#id-div' + idd).remove();
                     $('#idinput-' + idd).remove();
                     $('#categoryinput-' + idd).remove();
-
+                    $('.br').remove();
                 });
                 $.each($('select.multi-selection option:selected'), function () {
                     var curr_val = $(this).data('id');
@@ -822,7 +837,7 @@
 
                         var input2 = $('<input>').attr({
                             type: 'text',
-                            class: "remove",
+                            class: "remove w-20",
                             id: 'idinput-' + idd,
                             name: 'quantity[]',
                             value: '1',
@@ -834,6 +849,10 @@
                             id: 'categoryinput-' + idd,
                             name: 'category_id[]',
                             value: idd,
+                        }).appendTo('#editPaymentForm .qfloww');
+
+                        $('<br>').attr({
+                            class: "br"
                         }).appendTo('#editPaymentForm .qfloww');
                     }
 
