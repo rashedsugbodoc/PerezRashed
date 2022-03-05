@@ -16,6 +16,7 @@ class Finance extends MX_Controller {
         $this->load->model('receptionist/receptionist_model');
         $this->load->model('pgateway/pgateway_model');
         $this->load->model('company/company_model');
+        $this->load->model('settings/settings_model');
         $this->load->model('companyuser/companyuser_model');
         $this->load->module('sms');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
@@ -964,6 +965,7 @@ class Finance extends MX_Controller {
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['categories'] = $this->finance_model->getServiceCategory();
+                $data['settings'] = $this->settings_model->getSettings();
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_payment_categoryv2', $data);
                 // $this->load->view('home/footer'); // just the header file
@@ -996,6 +998,7 @@ class Finance extends MX_Controller {
         $id = $this->input->get('id');
         $data['service'] = $this->finance_model->getPaymentCategoryById($id);
         $data['categories'] = $this->finance_model->getServiceCategory();
+        $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_payment_categoryv2', $data);
         // $this->load->view('home/footer'); // just the footer file
