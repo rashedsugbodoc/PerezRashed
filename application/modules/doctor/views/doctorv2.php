@@ -85,17 +85,17 @@
                                                         </div>
                                                         <div class="col-md-6 col-sm12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
+                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="m_name">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
                                                                 <div class="input-group">
-                                                                    <input type="text" class="form-control" name="m_name">
+                                                                    <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
                                                                     <div class="input-group-append br-tl-0 br-bl-0">
                                                                         <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                                             <option selected disabled><?php echo lang('none'); ?></option>
@@ -310,17 +310,17 @@
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
+                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" class="form-control" name="m_name">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
                                                                 <div class="input-group">
-                                                                    <input type="text" class="form-control" name="m_name">
+                                                                    <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
                                                                     <div class="input-group-append br-tl-0 br-bl-0">
                                                                         <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                                             <option selected disabled><?php echo lang('none'); ?></option>
