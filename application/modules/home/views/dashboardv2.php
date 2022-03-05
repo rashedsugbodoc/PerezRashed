@@ -259,8 +259,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                     <div class="app-sidebar__logo">
                         <a class="header-brand" href="<?php echo base_url('home'); ?>">
                             <!--logo start-->
-                            <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-logo" alt="Rygel Dash logo">
-                            <img src="<?php if(!empty($settings->mobile_logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/favicon.png');} ?>" class="header-brand-img mobile-logo" alt="Rygel Dash logo">
+                            <img src="<?php echo base_url('public/assets/images/brand/logo.png'); ?>" class="header-brand-img desktop-lgo" alt="Rygel Dash logo">
+                            <img src="<?php echo base_url('public/assets/images/brand/logo1.png'); ?>" class="header-brand-img dark-logo" alt="Rygel Dash logo">
+                            <img src="<?php echo base_url('public/assets/images/brand/favicon.png'); ?>" class="header-brand-img mobile-logo" alt="Rygel Dash logo">
+                            <img src="<?php echo base_url('public/assets/images/brand/favicon1.png'); ?>" class="header-brand-img darkmobile-logo" alt="Rygel Dash logo">
                             <!--logo end-->
                         </a>
                     </div>
