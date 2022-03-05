@@ -13,9 +13,9 @@
                                         <div class="card-title">
                                              <?php
                                                 if (!empty($service->id))
-                                                    echo lang('edit_service');  
+                                                    echo lang('edit').' '.lang('charge');  
                                                 else
-                                                    echo lang('add_service');
+                                                    echo lang('add').' '.lang('charge');
                                             ?>
                                         </div>
                                     </div>
@@ -24,7 +24,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('service'); ?> <?php echo lang('name'); ?></label>
+                                                        <label class="form-label"><?php echo lang('charge'); ?> <?php echo lang('name'); ?></label>
                                                         <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('name');
@@ -50,7 +50,7 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('price'); ?></label>
+                                                        <label class="form-label"><?php echo lang('price'); ?> (<?php echo $settings->currency; ?>)</label>
                                                         <input type="text" class="form-control" name="c_price" id="exampleInputEmail1" value='<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('c_price');
@@ -63,7 +63,7 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('doctors_commission'); ?> <?php echo lang('rate'); ?> (%)</label>
+                                                        <label class="form-label"><?php echo lang('rendering'); ?> <?php echo lang('doctors_share'); ?> (%)</label>
                                                         <input type="text" class="form-control" name="d_commission" id="exampleInputEmail1" value='<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('d_commission');
@@ -98,7 +98,7 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('service_type'); ?></label>
+                                                        <label class="form-label"><?php echo lang('charge').' '.lang('type'); ?></label>
                                                         <select class="form-control select2-show-search" id="service_select" name="service_type">
                                                             <option value=""><?php echo lang('select_service_type');?></option>
                                                             <option value="<?php echo $service->service_category_group_id; ?>"
