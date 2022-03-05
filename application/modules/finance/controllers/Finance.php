@@ -144,6 +144,7 @@ class Finance extends MX_Controller {
         $d_phone = $this->input->post('d_phone');
 
         $doctor = $this->input->post('doctor');
+        $rendering_user = $this->input->post('rendering_user');
         $date = time();
         $date_string = date('d-m-y', $date);
         $discount = $this->input->post('discount');
@@ -318,6 +319,7 @@ class Finance extends MX_Controller {
                     'date' => $date,
                     'amount' => $sub_total,
                     'doctor' => $doctor,
+                    'rendering_staff_id' => $rendering_user,
                     'discount' => $discount,
                     'flat_discount' => $flat_discount,
                     'gross_total' => $gross_total,

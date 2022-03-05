@@ -161,11 +161,11 @@
                                                                 <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor">
                                                                     <option selected disabled>Search Doctor</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
-                                                                    <?php foreach ($staffs as $staff) { ?>
+                                                                    <?php foreach ($doctors as $doctor) { ?>
                                                                         <?php if (!empty($payment)) { ?>
-                                                                            <option value="<?php echo $staff->user_id ?>" selected="selected"><?php echo $staff->username ?></option>
+                                                                            <option value="<?php echo $doctor->id ?>" selected="selected"><?php echo $doctor->name ?></option>
                                                                         <?php } else { ?>
-                                                                            <option value="<?php echo $staff->user_id ?>"><?php echo $staff->username ?></option>
+                                                                            <option value="<?php echo $doctor->id ?>"><?php echo $doctor->name ?></option>
                                                                         <?php } ?>
                                                                         <?php if (!empty($encounter->id)) { ?>
                                                                             <option value="<?php echo $doctorr->id; ?>" selected><?php echo $doctorr->name ?></option>
@@ -212,12 +212,27 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('payer_account'); ?></label>
                                                         <select class="select2-show-search form-control add_payer" id="company" name="company_id" value=''>
                                                             <?php if (!empty($payment)) { ?>
                                                                 <option value="<?php echo $company->id; ?>" selected="selected"><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
+                                                            <?php }?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('rendering'). ' ' . lang('user')?></label>
+                                                        <select class="select2-show-search form-control rendering_user" id="rendering_user" name="rendering_user">
+                                                            <option value="add_new"><?php echo lang('add_new') ?></option>
+                                                            <?php foreach ($staffs as $staff) { ?>
+                                                                <?php if (!empty($payment)) { ?>
+                                                                    <option value="<?php echo $staff->user_id ?>" selected="selected"><?php echo $staff->username ?></option>
+                                                                <?php } else { ?>
+                                                                    <option value="<?php echo $staff->user_id ?>"><?php echo $staff->username ?></option>
+                                                                <?php } ?>
                                                             <?php }?>
                                                         </select>
                                                     </div>
@@ -1070,6 +1085,15 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 $("#add_doctor").select2({
+                    placeholder: '<?php echo lang('select_doctor'); ?>',
+                    allowClear: true,
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".rendering_user").select2({
                     placeholder: '<?php echo lang('select_doctor'); ?>',
                     allowClear: true,
                 });
