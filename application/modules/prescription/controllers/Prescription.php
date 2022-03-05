@@ -175,9 +175,9 @@ class Prescription extends MX_Controller {
                         $this->load->view('home/permission');
                     } else {
                         $data['settings'] = $this->settings_model->getSettings();
-                        $this->load->view('home/dashboard', $data); // just the header file
-                        $this->load->view('add_new_prescription_view', $data);
-                        $this->load->view('home/footer'); // just the footer file 
+                        $this->load->view('home/dashboardv2', $data); // just the header file
+                        $this->load->view('add_new_prescription_viewv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file 
                     }
                 } else {
                     $this->load->view('home/permission');
@@ -190,9 +190,9 @@ class Prescription extends MX_Controller {
                 $data['patients'] = $this->patient_model->getPatient();
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new_prescription_view', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_prescription_viewv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
