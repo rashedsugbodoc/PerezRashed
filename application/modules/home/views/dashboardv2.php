@@ -1335,20 +1335,44 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
                                                         if ($this->ion_auth->in_group('Doctor')) {
                                                             $user_image = $this->doctor_model->getDoctorByIonUserId($user)->img_url;
+                                                            if (empty($user_image)) {
+                                                                $user_image = 'public/assets/images/users/16.jpg';
+                                                            }
                                                         } else if ($this->ion_auth->in_group('Nurse')) {
                                                             $user_image = $this->nurse_model->getNurseByIonUserId($user)->img_url;
+                                                            if (empty($user_image)) {
+                                                                $user_image = 'public/assets/images/users/16.jpg';
+                                                            }
                                                         } else if ($this->ion_auth->in_group('Pharmacist')) {
                                                             $user_image = $this->pharmacist_model->getPharmacistByIonUserId($user)->img_url;
+                                                            if (empty($user_image)) {
+                                                                $user_image = 'public/assets/images/users/16.jpg';
+                                                            }
                                                         } else if ($this->ion_auth->in_group('Laboratorist')) {
                                                             $user_image = $this->laboratorist_model->getLaboratoristByIonUserId($user)->img_url;
+                                                            if (empty($user_image)) {
+                                                                $user_image = 'public/assets/images/users/16.jpg';
+                                                            }
                                                         } else if ($this->ion_auth->in_group('Accountant')) {
                                                             $user_image = $this->accountant_model->getAccountantByIonUserId($user)->img_url;
+                                                            if (empty($user_image)) {
+                                                                $user_image = 'public/assets/images/users/16.jpg';
+                                                            }
                                                         } else if ($this->ion_auth->in_group('Receptionist')) {
                                                             $user_image = $this->receptionist_model->getReceptionistByIonUserId($user)->img_url;
+                                                            if (empty($user_image)) {
+                                                                $user_image = 'public/assets/images/users/16.jpg';
+                                                            }
                                                         } else if ($this->ion_auth->in_group('CompanyUser')) {
                                                             $user_image = $this->companyuser_model->getCompanyUserByIonUserId($user)->img_url;
+                                                            if (empty($user_image)) {
+                                                                $user_image = 'public/assets/images/users/16.jpg';
+                                                            }
                                                         } else if ($this->ion_auth->in_group('Patient')) {
                                                             $user_image = $this->patient_model->getPatientByIonUserId($user)->img_url;
+                                                            if (empty($user_image)) {
+                                                                $user_image = 'public/assets/images/users/16.jpg';
+                                                            }
                                                         } else {
                                                             $user_image = 'public/assets/images/users/16.jpg';
                                                         }
