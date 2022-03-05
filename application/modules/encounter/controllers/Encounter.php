@@ -58,6 +58,7 @@ class Encounter extends MX_Controller {
         }
         $provider_name = $this->input->post('provider_name');
         $reason = $this->input->post('reason');
+        $rendering_user_id = $this->input->post('rendering_user');
 
         $user = $this->session->userdata('user_id');
 
@@ -131,7 +132,8 @@ class Encounter extends MX_Controller {
             $data = array(
                 'encounter_type_id' => $type,
                 'patient_id' => $patient_id,
-                'rendering_staff_id' => $rendering_doctor_id,
+                'doctor' => $rendering_doctor_id,
+                'rendering_staff_id' => $rendering_user_id,
                 'rendering_staff_name' => $render_name,
                 'referral_facility_id' => $provider_id,
                 'referral_facility_name' => $provider_name,
@@ -189,14 +191,15 @@ class Encounter extends MX_Controller {
         $i = 0;
         foreach ($data['encounters'] as $encounter) {
             $patient = $this->patient_model->getPatientById($encounter->patient_id)->name;
-            $user = $this->profile_model->getProfileById($encounter->rendering_staff_id)->username;
+            // $user = $this->profile_model->getProfileById($encounter->rendering_staff_id)->username;
+            $doctor = $this->doctor_model->getDoctorById($encounter->doctor)->name;
             $encounter_status = $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
             if (empty($user)) {
                 $user = $encounter->rendering_staff_name;
             }
             $i = $i + 1;
             $settings = $this->settings_model->getSettings();
-            if ($this->ion_auth->in_group(array('admin'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
                 $option1 = '<button type="button" class="btn btn-info btn-xs view_button" data-toggle="modal" data-id="'. $encounter->id .'"><i class="fa fa-eye"></i>  '. lang('view') . lang('encounter') .'</button>';
                 $option2 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-edit"> </i>  '. lang('edit') .'</button>';                
                 if (empty($encounter->start_vital_id)) {
@@ -223,7 +226,7 @@ class Encounter extends MX_Controller {
                 date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')),
                 $encounter->encounter_number,
                 $patient,
-                $user,
+                $doctor,
                 $encounter_status,
                 $option6
                     //  $options2
@@ -344,6 +347,50 @@ class Encounter extends MX_Controller {
 // Get users
 
         $response = $this->encounter_model->getUserWithAddNewOption($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getUserWithoutAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+
+        $response = $this->encounter_model->getUserWithoutAddNewOption($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getDoctorWithoutAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+
+        $response = $this->doctor_model->getDoctorWithoutAddNewOption($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getRenderingDoctorWithAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+
+        $response = $this->encounter_model->getRenderingDoctorWithAddNewOption($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getReferredByDoctorWithAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+
+        $response = $this->encounter_model->getReferredDoctorWithAddNewOption($searchTerm);
 
         echo json_encode($response);
     }

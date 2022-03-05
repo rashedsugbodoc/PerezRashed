@@ -303,20 +303,20 @@ class Encounter_model extends CI_model {
 
     function getUser() { 
         // Valid Users is comma separated ids of user groups example; 4,6,11
-        $valid_users = '4';
+        $valid_users = '4,6,7,8,10';
 
         $this->db->select('a.user_id, a.group_id, b.username, c.name');
         $this->db->from('users_groups a');
         $this->db->join('users b', 'b.id=a.user_id', 'left');
         $this->db->join('groups c', 'c.id=a.group_id', 'left');
         $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
-        $this->db->limit(10);
+        // $this->db->limit(10);
         $query = $this->db->get();
         return $query->result();
     }
 
     function getUserWithAddNewOption($searchTerm) {
-        $valid_users = '4';
+        $valid_users = '4,6,7,8,10';
         // $user_groups = $this->getUsersByValidUsers($valid_users);
 
         if (!empty($searchTerm)) {
@@ -358,6 +358,124 @@ class Encounter_model extends CI_model {
         $data[] = array("id" => 'add_new', "text" => lang('add_new'));
         foreach ($users as $user) {
             $data[] = array("id" => $user['user_id'], "text" => $user['username']);
+        }
+        return $data;
+    }
+
+    function getUserWithoutAddNewOption($searchTerm) {
+        $valid_users = '4,6,7,8,10';
+        // $user_groups = $this->getUsersByValidUsers($valid_users);
+
+        if (!empty($searchTerm)) {
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->where("(a.user_id LIKE '%" . $searchTerm . "%' OR b.username LIKE '%" . $searchTerm . "%')", NULL, FALSE);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        } else {
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->limit(10);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        }
+
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('a.user_id, a.group_id, b.username, c.name');
+        //     $this->db->from('users_groups a');
+        //     $this->db->join('users b', 'b.id=a.user_id', 'left');
+        //     $this->db->join('groups c', 'c.id=a.group_id', 'left');
+        //     $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get();
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['user_id'], "text" => $user['username']);
+        }
+        return $data;
+    }
+
+    function getRenderingDoctorWithAddNewOption($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('doctor')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('*');
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get('doctor');
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        $data[] = array("id" => 'add_new', "text" => lang('add_new'));
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
+        }
+        return $data;
+    }
+
+    function getReferredDoctorWithAddNewOption($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('doctor')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('*');
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get('doctor');
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        $data[] = array("id" => 'add_new', "text" => lang('add_new'));
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
         }
         return $data;
     }

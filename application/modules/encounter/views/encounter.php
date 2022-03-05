@@ -10,7 +10,7 @@
                             <div class="card-header">
                                 <div class="card-title"><?php echo lang('encounter'); ?></div>
                                 <div class="card-options">
-                                    <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                         <a data-toggle="modal" href="#myModal">
                                             <button id="" class="btn btn-primary btn-xs">
                                                 <i class="fa fa-plus"></i> <?php echo lang('add_encounter'); ?>
@@ -103,18 +103,10 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('referred_by'). ' ' . lang('doctor')?></label>
-                                                                <select class="select2-show-search form-control ref_doctor_select" name="ref_doctor" id="pos_ref_doctor">
+                                                                <label class="form-label"><?php echo lang('rendering'). ' ' . lang('user')?></label>
+                                                                <select class="select2-show-search form-control rendering_user_select" name="rendering_user" id="pos_rendering_user">
                                                                     
                                                                 </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-sm-12 ref_doctor_client">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('name'); ?></label>
-                                                                <input type="text" name="ref_name" class="form-control">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -137,6 +129,26 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('name'); ?></label>
                                                                 <input type="text" name="provider_name" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('referred_by'). ' ' . lang('doctor')?></label>
+                                                                <select class="select2-show-search form-control ref_doctor_select" name="ref_doctor" id="pos_ref_doctor">
+                                                                    
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12 ref_doctor_client">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('name'); ?></label>
+                                                                <input type="text" name="ref_name" class="form-control">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -225,8 +237,8 @@
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
                                                                 <select class="select2-show-search form-control rendering_doctor_select2" name="rendering_doctor" id="pos_rendering_doctor2">
                                                                     <option value="add_new"><?php echo lang('add_new'); ?></option>
-                                                                    <?php foreach ($staffs as $staff) { ?>
-                                                                        <option value="<?php echo $staff->user_id ?>"> <?php echo $staff->username ?> </option>
+                                                                    <?php foreach ($doctors as $doctor) { ?>
+                                                                        <option value="<?php echo $doctor->id ?>"> <?php echo $doctor->name ?> </option>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
@@ -243,23 +255,14 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="row">
-                                                         <div class="col-md-12 col-sm-12">
-                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('refd_by_doctor') ?></label>
-                                                                <select class="select2-show-search form-control ref_doctor_select2" name="ref_doctor" id="pos_ref_doctor2">
-                                                                    <option value="add_new"><?php echo lang('add_new'); ?></option>
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('rendering'). ' ' . lang('user')?></label>
+                                                                <select class="select2-show-search form-control rendering_user_select2" name="rendering_user" id="pos_rendering_user2">
                                                                     <?php foreach ($staffs as $staff) { ?>
                                                                         <option value="<?php echo $staff->user_id ?>"> <?php echo $staff->username ?> </option>
                                                                     <?php } ?>
                                                                 </select>
-                                                            </div>
-                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-sm-12 ref_doctor_client2">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('name'); ?></label>
-                                                                <input type="text" name="ref_name" class="form-control">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -285,6 +288,29 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('name'); ?></label>
                                                                 <input type="text" name="provider_name" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="row">
+                                                         <div class="col-md-12 col-sm-12">
+                                                             <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('refd_by_doctor') ?></label>
+                                                                <select class="select2-show-search form-control ref_doctor_select2" name="ref_doctor" id="pos_ref_doctor2">
+                                                                    <option value="add_new"><?php echo lang('add_new'); ?></option>
+                                                                    <?php foreach ($doctors as $doctor) { ?>
+                                                                        <option value="<?php echo $doctor->id ?>"> <?php echo $doctor->name ?> </option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                         </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12 ref_doctor_client2">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('name'); ?></label>
+                                                                <input type="text" name="ref_name" class="form-control">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -661,11 +687,11 @@
                         $('#editEncounterForm').find('[name="type"]').val(response.encounter.encounter_type_id).change()
                     }
                     
-                    if (response.encounter.rendering_staff_id == null) {
+                    if (response.encounter.doctor == null) {
                         $('.rendering_doctor_client2').show();
                         $('#editEncounterForm').find('[name="render_name"]').val(response.encounter.rendering_staff_name).end()
                     } else {
-                        $('#editEncounterForm').find('[name="rendering_doctor"]').val(response.encounter.rendering_staff_id).change()
+                        $('#editEncounterForm').find('[name="rendering_doctor"]').val(response.encounter.doctor).change()
                     }
 
                     if (response.encounter.referral_staff_id == null) {
@@ -674,6 +700,8 @@
                     } else {
                         $('#editEncounterForm').find('[name="ref_doctor"]').val(response.encounter.referral_staff_id).change()
                     }
+
+                    $('#editEncounterForm').find('[name="rendering_user"]').val(response.encounter.rendering_staff_id).change()
 
                     if (response.encounter.referral_facility_id == null) {
                         $('.ref_provider_client2').show();
@@ -802,7 +830,32 @@
                 placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'encounter/getUserWithAddNewOption',
+                    url: 'encounter/getReferredByDoctorWithAddNewOption',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#pos_rendering_user").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getUserWithoutAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -827,7 +880,7 @@
                 placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'encounter/getUserWithAddNewOption',
+                    url: 'encounter/getRenderingDoctorWithAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -971,6 +1024,22 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function () {
+            $('.rendering_user_select2').hide();
+            $(document.body).on('change', '#pos_rendering_user2', function () {
+
+                var v = $("select.ref_doctor_select2 option:selected").val()
+                if (v == 'add_new') {
+                    $('.ref_doctor_client2').show();
+                } else {
+                    $('.ref_doctor_client2').hide();
+                }
+            });
+
+        });
+    </script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $("#encounter_type2").change(function () {
@@ -1008,8 +1077,15 @@
         });
 
         $(document).ready(function () {
-            $("#pos_rendering_doctor2").select2({
+            $("#pos_rendering_user2").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
+                allowClear: true,
+            });
+        });
+
+        $(document).ready(function () {
+            $("#pos_rendering_doctor2").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
             });
         });
