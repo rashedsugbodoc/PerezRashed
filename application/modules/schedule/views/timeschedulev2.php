@@ -83,8 +83,8 @@
                                         <thead>
                                             <tr>
                                                 <th> # </th>
-                                                <th> <?php echo lang('weekday'); ?></th>
                                                 <th> <?php echo lang('doctor') ?> </th>
+                                                <th> <?php echo lang('weekday'); ?></th>
                                                 <th> <?php echo lang('start_time'); ?></th>
                                                 <th> <?php echo lang('end_time'); ?></th>
                                                 <th> <?php echo lang('duration'); ?></th>
