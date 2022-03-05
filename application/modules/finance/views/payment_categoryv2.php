@@ -11,13 +11,13 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('service_listing'); ?>
+                                            <?php echo lang('list_of_charges'); ?>
                                         </div>
                                         <div class="card-options">
                                             <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
                                                 <a href="finance/addPaymentCategory">
                                                     <button id="" class="btn btn-primary btn-xs">
-                                                        <i class="fa fa-plus"></i> <?php echo lang('add_service'); ?>
+                                                        <i class="fa fa-plus"></i> <?php echo lang('add').' '.lang('charge'); ?>
                                                     </button>
                                                 </a>
                                             <?php } ?>
@@ -29,10 +29,10 @@
                                                 <table class="table table-bordered w-100" id="editable-sample">
                                                     <thead>
                                                         <tr>
-                                                            <th><?php echo lang('service'); ?> <?php echo lang('name'); ?></th>
+                                                            <th><?php echo lang('charge'); ?> <?php echo lang('name'); ?></th>
                                                             <th><?php echo lang('description'); ?></th>
-                                                            <th><?php echo lang('service'); ?> <?php echo lang('price'); ?> ( <?php echo $settings->currency; ?> )</th>
-                                                            <th><?php echo lang('doctors_rebate'); ?></th>
+                                                            <th><?php echo lang('price'); ?> ( <?php echo $settings->currency; ?> )</th>
+                                                            <th><?php echo lang('rendering').' '.lang('doctors_share'); ?></th>
                                                             <th><?php echo lang('category'); ?></th>
                                                             <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                                                 <th class="no-print"><?php echo lang('options'); ?></th>
