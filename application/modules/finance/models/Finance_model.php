@@ -823,6 +823,7 @@ class Finance_model extends CI_model {
 
     function getServiceCategory() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->or_where(array('hospital_id'=> NULL));
         $query = $this->db->get('service_category');
         return $query->result();
     }
