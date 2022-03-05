@@ -21,7 +21,7 @@
                                                 <!-- Tabs -->
                                                 <ul class="nav panel-tabs">
                                                     <li class=""><a href="#todays" class="active" data-toggle="tab"><?php echo lang('todays'); ?> <?php echo lang('appointments'); ?></a></li>
-                                                    <li><a href="#patient" data-toggle="tab" class=""><?php echo lang('patient'); ?></a></li>
+                                                    <li><a href="#patient" data-toggle="tab" class=""><?php echo lang('scheduled').' '.lang('patients'); ?></a></li>
                                                     <li><a href="#prescription" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
                                                     <li><a href="#schedule" data-toggle="tab" class=""><?php echo lang('schedule'); ?></a></li>
                                                     <li><a href="#holiday" data-toggle="tab" class=""><?php echo lang('holidays'); ?></a></li>
