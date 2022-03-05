@@ -224,7 +224,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('rendering'). ' ' . lang('user')?></label>
+                                                        <label class="form-label"><?php echo lang('rendering'). ' ' . lang('staff')?></label>
                                                         <select class="select2-show-search form-control rendering_user" id="rendering_user" name="rendering_user">
                                                             <option value="add_new"><?php echo lang('add_new') ?></option>
                                                             <?php foreach ($staffs as $staff) { ?>
