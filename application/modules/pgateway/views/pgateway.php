@@ -10,7 +10,7 @@
                 </header>
                 <div class="panel-body">
                     <div class="adv-table editable-table ">
-                        <div class=" panel clearfix"> 
+                        <div class=" clearfix"> 
                             <button class="export" onclick="javascript:window.print();">Print</button>  
                         </div>
                         <div class="space15"></div>
