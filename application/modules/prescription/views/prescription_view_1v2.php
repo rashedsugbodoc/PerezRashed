@@ -268,7 +268,7 @@
                                                 <div class="row mb-1">
                                                     <?php foreach($branches as $branch) { 
                                                         $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
-                                                        $city_name = $this->location_model->getCityById($settings->city_id)->name;
+                                                        $city_name = $this->location_model->getCityById($branch->city_id)->name;
                                                     ?>
                                                         <div class="col-md col-sm pl-0">
                                                             <div class="row">
@@ -452,7 +452,7 @@
                                                     <div class="col-md-4 col-sm-4">
                                                         <div class="row">
                                                             <div class="form-group text-center">
-                                                                <img class="company-logo" src="<?php echo $settings->logo; ?>" width="auto" height="auto" style="max-width: 200px;max-height: 200px;margin-top: 160px;">
+                                                                <img class="company-logo" src="<?php echo base_url('public/assets/images/brand/logo.png'); ?>" width="auto" height="auto" style="max-width: 200px;max-height: 200px;margin-top: 160px;">
                                                                 <h4 class="text-primary">www.sugbodoc.com</h4>
                                                             </div>
                                                         </div>
