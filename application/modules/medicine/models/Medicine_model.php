@@ -114,6 +114,7 @@ class Medicine_model extends CI_model {
 
     function getMedicineCategory() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->or_where(array('hospital_id' => NULL));
         $query = $this->db->get('medicine_category');
         return $query->result();
     }
