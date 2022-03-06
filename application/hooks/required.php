@@ -32,11 +32,18 @@ function required() {
         if (!$CI->ion_auth->in_group(array('superadmin'))) {
             if ($CI->ion_auth->in_group(array('admin'))) {
                 $current_user_id = $CI->ion_auth->user()->row()->id;
-                $CI->hospital_id = $CI->db->get_where('admin', array('ion_user_id' => $current_user_id))->row()->hospital_id;
+                $user = $CI->db->get_where('admin', array('ion_user_id' => $current_user_id))->row();
+                $CI->hospital_id = $user->hospital_id;
                 $CI->timezone = $CI->db->get_where('settings', array('hospital_id' => $CI->hospital_id))->row()->timezone;
+                if (empty($user->img_url)) {
+                    $profile_img_url = 'public/assets/images/users/placeholder.jpg';
+                } else {
+                    $profile_img_url = $user->img_url;
+                }
                 if (!empty($CI->hospital_id)) {
                     $newdata = array(
                         'hospital_id' => $CI->hospital_id,
+                        'profile_img_url' => $profile_img_url,
                     );
                     $CI->session->set_userdata($newdata);
                 }
@@ -50,11 +57,18 @@ function required() {
                 $group_id = $CI->db->get_where('users_groups', array('user_id' => $current_user_id))->row()->group_id;
                 $group_name = $CI->db->get_where('groups', array('id' => $group_id))->row()->name;
                 $group_name = strtolower($group_name);
-                $CI->hospital_id = $CI->db->get_where($group_name, array('ion_user_id' => $current_user_id))->row()->hospital_id;
+                $user = $CI->db->get_where($group_name, array('ion_user_id' => $current_user_id))->row();
+                $CI->hospital_id = $user->hospital_id;
                 $CI->timezone = $CI->db->get_where('settings', array('hospital_id' => $CI->hospital_id))->row()->timezone;
+                if (empty($user->img_url)) {
+                    $profile_img_url = 'public/assets/images/users/placeholder.jpg';
+                } else {
+                    $profile_img_url = $user->img_url;
+                }
                 if (!empty($CI->hospital_id)) {
                     $newdata = array(
                         'hospital_id' => $CI->hospital_id,
+                        'profile_img_url' => $profile_img_url,
                     );
                     $CI->session->set_userdata($newdata);
                 }
