@@ -12,7 +12,7 @@
                                     <div class="card-header">
                                         <div class="card-title"><?php echo lang('medicine_categories'); ?> </div>
                                         <div class="card-options">
-                                            <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor','Pharmacist'))) { ?>
                                                 <a data-toggle="modal" href="#myModal">
                                                     <button id="" class="btn btn-primary btn-xs">
                                                         <i class="fa fa-plus"></i> <?php echo lang('create_medicine_category'); ?>
@@ -27,7 +27,7 @@
                                                 <tr>
                                                     <th> <?php echo lang('category'); ?></th>
                                                     <th> <?php echo lang('description'); ?></th>
-                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor','Pharmacist'))) { ?>
                                                         <th> <?php echo lang('options'); ?></th>
                                                     <?php } ?>
                                                 </tr>
@@ -37,10 +37,14 @@
                                                     <tr class="">
                                                         <td><?php echo $category->category; ?></td>
                                                         <td> <?php echo $category->description; ?></td>
-                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor','Pharmacist'))) { ?>
                                                             <td>
-                                                                <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
-                                                                <a class="btn btn-danger btn-xs" href="medicine/deleteMedicineCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                <?php if(!empty($category->hospital_id)) { ?>
+                                                                    <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
+                                                                <?php } ?>
+                                                                <?php if(!empty($category->hospital_id)) { ?>
+                                                                    <a class="btn btn-danger btn-xs" href="medicine/deleteMedicineCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                <?php } ?>
                                                             </td>
                                                         <?php } ?>
                                                     </tr>
@@ -306,7 +310,7 @@
                     [10, 25, 50, 100, "All"]
                 ],
                 iDisplayLength: -1,
-                "order": [[0, "desc"]],
+                "order": [[0, "asc"]],
 
                 "language": {
                     "lengthMenu": "_MENU_",
