@@ -1512,7 +1512,7 @@ class Patient extends MX_Controller {
             }
             
 
-            $timeline[$appointment->date + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, $appointment->date) . '</span></li>
+            $timeline[$appointment->date + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', $appointment->date) . '</span></li>
                                                 <li>
                                                     <i class="fa fa-download bg-success"></i>
                                                     <div class="timelineleft-item">
@@ -1525,7 +1525,7 @@ class Patient extends MX_Controller {
                                                                         <i class="fa fa-calendar fa-2x text-primary"></i>
                                                                     </div>
                                                                     <div class="media-body">
-                                                                        <strong>' . date($data['settings']->date_format_long, $appointment->date) . '</strong>
+                                                                        <strong>' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', $appointment->date) . '</strong>
                                                                         <div class="row">
                                                                             <div class="col-md-10 mb-3">
                                                                                 <small class="text-muted">' . $appointment->s_time . ' - ' . $appointment->e_time . '</small>
@@ -1647,7 +1647,7 @@ class Patient extends MX_Controller {
             
 
             if (!empty($prescription->prescription_date)) {
-                $timeline[strtotime($prescription->prescription_date.' UTC') + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($prescription->prescription_date.' UTC')) . '</span></li>
+                $timeline[strtotime($prescription->prescription_date.' UTC') + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($prescription->prescription_date.' UTC')) . '</span></li>
                                                         <li><i class="fa fa-download bg-cyan"></i>
                                                         <div class="timelineleft-item">
                                                             <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($prescription->prescription_date.' UTC')), 3) . '</span>
@@ -1716,7 +1716,7 @@ class Patient extends MX_Controller {
 
             
             if (!empty($lab->lab_date)) {
-                $timeline[strtotime($lab->lab_date.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($lab->lab_date.' UTC')) . '</span></li>
+                $timeline[strtotime($lab->lab_date.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($lab->lab_date.' UTC')) . '</span></li>
                                             <li>
                                                 <i class="fa fa-envelope bg-primary"></i>
                                                 <div class="timelineleft-item">
@@ -1783,7 +1783,7 @@ class Patient extends MX_Controller {
             }
             
             if (!empty($medical_history->case_date)) {
-                $timeline[strtotime($medical_history->case_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($medical_history->case_date.' UTC')) . '</span></li>
+                $timeline[strtotime($medical_history->case_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($medical_history->case_date.' UTC')) . '</span></li>
                                                         <li>
                                                             <i class="fa fa-download bg-info"></i>
                                                             <div class="timelineleft-item">
@@ -1877,7 +1877,7 @@ class Patient extends MX_Controller {
                 $document_date_time = $patient_material->created_at;
             }
             if (!empty($patient_material->created_at)) {
-                $timeline[strtotime($document_date_time.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($document_date_time.' UTC')) . ' </span></li>
+                $timeline[strtotime($document_date_time.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($document_date_time.' UTC')) . ' </span></li>
                                                             <li>
                                                                 <i class="fa fa-download bg-secondary"></i>
                                                                 <div class="timelineleft-item">
@@ -1961,7 +1961,7 @@ class Patient extends MX_Controller {
             }
 
             if (!empty($form->form_date)) {
-                $timeline[strtotime($form->form_date.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($form->form_date.' UTC')) . ' </span></li>
+                $timeline[strtotime($form->form_date.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($form->form_date.' UTC')) . ' </span></li>
                                                                 <li>
                                                                     <i class="fa fa-download bg-secondary"></i>
                                                                     <div class="timelineleft-item">
@@ -2043,7 +2043,7 @@ class Patient extends MX_Controller {
             if (!empty($encounter_appointment)) {
                 $encounter_appointment_service_group = $this->appointment_model->getServiceCategoryById($encounter_appointment->service_category_group_id)->display_name;
                 $encounter_services = $this->finance_model->getPaymentCategoryById($encounter_appointment->service_id)->description;
-                $encounter_appointment_date = date($data['settings']->date_format_long, strtotime($encounter_appointment->appointment_date.' UTC'));
+                $encounter_appointment_date = date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter_appointment->appointment_date.' UTC'));
                 if (!empty($encounter->ended_at)) {
                     $encounter_ending_time = date('H:i', strtotime($encounter->ended_at.' UTC'));
                 } else {
@@ -2064,7 +2064,7 @@ class Patient extends MX_Controller {
 
             
             if (!empty($encounter->created_at)) {
-                $timeline[strtotime($encounter->created_at.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long, strtotime($encounter->created_at.' UTC')) . '</span></li>
+                $timeline[strtotime($encounter->created_at.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter->created_at.' UTC')) . '</span></li>
                                             <li>
                                                 <i class="fa fa-envelope bg-primary"></i>
                                                 <div class="timelineleft-item">
@@ -2888,7 +2888,7 @@ class Patient extends MX_Controller {
                 $doctor_name = '';
             }
 
-            $timeline[$appointment->date + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, $appointment->date) . '</span></li>
+            $timeline[$appointment->date + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', $appointment->date) . '</span></li>
                                             <li>
                                                 <i class="fa fa-download bg-success"></i>
                                                 <div class="timelineleft-item">
@@ -2901,7 +2901,7 @@ class Patient extends MX_Controller {
                                                                     <i class="fa fa-calendar fa-2x text-primary"></i>
                                                                 </div>
                                                                 <div class="media-body">
-                                                                    <strong>' . date($settings->date_format_long, $appointment->date) . '</strong>
+                                                                    <strong>' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', $appointment->date) . '</strong>
                                                                     <div class="row">
                                                                         <div class="col-md-10 mb-3">
                                                                             <small class="text-muted">' . $appointment->s_time . ' - ' . $appointment->e_time . '</small>
@@ -3048,7 +3048,7 @@ class Patient extends MX_Controller {
                 $all_meds = '';
             }
             if (!empty($prescription->prescription_date)) {
-                $timeline[strtotime($prescription->prescription_date.' UTC') + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($prescription->prescription_date.' UTC')) . '</span></li>
+                $timeline[strtotime($prescription->prescription_date.' UTC') + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($prescription->prescription_date.' UTC')) . '</span></li>
                                                         <li><i class="fa fa-download bg-cyan"></i>
                                                         <div class="timelineleft-item">
                                                             <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($prescription->prescription_date.' UTC')), 3) . '</span>
@@ -3139,7 +3139,7 @@ class Patient extends MX_Controller {
             }
 
             if (!empty($lab->lab_date)) {
-                $timeline[strtotime($lab->lab_date.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($lab->lab_date.' UTC')) . '</span></li>
+                $timeline[strtotime($lab->lab_date.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($lab->lab_date.' UTC')) . '</span></li>
                                             <li>
                                                 <i class="fa fa-envelope bg-primary"></i>
                                                 <div class="timelineleft-item">
@@ -3230,7 +3230,7 @@ class Patient extends MX_Controller {
             }
 
             if (!empty($form->form_date)) {
-                $timeline[strtotime($form->form_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($form->form_date.' UTC')) . ' </span></li>
+                $timeline[strtotime($form->form_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($form->form_date.' UTC')) . ' </span></li>
                                                                 <li>
                                                                     <i class="fa fa-download bg-secondary"></i>
                                                                     <div class="timelineleft-item">
@@ -3312,7 +3312,7 @@ class Patient extends MX_Controller {
             }
 
             if (!empty($medical_history->case_date)) {
-                $timeline[strtotime($medical_history->case_date.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($medical_history->case_date.' UTC')) . '</span></li>
+                $timeline[strtotime($medical_history->case_date.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($medical_history->case_date.' UTC')) . '</span></li>
                                                         <li>
                                                             <i class="fa fa-download bg-info"></i>
                                                             <div class="timelineleft-item">
@@ -3429,7 +3429,7 @@ class Patient extends MX_Controller {
             }
 
             if (!empty($patient_material->created_at)) {
-                $timeline[strtotime($document_date_time.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($document_date_time.' UTC')) . ' </span></li>
+                $timeline[strtotime($document_date_time.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($document_date_time.' UTC')) . ' </span></li>
                                                             <li>
                                                                 <i class="fa fa-download bg-secondary"></i>
                                                                 <div class="timelineleft-item">
@@ -3536,7 +3536,7 @@ class Patient extends MX_Controller {
             if (!empty($encounter_appointment)) {
                 $encounter_appointment_service_group = $this->appointment_model->getServiceCategoryById($encounter_appointment->service_category_group_id)->display_name;
                 $encounter_services = $this->finance_model->getPaymentCategoryById($encounter_appointment->service_id)->description;
-                $encounter_appointment_date = date($data['settings']->date_format_long, strtotime($encounter_appointment->appointment_date.' UTC'));
+                $encounter_appointment_date = date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter_appointment->appointment_date.' UTC'));
                 if (!empty($encounter->ended_at)) {
                     $encounter_ending_time = date('H:i', strtotime($encounter->ended_at.' UTC'));
                 } else {
@@ -3557,7 +3557,7 @@ class Patient extends MX_Controller {
 
             
             if (!empty($encounter->created_at)) {
-                $timeline[strtotime($encounter->created_at.' UTC') + 7] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long, strtotime($encounter->created_at.' UTC')) . '</span></li>
+                $timeline[strtotime($encounter->created_at.' UTC') + 7] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($encounter->created_at.' UTC')) . '</span></li>
                                             <li>
                                                 <i class="fa fa-envelope bg-primary"></i>
                                                 <div class="timelineleft-item">
@@ -3992,7 +3992,7 @@ class Patient extends MX_Controller {
                                                     <h6 class="mb-1 font-weight-bold mt-4">' . $patient_material->title . '</h6>
                                                     <p class="text-dark">'.  lang('uploader') . ': ' . $this->hospital_model->getIonUserById($patient_material->created_user_id)->username .'</p>
                                                     <p class="text-muted">
-                                                        '. date($settings->date_format_long . ' ' . $settings->time_format, strtotime($patient_material->created_at.' UTC')) .'
+                                                        '. date($settings->date_format_long?$settings->date_format_long:'F j, Y' . ' ' . $settings->time_format, strtotime($patient_material->created_at.' UTC')) .'
                                                     </p>
                                                 </div>
                                             </div>
