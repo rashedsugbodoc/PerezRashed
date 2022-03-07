@@ -485,6 +485,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('pain_level'); ?></label>
+                                                        <input class="myrangeslider1" data-extra-classes="irs-outline" name="pain_level" type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <input type="hidden" name="patient" hidden value='<?php echo $patient->id; ?>'>
                                             <input type="hidden" name="encounter_id">
                                             <input type="hidden" name="redirect" value="encounter">
@@ -646,6 +654,10 @@
         <script src="<?php echo base_url('public/assets/plugins/clipboard/clipboard.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/clipboard/clipboard.js'); ?>"></script>
 
+        <!-- ion.rangeSlider.min js -->
+        <script src="<?php echo base_url('public/assets/plugins/ion-rangeslider/js/ion.rangeSlider.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/rangeslider.js'); ?>"></script>
+
         <!-- Prism js -->
         <script src="<?php echo base_url('public/assets/plugins/prism/prism.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
@@ -660,6 +672,17 @@
             $('#addVitalForm').find('[name="encounter_id"]').val(iid).end()
 
             $('#AddVital').modal('show');
+        });
+    </script>
+
+    <script type="text/javascript">
+        $('.myrangeslider1').ionRangeSlider({
+            // grid: true,
+            min: 0,
+            max: 10,
+            from: 0,
+            // prettify_enabled: true,
+            // prettify_separator: ",",
         });
     </script>
 
