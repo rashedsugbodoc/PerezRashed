@@ -20,15 +20,9 @@
                                         <input type="text" class="form-control">
                                         <div class="input-group-append">
                                             <select class="form-control select2-show-search" id="doctorchoose" data-placeholder="Choose one (with searchbox)">
-                                                <?php foreach ($departments as $department) { ?>
-                                                <option value="<?php echo $department->name; ?>" <?php
-                                                if (!empty($doctor->department)) {
-                                                    if ($department->name == $doctor->department) {
-                                                        echo 'selected';
-                                                    }
-                                                }
-                                                ?> > <?php echo $department->name; ?> </option>
-                                                    <?php } ?> 
+                                                <?php foreach ($specialties as $specialty) { ?>
+                                                    <option value="<?php echo $specialty->id; ?>"> <?php echo $specialty->display_name_ph ?> </option>
+                                                <?php } ?>
                                             </select>
                                         </div>
                                         <button class="btn btn-primary btn-sm">Search</button>
@@ -44,22 +38,53 @@
                         </div>
 
                         <div class="row">
-                            <?php foreach($doctors as $doctor) {?>
+                            <?php foreach($doctors as $doctor) { ?>
                                 <div class="col-xl-4 col-lg-6 col-md-12 col-sm-12">
                                     <div class="d-sm-flex align-items-center border bg-white p-3 mb-3 br-7">
                                         <div class="avatar avatar-lg brround d-block cover-image" data-image-src="<?php echo $doctor->img_url; ?>" >
                                         </div>
                                         <div class="wrapper ml-sm-3  mt-4 mt-sm-0">
                                             <p class="mb-0 mt-1 text-dark font-weight-semibold"><?php echo lang('dr') ?>. <?php echo $doctor->name; ?></p>
-                                            <small class="text-muted"><?php echo $doctor->profile; ?></small>
-                                            <small class="text-muted"><p><i class="fa fa-map-marker text-info"></i> Cebu City</p></small>
+                                            <small class="text-muted">
+                                                <?php
+                                                    $specialty_id = explode(',', $doctor->specialties);
+                                                    $specialty_name = [];
+                                                    foreach($specialty_id as $specialty_id_explode) {
+                                                        $display_name_ph = $this->specialty_model->getSpecialtyById($specialty_id_explode)->display_name_ph;
+                                                        if (!empty($display_name_ph)) {
+                                                            $speacialties = $display_name_ph;
+                                                        } else {
+                                                            $speacialties = "";
+                                                        }
+                                                        $specialty_name[] = $speacialties;
+                                                    }
+
+                                                    $spec_name = implode(', ', $specialty_name);
+
+                                                    if (!empty($doctor->specialties)) {
+                                                        echo $spec_name;
+                                                    } else {
+                                                        echo "";
+                                                    }
+                                                    
+                                                ?>
+                                            </small>
+                                            <small class="text-muted"><p><i class="fa fa-map-marker text-info"></i> 
+                                            <?php
+                                                $city = $this->location_model->getCityById($doctor->city_id)->name;
+                                                $barangay = $this->location_model->getBarangayById($doctor->barangay_id)->name;
+                                                if(empty($city && $barangay)) {
+                                                    echo "";
+                                                } else {
+                                                    echo $barangay . ', ' . $city;
+                                                }
+                                            ?>
+                                            </p></small>
                                             <a href="#" class="btn btn-primary btn-pill btn-sm d-xl-inline">Book</a>
                                             <a class="btn btn-white btn-pill btn-sm " data-target="#modaldemo3" data-toggle="modal" href="">Info</a>
                                         </div>
                                     </div>
                                 </div>
-
-                                
                             <?php } ?>
                         </div>
 

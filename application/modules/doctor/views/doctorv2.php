@@ -266,7 +266,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
-                                                                        <textarea type="hidden" id='signature-result' class="form-control" name="signature-result"></textarea>
+                                                                        <textarea id='signature-result' class="form-control" name="signature-result" hidden></textarea>
                                                                         <img src="" id="signature-img-result" />
                                                                     </div>
                                                                 </div>

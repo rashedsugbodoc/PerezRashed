@@ -48,7 +48,7 @@ class Patient extends MX_Controller {
     }
 
     public function findDoctors(){
-        $data['departments'] = $this->department_model->getDepartment();
+        $data['specialties'] = $this->specialty_model->getSpecialty();
         // $data['doctors'] = $this->doctor_model->getDoctor();
         $data['doctors'] = $this->doctor_model->getAllDoctor();
         $data['settings'] = $this->settings_model->getSettings();

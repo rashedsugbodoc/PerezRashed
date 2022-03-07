@@ -16,6 +16,7 @@ class Specialty_model extends CI_model {
     }
 
     function getSpecialty() {
+        $this->db->where("display_name_ph is NOT NULL");
         $query = $this->db->get('specialty');
         return $query->result();
     }
