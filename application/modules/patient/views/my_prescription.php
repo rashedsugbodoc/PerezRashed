@@ -42,7 +42,7 @@
 
                         <?php foreach ($prescriptions as $prescription) { ?>
                             <tr class="">
-                                <td><?php echo date('d-m-Y', strtotime($prescription->date)); ?></td>
+                                <td><?php echo date('d-m-Y', strtotime($prescription->date.' UTC')); ?></td>
                                 <td> <?php echo $this->patient_model->getPatientById($prescription->patient)->name; ?></td>
                                 <td>
 
