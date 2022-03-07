@@ -85,6 +85,17 @@ class Profile extends MX_Controller {
         }
     }
 
+    public function getUserWithoutAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+
+        $response = $this->profile_model->getUserWithoutAddNewOption($searchTerm);
+
+        echo json_encode($response);
+    }
+
 }
 
 /* End of file profile.php */
