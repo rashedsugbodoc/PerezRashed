@@ -267,7 +267,6 @@
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
                                                                         <textarea id='signature-result' class="form-control" name="signature-result" hidden></textarea>
-                                                                        <img src="" id="signature-img-result" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -778,7 +777,6 @@
             //     output.value += imageData[i].charCodeAt(0).toString(2) + " ";
             // }
             $('#signature-result').val(imageData)
-            $('#signature-img-result').attr('src',"data:"+imageData);
         }
 
         // form action
