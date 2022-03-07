@@ -68,15 +68,19 @@
                                                                 <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient">
                                                                     <option selected disabled hidden>Search Patient</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
-                                                                    <?php foreach ($patients as $patient) { ?>
-                                                                        <?php if (!empty($payment)) { ?>
-                                                                            <option value="<?php echo $patient->id ?>" selected="selected"><?php echo $patient->name ?></option>
-                                                                        <?php } else { ?>
-                                                                            <option value="<?php echo $patient->id ?>"><?php echo $patient->name ?></option>
-                                                                        <?php } ?>
-                                                                        <?php if (!empty($encounter->id)) { ?>
-                                                                            <option value="<?php echo $patientt->id; ?>" selected><?php echo $patientt->name ?></option>
-                                                                        <?php } ?>
+                                                                    <!-- <?php if (!empty($payment)) { ?>
+                                                                        <option value="<?php echo $patient->id ?>" selected="selected"><?php echo $patient->name ?></option>
+                                                                    <?php } else { ?>
+                                                                        <option value="<?php echo $patient->id ?>"><?php echo $patient->name ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $patientt->id; ?>" selected><?php echo $patientt->name ?></option>
+                                                                    <?php } ?> -->
+                                                                    <?php if (!empty($payment)) { ?>
+                                                                        <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $patientt->id; ?>" selected><?php echo $patientt->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
@@ -161,7 +165,7 @@
                                                                 <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor">
                                                                     <option selected disabled>Search Doctor</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
-                                                                    <?php foreach ($doctors as $doctor) { ?>
+                                                                    <!-- <?php foreach ($doctors as $doctor) { ?>
                                                                         <?php if (!empty($payment)) { ?>
                                                                             <option value="<?php echo $doctor->id ?>" selected="selected"><?php echo $doctor->name ?></option>
                                                                         <?php } else { ?>
@@ -170,7 +174,13 @@
                                                                         <?php if (!empty($encounter->id)) { ?>
                                                                             <option value="<?php echo $doctorr->id; ?>" selected><?php echo $doctorr->name ?></option>
                                                                         <?php } ?>
-                                                                    <?php }?>
+                                                                    <?php }?> -->
+                                                                    <?php if (!empty($payment)) { ?>
+                                                                        <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $doctorr->id; ?>" selected><?php echo $doctorr->name ?></option>
+                                                                    <?php } ?>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -229,9 +239,13 @@
                                                             <option value="add_new"><?php echo lang('add_new') ?></option>
                                                             <?php foreach ($staffs as $staff) { ?>
                                                                 <?php if (!empty($payment)) { ?>
-                                                                    <option value="<?php echo $staff->user_id ?>" selected="selected"><?php echo $staff->username ?></option>
+                                                                    <?php if ($payment->rendering_staff_id === $staff->user_id) { ?>
+                                                                        <option value="<?php echo $staff->user_id ?>" selected><?php echo $staff->username ?></option>
+                                                                    <?php } ?>
                                                                 <?php } else { ?>
-                                                                    <option value="<?php echo $staff->user_id ?>"><?php echo $staff->username ?></option>
+                                                                    <?php if ($encounter->rendering_staff_id === $staff->user_id) { ?>
+                                                                        <option value="<?php echo $staff->user_id ?>" selected><?php echo $staff->username ?></option>
+                                                                    <?php } ?>
                                                                 <?php } ?>
                                                             <?php }?>
                                                         </select>
@@ -1059,6 +1073,23 @@
                 $("#pos_select").select2({
                     placeholder: '<?php echo lang('select_patient'); ?>',
                     allowClear: true,
+                    ajax: {
+                        url: 'patient/getPatientinfoWithAddNewOption',
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
                 });
             });
         </script>
@@ -1087,6 +1118,23 @@
                 $("#add_doctor").select2({
                     placeholder: '<?php echo lang('select_doctor'); ?>',
                     allowClear: true,
+                    ajax: {
+                        url: 'doctor/getDoctorWithAddNewOption',
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
                 });
             });
         </script>
@@ -1096,6 +1144,23 @@
                 $(".rendering_user").select2({
                     placeholder: '<?php echo lang('select_doctor'); ?>',
                     allowClear: true,
+                    ajax: {
+                        url: 'encounter/getUserWithoutAddNewOption',
+                        type: "post",
+                        dataType: 'json',
+                        delay: 250,
+                        data: function (params) {
+                            return {
+                                searchTerm: params.term // search term
+                            };
+                        },
+                        processResults: function (response) {
+                            return {
+                                results: response
+                            };
+                        },
+                        cache: true
+                    }
                 });
             });
         </script>

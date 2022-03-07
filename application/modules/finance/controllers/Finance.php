@@ -68,7 +68,7 @@ class Finance extends MX_Controller {
         $data['staffs'] = $this->encounter_model->getUser();
         $data['encounter'] = $this->encounter_model->getEncounterById($id);
         $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
-        $data['doctorr'] = $this->doctor_model->getDoctorById($data['encounter']->rendering_staff_id);
+        $data['doctorr'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
         $data['patientt'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['settings'] = $this->settings_model->getSettings();
@@ -596,14 +596,15 @@ class Finance extends MX_Controller {
                     redirect('home/permission');
                 }
             }
-
+            $data['encounter'] = $this->encounter_model->getEncounterById($id);
+            $data['staffs'] = $this->encounter_model->getUser();
             $data['payment'] = $this->finance_model->getPaymentById($id);
             $data['patients'] = $this->patient_model->getPatientById($data['payment']->patient);
             $data['doctors'] = $this->doctor_model->getDoctorById($data['payment']->doctor);
             $data['company'] = $this->company_model->getCompanyById($data['payment']->company_id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_payment_view', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_payment_viewv2', $data);
+            // $this->load->view('home/footer'); // just the footer file
         } else {
             redirect('home/permission');
         }
