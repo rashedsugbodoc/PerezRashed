@@ -186,6 +186,14 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6 col-sm-12" hidden>
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('rendering') . ' ' . lang('staff'); ?><span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="staff" id="staffs" data-placeholder="Choose one">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <!-- <div class="pos_doctor clearfix">
                                                 <div class="row">
@@ -741,6 +749,29 @@
                 allowClear: true,
                 ajax: {
                     url: 'doctor/getDoctorInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+
+            $("#staffs").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'profile/getUserWithoutAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
