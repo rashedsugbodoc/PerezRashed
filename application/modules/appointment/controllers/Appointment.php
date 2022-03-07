@@ -15,6 +15,7 @@ class Appointment extends MX_Controller {
         $this->load->module('sms');
         $this->load->model('location/location_model');
         $this->load->model('service/service_model');
+        $this->load->model('encounter/encounter_model');
         if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Patient', 'Receptionist'))) {
             redirect('home/permission');
         }
@@ -161,6 +162,7 @@ class Appointment extends MX_Controller {
         $service = $this->input->post('service');
         $location = $this->input->post('branch');
         $appointment_registration = gmdate('Y-m-d H:i:s');
+        $staff = $this->input->post('staff');
 
         $virtual = $this->appointment_model->getServiceCategoryById($service_category_group)->is_virtual;
 

@@ -301,6 +301,16 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="row" hidden>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('rendering') . ' ' . lang('staff'); ?><span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="staff" id="staffs" data-placeholder="Choose one">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -407,6 +417,16 @@
                                                     <div class="form-group">
                                                         <label class="form-label">  <?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search doctor" id="adoctors1" name="doctor" data-placeholder="Choose One">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" hidden>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('rendering') . ' ' . lang('staff'); ?><span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="staff" id="staffs1" data-placeholder="Choose one">
                                                             
                                                         </select>
                                                     </div>
@@ -1537,6 +1557,51 @@
                 allowClear: true,
                 ajax: {
                     url: 'doctor/getDoctorInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+            $("#staffs").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getUserWithoutAddNewOption',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+
+            $("#staffs1").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getUserWithoutAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
