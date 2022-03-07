@@ -50,11 +50,9 @@
                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                                                     <td class="no-print">
                                                                         <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editPaymentCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"> </i></a>
-                                                                    </td>
-                                                                <?php } ?>
-                                                                <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
-                                                                    <td class="no-print">
-                                                                        <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deletePaymentCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                                                            <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deletePaymentCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                        <?php } ?>
                                                                     </td>
                                                                 <?php } ?>
                                                             </tr>

@@ -76,6 +76,19 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('staffs_share'); ?> (%)</label>
+                                                        <input type="text" class="form-control" name="s_commission" id="exampleInputEmail1" value='<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('s_commission');
+                                                        }
+                                                        if (!empty($service->staff_commission)) {
+                                                            echo $service->staff_commission;
+                                                        }
+                                                        ?>' placeholder="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
                                                         <label class="form-label"><?php echo lang('category'); ?></label>
                                                         <select class="form-control select2-show-search" name="category_id">
                                                             <option value=""><?php echo lang('select_category');?></option>

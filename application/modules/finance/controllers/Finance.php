@@ -933,6 +933,7 @@ class Finance extends MX_Controller {
         $description = $this->input->post('description');
         $c_price = $this->input->post('c_price');
         $d_commission = $this->input->post('d_commission');
+        $s_commission = $this->input->post('s_commission');
 
         if (empty($c_price)) {
             $c_price = 0;
@@ -978,6 +979,7 @@ class Finance extends MX_Controller {
                 'category_id' => $category_id,
                 'c_price' => $c_price,
                 'd_commission' => $d_commission,
+                'staff_commission' => $s_commission,
                 'service_category_group_id' => $service_type,
             );
             if (empty($id)) {
