@@ -1069,7 +1069,7 @@ class Patient extends MX_Controller {
         $vital_id = $this->input->post('id');
         $data['settings'] = $this->settings_model->getSettings();
         $id = $this->input->post('patient');
-        $encounter_id = $this->input->post('encounter_id');
+        $encounter_id = (int)$this->input->post('encounter_id');
         $encounter_row = $this->encounter_model->getEncounterById($encounter_id);
         $patient_id = (int)$id;
         $date_measured = $this->input->post('date');
@@ -1145,6 +1145,8 @@ class Patient extends MX_Controller {
 
         if ($this->ion_auth->in_group(array('Doctor', 'DoctorAdmin'))) {
             $doctor_id = (int)$this->doctor_model->getDoctorByIonUserId($current_user)->id;
+        } else {
+            $current_user = $this->ion_auth->get_user_id();
         }
 
         if (empty($doctor_id)) {
@@ -1271,6 +1273,7 @@ class Patient extends MX_Controller {
                 'blood_sugar_mmol' => $mmol,
                 'blood_sugar_timing' => $blood_sugar_timing,
                 'pain' => $pain,
+                'encounter_id' => $encounter_id,
             );
 
             if (empty($vital_id)) {
@@ -1278,16 +1281,21 @@ class Patient extends MX_Controller {
                 $inserted_id = $this->db->insert_id();
                 $this->session->set_flashdata('success', lang('record_added'));
 
-                $vital_exist = $this->encounter_model->getEncounterByVitalId($inserted_id)->start_vital_id;
+                $vital_exist = $this->encounter_model->getEncounterByVitalId($encounter_id)->start_vital_id;
+                $encounter_vital_start = $this->encounter_model->getEncounterById($encounter_id)->start_vital_id;
 
-                if (empty($vital_exist)) {
+                if (empty($encounter_vital_start)) {
                     $data_vital = array(
                         'start_vital_id' => $inserted_id,
                     );
-
-                    $this->encounter_model->updateEncounter($encounter_id, $data_vital);
-
+                } else {
+                    $data_vital = array(
+                        'end_vital_id' => $inserted_id,
+                    );
                 }
+
+                $this->encounter_model->updateEncounter($encounter_id, $data_vital);
+
             } else {
                 $this->patient_model->updatePatientVital($vital_id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
@@ -1335,6 +1343,8 @@ class Patient extends MX_Controller {
             $current_doctor = $this->ion_auth->get_user_id();
             $current_user = $this->doctor_model->getDoctorByIonUserId($current_doctor)->id;
         }
+
+        $encounter = $this->input->post('encounter_id');
         
         $id = $this->input->post('id');
         $patient_id = $this->input->post('patient_id');
@@ -1407,6 +1417,7 @@ class Patient extends MX_Controller {
                 'patient_phone' => $patient_phone,
                 'patient_address' => $patient_address,
                 'doctor_id' => $current_user,
+                'encounter_id' => $encounter,
             );
 
             if (empty($id)) {     // Adding New department
@@ -2226,6 +2237,9 @@ class Patient extends MX_Controller {
     }
 
     function addPatientMaterial() {
+        $encounter = $this->input->post('encounter_id');
+        $rendering_doctor_id = $this->input->post('rendering_doctor');
+        $rendering_user_id = $this->input->post('rendering_user');
         $title = $this->input->post('title');
         $patient_id = $this->input->post('patient');
         $img_url = $this->input->post('img_url');
@@ -2330,6 +2344,9 @@ class Patient extends MX_Controller {
                     'patient_phone' => $patient_phone,
                     'created_user_id' => $current_user,
                     'description' => $description,
+                    'encounter_id' => $encounter,
+                    'rendering_doctor_id' => $rendering_doctor_id,
+                    'rendering_staff_id' => $rendering_user_id
                 );
 
                 $this->patient_model->insertPatientMaterial($data);
