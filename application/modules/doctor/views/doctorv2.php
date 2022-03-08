@@ -210,7 +210,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6 col-sm-12">
+                                                        <div class="col-md-6 col-sm-12" hidden>
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('profile'); ?>: <span class="text-red">*</span></label>
                                                                 <input type="text" name="profile" class="form-control">
@@ -431,7 +431,7 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6 col-sm-12">
+                                                        <div class="col-md-6 col-sm-12" hidden>
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('profile'); ?>: <span class="text-red">*</span></label>
                                                                 <input type="text" name="profile" value="Otorlaryngologist" class="form-control">

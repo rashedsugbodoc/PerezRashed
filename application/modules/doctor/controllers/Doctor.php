@@ -169,7 +169,7 @@ class Doctor extends MX_Controller {
         // Validating Department Field   
         $this->form_validation->set_rules('department', 'Department', 'trim|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
-        $this->form_validation->set_rules('profile', 'Profile', 'trim|required|min_length[1]|max_length[50]|xss_clean');
+        // $this->form_validation->set_rules('profile', 'Profile', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('license', 'License Number', 'trim|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('tin', 'TIN Number', 'trim|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('ptr', 'PTR Number', 'trim|min_length[1]|max_length[50]|xss_clean');
