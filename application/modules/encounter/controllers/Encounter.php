@@ -12,6 +12,7 @@ class Encounter extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('profile/profile_model');
+        $this->load->model('form/form_model');
     }
 
     function index() {
@@ -23,6 +24,8 @@ class Encounter extends MX_Controller {
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['staffs'] = $this->encounter_model->getUser();
         $data['providers'] = $this->hospital_model->getHospital();
+        $data['templates'] = $this->form_model->getTemplate();
+        $data['categories'] = $this->form_model->getFormCategory();
 
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('encounter', $data);
@@ -205,7 +208,7 @@ class Encounter extends MX_Controller {
                 if (empty($encounter->start_vital_id)) {
                     $option3 = '<button type="button" class="vitalbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-camera"> </i>'. '  ' . lang('capture_vitals') .'</button>';
                 } else {
-                    $option3 = '<button type="button" class="dropdown-item bg-secondary text-light"><i class="fa fa-camera"></i>'. '  ' . lang('vitals_captured') .'</button>';
+                    $option3 = '<button type="button" class="vitalbutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-check"></i>'. '  ' . lang('vitals_captured') .'</button>';
                 }
                 $option4 = '<a class="btn btn-info btn-xs billbutton" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"> </i>'. ' ' . lang('generate_bill') . '</a>';
                 $option5 = '<a class="btn btn-danger btn-xs delete_button" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
@@ -213,10 +216,14 @@ class Encounter extends MX_Controller {
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-caret-down mr-2"></i>'. lang('actions') .'
                                 </button>
-                                <div class="dropdown-menu">
+                                <div class="dropdown-menu" style="overflow: auto; height: 200px; scrollbar-width: auto;">
                                     <button type="button" class="view_button dropdown-item bg-info text-light" data-toggle="modal" data-id="'. $encounter->id .'"><i class="fa fa-eye"></i>  '. lang('view') . ' ' . lang('encounter') .'</button>
                                     <button type="button" class="editbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-edit"> </i>  '. lang('edit') . ' ' . lang('encounter') .'</button>
                                     '.$option3.'
+                                    <button type="button" class="casebutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('case_note') .'</button>
+                                    <a href="prescription/addPrescriptionView?id='. $encounter->id .'" class="dropdown-item bg-info text-light"><i class="fa fa-file"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>
+                                    <button type="button" class="documentbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-image"> </i>  '. lang('add') . ' ' . lang('document') .'</button>
+                                    <button type="button" class="formbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('form') .'</button>
                                     <a class="billbutton dropdown-item bg-info text-light" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('generate_bill') . '</a>
                                     <a class="delete_button dropdown-item bg-danger text-light" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>  ' . lang('delete') . '</a>
                                 </div>
@@ -380,6 +387,17 @@ class Encounter extends MX_Controller {
 // Get users
 
         $response = $this->encounter_model->getRenderingDoctorWithAddNewOption($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getRenderingDoctorWithoutAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+
+        $response = $this->encounter_model->getRenderingDoctorWithoutAddNewOption($searchTerm);
 
         echo json_encode($response);
     }
