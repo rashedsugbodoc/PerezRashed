@@ -29,6 +29,11 @@
                                 <?php echo validation_errors(); ?>
                                 <form role="form" action="prescription/addNewPrescription" class="clearfix" method="post" enctype="multipart/form-data">
                                     <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <input type="hidden" name="encounter_id" value="<?php echo $id ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('date'); ?></label>

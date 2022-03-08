@@ -60,7 +60,14 @@ class Prescription extends MX_Controller {
             redirect('home/permission');
         }
 
+        $id = $this->input->get('id');
+
         $data = array();
+
+        if (!empty($id)) {
+            $data['id'] = $id;
+        }
+
         $data['medicines'] = $this->medicine_model->getMedicine();
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
@@ -77,6 +84,7 @@ class Prescription extends MX_Controller {
             redirect('home/permission');
         }
 
+        $encounter = $this->input->post('encounter_id');
         $id = $this->input->post('id');
         $tab = $this->input->post('tab');
         $date = $this->input->post('date');
@@ -206,7 +214,8 @@ class Prescription extends MX_Controller {
                 'laboratory' => $laboratory,
                 'advice' => $advice,
                 'patientname' => $patientname,
-                'doctorname' => $doctorname
+                'doctorname' => $doctorname,
+                'encounter_id' => $encounter,
             );
             if (empty($id)) {
                 $this->prescription_model->insertPrescription($data);
