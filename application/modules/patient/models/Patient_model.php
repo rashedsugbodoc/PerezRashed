@@ -450,7 +450,7 @@ class Patient_model extends CI_model {
 
         $data = array();
         foreach ($categories as $category) {
-            $data[] = array("id" => $category['id'], "text" => $category['name']);
+            $data[] = array("id" => $category['id'], "text" => $category['display_name']);
         }
         return $data;
     }
