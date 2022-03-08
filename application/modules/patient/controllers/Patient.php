@@ -2366,7 +2366,7 @@ class Patient extends MX_Controller {
     }
 
     function editUpload() {
-        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser'))) {
+        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin'))) {
             redirect('home/permission');
         }
         $document_id = $this->input->get('id');
@@ -2749,6 +2749,7 @@ class Patient extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $current_user = $this->ion_auth->get_user_id();
 
         if ($limit == -1) {
             if (!empty($search)) {
@@ -2774,6 +2775,9 @@ class Patient extends MX_Controller {
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
                 $options2 = '<a class="btn btn-danger btn-xs delete_button" href="patient/deletePatientMaterial?id=' . $document->id . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> <i class="fa fa-trash"></i> </a>';
             }
+            if ($document->created_user_id === $current_user) {
+                $option3 = '<a class="btn btn-info" href="patient/editUpload?id='. $document->id .'" target="_blank"><i class="fe fe-edit"></i></a>';
+            }
 
             if (!empty($document->patient)) {
                 $patient_info = $this->patient_model->getPatientById($document->patient);
@@ -2795,7 +2799,7 @@ class Patient extends MX_Controller {
                     $document->title,
                     $document->description,
                     '<a class="example-image-link" href="' . $document->url . '" data-title="' . $document->title . '" target="_blank"">' . '<img class="example-image" src="uploads/PDF_DefaultImage.png" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
-                    $options1 . ' ' . $options2
+                    $options1 . ' ' . $options2 . ' ' . $option3
                         // $options4
                 );
             } else {
@@ -2804,8 +2808,8 @@ class Patient extends MX_Controller {
                     $patient_details,
                     $document->title,
                     $document->description,
-                    '<a class="example-image-link" href="' . $document->url . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
-                    $options1 . ' ' . $options2
+                    '<a class="example-image-link" href="' . $document->url . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '?m='. $document->last_modified .'" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
+                    $options1 . ' ' . $options2 . ' ' . $option3
                         // $options4
                 );
             }
