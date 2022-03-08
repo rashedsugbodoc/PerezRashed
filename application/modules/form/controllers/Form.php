@@ -162,6 +162,12 @@ class Form extends MX_Controller {
         $id = $this->input->post('id');
         $form_name = $this->input->post('form_name');
         $report = $this->input->post('report');
+        $encounter = $this->input->post('encounter_id');
+        $rendering_user = $this->input->post('staff');
+
+        if (empty($rendering_user)) {
+            $rendering_user = null;
+        }
 
         $patient = $this->input->post('patient');
         $category = $this->input->post('category');
@@ -350,6 +356,8 @@ class Form extends MX_Controller {
                     'patient_phone' => $patient_phone,
                     'patient_address' => $patient_address,
                     'doctor_name' => $doctor_name,
+                    'rendering_staff_id' => $rendering_user,
+                    'encounter_id' => $encounter,
                 );
 
 
