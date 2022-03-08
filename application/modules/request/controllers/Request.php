@@ -155,11 +155,13 @@ class Request extends MX_Controller {
             $module = $this->package_model->getPackageById($package)->module;
             $p_limit = $this->package_model->getPackageById($package)->p_limit;
             $d_limit = $this->package_model->getPackageById($package)->d_limit;
+            $loc_limit = $this->package_model->getPackageById($package)->loc_limit;
         } else {
             $default_package = $this->package_model->getDefaultPackage();
             $module = $default_package->module;
             $p_limit = $default_package->p_limit;
             $d_limit = $default_package->d_limit;
+            $loc_limit = $default_package->loc_limit;
         }
 
         $language_array = array('english', 'arabic', 'spanish', 'french', 'italian', 'portuguese');
@@ -178,6 +180,7 @@ class Request extends MX_Controller {
             'package' => $package,
             'p_limit' => $p_limit,
             'd_limit' => $d_limit,
+            'loc_limit' => $loc_limit,
             'module' => $module
         );
 
@@ -216,8 +219,7 @@ class Request extends MX_Controller {
                 'date_format' => $date_format,
                 'date_format_long' => $date_format_long,                
                 'system_vendor' => 'SugboDoc',
-                'discount' => 'flat',
-                'sms_gateway' => 'Twilio',                
+                'sms_gateway' => 'Semaphore',                
                 'currency' => '$'
             );
             $this->settings_model->insertSettings($hospital_settings_data);
