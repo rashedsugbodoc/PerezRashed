@@ -2379,7 +2379,7 @@ class Patient extends MX_Controller {
     }
 
     function saveUploadEditChanges() {
-        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser'))) {
+        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin'))) {
             redirect('home/permission');
         }
         $image_json_str = file_get_contents('php://input');
