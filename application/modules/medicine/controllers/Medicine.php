@@ -397,7 +397,7 @@ class Medicine extends MX_Controller {
             $i = $i + 1;
             $settings = $this->settings_model->getSettings();
             if ($medicine->quantity <= 0) {
-                $quan = '<p class="os">Stock Out</p>';
+                $quan = '<p class="os">Out of Stock</p>';
             } else {
                 $quan = $medicine->quantity;
             }
