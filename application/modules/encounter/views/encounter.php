@@ -6,37 +6,41 @@
                     <!--div class="side-app"-->
                         <!--Page header-->
 
-                        <div class="card mt-5">
-                            <div class="card-header">
-                                <div class="card-title"><?php echo lang('encounter'); ?></div>
-                                <div class="card-options">
-                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
-                                        <a data-toggle="modal" href="#myModal">
-                                            <button id="" class="btn btn-primary btn-xs">
-                                                <i class="fa fa-plus"></i> <?php echo lang('add_encounter'); ?>
-                                            </button>
-                                        </a>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="">
-                                    <div class="table-responsive">
-                                        <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100">
-                                            <thead>
-                                                <tr>
-                                                    <th><?php echo lang('date'); ?></th>
-                                                    <th><?php echo lang('encounter'); ?> <?php echo lang('id'); ?></th>
-                                                    <th><?php echo lang('patient'); ?></th>
-                                                    <th><?php echo lang('doctor'); ?></th>
-                                                    <th><?php echo lang('status'); ?></th>
-                                                    <th><?php echo lang('actions'); ?></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                
-                                            </tbody>
-                                        </table>
+                        <div class="row mt-5 mb-8">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title"><?php echo lang('encounter'); ?></div>
+                                        <div class="card-options">
+                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                                                <a data-toggle="modal" href="#myModal">
+                                                    <button id="" class="btn btn-primary btn-xs">
+                                                        <i class="fa fa-plus"></i> <?php echo lang('add_encounter'); ?>
+                                                    </button>
+                                                </a>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="">
+                                            <div class="table-responsive">
+                                                <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100">
+                                                    <thead>
+                                                        <tr>
+                                                            <th><?php echo lang('date'); ?></th>
+                                                            <th><?php echo lang('encounter'); ?> <?php echo lang('id'); ?></th>
+                                                            <th><?php echo lang('patient'); ?></th>
+                                                            <th><?php echo lang('doctor'); ?></th>
+                                                            <th><?php echo lang('status'); ?></th>
+                                                            <th><?php echo lang('actions'); ?></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -518,6 +522,280 @@
                         </div>
                     <!-- Add Vital Modal End -->
 
+                    <!-- Add Case Modal Start -->
+                        <div class="modal fade" id="addCase" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title"><?php echo lang('add'). ' ' . lang('case_note'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form role="form" id="addCaseForm" action="patient/addMedicalHistory" class="clearfix" method="post" onsubmit="javascript: return myFunction();" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            
+                                            <input type="hidden" name="encounter_id">
+
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
+                                                        <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="date" type="text" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" id="patientchoose" name="patient_id">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></label>
+                                                        <input type="text" class="form-control" name="title" placeholder="Name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?></label>
+                                                        <div class="ql-wrapper ql-wrapper-demo bg-light">
+                                                            <div id="quillEditor" class="bg-white quillEditor">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <textarea id="description" name="description" readonly="" hidden="" class="form-control" rows="4"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="ql-wrapper ql-wrapper-demo bg-light">
+                                                            <textarea name="desc" id="quillEditor" class="quillEditor form-control" rows="10"></textarea>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div> -->
+                                            <input type="hidden" name="patient" hidden value='<?php echo $patient->id; ?>'>
+                                            <input type="hidden" name="encounter_id">
+                                            <input type="hidden" name="redirect" value="encounter">
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- Add Case Modal End -->
+
+                    <!-- Add Prescription Modal Start -->
+                        <!-- <div class="modal fade" id="addPrescription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title"><?php echo lang('add'). ' ' . lang('prescription'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form role="form" id="addPrescriptionForm" action="prescription/addNewPrescription" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            
+                                            <input type="hidden" name="encounter_id">
+                                            
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> -->
+                    <!-- Add Prescription Modal End -->
+
+                    <!-- Add Document Modal Start -->
+                        <div class="modal fade" id="addDocument" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title"><?php echo lang('add'). ' ' . lang('document'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form role="form" id="addDocumentForm" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" class="form-control" name="title" placeholder="Name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('description'); ?> <span class="text-red">*</span></label>
+                                                        <textarea class="form-control" id="documentDescription" name="description" rows="2"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="category" id="category" data-placeholder="Choose one">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('rendering_doctor'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="rendering_doctor" id="rendering_doctor_document" data-placeholder="Choose one">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" hidden>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('rendering'). ' ' . lang('user')?></label>
+                                                        <select class="select2-show-search form-control rendering_user_select2" name="rendering_user" id="pos_rendering_user2">
+                                                            <?php foreach ($staffs as $staff) { ?>
+                                                                <option value="<?php echo $staff->user_id ?>"> <?php echo $staff->username ?> </option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
+                                                        <input type="file" name="img_url" id="document" class="dropify"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="redirect" value="encounter">
+                                            <input type="hidden" name="encounter_id">
+                                            <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- Add Document Modal End -->
+
+                    <!-- Add Form Modal Start -->
+                        <div class="modal fade" id="addForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title"><?php echo lang('add'). ' ' . lang('form'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form role="form" id="addFormsForm" action="form/addForm" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
+                                                        <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('template'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one">
+                                                            <option value="">Select .....</option>
+                                                            <?php foreach ($templates as $template) { ?>
+                                                                <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search pos_select" id="pos_select_form" name="patient" data-placeholder="Choose one">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?></label>
+                                                        <select class="select2-show-search form-control" name="category" data-placeholder="Choose one">
+                                                            <option></option>
+                                                            <?php foreach ($categories as $category) { ?>
+                                                                <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('rendering_doctor'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12" hidden>
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('rendering') . ' ' . lang('staff'); ?><span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="staff" id="staffs" data-placeholder="Choose one">
+                                                            <option><?php echo lang('select_user') ?></option>
+                                                            <?php foreach ($staffs as $staff) { ?>
+                                                                <option value="<?php echo $staff->user_id ?>"> <?php echo $staff->username ?> </option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-12">
+                                                    <label for="exampleInputEmail1"><?php echo lang('name'); ?></label>
+                                                    <input type="text" class="form-control" name="form_name" placeholder="<?php echo lang('form_report_name'); ?>">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 form-group">
+                                                    <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
+                                                    <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10">
+                                                    </textarea>
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="redirect" value="encounter">
+                                            <input type="hidden" name="encounter_id">
+                                            <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
+                                            <div class="row mt-5">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <!-- Add Form Modal End -->
+
                     </div>
                 </div>
             </div>
@@ -660,9 +938,45 @@
 
         <!-- Prism js -->
         <script src="<?php echo base_url('public/assets/plugins/prism/prism.js'); ?>"></script>
+        <script type="text/javascript" src="common/assets/ckeditor/ckeditor.js"></script>
+
+        <!-- WYSIWYG Editor js -->
+        <script src="<?php echo base_url('public/assets/plugins/wysiwyag/jquery.richtext.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/form-editor.js'); ?>"></script>
+
+        <!-- quill js -->
+        <script src="<?php echo base_url('public/assets/plugins/quill/quill.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/form-editor2.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
+            $('.table-responsive').on('show.bs.dropdown', function () {
+                $('.table-responsive').css( "overflow", "inherit" );
+            });
+
+            $('.table-responsive').on('hide.bs.dropdown', function () {
+                $('.table-responsive').css( "overflow", "auto" );
+            });
+        });
+
+    </script> -->
+
+    <script type="text/javascript">
+        function myFunction(){
+            var quill = document.getElementById('quillEditor').children[0].innerHTML;
+            // var cleanText = quill.replace(/<\/?[^>]+(>|$)/g, "");
+            document.getElementById('description').value = quill;
+        }
+
+        function myFunction2(){
+            var quill = document.getElementById('quillEditor2').children[0].innerHTML;
+            // var cleanText = quill.replace(/<\/?[^>]+(>|$)/g, "");
+            document.getElementById('description2').value = quill;
+        }
+    </script>
+
     <script type="text/javascript">
         $(".table").on("click", ".vitalbutton", function () {
             var base_url = "<?php echo base_url() ?>";
@@ -676,6 +990,54 @@
     </script>
 
     <script type="text/javascript">
+        $(".table").on("click", ".casebutton", function () {
+            var base_url = "<?php echo base_url() ?>";
+            var iid = $(this).attr('data-id');
+
+            console.log(iid);
+            $('#addCaseForm').find('[name="encounter_id"]').val(iid).end()
+
+            $('#addCase').modal('show');
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(".table").on("click", ".prescriptionbutton", function () {
+            var base_url = "<?php echo base_url() ?>";
+            var iid = $(this).attr('data-id');
+
+            console.log(iid);
+            $('#addPrescriptionForm').find('[name="encounter_id"]').val(iid).end()
+
+            $('#addPrescription').modal('show');
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(".table").on("click", ".documentbutton", function () {
+            var base_url = "<?php echo base_url() ?>";
+            var iid = $(this).attr('data-id');
+
+            console.log(iid);
+            $('#addDocumentForm').find('[name="encounter_id"]').val(iid).end()
+
+            $('#addDocument').modal('show');
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(".table").on("click", ".formbutton", function () {
+            var base_url = "<?php echo base_url() ?>";
+            var iid = $(this).attr('data-id');
+
+            console.log(iid);
+            $('#addFormsForm').find('[name="encounter_id"]').val(iid).end()
+
+            $('#addForm').modal('show');
+        });
+    </script>
+
+    <script type="text/javascript">
         $('.myrangeslider1').ionRangeSlider({
             // grid: true,
             min: 0,
@@ -683,6 +1045,79 @@
             from: 0,
             // prettify_enabled: true,
             // prettify_separator: ",",
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#category").select2({
+                placeholder: '<?php echo lang('select_category'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'patient/getDocumentUploadCategory',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+
+            $("#rendering_doctor_document").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getRenderingDoctorWithoutAddNewOption',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(document.body).on('change', '#template', function () {
+                var iid = $("select.template option:selected").val();
+                $.ajax({
+                    url: 'form/getTemplateByIdByJason?id=' + iid,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var data = CKEDITOR.instances.editor.getData();
+                        if (response.template.template != null) {
+                            var data1 = data + response.template.template;
+                        } else {
+                            var data1 = data;
+                        }
+                        CKEDITOR.instances['editor'].setData(data1)
+                    }
+                });
+            });
         });
     </script>
 
@@ -996,7 +1431,82 @@
                 }
 
             });
-        })
+        });
+
+        $(document).ready(function () {
+            $("#patientchoose").select2({
+                placeholder: '<?php echo lang('select_patient'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'patient/getPatientinfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#pos_select_form").select2({
+                placeholder: '<?php echo lang('select_patient'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'patient/getPatientinfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#add_doctor").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'doctor/getDoctorInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
     </script>
 
     <script>
