@@ -452,8 +452,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
                                         <?php } ?>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist'))) { ?>
-                                            <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('service_listing'); ?></a></li>
-                                            <li><a href="finance/serviceCategory" class="slide-item"><?php echo lang('service_categories'); ?> </a></li>
+                                            <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('list_of_charges'); ?></a></li>
+                                            <li><a href="finance/serviceCategory" class="slide-item"><?php echo lang('charge').' '.lang('categories'); ?> </a></li>
                                             <li><a href="finance/expense" class="slide-item"><?php echo lang('expense'); ?></a></li>
                                         <?php } ?>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
