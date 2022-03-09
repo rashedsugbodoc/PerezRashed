@@ -220,6 +220,12 @@ class Patient_model extends CI_model {
         return $query->row();
     }
 
+    function getMedicalHistoryByEncounterId($id) {
+        $this->db->where('encounter_id', $id);
+        $query = $this->db->get('medical_history');
+        return $query->row();
+    }
+
     function updateMedicalHistory($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('medical_history', $data);

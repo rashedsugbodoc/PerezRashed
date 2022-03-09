@@ -197,6 +197,7 @@ class Encounter extends MX_Controller {
             // $user = $this->profile_model->getProfileById($encounter->rendering_staff_id)->username;
             $doctor = $this->doctor_model->getDoctorById($encounter->doctor)->name;
             $encounter_status = $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
+            $case_encounter = $this->patient_model->getMedicalHistoryByEncounterId($encounter->id);
             if (empty($user)) {
                 $user = $encounter->rendering_staff_name;
             }
@@ -212,6 +213,11 @@ class Encounter extends MX_Controller {
                 }
                 $option4 = '<a class="btn btn-info btn-xs billbutton" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"> </i>'. ' ' . lang('generate_bill') . '</a>';
                 $option5 = '<a class="btn btn-danger btn-xs delete_button" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+                if (empty($case_encounter->encounter_id)) {
+                    $option7 = '<button type="button" class="casebutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('case_note') .'</button>';
+                } else {
+                    $option7 = '<button type="button" class="casebutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('case_note') .'</button>';
+                }
                 $option6 = '<div class="dropdown">
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-caret-down mr-2"></i>'. lang('actions') .'
@@ -220,7 +226,7 @@ class Encounter extends MX_Controller {
                                     <button type="button" class="view_button dropdown-item bg-info text-light" data-toggle="modal" data-id="'. $encounter->id .'"><i class="fa fa-eye"></i>  '. lang('view') . ' ' . lang('encounter') .'</button>
                                     <button type="button" class="editbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-edit"> </i>  '. lang('edit') . ' ' . lang('encounter') .'</button>
                                     '.$option3.'
-                                    <button type="button" class="casebutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('case_note') .'</button>
+                                    '.$option7.'
                                     <a href="prescription/addPrescriptionView?id='. $encounter->id .'" class="dropdown-item bg-info text-light"><i class="fa fa-file"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>
                                     <button type="button" class="documentbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-image"> </i>  '. lang('add') . ' ' . lang('document') .'</button>
                                     <button type="button" class="formbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('form') .'</button>
