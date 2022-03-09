@@ -123,7 +123,7 @@
                                 <div class="col-lg-10 col-sm-12 col-md-12">
                                     <div class="box-widget widget-user">
                                         <div class="widget-user-image d-lg-flex">
-                                            <img alt="User Avatar" class="rounded-circle p-1" src="<?php echo $patient->img_url; ?>" style="width: 150px; height: 150px;" width="auto" height="auto">
+                                            <img alt="User Avatar" class="rounded-circle p-1" src="<?php echo $patient->img_url?$patient->img_url:base_url('public/assets/images/users/placeholder.jpg'); ?>" style="width: 150px; height: 150px;" width="auto" height="auto">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12 col-lg-5 pr-0 d-lg-flex">
                                                     <div class="ml-sm-4 ml-md-4 mt-md-4 mt-sm-1 mr-lg-3 mr-mb-0 mr-sm-0">
