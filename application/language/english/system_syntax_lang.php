@@ -186,6 +186,7 @@ $lang['edit_company_user'] = 'Edit Company User';
 $lang['payments'] = 'Payments';
 $lang['my_bills'] = 'My Bills';
 $lang['bills_and_payments'] = 'Bills and Payments';
+$lang['onset'] = 'Onset';
 $lang['date'] = 'Date';
 $lang['dates'] = 'Dates';
 $lang['sub_total'] = 'Sub Total';
