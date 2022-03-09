@@ -78,6 +78,13 @@ class Form_model extends CI_model {
         return $query->row();
     }
 
+    function getFormByEncounterId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('encounter_id', $id);
+        $query = $this->db->get('form');
+        return $query->row();
+    }
+
     function getFormByPatientId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
