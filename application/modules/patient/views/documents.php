@@ -18,17 +18,18 @@
             </header> 
             <div class="">
                 <div class="">
+                    <?php echo validation_errors(); ?>
+                    <?php
+                        $file_error = $this->session->flashdata('fileError');
+                        $other_error_list = $this->session->flashdata('error_list');
+                        if(!empty($file_error)) {
+                            echo $file_error;
+                        }
+                        if(!empty($other_error_list)) {
+                            echo $other_error_list;
+                        }
+                    ?>
                     <div class="adv-table editable-table panel-body">
-                        <?php echo validation_errors(); ?>
-                        <?php
-                            $file_error = $this->session->flashdata('fileError');
-
-                            if(!empty($file_error)) {
-                                echo $file_error;
-                            }else{
-                                
-                            }
-                        ?>
                         <table class="table table-striped table-hover table-bordered" id="editable-sample">
                             <thead>
                                 <tr>
