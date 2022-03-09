@@ -39,6 +39,10 @@
                                 color: black;
                             }
 
+                            .normal-caps {
+                                text-transform: inherit !important;
+                            }
+
                             .card-custom-icon{
                                 top: 40px;
                             }
@@ -367,25 +371,25 @@
                                                                 <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th><?php echo lang('measured_at'); ?></th>
-                                                                            <th><?php echo lang('heart_rate'); ?></th>
-                                                                            <th><?php echo lang('height'); ?></th>
-                                                                            <th><?php echo lang('weight'); ?></th>
-                                                                            <th><?php echo lang('bmi'); ?></th>
-                                                                            <th><?php echo lang('bp'); ?></th>
-                                                                            <th><?php echo lang('temperature'); ?></th>
-                                                                            <th><?php echo lang('spo2'); ?></th>
-                                                                            <th><?php echo lang('respiration_rate'); ?></th>
-                                                                            <th><?php echo lang('pain_level'); ?></th>
-                                                                            <th><?php echo lang('note'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('measured_at'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('heart_rate').'<br>'.'('.lang('bpm').')'; ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('height').'<br>'.'(cm)'; ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('weight').'<br>'.'(kg)'; ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('bmi'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('bp').'<br>'.'(mmHg)'; ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('temperature').'<br>'.'(&#176;C)'; ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('spo2').'<br>'.'(%)'; ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('respiration_rate').'<br>'.'('.lang('bpm').')'; ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('pain_level').'<br>'.'('.lang('10_highest').')'; ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
                                                                             <?php if ($vital->recorded_user_id == $current_user) { ?>
-                                                                                <th><?php echo lang('actions'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
                                                                             <?php } ?>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         <?php foreach ($vitals as $vital) { ?>
-                                                                            <tr>
+                                                                            <tr class="text-center">
                                                                                 <td><?php echo date('Y-m-d h:i A', strtotime($vital->measured_at.' UTC')); ?></td>
                                                                                 <td><?php echo $vital->heart_rate; ?></td>
                                                                                 <td><?php echo $vital->height_cm; ?></td>
