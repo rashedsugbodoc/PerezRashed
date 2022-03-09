@@ -12,6 +12,7 @@ class Encounter extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('profile/profile_model');
+        $this->load->model('prescription/prescription_model');
         $this->load->model('form/form_model');
     }
 
@@ -198,6 +199,9 @@ class Encounter extends MX_Controller {
             $doctor = $this->doctor_model->getDoctorById($encounter->doctor)->name;
             $encounter_status = $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
             $case_encounter = $this->patient_model->getMedicalHistoryByEncounterId($encounter->id);
+            $prescription_encounter = $this->prescription_model->getPrescriptionByEncounterId($encounter->id);
+            $document_encounter = $this->patient_model->getPatientMaterialByEncounterId($encounter->id);
+            $form_encounter = $this->form_model->getFormByEncounterId($encounter->id);
             if (empty($user)) {
                 $user = $encounter->rendering_staff_name;
             }
@@ -213,10 +217,38 @@ class Encounter extends MX_Controller {
                 }
                 $option4 = '<a class="btn btn-info btn-xs billbutton" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"> </i>'. ' ' . lang('generate_bill') . '</a>';
                 $option5 = '<a class="btn btn-danger btn-xs delete_button" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
-                if (empty($case_encounter->encounter_id)) {
-                    $option7 = '<button type="button" class="casebutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('case_note') .'</button>';
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    if (empty($case_encounter->encounter_id)) {
+                        $option7 = '<button type="button" class="casebutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('case_note') .'</button>';
+                    } else {
+                        $option7 = '<button type="button" class="casebutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('case_note') .'</button>';
+                    }
+                }
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    if (empty($prescription_encounter->encounter_id)) {
+                        $option8 = '<a href="prescription/addPrescriptionView?id='. $encounter->id .'" class="dropdown-item bg-info text-light"><i class="fa fa-file"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
+                    } else {
+                        $option8 = '<a href="prescription/addPrescriptionView?id='. $encounter->id .'" class="dropdown-item bg-success text-light"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
+                    }
+                }
+                if (empty($document_encounter->encounter_id)) {
+                    $option9 = '<button type="button" class="documentbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-image"> </i>  '. lang('add') . ' ' . lang('document') .'</button>';
                 } else {
-                    $option7 = '<button type="button" class="casebutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('case_note') .'</button>';
+                    $option9 = '<button type="button" class="documentbutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('document') .'</button>';
+                }
+                if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
+                    if (empty($form_encounter->encounter_id)) {
+                        $option10 = '<button type="button" class="formbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('form') .'</button>';
+                    } else {
+                        $option10 = '<button type="button" class="formbutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('form') .'</button>';
+                    }
+                }
+                if ($this->ion_auth->in_group(array('admin'))) {
+                    if (empty($encounter->invoice_id)) {
+                        $option11 = '<a class="billbutton dropdown-item bg-info text-light" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('generate_bill') . '</a>';
+                    } else {
+                        $option11 = '<a class="billbutton dropdown-item bg-success text-light" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-check"></i>  '. ' ' . lang('generate_bill') . '</a>';
+                    }
                 }
                 $option6 = '<div class="dropdown">
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
@@ -227,10 +259,10 @@ class Encounter extends MX_Controller {
                                     <button type="button" class="editbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-edit"> </i>  '. lang('edit') . ' ' . lang('encounter') .'</button>
                                     '.$option3.'
                                     '.$option7.'
-                                    <a href="prescription/addPrescriptionView?id='. $encounter->id .'" class="dropdown-item bg-info text-light"><i class="fa fa-file"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>
-                                    <button type="button" class="documentbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-image"> </i>  '. lang('add') . ' ' . lang('document') .'</button>
-                                    <button type="button" class="formbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('form') .'</button>
-                                    <a class="billbutton dropdown-item bg-info text-light" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('generate_bill') . '</a>
+                                    '.$option8.'
+                                    '.$option9.'
+                                    '.$option10.'
+                                    '.$option11.'
                                     <a class="delete_button dropdown-item bg-danger text-light" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>  ' . lang('delete') . '</a>
                                 </div>
                             </div>';
