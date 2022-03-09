@@ -2262,14 +2262,15 @@ class Patient extends MX_Controller {
             $redirect = "patient/medicalHistory?id=" . $patient_id;
         }
         $this->load->library('form_validation');
-        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>');
 
         // Validating Patient Field
         if (!$this->ion_auth->in_group(array('Patient'))) {
             $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         }
 
-        $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('title', 'Document Title', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('description', 'Document Description', 'trim|min_length[1]|max_length[300]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             if ($this->ion_auth->in_group(array('Patient'))) {
@@ -2282,9 +2283,13 @@ class Patient extends MX_Controller {
                 $this->load->view('home/footer'); // just the footer file
             } elseif ($this->ion_auth->in_group(array('admin' ,'Doctor', 'Nurse', 'Laboratorist', 'Receptionist'))) {
                 $this->session->set_flashdata('error', lang('validation_error'));
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('documents');
-                $this->load->view('home/footer'); // just the header file
+                $this->session->set_flashdata('error_list', validation_errors());
+
+                if (!empty($redirect)) {
+                    redirect($redirect);    
+                }
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('documentsv2');
             } else {
                 redirect('home/permission');
             }
@@ -2366,19 +2371,17 @@ class Patient extends MX_Controller {
                     $this->load->view('home/footer'); // just the footer file
                 } elseif ($this->ion_auth->in_group(array('admin' ,'Doctor', 'Nurse', 'Laboratorist', 'Receptionist'))) {
                     $this->session->set_flashdata('error', lang('validation_error'));
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('documents');
-                    $this->load->view('home/footer'); // just the header file
+
+                    if (!empty($redirect)) {
+                        redirect($redirect);
+                    }
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('documentsv2');
                 } else {
                     redirect('home/permission');
                 }
-                
             }
 
-            
-
-
-            
         }
     }
 
