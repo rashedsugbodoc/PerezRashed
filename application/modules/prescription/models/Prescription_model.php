@@ -36,6 +36,13 @@ class Prescription_model extends CI_model {
         return $query->row();
     }
 
+    function getPrescriptionByEncounterId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('encounter_id', $id);
+        $query = $this->db->get('prescription');
+        return $query->row();
+    }
+
     function getPrescriptionByPatientId($patient_id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
