@@ -645,14 +645,14 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="title" placeholder="Name">
+                                                        <input type="text" class="form-control" name="title" placeholder="Name" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('description'); ?> <span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('description'); ?> <span class="text-red"></span></label>
                                                         <textarea class="form-control" id="documentDescription" name="description" rows="2"></textarea>
                                                     </div>
                                                 </div>
@@ -691,6 +691,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
+                                                        <span class="text-muted">(<?php echo lang('maximum_upload_filesize').': 10MB';?>)</span>
                                                         <input type="file" name="img_url" id="document" class="dropify"/>
                                                     </div>
                                                 </div>
