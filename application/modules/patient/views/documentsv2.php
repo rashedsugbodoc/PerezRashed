@@ -19,11 +19,12 @@
                                         <?php echo validation_errors(); ?>
                                         <?php
                                             $file_error = $this->session->flashdata('fileError');
-
+                                            $other_error_list = $this->session->flashdata('error_list');
                                             if(!empty($file_error)) {
                                                 echo $file_error;
-                                            }else{
-                                                
+                                            }
+                                            if(!empty($other_error_list)) {
+                                                echo $other_error_list;
                                             }
                                         ?>
                                         <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100">
@@ -72,7 +73,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('title'); ?></label>
-                                                        <input type="text" class="form-control" name="title" placeholder="">
+                                                        <input type="text" class="form-control" name="title" placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -83,6 +84,7 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
+                                                    <span class="text-muted">(<?php echo lang('maximum_upload_filesize').': 10MB';?>)</span>
                                                     <input type="file" name="img_url" id="document" class="dropify"/>
                                                 </div>
                                                 <input type="hidden" name="redirect" value='patient/documents'>
