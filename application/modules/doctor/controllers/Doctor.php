@@ -19,6 +19,7 @@ class Doctor extends MX_Controller {
         $this->load->module('patient');
         $this->load->module('sms');
         $this->load->model('location/location_model');
+        $this->load->model('branch/branch_model');
         if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist', 'Nurse', 'Laboratorist', 'Patient'))) {
             redirect('home/permission');
         }

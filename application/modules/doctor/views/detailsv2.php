@@ -202,7 +202,7 @@
                                                             <table id="editable-sample4" class="table card-table table-vcenter text-nowrap mb-0 border w-100">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th class="wd-lg-10p">#</th>
+                                                                        <th class="wd-lg-10p"><?php echo lang('location'); ?></th>
                                                                         <th class="wd-lg-20p"><?php echo lang('weekday'); ?></th>
                                                                         <th class="wd-lg-20p"><?php echo lang('start_time'); ?></th>
                                                                         <th class="wd-lg-20p"><?php echo lang('end_time'); ?></th>
@@ -217,7 +217,13 @@
                                                                         $i = $i + 1;
                                                                         ?>
                                                                         <tr>
-                                                                            <td><?php echo $i; ?></td>
+                                                                            <td><?php
+                                                                            if (empty($schedule->location_id)) {
+                                                                                echo 'Online';
+                                                                            } else {
+                                                                                echo $this->branch_model->getBranchById($schedule->location_id)->display_name;
+                                                                            }
+                                                                            ?></td>
                                                                             <td><?php echo $schedule->weekday; ?></td>
                                                                             <td><?php echo $schedule->s_time; ?></td>
                                                                             <td><?php echo $schedule->e_time; ?></td>
