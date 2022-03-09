@@ -84,6 +84,7 @@ class Prescription extends MX_Controller {
             redirect('home/permission');
         }
 
+        $redirect = $this->input->post('redirect');
         $encounter = $this->input->post('encounter_id');
         $id = $this->input->post('id');
         $tab = $this->input->post('tab');
@@ -227,12 +228,24 @@ class Prescription extends MX_Controller {
 
             if (!empty($admin)) {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    redirect('prescription');
+                    if (!empty($redirect)) {
+                        redirect($redirect);
+                    } else {
+                        redirect('prescription');
+                    }
                 } else {
-                    redirect('prescription/all');
+                    if (!empty($redirect)) {
+                        redirect($redirect);
+                    } else {
+                        redirect('prescription/all');
+                    }
                 }
             } else {
-                redirect('prescription');
+                if (!empty($redirect)) {
+                    redirect($redirect);
+                } else {
+                    redirect('prescription');
+                }
             }
         }
     }

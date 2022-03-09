@@ -32,6 +32,13 @@
                                         <div class="col-md-12 col-sm-12">
                                             <input type="hidden" name="encounter_id" value="<?php echo $id ?>">
                                         </div>
+                                        <div class="col-md-12 col-sm-12">
+                                            <input type="hidden" name="redirect" value="<?php
+                                            if (!empty($id)) {
+                                                echo 'encounter';
+                                            }
+                                            ?>">
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-4 col-sm-12">
