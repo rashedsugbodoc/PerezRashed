@@ -291,7 +291,7 @@
         
         $(document).ready(function () {
             $("#pos_ref_provider").select2({
-                placeholder: '<?php echo lang('select_provider'); ?>',
+                placeholder: '<?php echo lang('search').' '.lang('referral_facility'); ?>',
                 allowClear: true,
                 ajax: {
                     url: 'hospital/getProviderInfoWithAddNewOption',
@@ -316,7 +316,7 @@
 
         $(document).ready(function () {
             $("#pos_ref_doctor").select2({
-                placeholder: '<?php echo lang('select_patient'); ?>',
+                placeholder: '<?php echo lang('search').' '.lang('referring_doctor'); ?>',
                 allowClear: true,
                 ajax: {
                     url: 'encounter/getUserWithAddNewOption',
@@ -341,7 +341,7 @@
 
         $(document).ready(function () {
             $("#pos_rendering_doctor").select2({
-                placeholder: '<?php echo lang('select_patient'); ?>',
+                placeholder: '<?php echo lang('search').' '.lang('rendering_doctor'); ?>',
                 allowClear: true,
                 ajax: {
                     url: 'encounter/getUserWithAddNewOption',
@@ -391,7 +391,7 @@
 
         $(document).ready(function () {
             $("#location").select2({
-                placeholder: '<?php echo lang('select_branch'); ?>',
+                placeholder: '<?php echo lang('select_online_or_location'); ?>',
                 allowClear: true,
                 ajax: {
                     url: 'appointment/getBranchInfoWithHospital',
