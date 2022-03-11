@@ -59,32 +59,32 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" id="patientchoose" name="patient" data-placeholder="Choose one">
+                                                        <select class="form-control select2-show-search" id="patientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>">
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="category" id="category" data-placeholder="Choose one">
+                                                        <select class="form-control select2-show-search" name="category" id="category" data-placeholder="<?=lang('select').' '.lang('category');?>">
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('title'); ?></label>
-                                                        <input type="text" class="form-control" name="title" placeholder="" required>
+                                                        <input type="text" class="form-control" name="title" placeholder="<?=lang('title');?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('description'); ?> <span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="description" placeholder="Name">
+                                                        <input type="text" class="form-control" name="description" placeholder="<?=lang('description');?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
-                                                    <span class="text-muted">(<?php echo lang('maximum_upload_filesize').': 10MB';?>)</span>
+                                                    <span class="text-muted">(<?php echo lang('upload_less_than_10MB_image_or_pdf');?>)</span>
                                                     <input type="file" name="img_url" id="document" class="dropify"/>
                                                 </div>
                                                 <input type="hidden" name="redirect" value='patient/documents'>
