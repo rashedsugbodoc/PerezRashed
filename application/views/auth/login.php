@@ -42,7 +42,9 @@
             <div class="w-40 bg-style h-100vh page-style">
                 <div class="page-content">
                     <div class="page-single-content">
-                        <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                        <a href="<?php echo base_url('')?>">
+                            <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                        </a>
                         <div class="card-body text-white py-5 px-8 text-center">
                             <img src="<?php echo base_url('public/assets/images/png/5.png'); ?>" alt="img" class="w-100 mx-auto text-center">
                         </div>
@@ -57,7 +59,9 @@
                                 <div class="col-md-8 mx-auto d-block">
                                     <div class="">
                                         <div class="text-white py-1 px-8 text-center">
-                                            <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                                            <a href="<?php echo base_url('')?>">
+                                                <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                                            </a>
                                         </div>
                                         <?php if($message) { ?>
                                             <div class="alert alert-info"><?php echo $message; ?></div>
@@ -77,6 +81,7 @@
                                         <div class="col-12">
                                             <a href="<?php echo base_url('auth/forgot_password'); ?>" class="btn btn-link box-shadow-0 px-0"><?php echo lang('login_forgot_password');?></a>
                                         </div>
+                                        <input type="hidden" name="<?=$csrf_token_name; ?>" value="<?=$csrf_token_hash;?>">
                                         <div class="col-12">
                                             <button type="submit"class="btn btn-primary btn-block"><?php echo lang('login_submit_btn');?></button>
                                         </div>
