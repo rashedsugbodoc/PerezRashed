@@ -31,7 +31,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <meta name="description" content="">
         <meta name="author" content="Rygel">
         <meta name="keywords" content="Hospital Information System, Clinic, Management, Software, Finance">
-        <link rel="shortcut icon" href="uploads/favicon.png">
+        <link rel="shortcut icon" href="public/assets/images/brand/favicon.ico">
         <title> <?php echo $this->router->fetch_class(); ?> | 
             <?php
             if ($this->ion_auth->in_group(array('superadmin'))) {
