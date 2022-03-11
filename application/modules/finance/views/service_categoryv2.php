@@ -10,7 +10,7 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <div class="card-title"><?php echo lang('service_categories'); ?></div>
+                                        <div class="card-title"><?php echo lang('charge').' '.lang('categories'); ?></div>
                                         <div class="card-options">
                                             <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
                                                 <a href="finance/addServiceCategoryView">
@@ -25,7 +25,7 @@
                                         <table class="table table-bordered" id="editable-sample">
                                             <thead>
                                                 <tr>
-                                                    <th><?php echo lang('category'); ?></th>
+                                                    <th><?php echo lang('category').' '.lang('name'); ?></th>
                                                     <th><?php echo lang('description'); ?></th>
                                                     <?php if ($this->ion_auth->in_group('admin')) { ?>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>

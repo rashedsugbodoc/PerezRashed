@@ -27,7 +27,7 @@
                                         <table class="table table-bordered w-100" id="editable-sample">
                                             <thead>
                                                 <tr>
-                                                    <th><?php echo lang('category'); ?></th>
+                                                    <th><?php echo lang('category').' '.lang('name'); ?></th>
                                                     <th><?php echo lang('description'); ?></th>
                                                     <?php if ($this->ion_auth->in_group('admin')) { ?>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
