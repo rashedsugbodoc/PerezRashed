@@ -931,7 +931,7 @@
                                                                             <p class="text-muted">
                                                                                 <?php
                                                                                 if (!empty($patient_material->created_at)) {
-                                                                                    $utcdate = date($settings->date_format_long . ' ' . $settings->time_format, strtotime($patient_material->created_at.' UTC'));
+                                                                                    $utcdate = date($settings->date_format_long?$settings->date_format_long:'m-d-Y' . ' ' . $settings->time_format, strtotime($patient_material->created_at.' UTC'));
                                                                                     echo $utcdate;
                                                                                 } else {
                                                                                     echo '';
@@ -1429,7 +1429,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content modal-content-demo">
                                         <div class="modal-header">
-                                            <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('files'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                            <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('document'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <form role="form" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
@@ -1437,7 +1437,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
-                                                            <input type="text" class="form-control" name="title" placeholder="Name">
+                                                            <input type="text" class="form-control" name="title" placeholder="<?=lang('title');?>">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1445,7 +1445,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('description'); ?> <span class="text-red">*</span></label>
-                                                            <textarea class="form-control" id="documentDescription" name="description" rows="2"></textarea>
+                                                            <textarea class="form-control" id="documentDescription" name="description" placeholder="<?=lang('description');?>" rows="2"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1453,7 +1453,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search" name="category" id="category" data-placeholder="Choose one">
+                                                            <select class="form-control select2-show-search" name="category" id="category" data-placeholder="<?=lang('select').' '.lang('category');?>">
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1462,6 +1462,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
+                                                            <span class="text-muted">(<?php echo lang('upload_less_than_10MB_image_or_pdf');?>)</span>
                                                             <input type="file" name="img_url" id="document" class="dropify"/>
                                                         </div>
                                                     </div>
