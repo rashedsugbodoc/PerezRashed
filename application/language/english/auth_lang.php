@@ -52,6 +52,32 @@ $lang['deactivate_submit_btn']               = 'Submit';
 $lang['deactivate_validation_confirm_label'] = 'confirmation';
 $lang['deactivate_validation_user_id_label'] = 'user ID';
 
+// Patient Registration
+$lang['personal_information']                = 'Personal Information';
+$lang['patient']                             = 'Patient';
+$lang['registration']                        = 'Registration';
+$lang['create_your_account']                           = 'Create your account';
+$lang['first_name']                       	   = 'First Name';
+$lang['middle_name']                             = 'Middle Name';
+$lang['last_name']                               = 'Last Name';
+$lang['suffix']                       				   = 'Suffix';
+$lang['birth_date']                                    = 'Birth Date';
+$lang['sex']                                           = 'Sex';
+$lang['civil_status']                                  = 'Civil Status';
+$lang['blood_type']                                    = 'Blood Type';
+$lang['address']                                       = 'Address';
+$lang['province']                                      = 'Province';
+$lang['city_municipality']                             = 'City / Municipality';
+$lang['barangay']           						   = 'Barangay';
+$lang['street_number']                                 = 'Street Number';
+$lang['street_name']                                   = 'Street Name';
+$lang['country']           							   = 'Country';
+$lang['mobile_number']                                 = 'Mobile Number';
+$lang['email_address']         						   = 'Email Address';
+$lang['profile_picture'] 							   = 'Profile Picture';
+$lang['password'] 							           = 'Password';
+$lang['confirm'] 							           = 'Confirm';
+
 // Create User
 $lang['create_user_heading']                           = 'Create User';
 $lang['create_user_subheading']                        = 'Please enter the user\'s information below.';
