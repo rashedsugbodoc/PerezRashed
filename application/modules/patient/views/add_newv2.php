@@ -136,18 +136,20 @@
                                                         <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('password'); ?> <span class="text-red">*</span></label>
-                                                            <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255">
+                                                            <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255" <?php
+                                                            if (empty($patient->id)) { ?>
+                                                                required
+                                                            <?php } ?>>
                                                         </div>
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('phone'); ?> <span class="text-red">*</span></label>
                                                                 <form>
-                                                                    <input id="phone" name="phone" type="tel" maxlength="100" class="form-control" required value="<?php
+                                                                    <input id="phone" name="phone" type="tel" maxlength="14" class="form-control" required value="<?php
                                                                     if (!empty($setval)) {
                                                                         echo set_value('phone');
-                                                                    }
-                                                                    if (!empty($patient->phone)) {
+                                                                    } elseif (!empty($patient->phone)) {
                                                                         echo $patient->phone;
                                                                     } else {
                                                                         echo '+63';
@@ -180,11 +182,11 @@
                                                                     <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
                                                                     <?php foreach ($countries as $country) { ?>
                                                                         <option value="<?php echo $country->id; ?>" <?php
-                                                                        if (!empty($setval)) {
-                                                                            if ($country->id == set_value('country_id')) {
-                                                                                echo 'selected';
-                                                                            }
-                                                                        }
+                                                                        // if (!empty($setval)) {
+                                                                        //     if ($country->id == set_value('country_id')) {
+                                                                        //         echo 'selected';
+                                                                        //     }
+                                                                        // }
                                                                         if (!empty($patient->country_id)) {
                                                                             if ($country->id == $patient->country_id) {
                                                                                 echo 'selected';
@@ -230,6 +232,23 @@
                                                                     echo $patient->postal;
                                                                 }
                                                                 ?>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-12 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('civil_status') ?></label>
+                                                                <select class="form-control select2-show-search" name="civil_status" data-placeholder="Choose one">
+                                                                    <?php foreach ($civil_status as $civil) { ?>
+                                                                        <option value="<?php echo $civil->name ?>" <?php
+                                                                            if (!empty($setval)) {
+                                                                                echo set_value('civil_status');
+                                                                            }
+                                                                            if ($patient->civil_status == $civil->name) {
+                                                                                echo 'selected';
+                                                                            }
+                                                                        ?>> <?php echo $civil->display_name ?> </option>
+                                                                    <?php } ?>
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -299,18 +318,18 @@
                                                                         <label class="form-label"><?php echo lang('blood_group'); ?></label>
                                                                         <select class="form-control select2-show-search" name="bloodgroup" data-placeholder="Choose one">
                                                                             <?php foreach ($groups as $group) { ?>
-                                                                                <option value="<?php echo $group->group; ?>" <?php
+                                                                                <option value="<?php echo $group->name; ?>" <?php
                                                                                 if (!empty($setval)) {
-                                                                                    if ($group->group == set_value('bloodgroup')) {
+                                                                                    if ($group->name == set_value('bloodgroup')) {
                                                                                         echo 'selected';
                                                                                     }
                                                                                 }
                                                                                 if (!empty($patient->bloodgroup)) {
-                                                                                    if ($group->group == $patient->bloodgroup) {
+                                                                                    if ($group->name == $patient->bloodgroup) {
                                                                                         echo 'selected';
                                                                                     }
                                                                                 }
-                                                                                ?> > <?php echo $group->group; ?> </option>
+                                                                                ?> > <?php echo $group->display_name; ?> </option>
                                                                                     <?php } ?> 
                                                                         </select>
                                                                     </div>

@@ -106,8 +106,9 @@ class Patient extends MX_Controller {
         }
         $data = array();
         $data['doctors'] = $this->doctor_model->getDoctor();
-        $data['groups'] = $this->donor_model->getBloodBank();
+        $data['groups'] = $this->patient_model->getBloodGroup();
         $data['countries'] = $this->location_model->getCountry();
+        $data['civil_status'] = $this->patient_model->getCivilStatus();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the header file
@@ -153,6 +154,7 @@ class Patient extends MX_Controller {
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
+        $civil_status = $this->input->post('civil_status');
 
         $phone = $this->input->post('phone');
         $sex = $this->input->post('sex');
@@ -212,6 +214,8 @@ class Patient extends MX_Controller {
         //   $this->form_validation->set_rules('doctor', 'Doctor', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        // Validating Civil Status Field   
+        $this->form_validation->set_rules('civil_status', 'Civil Status', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Address Field   
         $this->form_validation->set_rules('country', 'Country', 'trim|max_length[100]|xss_clean');
         // Validating Address Field   
@@ -221,7 +225,7 @@ class Patient extends MX_Controller {
         // Validating Postal Field   
         $this->form_validation->set_rules('postal', 'Postal', 'trim|alpha_numeric|max_length[500]|xss_clean');
         // Validating Phone Field           
-        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|numeric|min_length[2]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[2]|regex_match[/^[+][0-9]{3,14}$/]|xss_clean');
         // Validating Email Field
         $this->form_validation->set_rules('sex', 'Sex', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Address Field   
@@ -238,8 +242,9 @@ class Patient extends MX_Controller {
                 // $id = $this->input->get('id');
                 $data['patient'] = $this->patient_model->getPatientById($id);
                 $data['doctors'] = $this->doctor_model->getDoctor();
-                $data['groups'] = $this->donor_model->getBloodBank();
+                $data['groups'] = $this->patient_model->getBloodGroup();
                 $data['countries'] = $this->location_model->getCountry();
+                $data['civil_status'] = $this->patient_model->getCivilStatus();
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_newv2', $data);
                 // $this->load->view('home/footer'); // just the footer file
@@ -248,8 +253,9 @@ class Patient extends MX_Controller {
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['doctors'] = $this->doctor_model->getDoctor();
-                $data['groups'] = $this->donor_model->getBloodBank();
+                $data['groups'] = $this->patient_model->getBloodGroup();
                 $data['countries'] = $this->location_model->getCountry();
+                $data['civil_status'] = $this->patient_model->getCivilStatus();
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_newv2', $data);
                 // $this->load->view('home/footer'); // just the header file
@@ -301,6 +307,7 @@ class Patient extends MX_Controller {
                 'middlename' => $mname,
                 'suffix' => $suffix,
                 'email' => $email,
+                'civil_status' => $civil_status,
                 'address' => $address,
                 'country_id' => $country,
                 'state_id' => $state,
@@ -322,8 +329,9 @@ class Patient extends MX_Controller {
                     $data = array();
                     $data['patient'] = $this->patient_model->getPatientById($id);
                     $data['doctors'] = $this->doctor_model->getDoctor();
-                    $data['groups'] = $this->donor_model->getBloodBank();
+                    $data['groups'] = $this->patient_model->getBloodGroup();
                     $data['countries'] = $this->location_model->getCountry();
+                    $data['civil_status'] = $this->patient_model->getCivilStatus();
                     $this->load->view('home/dashboardv2'); // just the header file
                     $this->load->view('add_newv2', $data);
                     // $this->load->view('home/footer'); // just the footer file
@@ -399,8 +407,9 @@ class Patient extends MX_Controller {
                             $data['setval'] = 'setval';
                             $data['patient'] = $this->patient_model->getPatientById($id);
                             $data['doctors'] = $this->doctor_model->getDoctor();
-                            $data['groups'] = $this->donor_model->getBloodBank();
+                            $data['groups'] = $this->patient_model->getBloodGroup();
                             $data['countries'] = $this->location_model->getCountry();
+                            $data['civil_status'] = $this->patient_model->getCivilStatus();
                             $this->load->view('home/dashboardv2'); // just the header file
                             $this->load->view('add_newv2', $data);
                             // $this->load->view('home/footer'); // just the footer file
@@ -475,8 +484,9 @@ class Patient extends MX_Controller {
                         $data = array();
                         $data['patient'] = $this->patient_model->getPatientById($id);
                         $data['doctors'] = $this->doctor_model->getDoctor();
-                        $data['groups'] = $this->donor_model->getBloodBank();
+                        $data['groups'] = $this->patient_model->getBloodGroup();
                         $data['countries'] = $this->location_model->getCountry();
+                        $data['civil_status'] = $this->patient_model->getCivilStatus();
                         $this->load->view('home/dashboardv2'); // just the header file
                         $this->load->view('add_newv2', $data);
                         // $this->load->view('home/footer'); // just the footer file
@@ -504,8 +514,9 @@ class Patient extends MX_Controller {
                                 $data['setval'] = 'setval';
                                 $data['patient'] = $this->patient_model->getPatientById($id);
                                 $data['doctors'] = $this->doctor_model->getDoctor();
-                                $data['groups'] = $this->donor_model->getBloodBank();
+                                $data['groups'] = $this->patient_model->getBloodGroup();
                                 $data['countries'] = $this->location_model->getCountry();
+                                $data['civil_status'] = $this->patient_model->getCivilStatus();
                                 $this->load->view('home/dashboardv2'); // just the header file
                                 $this->load->view('add_newv2', $data);
                                 // $this->load->view('home/footer'); // just the footer file
@@ -546,8 +557,9 @@ class Patient extends MX_Controller {
                             $data['setval'] = 'setval';
                             $data['patient'] = $this->patient_model->getPatientById($id);
                             $data['doctors'] = $this->doctor_model->getDoctor();
-                            $data['groups'] = $this->donor_model->getBloodBank();
+                            $data['groups'] = $this->patient_model->getBloodGroup();
                             $data['countries'] = $this->location_model->getCountry();
+                            $data['civil_status'] = $this->patient_model->getCivilStatus();
                             $this->load->view('home/dashboardv2'); // just the header file
                             $this->load->view('add_newv2', $data);
                             // $this->load->view('home/footer'); // just the footer file
@@ -583,8 +595,9 @@ class Patient extends MX_Controller {
         $id = $this->input->get('id');
         $data['patient'] = $this->patient_model->getPatientById($id);
         $data['doctors'] = $this->doctor_model->getDoctor();
-        $data['groups'] = $this->donor_model->getBloodBank();
+        $data['groups'] = $this->patient_model->getBloodGroup();
         $data['countries'] = $this->location_model->getCountry();
+        $data['civil_status'] = $this->patient_model->getCivilStatus();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the footer file
