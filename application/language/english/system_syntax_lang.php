@@ -283,6 +283,7 @@ $lang['not_provided'] = 'Not Provided';
 $lang['yrs_old'] = 'year(s) old';
 $lang['not_given'] = 'Not Given';
 $lang['sex'] = 'Sex';
+$lang['civil_status'] = 'Civil Status';
 $lang['last_donation_date'] = 'Last Donation Date';
 $lang['male'] = 'Male';
 $lang['female'] = 'Female';
