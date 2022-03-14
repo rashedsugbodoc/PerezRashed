@@ -62,12 +62,18 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12 diagnosis_block">
+                                                <div class="col-md-9 col-sm-12 diagnosis_block">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('select') . ' ' . lang('diagnosis') ?></label>
                                                         <select class="select2-show-search form-control diagnosis" name="diagnosisInput" id="diagnosis" value="">
                                                             
                                                         </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3 col-sm-12 diagnosis_block">
+                                                    <div class="form-group">
+                                                        <label class="form-label">or Type Manually</label>
+                                                        <button class="btn btn-primary" id="add_manual" type="button">Add Diagnosis Test</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -218,18 +224,51 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
     <!-- INTERNAL JS INDEX END -->
+    <script type="text/javascript">
+        function removeElem(count, id) {
+            var remove = $(".remove"+count);
+
+            /*Select2 Option Delete Function Start*/
+                // var selected = $('#labrequest').find('option:selected');
+                // var selected_val = $('#labrequest').val();
+                
+                // $.each(selected_val, function (index, value) {
+                //     var selected_id = value.split("*");
+                //     if (parseInt(selected_id[0]) !== parseInt(id)) {
+                //         console.log("New Selected: "+selected_id[0]);
+                //         console.log(selected_id);
+                //         $('#labrequest').val(null).trigger("change");
+                //         $('#labrequest').append($('<option selected>').text(selected_id[1]).val(value)).change();
+                //     } else {
+
+                //     }
+                // });
+            /*Select2 Option Delete Function End*/
+
+            remove.remove();
+
+        }
+        // $('#labrequest').on('select2:select', function (e) {
+        //     var data = e.params.data;
+        //     var selected = $('#labrequest').find('option:selected');
+        //     console.log("Id: "+data.id[0]);
+        //     console.log("Data-Selected: "+selected.attr('data-selected'));
+        // });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
             $(".diagnosis").change(function () {
-                var count = 1;
+                
 
                 var selected = $('#diagnosis').find('option:selected');
                 var unselected = $('#diagnosis').find('option:not(:selected)');
                 selected.attr('data-selected', '1');
                 var num = 0;
+                var countdiag = $(".diag_selected").length;
                 $.each(unselected, function (index, value1) {
                     num--;
+                    var count = parseInt(countdiag) - 1;
                     if ($(this).attr('data-selected') == '1') {
                         var value = $(this).val();
                         var res = value.split("*");
@@ -247,6 +286,7 @@
                 
                 $.each($('select.diagnosis option:selected'), function ( index ) {
                     num++;
+                    var count = parseInt(countdiag) + 1;
                     var value = $(this).val();
                     var res = value.split("*");
                     var id = res[0];
@@ -258,10 +298,10 @@
 
                     } else {
                         $(".diag").append(
-                            '<section class="diag_selected" id="diag_selected_section-' + id + '">\n\
+                            '<section class="diag_selected remove'+ count +'" id="diag_selected_section-' + id + '">\n\
                                 <div class="row">\n\
                                     <div class="col-sm-1">\n\
-                                        <label>'+ num +'.</label>\n\
+                                        <button class="btn btn-danger" hidden onclick="removeElem('+ count +')" type="button"><i class="fe fe-trash"></i></button>\n\
                                     </div>\n\
                                     <div class="col-sm-11">\n\
                                         <div class="form-group diagnosis_sect">\n\
@@ -271,11 +311,13 @@
                                                         <input type="text" class = "form-control diag-div" name = "diag_description[]" value = "' + diag_desc + '" placeholder="" required readonly>\n\
                                                         <input type="hidden" id="diag_id-' + id + '" class = "diag-div" name = "diagnosis[]" value = "' + id + '" placeholder="" required disabled>\n\
                                                         <input class = "form-control diag-div" name = "diag[]" hidden value = "' + id + '" placeholder="" required>\n\
+                                                        <input type="text" hidden class = "form-control diag-div" name = "patient_diagnosis_text[]" placeholder="">\n\
                                                     </div>\n\
                                                 </div>\n\
                                                 <div class="col-sm-4">\n\
                                                     <div class="form-group">\n\
-                                                        <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" value="' + id + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
+                                                        <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\
@@ -293,6 +335,51 @@
                         ');
                     }
                 });
+            });
+        });
+
+        $(document).ready(function () {
+            $("#add_manual").click(function () {
+                // var numm = $('.num').last().text();
+                // count += parseInt(numm);
+                // // console.log(count);
+                var countdiag = $(".diag_selected").length;
+                var count = parseInt(countdiag) + 1;
+                console.log(count);
+                $(".diag").append(
+                    '<section class="diag_selected remove'+ count +'" id="diag_selected_section">\n\
+                        <div class="row">\n\
+                            <div class="col-sm-1">\n\
+                                <button class="btn btn-danger" onclick="removeElem('+ count +')" type="button"><i class="fe fe-trash"></i></button>\n\
+                            </div>\n\
+                            <div class="col-sm-11">\n\
+                                <div class="form-group diagnosis_sect">\n\
+                                    <div class="row">\n\
+                                        <div class="col-sm-8">\n\
+                                            <div class="form-group">\n\
+                                                <input type="text" hidden class = "form-control diag-div" name = "diag_description[]" value = "" placeholder="" required readonly>\n\
+                                                <input type="text" class = "form-control diag-div" name = "patient_diagnosis_text[]" placeholder="" required>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                        <div class="col-sm-4">\n\
+                                            <div class="form-group">\n\
+                                                <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class="row">\n\
+                                        <div class="col-sm-12">\n\
+                                            <div class="form-group">\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("diagnosis") . " " . lang("note")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" required></div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>\n\
+                        <div>\n\
+                    </section>\n\
+                    ');
             });
         });
     </script>

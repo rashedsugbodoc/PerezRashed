@@ -42,6 +42,10 @@ class Diagnosis extends MX_Controller {
         $date = gmdate('Y-m-d H:i:s');
         $redirect = $this->input->post('redirect');
 
+        $dataholder = $this->input->post('dataholder');
+        $patient_diagnosis_text = $this->input->post('patient_diagnosis_text');
+        $instruction_manual = $this->input->post('instruction_manual');
+
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>');
         $this->form_validation->set_rules('diagnosisInput', 'Diagnosis', 'trim|required|min_length[1]|xss_clean');
@@ -54,13 +58,18 @@ class Diagnosis extends MX_Controller {
             $this->load->view('home/dashboardv2');
             $this->load->view('add_new', $data);
         } else {
-            $typeAr = [];
-            $primary = [];
-            $secondary = [];
+            
             $diagnosis_code = [];
             foreach ($diagnosis as $diag) {
                 $diagnosis_code[] = $this->diagnosis_model->getDiagnosisById($diag)->code;
-                if ($diag === $type) {
+            }
+
+            $typeAr = [];
+            $primary = [];
+            $secondary = [];
+            foreach ($dataholder as $dh) {
+                
+                if ($dh === $type) {
                     $typeAr[] = '1';
                     $primary[] = 1;
                     $secondary[] = 0;
@@ -82,13 +91,23 @@ class Diagnosis extends MX_Controller {
             //     }
             // }
             $inserted_id = [];
-            if (!empty($diagnosis)) {
-                foreach ($diagnosis as $key => $value) {
+            if (!empty($dataholder)) {
+                foreach ($dataholder as $key => $value) {
+
+                    if (empty($patient_diagnosis_text[$key])) {
+                        $patient_diagnosis_text[$key] = null;
+                    }
+
+                    if (empty($diagnosis_description[$key])) {
+                        $diagnosis_description[$key] = null;
+                    }
+
                     $data = array();
                     $data[$value] = array(
                         'patient_id' => $patient,
                         'diagnosis_id' => $diagnosis[$key],
                         'diagnosis_long_description' => $diagnosis_description[$key],
+                        'patient_diagnosis_text' => $patient_diagnosis_text[$key],
                         'patient_name' => $patient_name,
                         'patient_address' => $patient_address,
                         'patient_phone' => $patient_phone,
@@ -105,6 +124,27 @@ class Diagnosis extends MX_Controller {
                     $this->diagnosis_model->insertDiagnosis($data[$value]);
                     $inserted_id[] = $this->db->insert_id();
                 }
+
+                // foreach ($dataholder as $key => $value) {
+                //     $data1 = array();
+
+                //     $data1[$value] = array(
+                //         'patient_id' => $patient,
+                //         'patient_diagnosis_text' => $patient_diagnosis_text[$key],
+                //         'diagnosis_notes' => $instruction_manual[$key],
+                //         'patient_address' => $patient_address,
+                //         'patient_phone' => $patient_phone,
+                //         'onset_date' => $on_date,
+                //         'diagnosis_date' => $diag_date,
+                //         'doctor_id' => $doctor,
+                //         'created_at' => $date,
+                //         'encounter_id' => $encounter,
+                //         'is_primary_diagnosis' => $primary[$key],
+                //         'is_secondary_diagnosis' => $secondary[$key],
+                //     );
+                //     $this->diagnosis_model->insertDiagnosis($data1[$value]);
+                    
+                // }
 
                 
 
