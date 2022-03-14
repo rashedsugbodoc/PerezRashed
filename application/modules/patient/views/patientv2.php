@@ -1134,6 +1134,8 @@
 
                     if (typeof response.patient.img_url !== 'undefined' && response.patient.img_url != '') {
                         $("#img1").attr("src", response.patient.img_url);
+                    } if (response.patient.img_url === null) {
+                        $("#img1").attr("src", "public/assets/images/users/placeholder.jpg");
                     }
 
 
