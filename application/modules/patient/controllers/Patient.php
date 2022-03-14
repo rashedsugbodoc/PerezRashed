@@ -219,7 +219,7 @@ class Patient extends MX_Controller {
         // Validating Email Field
         $this->form_validation->set_rules('sex', 'Sex', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Address Field   
-        $this->form_validation->set_rules('birthdate', 'Birth Date', 'trim|min_length[2]|max_length[500]|xss_clean');
+        $this->form_validation->set_rules('birthdate', 'Birth Date', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Phone Field           
         $this->form_validation->set_rules('bloodgroup', 'Blood Group', 'trim|max_length[15]|xss_clean');
 

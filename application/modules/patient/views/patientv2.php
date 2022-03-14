@@ -71,22 +71,22 @@
                                                             <div class="col-md-6 col-sm-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label"><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
-                                                                    <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100">
+                                                                    <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-6 col-sm-6">
                                                                 <div class="form-group">
-                                                                    <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
-                                                                    <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
+                                                                    <label class="form-label"><?php echo lang('middle_name'); ?></label>
+                                                                    <input type="text" class="form-control" name="m_name" maxlength="100">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-6 col-sm-6">
                                                                 <div class="form-group">
-                                                                    <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                    <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
                                                                     <div class="input-group">
-                                                                        <input type="text" class="form-control" name="m_name">
+                                                                        <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100" required="">
                                                                         <div class="input-group-append br-tl-0 br-bl-0">
                                                                             <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                                                 <option selected disabled><?php echo lang('none'); ?></option>
@@ -105,7 +105,7 @@
                                                             <div class="col-md-6 col-sm-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
-                                                                    <input type="email" class="form-control" name="email" placeholder="Email">
+                                                                    <input type="email" class="form-control" name="email" placeholder="Email" required>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -127,14 +127,14 @@
                                                             <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('password'); ?> <span class="text-red">*</span></label>
-                                                                <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255">
+                                                                <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255" required>
                                                             </div>
                                                             </div>
                                                             <div class="col-sm-6 col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label"><?php echo lang('phone'); ?> <span class="text-red">*</span></label>
                                                                     <form>
-                                                                        <input id="phone" name="phone" value="+63" type="tel" maxlength="20" class="form-control">
+                                                                        <input id="phone" name="phone" value="+63" type="tel" maxlength="100" class="form-control" required>
                                                                      </form>
                                                                 </div>
                                                             </div>
@@ -143,7 +143,7 @@
                                                             <div class="col-sm-12 col-md-12">
                                                                 <div class="form-group">
                                                                     <label class="form-label"><?php echo lang('address'); ?> <span class="text-red">*</span></label>
-                                                                    <input type="text" class="form-control" placeholder="Address" name="address">
+                                                                    <input type="text" class="form-control" placeholder="Address" name="address" required maxlength="100">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -151,7 +151,7 @@
                                                             <div class="col-sm-12 col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
-                                                                    <select class="form-control select2-show-search" name="country_id" id="country">
+                                                                    <select class="form-control select2-show-search" name="country_id" id="country" required>
                                                                         <option value="0" selected disabled><?php echo lang('country_placeholder'); ?></option>
                                                                         <?php foreach ($countries as $country) { ?>
                                                                             <option value="<?php echo $country->id; ?>" <?php
@@ -205,7 +205,7 @@
                                                             <div class="col-sm-6 col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label"><?php echo lang('sex'); ?> <span class="text-red">*</span></label>
-                                                                    <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one">
+                                                                    <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one" required>
                                                                         <option value="Male" <?php
                                                                         if (!empty($patient->sex)) {
                                                                             if ($patient->sex == 'Male') {
@@ -233,7 +233,7 @@
                                                             <div class="col-sm-6 col-md-6">
                                                                 <div class="form-group">
                                                                     <label class="form-label"><?php echo lang('birth_date'); ?> <span class="text-red">*</span></label>
-                                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="birthdate" type="text" readonly>
+                                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="birthdate" type="text" readonly required maxlength="100">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -260,7 +260,7 @@
                                                                 <div class="row">
                                                                     <div class="col-md-12 col-sm-12">
                                                                         <div class="form-group">
-                                                                            <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
+                                                                            <label class="form-label"><?php echo lang('doctor'); ?></label>
                                                                             <select class="form-control select2" data-placeholder="Choose one" id="doctorchoose1" name="doctor[]" value='' multiple>
                                                                             </select>
                                                                         </div>
@@ -324,20 +324,20 @@
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100">
+                                                                <label class="form-label"><?php echo lang('middle_name'); ?></label>
+                                                                <input type="text" class="form-control" name="m_name" maxlength="100">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
                                                                 <div class="input-group">
-                                                                    <input type="text" class="form-control" name="m_name">
+                                                                    <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100" required>
                                                                     <div class="input-group-append br-tl-0 br-bl-0">
                                                                         <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
-                                                                            <option selected disabled><?php echo lang('none'); ?></option>
+                                                                            <option selected><?php echo lang('none'); ?></option>
                                                                             <option value="jr"><?php echo lang('jr'); ?></option>
                                                                             <option value="sr"><?php echo lang('sr'); ?></option>
                                                                             <option value="i"><?php echo lang('i'); ?></option>
@@ -353,7 +353,7 @@
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
-                                                                <input type="email" class="form-control" name="email" placeholder="Email">
+                                                                <input type="email" class="form-control" name="email" placeholder="Email" required maxlength="1000">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -367,7 +367,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">Phone <span class="text-red">*</span></label>
-                                                                <input id="phone2" name="phone" value="+63" type="tel" maxlength="20" class="form-control">
+                                                                <input id="phone2" name="phone" value="+63" type="tel" maxlength="100" class="form-control" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -375,7 +375,7 @@
                                                         <div class="col-sm-12 col-md-12">
                                                             <div class="form-group">
                                                                 <label class="form-label">Address <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="address" placeholder="text">
+                                                                <input type="text" class="form-control" name="address" placeholder="text" required maxlength="100">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -383,7 +383,7 @@
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" name="country_id" id="edit_country">
+                                                                <select class="form-control select2-show-search" name="country_id" id="edit_country" required>
                                                                     <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
                                                                     <?php foreach ($countries as $country) { ?>
                                                                         <option value="<?php echo $country->id; ?>" <?php
@@ -434,7 +434,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">Sex <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one">
+                                                                <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one" required>
                                                                     <option value="Male" <?php
                                                                     if (!empty($patient->sex)) {
                                                                         if ($patient->sex == 'Male') {
@@ -462,7 +462,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">Birth Date <span class="text-red">*</span></label>
-                                                                <input class="form-control fc-datepicker" name="birthdate" placeholder="MM/DD/YYYY" type="text">
+                                                                <input class="form-control fc-datepicker" name="birthdate" placeholder="MM/DD/YYYY" type="text" required maxlength="100">
                                                             </div>
                                                         </div>
                                                     </div>
