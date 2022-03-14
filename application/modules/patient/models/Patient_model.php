@@ -504,4 +504,15 @@ class Patient_model extends CI_model {
         $this->db->delete('vital');
     }
 
+    function getCivilStatus() {
+        $this->db->order_by('id','asc');
+        $query = $this->db->get('civil_status');
+        return $query->result();
+    }
+
+    function getBloodGroup() {
+        $this->db->order_by('id','asc');
+        $query = $this->db->get('blood_group');
+        return $query->result();
+    }
 }
