@@ -11,15 +11,6 @@
                                 <div class="card-title">
                                     <?php echo lang('patient'); ?> <?php echo lang('payments'); ?>
                                 </div>
-                                <div class="card-options">
-                                    <a data-toggle="modal" href="#myModal">
-                                        <div class="btn-group pull-right">
-                                            <button id="" class="btn btn-primary btn-xs">
-                                                <i class="fa fa-plus"></i> <?php echo lang('register_new_patient'); ?>
-                                            </button>
-                                        </div>
-                                    </a>
-                                </div>
                             </div>
                             <div class="card-body">
                                 <div class="">

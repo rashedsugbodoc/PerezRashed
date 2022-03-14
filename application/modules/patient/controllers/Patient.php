@@ -107,6 +107,7 @@ class Patient extends MX_Controller {
         $data = array();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['groups'] = $this->donor_model->getBloodBank();
+        $data['countries'] = $this->location_model->getCountry();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the header file
@@ -138,6 +139,11 @@ class Patient extends MX_Controller {
         $lname = $this->input->post('l_name');
         $mname = $this->input->post('m_name');
         $suffix = $this->input->post('suffix');
+
+        if ($suffix == '0') {
+            $suffix = null;
+        }
+
         $password = $this->input->post('password');
         $sms = $this->input->post('sms');
         $doctor = $this->input->post('doctor');
@@ -578,9 +584,10 @@ class Patient extends MX_Controller {
         $data['patient'] = $this->patient_model->getPatientById($id);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['groups'] = $this->donor_model->getBloodBank();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $data['countries'] = $this->location_model->getCountry();
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function editPatientByJason() {
@@ -2528,7 +2535,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a class="btn btn-info editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a class="btn btn-info editbutton" title="' . lang('edit') . '" href="patient/editPatient?id=' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
             $options2 = '<a class="btn btn-info" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';

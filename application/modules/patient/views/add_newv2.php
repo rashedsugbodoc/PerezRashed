@@ -65,7 +65,7 @@
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100" value="<?php
+                                                                <input type="text" class="form-control" name="f_name" placeholder="First Name" maxlength="100" required value="<?php
                                                                     if (!empty($setval)) {
                                                                     echo set_value('f_name');
                                                                     }
@@ -77,34 +77,35 @@
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100" value="<?php
-                                                                    if (!empty($setval)) {
-                                                                    echo set_value('l_name');
-                                                                    }
-                                                                    if (!empty($patient->lastname)) {
-                                                                        echo $patient->lastname;
-                                                                    }
+                                                                <label class="form-label"><?php echo lang('middle_name'); ?></label>
+                                                                <input type="text" class="form-control" name="m_name" placeholder="Middle Name" value="<?php
+                                                                if (!empty($setval)) {
+                                                                echo set_value('m_name');
+                                                                }
+                                                                if (!empty($patient->middlename)) {
+                                                                    echo $patient->middlename;
+                                                                }
                                                                 ?>">
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                                <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
                                                                 <div class="input-group">
-                                                                    <input type="text" class="form-control" name="m_name" value="<?php
-                                                                    if (!empty($setval)) {
-                                                                    echo set_value('m_name');
-                                                                    }
-                                                                    if (!empty($patient->middlename)) {
-                                                                        echo $patient->middlename;
-                                                                    }
+                                                                    <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100" required value="<?php
+                                                                        if (!empty($setval)) {
+                                                                        echo set_value('l_name');
+                                                                        }
+                                                                        if (!empty($patient->lastname)) {
+                                                                            echo $patient->lastname;
+                                                                        }
                                                                     ?>">
                                                                     <div class="input-group-append br-tl-0 br-bl-0">
                                                                         <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
-                                                                            <option selected disabled><?php echo lang('none'); ?></option>
+                                                                            <option value="0" selected><?php echo lang('none'); ?></option>
                                                                             <option value="jr"><?php echo lang('jr'); ?></option>
                                                                             <option value="sr"><?php echo lang('sr'); ?></option>
                                                                             <option value="i"><?php echo lang('i'); ?></option>
@@ -120,7 +121,7 @@
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
-                                                                <input type="email" class="form-control" name="email" placeholder="Email" value="<?php
+                                                                <input type="email" class="form-control" name="email" placeholder="Email" maxlength="1000" required value="<?php
                                                                 if (!empty($setval)) {
                                                                     echo set_value('email');
                                                                 }
@@ -142,12 +143,14 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('phone'); ?> <span class="text-red">*</span></label>
                                                                 <form>
-                                                                    <input id="phone" name="phone" type="tel" maxlength="20" class="form-control" value="<?php
+                                                                    <input id="phone" name="phone" type="tel" maxlength="100" class="form-control" required value="<?php
                                                                     if (!empty($setval)) {
                                                                         echo set_value('phone');
                                                                     }
                                                                     if (!empty($patient->phone)) {
                                                                         echo $patient->phone;
+                                                                    } else {
+                                                                        echo '+63';
                                                                     }
                                                                     ?>">
                                                                  </form>
@@ -158,7 +161,7 @@
                                                         <div class="col-sm-12 col-md-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('address'); ?> <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" placeholder="Address" name="address" value="<?php
+                                                                <input type="text" class="form-control" placeholder="Address" name="address" required maxlength="100" value="<?php
                                                                 if (!empty($setval)) {
                                                                     echo set_value('address');
                                                                 }
@@ -173,7 +176,7 @@
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" name="country_id" id="country">
+                                                                <select class="form-control select2-show-search" name="country_id" id="country" required>
                                                                     <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
                                                                     <?php foreach ($countries as $country) { ?>
                                                                         <option value="<?php echo $country->id; ?>" <?php
@@ -234,7 +237,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('sex'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one">
+                                                                <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one" required>
                                                                     <option value="Male" <?php
                                                                     if (!empty($setval)) {
                                                                         if (set_value('sex') == 'Male') {
@@ -277,7 +280,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('birth_date'); ?> <span class="text-red">*</span></label>
-                                                                <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="birthdate" type="text" readonly value="<?php
+                                                                <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="birthdate" type="text" maxlength="100" required readonly value="<?php
                                                                 if (!empty($setval)) {
                                                                     echo set_value('birthdate');
                                                                 }
@@ -293,7 +296,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
-                                                                        <label class="form-label"><?php echo lang('blood_group'); ?> <span class="text-red">*</span></label>
+                                                                        <label class="form-label"><?php echo lang('blood_group'); ?></label>
                                                                         <select class="form-control select2-show-search" name="bloodgroup" data-placeholder="Choose one">
                                                                             <?php foreach ($groups as $group) { ?>
                                                                                 <option value="<?php echo $group->group; ?>" <?php
@@ -316,7 +319,7 @@
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
-                                                                        <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
+                                                                        <label class="form-label"><?php echo lang('doctor'); ?></label>
                                                                         <select class="form-control select2" data-placeholder="Choose one" id="doctorchoose" name="doctor[]" multiple="multiple">
                                                                             
                                                                         </select>
@@ -328,13 +331,6 @@
                                                             <label class="form-label">Image Upload <span class="text-red">*</span></label>
                                                             <input type="file" name="img_url" id="image" class="dropify"/>
                                                         </div>
-
-                                                        <?php if (empty($id)) { ?>
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <input type="checkbox" name="sms" value="sms"> <?php echo lang('send_sms') ?>
-                                                        </div>
-                                                        <?php } ?>
-
                                                         <input type="hidden" id="patient_id" name="id" value='<?php
                                                         if (!empty($patient->id)) {
                                                             echo $patient->id;
@@ -519,6 +515,18 @@
                 } else {
                     $('#patientForm').find('[name="country_id"]').val(response.patient.country_id).change()
                 }
+
+                var imagenUrl = response.patient.img_url;
+                var drEvent = $('#image').dropify(
+                {
+                  defaultFile: imagenUrl
+                });
+                drEvent = drEvent.data('dropify');
+                drEvent.resetPreview();
+                drEvent.clearElement();
+                drEvent.settings.defaultFile = imagenUrl;
+                drEvent.destroy();
+                drEvent.init();
 
                 $.each(response.doctors, function(key, value) {
                     $('#doctorchoose').append($('<option selected>').text(value.name + ' (' + '<?php echo lang('id') ?>' + ': ' + value.id + ')').val(value.id)).end();

@@ -17,7 +17,7 @@
                                             <div class="card-title"><?php echo lang('patient'); ?> <?php echo lang('database'); ?></div>
                                             <div class="card-options">
                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?> 
-                                                    <a data-toggle="modal" href="#myModal">
+                                                    <a href="patient/addNewView">
                                                         <div class="btn-group pull-right">
                                                             <button id="" class="btn btn-primary btn-xs">
                                                                 <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
