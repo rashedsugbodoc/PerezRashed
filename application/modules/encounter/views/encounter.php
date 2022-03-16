@@ -68,16 +68,16 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('encounter_type'); ?></label>
-                                                        <select class="select2-show-search form-control" name="type" id="encounter_type">
+                                                        <label class="form-label"><?php echo lang('encounter_type'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="select2-show-search form-control" name="type" id="encounter_type" required>
                                                             
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('location'); ?></label>
-                                                        <select class="select2-show-search form-control" name="location" id="location">
+                                                        <label class="form-label"><?php echo lang('location'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="select2-show-search form-control" name="location" id="location" required>
                                                             
                                                         </select>
                                                     </div>
@@ -86,8 +86,8 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('patient'); ?></label>
-                                                        <select class="select2-show-search form-control pos_select" name="patient" id="pos_select">
+                                                        <label class="form-label"><?php echo lang('patient'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="select2-show-search form-control pos_select" name="patient" id="pos_select" required>
                                                             
                                                         </select>
                                                     </div>
@@ -172,16 +172,16 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('reason'); ?></label>
-                                                        <textarea class="form-control" name="reason" rows="2"></textarea>
+                                                        <label class="form-label"><?php echo lang('reason'); ?> <span class="text-danger">*</span></label>
+                                                        <textarea class="form-control" name="reason" rows="2" required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('status'); ?></label>
-                                                        <select class="select2-show-search form-control encounter_status" name="encounter_status" id="encounter_status">
+                                                        <label class="form-label"><?php echo lang('status'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="select2-show-search form-control encounter_status" name="encounter_status" id="encounter_status" required>
                                                             
                                                         </select>
                                                     </div>
@@ -212,8 +212,8 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('encounter_type'); ?></label>
-                                                        <select class="select2-show-search form-control" name="type" id="encounter_type2">
+                                                        <label class="form-label"><?php echo lang('encounter_type'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="select2-show-search form-control" name="type" id="encounter_type2" required>
                                                             <?php foreach ($encounter_types as $types) { ?>
                                                                 <option value="<?php echo $types->id ?>"> <?php echo $types->display_name ?> </option>
                                                             <?php } ?>                                                            
@@ -222,8 +222,8 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('location'); ?></label>
-                                                        <select class="select2-show-search form-control" name="location" id="location2">
+                                                        <label class="form-label"><?php echo lang('location'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="select2-show-search form-control" name="location" id="location2" required>
                                                             <option value="0"><?php echo lang('online') ?></option>
                                                             <?php foreach ($branches as $branch) { ?>
                                                                 <option value="<?php echo $branch->id ?>"> <?php echo $branch->display_name ?></option>
@@ -235,8 +235,8 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('patient'); ?></label>
-                                                        <select class="select2-show-search form-control pos_select" name="patient" id="pos_select2">
+                                                        <label class="form-label"><?php echo lang('patient'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="select2-show-search form-control pos_select" name="patient" id="pos_select2" required>
                                                             <?php foreach ($patients as $patient) { ?>
                                                                 <option value="<?php echo $patient->id ?>"> <?php echo $patient->name ?> </option>
                                                             <?php } ?>
@@ -334,16 +334,16 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('reason'); ?></label>
-                                                        <textarea class="form-control" name="reason" rows="2"></textarea>
+                                                        <label class="form-label"><?php echo lang('reason'); ?> <span class="text-danger">*</span></label>
+                                                        <textarea class="form-control" name="reason" rows="2" required></textarea>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('status'); ?></label>
-                                                        <select class="select2-show-search form-control encounter_status" name="encounter_status" id="encounter_status2">
+                                                        <label class="form-label"><?php echo lang('status'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="select2-show-search form-control encounter_status" name="encounter_status" id="encounter_status2" required>
                                                             
                                                         </select>
                                                     </div>
