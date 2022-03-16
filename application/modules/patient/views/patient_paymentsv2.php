@@ -509,20 +509,35 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
+                    {
+                        extend: 'copyHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2]
+                        }
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2]
+                        }
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        exportOptions: {
+                            columns: [0, 1, 2]
+                        }
+                    },
                     {
                         extend: 'pdfHtml5',
                         exportOptions: {
-                            columns: [1, 2, 3],
+                            columns: [0, 1, 2],
                         },
                         title: '<?php echo lang('patient'); ?> <?php echo lang('payments'); ?>'
                     },
                     {
                         extend: 'print',
                         exportOptions: {
-                            columns: [1, 2, 3],
+                            columns: [0, 1, 2],
                         },
                         title: '<?php echo lang('patient'); ?> <?php echo lang('payments'); ?>'
                     },
