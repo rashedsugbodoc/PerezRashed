@@ -628,6 +628,14 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('postal'); ?>: </label>
+                                                                <label class="form-label postalClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
                                                                 <label class="form-label font-weight-bold"><?php echo lang('phone'); ?>: </label>
                                                                 <label class="form-label phoneClass"></label>
                                                             </div>
@@ -1076,6 +1084,7 @@
             $('.stateClass').html("").end()
             $('.cityClass').html("").end()
             $('.barangayClass').html("").end()
+            $('.postalClass').html("").end()
             $('.phoneClass').html("").end()
             $('.genderClass').html("").end()
             $('.birthdateClass').html("").end()
@@ -1095,6 +1104,7 @@
                     $('.nameClass').append(response.patient.name).end()
                     $('.emailClass').append(response.patient.email).end()
                     $('.addressClass').append(response.patient.address).end()
+                    $('.postalClass').append(response.patient.postal).end()
                     $('.phoneClass').append(response.patient.phone).end()
                     $('.genderClass').append(response.patient.sex).end()
                     $('.birthdateClass').append(response.birthdate).end()
