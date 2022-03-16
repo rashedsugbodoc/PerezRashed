@@ -28,6 +28,8 @@ $lang['login_password_label']  = 'Password';
 $lang['login_remember_label']  = 'Remember Me:';
 $lang['login_submit_btn']      = 'Login';
 $lang['login_forgot_password'] = 'Forgot your password?';
+$lang['dont_have_an_account']  = 'Don\'t have an account?';
+$lang['register_here']  	   = 'Register here';
 
 // Index
 $lang['index_heading']           = 'Users';
@@ -53,6 +55,8 @@ $lang['deactivate_validation_confirm_label'] = 'confirmation';
 $lang['deactivate_validation_user_id_label'] = 'user ID';
 
 // Patient Registration
+$lang['register_heading']         = 'Register';
+$lang['register_subheading']      = 'Create your account as a Patient';
 $lang['personal_information']             			   = 'Personal Information';
 $lang['patient']                           			   = 'Patient';
 $lang['registration']                        = 'Registration';
