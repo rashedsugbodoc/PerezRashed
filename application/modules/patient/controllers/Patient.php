@@ -530,6 +530,7 @@ class Patient extends MX_Controller {
                                 $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
                                 $this->patient_model->updatePatient($id, $data);
                                 $this->session->set_flashdata('success', lang('record_updated'));
+                                redirect('patient');
                             }
                         }
 
