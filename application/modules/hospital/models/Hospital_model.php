@@ -70,6 +70,14 @@ class Hospital_model extends CI_model {
         return $query->result();
     }
 
+    function getLatestHospital() {
+        $this->db->select('id');
+        $this->db->order_by('id', 'desc');
+        $this->db->limit(1);
+        $query = $this->db->get('hospital');
+        return $query->row();
+    }
+
     function getActivePublicHospital() {
         $this->db->select('hospital.id, hospital.name, hospital.email, settings.address, settings.barangay_id, settings.city_id, settings.state_id, settings.country_id, hospital.phone, hospital.package, hospital.ion_user_id, settings.is_active');
         $this->db->from('hospital');

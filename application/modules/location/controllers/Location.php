@@ -101,6 +101,33 @@ class Country extends MX_Controller {
         redirect('country');
     }
 
+    function getStateByCountryIdByJason() {
+        $data = array();
+        $country_id = $this->input->get('country');
+
+        $data['state'] = $this->location_model->getStateByCountryId($country_id);
+        
+        echo json_encode($data);        
+    }
+
+    public function getCityByStateIdByJason() {
+        $data = array();
+        $state_id = $this->input->get('state');
+
+        $data['city'] = $this->location_model->getCityByStateId($state_id);
+
+        echo json_encode($data);        
+    }
+
+    public function getBarangayByCityIdByJason() {
+        $data = array();
+        $city_id = $this->input->get('city');
+
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
+
+        echo json_encode($data);        
+    }
+
 }
 
 /* End of file country.php */
