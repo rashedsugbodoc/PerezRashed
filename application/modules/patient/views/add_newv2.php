@@ -144,7 +144,7 @@
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('phone'); ?> <span class="text-red">*</span></label>
+                                                                <label class="form-label"><?php echo lang('mobile_number'); ?> <span class="text-red">*</span></label>
                                                                 <form>
                                                                     <input id="phone" name="phone" type="tel" maxlength="14" class="form-control" required value="<?php
                                                                     if (!empty($setval)) {

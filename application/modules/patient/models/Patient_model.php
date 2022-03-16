@@ -20,6 +20,17 @@ class Patient_model extends CI_model {
         $this->db->insert('patient', $data2);
     }
 
+    function insertPatientInSystemHospital($data) {
+        $hospital_id = 508;
+        $data1 = array(
+            'hospital_id' => $hospital_id,
+            'visited_provider_id' => $hospital_id,
+            'unrestricted_provider_id' => $hospital_id,
+        );
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('patient', $data2);
+    }
+
     function getPatient() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
