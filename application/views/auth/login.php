@@ -86,6 +86,9 @@
                                             <button type="submit"class="btn btn-primary btn-block"><?php echo lang('login_submit_btn');?></button>
                                         </div>
                                     </div>
+                                    <div class="pt-4">
+                                        <div class="font-weight-normal fs-16"><?php echo lang('dont_have_an_account');?> <a class="btn-link font-weight-normal" href="auth/register"><?php echo lang('register_here');?></a></div>
+                                    </div>
                                 </div>
                             </div>
                         </form>
