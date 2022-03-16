@@ -135,7 +135,7 @@
                                                     <div class="row">
                                                         <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('password'); ?> <span class="text-red">*</span></label>
+                                                            <label class="form-label"><?php echo lang('password'); ?> <?php if (empty($patient->id)) { ?> <span class="text-red">*</span><?php } ?></label>
                                                             <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255" <?php
                                                             if (empty($patient->id)) { ?>
                                                                 required
@@ -236,7 +236,7 @@
                                                         </div>
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('civil_status') ?></label>
+                                                                <label class="form-label"><?php echo lang('civil_status') ?> <span class="text-red">*</span></label>
                                                                 <select class="form-control select2-show-search" name="civil_status" data-placeholder="Choose one">
                                                                     <?php foreach ($civil_status as $civil) { ?>
                                                                         <option value="<?php echo $civil->name ?>" <?php
@@ -347,7 +347,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
-                                                            <label class="form-label">Image Upload <span class="text-red">*</span></label>
+                                                            <label class="form-label">Image Upload</label>
                                                             <input type="file" name="img_url" id="image" class="dropify"/>
                                                         </div>
                                                         <input type="hidden" id="patient_id" name="id" value='<?php
