@@ -59,26 +59,26 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" id="patientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>">
+                                                        <select class="form-control select2-show-search" id="patientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>" required>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="category" id="category" data-placeholder="<?=lang('select').' '.lang('category');?>">
+                                                        <select class="form-control select2-show-search" name="category" id="category" data-placeholder="<?=lang('select').' '.lang('category');?>" required>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('title'); ?></label>
+                                                        <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="title" placeholder="<?=lang('title');?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('description'); ?> <span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('description'); ?></label>
                                                         <input type="text" class="form-control" name="description" placeholder="<?=lang('description');?>">
                                                     </div>
                                                 </div>
