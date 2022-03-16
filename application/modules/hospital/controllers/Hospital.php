@@ -140,10 +140,15 @@ class Hospital extends MX_Controller {
         // Validating Phone Field           
         $this->form_validation->set_rules('language', 'Language', 'trim|required|min_length[1]|max_length[50]|xss_clean');
 
-        $this->form_validation->set_rules('country_id', 'Country ID', 'trim|required|min_length[1]|max_length[4]|xss_clean');
+        $this->form_validation->set_rules('country_id', 'Country', 'trim|required|min_length[1]|max_length[4]|xss_clean');
         $this->form_validation->set_rules('company_name', 'Company Name', 'trim|min_length[1]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('company_vat_number','Company VAT Number', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('currency', 'Currency Symbol', 'trim|required|min_length[1]|max_length[3]|xss_clean');
+        $this->form_validation->set_rules('time_format', 'Time Format', 'trim|required|min_length[1]|max_length[20]|xss_clean');
+        $this->form_validation->set_rules('date_format', 'Date Format', 'trim|required|min_length[1]|max_length[20]|xss_clean');
+        $this->form_validation->set_rules('date_format_long', 'Long Date Format', 'trim|required|min_length[1]|max_length[30]|xss_clean');
         $this->form_validation->set_rules('entity_type', 'Healthcare Provider Type', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('is_public', 'Is Public', 'trim|required|xss_clean');
         
         $country = $this->country_model->getCountryById($country_id);
         $hospital_password = $this->ion_auth->hash_code(random_string('alnum', 8));
