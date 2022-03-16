@@ -10,6 +10,12 @@ $(function() {
 		headerTag: 'h3',
 		bodyTag: 'section',
 		autoFocus: true,
+		onInit :function (event, current) {
+		   $('.actions a[href="#finish"]').attr('id', 'submit');
+		},
+		labels: {
+			finish: "Submit",
+		},
 		titleTemplate: '<span class="number">#index#<\/span> <span class="title">#title#<\/span>',
 		onStepChanging: function(event, currentIndex, newIndex) {
 			if (currentIndex < newIndex) {

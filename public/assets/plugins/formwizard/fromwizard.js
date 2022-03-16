@@ -2,7 +2,7 @@
 	"use strict";
 	
 	// Toolbar extra buttons
-	var btnFinish = $('<button></button>').text('Finish')
+	var btnFinish = $('<button></button>').text('Submit')
 		.addClass('btn btn-primary finish')
 		.on('click', function(){ alert('Finish Clicked'); });
 	var btnCancel = $('<button></button>').text('Cancel')
