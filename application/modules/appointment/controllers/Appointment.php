@@ -1169,19 +1169,19 @@ class Appointment extends MX_Controller {
             $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/> Doctor: ' . $doctor . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
             if ($entry->status == 'Pending Confirmation') {
                 //  $color = '#098098';
-                $color = '#c2940a';
+                $color = 'rgba(69, 170, 242,0.15)';
             }
             if ($entry->status == 'Confirmed') {
-                $color = '#28a745';
+                $color = 'rgba(68, 84, 195, 0.15)';
             }
             if ($entry->status == 'Treated') {
-                $color = '#007bff';
+                $color = 'rgba(45, 206, 137, 0.15)';
             }
             if ($entry->status == 'Cancelled') {
-                $color = '#dc3545';
+                $color = 'rgba(247, 45, 102, 0.15)';
             }
             if ($entry->status == 'Requested') {
-                $color = '#17a2b8';
+                $color = 'rgba(236, 180, 3, 0.5)';
             }
 
             $jsonevents[] = array(
