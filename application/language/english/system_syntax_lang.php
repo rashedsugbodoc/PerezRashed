@@ -139,6 +139,7 @@ $lang['postal'] = 'Postal Code';
 $lang['postal_placeholder'] = 'Postal';
 $lang['not_available'] = 'Not Available';
 $lang['phone'] = 'Phone';
+$lang['mobile_number'] = 'Mobile Number';
 $lang['tel'] = 'Tel';
 $lang['password'] = 'Password';
 $lang['add_patient'] = 'Add Patient';
