@@ -40,7 +40,7 @@ $lang['activation_email_unsuccessful']   	 = 'Unable to Send Activation Email';
 // Login / Logout
 $lang['login_successful'] 		  	         = 'Logged In Successfully';
 $lang['login_unsuccessful'] 		  	     = 'Incorrect Email or Password';
-$lang['login_unsuccessful_not_active'] 		 = 'Account is inactive';
+$lang['login_unsuccessful_not_active'] 		 = 'Your Account has not been activated yet.<br>Click the link in the email we sent you to activate your account.';
 $lang['login_timeout']                       = 'Temporarily Locked Out.  Try again later.';
 $lang['logout_successful'] 		 	         = 'Logged Out Successfully';
 
@@ -61,10 +61,12 @@ $lang['group_name_required'] 		= 'Group name is a required field';
 $lang['group_name_admin_not_alter'] = 'Admin group name can not be changed';
 
 // Activation Email
-$lang['email_activation_subject']            = 'Account Activation';
-$lang['email_activate_heading']    = 'Activate account for %s';
-$lang['email_activate_subheading'] = 'Please click this link to %s.';
+$lang['email_activation_subject']            = 'Activate your account';
+$lang['email_activation_welcome']            = 'Welcome to SugboDoc';
+$lang['email_activate_heading']    = 'To activate your account and start using our platform, please click the button below to verify your email address (%s):';
+$lang['email_activate_subheading'] = 'If you did not authorize this account creation, feel free to delete or ignore this email.';
 $lang['email_activate_link']       = 'Activate Your Account';
+$lang['email_activation_complimentary_close']    = 'All the best';
 
 // Forgot Password Email
 $lang['email_forgotten_password_subject']    = 'Password Reset Request';
