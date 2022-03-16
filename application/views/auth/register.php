@@ -50,58 +50,72 @@
 
         <!--Sumoselect css-->
         <link rel="stylesheet" href="<?php echo base_url('public/assets/plugins/sumoselect/sumoselect.css'); ?>">
+        <style type="text/css">
+            .scroll {
+                height: 100vh;
+                overflow-y: scroll;
+            }
+            /*::-webkit-scrollbar, .scroll {
+                width: 10px;
+            }
+            ::-webkit-scrollbar-track {
+                display: none;
+            }*/
+        </style>
     </head>
 
 
 <!--start of new-->
     <body class="page-style1 page-style2 light-mode default-sidebar">
-        <div class="row h-100">
-            <div class="d-md-flex">
-                    <div class="w-40 bg-style h-100vh page-style">
-                        <div class="page-content">
-                            <div class="page-single-content">
-                                <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
-                                <div class="card-body text-white py-5 px-8 text-center">
-                                    <img src="<?php echo base_url('public/assets/images/png/5.png'); ?>" alt="img" class="w-100 mx-auto text-center">
-                                </div>
+        <div class="d-md-flex">
+                <div class="w-40 bg-style page-style">
+                    <div class="page-content">
+                        <div class="page-single-content">
+                            <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                            <div class="card-body text-white py-5 px-8 text-center">
+                                <img src="<?php echo base_url('public/assets/images/png/5.png'); ?>" alt="img" class="w-100 mx-auto text-center">
                             </div>
                         </div>
                     </div>
-                <div class="w-80 page-content">
-                    <div class="page-single-content">
-                        <div class="card-body p-6">
-                            <form method="post" id="myForm" action="<?php echo base_url('auth/register'); ?>">
-                                <div class="row">
-                                    <div class="col-md-10 col-sm-12 mx-auto d-block">
-                                        <div class="">
-                                            <div class="text-white py-1 px-8 text-center">
-                                                <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
-                                            </div>
-                                            <?php if($message) { ?>
-                                                <div class="alert alert-info"><?php echo $message; ?></div>
-                                            <?php } ?>
-                                            <h1 class="mb-2"><?php echo lang('register_heading');?></h1>
-                                            <p class="text-muted"><?php echo lang('register_subheading');?></p>
+                </div>
+            <div class="w-80 page-content">
+                <div class="page-single-content">
+                    <div class="card-body p-6 scroll">
+                        <form method="post" id="myForm" action="<?php echo base_url('auth/register'); ?>">
+                            <div class="row">
+                                <div class="col-md-10 col-sm-12 mx-auto d-block">
+                                    <div class="">
+                                        <div class="text-white py-1 px-8 text-center">
+                                            <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
                                         </div>
-                                        <div id="wizard2">
-                                            <h3><?php echo lang('personal_information');?></h3>
-                                            <section>
-                                                <div class="control-group form-group">
-                                                    <label class="form-control-label"><?php echo lang('first_name');?></label>
-                                                    <input id="firstname" name="first_name" type="text" class="form-control" placeholder="First Name" required>
-                                                </div>
-                                                <div class="control-group form-group">
-                                                    <label class="form-control-label"><?php echo lang('middle_name');?></label>
-                                                    <input id="fullname" name="middle_name" type="text" class="form-control" placeholder="Middle Name">
-                                                </div>        
-                                                <div class="control-group form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <label class="form-control-label"><?php echo lang('last_name');?></label>
+                                        <?php if($message) { ?>
+                                            <div class="alert alert-info"><?php echo $message; ?></div>
+                                        <?php } ?>
+                                        <h1 class="mb-2"><?php echo lang('register_heading');?></h1>
+                                        <p class="text-muted"><?php echo lang('register_subheading');?></p>
+                                    </div>
+                                    <div id="wizard2">
+                                        <h3><?php echo lang('personal_information');?></h3>
+                                        <section>
+                                            <div class="control-group form-group">
+                                                <label class="form-control-label"><?php echo lang('first_name');?><span class="text-danger">*</span></label>
+                                                <input id="firstname" name="first_name" type="text" class="form-control" placeholder="First Name" required>
+                                            </div>
+                                            <div class="control-group form-group">
+                                                <label class="form-control-label"><?php echo lang('middle_name');?></label>
+                                                <input id="fullname" name="middle_name" type="text" class="form-control" placeholder="Middle Name">
+                                            </div>        
+                                            <div class="control-group">
+                                                <div class="row">
+                                                    <div class="col-md-8">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label"><?php echo lang('last_name');?><span class="text-danger">*</span></label>
                                                             <input id="lastname" name="last_name" type="text" class="form-control" placeholder="Last Name" required>
                                                         </div>
-                                                        <div class="col-md-4">
-                                                            <label class="form-control-label"><?php echo lang('suffix');?></label>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('suffix');?></label>
                                                             <select class="form-control select2-show-search" name="suffix">
                                                                 <option value="0" selected><?php echo lang('none'); ?></option>
                                                                 <option value="jr"><?php echo lang('jr'); ?></option>
@@ -114,151 +128,151 @@
                                                             </select>
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>  
+                                            <div class="control-group form-group">
+                                                <label class="form-control-label"><?php echo lang('birth_date');?><span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 2v3H4V5h16zM4 21V10h16v11H4z"/><path d="M4 5.01h16V8H4z" opacity=".3"/></svg>
+                                                        </div>
+                                                    </div><input class="form-control fc-datepicker" id="bdate" placeholder="MM/DD/YYYY" type="text" name="bdate" required>
                                                 </div>  
-                                                <div class="control-group form-group">
-                                                    <label class="form-control-label"><?php echo lang('birth_date');?></label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 2v3H4V5h16zM4 21V10h16v11H4z"/><path d="M4 5.01h16V8H4z" opacity=".3"/></svg>
-                                                            </div>
-                                                        </div><input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" type="text" name="bdate" required>
-                                                    </div>  
-                                                </div>                                         
-                                                <div class="form-group ">
-                                                    <div class="form-label"><?php echo lang('sex');?></div>
-                                                    <div class="custom-controls-stacked">
-                                                        <label class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input" name="gender" value="male" checked="">
-                                                            <span class="custom-control-label">Male</span>
-                                                        </label>
-                                                        <label class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input" name="gender" value="female">
-                                                            <span class="custom-control-label">Female</span>
-                                                        </label>
-                                                    </div>
+                                            </div>                                         
+                                            <div class="form-group ">
+                                                <div class="form-label"><?php echo lang('sex');?></div>
+                                                <div class="custom-controls-stacked">
+                                                    <label class="custom-control custom-radio">
+                                                        <input type="radio" class="custom-control-input" name="gender" value="male" checked="">
+                                                        <span class="custom-control-label">Male</span>
+                                                    </label>
+                                                    <label class="custom-control custom-radio">
+                                                        <input type="radio" class="custom-control-input" name="gender" value="female">
+                                                        <span class="custom-control-label">Female</span>
+                                                    </label>
                                                 </div>
-                                                <div class="control-group form-group">
-                                                    <label class="form-label"><?php echo lang('civil_status');?></label>
-                                                    <select class="form-control select2-show-search" id="civil_status" name="civil_status" data-placeholder="Choose one">
-                                                        <option value="" label="Choose one"></option>
-                                                            <?php foreach ($civil_status as $status) { ?>
-                                                                <option value="<?php echo $status->name; ?>" <?php
-                                                                if (!empty($setval)) {
-                                                                    if ($status->display_name == set_value('civil_status')) {
-                                                                        echo 'selected';
-                                                                    }
-                                                                }
-                                                                ?> > <?php echo $status->display_name; ?> </option>
-                                                            <?php } ?> 
-                                                    </select>
-                                                </div>
-                                                <div class="control-group form-group">
-                                                    <label class="form-label"><?php echo lang('blood_type');?></label>
-                                                    <select class="form-control select2-show-search" id="bloodgroup" name="blood_group" data-placeholder="Choose one">
-                                                        <?php foreach ($blood_groups as $group) { ?>
-                                                            <option value="<?php echo $group->display_name; ?>" <?php
+                                            </div>
+                                            <div class="control-group form-group">
+                                                <label class="form-label"><?php echo lang('civil_status');?><span class="text-danger">*</span></label>
+                                                <select class="form-control select2-show-search" id="civil_status" name="civil_status" data-placeholder="Choose one" required>
+                                                    <option value="" label="Choose one"></option>
+                                                        <?php foreach ($civil_status as $status) { ?>
+                                                            <option value="<?php echo $status->name; ?>" <?php
                                                             if (!empty($setval)) {
-                                                                if ($group->display_name == set_value('blood_group')) {
+                                                                if ($status->display_name == set_value('civil_status')) {
                                                                     echo 'selected';
                                                                 }
                                                             }
-                                                            ?> > <?php echo $group->display_name; ?> </option>
-                                                        <?php } ?>
-                                                    </select>
-                                                </div>
-                                                <div class="control-group form-group">
-                                                    <label class="form-label"><?php echo lang('company');?></label>
-                                                    <input id="company" name="company" type="text" class="form-control" placeholder="Company">
-                                                </div>
-                                            </section>
-                                            <h3><?php echo lang('address');?></h3>
-                                            <section>
-                                                <!-- <p>Your current address</p> -->
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group wd-xs-300">
-                                                            <label class="form-control-label"><?php echo lang('street_number').' / '.lang('street_name');?> <span class="tx-danger">*</span></label> <input class="form-control" id="address" name="address" placeholder="Enter street number and street address" required="" type="text">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search" name="country_id" id="country" required>
-                                                                <!-- <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option> -->
-                                                                <option></option>
-                                                                <?php foreach($countries as $country) { ?>
-                                                                    <option value="<?php echo $country->id ?>"><?php echo $country->name; ?></option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('state_province'); ?></label>
-                                                            <select class="form-control" name="state_id" id="state" value=''>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('city_municipality'); ?></label>
-                                                            <select class="form-control" name="city_id" id="city" value=''>
-                                                                <option></option>
-                                                            </select> 
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6" id="barangayDiv">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('barangay'); ?></label>
-                                                            <select class="form-control" name="barangay_id" id="barangay" value=''>
-                                                                <option></option>
-                                                            </select>        
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12 col-md-6" id="barangayDiv">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('postal'); ?></label>
-                                                            <input type="text" name="postal" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </section>
-                                            <h3>Contact</h3>
-                                            <section>
-                                                <div class="form-group">
-                                                    <label class="form-label" ><?php echo lang('email_address');?></label>
-                                                    <input type="email" class="form-control" name="email" id="email" placeholder="Email">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="form-label" ><?php echo lang('mobile_number');?></label>
-                                                    <form>
-                                                        <input type="tel" class="form-control" name="mobile" id="phone" placeholder="<?php echo lang('mobile_number');?>">
-                                                    </form>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="form-label" ><?php echo lang('password');?></label>
-                                                    <input type="text" class="form-control" name="password" id="password" placeholder="<?php echo lang('password');?>">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="form-label" ><?php echo lang('confirm').' '.lang('password');?></label>
-                                                    <input type="text" class="form-control" name="password_confirm" id="password_confirm" placeholder="<?php echo lang('confirm').' '.lang('password') ;?>">
-                                                </div>
-
-                                            </section>
-                                        </div>              
-
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <a href="<?php echo base_url('auth/login'); ?>" class="btn btn-link box-shadow-0 px-0">Already have an account? Login here</a>
+                                                            ?> > <?php echo $status->display_name; ?> </option>
+                                                        <?php } ?> 
+                                                </select>
                                             </div>
+                                            <div class="control-group form-group">
+                                                <label class="form-label"><?php echo lang('blood_type');?></label>
+                                                <select class="form-control select2-show-search" id="bloodgroup" name="blood_group" data-placeholder="Choose one">
+                                                    <?php foreach ($blood_groups as $group) { ?>
+                                                        <option value="<?php echo $group->display_name; ?>" <?php
+                                                        if (!empty($setval)) {
+                                                            if ($group->display_name == set_value('blood_group')) {
+                                                                echo 'selected';
+                                                            }
+                                                        }
+                                                        ?> > <?php echo $group->display_name; ?> </option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                            <div class="control-group form-group">
+                                                <label class="form-label"><?php echo lang('company');?></label>
+                                                <input id="company" name="company" type="text" class="form-control" placeholder="Company">
+                                            </div>
+                                        </section>
+                                        <h3><?php echo lang('address');?></h3>
+                                        <section>
+                                            <!-- <p>Your current address</p> -->
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group wd-xs-300">
+                                                        <label class="form-control-label"><?php echo lang('street_number').' / '.lang('street_name');?> <span class="tx-danger">*</span></label> <input class="form-control" id="address" name="address" placeholder="Enter street number and street address" required="" type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('country'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="form-control select2-show-search" name="country_id" id="country" required>
+                                                            <!-- <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option> -->
+                                                            <option></option>
+                                                            <?php foreach($countries as $country) { ?>
+                                                                <option value="<?php echo $country->id ?>"><?php echo $country->name; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('state_province'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="form-control" name="state_id" id="state" value='' required>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('city_municipality'); ?> <span class="text-danger">*</span></label>
+                                                        <select class="form-control" name="city_id" id="city" value='' required>
+                                                            <option></option>
+                                                        </select> 
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6" id="barangayDiv">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('barangay'); ?></label>
+                                                        <select class="form-control" name="barangay_id" id="barangay" value=''>
+                                                            <option></option>
+                                                        </select>        
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6" id="barangayDiv">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('postal'); ?></label>
+                                                        <input type="text" name="postal" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <h3>Contact</h3>
+                                        <section>
+                                            <div class="form-group">
+                                                <label class="form-label" ><?php echo lang('email_address');?> <span class="text-danger">*</span></label>
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label" ><?php echo lang('mobile_number');?> <span class="text-danger">*</span></label>
+                                                <form>
+                                                    <input type="tel" class="form-control" name="mobile" id="phone" placeholder="<?php echo lang('mobile_number');?>">
+                                                </form>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label" ><?php echo lang('password');?> <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="password" id="password" placeholder="<?php echo lang('password');?>">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-label" ><?php echo lang('confirm').' '.lang('password');?></label>
+                                                <input type="text" class="form-control" name="password_confirm" id="password_confirm" placeholder="<?php echo lang('confirm').' '.lang('password') ;?>">
+                                            </div>
+
+                                        </section>
+                                    </div>              
+
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <a href="<?php echo base_url('auth/login'); ?>" class="btn btn-link box-shadow-0 px-0">Already have an account? Login here</a>
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -324,6 +338,23 @@
             });
         </script>
 
+        <!-- <script type="text/javascript">
+            $(document).ready(function () {
+                var barangay = document.getElementById("barangayDiv");
+
+                if (country == "174") {
+                    barangay.style.display='block';
+                } else {
+                    barangay.style.display='none';
+                }
+
+                $("#barangay").select2({
+                    placeholder: '<?php echo lang('barangay') ?>',
+                    allowClear: true,
+                });
+            });
+        </script> -->
+
         <script type="text/javascript">
             $(document).ready(function () {
                 $("#civil_status").select2({
@@ -375,26 +406,33 @@
             $(document).ready(function () {
                 $("#country").change(function () {
                     var country = $("#country").val();
+                    var barangay = document.getElementById("barangayDiv");
 
-                    $("#country").select2({
-                        placeholder: '<?php echo lang('country_placeholder') ?>',
-                        allowClear: true,
-                    });
+                    // $("#country").select2({
+                    //     placeholder: '<?php echo lang('country_placeholder') ?>',
+                    //     allowClear: true,
+                    // });
 
-                    $("#state").select2({
-                        placeholder: '<?php echo lang('state_province') ?>',
-                        allowClear: true,
-                    });
+                    // $("#state").select2({
+                    //     placeholder: '<?php echo lang('state_province') ?>',
+                    //     allowClear: true,
+                    // });
 
-                    $("#city").select2({
-                        placeholder: '<?php echo lang('city_municipality') ?>',
-                        allowClear: true,
-                    });
+                    // $("#city").select2({
+                    //     placeholder: '<?php echo lang('city_municipality') ?>',
+                    //     allowClear: true,
+                    // });
 
-                    $("#barangay").select2({
-                        placeholder: '<?php echo lang('barangay') ?>',
-                        allowClear: true,
-                    });
+                    // $("#barangay").select2({
+                    //     placeholder: '<?php echo lang('barangay') ?>',
+                    //     allowClear: true,
+                    // });
+
+                    // if (country == "174") {
+                    //     barangay.style.display='block';
+                    // } else {
+                    //     barangay.style.display='none';
+                    // }
 
                     $("#state").find('option').remove();
                     $("#city").find('option').remove();
