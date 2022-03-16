@@ -255,11 +255,11 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label" ><?php echo lang('password');?> <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="password" id="password" placeholder="<?php echo lang('password');?>">
+                                                <input type="password" class="form-control" name="password" id="password" placeholder="<?php echo lang('password');?>">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label" ><?php echo lang('confirm').' '.lang('password');?></label>
-                                                <input type="text" class="form-control" name="password_confirm" id="password_confirm" placeholder="<?php echo lang('confirm').' '.lang('password') ;?>">
+                                                <input type="password" class="form-control" name="password_confirm" id="password_confirm" placeholder="<?php echo lang('confirm').' '.lang('password') ;?>">
                                             </div>
 
                                         </section>
