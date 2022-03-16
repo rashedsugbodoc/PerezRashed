@@ -1158,9 +1158,7 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
+                
                 "ajax": {
                     url: "patient/getPatient",
                     type: 'POST',
