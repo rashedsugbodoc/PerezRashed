@@ -118,7 +118,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('rendering'). ' ' . lang('user')?></label>
+                                                                <label class="form-label"><?php echo lang('rendering'). ' ' . lang('staff')?></label>
                                                                 <select class="select2-show-search form-control rendering_user_select" name="rendering_user" id="pos_rendering_user">
                                                                     
                                                                 </select>
@@ -272,7 +272,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('rendering'). ' ' . lang('user')?></label>
+                                                                <label class="form-label"><?php echo lang('rendering'). ' ' . lang('staff')?></label>
                                                                 <select class="select2-show-search form-control rendering_user_select2" name="rendering_user" id="pos_rendering_user2">
                                                                     <?php foreach ($staffs as $staff) { ?>
                                                                         <option value="<?php echo $staff->user_id ?>"> <?php echo $staff->username ?> </option>
@@ -678,7 +678,7 @@
                                             <div class="row" hidden>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('rendering'). ' ' . lang('user')?></label>
+                                                        <label class="form-label"><?php echo lang('rendering'). ' ' . lang('staff')?></label>
                                                         <select class="select2-show-search form-control rendering_user_select2" name="rendering_user" id="pos_rendering_user2">
                                                             <?php foreach ($staffs as $staff) { ?>
                                                                 <option value="<?php echo $staff->user_id ?>"> <?php echo $staff->username ?> </option>
