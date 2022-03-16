@@ -368,6 +368,8 @@ class Auth extends MX_Controller {
 		{
 			//redirect them to the auth page
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
+			// $data['message'] = $this->ion_auth->messages();
+			// $this->load->view('auth/login', $data);
 			redirect("auth", 'refresh');
 		}
 		else
@@ -431,12 +433,32 @@ class Auth extends MX_Controller {
 		$data['civil_status'] = $this->patient_model->getCivilStatus();
 		$data['blood_groups'] = $this->patient_model->getBloodGroup();
 		$data['countries'] = $this->location_model->getCountry();
-
+		$firstname = $this->input->post('first_name');
+		$middlename = $this->input->post('middle_name');
+		$lastname = $this->input->post('last_name');
+		$suffix = $this->input->post('suffix');
+		$company = $this->input->post('company');
+		$phone = $this->input->post('mobile');
+		$email = $this->input->post('email');
+		$birthdate = $this->input->post('bdate');
+		$sex = $this->input->post('gender');
+		$civil_status = $this->input->post('civil_status');
+		$bloodgroup = $this->input->post('blood_group');
+		$address = $this->input->post('address');
+		$country_id = $this->input->post('country_id');
+		$state_id = $this->input->post('state_id');
+		$city_id = $this->input->post('city_id');
+		$barangay_id = $this->input->post('barangay_id');
+		$postal = $this->input->post('postal');
+		$password = $this->input->post('password');
 
 		if ($this->ion_auth->logged_in())
 		{
 			//redirect('auth', 'refresh');
 			$this->ion_auth->logout();
+		}
+		if (empty($suffix)) {
+			$suffix = null;
 		}
 
 		$tables = $this->config->item('tables','ion_auth');
@@ -452,33 +474,33 @@ class Auth extends MX_Controller {
 
 		if ($this->form_validation->run() == true)
 		{
-			$username = strtolower($this->input->post('first_name')) . ' ' . strtolower($this->input->post('last_name'));
-			$email    = strtolower($this->input->post('email'));
+			$fullname = $firstname.' '.$middlename.' '.$lastname.' '.$suffix;
+			$email    = strtolower($email);
 			$password = $this->input->post('password');
 			$dfg = 5;
 
 			$patient_data = array(
-				'firstname' 	=> $this->input->post('first_name'),
-				'lastname'  	=> $this->input->post('last_name'),
-				'name'			=> $this->input->post('first_name') . ' ' . $this->input->post('middle_name') . ' ' . $this->input->post('last_name') . ' ' . $this->input->post('suffix'),
-				'company'		=> $this->input->post('company'),
-				'phone'			=> $this->input->post('mobile'),
+				'firstname' 	=> $firstname,
+				'lastname'  	=> $lastname,
+				'name'			=> $fullname,
+				'company'		=> $company,
+				'phone'			=> $phone,
 				'email'			=> $email,
-				'middlename' 	=> $this->input->post('middle_name'),
-				'suffix'		=> $this->input->post('suffix'),
-				'birthdate'	 	=> $this->input->post('bdate'),
-				'sex'		 	=> $this->input->post('gender'),
-				'civil_status'	=> $this->input->post('civil_status'),
-				'bloodgroup'	=> $this->input->post('blood_group'),
-				'address'		=> $this->input->post('address'),
-				'country_id'	=> $this->input->post('country_id'),
-				'state_id'		=> $this->input->post('state_id'),
-				'city_id'		=> $this->input->post('city_id'),
-				'barangay_id'	=> $this->input->post('barangay_id'),
-				'postal'	=> $this->input->post('postal'),
+				'middlename' 	=> $middlename,
+				'suffix'		=> $suffix,
+				'birthdate'	 	=> $birthdate,
+				'sex'		 	=> $sex,
+				'civil_status'	=> $civil_status,
+				'bloodgroup'	=> $bloodgroup,
+				'address'		=> $address,
+				'country_id'	=> $country_id,
+				'state_id'		=> $state_id,
+				'city_id'		=> $city_id,
+				'barangay_id'	=> $barangay_id,
+				'postal'	    => $postal,
 			);
 		}
-		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $dfg))
+		if ($this->form_validation->run() == true && $this->ion_auth->register($fullname, $password, $email, $dfg))
 		{
 			//check to see if we are creating the user
 			//redirect them back to the admin page
@@ -489,7 +511,9 @@ class Auth extends MX_Controller {
             $this->patient_model->updatePatient($patient_user_id, $id_info);
             $this->hospital_model->addHospitalIdToIonUser($ion_user_id, 508);
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect("auth", 'refresh');
+			//redirect("auth", 'refresh');
+			$data['message'] = $this->ion_auth->messages();
+			$this->load->view('auth/login', $data);
 		}
 		else
 		{
