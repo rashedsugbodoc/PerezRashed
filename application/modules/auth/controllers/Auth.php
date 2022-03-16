@@ -9,6 +9,7 @@ class Auth extends MX_Controller {
 		$this->load->library(array('ion_auth','form_validation'));
 		$this->load->helper(array('url','language'));
 		$this->load->model('patient/patient_model');
+		$this->load->model('location/location_model');
 
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -429,6 +430,8 @@ class Auth extends MX_Controller {
 		$data['title'] = "Create User";
 		$data['civil_status'] = $this->patient_model->getCivilStatus();
 		$data['blood_groups'] = $this->patient_model->getBloodGroup();
+		$data['countries'] = $this->location_model->getCountry();
+
 
 		if ($this->ion_auth->logged_in())
 		{
@@ -442,7 +445,7 @@ class Auth extends MX_Controller {
 		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
 		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'));
 		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]');
-		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'required');
+		$this->form_validation->set_rules('mobile', $this->lang->line('create_user_validation_phone_label'), 'required');
 		$this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'));
 		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
 		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
@@ -452,18 +455,39 @@ class Auth extends MX_Controller {
 			$username = strtolower($this->input->post('first_name')) . ' ' . strtolower($this->input->post('last_name'));
 			$email    = strtolower($this->input->post('email'));
 			$password = $this->input->post('password');
+			$dfg = 5;
 
-			$additional_data = array(
-				'first_name' => $this->input->post('first_name'),
-				'last_name'  => $this->input->post('last_name'),
-				'company'    => $this->input->post('company'),
-				'phone'      => $this->input->post('phone'),
+			$patient_data = array(
+				'firstname' 	=> $this->input->post('first_name'),
+				'lastname'  	=> $this->input->post('last_name'),
+				'name'			=> $this->input->post('first_name') . ' ' . $this->input->post('middle_name') . ' ' . $this->input->post('last_name') . ' ' . $this->input->post('suffix'),
+				'company'		=> $this->input->post('company'),
+				'phone'			=> $this->input->post('mobile'),
+				'email'			=> $email,
+				'middlename' 	=> $this->input->post('middle_name'),
+				'suffix'		=> $this->input->post('suffix'),
+				'birthdate'	 	=> $this->input->post('bdate'),
+				'sex'		 	=> $this->input->post('gender'),
+				'civil_status'	=> $this->input->post('civil_status'),
+				'bloodgroup'	=> $this->input->post('blood_group'),
+				'address'		=> $this->input->post('address'),
+				'country_id'	=> $this->input->post('country_id'),
+				'state_id'		=> $this->input->post('state_id'),
+				'city_id'		=> $this->input->post('city_id'),
+				'barangay_id'	=> $this->input->post('barangay_id'),
+				'postal'	=> $this->input->post('postal'),
 			);
 		}
-		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data))
+		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $dfg))
 		{
 			//check to see if we are creating the user
 			//redirect them back to the admin page
+			$ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
+			$this->patient_model->insertPatientInSystemHospital($patient_data);
+			$patient_user_id = $this->db->get_where('patient', array('email' => $email))->row()->id;
+            $id_info = array('ion_user_id' => $ion_user_id);
+            $this->patient_model->updatePatient($patient_user_id, $id_info);
+            $this->hospital_model->addHospitalIdToIonUser($ion_user_id, 508);
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
 			redirect("auth", 'refresh');
 		}
@@ -910,5 +934,32 @@ class Auth extends MX_Controller {
 
 		if (!$render) return $view_html;
 	}
+
+	function getStateByCountryIdByJason() {
+        $data = array();
+        $country_id = $this->input->get('country');
+
+        $data['state'] = $this->location_model->getStateByCountryId($country_id);
+        
+        echo json_encode($data);        
+    }
+
+    public function getCityByStateIdByJason() {
+        $data = array();
+        $state_id = $this->input->get('state');
+
+        $data['city'] = $this->location_model->getCityByStateId($state_id);
+
+        echo json_encode($data);        
+    }
+
+    public function getBarangayByCityIdByJason() {
+        $data = array();
+        $city_id = $this->input->get('city');
+
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
+
+        echo json_encode($data);        
+    }
 
 }
