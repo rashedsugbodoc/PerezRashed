@@ -761,6 +761,7 @@ $lang['available_slots'] = 'Available Slots';
 $lang['request'] = 'Request';
 $lang['requests'] = 'Requests';
 $lang['approved'] = 'Approved';
+$lang['loinc_num'] = 'Loinc Num';
 $lang['done'] = 'Done';
 $lang['all'] = 'All';
 $lang['pending'] = 'Pending';
