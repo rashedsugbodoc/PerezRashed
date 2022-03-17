@@ -17,6 +17,11 @@ class Labrequest extends MX_Controller {
         }
     }
 
+    function index() {
+        $this->load->view('home/dashboardv2');
+        $this->load->view('labrequest', $data);
+    }
+
     function addLabRequestView() {
         $data = array();
 
@@ -93,6 +98,59 @@ class Labrequest extends MX_Controller {
         if (!empty($redirect)) {
             redirect($redirect);
         }
+    }
+
+    function getLabrequest() {
+        $requestData = $_REQUEST;
+        $start = $requestData['start'];
+        $limit = $requestData['length'];
+        $search = $this->input->post('search')['value'];
+        $current_user = $this->ion_auth->get_user_id();
+
+        if ($limit == -1) {
+            if (!empty($search)) {
+                $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search);
+            } else {
+                $data['labrequests'] = $this->labrequest_model->getLabrequest();
+            }
+        } else {
+            if (!empty($search)) {
+                $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search);
+            } else {
+                $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start);
+            }
+        }
+
+        foreach ($data['labrequests'] as $labrequest) {
+            $option1 = '<a class="btn btn-info">'. lang('edit') .'</a>';
+
+            $doctor = $this->doctor_model->getDoctorById($labrequest->doctor_id);
+
+            $info[] = array(
+                $labrequest->id,
+                $labrequest->loinc_num,
+                $labrequest->patientname,
+                $doctor->name,
+            );
+        }
+
+        if ($data['labrequests']) {
+            $output = array(
+                "draw" => intval($requestData['draw']),
+                "recordsTotal" => $this->labrequest_model->getLabrequestCount(),
+                "recordsFiltered" => $this->labrequest_model->getLabrequestBySearchCount($search),
+                "data" => $info
+            );
+        } else {
+            $output = array(
+                // "draw" => 1,
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => []
+            );
+        }
+
+        echo json_encode($output);
     }
 
     public function getLabrequestSelect2() {
