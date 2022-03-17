@@ -65,18 +65,10 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('refd_by_doctor') ?></label>
-                                                        <select class="select2-show-search form-control ref_doctor_select" name="ref_doctor" id="pos_ref_doctor">
+                                                        <label class="form-label"><?php echo lang('rendering'). ' ' . lang('staff')?></label>
+                                                        <select class="select2-show-search form-control rendering_user_select" name="rendering_user" id="pos_rendering_user">
                                                             
                                                         </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12 ref_doctor_client">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('name'); ?></label>
-                                                        <input type="text" name="ref_name" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -99,6 +91,26 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('name'); ?></label>
                                                         <input type="text" name="provider_name" class="form-control">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('refd_by_doctor') ?></label>
+                                                        <select class="select2-show-search form-control ref_doctor_select" name="ref_doctor" id="pos_ref_doctor">
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12 ref_doctor_client">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('name'); ?></label>
+                                                        <input type="text" name="ref_name" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -294,7 +306,32 @@
                 placeholder: '<?php echo lang('search').' '.lang('referral_facility'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'hospital/getProviderInfoWithAddNewOption',
+                    url: 'encounter/getProviderInfoWithAddNewOption',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+
+        $(document).ready(function () {
+            $("#pos_rendering_user").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getUserWithoutAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -319,7 +356,7 @@
                 placeholder: '<?php echo lang('search').' '.lang('referring_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'encounter/getUserWithAddNewOption',
+                    url: 'encounter/getReferredByDoctorWithAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -344,7 +381,7 @@
                 placeholder: '<?php echo lang('search').' '.lang('rendering_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'encounter/getUserWithAddNewOption',
+                    url: 'encounter/getRenderingDoctorWithAddNewOption',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
