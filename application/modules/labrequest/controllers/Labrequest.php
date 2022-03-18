@@ -12,6 +12,9 @@ class Labrequest extends MX_Controller {
         $this->load->model('encounter/encounter_model');
         $this->load->model('patient/patient_model');
         $this->load->model('doctor/doctor_model');
+        $this->load->model('branch/branch_model');
+        $this->load->model('location/location_model');
+        $this->load->model('specialty/specialty_model');
         if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
             redirect('home/permission');
         }
@@ -34,8 +37,15 @@ class Labrequest extends MX_Controller {
     function addNew() {
         $encounter = $this->input->post('encounter_id');
         $patient = $this->encounter_model->getEncounterById($encounter)->patient_id;
+        if (empty($patient)) {
+            $patient = $this->input->post('patient');
+        }
         $patient_name = $this->patient_model->getPatientById($patient)->name;
         $doctor = $this->encounter_model->getEncounterById($encounter)->doctor;
+        if (empty($doctor)) {
+            $current_user = $this->ion_auth->get_user_id();
+            $doctor = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
+        }
         $doctor_name = $this->doctor_model->getDoctorById($doctor)->name;
         $redirect = $this->input->post('redirect');
 
@@ -50,8 +60,10 @@ class Labrequest extends MX_Controller {
         $labrequest_text = $this->input->post('labrequest_text');
         $instruction_text = $this->input->post('instruction_text');
 
+        $inserted_id_loop = [];
         if (!empty($labrequest_id)) {
             $data = array();
+            
             foreach ($labrequest_id as $key => $value) {
                 // if ($long_common_name[$key] === null) {
                 //     $labrequest_text_result[$key] = $labrequest_text;
@@ -76,6 +88,7 @@ class Labrequest extends MX_Controller {
                 );
 
                 $this->labrequest_model->insertLabrequest($data[$value]);
+                $inserted_id_loop[] = $this->db->insert_id();
             }
 
             foreach ($labrequest_text as $key => $value) {
@@ -92,12 +105,58 @@ class Labrequest extends MX_Controller {
                 );
 
                 $this->labrequest_model->insertLabrequest($data1[$value]);
+                $inserted_id_loop[] = $this->db->insert_id();
             }
+
+            $inserted_id = $this->db->insert_id();
+            $lab_request_number = format_number_with_digits($this->session->userdata('hospital_id'),4).gmdate('ymd').format_number_with_digits($inserted_id, 3);
+            $data2 = array(
+                'lab_request_number' => $lab_request_number,
+            );
+
+            foreach ($inserted_id_loop as $iil) {
+                $this->labrequest_model->updateLabrequestNumberById($iil, $data2);
+            }
+            
         }
 
         if (!empty($redirect)) {
             redirect($redirect);
+        } else {
+            redirect('labrequest');
         }
+    }
+
+    function editLabRequestView() {
+        $data = array();
+
+        $data['request_id'] = $this->input->get('id');
+        $data['labrequest'] = $this->labrequest_model->getLabrequestById($data['request_id']);
+        $data['labLoincItems'] = $this->labrequest_model->getLabLoinc();
+
+        $this->load->view('home/dashboardv2');
+        $this->load->view('add_new', $data);
+    }
+
+    function labrequestView() {
+        $id = $this->input->get('id');
+        $data['labrequest'] = $this->labrequest_model->getLabrequestById($id);
+        $data['lab_request_number'] = $this->labrequest_model->getLabrequestByLabrequestNumber($data['labrequest']->lab_request_number);
+        $data['doctor'] = $this->doctor_model->getDoctorById($data['labrequest']->doctor_id);
+        $data['signature'] = $this->doctor_model->getUserSignatureByUserId($data['doctor']->ion_user_id);
+        $data['patient'] = $this->patient_model->getPatientById($data['labrequest']->patient_id);
+        $specializations = explode(',', $data['doctor']->specialties);
+        $limit = 3;
+        $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
+        foreach ($specializations as $specialization) {
+            $specialties = $this->specialty_model->getSpecialtyById($specialization)->display_name_ph;
+            $specialty[] = $specialties;
+        }
+        $data['spec'] = implode(', ', $specialty);
+        $data['settings'] = $this->settings_model->getSettings();
+
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('labrequest_view', $data);
     }
 
     function getLabrequest() {
@@ -122,7 +181,8 @@ class Labrequest extends MX_Controller {
         }
 
         foreach ($data['labrequests'] as $labrequest) {
-            $option1 = '<a class="btn btn-info">'. lang('edit') .'</a>';
+            $option1 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->id.'"><i class="fe fe-edit"></i></a>';
+            $option2 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->id.'"><i class="fe fe-eye"></i></a>';
 
             $doctor = $this->doctor_model->getDoctorById($labrequest->doctor_id);
 
@@ -131,6 +191,7 @@ class Labrequest extends MX_Controller {
                 $labrequest->loinc_num,
                 $labrequest->patientname,
                 $doctor->name,
+                $option1 . ' ' . $option2,
             );
         }
 
