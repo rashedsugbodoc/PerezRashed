@@ -197,6 +197,17 @@ class Encounter extends MX_Controller {
             $patient = $this->patient_model->getPatientById($encounter->patient_id)->name;
             // $user = $this->profile_model->getProfileById($encounter->rendering_staff_id)->username;
             $doctor = $this->doctor_model->getDoctorById($encounter->doctor)->name;
+            if (empty($doctor)) {
+                if (!empty($encounter->rendering_staff_name)) {
+                    $doctor = $encounter->rendering_staff_name;
+                } else {
+                    if (!empty($encounter->created_user_id)) {
+                        $doctor = $this->profile_model->getProfileById($encounter->created_user_id)->username;
+                    } else {
+                        $doctor = "NO Data";
+                    }
+                }
+            }
             $encounter_status = $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
             $case_encounter = $this->patient_model->getMedicalHistoryByEncounterId($encounter->id);
             $prescription_encounter = $this->prescription_model->getPrescriptionByEncounterId($encounter->id);
