@@ -324,7 +324,7 @@
                                             <div class="row">\n\
                                                 <div class="col-sm-12">\n\
                                                     <div class="form-group">\n\
-                                                        <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("diagnosis") . " " . lang("note")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" required></div>\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("diagnosis") . " " . lang("note")?> &nbsp</label><input type="text" class="form-control" name="instruction[]"></div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\
@@ -371,7 +371,7 @@
                                     <div class="row">\n\
                                         <div class="col-sm-12">\n\
                                             <div class="form-group">\n\
-                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("diagnosis") . " " . lang("note")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" required></div>\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("diagnosis") . " " . lang("note")?> &nbsp</label><input type="text" class="form-control" name="instruction[]"></div>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\
