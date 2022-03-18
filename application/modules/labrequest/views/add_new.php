@@ -46,22 +46,55 @@
                                                     }
                                                     ?>">
                                                 </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <input type="hidden" name="request_id" value="<?php
+                                                    if (!empty($request_id)) {
+                                                        echo $request_id;
+                                                    }
+                                                    ?>">
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('lab') . '  ' . lang('request') . ' ' . lang('date') ?></label>
-                                                        <input type="text" class="form-control fc-datepicker" id="date" readonly placeholder="MM/DD/YYYY" name="date">
+                                                        <input type="text" class="form-control fc-datepicker" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php
+                                                        if (!empty($request_id)) {
+                                                            if (!empty($labrequest->request_date)) {
+                                                                echo date('m/d/Y', strtotime($labrequest->request_date.' UTC'));
+                                                            }
+                                                        }
+                                                        ?>">
                                                     </div>
                                                 </div>
+                                                <?php if (empty($encounter_id)) { ?>
+                                                    <div class="col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('patient') ?></label>
+                                                            <select class="select2-show-search form-control" id="patient" name="patient">
+                                                                
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10 col-sm-12 labrequest_block">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('select') . ' ' . lang('lab') . ' ' . lang('test') ?></label>
-                                                        <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="" multiple>
-                                                            
-                                                        </select>
+                                                        <?php if (empty($labrequest->lab_loinc_id)) { ?>
+                                                            <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="">
+
+                                                            </select>
+                                                        <?php } else { ?>
+                                                            <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="" multiple>
+                                                                <?php if (!empty($labrequest->lab_loinc_id)) { ?>
+                                                                    <option value="<?php echo $labrequest->lab_loinc_id . '*' . $labrequest->long_common_name . '*' . $labrequest->loinc_num; ?>" <?php echo 'data-loincid="' . $labrequest->lab_loinc_id . '"data-long="' . $labrequest->long_common_name . '"' ?> selected="selected">
+                                                                        <?php echo $labrequest->long_common_name ?>
+                                                                    </option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12 labrequest_block">
@@ -252,6 +285,82 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var selected = $('#labrequest').find('option:selected');
+            var unselected = $('#labrequest').find('option:not(:selected)');
+            selected.attr('data-selected', '1');
+            $.each(unselected, function (index, value1) {
+                num--;
+                var count = parseInt(countlabReq) - 1;
+                // console.log(count);
+                if ($(this).attr('data-selected') == '1') {
+                    var value = $(this).val();
+                    var res = value.split("*");
+                    // var unit_price = res[1];
+                    var id = res[0];
+
+                    // console.log(id);
+                    $('#labreq_selected_section-' + id).remove();
+                    // $('#removediv' + $(this).val() + '').remove();
+                    //this option was selected before
+
+                }
+            });
+
+            var count = 0;
+            $.each($('select.labrequest option:selected'), function ( index ) {
+                var value = $(this).val();
+                var res = value.split("*");
+                var id = res[0];
+                var long_common = res[1];
+                var loinc_num = res[2];
+
+                if ($('#labreq_id-' + id).length)
+                {
+
+                } else {
+                    $(".labreq").append(
+                        '<section class="labreq_selected remove'+ count +'" id="labreq_selected_section-' + id + '">\n\
+                            <div class="row">\n\
+                                <div class="col-sm-1">\n\
+                                    <button class="btn btn-danger" hidden onclick="removeElem('+ count + ', ' + id +')" type="button"><i class="fe fe-trash"></i></button>\n\
+                                </div>\n\
+                                <div class="col-sm-11">\n\
+                                    <div class="form-group labrequest_sect">\n\
+                                        <div class="row">\n\
+                                            <div class="col-sm-8">\n\
+                                                <div class="form-group">\n\
+                                                    <input type="text" class = "form-control labreq-div" name = "labrequest_long[]" value = "' + long_common + '" placeholder="" required readonly>\n\
+                                                    <input type="hidden" id="labreq_id-' + id + '" class = "labreq-div" name = "labrequest[]" value = "' + id + '" placeholder="" required disabled>\n\
+                                                    <input class = "form-control labreq-div" name = "labreq[]" hidden value = "' + id + '" placeholder="" required>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                            <div class="col-sm-4">\n\
+                                                <div class="form-group">\n\
+                                                    <input type="text" name="loinc_num[]" class="form-control" value="' + loinc_num + '" readonly>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                        <div class="row">\n\
+                                            <div class="col-sm-12">\n\
+                                                <div class="form-group">\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]"></div>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            <div>\n\
+                        </section>\n\
+                    ');
+                }
+
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             $(".labrequest").change(function () {
                 var count = 1;
 
@@ -319,7 +428,7 @@
                                             <div class="row">\n\
                                                 <div class="col-sm-12">\n\
                                                     <div class="form-group">\n\
-                                                        <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" required></div>\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]"></div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\
@@ -359,7 +468,7 @@
                                     <div class="row">\n\
                                         <div class="col-sm-12">\n\
                                             <div class="form-group">\n\
-                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction_text[]" required></div>\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction_text[]"></div>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\
@@ -388,6 +497,33 @@
                 allowClear: false,
                 ajax: {
                     url: 'labrequest/getLabrequestSelect2',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#patient").select2({
+                placeholder: '<?php echo lang('request'); ?>',
+                allowClear: false,
+                ajax: {
+                    url: 'patient/getPatientinfo',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
