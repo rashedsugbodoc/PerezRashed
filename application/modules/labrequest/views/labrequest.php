@@ -27,6 +27,7 @@
                                                             <th class="border-bottom-0"><?php echo lang('loinc_num'); ?></th>
                                                             <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
                                                             <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
+                                                            <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
