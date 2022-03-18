@@ -16,6 +16,11 @@ class Labrequest_model extends CI_model {
         $this->db->insert('lab_request', $data2);
     }
 
+    function updateLabrequestNumberById($id, $data2) {
+        $this->db->where('id', $id);
+        $this->db->update('lab_request', $data2);
+    }
+
     function getLabrequestInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
@@ -53,6 +58,28 @@ class Labrequest_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('lab_request');
+        return $query->result();
+    }
+
+    function getLabrequestById($id) {
+        $this->db->where("id", $id);
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('lab_request');
+        return $query->row();
+    }
+
+    function getLabrequestByLabrequestNumber($id) {
+        $this->db->where("lab_request_number", $id);
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('lab_request');
+        return $query->result();
+    }
+
+    function getLabLoinc() {
+        $this->db->select('*');
+        $this->db->order_by('id', 'desc');
+        $this->db->limit(10);
+        $query = $this->db->get('lab_loinc');
         return $query->result();
     }
 
