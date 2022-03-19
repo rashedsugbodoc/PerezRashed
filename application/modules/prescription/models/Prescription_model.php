@@ -14,6 +14,7 @@ class Prescription_model extends CI_model {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
         $this->db->insert('prescription', $data2);
+        return $this->db->affected_rows() > 0;
     }
 
     function getPrescription() {
@@ -62,11 +63,13 @@ class Prescription_model extends CI_model {
     function updatePrescription($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('prescription', $data);
+        return $this->db->affected_rows() > 0;
     }
 
     function deletePrescription($id) {
         $this->db->where('id', $id);
         $this->db->delete('prescription');
+        return $this->db->affected_rows() > 0;
     }
 
     function getPrescriptionBySearch($search) {
