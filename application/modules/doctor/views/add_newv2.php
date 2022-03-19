@@ -33,28 +33,13 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('professional_display_name'); ?></label>
-                                                        <input type="text" name="professional_display_name" class="form-control" value="<?php
+                                                        <label><?php echo lang('professional_display_name'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" name="professional_display_name" placeholder="example: John Garcia, MD" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('professional_display_name');
                                                         }
                                                         if (!empty($doctor->professional_display_name)) {
                                                             echo $doctor->professional_display_name;
-                                                        }
-                                                        ?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label><?php echo lang('name'); ?></label>
-                                                        <input type="text" name="name" class="form-control" value="<?php
-                                                        if (!empty($setval)) {
-                                                            echo set_value('name');
-                                                        }
-                                                        if (!empty($doctor->name)) {
-                                                            echo $doctor->name;
                                                         }
                                                         ?>">
                                                     </div>
@@ -76,7 +61,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('middle_name'); ?> <span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('middle_name'); ?></label>
                                                         <input type="text" class="form-control" name="m_name" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('m_name');
@@ -111,22 +96,21 @@
                                                                     <option value="iii"><?php echo lang('iii'); ?></option>
                                                                     <option value="iv"><?php echo lang('iv'); ?></option>
                                                                     <option value="v"><?php echo lang('v'); ?></option>
+                                                                    <option value="vi"><?php echo lang('vi'); ?></option>
+                                                                    <option value="vii"><?php echo lang('vii'); ?></option>
+                                                                    <option value="viii"><?php echo lang('viii'); ?></option>
+                                                                    <option value="ix"><?php echo lang('ix'); ?></option>
+                                                                    <option value="x"><?php echo lang('x'); ?></option>
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('professional_display_name') ?><span class="text-red">*</span></label>
-                                                        <input type="text" name="professional_display_name" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('email'); ?></label>
+                                                        <label><?php echo lang('email'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" name="email" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('email');
@@ -141,7 +125,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('password'); ?></label>
+                                                        <label><?php echo lang('password'); ?> <span class="text-red">*</span></label>
                                                         <input type="password" name="password" class="form-control">
                                                     </div>
                                                 </div>
@@ -149,8 +133,8 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('address'); ?></label>
-                                                        <input type="text" name="address" class="form-control" value="<?php
+                                                        <label><?php echo lang('street_address'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" name="address" placeholder="<?php echo lang('street_address_placeholder');?>" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('address');
                                                         }
@@ -225,7 +209,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('mobile_number'); ?> <span class="text-red">*</span></label>
                                                         <form>
                                                             <input id="phone" name="phone" class="form-control" type="tel" maxlength="20" value="<?php
                                                             if (!empty($setval)) {
@@ -242,7 +226,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo lang('specialization'); ?></label>
+                                                        <label for="exampleInputEmail1"><?php echo lang('specialization'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search" name="specialization[]" id="specialtychoose" multiple="multiple">
                                                             <!-- <?php foreach ($specialties as $specialty) { ?>
                                                                 <option value="<?php echo $specialty->display_name; ?>" <?php
@@ -265,22 +249,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1"><?php echo lang('profile'); ?></label>
-                                                        <input type="text" class="form-control" name="profile" id="exampleInputEmail1" value='<?php
-                                                        if (!empty($setval)) {
-                                                            echo set_value('profile');
-                                                        }
-                                                        if (!empty($doctor->profile)) {
-                                                            echo $doctor->profile;
-                                                        }
-                                                        ?>' placeholder="">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('license'); ?>: <span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('license'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" name="license" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('license');
@@ -295,7 +264,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('tin'); ?>: <span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('tin'); ?></label>
                                                         <input type="text" name="tin" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('tin');
@@ -310,7 +279,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('ptr'); ?>: <span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('ptr'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" name="ptr" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('ptr');
@@ -325,7 +294,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('s2'); ?>: <span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('s2'); ?></label>
                                                         <input type="text" name="s2" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('s2');
@@ -338,6 +307,31 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('signature');?> <span class="text-red">*</span></label>
+                                                                <canvas id="signature-pad" class="signature-pad border border-dark" width=300 height=200></canvas>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <button id="clear" class="btn btn-sm btn-secondary">Clear</button>
+                                                                <button id="save" class="btn btn-sm btn-success">Save</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <textarea id='signature-result' class="form-control" name="signature-result" hidden></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="col-sm-12 col-md-6">
                                                     <label class="form-label"><?php echo lang('profile_picture'); ?>:<span class="text-red">*</span></label>
                                                     <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
@@ -490,7 +484,40 @@
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+    <script src="<?php echo base_url('public/assets/plugins/signature/signature_plugin.min.js'); ?>"></script>
+    <script>
+    $(function() {
+        // init signaturepad
+        var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
+                backgroundColor: 'rgba(255, 255, 255, 0)',
+        penColor: 'rgb(0, 0, 0)'
+        });
 
+        // get image data and put to hidden input field
+        function getSignaturePad() {
+            var imageData = signaturePad.toDataURL('image/png');
+            // var output = document.getElementById("signature-result");
+            // output.value = "";
+            // for (i=0; i < imageData.length; i++) {
+            //     output.value += imageData[i].charCodeAt(0).toString(2) + " ";
+            // }
+            $('#signature-result').val(imageData)
+        }
+
+        // form action
+        $('#save').click(function() {
+            getSignaturePad();
+            return false; // set true to submits the form.
+        });
+
+        // action on click button clea
+        $('#clear').click(function(e) {
+            e.preventDefault();
+            $("#signature-result").val('');
+            signaturePad.clear();
+        })
+    });
+    </script>
     <script type="text/javascript">
         var country = $("#country").val();
         var iid = $("#doctor_id").val();
