@@ -43,7 +43,7 @@
                                     <div class="row">
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('date'); ?></label>
+                                                <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
                                                 <input type="text" class="form-control fc-datepicker" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php
                                                     if (!empty($setval)) {
                                                         echo set_value('date');
@@ -56,7 +56,7 @@
                                         </div>
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('patient'); ?></label>
+                                                <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
                                                 <select class="select2-show-search form-control" name="patient" id="patientchoose">
                                                     <?php if (!empty($prescription->patient)) { ?>
                                                         <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patients->id; ?>)</option>  
@@ -74,7 +74,7 @@
                                         <?php if (!$this->ion_auth->in_group('Doctor')) { ?>
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('doctor'); ?></label>
+                                                <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
                                                 <select class="select2-show-search form-control" name="doctor" id="doctorchoose">
                                                     <?php if (!empty($prescription->doctor)) { ?>
                                                         <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
@@ -92,7 +92,7 @@
                                         <?php } else { ?>
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('doctor'); ?></label>
+                                                <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
                                                 <?php if (!empty($prescription->doctor)) { ?>
                                                     <select class="select2-show-search form-control" name="doctor" value="">
                                                         <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
@@ -119,7 +119,7 @@
                                         <?php } ?>
                                         <div class="col-md-12 medicine_block">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('select_medicine'); ?></label>
+                                                <label class="form-label"><?php echo lang('select_medicine'); ?> <span class="text-red">*</span></label>
                                                 <?php if (empty($prescription->medicine)) { ?>
                                                     <select class="form-control medicinee select2-show-search"  id="my_select1_disabled" name="category" value=''>
                                                     </select>
@@ -549,7 +549,7 @@
                                             <div class="row">\n\
                                                 <div class="col-sm-12">\n\
                                                     <div class="form-group">\n\
-                                                        <div class="input-group"><label class="align-self-center mb-0">Uses &nbsp</label><input type="text" class="form-control" name="uses[]" value="' + med_uses + '"></div>\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0">Uses &nbsp</label><input type="text" class="form-control" name="uses[]" value="' + med_uses + '" required></div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\
