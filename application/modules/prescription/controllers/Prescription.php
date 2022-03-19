@@ -98,9 +98,12 @@ class Prescription extends MX_Controller {
             $date = gmdate('Y-m-d H:i:s', $date);
         }
 
+        if (empty($encounter)) {
+            $encounter = null;
+        }
+
         $patient = $this->input->post('patient');
         $doctor = $this->input->post('doctor');
-        $symptom = $this->input->post('symptom');
         $medicine = $this->input->post('meds');
         $category = $this->input->post('category');
         $dosage = $this->input->post('dosage');
@@ -110,11 +113,7 @@ class Prescription extends MX_Controller {
         $quantity = $this->input->post('qty');
         $uses = $this->input->post('uses');
         $form = $this->input->post('form');
-        $laboratory = $this->input->post('laboratory');
         $admin = $this->input->post('admin');
-
-
-        $advice = $this->input->post('advice');
 
         $report = array();
 
@@ -210,20 +209,26 @@ class Prescription extends MX_Controller {
             $data = array('prescription_date' => $date,
                 'patient' => $patient,
                 'doctor' => $doctor,
-                'symptom' => $symptom,
                 'medicine' => $final_report,
-                'laboratory' => $laboratory,
-                'advice' => $advice,
                 'patientname' => $patientname,
                 'doctorname' => $doctorname,
                 'encounter_id' => $encounter,
+                
             );
             if (empty($id)) {
-                $this->prescription_model->insertPrescription($data);
-                $this->session->set_flashdata('success', lang('record_added'));
+                if ($this->prescription_model->insertPrescription($data)) {
+                    $this->session->set_flashdata('success', lang('record_added'));    
+                } else {
+                    $this->session->set_flashdata('error', lang('error_adding_record'));    
+                }
+                
             } else {
-                $this->prescription_model->updatePrescription($id, $data);
-                $this->session->set_flashdata('success', lang('record_updated'));
+                if ($this->prescription_model->updatePrescription($id, $data)) {
+                    $this->session->set_flashdata('success', lang('record_updated'));    
+                } else {
+                    $this->session->set_flashdata('error', lang('error_updating_record'));  
+                }
+                
             }
 
             if (!empty($admin)) {
@@ -388,8 +393,13 @@ class Prescription extends MX_Controller {
             if ($data['prescription']->hospital_id != $this->session->userdata('hospital_id')) {
                 $this->load->view('home/permission');
             } else {
-                $this->prescription_model->deletePrescription($id);
-                $this->session->set_flashdata('success', lang('record_deleted'));
+                
+                if ($this->prescription_model->deletePrescription($id)) {
+                    $this->session->set_flashdata('success', lang('record_deleted'));    
+                } else {
+                    $this->session->set_flashdata('success', lang('error_deleting_record'));
+                }
+                
                 if (!empty($patient)) {
                     redirect('patient/caseHistory?patient_id=' . $patient);
                 } elseif (!empty($admin)) {
@@ -510,7 +520,7 @@ class Prescription extends MX_Controller {
             $option1 = '<a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>';
             $option3 = '<a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=' . $prescription->id . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . ' ' .lang('edit') . ' ' . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin'))) {
+            if ($this->ion_auth->in_group(array('Doctor'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 
