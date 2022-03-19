@@ -32,9 +32,17 @@
 
                                     <div class="card mt-5">
                                         <div class="card-header">
-                                            <div class="card-title">Doctors</div>
+                                            <div class="card-title"><?php echo lang('list_of').' '.lang('doctors');?></div>
                                             <div class="card-options">
-                                                <a data-toggle="modal" href="#myModal" class="btn btn-primary"><i class="fe fe-plus"></i><span class="button-text"> <?php echo lang('add_new'); ?></span></a>
+                                                <?php if ($this->ion_auth->in_group(array('admin'))) { ?> 
+                                                    <a href="doctor/addNewDoctor">
+                                                        <div class="btn-group pull-right">
+                                                            <button id="" class="btn btn-primary btn-xs">
+                                                                <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
+                                                            </button>
+                                                        </div>
+                                                    </a>
+                                                <?php } ?>
                                             </div>
                                         </div>
                                         <div class="card-body">
