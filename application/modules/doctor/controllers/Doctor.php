@@ -73,19 +73,14 @@ class Doctor extends MX_Controller {
         echo json_encode($data);        
     }
 
-    public function addNewView() {
+    public function addNewDoctor() {
         if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
             redirect('home/permission');
         }
         
         $data = array();
-        $data['departments'] = $this->department_model->getDepartment();
-        $data['doctors'] = $this->doctor_model->getDoctor();
         $data['specialties'] = $this->specialty_model->getSpecialty();
         $data['countries'] = $this->location_model->getCountry();
-        $data['states'] = $this->location_model->getState();
-        $data['cities'] = $this->location_model->getCity();
-        $data['barangays'] = $this->location_model->getBarangay();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the header file
