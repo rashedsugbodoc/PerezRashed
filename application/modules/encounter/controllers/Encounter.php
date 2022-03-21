@@ -254,7 +254,7 @@ class Encounter extends MX_Controller {
                         $option10 = '<button type="button" class="formbutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('form') .'</button>';
                     }
                 }
-                if ($this->ion_auth->in_group(array('admin'))) {
+                if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
                     if (empty($encounter->invoice_id)) {
                         $option11 = '<a class="billbutton dropdown-item bg-info text-light" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('generate_bill') . '</a>';
                     } else {
