@@ -150,7 +150,7 @@
                         ?>
                         <div class="page-header d-print-none">
                             <div class="page-leftheader">
-                                <h4 class="page-title"><?php echo lang('prescription');?> <?php echo lang('details');?></h4>
+                                <h4 class="page-title"><?php echo lang('lab').' '.lang('request') ;?> <?php echo lang('details');?></h4>
                             </div>
                         </div>
                         <!--End Page header-->
