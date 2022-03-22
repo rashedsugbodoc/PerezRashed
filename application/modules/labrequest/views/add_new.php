@@ -11,11 +11,15 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('add') . ' ' . lang('lab') . ' ' . lang('request'); ?>
+                                            <?php if (!empty($request_number)) { ?>
+                                                <?php echo lang('edit') . ' ' . lang('lab') . ' ' . lang('request'); ?>
+                                            <?php } else { ?>
+                                                <?php echo lang('add') . ' ' . lang('lab') . ' ' . lang('request'); ?>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" id="branchForm" action="labrequest/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="labrequestForm" action="labrequest/addNew" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <?php echo validation_errors(); ?>
@@ -33,24 +37,42 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
-                                                    <input type="hidden" name="encounter_id" value="<?php
+                                                    <input type="text" hidden name="encounter_id" value="<?php
                                                     if (!empty($encounter_id)) {
                                                         echo $encounter_id;
                                                     }
                                                     ?>">
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
-                                                    <input type="hidden" name="redirect" value="<?php
+                                                    <input type="text" hidden name="redirect" value="<?php
                                                     if (!empty($encounter_id)) {
                                                         echo "encounter";
                                                     }
                                                     ?>">
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
-                                                    <input type="hidden" name="request_id" value="<?php
+                                                    <input type="text" hidden name="request_id" id="request_id" value="<?php
                                                     if (!empty($request_id)) {
                                                         echo $request_id;
                                                     }
+                                                    ?>">
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <input type="text" hidden name="labrequest_number" id="lab_request_number_input" value="<?php
+                                                        if (!empty($request_number)) {
+                                                            echo $request_number;
+                                                        } else {
+                                                            echo "";
+                                                        }
+                                                    ?>">
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <input type="text" hidden name="loinc" id="loinc_input" value="<?php
+                                                        if (!empty($labrequest->lab_loinc_id)) {
+                                                            echo $labrequest->lab_loinc_id;
+                                                        } else {
+                                                            echo "";
+                                                        }
                                                     ?>">
                                                 </div>
                                             </div>
@@ -64,6 +86,11 @@
                                                                 echo date('m/d/Y', strtotime($labrequest->request_date.' UTC'));
                                                             }
                                                         }
+                                                        if (!empty($request_number)) {
+                                                            if (!empty($labrequests[0]->request_date)) {
+                                                                echo date('m/d/Y', strtotime($labrequests[0]->request_date.' UTC'));
+                                                            }
+                                                        }
                                                         ?>">
                                                     </div>
                                                 </div>
@@ -72,7 +99,9 @@
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('patient') ?></label>
                                                             <select class="select2-show-search form-control" id="patient" name="patient">
-                                                                
+                                                                <?php foreach ($patients as $patient) { ?>
+                                                                    <option value="<?php echo $patient->id ?>"><?php echo $patient->firstname.' '.$patient->lastname ?></option>
+                                                                <?php } ?>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -82,7 +111,7 @@
                                                 <div class="col-md-10 col-sm-12 labrequest_block">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('select') . ' ' . lang('lab') . ' ' . lang('test') ?></label>
-                                                        <?php if (empty($labrequest->lab_loinc_id)) { ?>
+                                                        <!-- <?php if (empty($labrequest->lab_loinc_id)) { ?>
                                                             <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="">
 
                                                             </select>
@@ -92,6 +121,24 @@
                                                                     <option value="<?php echo $labrequest->lab_loinc_id . '*' . $labrequest->long_common_name . '*' . $labrequest->loinc_num; ?>" <?php echo 'data-loincid="' . $labrequest->lab_loinc_id . '"data-long="' . $labrequest->long_common_name . '"' ?> selected="selected">
                                                                         <?php echo $labrequest->long_common_name ?>
                                                                     </option>
+                                                                <?php } ?>
+                                                            </select>
+                                                        <?php } ?> -->
+
+                                                        <?php if (empty($labrequests)) { ?>
+                                                            <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="">
+
+                                                            </select>
+                                                        <?php } else { ?>
+                                                            <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="" multiple>
+                                                                <?php $i; ?>
+                                                                <?php foreach ($labrequests as $labrequest) { ?>
+                                                                    <?php if (!empty($labrequest->lab_loinc_id)) { ?>
+                                                                        <?php $i += 1; ?>
+                                                                        <option value="<?php echo $labrequest->lab_loinc_id . '*' . $labrequest->long_common_name . '*' . $labrequest->loinc_num . '*' . $labrequest->instructions . '*' . $i . '*' . $labrequest->id; ?>" <?php echo 'data-loincid="' . $labrequest->lab_loinc_id . '"data-long="' . $labrequest->long_common_name . '"' ?> selected="selected">
+                                                                            <?php echo $labrequest->long_common_name ?>
+                                                                        </option>
+                                                                    <?php } ?>
                                                                 <?php } ?>
                                                             </select>
                                                         <?php } ?>
@@ -109,6 +156,44 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('lab') . ' ' . lang('request'); ?></label>
                                                         <div class="labreq">
+                                                            <!-- <?php foreach($labrequests as $labrequest) { ?>
+                                                                <?php if (empty($labrequest->lab_loinc_id)) { ?>
+                                                                    <?php $i += 1; ?>
+                                                                    <section class="labreq_selected remove<?php echo $i; ?>" id="labreq_selected_section-<?php $labrequest->lab_loinc_id ?>">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-1">
+                                                                                <button class="btn btn-danger" onclick="removeElem(<?php echo $i; ?>)" type="button"><i class="fe fe-trash"></i></button>
+                                                                            </div>
+                                                                            <div class="col-sm-11">
+                                                                                <div class="form-group labrequest_sect">
+                                                                                    <div class="row">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="form-group">
+                                                                                                <input type="text" hidden name="labrequest_id[]" value="<?php echo $labrequest->id; ?>">
+                                                                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" value="<?php echo $labrequest->lab_request_text ?>" required>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-sm-12">
+                                                                                            <div class="form-group">
+                                                                                                <input type="text" name="dataholder[]" class="form-control" value="<?php echo $i; ?>">
+                                                                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="<?php echo $labrequest->instructions ?>"></div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        <div>
+                                                                    </section>
+                                                                <?php } ?>
+                                                            <?php } ?> -->
+                                                            <?php foreach($labrequests as $labrequest) { ?>
+                                                                <?php if(empty($labrequest->loinc_num)) { ?>
+                                                                    <?php $i += 1; ?>
+                                                                    <input type="text" hidden name="manual_item[]" class="manual_item" value="<?php echo $labrequest->id.'*'.$labrequest->lab_request_text.'*'.$labrequest->instructions.'*'.$i; ?>">
+                                                                <?php } ?>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -285,9 +370,123 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var request_number = $("#lab_request_number_input").val();
+
+            $.ajax({
+                url: 'labrequest/getLabrequestByJason?requestnumber='+ request_number,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var patient = response.patient;
+                    $("#labrequestForm").find('[name="patient"]').val(patient).change();
+                }
+            });
+        });
+    </script>
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
+            var lab_request_number = $("#lab_request_number_input").val();
+
+            $.ajax({
+                url: 'labrequest/getLabrequestByLabrequestnumberByJason?number=' + lab_request_number,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var request = response.requests;
+
+                    $.each(request, function (key, value) {
+                        var lab_request = value.lab_request_text;
+                        if (lab_request === null) {
+                            var lab_request = value.long_common_name;
+                        }
+                        console.log(value);
+                        console.log(value.id);
+                        console.log(value.lab_loinc_id);
+                        $(".labreq").append(
+                        '<section class="labreq_selected" id="labreq_selected_section">\n\
+                            <div class="row">\n\
+                                <div class="col-sm-1">\n\
+                                </div>\n\
+                                <div class="col-sm-11">\n\
+                                    <div class="form-group labrequest_sect">\n\
+                                        <div class="row">\n\
+                                            <div class="col-sm-12">\n\
+                                                <div class="form-group">\n\
+                                                    <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" value="'+lab_request+'" required>\n\
+                                                    <input type="hidden" id="labreq_id-' + value.lab_loinc_id + '" class = "labreq-div" name = "labrequest[]" value = "' + value.lab_loinc_id + '" placeholder="" required disabled>\n\
+                                                    <input class = "form-control labreq-div" name = "labreq[]" hidden value = "' + value.lab_loinc_id + '" placeholder="" required>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                        <div class="row">\n\
+                                            <div class="col-sm-12">\n\
+                                                <div class="form-group">\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="'+value.instructions+'"></div>\n\
+                                                    <input type="text" hidden name="dataholder[]" class="form-control" value="">\n\
+                                                </div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            <div>\n\
+                        </section>\n\
+                        ');
+                    })
+                }
+            })
+        });
+    </script> -->
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
+            var lab_loinc_id = $("#loinc_input").val();
+            var request_id = $("#request_id").val();
+            var count = 0;
+            if (request_id != '') {
+                if (lab_loinc_id == '') {
+                    $(".labreq").append(
+                    '<section class="labreq_selected" id="labreq_selected_section">\n\
+                        <div class="row">\n\
+                            <div class="col-sm-1">\n\
+                            </div>\n\
+                            <div class="col-sm-11">\n\
+                                <div class="form-group labrequest_sect">\n\
+                                    <div class="row">\n\
+                                        <div class="col-sm-12">\n\
+                                            <div class="form-group">\n\
+                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" value="<?php echo $labrequest->lab_request_text ?>" required>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class="row">\n\
+                                        <div class="col-sm-12">\n\
+                                            <div class="form-group">\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="<?php echo $labrequest->instructions ?>"></div>\n\
+                                                <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>\n\
+                        <div>\n\
+                    </section>\n\
+                    ');
+                }
+            } else {
+                alert('not null');
+            }
+        });
+    </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             var selected = $('#labrequest').find('option:selected');
             var unselected = $('#labrequest').find('option:not(:selected)');
             selected.attr('data-selected', '1');
+            
             $.each(unselected, function (index, value1) {
                 num--;
                 var count = parseInt(countlabReq) - 1;
@@ -306,13 +505,18 @@
                 }
             });
 
-            var count = 0;
             $.each($('select.labrequest option:selected'), function ( index ) {
                 var value = $(this).val();
                 var res = value.split("*");
                 var id = res[0];
                 var long_common = res[1];
                 var loinc_num = res[2];
+                var instructions = res[3];
+                var dataholder = res[4];
+                var labrequest_id = res[5];
+                var countlabReq = $(".labreq_selected").length;
+                var count = parseInt(countlabReq) + 1;
+                console.log(count);
 
                 if ($('#labreq_id-' + id).length)
                 {
@@ -329,9 +533,11 @@
                                         <div class="row">\n\
                                             <div class="col-sm-8">\n\
                                                 <div class="form-group">\n\
+                                                    <input type="text" hidden name="labrequest_id[]" value="' + labrequest_id + '">\n\
                                                     <input type="text" class = "form-control labreq-div" name = "labrequest_long[]" value = "' + long_common + '" placeholder="" required readonly>\n\
                                                     <input type="hidden" id="labreq_id-' + id + '" class = "labreq-div" name = "labrequest[]" value = "' + id + '" placeholder="" required disabled>\n\
                                                     <input class = "form-control labreq-div" name = "labreq[]" hidden value = "' + id + '" placeholder="" required>\n\
+                                                    <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" hidden>\n\
                                                 </div>\n\
                                             </div>\n\
                                             <div class="col-sm-4">\n\
@@ -343,7 +549,8 @@
                                         <div class="row">\n\
                                             <div class="col-sm-12">\n\
                                                 <div class="form-group">\n\
-                                                    <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]"></div>\n\
+                                                    <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="' + instructions + '"></div>\n\
                                                 </div>\n\
                                             </div>\n\
                                         </div>\n\
@@ -354,6 +561,51 @@
                     ');
                 }
 
+            });
+
+            $.each($('input.manual_item'), function (index) {
+                var value = $(this).val();
+                var res = value.split("*");
+                var id = res[0];
+                var request_text = res[1];
+                var instructions = res[2];
+                var i = res[3];
+                var countlabReq = $(".labreq_selected").length;
+                var count = parseInt(countlabReq) + 1;
+                console.log(count);
+                // console.log(value);
+                $(".labreq").append(
+                    '<section class="labreq_selected remove'+ count +'" id="labreq_selected_section">\n\
+                        <div class="row">\n\
+                            <div class="col-sm-1">\n\
+                                <button class="btn btn-danger" onclick="removeElem('+ count +')" type="button"><i class="fe fe-trash"></i></button>\n\
+                            </div>\n\
+                            <div class="col-sm-11">\n\
+                                <div class="form-group labrequest_sect">\n\
+                                    <div class="row">\n\
+                                        <div class="col-sm-12">\n\
+                                            <div class="form-group">\n\
+                                                <input type="text" hidden name="labrequest_id[]" value="'+ id +'">\n\
+                                                <input type="text" hidden class = "form-control labreq-div" name = "labrequest_long[]" value = "" placeholder="">\n\
+                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" value="'+ request_text +'" placeholder="" required>\n\
+                                                <input class = "form-control labreq-div" name = "labreq[]" hidden value = "" placeholder="">\n\
+                                                <input type="text" name="loinc_num[]" class="form-control" value="" hidden readonly>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class="row">\n\
+                                        <div class="col-sm-12">\n\
+                                            <div class="form-group">\n\
+                                                <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="'+ instructions +'"></div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>\n\
+                        <div>\n\
+                    </section>\n\
+                    ');
             });
 
         });
@@ -417,6 +669,7 @@
                                                         <input type="text" class = "form-control labreq-div" name = "labrequest_long[]" value = "' + long_common + '" placeholder="" required readonly>\n\
                                                         <input type="hidden" id="labreq_id-' + id + '" class = "labreq-div" name = "labrequest[]" value = "' + id + '" placeholder="" required disabled>\n\
                                                         <input class = "form-control labreq-div" name = "labreq[]" hidden value = "' + id + '" placeholder="" required>\n\
+                                                        <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" hidden>\n\
                                                     </div>\n\
                                                 </div>\n\
                                                 <div class="col-sm-4">\n\
@@ -428,6 +681,7 @@
                                             <div class="row">\n\
                                                 <div class="col-sm-12">\n\
                                                     <div class="form-group">\n\
+                                                        <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
                                                         <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]"></div>\n\
                                                     </div>\n\
                                                 </div>\n\
@@ -468,7 +722,8 @@
                                     <div class="row">\n\
                                         <div class="col-sm-12">\n\
                                             <div class="form-group">\n\
-                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction_text[]"></div>\n\
+                                                <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]"></div>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\
@@ -520,7 +775,7 @@
     <script>
         $(document).ready(function () {
             $("#patient").select2({
-                placeholder: '<?php echo lang('request'); ?>',
+                placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: false,
                 ajax: {
                     url: 'patient/getPatientinfo',
