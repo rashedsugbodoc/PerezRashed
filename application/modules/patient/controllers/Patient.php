@@ -1521,7 +1521,6 @@ class Patient extends MX_Controller {
         $data['barangays'] = $this->location_model->getBarangay();
 
 
-
         foreach ($data['appointments'] as $appointment) {
             $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
             $hospital_details = $this->hospital_model->getHospitalById($appointment->hospital_id);
@@ -1696,6 +1695,85 @@ class Patient extends MX_Controller {
                                                                     <div>
                                                                         <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
                                                                         <small class="d-block text-muted">' . $prescription_spec . '</small>
+                                                                    </div>
+                                                                    <div class="ml-auto mr-3 text-right">
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <strong>'. $hospital_details->name .'</strong>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <small>'. $branch_name .'</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div>
+                                                                            <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div></li>';
+            } else {
+                '';
+            }
+        }
+
+        foreach ($data['labrequests'] as $labrequest) {
+
+            $labtests = $this->labrequest_model->getLabrequestByLabrequestNumber($labrequest->lab_request_number);
+            $labtestdata = '';
+            foreach ($labtests as $labtest) {
+                $labrequest_text = $labtest->long_common_name;
+                if (empty($labrequest_text)) {
+                    $labrequest_text = $labtest->lab_request_text;
+                }
+
+                $labloinc = $labtest->loinc_num;
+                if (empty($labloinc)) {
+                    $labloinc = '';
+                }
+
+                $labtestsingle = '<div class="mb-3"><p class="mb-0"><strong>'.$labrequest_text.'</strong></p><p class="mb-0">'.$labtest->instructions.'</p><p class="mb-0">'.$labloinc.'</p></div>';
+                $labtestdata .= $labtestsingle;
+            }
+            $alltest = $labtestdata;
+
+            $doctor = $this->doctor_model->getDoctorById($labrequest->doctor_id);
+            $labrequest_specialty = [];
+            $labrequest_doctor_specialty_explode = explode(',', $doctor->specialties);
+
+            foreach($labrequest_doctor_specialty_explode as $labrequest_doctor_specialty) {
+                $labrequest_specialties = $this->specialty_model->getSpecialtyById($labrequest_doctor_specialty)->display_name_ph;
+                $labrequest_specialty[] = '<span class="badge badge-light badge-pill">'. $labrequest_specialties .'</span>';
+            }
+
+            $labrequest_spec = implode(' ', $labrequest_specialty);
+
+            $hospital_details = $this->hospital_model->getHospitalById($labrequest->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
+
+            if(!empty($labrequest->created_at)) {
+                $timeline[strtotime($labrequest->created_at.' UTC') + 7] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($labrequest->created_at.' UTC')) . '</span></li>
+                                                        <li><i class="fa fa-download bg-cyan"></i>
+                                                        <div class="timelineleft-item">
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($labrequest->created_at.' UTC')), 3) . '</span>
+                                                            <h3 class="timelineleft-header"><span>' . lang('lab').' '.lang('test') . '</span></h3>
+                                                            <div class="timelineleft-body">
+                                                                '. $alltest .'
+                                                                <a class="btn btn-info btn-xs btn_width" href="labrequest/labrequestView?id=' . $labrequest->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
+                                                            </div>
+                                                            <div class="timelineleft-footer border-top bg-light">
+                                                                <div class="d-flex align-items-center mt-auto">
+                                                                    <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor->img_url .')"></div>
+                                                                    <div>
+                                                                        <p class="font-weight-semibold mb-1">'. $doctor->name .'</p>
+                                                                        <small class="d-block text-muted">'. $labrequest_spec .'</small>
                                                                     </div>
                                                                     <div class="ml-auto mr-3 text-right">
                                                                         <div class="row">
