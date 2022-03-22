@@ -419,9 +419,10 @@
                                                                                 ?>
                                                                                 </strong></p>
                                                                                 <p class="mb-2"><?php echo $labrequest_number->instructions; ?></p>
-                                                                                <p class="mb-2"></p></h4>
+                                                                                <?php if (!empty($labrequest_number->loinc_num)) { ?>
+                                                                                    <p class="mb-2"><span><?php echo lang('loinc_code'); ?>: </span><?php echo $labrequest_number->loinc_num; ?></p></h4>
+                                                                                <?php } ?>
                                                                             </td>
-                                                                            <td class="pl-0 pb-0 pt-2"><h4><p><?php echo $labrequest_number->loinc_num; ?></p></h4></td>
                                                                         </tr>
                                                                     <?php } ?>
                                                                 </tbody>

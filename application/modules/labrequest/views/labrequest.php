@@ -24,7 +24,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th class="border-bottom-0"><?php echo lang('id'); ?></th>
-                                                            <th class="border-bottom-0"><?php echo lang('loinc_num'); ?></th>
+                                                            <th class="border-bottom-0"><?php echo lang('lab').' '.lang('test'); ?></th>
                                                             <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
                                                             <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
                                                             <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
@@ -158,7 +158,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: 100,
+                iDisplayLength: -1,
                 "order": [[0, "desc"]],
 
                 "language": {
