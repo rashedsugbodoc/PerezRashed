@@ -766,7 +766,7 @@
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="border-bottom-0"><?php echo lang('id'); ?></th>
-                                                                            <th class="border-bottom-0"><?php echo lang('loinc_num'); ?></th>
+                                                                            <th class="border-bottom-0"><?php echo lang('lab').' '.lang('test'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
@@ -776,7 +776,30 @@
                                                                         <?php foreach($labrequests as $labrequest) { ?>
                                                                             <tr>
                                                                                 <td><?php echo $labrequest->id ?></td>
-                                                                                <td><?php echo $labrequest->loinc_num ?></td>
+                                                                                <td>
+                                                                                    <?php
+                                                                                        $labtests = $this->labrequest_model->getLabrequestByLabrequestNumber($labrequest->lab_request_number);
+                                                                                        $labtestdata = '';
+                                                                                        foreach ($labtests as $labtest) {
+                                                                                            $labrequest_text = $labtest->long_common_name;
+                                                                                            if (empty($labrequest_text)) {
+                                                                                                $labrequest_text = $labtest->lab_request_text;
+                                                                                            }
+
+                                                                                            $labloinc = $labtest->loinc_num;
+                                                                                            if (empty($labloinc)) {
+                                                                                                $labloinc = '';
+                                                                                            }
+
+                                                                                            $labtestsingle = '<div class="mb-3"><p class="mb-0"><strong>'.$labrequest_text.'</strong></p><p class="mb-0">'.$labtest->instructions.'</p><p class="mb-0">'.$labloinc.'</p></div>';
+                                                                                            $labtestdata .= $labtestsingle;
+                                                                                        }
+                                                                                        $alltest = $labtestdata;
+
+                                                                                        echo $alltest;
+
+                                                                                    ?>
+                                                                                </td>
                                                                                 <td><?php echo $this->patient_model->getPatientById($labrequest->patient_id)->name ?></td>
                                                                                 <td><?php echo $this->doctor_model->getDoctorById($labrequest->doctor_id)->name ?></td>
                                                                                 <td>
