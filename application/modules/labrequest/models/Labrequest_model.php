@@ -14,22 +14,37 @@ class Labrequest_model extends CI_model {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
         $this->db->insert('lab_request', $data2);
+        return $this->db->affected_rows() > 0;
     }
 
     function updateLabrequestNumberById($id, $data2) {
         $this->db->where('id', $id);
         $this->db->update('lab_request', $data2);
+        return $this->db->affected_rows() > 0;
+    }
+
+    function updateLabrequestById($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('lab_request', $data);
+        return $this->db->affected_rows() > 0;
+    }
+
+    function delete($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('lab_request');
     }
 
     function getLabrequestInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
-            $this->db->where("loinc_num LIKE '%" . $searchTerm . "%' OR component LIKE '%" . $searchTerm . "%' OR long_common_name LIKE '%" . $searchTerm . "%'");
+            $this->db->where("classtype", 1);
             $this->db->where("status", "ACTIVE");
+            $this->db->where("(loinc_num LIKE '%" . $searchTerm . "%' OR component LIKE '%" . $searchTerm . "%' OR long_common_name LIKE '%" . $searchTerm . "%')", NULL, FALSE);
             $fetched_records = $this->db->get('lab_loinc');
             $users = $fetched_records->result_array();
         } else {
             $this->db->select('*');
+            $this->db->where("classtype", 1);
             $this->db->where("status", "ACTIVE");
             $this->db->limit(10);
             $fetched_records = $this->db->get('lab_loinc');
@@ -49,6 +64,7 @@ class Labrequest_model extends CI_model {
                 ->from('lab_request')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
+                ->group_by('lab_request_number')
                 ->get();
         ;
         return $query->result();            
@@ -56,6 +72,26 @@ class Labrequest_model extends CI_model {
 
     function getLabrequest() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->group_by('lab_request_number');
+        $query = $this->db->get('lab_request');
+        return $query->result();
+    }
+
+    // function getLabrequest() {
+    //     $this->db->select('*');
+    //     $this->db->from('lab_request');
+    //     $this->db->group_by('lab_request_number');
+    //     $this->db->having('count(lab_request_number) > 1');
+    //     $where_clause = $this->db->get_compiled_select();
+
+    //     $this->db->get('lab_request');
+    //     $this->db->where('`id` IN ($where_clause)', NULL, FALSE);
+    // }
+
+    function getLabrequestByPatientId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('patient_id', $id);
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('lab_request');
         return $query->result();
@@ -90,6 +126,7 @@ class Labrequest_model extends CI_model {
                 ->from('lab_request')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
+                ->group_by('lab_request_number')
                 ->get();
         ;
         return $query->result();       
@@ -98,6 +135,7 @@ class Labrequest_model extends CI_model {
     function getLabrequestByLimit($limit, $start) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
+        $this->db->group_by('lab_request_number');
         $this->db->limit($limit, $start);
         $query = $this->db->get('lab_request');
         return $query->result();
