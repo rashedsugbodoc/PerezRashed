@@ -15,6 +15,7 @@ class Patient extends MX_Controller {
         $this->load->model('appointment/appointment_model');
         $this->load->model('bed/bed_model');
         $this->load->model('lab/lab_model');
+        $this->load->model('labrequest/labrequest_model');
         $this->load->model('finance/finance_model');
         $this->load->model('finance/pharmacy_model');
         $this->load->model('sms/sms_model');
@@ -1503,6 +1504,7 @@ class Patient extends MX_Controller {
         $data['patient'] = $this->patient_model->getPatientById($id);
         $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
         $data['appointments_location'] = $this->appointment_model->getAppointmentByPatientForLocation($data['patient']->id);
+        $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientId($data['patient']->id);
         // $data['service_category_group'] = $this->appointment_model->getServiceCategoryById($data['appointments_location']->service_category_group_id);
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();

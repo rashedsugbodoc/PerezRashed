@@ -179,11 +179,12 @@
                                                 <li><a href="#tab-8" data-toggle="tab" class=""><?php echo lang('appointments'); ?></a></li>
                                                 <li><a href="#tab-9" data-toggle="tab" class=""><?php echo lang('case_notes'); ?></a></li>
                                                 <li><a href="#tab-10" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
-                                                <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
-                                                <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li>
-                                                <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
-                                                <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('encounters'); ?></a></li>
-                                                <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
+                                                <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('lab').' '.lang('request'); ?></a></li>
+                                                <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
+                                                <!-- <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li> -->
+                                                <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
+                                                <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('encounters'); ?></a></li>
+                                                <li><a href="#tab-16" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -382,9 +383,10 @@
                                                                             <th class="text-center normal-caps"><?php echo lang('respiration_rate').'<br>'.'('.lang('bpm').')'; ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('pain_level').'<br>'.'('.lang('10_highest').')'; ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
-                                                                            <?php if ($vital->recorded_user_id == $current_user) { ?>
+                                                                            <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
+                                                                            <!-- <?php if ($vital->recorded_user_id == $current_user) { ?>
                                                                                 <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
-                                                                            <?php } ?>
+                                                                            <?php } ?> -->
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -592,7 +594,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample3" class="table table-bordered text-nowrap key-buttons w-100 editable-sample3">
+                                                                <table id="editable-sample3" class="table table table-bordered text-nowrap key-buttons w-100 editable-sample3">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="w-15"><?php echo lang('date'); ?></th>
@@ -751,6 +753,51 @@
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <div class="card-title">
+                                                            <?php echo lang('lab').' '.lang('request')?>
+                                                        </div>
+                                                        <div class="card-options">
+                                                            <a href="labrequest/addLabRequestView" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="">
+                                                            <div class="table-responsive">
+                                                                <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100 editable-sample5">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="border-bottom-0"><?php echo lang('id'); ?></th>
+                                                                            <th class="border-bottom-0"><?php echo lang('loinc_num'); ?></th>
+                                                                            <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
+                                                                            <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
+                                                                            <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php foreach($labrequests as $labrequest) { ?>
+                                                                            <tr>
+                                                                                <td><?php echo $labrequest->id ?></td>
+                                                                                <td><?php echo $labrequest->loinc_num ?></td>
+                                                                                <td><?php echo $this->patient_model->getPatientById($labrequest->patient_id)->name ?></td>
+                                                                                <td><?php echo $this->doctor_model->getDoctorById($labrequest->doctor_id)->name ?></td>
+                                                                                <td>
+                                                                                    <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->id ?>"><i class="fe fe-edit"></i></a>
+                                                                                    <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->id ?>"><i class="fe fe-eye"></i></a>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php } ?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-12">
+                                            <div class="mb-0 border">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="card-title">
                                                             <?php echo lang('forms')?>
                                                         </div>
                                                         <div class="card-options">
@@ -795,7 +842,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="tab-12">
+                                        <div class="tab-pane" id="tab-13">
                                             <div class="mb-0 border">
                                                 <div class="card">
                                                     <div class="card-header">
@@ -854,7 +901,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane" id="tab-13">
+                                        <div class="tab-pane" id="tab-14">
                                             <div class="card p-5">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
@@ -948,8 +995,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php if (in_array('bed', $this->modules)) { ?>
-                                        <div class="tab-pane" id="tab-14">
+                                        <div class="tab-pane" id="tab-15">
                                             <div class="mb-0 border">
                                                 <div class="card">
                                                     <div class="card-header">
@@ -1009,8 +1055,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php } ?>
-                                        <div class="tab-pane" id="tab-15">
+                                        <div class="tab-pane" id="tab-16">
                                             <ul class="timelineleft pb-5">
                                                 <?php
                                                 if (!empty($timeline)) {
