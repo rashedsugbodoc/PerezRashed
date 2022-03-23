@@ -976,6 +976,13 @@
     </script> -->
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tpBasic').timepicker('setTime', new Date());
+            $('.fc-datepicker').datepicker('setDate', new Date());
+        });
+    </script>
+
+    <script type="text/javascript">
         function myFunction(){
             var quill = document.getElementById('quillEditor').children[0].innerHTML;
             // var cleanText = quill.replace(/<\/?[^>]+(>|$)/g, "");
