@@ -803,7 +803,7 @@
                                                                                 <td><?php echo $this->patient_model->getPatientById($labrequest->patient_id)->name ?></td>
                                                                                 <td><?php echo $this->doctor_model->getDoctorById($labrequest->doctor_id)->name ?></td>
                                                                                 <td>
-                                                                                    <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->id ?>"><i class="fe fe-edit"></i></a>
+                                                                                    <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number ?>"><i class="fe fe-edit"></i></a>
                                                                                     <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->id ?>"><i class="fe fe-eye"></i></a>
                                                                                 </td>
                                                                             </tr>
