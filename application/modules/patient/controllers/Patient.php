@@ -1376,7 +1376,8 @@ class Patient extends MX_Controller {
         $title = $this->input->post('title');
 
         if (!empty($date)) {
-            $date = strtotime($date);
+            $nowtime = date('H:i:s');
+            $date = strtotime($date . ' ' . $nowtime);
             $date = gmdate('Y-m-d H:i:s', $date);
         } else {
             $date = time();
