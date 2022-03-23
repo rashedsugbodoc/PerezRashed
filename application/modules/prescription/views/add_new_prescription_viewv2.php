@@ -310,6 +310,13 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $('#tpBasic').timepicker('setTime', new Date());
+            $('.fc-datepicker').datepicker('setDate', new Date());
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             //   $(".medicine").html("");
             var selected = $('#my_select1_disabled').find('option:selected');
             var unselected = $('#my_select1_disabled').find('option:not(:selected)');
