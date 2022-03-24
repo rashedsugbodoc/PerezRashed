@@ -237,9 +237,9 @@ class Encounter extends MX_Controller {
                 }
                 if ($this->ion_auth->in_group(array('Doctor'))) {
                     if (empty($prescription_encounter->encounter_id)) {
-                        $option8 = '<a href="prescription/addPrescriptionView?id='. $encounter->id .'" class="dropdown-item bg-info text-light"><i class="fa fa-file"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
+                        $option8 = '<a href="prescription/addPrescriptionView?encounter_id='. $encounter->id .'" class="dropdown-item bg-info text-light"><i class="fa fa-file"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
                     } else {
-                        $option8 = '<a href="prescription/addPrescriptionView?id='. $encounter->id .'" class="dropdown-item bg-success text-light"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
+                        $option8 = '<a href="prescription/addPrescriptionView?encounter_id='. $encounter->id .'" class="dropdown-item bg-success text-light"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
                     }
                 }
                 if (empty($document_encounter->encounter_id)) {
