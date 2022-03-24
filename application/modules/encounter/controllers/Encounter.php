@@ -275,7 +275,7 @@ class Encounter extends MX_Controller {
                                     '.$option10.'
                                     '.$option11.'
                                     <a class="billbutton dropdown-item bg-info text-light" href="diagnosis/addDiagnosisView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('add') . ' ' . lang('diagnosis') . '</a>
-                                    <a class="billbutton dropdown-item bg-info text-light" href="labrequest/addLabRequestView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('add') . ' ' . lang('lab') . ' '. lang('request') . '</a>
+                                    <a class="billbutton dropdown-item bg-info text-light" href="labrequest/addLabRequestView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('add') . ' ' . lang('lab') . ' '. lang('request') . '</a>
                                     <a class="delete_button dropdown-item bg-danger text-light" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>  ' . lang('delete') . '</a>
                                 </div>
                             </div>';
