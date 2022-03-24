@@ -71,7 +71,9 @@
                 <div class="w-40 bg-style page-style">
                     <div class="page-content">
                         <div class="page-single-content">
-                            <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                            <a href="<?php echo base_url('')?>">
+                                <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                            </a>
                             <div class="card-body text-white py-5 px-8 text-center">
                                 <img src="<?php echo base_url('public/assets/images/png/5.png'); ?>" alt="img" class="w-100 mx-auto text-center">
                             </div>
@@ -86,7 +88,9 @@
                                 <div class="col-md-10 col-sm-12 mx-auto d-block">
                                     <div class="">
                                         <div class="text-white py-1 px-8 text-center">
-                                            <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                                            <a href="<?php echo base_url('')?>">
+                                                <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                                            </a>
                                         </div>
                                         <?php if($message) { ?>
                                             <div class="alert alert-info"><?php echo $message; ?></div>
@@ -193,7 +197,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group wd-xs-300">
-                                                        <label class="form-control-label"><?php echo lang('street_number').' / '.lang('street_name');?> <span class="tx-danger">*</span></label> <input class="form-control" id="address" name="address" placeholder="Enter street number and street address" required="" type="text">
+                                                        <label class="form-control-label"><?php echo lang('street_number').' / '.lang('street_name');?> <span class="text-danger">*</span></label> <input class="form-control" id="address" name="address" placeholder="Enter street number, street address, unit number, etc." required="" type="text">
                                                     </div>
                                                 </div>
                                             </div>
@@ -201,7 +205,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('country'); ?> <span class="text-danger">*</span></label>
-                                                        <select class="form-control select2-show-search" name="country_id" id="country" required>
+                                                        <select class="form-control select2-show-search" name="country_id" id="country" required style="width:100%;">
                                                             <!-- <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option> -->
                                                             <option></option>
                                                             <?php foreach($countries as $country) { ?>
@@ -213,14 +217,14 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('state_province'); ?> <span class="text-danger">*</span></label>
-                                                        <select class="form-control" name="state_id" id="state" value='' required>
+                                                        <select class="form-control" name="state_id" id="state" value='' required style="width:100%;">
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('city_municipality'); ?> <span class="text-danger">*</span></label>
-                                                        <select class="form-control" name="city_id" id="city" value='' required>
+                                                        <select class="form-control" name="city_id" id="city" value='' required style="width:100%;">
                                                             <option></option>
                                                         </select> 
                                                     </div>
@@ -228,7 +232,7 @@
                                                 <div class="col-sm-12 col-md-6" id="barangayDiv">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('barangay'); ?></label>
-                                                        <select class="form-control" name="barangay_id" id="barangay" value=''>
+                                                        <select class="form-control" name="barangay_id" id="barangay" value='' style="width:100%;">
                                                             <option></option>
                                                         </select>        
                                                     </div>
