@@ -163,7 +163,7 @@
                                                         <div class="col-sm-12 col-md-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('address'); ?> <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" placeholder="Address" name="address" required maxlength="100" value="<?php
+                                                                <input type="text" class="form-control" placeholder="<?php echo lang('street_address_placeholder');?>" name="address" required maxlength="100" value="<?php
                                                                 if (!empty($setval)) {
                                                                     echo set_value('address');
                                                                 }
