@@ -59,7 +59,7 @@ class Finance extends MX_Controller {
     }
 
     public function addPaymentView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
             redirect('home/permission');
         }
         $data = array();
