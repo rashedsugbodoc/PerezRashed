@@ -61,11 +61,16 @@ class Prescription extends MX_Controller {
         }
 
         $id = $this->input->get('id');
+        $encounter_id = $this->input->get('encounter_id');
 
         $data = array();
 
         if (!empty($id)) {
             $data['id'] = $id;
+        }
+
+        if (!empty($encounter_id)) {
+            $data['encounter_id'] = $encounter_id;
         }
 
         $data['medicines'] = $this->medicine_model->getMedicine();
