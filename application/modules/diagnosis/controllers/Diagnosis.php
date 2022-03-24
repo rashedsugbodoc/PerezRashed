@@ -33,8 +33,9 @@ class Diagnosis extends MX_Controller {
         $patient_address = $this->patient_model->getPatientById($patient)->address;
         $patient_phone = $this->patient_model->getPatientById($patient)->phone;
         $doctor = $this->encounter_model->getEncounterById($encounter)->doctor;
-        $diag_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date')));
-        $on_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('on_date')));
+        $nowtime = date('H:i:s');
+        $diag_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date') . ' ' . $nowtime));
+        $on_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('on_date') . ' ' . $nowtime));
         $diagnosis = $this->input->post('diag');
         $diagnosis_description = $this->input->post('diag_description');
         $type = $this->input->post('type');

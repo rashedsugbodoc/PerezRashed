@@ -543,7 +543,7 @@
                                     <form role="form" id="addCaseForm" action="patient/addMedicalHistory" class="clearfix" method="post" onsubmit="javascript: return myFunction();" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             
-                                            <input type="hidden" name="encounter_id">
+                                            <input type="hidden" name="encounter_id" id="encounter_id">
 
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
@@ -556,6 +556,9 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search" id="patientchoose" name="patient_id">
+                                                            <?php foreach ($patients as $patient) { ?>
+                                                                <option value="<?php echo $patient->id ?>"> <?php echo $patient->firstname . ' ' . $patient->lastname ?> </option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -982,6 +985,25 @@
         });
     </script>
 
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
+            var iid = $("#encounter_id").val();
+            $.ajax({
+                url: "encounter/getEncounterById?id=" + iid,
+                method: "GET",
+                data: "",
+                dataType: "json",
+                success: function (response) {
+                    var patient_id = response.encounter.patient_id;
+
+                    alert(patient_id);
+                    $('#addCaseForm').find('[name="patient_id"]').val(patient_id).change();
+
+                }
+            });
+        });
+    </script> -->
+
     <script type="text/javascript">
         function myFunction(){
             var quill = document.getElementById('quillEditor').children[0].innerHTML;
@@ -1015,8 +1037,20 @@
 
             console.log(iid);
             $('#addCaseForm').find('[name="encounter_id"]').val(iid).end()
+            
+            $.ajax({
+                url: "encounter/getEncounterById?id=" + iid,
+                method: "GET",
+                data: "",
+                dataType: "json",
+                success: function (response) {
+                    var patient_id = response.encounter.patient_id;
+                    $('#addCaseForm').find('[name="patient_id"]').val(patient_id).change();
 
-            $('#addCase').modal('show');
+                    $('#addCase').modal('show');
+                }
+            });
+            
         });
     </script>
 
@@ -1456,23 +1490,23 @@
             $("#patientchoose").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
-                ajax: {
-                    url: 'patient/getPatientinfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
+                // ajax: {
+                //     url: 'patient/getPatientinfo',
+                //     type: "post",
+                //     dataType: 'json',
+                //     delay: 250,
+                //     data: function (params) {
+                //         return {
+                //             searchTerm: params.term // search term
+                //         };
+                //     },
+                //     processResults: function (response) {
+                //         return {
+                //             results: response
+                //         };
+                //     },
+                //     cache: true
+                // }
 
             });
         });

@@ -224,6 +224,15 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tpBasic').timepicker('setTime', new Date());
+            $('.fc-datepicker').datepicker('setDate', new Date());
+        });
+    </script>
+
+    
     <script type="text/javascript">
         function removeElem(count, id) {
             var remove = $(".remove"+count);
