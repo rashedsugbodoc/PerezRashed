@@ -1158,12 +1158,14 @@ class Appointment extends MX_Controller {
                 $appointment_status = lang('pending_confirmation');
             } elseif ($entry->status == 'Confirmed') {
                 $appointment_status = lang('confirmed');
-            } elseif ($entry->status == 'Treated') {
-                $appointment_status = lang('treated');
+            } elseif ($entry->status == 'Consulted') {
+                $appointment_status = lang('consulted');
             } elseif ($entry->status == 'Cancelled') {
                 $appointment_status = lang('cancelled');
             } elseif ($entry->status == 'Requested') {
                 $appointment_status = lang('requested');
+            } else {
+                $appointment_status = lang('not_available');
             }
 
             $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/> Doctor: ' . $doctor . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
@@ -1174,7 +1176,7 @@ class Appointment extends MX_Controller {
             if ($entry->status == 'Confirmed') {
                 $color = 'rgba(68, 84, 195, 0.15)';
             }
-            if ($entry->status == 'Treated') {
+            if ($entry->status == 'Consulted') {
                 $color = 'rgba(45, 206, 137, 0.15)';
             }
             if ($entry->status == 'Cancelled') {
