@@ -366,8 +366,8 @@
                                                                 ?> > <?php echo lang('pending_confirmation'); ?> </option>
                                                             <option value="Confirmed" <?php
                                                                 ?> > <?php echo lang('confirmed'); ?> </option>
-                                                            <option value="Treated" <?php
-                                                                ?> > <?php echo lang('treated'); ?> </option>
+                                                            <option value="Consulted" <?php
+                                                                ?> > <?php echo lang('consulted'); ?> </option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -487,8 +487,8 @@
                                                                 ?> > <?php echo lang('pending_confirmation'); ?> </option>
                                                             <option value="Confirmed" <?php
                                                                 ?> > <?php echo lang('confirmed'); ?> </option>
-                                                            <option value="Treated" <?php
-                                                                ?> > <?php echo lang('treated'); ?> </option>
+                                                            <option value="Consulted" <?php
+                                                                ?> > <?php echo lang('consulted'); ?> </option>
                                                             <option value="Cancelled" <?php
                                                                 ?> > <?php echo lang('cancelled'); ?> </option>
                                                             <option value="Requested" <?php
