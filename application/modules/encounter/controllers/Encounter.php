@@ -256,9 +256,9 @@ class Encounter extends MX_Controller {
                 }
                 if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
                     if (empty($encounter->invoice_id)) {
-                        $option11 = '<a class="billbutton dropdown-item bg-info text-light" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('generate_bill') . '</a>';
+                        $option11 = '<a class="billbutton dropdown-item bg-info text-light" href="finance/addPaymentView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('generate_bill') . '</a>';
                     } else {
-                        $option11 = '<a class="billbutton dropdown-item bg-success text-light" href="finance/addPaymentView?id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-check"></i>  '. ' ' . lang('generate_bill') . '</a>';
+                        $option11 = '<a class="billbutton dropdown-item bg-success text-light" href="finance/addPaymentView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-check"></i>  '. ' ' . lang('generate_bill') . '</a>';
                     }
                 }
                 $option6 = '<div class="dropdown">
