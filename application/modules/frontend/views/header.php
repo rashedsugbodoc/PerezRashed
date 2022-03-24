@@ -33,7 +33,7 @@ $title = explode(' ', $settings->title);
   <!-- Navbar -->
   <nav id="navbar-main" class="navbar navbar-main navbar-expand-lg bg-primary navbar-dark position-sticky top-0  py-2">
     <div class="container">
-      <a class="navbar-brand mr-lg-5" href="./index.html">
+      <a class="navbar-brand mr-lg-5" href="">
         <img src="<?php echo base_url('public/assets/images/brand/logo1.png'); ?>">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar_global" aria-controls="navbar_global" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@ $title = explode(' ', $settings->title);
         <div class="navbar-collapse-header">
           <div class="row">
             <div class="col-6 collapse-brand">
-              <a href="./index.html">
+              <a href="">
                 <img src="front/img/brand/logo.png">
               </a>
             </div>

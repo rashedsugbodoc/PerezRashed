@@ -31,7 +31,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <meta name="description" content="">
         <meta name="author" content="Rygel">
         <meta name="keywords" content="Hospital Information System, Clinic, Management, Software, Finance">
-        <link rel="shortcut icon" href="public/assets/images/brand/favicon.ico">
+        <link rel="shortcut icon" href="public/assets/images/brand/favicon.png">
         <title> <?php echo $this->router->fetch_class(); ?> | 
             <?php
             if ($this->ion_auth->in_group(array('superadmin'))) {
@@ -278,7 +278,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php if (in_array('department', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" href="patient/addNewView">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><g fill="currentColor"><path d="M22,11V3h-7v3H9V3H2v8h7V8h2v10h4v3h7v-8h-7v3h-2V8h2v3H22z M7,9H4V5h3V9z M17,15h3v4h-3V15z M17,5h3v4h-3V5z"/><polyline opacity=".3" points="7,5 7,9 4,9 4,5 7,5"/><polyline opacity=".3" points="20,5 20,9 17,9 17,5 20,5"/><polyline opacity=".3" points="20,15 20,19 17,19 17,15 20,15"/></g></svg>
+
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" ><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M15 16c-2.69 0-5.77 1.28-6 2h12c-.2-.71-3.3-2-6-2z" opacity=".3"></path><circle cx="15" cy="8" opacity=".6" r="2"></circle><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 8c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2 2.7 0 5.8 1.29 6 2H9zm-3-3v-3h3v-2H6V7H4v3H1v2h3v3z" fill="currentColor"></path></svg>
                                     <span class="side-menu__label"><?php echo lang('register_new_patient'); ?></span></a>
                                 </li>
                             <?php } ?>
