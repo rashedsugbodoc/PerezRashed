@@ -67,8 +67,10 @@
                                                         $patientdetails = $this->db->get_where('patient', array('id' => set_value('patient')))->row();
                                                         ?>
                                                         <option value="<?php echo $patientdetails->id; ?>" selected="selected"><?php echo $patientdetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patientdetails->id; ?>)</option>
-                                                    <?php }
-                                                    ?>
+                                                    <?php } ?>
+                                                    <?php if (!empty($patient_id)) { ?>
+                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
                                         </div>

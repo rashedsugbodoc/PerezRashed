@@ -14,6 +14,7 @@ class Prescription extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('branch/branch_model');
         $this->load->model('specialty/specialty_model');
+        $this->load->model('encounter/encounter_model');
         if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
@@ -71,6 +72,7 @@ class Prescription extends MX_Controller {
 
         if (!empty($encounter_id)) {
             $data['encounter_id'] = $encounter_id;
+            $data['patient_id'] = $this->encounter_model->getEncounterById($data['encounter_id'])->patient_id;
         }
 
         $data['medicines'] = $this->medicine_model->getMedicine();
