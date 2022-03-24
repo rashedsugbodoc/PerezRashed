@@ -19,7 +19,7 @@ class Diagnosis extends MX_Controller {
     function addDiagnosisView() {
         $data = array();
 
-        $data['encounter_id'] = $this->input->get('id');
+        $data['encounter_id'] = $this->input->get('encounter_id');
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
