@@ -157,15 +157,15 @@
                                                                 ?> > <?php echo lang('pending_confirmation'); ?> </option>
                                                             <option value="Confirmed" <?php
                                                                 ?> > <?php echo lang('confirmed'); ?> </option>
-                                                            <option value="Treated" <?php
-                                                                ?> > <?php echo lang('treated'); ?> </option>
+                                                            <option value="Consulted" <?php
+                                                                ?> > <?php echo lang('consulted'); ?> </option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('remarks'); ?> <span class="text-red">*</span></label>
-                                                        <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" rows="3" maxlength="500"></textarea>
+                                                        <label class="form-label"><?php echo lang('reason_for_visit_consultation'); ?> <span class="text-red">*</span></label>
+                                                        <textarea class="form-control mb-4" placeholder="<?php echo lang('enter').' '.lang('reason_for_visit_consultation'); ?>" name="remarks" rows="3" maxlength="500"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,8 +236,8 @@
                                                                 ?> > <?php echo lang('pending_confirmation'); ?> </option>
                                                             <option value="Confirmed" <?php
                                                                 ?> > <?php echo lang('confirmed'); ?> </option>
-                                                            <option value="Treated" <?php
-                                                                ?> > <?php echo lang('treated'); ?> </option>
+                                                            <option value="Consulted" <?php
+                                                                ?> > <?php echo lang('consulted'); ?> </option>
                                                             <option value="Cancelled" <?php
                                                                 ?> > <?php echo lang('cancelled'); ?> </option>
                                                         </select>
@@ -504,11 +504,7 @@
         $(document).ready(function () {
             var table = $('#editable-sample1').DataTable({
                 responsive: true,
-                //   dom: 'lfrBtip',
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
                 "ajax": {
                     url: "appointment/getUpcomingAppoinmentList",
                     type: 'POST',
