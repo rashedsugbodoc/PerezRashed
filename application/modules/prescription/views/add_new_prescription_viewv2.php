@@ -30,13 +30,14 @@
                                 <form role="form" action="prescription/addNewPrescription" class="clearfix" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
-                                            <input type="hidden" name="encounter_id" value="<?php echo $id ?>">
+                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
                                         </div>
                                         <div class="col-md-12 col-sm-12">
                                             <input type="hidden" name="redirect" value="<?php
-                                            if (!empty($id)) {
+                                            if (!empty($encounter_id)) {
                                                 echo 'encounter';
                                             }
+
                                             ?>">
                                         </div>
                                     </div>
