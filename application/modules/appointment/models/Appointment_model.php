@@ -826,7 +826,7 @@ class Appointment_model extends CI_model {
     function getTreatedAppointmentByDoctor($doctor) {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where('status', 'Treated');
+        $this->db->where('status', 'Consulted');
         $this->db->where('doctor', $doctor);
         $query = $this->db->get('appointment');
         return $query->result();
@@ -836,7 +836,7 @@ class Appointment_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
                 ->from('appointment')
-                ->where('status', 'Treated')
+                ->where('status', 'Consulted')
                 ->where('doctor', $doctor)
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
@@ -846,7 +846,7 @@ class Appointment_model extends CI_model {
     function getTreatedAppointmentByLimitByDoctor($doctor, $limit, $start) {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where('status', 'Treated');
+        $this->db->where('status', 'Consulted');
         $this->db->where('doctor', $doctor);
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
@@ -858,7 +858,7 @@ class Appointment_model extends CI_model {
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
                 ->from('appointment')
-                ->where('status', 'Treated')
+                ->where('status', 'Consulted')
                 ->where('doctor', $doctor)
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
