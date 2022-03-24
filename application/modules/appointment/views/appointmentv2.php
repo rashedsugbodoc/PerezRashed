@@ -506,10 +506,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
-                                                    <label class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
-                                                        <span class="custom-control-label">Send SMS</span>
-                                                    </label>
+
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <button class="btn btn-primary pull-right" name="EditAppointment" type="submit"><?php echo lang('submit'); ?></button>
@@ -1215,9 +1212,6 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
                 "ajax": {
                     url: "appointment/getRequestedAppointmentList",
                     type: 'POST',
@@ -1270,9 +1264,6 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
                 "ajax": {
                     url: "appointment/getPendingAppoinmentList",
                     type: 'POST',
@@ -1324,9 +1315,6 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
                 "ajax": {
                     url: "appointment/getConfirmedAppoinmentList",
                     type: 'POST',
@@ -1379,9 +1367,6 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
                 "ajax": {
                     url: "appointment/getTreatedAppoinmentList",
                     type: 'POST',
@@ -1434,9 +1419,6 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
                 "ajax": {
                     url: "appointment/getCancelledAppoinmentList",
                     type: 'POST',
