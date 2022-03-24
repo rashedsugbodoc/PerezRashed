@@ -51,7 +51,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('diagnosis') . '  ' . lang('date') ?></label>
-                                                        <input type="text" class="form-control fc-datepicker" id="date" readonly placeholder="MM/DD/YYYY" name="date">
+                                                        <input type="text" class="form-control fc-datepicker1" id="date" readonly placeholder="MM/DD/YYYY" name="date">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
@@ -226,9 +226,16 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
+        $('.fc-datepicker1').datepicker({
+            showOtherMonths: true,
+            selectOtherMonths: true
+        });
+    </script>
+
+    <script type="text/javascript">
         $(document).ready(function () {
             $('#tpBasic').timepicker('setTime', new Date());
-            $('.fc-datepicker').datepicker('setDate', new Date());
+            $('.fc-datepicker1').datepicker('setDate', new Date());
         });
     </script>
 
