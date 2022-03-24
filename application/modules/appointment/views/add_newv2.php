@@ -202,16 +202,16 @@
                                                         }
                                                     }
                                                     ?> > <?php echo lang('confirmed'); ?> </option>
-                                                    <option value="Treated" <?php
+                                                    <option value="Consulted" <?php
                                                     if (!empty($appointment->status)) {
-                                                        if ($appointment->status == 'Treated') {
+                                                        if ($appointment->status == 'Consulted') {
                                                             echo 'selected';
                                                         }
                                                     }
-                                                    ?> > <?php echo lang('treated'); ?> </option>
+                                                    ?> > <?php echo lang('consulted'); ?> </option>
                                                     <option value="cancelled" <?php
                                                     if (!empty($appointment->status)) {
-                                                        if ($appointment->status == 'Treated') {
+                                                        if ($appointment->status == 'Cancelled') {
                                                             echo 'selected';
                                                         }
                                                     }
