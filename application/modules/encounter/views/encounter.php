@@ -746,6 +746,9 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search pos_select" id="pos_select_form" name="patient" data-placeholder="Choose one">
+                                                            <?php foreach ($patients as $patient) { ?>
+                                                                <option value="<?php echo $patient->id ?>"> <?php echo $patient->firstname . ' ' . $patient->lastname ?> </option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -766,6 +769,9 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('rendering_doctor'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one">
+                                                            <?php foreach ($doctors as $doctor) { ?>
+                                                                <option value="<?php echo $doctor->id ?>"><?php echo $doctor->firstname . ' ' . $doctor->lastname ?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1086,7 +1092,21 @@
             console.log(iid);
             $('#addFormsForm').find('[name="encounter_id"]').val(iid).end()
 
-            $('#addForm').modal('show');
+            $.ajax({
+                url: "encounter/getEncounterById?id=" + iid,
+                method: "GET",
+                data: "",
+                dataType: "json",
+                success: function (response) {
+                    var patient_id = response.encounter.patient_id;
+                    var doctor_id = response.encounter.doctor;
+                    $('#addFormsForm').find('[name="patient"]').val(patient_id).change();
+                    $('#addFormsForm').find('[name="doctor"]').val(doctor_id).change();
+
+                    $('#addForm').modal('show');
+                }
+            });
+
         });
     </script>
 
@@ -1490,23 +1510,6 @@
             $("#patientchoose").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
-                // ajax: {
-                //     url: 'patient/getPatientinfo',
-                //     type: "post",
-                //     dataType: 'json',
-                //     delay: 250,
-                //     data: function (params) {
-                //         return {
-                //             searchTerm: params.term // search term
-                //         };
-                //     },
-                //     processResults: function (response) {
-                //         return {
-                //             results: response
-                //         };
-                //     },
-                //     cache: true
-                // }
 
             });
         });
@@ -1515,23 +1518,6 @@
             $("#pos_select_form").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
-                ajax: {
-                    url: 'patient/getPatientinfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
 
             });
         });
