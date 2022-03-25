@@ -583,7 +583,7 @@ class Finance extends MX_Controller {
     }
 
     function editPayment() {
-        if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) {
             $data = array();
             $data['discount_type'] = $this->finance_model->getDiscountType();
             $data['settings'] = $this->settings_model->getSettings();
@@ -2211,7 +2211,7 @@ class Finance extends MX_Controller {
                 $discount = 0;
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor'))) {
                 $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?id=' . $payment->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 

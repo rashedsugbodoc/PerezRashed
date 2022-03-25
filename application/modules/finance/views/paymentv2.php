@@ -13,7 +13,7 @@
                                         <?php echo lang('invoices'); ?>
                                     </div>
                                     <div class="card-options">
-                                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) { ?>
                                             <a href="finance/addPaymentView">
                                                 <button id="" class="btn btn-primary btn-xs">
                                                     <i class="fa fa-plus"></i> <?php echo lang('add_new_invoice'); ?>
