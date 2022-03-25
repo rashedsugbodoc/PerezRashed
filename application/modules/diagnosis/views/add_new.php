@@ -53,7 +53,7 @@
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
                                                         <select class="form-control select2-show-search" name="encounter" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                             <?php if (!empty($encounter_id)) { ?>
-                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . $encounter->created_at; ?></option>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>
