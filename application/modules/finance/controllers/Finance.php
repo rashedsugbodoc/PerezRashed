@@ -1422,7 +1422,7 @@ class Finance extends MX_Controller {
     function amountReceived() {
         $id = $this->input->post('id');
         $amount_received = $this->input->post('amount_received');
-        $previous_amount_received = $this->db->get_where('payment', array('id' => $id))->row()->amount_received;
+        $previous_amount_received = $this->db->get_where('invoice', array('id' => $id))->row()->amount_received;
         $amount_received = $amount_received + $previous_amount_received;
         $data = array();
         $data = array('amount_received' => $amount_received);
