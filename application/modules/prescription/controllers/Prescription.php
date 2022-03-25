@@ -73,6 +73,9 @@ class Prescription extends MX_Controller {
         if (!empty($encounter_id)) {
             $data['encounter_id'] = $encounter_id;
             $data['patient_id'] = $this->encounter_model->getEncounterById($data['encounter_id'])->patient_id;
+            $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
+            $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+            
         }
 
         $data['medicines'] = $this->medicine_model->getMedicine();
@@ -92,7 +95,7 @@ class Prescription extends MX_Controller {
         }
 
         $redirect = $this->input->post('redirect');
-        $encounter = $this->input->post('encounter_id');
+        $encounter = $this->input->post('encounter');
         $id = $this->input->post('id');
         $tab = $this->input->post('tab');
         $date = $this->input->post('date');

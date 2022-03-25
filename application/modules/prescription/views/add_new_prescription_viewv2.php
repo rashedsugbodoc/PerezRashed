@@ -42,6 +42,16 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                <select class="form-control select2-show-search" name="encounter" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                    <?php if (!empty($encounter_id)) { ?>
+                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
@@ -742,6 +752,34 @@
             });
         });
     </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#encounter").select2({
+                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+
     <script>
         $(document).ready(function () {
             $("#my_select1_disabled").select2({
