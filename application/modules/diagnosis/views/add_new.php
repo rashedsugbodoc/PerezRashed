@@ -48,6 +48,18 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                        <select class="form-control select2-show-search" name="encounter" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                            <?php if (!empty($encounter_id)) { ?>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . $encounter->created_at; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('diagnosis') . '  ' . lang('date') ?></label>
@@ -58,6 +70,36 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('onset') . '  ' . lang('date') ?></label>
                                                         <input type="text" class="form-control fc-datepicker" id="on_date" readonly placeholder="MM/DD/YYYY" name="on_date">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('patient'); ?></label>
+                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
+                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $doctor->id; ?>" selected><?php echo $doctor->name ?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -236,6 +278,85 @@
         $(document).ready(function () {
             $('#tpBasic').timepicker('setTime', new Date());
             $('.fc-datepicker1').datepicker('setDate', new Date());
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#encounter").select2({
+                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#pos_select").select2({
+                placeholder: '<?php echo lang('select_patient'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'patient/getPatientinfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#add_doctor").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'doctor/getDoctorWithAddNewOption',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+            });
         });
     </script>
 

@@ -10,6 +10,7 @@ class Diagnosis extends MX_Controller {
 
         $this->load->model('diagnosis_model');
         $this->load->model('patient/patient_model');
+        $this->load->model('doctor/doctor_model');
         $this->load->model('encounter/encounter_model');
         if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
             redirect('home/permission');
@@ -20,6 +21,10 @@ class Diagnosis extends MX_Controller {
         $data = array();
 
         $data['encounter_id'] = $this->input->get('encounter_id');
+        $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
+        $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+        $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
+        $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
@@ -27,7 +32,7 @@ class Diagnosis extends MX_Controller {
 
     function addNew() {
         
-        $encounter = $this->input->post('encounter_id');
+        $encounter = $this->input->post('encounter');
         $patient = $this->encounter_model->getEncounterById($encounter)->patient_id;
         $patient_name = $this->patient_model->getPatientById($patient)->name;
         $patient_address = $this->patient_model->getPatientById($patient)->address;
