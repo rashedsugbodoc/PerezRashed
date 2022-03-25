@@ -34,6 +34,12 @@ class Labrequest_model extends CI_model {
         $this->db->delete('lab_request');
     }
 
+    function deleteLabrequestByRequestNumber($number) {
+        $this->db->where('lab_request_number', $number);
+        $this->db->delete('lab_request');
+        return $this->db->affected_rows() > 0;
+    }
+
     function getLabrequestInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
@@ -108,6 +114,7 @@ class Labrequest_model extends CI_model {
     function getLabrequestByLabrequestNumber($id) {
         $this->db->where("lab_request_number", $id);
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'asc');
         $query = $this->db->get('lab_request');
         return $query->result();
     }

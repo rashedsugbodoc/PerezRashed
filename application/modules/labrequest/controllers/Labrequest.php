@@ -28,7 +28,11 @@ class Labrequest extends MX_Controller {
     function addLabRequestView() {
         $data = array();
 
-        $data['encounter_id'] = $this->input->get('id');
+        $data['encounter_id'] = $this->input->get('encounter_id');
+        $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
+        $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+        $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
+        $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
@@ -36,7 +40,7 @@ class Labrequest extends MX_Controller {
 
     function addNew() {
         $id = $this->input->post('labrequest_number');
-        $encounter = $this->input->post('encounter_id');
+        $encounter = $this->input->post('encounter');
         $patient = $this->encounter_model->getEncounterById($encounter)->patient_id;
         if (empty($patient)) {
             $patient = $this->input->post('patient');
@@ -50,7 +54,10 @@ class Labrequest extends MX_Controller {
         $doctor_name = $this->doctor_model->getDoctorById($doctor)->name;
         $redirect = $this->input->post('redirect');
 
-        $request_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date')));
+        $nowtime = date('H:i:s');
+        $reqdate = $this->input->post('date');
+        $datetime = $reqdate .' '. $nowtime;
+        $request_date = gmdate('Y-m-d H:i:s', strtotime($datetime));
         $date = gmdate('Y-m-d H:i:s');
 
         $long_common_name = $this->input->post('labrequest_long');
@@ -68,25 +75,28 @@ class Labrequest extends MX_Controller {
             $data = array();
 
             foreach ($dataholder as $key => $value) {
-                $data[$value] = array(
-                    'doctor_id' => $doctor,
-                    'patient_id' => $patient,
-                    'doctorname' => $doctor_name,
-                    'patientname' => $patient_name,
-                    'lab_loinc_id' => $labrequest_id[$key],
-                    'lab_request_text' => $labrequest_text[$key],
-                    'long_common_name' => $long_common_name[$key],
-                    'loinc_num' => $loinc_num[$key],
-                    'instructions' => $instruction[$key],
-                    'encounter_id' => $encounter,
-                    'last_modified' => $date,
-                );
-                $request_id[$value] = $lab_request[$key];
 
-                if ($this->labrequest_model->updateLabrequestById($request_id[$value], $data[$value])) {
-                    $this->session->set_flashdata('success', lang('record_updated'));
-                } else {
-                    $this->session->set_flashdata('error', lang('error_adding_record'));
+                if (!empty($lab_request[$key])) {
+                    $data[$value] = array(
+                        'doctor_id' => $doctor,
+                        'patient_id' => $patient,
+                        'doctorname' => $doctor_name,
+                        'patientname' => $patient_name,
+                        'lab_loinc_id' => $labrequest_id[$key],
+                        'lab_request_text' => $labrequest_text[$key],
+                        'long_common_name' => $long_common_name[$key],
+                        'loinc_num' => $loinc_num[$key],
+                        'instructions' => $instruction[$key],
+                        'encounter_id' => $encounter,
+                        'last_modified' => $date,
+                    );
+                    $request_id[$value] = $lab_request[$key];
+
+                    if ($this->labrequest_model->updateLabrequestById($request_id[$value], $data[$value])) {
+                        $this->session->set_flashdata('success', lang('record_updated'));
+                    } else {
+                        $this->session->set_flashdata('error', lang('error_adding_record'));
+                    }
                 }
 
                 if (empty($lab_request[$key])) {
@@ -225,10 +235,23 @@ class Labrequest extends MX_Controller {
         $data['request_number'] = $this->input->get('id');
         $data['labrequests'] = $this->labrequest_model->getLabrequestByLabrequestNumber($data['request_number']);
         $data['labLoincItems'] = $this->labrequest_model->getLabLoinc();
-        $data['patients'] = $this->patient_model->getPatient();
+        $data['patient'] = $this->patient_model->getPatientById($data['labrequests'][0]->patient_id);
+        $data['doctor'] = $this->doctor_model->getDoctorById($data['labrequests'][0]->doctor_id);
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
+    }
+
+    function deleteLabrequestByRequestNumber() {
+        $request_number = $this->input->get('request_number');
+
+        if ($this->labrequest_model->deleteLabrequestByRequestNumber($request_number)) {
+            $this->session->set_flashdata('success', lang('record_deleted'));
+        } else {
+            $this->session->set_flashdata('error', lang('error_deleting_record'));
+        }
+
+        redirect('labrequest');
     }
 
     function labrequestView() {
@@ -276,6 +299,7 @@ class Labrequest extends MX_Controller {
         foreach ($data['labrequests'] as $labrequest) {
             $option1 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-edit"></i></a>';
             $option2 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->id.'"><i class="fe fe-eye"></i></a>';
+            $option3 = '<a class="btn btn-danger" href="labrequest/deleteLabrequestByRequestNumber?request_number='.$labrequest->lab_request_number.'"><i class="fe fe-trash-2"></i></a>';
 
             $doctor = $this->doctor_model->getDoctorById($labrequest->doctor_id);
 
@@ -291,6 +315,8 @@ class Labrequest extends MX_Controller {
                 $labloinc = $labtest->loinc_num;
                 if (empty($labloinc)) {
                     $labloinc = '';
+                } else {
+                    $labloinc =  '<span>' . lang('loinc_code') . ': </span>' . $labloinc;
                 }
 
                 $labtestsingle = '<div class="mb-3"><p class="mb-0"><strong>'.$labrequest_text.'</strong></p><p class="mb-0">'.$labtest->instructions.'</p><p class="mb-0">'.$labloinc.'</p></div>';
@@ -304,7 +330,7 @@ class Labrequest extends MX_Controller {
                 $alltest,
                 $labrequest->patientname,
                 $doctor->name,
-                $option1 . ' ' . $option2,
+                $option1 . ' ' . $option2 . ' ' . $option3,
             );
         }
 

@@ -77,6 +77,18 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                        <select class="form-control select2-show-search" name="encounter" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                            <?php if (!empty($encounter_id)) { ?>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . $encounter->created_at; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('lab') . '  ' . lang('request') . ' ' . lang('date') ?></label>
@@ -94,7 +106,7 @@
                                                         ?>">
                                                     </div>
                                                 </div>
-                                                <?php if (empty($encounter_id)) { ?>
+                                                <!-- <?php if (empty($encounter_id)) { ?>
                                                     <div class="col-md-6 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('patient') ?></label>
@@ -105,7 +117,45 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                <?php } ?>
+                                                <?php } ?> -->
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('patient'); ?></label>
+                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                    <?php if (!empty($encounter_id)) { ?>
+                                                                        <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($request_number)) { ?>
+                                                                        <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
+                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $doctor->id; ?>" selected><?php echo $doctor->name ?></option>
+                                                                    <?php } ?>
+
+                                                                    <?php if (!empty($request_number)) { ?>
+                                                                        <option value="<?php echo $doctor->id ?>" selected><?php echo $doctor->firstname.' '.$doctor->lastname ?></option>
+                                                                    <?php } ?>
+                                                                    
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-10 col-sm-12 labrequest_block">
@@ -135,7 +185,7 @@
                                                                 <?php foreach ($labrequests as $labrequest) { ?>
                                                                     <?php if (!empty($labrequest->lab_loinc_id)) { ?>
                                                                         <?php $i += 1; ?>
-                                                                        <option value="<?php echo $labrequest->lab_loinc_id . '*' . $labrequest->long_common_name . '*' . $labrequest->loinc_num . '*' . $labrequest->instructions . '*' . $i . '*' . $labrequest->id; ?>" <?php echo 'data-loincid="' . $labrequest->lab_loinc_id . '"data-long="' . $labrequest->long_common_name . '"' ?> selected="selected">
+                                                                        <option value="<?php echo $labrequest->lab_loinc_id . '*' . $labrequest->long_common_name . '*' . $labrequest->loinc_num; ?>" <?php echo 'data-instructions="' . $labrequest->instructions . '"data-request="' . $labrequest->id . '"' ?> selected="selected">
                                                                             <?php echo $labrequest->long_common_name ?>
                                                                         </option>
                                                                     <?php } ?>
@@ -337,6 +387,13 @@
 
     <!-- INTERNAL JS INDEX END -->
     <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tpBasic').timepicker('setTime', new Date());
+            $('.fc-datepicker').datepicker('setDate', new Date());
+        });
+    </script>
+
+    <script type="text/javascript">
         function removeElem(count, id) {
             var remove = $(".remove"+count);
 
@@ -370,6 +427,85 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#encounter").select2({
+                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#pos_select").select2({
+                placeholder: '<?php echo lang('select_patient'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'patient/getPatientinfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#add_doctor").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'doctor/getDoctorWithAddNewOption',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+            });
+        });
+    </script>
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
             var request_number = $("#lab_request_number_input").val();
 
             $.ajax({
@@ -383,7 +519,7 @@
                 }
             });
         });
-    </script>
+    </script> -->
 
     <!-- <script type="text/javascript">
         $(document).ready(function () {
@@ -511,11 +647,13 @@
                 var id = res[0];
                 var long_common = res[1];
                 var loinc_num = res[2];
-                var instructions = res[3];
-                var dataholder = res[4];
-                var labrequest_id = res[5];
+                // var instructions = res[3];
+                // var dataholder = res[4];
+                // var labrequest_id = res[5];
                 var countlabReq = $(".labreq_selected").length;
                 var count = parseInt(countlabReq) + 1;
+                var labrequest_id = $(this).data('request');
+                var instructions = $(this).data('instructions');
                 console.log(count);
 
                 if ($('#labreq_id-' + id).length)
@@ -550,7 +688,7 @@
                                             <div class="col-sm-12">\n\
                                                 <div class="form-group">\n\
                                                     <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
-                                                    <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="' + instructions + '"></div>\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="' + instructions + '" placeholder="<?php echo lang("lab_test_instruction_placeholder"); ?>"></div>\n\
                                                 </div>\n\
                                             </div>\n\
                                         </div>\n\
@@ -587,7 +725,7 @@
                                             <div class="form-group">\n\
                                                 <input type="text" hidden name="labrequest_id[]" value="'+ id +'">\n\
                                                 <input type="text" hidden class = "form-control labreq-div" name = "labrequest_long[]" value = "" placeholder="">\n\
-                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" value="'+ request_text +'" placeholder="" required>\n\
+                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" value="'+ request_text +'" placeholder="<?php echo lang("lab_test_name_placeholder"); ?>" required>\n\
                                                 <input class = "form-control labreq-div" name = "labreq[]" hidden value = "" placeholder="">\n\
                                                 <input type="text" name="loinc_num[]" class="form-control" value="" hidden readonly>\n\
                                             </div>\n\
@@ -597,7 +735,7 @@
                                         <div class="col-sm-12">\n\
                                             <div class="form-group">\n\
                                                 <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
-                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="'+ instructions +'"></div>\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="'+ instructions +'" placeholder="<?php echo lang("lab_test_instruction_placeholder"); ?>"></div>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\
@@ -649,6 +787,7 @@
                     var id = res[0];
                     var long_common = res[1];
                     var loinc_num = res[2];
+
                     
                     console.log(value);
                     if ($('#labreq_id-' + id).length)
@@ -666,6 +805,7 @@
                                             <div class="row">\n\
                                                 <div class="col-sm-8">\n\
                                                     <div class="form-group">\n\
+                                                        <input type="text" hidden name="labrequest_id[]" value="">\n\
                                                         <input type="text" class = "form-control labreq-div" name = "labrequest_long[]" value = "' + long_common + '" placeholder="" required readonly>\n\
                                                         <input type="hidden" id="labreq_id-' + id + '" class = "labreq-div" name = "labrequest[]" value = "' + id + '" placeholder="" required disabled>\n\
                                                         <input class = "form-control labreq-div" name = "labreq[]" hidden value = "' + id + '" placeholder="" required>\n\
@@ -682,7 +822,7 @@
                                                 <div class="col-sm-12">\n\
                                                     <div class="form-group">\n\
                                                         <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
-                                                        <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]"></div>\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" placeholder="<?php echo lang("lab_test_instruction_placeholder"); ?>"></div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\
@@ -715,7 +855,11 @@
                                     <div class="row">\n\
                                         <div class="col-sm-12">\n\
                                             <div class="form-group">\n\
-                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" required>\n\
+                                                <input class = "form-control labreq-div" name = "labreq[]" hidden value = "" placeholder="">\n\
+                                                <input type="text" hidden name="labrequest_id[]" value="">\n\
+                                                <input type="text" hidden class = "form-control labreq-div" name = "labrequest_long[]" value = "" placeholder="">\n\
+                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="<?php echo lang("lab_test_name_placeholder"); ?>" required>\n\
+                                                <input type="text" name="loinc_num[]" class="form-control" value="" readonly>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\
@@ -723,7 +867,7 @@
                                         <div class="col-sm-12">\n\
                                             <div class="form-group">\n\
                                                 <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
-                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]"></div>\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" placeholder="<?php echo lang("lab_test_instruction_placeholder"); ?>"></div>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\
@@ -772,7 +916,7 @@
         });
     </script>
 
-    <script>
+    <!-- <script>
         $(document).ready(function () {
             $("#patient").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
@@ -797,7 +941,7 @@
 
             });
         });
-    </script>
+    </script> -->
 
     </body>
 </html>
