@@ -128,6 +128,7 @@ class Encounter_model extends CI_model {
     }
 
     function getEncounterInfo($searchTerm) {
+        $settings = $this->settings_model->getSettings();
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')
                     ->from('encounter')
@@ -145,7 +146,7 @@ class Encounter_model extends CI_model {
         $data = array();
         foreach ($users as $user) {
             $encounter_type_name = $this->getEncounterTypeById($user['encounter_type_id']);
-            $data[] = array("id" => $user['id'], "text" => $user['encounter_number'] . ' - ' . $encounter_type_name->display_name . ' - ' . $user['created_at']);
+            $data[] = array("id" => $user['id'], "text" =>  lang('encounter') . " No." . ' : ' . $user['encounter_number'] . ' - ' . $encounter_type_name->display_name . ' - ' . date("M j, Y g:i a", strtotime($user['created_at'].' UTC')));
         }
         return $data;
     }
