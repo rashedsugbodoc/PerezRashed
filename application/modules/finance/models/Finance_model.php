@@ -13,26 +13,26 @@ class Finance_model extends CI_model {
     function insertPayment($data) {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
-        $this->db->insert('payment', $data2);
+        $this->db->insert('invoice', $data2);
     }
 
     function getPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
     function getPaymentCount() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->num_rows();
     }    
 
     function getPaymentBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
-                ->from('payment')
+                ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
@@ -43,7 +43,7 @@ class Finance_model extends CI_model {
     function getPaymentByCompanyIdBySearch($company_id, $search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
-                ->from('payment')
+                ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where('company_id', $company_id)
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
@@ -56,7 +56,7 @@ class Finance_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -65,7 +65,7 @@ class Finance_model extends CI_model {
         $this->db->where('company_id', $company_id);
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -80,7 +80,7 @@ class Finance_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
-                ->from('payment')
+                ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
@@ -92,7 +92,7 @@ class Finance_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
-                ->from('payment')
+                ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where('company_id', $company_id)
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
@@ -103,7 +103,7 @@ class Finance_model extends CI_model {
     function getPaymentById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->row();
     }
 
@@ -111,7 +111,7 @@ class Finance_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->where('patient', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -121,7 +121,7 @@ class Finance_model extends CI_model {
         $this->db->where('patient', $id);
         $this->db->where('date >=', $date_from);
         $this->db->where('date <=', $date_to);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -129,7 +129,7 @@ class Finance_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('user', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -137,13 +137,13 @@ class Finance_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('company_id', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
     function thisMonthPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment')->result();
+        $query = $this->db->get('invoice')->result();
         $total = array();
         foreach ($query as $q) {
             if (date('m/Y', time()) == date('m/Y', $q->date)) {
@@ -191,7 +191,7 @@ class Finance_model extends CI_model {
 
     function thisDayPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment')->result();
+        $query = $this->db->get('invoice')->result();
         $total = array();
         foreach ($query as $q) {
             if (date('d/m/Y', time()) == date('d/m/Y', $q->date)) {
@@ -239,7 +239,7 @@ class Finance_model extends CI_model {
 
     function thisYearPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment')->result();
+        $query = $this->db->get('invoice')->result();
         $total = array();
         foreach ($query as $q) {
             if (date('Y', time()) == date('Y', $q->date)) {
@@ -323,7 +323,7 @@ class Finance_model extends CI_model {
 
     function getPaymentPerMonthThisYear() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment')->result();
+        $query = $this->db->get('invoice')->result();
         $total = array();
         foreach ($query as $q) {
             if (date('Y', time()) == date('Y', $q->date)) {
@@ -637,7 +637,7 @@ class Finance_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('patient', $id);
         $this->db->where('status', 'unpaid');
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -652,7 +652,7 @@ class Finance_model extends CI_model {
     function updatePayment($id, $data) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $this->db->update('payment', $data);
+        $this->db->update('invoice', $data);
     }
 
     function insertOtPayment($data) {
@@ -719,7 +719,7 @@ class Finance_model extends CI_model {
 
     function deletePayment($id) {
         $this->db->where('id', $id);
-        $this->db->delete('payment');
+        $this->db->delete('invoice');
     }
 
     function deletePaymentCategory($id) {
@@ -909,7 +909,7 @@ class Finance_model extends CI_model {
 
     function getPaymentByDoctor($doctor) {
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor);
         $query = $this->db->get();
@@ -941,7 +941,7 @@ class Finance_model extends CI_model {
 
     function getPaymentByDate($date_from, $date_to) {
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('date >=', $date_from);
         $this->db->where('date <=', $date_to);
@@ -951,7 +951,7 @@ class Finance_model extends CI_model {
 
     function getPaymentByDoctorDate($doctor, $date_from, $date_to) {
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor);
         $this->db->where('date >=', $date_from);
@@ -1005,15 +1005,15 @@ class Finance_model extends CI_model {
     function makeStatusPaid($id, $patient_id, $data, $data1) {
         $this->db->where('patient', $patient_id);
         $this->db->where('status', 'paid-last');
-        $this->db->update('payment', $data);
+        $this->db->update('invoice', $data);
         $this->db->where('id', $id);
-        $this->db->update('payment', $data1);
+        $this->db->update('invoice', $data1);
     }
 
     function makePaidByPatientIdByStatus($id, $data, $data1) {
         $this->db->where('patient', $id);
         $this->db->where('status', 'paid-last');
-        $this->db->update('payment', $data1);
+        $this->db->update('invoice', $data1);
 
         $this->db->where('patient', $id);
         $this->db->where('status', 'paid-last');
@@ -1021,7 +1021,7 @@ class Finance_model extends CI_model {
 
         $this->db->where('patient', $id);
         $this->db->where('status', 'unpaid');
-        $this->db->update('payment', $data);
+        $this->db->update('invoice', $data);
 
         $this->db->where('patient', $id);
         $this->db->where('status', 'unpaid');
@@ -1036,7 +1036,7 @@ class Finance_model extends CI_model {
     function lastPaidInvoice($id) {
         $this->db->where('patient', $id);
         $this->db->where('status', 'paid-last');
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -1049,7 +1049,7 @@ class Finance_model extends CI_model {
 
     function amountReceived($id, $data) {
         $this->db->where('id', $id);
-        $query = $this->db->update('payment', $data);
+        $query = $this->db->update('invoice', $data);
     }
 
     function otAmountReceived($id, $data) {
@@ -1059,7 +1059,7 @@ class Finance_model extends CI_model {
 
     function getThisMonth() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $payments = $this->db->get('payment')->result();
+        $payments = $this->db->get('invoice')->result();
         foreach ($payments as $payment) {
             if (date('m/y', $payment->date) == date('m/y', time())) {
                 $this_month_payment[] = $payment->gross_total;
@@ -1106,7 +1106,7 @@ class Finance_model extends CI_model {
     function getPaymentByUserIdByDate($user, $date_from, $date_to) {
         $this->db->order_by('id', 'desc');
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('user', $user);
         $this->db->where('date >=', $date_from);
@@ -1118,7 +1118,7 @@ class Finance_model extends CI_model {
     function getPaymentByCompanyIdByDate($company, $date_from, $date_to) {
         $this->db->order_by('id', 'desc');
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('company_id', $company);
         $this->db->where('date >=', $date_from);
@@ -1176,7 +1176,7 @@ class Finance_model extends CI_model {
     }
 
     function getDueBalanceByPatientId($patient) {
-        $query = $this->db->get_where('payment', array('patient' => $patient->id))->result();
+        $query = $this->db->get_where('invoice', array('patient' => $patient->id))->result();
         $deposits = $this->db->get_where('patient_deposit', array('patient' => $patient->id))->result();
         $balance = array();
         $deposit_balance = array();
@@ -1204,7 +1204,7 @@ class Finance_model extends CI_model {
         $last = $this->db->order_by('id', "asc")
                 ->limit(1)
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->get('payment')
+                ->get('invoice')
                 ->row();
         return $last;
     }
@@ -1215,7 +1215,7 @@ class Finance_model extends CI_model {
         $last = $this->db->order_by('id', "desc")
                 ->limit(1)
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->get('payment')
+                ->get('invoice')
                 ->row();
         return $last;
     }
@@ -1223,14 +1223,14 @@ class Finance_model extends CI_model {
     function getPreviousPaymentById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->previous_row();
     }
 
     function getNextPaymentById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->row();
     }
 
