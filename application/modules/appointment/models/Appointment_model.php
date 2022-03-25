@@ -990,14 +990,14 @@ class Appointment_model extends CI_model {
 
         $this->db->where('service_category_group_id', $serviceCategoryGroup);
         $this->db->where('hospital_id', $doctorHospital);
-        $services = $this->db->get('payment_category')->result();
+        $services = $this->db->get('charge')->result();
 
         return $services;
     }
 
     function getServicesByServiceId($services) {
         $this->db->where('id', $services);
-        $services = $this->db->get('payment_category')->row();
+        $services = $this->db->get('charge')->row();
 
         return $services;
     }
