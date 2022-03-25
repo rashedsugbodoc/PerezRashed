@@ -51,7 +51,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                        <select class="form-control select2-show-search" name="encounter" id="encounter">
+                                                        <select class="form-control select2-show-search" name="encounter" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                             <?php if (!empty($encounter->id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . $encounter->created_at; ?></option>
                                                             <?php } ?>
@@ -65,7 +65,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
-                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient">
+                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                                     <option selected disabled hidden>Search Patient</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
                                                                     <!-- <?php if (!empty($payment)) { ?>
@@ -162,7 +162,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
-                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor">
+                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                                     <option selected disabled>Search Doctor</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
                                                                     <!-- <?php foreach ($doctors as $doctor) { ?>
