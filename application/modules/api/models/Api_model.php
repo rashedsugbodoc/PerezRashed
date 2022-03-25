@@ -179,7 +179,7 @@ class Api_model extends CI_model {
     function updatePayment($id, $data, $hospitalID) {
         $this->db->where('hospital_id', $hospitalID);
         $this->db->where('id', $id);
-        $this->db->update('payment', $data);
+        $this->db->update('invoice', $data);
     }
     
     function updateDeposit($id, $data) {
@@ -365,7 +365,7 @@ class Api_model extends CI_model {
     function getPaymentById($id, $hospitalID) {
         $this->db->where('hospital_id', $hospitalID);
         $this->db->where('id', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->row();
     }
     
@@ -531,7 +531,7 @@ class Api_model extends CI_model {
         $this->db->where('patient', $id);
         $this->db->where('date >=', $date_from);
         $this->db->where('date <=', $date_to);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
     
@@ -557,7 +557,7 @@ class Api_model extends CI_model {
         $this->db->where('hospital_id', $hospital_id);
         $this->db->order_by('id', 'desc');
         $this->db->where('patient', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
     
