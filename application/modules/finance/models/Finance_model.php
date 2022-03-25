@@ -688,33 +688,33 @@ class Finance_model extends CI_model {
     function insertPaymentCategory($data) {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
-        $this->db->insert('payment_category', $data2);
+        $this->db->insert('charge', $data2);
     }
 
     function getPaymentCategory() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment_category');
+        $query = $this->db->get('charge');
         return $query->result();
     }
 
     function getPaymentCategoryById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment_category');
+        $query = $this->db->get('charge');
         return $query->row();
     }
 
     function getDoctorCommissionByCategory($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment_category');
+        $query = $this->db->get('charge');
         return $query->row();
     }
 
     function updatePaymentCategory($id, $data) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $this->db->update('payment_category', $data);
+        $this->db->update('charge', $data);
     }
 
     function deletePayment($id) {
@@ -724,7 +724,7 @@ class Finance_model extends CI_model {
 
     function deletePaymentCategory($id) {
         $this->db->where('id', $id);
-        $this->db->delete('payment_category');
+        $this->db->delete('charge');
     }
 
     function insertExpense($data) {
