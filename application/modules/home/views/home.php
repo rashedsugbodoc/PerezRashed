@@ -184,7 +184,7 @@
         <?php echo lang('prescription'); ?> :  <?php echo $this->db->count_all('prescription'); ?> <hr>
                                     </div>
                                     <div class="home_section">
-        <?php echo lang('case_history'); ?> :  <?php echo $this->db->count_all('medical_history'); ?> <hr>
+        <?php echo lang('case_history'); ?> :  <?php echo $this->db->count_all('case_note'); ?> <hr>
                                     </div>
                                     <div class="home_section">
         <?php echo lang('lab_reports'); ?> :  <?php echo $this->db->count_all('lab'); ?> <hr>
@@ -338,7 +338,7 @@
                                             <h3 class="">
                                                 <?php
                                                 $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-                                                $this->db->from('medical_history');
+                                                $this->db->from('case_note');
                                                 $count = $this->db->count_all_results();
                                                 echo $count;
                                                 ?>
