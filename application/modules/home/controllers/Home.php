@@ -17,7 +17,7 @@ class Home extends MX_Controller {
         if (!$this->ion_auth->in_group(array('superadmin'))) {
             $data = array();
             $data['settings'] = $this->settings_model->getSettings();
-            $data['sum'] = $this->home_model->getSum('gross_total', 'payment');
+            $data['sum'] = $this->home_model->getSum('gross_total', 'invoice');
             $data['payments'] = $this->finance_model->getPayment();
             $data['notices'] = $this->notice_model->getNotice();
             $data['this_month'] = $this->finance_model->getThisMonth();
