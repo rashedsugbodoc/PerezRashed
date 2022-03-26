@@ -172,14 +172,14 @@ class Patient_model extends CI_model {
     function insertMedicalHistory($data) {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
-        $this->db->insert('medical_history', $data2);
+        $this->db->insert('case_note', $data2);
     }
 
     function getMedicalHistoryByPatientId($id) {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('patient_id', $id);
-        $query = $this->db->get('medical_history');
+        $query = $this->db->get('case_note');
         return $query->result();
     }
 
@@ -187,21 +187,21 @@ class Patient_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('patient_id', $id);
-        $query = $this->db->get('medical_history');
+        $query = $this->db->get('case_note');
         return $query->result();
     }
 
     function getMedicalHistory() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
-        $query = $this->db->get('medical_history');
+        $query = $this->db->get('case_note');
         return $query->result();
     }
 
     function getMedicalHistoryBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
-                ->from('medical_history')
+                ->from('case_note')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
@@ -213,7 +213,7 @@ class Patient_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->get('medical_history');
+        $query = $this->db->get('case_note');
         return $query->result();
     }
 
@@ -221,7 +221,7 @@ class Patient_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
-                ->from('medical_history')
+                ->from('case_note')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
@@ -231,19 +231,19 @@ class Patient_model extends CI_model {
 
     function getMedicalHistoryById($id) {
         $this->db->where('id', $id);
-        $query = $this->db->get('medical_history');
+        $query = $this->db->get('case_note');
         return $query->row();
     }
 
     function getMedicalHistoryByEncounterId($id) {
         $this->db->where('encounter_id', $id);
-        $query = $this->db->get('medical_history');
+        $query = $this->db->get('case_note');
         return $query->row();
     }
 
     function updateMedicalHistory($id, $data) {
         $this->db->where('id', $id);
-        $this->db->update('medical_history', $data);
+        $this->db->update('case_note', $data);
     }
 
     function insertDiagnosticReport($data) {
@@ -380,7 +380,7 @@ class Patient_model extends CI_model {
 
     function deleteMedicalHistory($id) {
         $this->db->where('id', $id);
-        $this->db->delete('medical_history');
+        $this->db->delete('case_note');
     }
 
     function updateIonUser($username, $email, $password, $ion_user_id) {
