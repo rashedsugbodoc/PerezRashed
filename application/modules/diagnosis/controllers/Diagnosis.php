@@ -33,12 +33,12 @@ class Diagnosis extends MX_Controller {
 
     function addNew() {
         
-        $encounter = $this->input->post('encounter');
-        $patient = $this->encounter_model->getEncounterById($encounter)->patient_id;
+        $encounter_id = $this->input->post('encounter_id');
+        $patient = $this->encounter_model->getEncounterById($encounter_id)->patient_id;
         $patient_name = $this->patient_model->getPatientById($patient)->name;
         $patient_address = $this->patient_model->getPatientById($patient)->address;
         $patient_phone = $this->patient_model->getPatientById($patient)->phone;
-        $doctor = $this->encounter_model->getEncounterById($encounter)->doctor;
+        $doctor = $this->encounter_model->getEncounterById($encounter_id)->doctor;
         $nowtime = date('H:i:s');
         $diag_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date') . ' ' . $nowtime));
         $on_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('on_date') . ' ' . $nowtime));
@@ -123,7 +123,7 @@ class Diagnosis extends MX_Controller {
                         'diagnosis_date' => $diag_date,
                         'doctor_id' => $doctor,
                         'created_at' => $date,
-                        'encounter_id' => $encounter,
+                        'encounter_id' => $encounter_id,
                         'is_primary_diagnosis' => $primary[$key],
                         'is_secondary_diagnosis' => $secondary[$key],
                         'diagnosis_code' => $diagnosis_code[$key],
