@@ -40,13 +40,13 @@ class Labrequest extends MX_Controller {
 
     function addNew() {
         $id = $this->input->post('labrequest_number');
-        $encounter = $this->input->post('encounter');
-        $patient = $this->encounter_model->getEncounterById($encounter)->patient_id;
+        $encounter_id = $this->input->post('encounter_id');
+        $patient = $this->encounter_model->getEncounterById($encounter_id)->patient_id;
         if (empty($patient)) {
             $patient = $this->input->post('patient');
         }
         $patient_name = $this->patient_model->getPatientById($patient)->name;
-        $doctor = $this->encounter_model->getEncounterById($encounter)->doctor;
+        $doctor = $this->encounter_model->getEncounterById($encounter_id)->doctor;
         if (empty($doctor)) {
             $current_user = $this->ion_auth->get_user_id();
             $doctor = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
@@ -87,7 +87,7 @@ class Labrequest extends MX_Controller {
                         'long_common_name' => $long_common_name[$key],
                         'loinc_num' => $loinc_num[$key],
                         'instructions' => $instruction[$key],
-                        'encounter_id' => $encounter,
+                        'encounter_id' => $encounter_id,
                         'last_modified' => $date,
                     );
                     $request_id[$value] = $lab_request[$key];
@@ -110,7 +110,7 @@ class Labrequest extends MX_Controller {
                         'lab_request_text' => $labrequest_text[$key],
                         'loinc_num' => $loinc_num[$key],
                         'instructions' => $instruction[$key],
-                        'encounter_id' => $encounter,
+                        'encounter_id' => $encounter_id,
                         'created_at' => $date,
                         'request_date' => $request_date,
                         'lab_request_number' => $id,
@@ -148,7 +148,7 @@ class Labrequest extends MX_Controller {
                         'lab_request_text' => $labrequest_text[$key],
                         'loinc_num' => $loinc_num[$key],
                         'instructions' => $instruction[$key],
-                        'encounter_id' => $encounter,
+                        'encounter_id' => $encounter_id,
                         'created_at' => $date,
                         'request_date' => $request_date,
                     );

@@ -37,11 +37,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
-                                                    <input type="text" hidden name="encounter_id" value="<?php
-                                                    if (!empty($encounter_id)) {
-                                                        echo $encounter_id;
-                                                    }
-                                                    ?>">
+                                                    
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <input type="text" hidden name="redirect" value="<?php
@@ -80,11 +76,18 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                        <select class="form-control select2-show-search" name="encounter" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                             <?php if (!empty($encounter_id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
                                                         </select>
+                                                        <?php if (!empty($encounter_id)) { ?>
+                                                            <input type="hidden" name="encounter_id" value="<?php
+                                                            if (!empty($encounter_id)) {
+                                                                echo $encounter_id;
+                                                            }
+                                                            ?>">
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -133,6 +136,9 @@
                                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
+                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                    <input type="hidden" name="patient" value="<?php echo $patient->id ?>">
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -152,6 +158,9 @@
                                                                     <?php } ?>
                                                                     
                                                                 </select>
+                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                    <input type="hidden" name="doctor" value="<?php echo $doctor->id ?>">
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
