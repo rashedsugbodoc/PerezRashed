@@ -394,7 +394,7 @@ class Patient_model extends CI_model {
     }
 
     function getDueBalanceByPatientId($patient) {
-        $query = $this->db->get_where('payment', array('patient' => $patient))->result();
+        $query = $this->db->get_where('invoice', array('patient' => $patient))->result();
         $deposits = $this->db->get_where('patient_deposit', array('patient' => $patient))->result();
         $balance = array();
         $deposit_balance = array();
