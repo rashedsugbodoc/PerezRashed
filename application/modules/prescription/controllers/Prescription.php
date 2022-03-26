@@ -95,7 +95,8 @@ class Prescription extends MX_Controller {
         }
 
         $redirect = $this->input->post('redirect');
-        $encounter = $this->input->post('encounter');
+        $encounter_id = $this->input->post('encounter_id');
+
         $id = $this->input->post('id');
         $tab = $this->input->post('tab');
         $date = $this->input->post('date');
@@ -108,8 +109,8 @@ class Prescription extends MX_Controller {
             $date = gmdate('Y-m-d H:i:s', $date);
         }
 
-        if (empty($encounter)) {
-            $encounter = null;
+        if (empty($encounter_id)) {
+            $encounter_id = null;
         }
 
         $patient = $this->input->post('patient');
@@ -222,7 +223,7 @@ class Prescription extends MX_Controller {
                 'medicine' => $final_report,
                 'patientname' => $patientname,
                 'doctorname' => $doctorname,
-                'encounter_id' => $encounter,
+                'encounter_id' => $encounter_id,
                 
             );
             if (empty($id)) {

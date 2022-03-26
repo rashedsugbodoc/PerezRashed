@@ -30,9 +30,6 @@
                                 <form role="form" action="prescription/addNewPrescription" class="clearfix" method="post" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
-                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
-                                        </div>
-                                        <div class="col-md-12 col-sm-12">
                                             <input type="hidden" name="redirect" value="<?php
                                             if (!empty($encounter_id)) {
                                                 echo 'encounter';
@@ -45,11 +42,14 @@
                                         <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                <select class="form-control select2-show-search" name="encounter" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
                                                     <?php if (!empty($encounter_id)) { ?>
                                                         <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                     <?php } ?>
                                                 </select>
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <input type="text" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                <?php } ?>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-12">
