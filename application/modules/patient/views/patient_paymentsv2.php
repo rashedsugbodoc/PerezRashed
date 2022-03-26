@@ -21,7 +21,7 @@
                                                     <th class="border-bottom-0"><?php echo lang('patient_id'); ?></th>
                                                     <th class="border-bottom-0"><?php echo lang('name'); ?></th>
                                                     <th class="border-bottom-0"><?php echo lang('phone'); ?></th>
-                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) { ?>
                                                         <th class="border-bottom-0"><?php echo lang('due_balance'); ?></th>
                                                     <?php } ?>
                                                     <th class="border-bottom-0"><?php echo lang('options'); ?></th>
@@ -495,9 +495,6 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
                 "ajax": {
                     url: "patient/getPatientPayments",
                     type: 'POST',
