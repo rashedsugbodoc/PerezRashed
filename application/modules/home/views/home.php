@@ -193,7 +193,7 @@
         <?php echo lang('documents'); ?> :  <?php echo $this->db->count_all('patient_material'); ?> <hr>
                                     </div>
                                     <div class="home_section">
-        <?php echo lang('total'); ?>  <?php echo lang('invoice'); ?> :  <?php echo $this->db->count_all('payment'); ?> <hr>
+        <?php echo lang('total'); ?>  <?php echo lang('invoice'); ?> :  <?php echo $this->db->count_all('invoice'); ?> <hr>
                                     </div>
                                     <div class="home_section">
         <?php echo lang('medicine'); ?> :  <?php echo $this->db->count_all('medicine'); ?> <hr>
@@ -421,7 +421,7 @@
                                             <h3 class="">
                                                 <?php
                                                 $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-                                                $this->db->from('payment');
+                                                $this->db->from('invoice');
                                                 $count = $this->db->count_all_results();
                                                 echo $count;
                                                 ?>
