@@ -265,7 +265,7 @@
                                                                         <h2 class="text-white m-0 font-weight-bold">
                                                                             <?php
                                                                             $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-                                                                            $this->db->from('payment');
+                                                                            $this->db->from('invoice');
                                                                             $count = $this->db->count_all_results();
                                                                             echo $count;
                                                                             ?>

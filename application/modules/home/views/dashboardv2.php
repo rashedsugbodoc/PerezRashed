@@ -1104,7 +1104,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                     <span class="nav-unread badge bg-secondary badge-pill">
                                                         <?php
                                                         $this->db->where('hospital_id', $this->hospital_id);
-                                                        $query = $this->db->get('payment');
+                                                        $query = $this->db->get('invoice');
                                                         $query = $query->result();
                                                         foreach ($query as $payment) {
                                                             $payment_date = date('y/m/d', $payment->date);
