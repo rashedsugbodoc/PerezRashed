@@ -93,7 +93,7 @@ class Finance extends MX_Controller {
         $category_selected = array();
         // $amount_by_category = $this->input->post('category_amount');
         $payment_status = $this->input->post('payment_status');
-        $encounter = $this->input->post('encounter');
+        $encounter_id = $this->input->post('encounter_id');
         $category_selected = $this->input->post('category_name');
         $item_selected = $this->input->post('category_id');
         $quantity = $this->input->post('quantity');
@@ -148,6 +148,9 @@ class Finance extends MX_Controller {
 
         $doctor = $this->input->post('doctor');
         $rendering_user = $this->input->post('rendering_user');
+        if ($rendering_user === "add_new") {
+            $rendering_user = null;
+        }
         $date = time();
         $date_string = date('d-m-y', $date);
         $discount = $this->input->post('discount');
@@ -180,9 +183,9 @@ class Finance extends MX_Controller {
             $data['patients'] = $this->patient_model->getPatient();
             $data['doctors'] = $this->doctor_model->getDoctor();
             $data['company'] = $this->company_model->getCompany();
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_payment_view', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_payment_viewv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         } else {
             if (!empty($p_name)) {
 
@@ -344,7 +347,7 @@ class Finance extends MX_Controller {
                 $this->finance_model->insertPayment($data);
                 $inserted_id = $this->db->insert_id();
 
-                $encounter_data = $this->encounter_model->getEncounterById($encounter);
+                $encounter_data = $this->encounter_model->getEncounterById($encounter_id);
                 $encounter_payment_status = $encounter_data->payment_status;
                 $encounter_invoice_id = $encounter_data->invoice_id;
 
@@ -354,7 +357,7 @@ class Finance extends MX_Controller {
                         'invoice_id' => $inserted_id,
                     );
 
-                    $this->encounter_model->updateEncounter($encounter, $finance_encounter);
+                    $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
                 }
 
                 //sms

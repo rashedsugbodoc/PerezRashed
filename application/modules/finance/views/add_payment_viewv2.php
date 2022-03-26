@@ -51,11 +51,14 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                        <select class="form-control select2-show-search" name="encounter" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                             <?php if (!empty($encounter->id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . $encounter->created_at; ?></option>
                                                             <?php } ?>
                                                         </select>
+                                                        <?php if (!empty($encounter_id)) { ?>
+                                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -83,6 +86,9 @@
                                                                         <option value="<?php echo $patientt->id; ?>" selected><?php echo $patientt->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
+                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                    <input type="hidden" name="patient" value="<?php echo $patientt->id ?>">
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -182,6 +188,9 @@
                                                                         <option value="<?php echo $doctorr->id; ?>" selected><?php echo $doctorr->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
+                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                    <input type="hidden" name="doctor" value="<?php echo $doctorr->id ?>">
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -401,7 +410,7 @@
                                                             <?php if (empty($payment->id)) { ?>
                                                             <label for="exampleInputEmail1"><?php echo lang('deposit_type'); ?></label>
                                                             <select class="form-control m-bot15 js-example-basic-single selecttype" id="selecttype" name="deposit_type" value=''> 
-                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
+                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) { ?>
                                                                     <option value="Cash"> <?php echo lang('cash'); ?> </option>
                                                                     <option value="Card"> <?php echo lang('card'); ?> </option>
                                                                 <?php } ?>
