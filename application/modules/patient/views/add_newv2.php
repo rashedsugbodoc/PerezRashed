@@ -257,42 +257,42 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('sex'); ?> <span class="text-red">*</span></label>
                                                                 <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one" required>
-                                                                    <option value="Male" <?php
+                                                                    <option value="male" <?php
                                                                     if (!empty($setval)) {
-                                                                        if (set_value('sex') == 'Male') {
+                                                                        if (set_value('sex') == 'male') {
                                                                             echo 'selected';
                                                                         }
                                                                     }
                                                                     if (!empty($patient->sex)) {
-                                                                        if ($patient->sex == 'Male') {
+                                                                        if ($patient->sex == 'male') {
                                                                             echo 'selected';
                                                                         }
                                                                     }
                                                                     ?> > Male </option>
-                                                                    <option value="Female" <?php
+                                                                    <option value="female" <?php
                                                                     if (!empty($setval)) {
-                                                                        if (set_value('sex') == 'Female') {
+                                                                        if (set_value('sex') == 'female') {
                                                                             echo 'selected';
                                                                         }
                                                                     }
                                                                     if (!empty($patient->sex)) {
-                                                                        if ($patient->sex == 'Female') {
+                                                                        if ($patient->sex == 'female') {
                                                                             echo 'selected';
                                                                         }
                                                                     }
                                                                     ?> > Female </option>
-                                                                    <option value="Others" <?php
+                                                                    <option value="other" <?php
                                                                     if (!empty($setval)) {
-                                                                        if (set_value('sex') == 'Others') {
+                                                                        if (set_value('sex') == 'other') {
                                                                             echo 'selected';
                                                                         }
                                                                     }
                                                                     if (!empty($patient->sex)) {
-                                                                        if ($patient->sex == 'Others') {
+                                                                        if ($patient->sex == 'other') {
                                                                             echo 'selected';
                                                                         }
                                                                     }
-                                                                    ?> > <?php echo lang('others'); ?> </option>
+                                                                    ?> > <?php echo lang('other'); ?> </option>
                                                                 </select>
                                                             </div>
                                                         </div>
