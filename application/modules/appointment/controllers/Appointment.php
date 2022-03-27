@@ -1168,7 +1168,7 @@ class Appointment extends MX_Controller {
                 $appointment_status = lang('not_available');
             }
 
-            $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/> Doctor: ' . $doctor . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
+            $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/> Doctor: ' . $doctor . '<br/>' . lang('reason') . ': ' . $entry->remarks;
             if ($entry->status == 'Pending Confirmation') {
                 //  $color = '#098098';
                 $color = 'rgba(69, 170, 242,0.15)';
