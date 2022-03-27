@@ -53,7 +53,7 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('template'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one">
+                                                                <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one" style="width:100%;">
                                                                     <option value="">Select .....</option>
                                                                     <?php foreach ($templates as $template) { ?>
                                                                         <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
@@ -64,7 +64,7 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one">
+                                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" style="width:100%;">
                                                                     <?php if (!empty($form_single->patient)) { ?>
                                                                         <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
                                                                     <?php } ?>
@@ -74,7 +74,7 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?></label>
-                                                                <select class="select2-show-search form-control" name="category" data-placeholder="Choose one">
+                                                                <select class="select2-show-search form-control" name="category" data-placeholder="Choose one" style="width:100%;">
                                                                     <?php foreach ($categories as $category) { ?>
                                                                         <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
                                                                     <?php } ?>
@@ -144,7 +144,7 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one">
+                                                                <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one" style="width:100%;">
                                                                     <?php if (!empty($form_single->doctor)) { ?>
                                                                         <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
                                                                     <?php } ?>
