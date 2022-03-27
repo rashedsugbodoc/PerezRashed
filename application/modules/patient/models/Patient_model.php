@@ -21,7 +21,7 @@ class Patient_model extends CI_model {
     }
 
     function insertPatientInSystemHospital($data) {
-        $hospital_id = 508;
+        $hospital_id = 1;
         $data1 = array(
             'hospital_id' => $hospital_id,
             'visited_provider_id' => $hospital_id,
