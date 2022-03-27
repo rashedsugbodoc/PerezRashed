@@ -358,9 +358,6 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
                 "ajax": {
                     url: "appointment/getRequestedAppointmentList",
                     type: 'POST',
