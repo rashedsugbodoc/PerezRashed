@@ -7,12 +7,13 @@
         <meta name="description" content="">
         <meta name="author" content="Sugbodoc">
         <meta name="keyword" content="Hospital, Clinic, Management, Software, HIS, Accounting">
-        <link rel="shortcut icon" href="uploads/favicon.png">
 
         <title>Login - <?php echo $this->db->get('settings')->row()->system_vendor; ?></title>
 
         <!--Favicon -->
-        <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.png'); ?>" type="image/x-icon"/>
+        <link rel="shortcut icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>">
+        <link rel="icon" type="image/png" href="<?php echo base_url('public/assets/images/brand/android-chrome-192x192.png'); ?>" sizes="192x192">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url('public/assets/images/brand/apple-touch-icon.png'); ?>">
 
         <!-- Bootstrap css -->
         <link href="<?php echo base_url('public/assets/plugins/bootstrap/css/bootstrap.css'); ?>" rel="stylesheet" />

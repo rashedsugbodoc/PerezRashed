@@ -31,7 +31,6 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <meta name="description" content="">
         <meta name="author" content="Rygel">
         <meta name="keywords" content="Hospital Information System, Clinic, Management, Software, Finance">
-        <link rel="shortcut icon" href="uploads/favicon.png">
         <title> <?php echo $this->router->fetch_class(); ?> | 
             <?php
             if ($this->ion_auth->in_group(array('superadmin'))) {
@@ -46,7 +45,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         </title>
         
         <!--Favicon -->
-        <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.png'); ?>" type="image/x-icon"/>
+        <link rel="shortcut icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>">
+        <link rel="icon" type="image/png" href="<?php echo base_url('public/assets/images/brand/android-chrome-192x192.png'); ?>" sizes="192x192">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url('public/assets/images/brand/apple-touch-icon.png'); ?>">
 
         <!-- Bootstrap css -->
         <link href="<?php echo base_url('public/assets/plugins/bootstrap/css/bootstrap.css'); ?>" rel="stylesheet" />
