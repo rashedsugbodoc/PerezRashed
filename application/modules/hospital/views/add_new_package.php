@@ -78,7 +78,7 @@
                                     if (!empty($package->platform_percent_fee)) {
                                         echo $package->platform_percent_fee;
                                     }
-                                    ?>' placeholder="">
+                                    ?>' placeholder="" required="">
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('platform_flat_fee'); ?> </label>
@@ -86,7 +86,7 @@
                                     if (!empty($package->platform_flat_fee)) {
                                         echo $package->platform_flat_fee;
                                     }
-                                    ?>' placeholder="">
+                                    ?>' placeholder="" required="">
                                 </div>                                
 
                                 <div class="form-group">
