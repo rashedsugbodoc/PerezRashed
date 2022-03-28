@@ -509,7 +509,9 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
-        flatpickr(".flatpickr", {});
+        flatpickr(".flatpickr", {
+            maxDate: "today"
+        });
     </script>
 
     <script type="text/javascript">
