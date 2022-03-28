@@ -55,7 +55,7 @@
 
         <!-- FlatPicker css -->
         <link href="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.min.css'); ?>" rel="stylesheet">
-        <link href="<?php echo base_url('common/assets/flatpickr/dist/themes/material_blue.css'); ?>" rel="stylesheet">
+        <link href="<?php echo base_url('common/assets/flatpickr/dist/themes/sugbodoc_purple.css'); ?>" rel="stylesheet">
         <style type="text/css">
             .scroll {
                 height: 100vh;
