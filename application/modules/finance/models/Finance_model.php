@@ -829,7 +829,6 @@ class Finance_model extends CI_model {
     }
 
     function getServiceCategoryById($id) {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
         $query = $this->db->get('service_category');
         return $query->row();

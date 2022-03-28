@@ -14,7 +14,7 @@
                                             <?php echo lang('list_of_charges'); ?>
                                         </div>
                                         <div class="card-options">
-                                            <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
+                                            <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) { ?>
                                                 <a href="finance/addPaymentCategory">
                                                     <button id="" class="btn btn-primary btn-xs">
                                                         <i class="fa fa-plus"></i> <?php echo lang('add').' '.lang('charge'); ?>
@@ -34,7 +34,7 @@
                                                             <th><?php echo lang('price'); ?> ( <?php echo $settings->currency; ?> )</th>
                                                             <th><?php echo lang('rendering').' '.lang('doctors_share'); ?></th>
                                                             <th><?php echo lang('category'); ?></th>
-                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor'))) { ?>
                                                                 <th class="no-print"><?php echo lang('options'); ?></th>
                                                             <?php } ?>
                                                         </tr>
@@ -47,7 +47,7 @@
                                                                 <td> <?php echo $category->c_price; ?></td>
                                                                 <td> <?php echo $category->d_commission; ?> %</td>
                                                                 <td> <?php echo $this->finance_model->getServiceCategoryById($category->category_id)->category;?></td>
-                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
+                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor'))) { ?>
                                                                     <td class="no-print">
                                                                         <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editPaymentCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"> </i></a>
                                                                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
