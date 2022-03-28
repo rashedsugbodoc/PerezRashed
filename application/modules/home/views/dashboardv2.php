@@ -154,6 +154,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <link href="<?php echo base_url('public/assets/plugins/ion-rangeslider/css/ion.rangeSlider.css'); ?>" rel="stylesheet">
         <link href="<?php echo base_url('public/assets/plugins/ion-rangeslider/css/ion.rangeSlider.skinFlat.css'); ?>" rel="stylesheet">
 
+        <!-- FlatPicker css -->
+        <link href="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.min.css'); ?>" rel="stylesheet">
+        <link href="<?php echo base_url('common/assets/flatpickr/dist/themes/material_blue.css'); ?>" rel="stylesheet">
+
         <!-- INTERNAL CSS END -->
 
         <style>

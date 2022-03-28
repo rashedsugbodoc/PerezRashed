@@ -299,7 +299,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('birth_date'); ?> <span class="text-red">*</span></label>
-                                                                <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="birthdate" type="text" maxlength="100" required readonly value="<?php
+                                                                <input class="form-control flatpickr" placeholder="MM/DD/YYYY" name="birthdate" type="text" maxlength="100" required readonly value="<?php
                                                                 if (!empty($setval)) {
                                                                     echo set_value('birthdate');
                                                                 }
@@ -501,9 +501,16 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        flatpickr(".flatpickr", {});
+    </script>
 
     <script type="text/javascript">
         var country = $("#country").val();
