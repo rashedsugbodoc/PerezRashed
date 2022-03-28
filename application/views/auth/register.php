@@ -50,6 +50,10 @@
 
         <!--Sumoselect css-->
         <link rel="stylesheet" href="<?php echo base_url('public/assets/plugins/sumoselect/sumoselect.css'); ?>">
+
+        <!-- FlatPicker css -->
+        <link href="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.min.css'); ?>" rel="stylesheet">
+        <link href="<?php echo base_url('common/assets/flatpickr/dist/themes/material_blue.css'); ?>" rel="stylesheet">
         <style type="text/css">
             .scroll {
                 height: 100vh;
@@ -141,9 +145,9 @@
                                                         <div class="input-group-text">
                                                             <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 2v3H4V5h16zM4 21V10h16v11H4z"/><path d="M4 5.01h16V8H4z" opacity=".3"/></svg>
                                                         </div>
-                                                    </div><input class="form-control fc-datepicker" id="bdate" placeholder="MM/DD/YYYY" type="text" name="bdate" required>
+                                                    </div><input class="form-control flatpickr" id="bdate" placeholder="YYYY/MM/DD" type="text" name="bdate" required>
                                                 </div>  
-                                            </div>                                         
+                                            </div>                              
                                             <div class="form-group ">
                                                 <div class="form-label"><?php echo lang('sex');?></div>
                                                 <div class="custom-controls-stacked">
@@ -333,6 +337,17 @@
         <!--Select2 js -->
         <script src="<?php echo base_url('public/assets/plugins/select2/select2.full.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/select2.js'); ?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                flatpickr(".flatpickr", {
+                    maxDate: "today"
+                });
+            });
+        </script>
 
         <script type="text/javascript">
             $(document).ready(function () {
