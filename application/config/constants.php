@@ -95,3 +95,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 |
 */
 define('COMPANY_ID_LENGTH', 5);
+define('SYSTEMHOSPITALID', '01');
