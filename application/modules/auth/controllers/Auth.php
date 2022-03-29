@@ -451,6 +451,7 @@ class Auth extends MX_Controller {
 		$barangay_id = $this->input->post('barangay_id');
 		$postal = $this->input->post('postal');
 		$password = $this->input->post('password');
+		$phone = $this->input->post('phone');
 
 		if ($this->ion_auth->logged_in())
 		{
@@ -464,17 +465,22 @@ class Auth extends MX_Controller {
 		$tables = $this->config->item('tables','ion_auth');
 
 		//validate form input
-		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
-		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'));
-		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]');
-		$this->form_validation->set_rules('mobile', $this->lang->line('create_user_validation_phone_label'), 'required');
-		$this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'));
-		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required|max_length[100]|xss_clean');
+		$this->form_validation->set_rules('middle_name', $this->lang->line('create_user_validation_mname_label'), 'max_length[100]|xss_clean');
+		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required|max_length[100]|xss_clean');
+		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]|xss_clean');
+		$this->form_validation->set_rules('mobile', $this->lang->line('create_user_validation_phone_label'), 'required|min_length[7]|max_length[30]|xss_clean');
+		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'min_length[7]|max_length[30]|xss_clean');
+		$this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'max_length[100]|xss_clean');
+		$this->form_validation->set_rules('address', $this->lang->line('create_user_validation_address_label'), 'required|max_length[100]|xss_clean');
+		$this->form_validation->set_rules('postal', $this->lang->line('postal_code'), 'max_length[80]|xss_clean');
+		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]|xss_clean');
+		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|xss_clean');
 
 		if ($this->form_validation->run() == true)
 		{
 			$fullname = $firstname.' '.$middlename.' '.$lastname.' '.$suffix;
+			$today =  gmdate('Y-m-d H:i:s');
 			$email    = strtolower($email);
 			$password = $this->input->post('password');
 			$dfg = 5;
@@ -498,18 +504,21 @@ class Auth extends MX_Controller {
 				'city_id'		=> $city_id,
 				'barangay_id'	=> $barangay_id,
 				'postal'	    => $postal,
+				'registration_time' => $today,
 			);
 		}
 		if ($this->form_validation->run() == true && $this->ion_auth->register($fullname, $password, $email, $dfg))
 		{
 			//check to see if we are creating the user
 			//redirect them back to the admin page
+			$countryname = $this->location_model->getCountryById($country_id)->name;
 			$ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
 			$this->patient_model->insertPatientInSystemHospital($patient_data);
 			$patient_user_id = $this->db->get_where('patient', array('email' => $email))->row()->id;
-            $id_info = array('ion_user_id' => $ion_user_id);
+			$patient_number = $countryname[0]. gmdate("y") .dechex(gmdate("n")). format_number_with_digits($patient_user_id, 4);
+            $id_info = array('ion_user_id' => $ion_user_id, 'patient_id' => $patient_number);
             $this->patient_model->updatePatient($patient_user_id, $id_info);
-            $this->hospital_model->addHospitalIdToIonUser($ion_user_id, 508);
+            $this->hospital_model->addHospitalIdToIonUser($ion_user_id, 1);
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
 			//redirect("auth", 'refresh');
 			$data['message'] = $this->ion_auth->messages();
@@ -520,49 +529,6 @@ class Auth extends MX_Controller {
 			//display the create user form
 			//set the flash data error message if there is one
 			$data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
-
-			$data['first_name'] = array(
-				'name'  => 'first_name',
-				'id'    => 'first_name',
-				'type'  => 'text',
-				'value' => $this->form_validation->set_value('first_name'),
-			);
-			$data['middle_name'] = array(
-				'name'  => 'middle_name',
-				'id'    => 'middle_name',
-				'type'  => 'text',
-				'value' => $this->form_validation->set_value('last_name'),
-			);
-			$data['last_name'] = array(
-				'name'  => 'last_name',
-				'id'    => 'last_name',
-				'type'  => 'text',
-				'value' => $this->form_validation->set_value('last_name'),
-			);
-			$data['email'] = array(
-				'name'  => 'email',
-				'id'    => 'email',
-				'type'  => 'email',
-				'value' => $this->form_validation->set_value('email'),
-			);
-			$data['mobile_number'] = array(
-				'name'  => 'mobile',
-				'id'    => 'mobile',
-				'type'  => 'text',
-				'value' => $this->form_validation->set_value('mobile_number'),
-			);
-			$data['password'] = array(
-				'name'  => 'password',
-				'id'    => 'password',
-				'type'  => 'password',
-				'value' => $this->form_validation->set_value('password'),
-			);
-			$data['password_confirm'] = array(
-				'name'  => 'password_confirm',
-				'id'    => 'password_confirm',
-				'type'  => 'password',
-				'value' => $this->form_validation->set_value('password_confirm'),
-			);
 
 			$this->_render_page('auth/register', $data);
 		}
