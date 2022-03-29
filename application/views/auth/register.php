@@ -41,9 +41,6 @@
         <link href="<?php echo base_url('public/assets/plugins/web-fonts/font-awesome/font-awesome.min.css'); ?>" rel="stylesheet">
         <link href="<?php echo base_url('public/assets/plugins/web-fonts/plugin.css'); ?>" rel="stylesheet" />
 
-        <!--intlTelInput css-->
-        <link rel="stylesheet" href="<?php echo base_url('public/assets/plugins/intl-tel-input-master/intlTelInput.css'); ?>">
-
         <!-- Slect2 css -->
         <link href="<?php echo base_url('public/assets/plugins/select2/select2.min.css'); ?>" rel="stylesheet" />   
 
@@ -53,9 +50,12 @@
         <!--Sumoselect css-->
         <link rel="stylesheet" href="<?php echo base_url('public/assets/plugins/sumoselect/sumoselect.css'); ?>">
 
+        <link rel="stylesheet" href="<?php echo base_url('common/assets/intl-tel-input/build/css/intlTelInput.css');?>">
+        <link rel="stylesheet" href="<?php echo base_url('common/assets/intl-tel-input/examples/css/isValidNumber.css');?>">
         <!-- FlatPicker css -->
         <link href="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.min.css'); ?>" rel="stylesheet">
         <link href="<?php echo base_url('common/assets/flatpickr/dist/themes/sugbodoc_purple.css'); ?>" rel="stylesheet">
+        
         <style type="text/css">
             .scroll {
                 height: 100vh;
@@ -89,7 +89,7 @@
             <div class="w-80 page-content">
                 <div class="page-single-content">
                     <div class="card-body p-6 scroll">
-                        <form method="post" id="myForm" action="<?php echo base_url('auth/register'); ?>">
+                        <form data-parsley-validate method="post" id="myForm" action="<?php echo base_url('auth/register'); ?>">
                             <div class="row">
                                 <div class="col-md-10 col-sm-12 mx-auto d-block">
                                     <div class="">
@@ -108,19 +108,19 @@
                                         <h3><?php echo lang('personal_information');?></h3>
                                         <section>
                                             <div class="control-group form-group">
-                                                <label class="form-control-label"><?php echo lang('first_name');?><span class="text-danger">*</span></label>
-                                                <input id="firstname" name="first_name" type="text" class="form-control" placeholder="First Name" required>
+                                                <label class="form-label"><?php echo lang('first_name');?><span class="text-danger"> *</span></label>
+                                                <input id="firstname" name="first_name" type="text" class="form-control" maxlength="80" placeholder="First Name" required value="<?php echo set_value('first_name'); ?>">
                                             </div>
                                             <div class="control-group form-group">
-                                                <label class="form-control-label"><?php echo lang('middle_name');?></label>
-                                                <input id="fullname" name="middle_name" type="text" class="form-control" placeholder="Middle Name">
+                                                <label class="form-label"><?php echo lang('middle_name');?></label>
+                                                <input id="fullname" name="middle_name" type="text" class="form-control" maxlength="80" placeholder="Middle Name" value="<?php echo set_value('middle_name'); ?>">
                                             </div>        
                                             <div class="control-group">
                                                 <div class="row">
                                                     <div class="col-md-8">
                                                         <div class="form-group">
-                                                            <label class="form-control-label"><?php echo lang('last_name');?><span class="text-danger">*</span></label>
-                                                            <input id="lastname" name="last_name" type="text" class="form-control" placeholder="Last Name" required>
+                                                            <label class="form-label"><?php echo lang('last_name');?><span class="text-danger"> *</span></label>
+                                                            <input id="lastname" name="last_name" type="text" class="form-control" maxlength="80" placeholder="Last Name" required value="<?php echo set_value('last_name'); ?>">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
@@ -135,19 +135,25 @@
                                                                 <option value="iii"><?php echo lang('iii'); ?></option>
                                                                 <option value="iv"><?php echo lang('iv'); ?></option>
                                                                 <option value="v"><?php echo lang('v'); ?></option>
+                                                                <option value="vi"><?php echo lang('vi'); ?></option>
+                                                                <option value="vii"><?php echo lang('vii'); ?></option>
+                                                                <option value="viii"><?php echo lang('viii'); ?></option>
+                                                                <option value="ix"><?php echo lang('ix'); ?></option>
+                                                                <option value="x"><?php echo lang('x'); ?></option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>  
                                             <div class="control-group form-group">
-                                                <label class="form-control-label"><?php echo lang('birth_date');?><span class="text-danger">*</span></label>
+                                                <label class="form-label"><?php echo lang('birth_date');?><span class="text-danger"> *</span></label>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text">
                                                             <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 2v3H4V5h16zM4 21V10h16v11H4z"/><path d="M4 5.01h16V8H4z" opacity=".3"/></svg>
                                                         </div>
-                                                    </div><input class="form-control flatpickr" id="bdate" placeholder="YYYY/MM/DD" type="text" name="bdate" required>
+                                                    </div>
+                                                    <input class="form-control flatpickr" id="bdate" placeholder="Select Date" type="text" name="bdate" required>
                                                 </div>  
                                             </div>                              
                                             <div class="form-group ">
@@ -164,7 +170,7 @@
                                                 </div>
                                             </div>
                                             <div class="control-group form-group">
-                                                <label class="form-label"><?php echo lang('civil_status');?><span class="text-danger">*</span></label>
+                                                <label class="form-label"><?php echo lang('civil_status');?><span class="text-danger"> *</span></label>
                                                 <select class="form-control select2-show-search" id="civil_status" name="civil_status" data-placeholder="Choose one" required>
                                                     <option value="" label="Choose one"></option>
                                                         <?php foreach ($civil_status as $status) { ?>
@@ -194,7 +200,7 @@
                                             </div>
                                             <div class="control-group form-group">
                                                 <label class="form-label"><?php echo lang('company');?></label>
-                                                <input id="company" name="company" type="text" class="form-control" placeholder="Company">
+                                                <input id="company" name="company" type="text" class="form-control" maxlength="80" placeholder="Company" value="<?php echo set_value('company'); ?>">
                                             </div>
                                         </section>
                                         <h3><?php echo lang('address');?></h3>
@@ -203,14 +209,15 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group wd-xs-300">
-                                                        <label class="form-control-label"><?php echo lang('street_number').' / '.lang('street_name');?> <span class="text-danger">*</span></label> <input class="form-control" id="address" name="address" placeholder="Enter street number, street address, unit number, etc." required="" type="text">
+                                                        <label class="form-label"><?php echo lang('street_number').' / '.lang('street_name');?> <span class="text-danger">*</span></label>
+                                                        <input class="form-control" id="address" name="address" maxlength="100" placeholder="Enter street number, street name, unit number, etc." required="" type="text" value="<?php echo set_value('address'); ?>">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('country'); ?> <span class="text-danger">*</span></label>
+                                                        <label class="form-label"><?php echo lang('country'); ?> <span class="text-danger"> *</span></label>
                                                         <select class="form-control select2-show-search" name="country_id" id="country" required style="width:100%;">
                                                             <!-- <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option> -->
                                                             <option></option>
@@ -246,7 +253,7 @@
                                                 <div class="col-sm-12 col-md-6" id="barangayDiv">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('postal'); ?></label>
-                                                        <input type="text" name="postal" class="form-control">
+                                                        <input type="text" name="postal" class="form-control" maxlength="20" value="<?php echo set_value('postal'); ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -255,21 +262,23 @@
                                         <section>
                                             <div class="form-group">
                                                 <label class="form-label" ><?php echo lang('email_address');?> <span class="text-danger">*</span></label>
-                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" maxlength="100" required value="<?php echo set_value('email'); ?>">
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label" ><?php echo lang('mobile_number');?> <span class="text-danger">*</span></label>
-                                                <form>
-                                                    <input type="tel" class="form-control" name="mobile" id="phone" placeholder="<?php echo lang('mobile_number');?>">
-                                                </form>
+                                                
+                                                <input type="tel" class="form-control" name="mobile" id="mobile" value="<?php echo set_value('mobile'); ?>" required>
+                                                <input type="hidden" name="phone" id="phone">
+                                                <span id="error-msg" class="hide"></span>
+                                                <span id="valid-msg" class="hide"> Valid</span>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label" ><?php echo lang('password');?> <span class="text-danger">*</span></label>
-                                                <input type="password" class="form-control" name="password" id="password" placeholder="<?php echo lang('password');?>">
+                                                <input type="password" class="form-control" name="password" id="password" minlength="8" placeholder="<?php echo lang('password');?> (min. 8 characters)" required>
                                             </div>
                                             <div class="form-group">
                                                 <label class="form-label" ><?php echo lang('confirm').' '.lang('password');?></label>
-                                                <input type="password" class="form-control" name="password_confirm" id="password_confirm" placeholder="<?php echo lang('confirm').' '.lang('password') ;?>">
+                                                <input type="password" class="form-control" name="password_confirm" id="password_confirm" placeholder="<?php echo lang('confirm').' '.lang('password') ;?>" required data-parsley-equalto="#password">
                                             </div>
 
                                         </section>
@@ -331,11 +340,6 @@
         <script src="<?php echo base_url('public/assets/js/formelementadvnced.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/form-elements.js'); ?>"></script>
 
-        <!--intlTelInput js-->
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/intlTelInput.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/country-select.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/utils.js'); ?>"></script>
-
         <!--Select2 js -->
         <script src="<?php echo base_url('public/assets/plugins/select2/select2.full.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/select2.js'); ?>"></script>
@@ -343,10 +347,16 @@
         <!-- flatpickr js -->
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
 
+        <script src="<?php echo base_url('common/assets/intl-tel-input/build/js/intlTelInput.js');?>"></script>
+
         <script type="text/javascript">
             $(document).ready(function () {
                 flatpickr(".flatpickr", {
-                    maxDate: "today"
+                    maxDate: "today",
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    dateFormat: "Y-m-d",
+
                 });
             });
         </script>
@@ -458,6 +468,11 @@
                     $("#state").find('option').remove();
                     $("#city").find('option').remove();
                     $("#barangay").find('option').remove();
+                    if (country == "174") {
+                        barangay.style.display='block';
+                    } else {
+                        barangay.style.display='none';
+                    }
 
                     $.ajax({
                         url: 'auth/getStateByCountryIdByJason?country=' + country,
@@ -524,6 +539,54 @@
             });
                 
             
+        </script>
+        
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var input = document.querySelector("#mobile");
+                var errorMsg = document.querySelector("#error-msg");
+                var validMsg = document.querySelector("#valid-msg");
+
+                // here, the index maps to the error code returned from getValidationError - see readme
+                var errorMap = ["Invalid mobile number", "Invalid country code", "Too short", "Too long", "Invalid mobile number", "Invalid length"];
+
+                // initialise plugin
+                var iti = window.intlTelInput(input, {
+                    hiddenInput: "full_number",
+                    preferredCountries: ['ph', 'jp'],
+                    utilsScript: "<?php echo base_url('common/assets/intl-tel-input/build/js/utils.js?1638200991544');?>"
+                });
+
+                var reset = function() {
+                  input.classList.remove("parsley-error");
+                  input.classList.remove("is-valid");
+                  errorMsg.innerHTML = "";
+                  errorMsg.classList.add("hide");
+                  validMsg.classList.add("hide");
+                };
+
+                // on blur: validate
+                input.addEventListener('blur', function() {
+                  reset();
+                  document.getElementById("phone").value = iti.getNumber();
+                  if (input.value.trim()) {
+                    if (iti.isValidNumber()) {
+                      validMsg.classList.remove("hide");
+                      input.classList.add("is-valid");
+                    } else {
+                      input.classList.add("parsley-error");
+                      input.classList.remove("is-valid");
+                      var errorCode = iti.getValidationError();
+                      errorMsg.innerHTML = errorMap[errorCode];
+                      errorMsg.classList.remove("hide");
+                    }
+                  }
+                });
+
+                // on keyup / change flag: reset
+                input.addEventListener('change', reset);
+                input.addEventListener('keyup', reset);
+            });
         </script>
     </body>
 </html>
