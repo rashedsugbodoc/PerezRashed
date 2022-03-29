@@ -37,12 +37,14 @@ $(function() {
 				}
 				// Step 2 form validation
 				if (currentIndex === 1) {
+					var address = $('#address').parsley();
 					var country = $('#country').parsley();
 					var state = $('#state').parsley();
 					var city = $('#city').parsley();
-					if (country.isValid() && state.isValid() && city.isValid()) {
+					if (address.isValid() && country.isValid() && state.isValid() && city.isValid()) {
 						return true;
 					} else {
+						address.validate();
 						country.validate();
 						state.validate();
 						city.validate();
@@ -51,13 +53,13 @@ $(function() {
 				// Step 3 from validation
 				if (currentIndex === 2) {
 					var email = $('#email').parsley();
-					var phone = $('#phone').parsley();
+					
 					var password = $('#password').parsley();
-					if (email.isValid() && phone.isValid() && password.isValid()) {
+					if (email.isValid() && password.isValid()) {
 						return true;
 					} else {
 						email.validate();
-						phone.validate();
+						
 						password.validate();
 					}
 				}
