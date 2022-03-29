@@ -92,7 +92,7 @@ class Finance extends MX_Controller {
         $quantity = array();
         $category_selected = array();
         // $amount_by_category = $this->input->post('category_amount');
-        $payment_status = $this->input->post('payment_status');
+        $payment_status = (int)$this->input->post('payment_status');
         $encounter_id = $this->input->post('encounter_id');
         $category_selected = $this->input->post('category_name');
         $item_selected = $this->input->post('category_id');
@@ -329,7 +329,6 @@ class Finance extends MX_Controller {
                     'discount' => $discount,
                     'flat_discount' => $flat_discount,
                     'gross_total' => $gross_total,
-                    'status' => 'unpaid',
                     'hospital_amount' => $hospital_amount,
                     'doctor_amount' => $doctor_amount,
                     'user' => $user,
@@ -340,7 +339,9 @@ class Finance extends MX_Controller {
                     'date_string' => $date_string,
                     'remarks' => $remarks,
                     'completion_status' => $completion_status,
-                    'company_id' => $company_id
+                    'company_id' => $company_id,
+                    'payment_status' => $payment_status,
+                    'encounter_id' => $encounter_id
                 );
 
 
@@ -423,7 +424,6 @@ class Finance extends MX_Controller {
                             'discount' => $discount,
                             'flat_discount' => $flat_discount,
                             'gross_total' => $gross_total,
-                            'status' => 'unpaid',
                             'hospital_amount' => $hospital_amount,
                             'doctor_amount' => $doctor_amount,
                             'patient_name' => $patient_name,
@@ -442,7 +442,8 @@ class Finance extends MX_Controller {
                             'cvv' => $cvv,
                             'from' => 'pos',
                             'user' => $user,
-                            'cardholdername' => $this->input->post('cardholder')
+                            'cardholdername' => $this->input->post('cardholder'),
+                            'payment_status' => $payment_status
                         );
                         //    $data_payments['all_details'] = $all_details;
                         //    $this->load->view('home/dashboard'); // just the header file
@@ -553,7 +554,8 @@ class Finance extends MX_Controller {
                     'doctor_name' => $doctor_details->name,
                     'remarks' => $remarks,
                     'completion_status' => $completion_status,
-                    'company_id' => $company_id
+                    'company_id' => $company_id,
+                    'payment_status' => $payment_status
                 );
 
                 if (!empty($deposit_id->id)) {
@@ -601,11 +603,14 @@ class Finance extends MX_Controller {
                     redirect('home/permission');
                 }
             }
+
             $data['encounter'] = $this->encounter_model->getEncounterById($id);
             $data['staffs'] = $this->encounter_model->getUser();
             $data['payment'] = $this->finance_model->getPaymentById($id);
-            $data['patients'] = $this->patient_model->getPatientById($data['payment']->patient);
-            $data['doctors'] = $this->doctor_model->getDoctorById($data['payment']->doctor);
+            // $data['patients'] = $this->patient_model->getPatientById($data['payment']->patient);
+            // $data['doctors'] = $this->doctor_model->getDoctorById($data['payment']->doctor);
+            $data['patients'] = $this->patient_model->getPatient();
+            $data['doctors'] = $this->doctor_model->getDoctor();
             $data['company'] = $this->company_model->getCompanyById($data['payment']->company_id);
             $this->load->view('home/dashboardv2'); // just the header file
             $this->load->view('add_payment_viewv2', $data);
@@ -2603,6 +2608,7 @@ class Finance extends MX_Controller {
         $companyClassificationName = $this->company_model->getCompanyClassificationById($companyId->classification_id);
         $current_user = $this->ion_auth->get_users_groups()->row()->name;
         $data['name'] = $this->finance_model->getInvoiceStatusByCompanyClassificationName($companyClassificationName->name, $current_user);
+        $data['company_name'] = $companyClassificationName->name;
         
 
         echo json_encode($data);        

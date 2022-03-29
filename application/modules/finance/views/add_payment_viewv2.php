@@ -69,20 +69,18 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
                                                                 <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
-                                                                    <option selected disabled hidden>Search Patient</option>
+                                                                    <option disabled>Search Patient</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
-                                                                    <!-- <?php if (!empty($payment)) { ?>
-                                                                        <option value="<?php echo $patient->id ?>" selected="selected"><?php echo $patient->name ?></option>
-                                                                    <?php } else { ?>
-                                                                        <option value="<?php echo $patient->id ?>"><?php echo $patient->name ?></option>
-                                                                    <?php } ?>
-                                                                    <?php if (!empty($encounter->id)) { ?>
-                                                                        <option value="<?php echo $patientt->id; ?>" selected><?php echo $patientt->name ?></option>
-                                                                    <?php } ?> -->
                                                                     <?php if (!empty($payment)) { ?>
-                                                                        <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
+                                                                        <?php foreach($patients as $patient) { ?>
+                                                                            <?php if ($patient->id === $payment->patient) { ?>
+                                                                                <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                                            <?php } else { ?>
+                                                                                <option value="<?php echo $patient->id; ?>"><?php echo $patient->name ?></option>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
                                                                     <?php } ?>
-                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                    <?php if (!empty($encounter_id)) { ?>
                                                                         <option value="<?php echo $patientt->id; ?>" selected><?php echo $patientt->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
@@ -171,20 +169,14 @@
                                                                 <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                                     <option selected disabled>Search Doctor</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
-                                                                    <!-- <?php foreach ($doctors as $doctor) { ?>
-                                                                        <?php if (!empty($payment)) { ?>
-                                                                            <option value="<?php echo $doctor->id ?>" selected="selected"><?php echo $doctor->name ?></option>
-                                                                        <?php } else { ?>
-                                                                            <option value="<?php echo $doctor->id ?>"><?php echo $doctor->name ?></option>
-                                                                        <?php } ?>
-                                                                        <?php if (!empty($encounter->id)) { ?>
-                                                                            <option value="<?php echo $doctorr->id; ?>" selected><?php echo $doctorr->name ?></option>
-                                                                        <?php } ?>
-                                                                    <?php }?> -->
                                                                     <?php if (!empty($payment)) { ?>
-                                                                        <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
+                                                                        <?php foreach($doctors as $doctor) { ?>
+                                                                            <?php if ($doctor->id === $payment->doctor) { ?>
+                                                                                <option value="<?php echo $doctor->id; ?>" selected="selected"><?php echo $doctor->name; ?> - <?php echo $doctor->id; ?></option>  
+                                                                            <?php } ?>
+                                                                        <?php } ?>
                                                                     <?php } ?>
-                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                    <?php if (!empty($encounter_id)) { ?>
                                                                         <option value="<?php echo $doctorr->id; ?>" selected><?php echo $doctorr->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
@@ -465,11 +457,8 @@
 
                                                             <?php } ?>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('invoice') ?> <?php echo lang('status') ?></label>
-                                                            <select class="select2-show-search form-control" name="payment_status" id="payment_status">
-                                                                
-                                                            </select>
+                                                        <div class="form-group" id="invoice_status">
+                                                            
                                                         </div>
                                                         <div class="form-group cashsubmit col-md-12">
                                                             <button type="submit" name="submit2" id="submit1" class="btn btn-primary row pull-right"> <?php echo lang('submit'); ?>
@@ -521,7 +510,7 @@
                                                                         <td><?php echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
                                                                         <td><?php echo $payment->deposit_type;?></td>
                                                                         <td>
-                                                                            <input type="text" class="form-control" name="amount_received" id="amount_received" value='<?php if (!empty($payment->amount_received)) { echo $payment->amount_received; } ?>' <?php
+                                                                            <input type="text" class="form-control amount_received" name="amount_received" id="amount_received" value='<?php if (!empty($payment->amount_received)) { echo $payment->amount_received; } ?>' <?php
                                                                             if ($payment->deposit_type == 'Card') {
                                                                                 echo 'readonly';
                                                                             }
@@ -546,7 +535,7 @@
                                                                                 <td><?php echo $this->ion_auth->user($deposit->user)->row()->username; ?></td>
                                                                                 <td><?php echo $deposit->deposit_type;?></td>
                                                                                 <td>
-                                                                                    <input type="text" class="form-control" name="deposit_edit_amount[]" id="amount_received" value='<?php echo $deposit->deposited_amount; ?>' <?php
+                                                                                    <input type="text" class="form-control amount_received" name="deposit_edit_amount[]" id="amount_received" value='<?php echo $deposit->deposited_amount; ?>' <?php
                                                                                     if ($deposit->deposit_type == 'Card') {
                                                                                         echo 'readonly';
                                                                                     }
@@ -1318,6 +1307,51 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            console.log($("#subtotal").val());
+            var amount_received = $(".amount_received").val();
+            var deposit_edit_amount = $("input[name^=deposit_edit_amount").map(function (idx, elem) {
+                return $(elem).val();
+            }).get();
+            var amount_received = $("input[name=amount_received]").val();
+
+            var dep = 0;
+            $.each(deposit_edit_amount, function (key, value) {
+                dep = (parseFloat(value) + dep);
+            });
+
+            var totaldeposit = parseFloat(amount_received) + dep;
+
+            console.log(totaldeposit);
+            console.log(deposit_edit_amount);
+            $("#payment_status").find('option').remove();
+                var company = $("#company").val();
+                $.ajax({
+                    url: 'finance/getInvoiceStatusByCompanyClassificationName?id=' + company,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var status = response.name;
+                        console.log(response.company_name);
+
+                        $.each(status, function (key, value) {
+                            if (response.company_name == "personal") {
+                                if (totaldeposit == $("#gross").val()) {
+                                    $('#payment_status').append($('<option selected>').text("Paid").val("Paid")).end();
+                                } else {
+                                    $('#payment_status').append($('<option>').text(value.display_name).val(value.id)).end();
+                                }
+                            } else {
+                                $('#payment_status').append($('<option>').text(value.display_name).val(value.id)).end();
+                            }
+                        });
+                    }
+                });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             $("#company").change(function (){
                 $("#payment_status").find('option').remove();
                 var company = $("#company").val();
@@ -1328,10 +1362,19 @@
                     dataType: 'json',
                     success: function (response) {
                         var status = response.name;
-
-                        $.each(status, function (key, value) {
-                            $('#payment_status').append($('<option>').text(value.display_name).val(value.display_name)).end();
-                        });
+                        var company_name = response.company_name;
+                        if (company_name != "personal") {
+                            $("#invoice_status").append("<div id='payment_statusDiv'><label class='form-label'><?php echo lang('invoice') ?> <?php echo lang('status') ?></label>\n\
+                                <select class='select2-show-search form-control' name='payment_status' id='payment_status'>\n\
+                                </select></div>");
+                            $("#payment_status").select2({});
+                            $.each(status, function (key, value) {
+                                $('#payment_status').append($('<option>').text(value.display_name).val(value.id)).end();
+                            });
+                        } else {
+                            $("#payment_statusDiv").remove();
+                        }
+                        
                     }
                 });
             });
