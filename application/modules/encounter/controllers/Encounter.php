@@ -14,6 +14,10 @@ class Encounter extends MX_Controller {
         $this->load->model('profile/profile_model');
         $this->load->model('prescription/prescription_model');
         $this->load->model('form/form_model');
+
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
+            redirect('home/permission');
+        }
     }
 
     function index() {
