@@ -153,7 +153,7 @@
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span><?php echo $encounter->encounter_number;?></span>
+                                                                    <span><?php echo $this->encounter_model->getEncounterById($payment->encounter_id)->encounter_number;?></span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
@@ -295,7 +295,7 @@
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span><?php echo $encounter->payment_status;?></span>
+                                                                    <span><?php echo $this->finance_model->getInvoicePaymentStatusById($payment->payment_status)->display_name;?></span>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
