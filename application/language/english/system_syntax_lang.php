@@ -152,6 +152,7 @@ $lang['edit_patient'] = 'Edit Patient';
 $lang['birth_date'] = 'Birth Date';
 $lang['blood_group'] = 'Blood Group';
 $lang['due_balance'] = 'Balance Due';
+$lang['balance'] = 'Balance';
 $lang['unpaid_amount'] = 'Unpaid Amount';
 $lang['in_progress'] = 'In Progress';
 $lang['completed'] = 'Completed';
