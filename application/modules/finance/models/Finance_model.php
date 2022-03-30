@@ -1242,4 +1242,17 @@ class Finance_model extends CI_model {
 
     }
 
+    function getInvoicePaymentStatusById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('invoice_payment_status');
+        return $query->row();
+    }
+
+    function getPaymentByEncounterIdByPatientId($encounter_id, $patient_id) {
+        $this->db->where('encounter_id', $encounter_id);
+        $this->db->where('patient', $patient_id);
+        $query = $this->db->get('invoice');
+        return $query->result();
+    }
+
 }
