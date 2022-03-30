@@ -42,6 +42,8 @@
                                                             <th><?php echo lang('encounter'); ?> <?php echo lang('id'); ?></th>
                                                             <th><?php echo lang('patient'); ?></th>
                                                             <th><?php echo lang('doctor'); ?></th>
+                                                            <th><?php echo lang('balance'); ?></th>
+                                                            <th><?php echo lang('payment').' '.lang('status'); ?></th>
                                                             <th><?php echo lang('status'); ?></th>
                                                             <th><?php echo lang('actions'); ?></th>
                                                         </tr>
