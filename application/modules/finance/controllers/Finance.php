@@ -83,6 +83,37 @@ class Finance extends MX_Controller {
         // $this->load->view('home/footer'); // just the header file
     }
 
+    public function getOutstandingBalanceByPatientIdByEncounterId($encounter_id, $patient_id) {
+        $invoices_by_encounter = $this->finance_model->getPaymentByEncounterIdByPatientId($encounter_id, $patient_id);
+
+        $invoices = [];
+        $invoices_amount = [];
+        foreach($invoices_by_encounter as $invoice_encounter) {
+            $invoices[] = $invoice_encounter->id;
+            $invoices_amount[] = $invoice_encounter->gross_total;
+        }
+
+        $total_invoices_amount = array_sum($invoices_amount);
+
+        $deposits = [];
+        foreach($invoices as $invoice) {
+            $deposits_details = [];
+            $deposits_details[] = $this->finance_model->getDepositByPaymentId($invoice);
+            foreach($deposits_details as $dep_details) {
+                $deposits_amount = $dep_details->deposited_amount;
+                foreach($dep_details as $details) {
+                    $deposits[] = $details->deposited_amount;
+                }
+            }
+        }
+
+        $deposit = array_sum($deposits);
+
+        $outstanding_balance = $total_invoices_amount - $deposit;
+
+        return $outstanding_balance;
+    }
+
     public function addPayment() {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
             redirect('home/permission');
@@ -160,6 +191,36 @@ class Finance extends MX_Controller {
         $amount_received = $this->input->post('amount_received');
         $deposit_type = $this->input->post('deposit_type');
         $user = $this->ion_auth->get_user_id();
+        $current_user_group = $this->ion_auth->get_users_groups()->row()->name;
+
+        $company_classification = $this->company_model->getClassificationByCompanyId($company_id);
+        $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
+        $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+
+        foreach ($payment_status_list as $status_list) {
+            if ($status_list->name === "paid") {
+                $paid_status = $status_list->id;
+            } elseif ($status_list->name === "unpaid") {
+                $unpaid_status = $status_list->id;
+            } elseif ($status_list->name === "overdue") {
+                $overdue_status = $status_list->id;
+            }
+        }
+        // $payment_status_list = $this->
+
+        if (empty($payment_status)) {
+            $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
+            $gross = $this->input->post('grsss');
+            $received_deposit_amount = $amount_received + $deposit_amount;
+
+            if ($received_deposit_amount >= $gross) {
+                $payment_status = $paid_status;
+            } else {
+                $payment_status = $unpaid_status;
+            }
+        }
+
+        $outstanding_balance = $this->getOutstandingBalanceByPatientIdByEncounterId($encounter_id, $patient) - $amount_received;
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -358,6 +419,20 @@ class Finance extends MX_Controller {
                         'invoice_id' => $inserted_id,
                     );
 
+                    $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
+                }
+
+                if ($outstanding_balance <= 0) {
+                    $payment_status = $paid_status;
+                    $finance_encounter = array(
+                        'payment_status' => $payment_status,
+                    );
+                    $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
+                } elseif ($outstanding_balance > 0) {
+                    $payment_status = $unpaid_status;
+                    $finance_encounter = array(
+                        'payment_status' => $payment_status,
+                    );
                     $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
                 }
 
@@ -1517,6 +1592,26 @@ class Finance extends MX_Controller {
         $payment_details = $this->finance_model->getPaymentById($payment_id);
         $user = $this->ion_auth->get_user_id();
 
+        $payment_details = $this->finance_model->getPaymentById($payment_id);
+        $encounter_id = $payment_details->encounter_id;
+
+        $current_user_group = $this->ion_auth->get_users_groups()->row()->name;
+        $company_classification = $this->company_model->getClassificationByCompanyId($payment_details->company_id);
+        $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
+        $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+
+        foreach ($payment_status_list as $status_list) {
+            if ($status_list->name === "paid") {
+                $paid_status = $status_list->id;
+            } elseif ($status_list->name === "unpaid") {
+                $unpaid_status = $status_list->id;
+            } elseif ($status_list->name === "overdue") {
+                $overdue_status = $status_list->id;
+            }
+        }
+
+        $outstanding_balance = $this->getOutstandingBalanceByPatientIdByEncounterId($encounter_id, $patient) - $deposited_amount;
+
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 // Validating Patient Name Field
@@ -1616,6 +1711,20 @@ class Finance extends MX_Controller {
                 } else {
                     $this->finance_model->insertDeposit($data);
                     $this->session->set_flashdata('success', lang('added'));
+
+                    if ($outstanding_balance <= 0) {
+                        $payment_status = $paid_status;
+                        $finance_encounter = array(
+                            'payment_status' => $payment_status,
+                        );
+                        $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
+                    } elseif ($outstanding_balance > 0) {
+                        $payment_status = $unpaid_status;
+                        $finance_encounter = array(
+                            'payment_status' => $payment_status,
+                        );
+                        $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
+                    }
                 }
             } else {
                 $this->finance_model->updateDeposit($id, $data);
@@ -2214,9 +2323,9 @@ class Finance extends MX_Controller {
         foreach ($data['payments'] as $payment) {
             $date = date('d-m-y', $payment->date);
 
-            $discount = $payment->discount;
-            if (empty($discount)) {
-                $discount = 0;
+            $flat_discount = $payment->flat_discount;
+            if (empty($flat_discount)) {
+                $flat_discount = 0;
             }
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor'))) {
@@ -2262,7 +2371,7 @@ class Finance extends MX_Controller {
                 $doctor,
                 $date,
                 $settings->currency . '' . number_format($payment->amount,2),
-                $settings->currency . '' . number_format($discount,2),
+                $settings->currency . '' . number_format($flat_discount,2),
                 $settings->currency . '' . number_format($payment->gross_total,2),
                 $settings->currency . '' . number_format(($this->finance_model->getDepositAmountByPaymentId($payment->id)),2),
                 $settings->currency . '' . number_format(($payment->gross_total - $this->finance_model->getDepositAmountByPaymentId($payment->id)),2),
