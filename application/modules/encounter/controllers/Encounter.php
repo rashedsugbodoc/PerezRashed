@@ -38,6 +38,16 @@ class Encounter extends MX_Controller {
     }
 
     function addNewView() {
+        $data = array();
+
+        $data['patient_id'] = $this->input->get('patient_id');
+
+        $current_user = $this->ion_auth->get_user_id();
+        if ($this->ion_auth->in_group('Doctor')) {
+            $doctor_id = $this->db->get_where('doctor', array('ion_user_id' => $current_user))->row()->id;
+            $data['doctordetails'] = $this->db->get_where('doctor', array('id' => $doctor_id))->row();
+        }
+
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_new', $data);
     }

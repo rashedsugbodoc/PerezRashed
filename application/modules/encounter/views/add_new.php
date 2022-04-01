@@ -35,7 +35,9 @@
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
                                                 <select class="select2-show-search form-control pos_select" name="patient" id="pos_select">
-                                                    
+                                                    <?php if (!empty($patient_id)) { ?>
+                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -47,7 +49,9 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
                                                         <select class="select2-show-search form-control rendering_doctor_select" name="rendering_doctor" id="pos_rendering_doctor">
-                                                            
+                                                            <?php if (!empty($doctordetails)) { ?>
+                                                                <option value="<?php echo $doctordetails->id; ?>" selected="selected"><?php echo $doctordetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctordetails->id; ?>)</option>  
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
