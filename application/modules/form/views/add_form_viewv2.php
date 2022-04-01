@@ -83,6 +83,9 @@
                                                             <?php if (!empty($form->patient)) { ?>
                                                                 <option value="<?php echo $form->name; ?>" selected="selected"><?php echo $form->patient_name; ?> - <?php echo $form->patient; ?></option>  
                                                             <?php } ?>
+                                                            <?php if (!empty($patient_id)) { ?>
+                                                                <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -182,6 +185,9 @@
                                                         <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one">
                                                             <?php if (!empty($form->patient)) { ?>
                                                                 <option value="<?php echo $form->name; ?>" selected="selected"><?php echo $form->doctor_name; ?> - <?php echo $form->doctor; ?></option>  
+                                                            <?php } ?>
+                                                            <?php if (!empty($doctordetails)) { ?>
+                                                                <option value="<?php echo $doctordetails->id; ?>" selected="selected"><?php echo $doctordetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctordetails->id; ?>)</option>  
                                                             <?php } ?>
                                                         </select>
                                                     </div>

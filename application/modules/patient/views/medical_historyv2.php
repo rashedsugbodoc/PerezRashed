@@ -836,7 +836,7 @@
                                                             <?php echo lang('forms')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="form/addFormView" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <a href="form/addFormView?patient_id=<?php echo $patient->id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">

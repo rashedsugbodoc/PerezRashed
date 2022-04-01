@@ -137,11 +137,18 @@ class Form extends MX_Controller {
 
 
         $id = $this->input->get('id');
+        $data['patient_id'] = $this->input->get('patient_id');
 
         if (!empty($id)) {
             $data['form'] = $this->form_model->getFormById($id);
             $data['patients'] = $this->patient_model->getPatientById($data['form_single']->patient);
             $data['doctors'] = $this->doctor_model->getDoctorById($data['form_single']->doctor);
+        }
+
+        $current_user = $this->ion_auth->get_user_id();
+        if ($this->ion_auth->in_group('Doctor')) {
+            $doctor_id = $this->db->get_where('doctor', array('ion_user_id' => $current_user))->row()->id;
+            $data['doctordetails'] = $this->db->get_where('doctor', array('id' => $doctor_id))->row();
         }
 
         $data['templates'] = $this->form_model->getTemplate();
