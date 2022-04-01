@@ -35,12 +35,12 @@ class Labrequest extends MX_Controller {
             $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
             $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
             $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
-        } else {
-            $current_user = $this->ion_auth->get_user_id();
-            if ($this->ion_auth->in_group('Doctor')) {
-                $doctor_id = $this->db->get_where('doctor', array('ion_user_id' => $current_user))->row()->id;
-                $data['doctordetails'] = $this->db->get_where('doctor', array('id' => $doctor_id))->row();
-            }
+        }
+
+        $current_user = $this->ion_auth->get_user_id();
+        if ($this->ion_auth->in_group('Doctor')) {
+            $doctor_id = $this->db->get_where('doctor', array('ion_user_id' => $current_user))->row()->id;
+            $data['doctordetails'] = $this->db->get_where('doctor', array('id' => $doctor_id))->row();
         }
 
         $this->load->view('home/dashboardv2');
