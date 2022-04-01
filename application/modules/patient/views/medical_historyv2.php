@@ -768,7 +768,7 @@
                                                             <?php echo lang('lab').' '.lang('request')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="labrequest/addLabRequestView" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">

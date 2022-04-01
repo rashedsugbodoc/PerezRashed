@@ -135,6 +135,9 @@
                                                                     <?php if (!empty($request_number)) { ?>
                                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
                                                                     <?php } ?>
+                                                                    <?php if (!empty($patient_id)) { ?>
+                                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
+                                                                    <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter_id)) { ?>
                                                                     <input type="hidden" name="patient" value="<?php echo $patient->id ?>">
@@ -156,7 +159,9 @@
                                                                     <?php if (!empty($request_number)) { ?>
                                                                         <option value="<?php echo $doctor->id ?>" selected><?php echo $doctor->firstname.' '.$doctor->lastname ?></option>
                                                                     <?php } ?>
-                                                                    
+                                                                    <?php if (!empty($doctordetails)) { ?>
+                                                                        <option value="<?php echo $doctordetails->id; ?>" selected="selected"><?php echo $doctordetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctordetails->id; ?>)</option>  
+                                                                    <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter_id)) { ?>
                                                                     <input type="hidden" name="doctor" value="<?php echo $doctor->id ?>">
