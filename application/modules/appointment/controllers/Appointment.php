@@ -16,6 +16,7 @@ class Appointment extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('service/service_model');
         $this->load->model('encounter/encounter_model');
+        $this->load->model('finance/finance_model');
         if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Patient', 'Receptionist'))) {
             redirect('home/permission');
         }

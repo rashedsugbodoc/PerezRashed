@@ -136,7 +136,9 @@
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('service_type'); ?></label>
                                                 <select class="form-control select2-show-search service_cat" name="service_category_group" id="service_select" data-placeholder="Choose one (with searchbox)"  required="">
-                                                    
+                                                    <?php if (!empty($appointment->service_category_group_id)) { ?>
+                                                        <option value="<?php echo $appointment->service_category_group_id ?>" selected><?php echo $this->finance_model->getServiceCategoryGroupById($appointment->service_category_group_id)->display_name; ?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -146,7 +148,9 @@
                                             <div class="form-group">
                                                 <label class="form-label"> <?php echo lang('service'); ?></label>
                                                 <select class="form-control select2-show-search sub_service" id="sub_service" name="service" data-placeholder="Choose one (with searchbox)"  required="">
-                                                    
+                                                    <?php if (!empty($appointment->service_id)) { ?>
+                                                        <option value="<?php echo $appointment->service_id ?>" selected><?php echo $this->appointment_model->getServicesByServiceId($appointment->service_id)->category; ?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -156,7 +160,9 @@
                                             <div class="form-group branch_select">
                                                 <label class="form-label"> <?php echo lang('location'); ?></label>
                                                 <select class="form-control select2-show-search branch" name="branch" id="branch_select" data-placeholder="Choose one (with searchbox)">
-                                                    <option selected value="">Choose One</option>
+                                                    <?php if (!empty($appointment->location_id)) { ?>
+                                                        <option value="<?php echo $appointment->location_id ?>"><?php echo $this->branch_model->getBranchById($appointment->location_id)->display_name; ?></option>
+                                                    <?php } ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -538,6 +544,49 @@
                 });
 
                 $(document).ready(function () {
+                    var doctor = $("#adoctors").val();
+                    var service_type = $("#service_select").val();
+
+                    // console.log(is_virtual);
+                    // $('#sub_service').find('option').remove();
+                    // $('#aslots').find('option').remove();
+                    // $('#date').val('');
+                    // $('#branch_select').find('option').remove();
+                    $.ajax({
+                        url: 'appointment/getServicesByServiceCategoryGroupByDoctorHospital?servicecategorygroup=' + service_type + '&doctor=' + doctor,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+                            // console.log(response.services);
+                            $.each(response.services, function (key, value) {
+                                $('#sub_service').append($('<option>').text(value.description).val(value.id)).end();
+                            });
+
+                        }
+                    });
+
+                    var branch = $("branch_select").val;
+
+                    $.ajax({
+                        url: 'appointment/getServiceCategoryById?id=' + service_type,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+                            var is_virtual = response.is_virtual;
+                            
+                            if (is_virtual) {
+                                $(".branch_select").prop('hidden', true);
+                                console.log(branch);
+                            } else {
+                                $(".branch_select").attr('hidden', false);
+                                console.log('Not hidden');
+                            }
+                        }
+                    });
+
+
                     $("#service_select").change(function () {
                         var doctor = $("#adoctors").val();
                         var service_type = $("#service_select").val();
