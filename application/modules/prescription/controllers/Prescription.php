@@ -56,15 +56,15 @@ class Prescription extends MX_Controller {
     }
 
     public function addPrescriptionView() {
-
         if (!$this->ion_auth->in_group(array('Doctor'))) {
             redirect('home/permission');
         }
 
+        $data = array();
+
         $id = $this->input->get('id');
         $encounter_id = $this->input->get('encounter_id');
-
-        $data = array();
+        $data['patient_id'] = $this->input->get('patient_id');
 
         if (!empty($id)) {
             $data['id'] = $id;
@@ -75,7 +75,6 @@ class Prescription extends MX_Controller {
             $data['patient_id'] = $this->encounter_model->getEncounterById($data['encounter_id'])->patient_id;
             $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
             $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
-            
         }
 
         $data['medicines'] = $this->medicine_model->getMedicine();
