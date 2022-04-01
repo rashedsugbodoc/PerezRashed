@@ -55,8 +55,8 @@
                                                                 <th><?php echo lang('name'); ?></th>
                                                                 <th><?php echo lang('email'); ?></th>
                                                                 <th><?php echo lang('phone'); ?></th>
-                                                                <th><?php echo lang('department'); ?></th>
-                                                                <th><?php echo lang('profile'); ?></th>
+                                                                <th><?php echo lang('specialization'); ?></th>
+                                                                <th>Consultation Fees</th>
                                                                 <th class="no-print"><?php echo lang('options'); ?></th>
                                                             </tr>
                                                         </thead>
@@ -476,6 +476,20 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Virtual Consultation Fee <span class="text-danger">*</span></label>
+                                                                <input type="text" name="virtual_consultation_fee" class="form-control" placeholder="Enter Digit with/out decimal" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label">In-Person Consultation Fee <span class="text-danger">*</span></label>
+                                                                <input type="text" name="in_person_consultation_fee" class="form-control" placeholder="Enter Digit with/out decimal" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
                                                             
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
@@ -848,6 +862,8 @@
                         $('#editDoctorForm').find('[name="tin"]').val(response.doctor.tax_number).end()
                         $('#editDoctorForm').find('[name="ptr"]').val(response.doctor.tax_receipt_number).end()
                         $('#editDoctorForm').find('[name="s2"]').val(response.doctor.secondary_license_number).end()
+                        $('#editDoctorForm').find('[name="virtual_consultation_fee"]').val(response.doctor.virtual_consultation_fee).end()
+                        $('#editDoctorForm').find('[name="in_person_consultation_fee"]').val(response.doctor.physical_consultation_fee).end()
 
                         $.each(response.specialties, function(key, value) {
                             $('#specialtychoose2').append($('<option selected>').text(value.display_name_ph).val(value.id)).end();

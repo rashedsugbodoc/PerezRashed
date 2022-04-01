@@ -308,6 +308,20 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Virtual Consultation Fee <span class="text-danger">*</span></label>
+                                                        <input type="text" name="virtual_consultation_fee" class="form-control" placeholder="Enter Digit with/out decimal">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">In-Person Consultation Fee <span class="text-danger">*</span></label>
+                                                        <input type="text" name="in_person_consultation_fee" class="form-control" placeholder="Enter Digit with/out decimal">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">

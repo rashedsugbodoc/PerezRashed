@@ -121,6 +121,8 @@ class Doctor extends MX_Controller {
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
+        $virtual_consultation_fee = $this->input->post('virtual_consultation_fee');
+        $in_person_consultation_fee = $this->input->post('in_person_consultation_fee');
         $name = $fname . ' ' . $mname . ' ' . $lname . ' ' . $suffix;
         $specialization = implode(',', $specialization);
 
@@ -170,6 +172,8 @@ class Doctor extends MX_Controller {
         $this->form_validation->set_rules('tin', 'TIN Number', 'trim|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('ptr', 'PTR Number', 'trim|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('s2', 'S2 Number', 'trim|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('virtual_consultation_fee', 'Virtual Consultation Fee', 'trim|required|decimal|max_length[15]|xss_clean');
+        $this->form_validation->set_rules('in_person_consultation_fee', 'In-Person Consultation Fee', 'trim|decimal|required|max_length[15]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -255,6 +259,8 @@ class Doctor extends MX_Controller {
                 'tax_number' => $tin,
                 'tax_receipt_number' => $ptr,
                 'secondary_license_number' => $s2,
+                'virtual_consultation_fee' => $virtual_consultation_fee,
+                'physical_consultation_fee' => $in_person_consultation_fee
             );
 
             if (empty($id)) {     // Adding New Doctor
@@ -617,6 +623,7 @@ class Doctor extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $settings = $this->settings_model->getSettings();
 
         if ($limit == -1) {
             if (!empty($search)) {
@@ -634,6 +641,17 @@ class Doctor extends MX_Controller {
         //  $data['doctors'] = $this->doctor_model->getDoctor();
 
         foreach ($data['doctors'] as $doctor) {
+            $specializations = explode(',', $doctor->specialties);
+            $specialties = [];
+            foreach ($specializations as $specialization) {
+                $specialty_name = $this->specialty_model->getSpecialtyById($specialization);
+                $specialties[] = $specialty_name->display_name;
+            }
+
+            $specialty_names = implode('<br>', $specialties);
+            $consultation_fee = '<label><strong>Virtual:</strong> '. $settings->currency . ' ' . number_format($doctor->virtual_consultation_fee,2) .'</label><br>
+                                <label><strong>In-Person:</strong> '. $settings->currency . ' ' . number_format($doctor->physical_consultation_fee,2) .'</label>';
+
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
                 $options1 = '<a type="button" class="btn btn-info btn-xs btn_width editbutton" title="' . lang('edit') . '" data-toggle="modal" data-id="' . $doctor->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
                 //   $options1 = '<a class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '" href="doctor/editDoctor?id='.$doctor->id.'"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
@@ -656,8 +674,8 @@ class Doctor extends MX_Controller {
                 $doctor->name,
                 $doctor->email,
                 $doctor->phone,
-                $doctor->department,
-                $doctor->profile,
+                $specialty_names,
+                $consultation_fee,
                 //  $options1 . ' ' . $options2 . ' ' . $options3,
                 '<div class="btn-list">'. $options6 . ' ' . $options1 . ' ' . $options2 . ' ' . $options4 . ' ' . $options5 . ' ' . $options3 . '</div>',
                     //  $options2
