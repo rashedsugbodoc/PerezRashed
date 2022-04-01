@@ -199,6 +199,10 @@
                                                 </select>
                                             </div>
                                             <div class="control-group form-group">
+                                                <label class="form-label"><?php echo lang('allergies');?></label>
+                                                <input id="allergies" name="allergies" type="text" class="form-control" maxlength="100" placeholder="<?php echo lang('allergies_placeholder');?>" value="<?php echo set_value('allergies'); ?>">
+                                            </div>                                            
+                                            <div class="control-group form-group">
                                                 <label class="form-label"><?php echo lang('company');?></label>
                                                 <input id="company" name="company" type="text" class="form-control" maxlength="80" placeholder="Company" value="<?php echo set_value('company'); ?>">
                                             </div>
