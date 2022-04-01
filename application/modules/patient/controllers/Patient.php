@@ -1098,6 +1098,11 @@ class Patient extends MX_Controller {
         $time_measured = $this->input->post('time');
         $systolic = $this->input->post('systolic');
         $pain = $this->input->post('pain_level');
+
+        if(empty($encounter_id)) {
+            $encounter_id = null;
+        }
+
         if(empty($systolic)) {
             $systolic = null;
         }
@@ -2380,9 +2385,9 @@ class Patient extends MX_Controller {
                 $patient_ion_id = $this->ion_auth->get_user_id();
                 $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
                 $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('my_documents', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('my_documentsv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } elseif ($this->ion_auth->in_group(array('admin' ,'Doctor', 'Nurse', 'Laboratorist', 'Receptionist'))) {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $this->session->set_flashdata('error_list', validation_errors());
@@ -2468,9 +2473,9 @@ class Patient extends MX_Controller {
                     $patient_ion_id = $this->ion_auth->get_user_id();
                     $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
                     $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
-                    $this->load->view('home/dashboard'); // just the header file
-                    $this->load->view('my_documents', $data);
-                    $this->load->view('home/footer'); // just the footer file
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('my_documentsv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
                 } elseif ($this->ion_auth->in_group(array('admin' ,'Doctor', 'Nurse', 'Laboratorist', 'Receptionist'))) {
                     $this->session->set_flashdata('error', lang('validation_error'));
 
