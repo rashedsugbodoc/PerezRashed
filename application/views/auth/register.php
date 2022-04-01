@@ -553,7 +553,7 @@
                 // initialise plugin
                 var iti = window.intlTelInput(input, {
                     hiddenInput: "full_number",
-                    preferredCountries: ['ph', 'jp'],
+                    preferredCountries: ['ph', 'sg', 'us'],
                     utilsScript: "<?php echo base_url('common/assets/intl-tel-input/build/js/utils.js?1638200991544');?>"
                 });
 
