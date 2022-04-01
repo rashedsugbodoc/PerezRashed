@@ -2059,8 +2059,8 @@ class Patient extends MX_Controller {
             $form_doctor = $this->doctor_model->getDoctorById($form->doctor);
             $form_category = $this->form_model->getFormCategoryById($form->category_id)->name;
             $form_doctor_specialty_explode = explode(',', $form_doctor->specialties);
-            $hospital_details = $this->hospital_model->getHospitalById($medical_history->hospital_id);
-            $branch_name = $this->branch_model->getBranchById($medical_history->location_id)->display_name;
+            $hospital_details = $this->hospital_model->getHospitalById($form->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($form->location_id)->display_name;
             if (empty($branch_name)) {
                 $branch_name = "Online";
             }
