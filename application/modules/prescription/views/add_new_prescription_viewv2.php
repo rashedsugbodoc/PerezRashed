@@ -48,7 +48,7 @@
                                                     <?php } ?>
                                                 </select>
                                                 <?php if (!empty($encounter_id)) { ?>
-                                                    <input type="text" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                    <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
                                                 <?php } ?>
                                             </div>
                                         </div>
