@@ -56,11 +56,11 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly value="<?php
+                                                        <input class="form-control flatpickr" name="date" placeholder="MM/DD/YYYY" type="text" readonly value="<?php
                                                         if (!empty($form->date)) {
                                                             echo date('m/d/Y', $form->form_date.' UTC');
                                                         } else {
-                                                            echo date('m/d/Y');
+                                                            echo date('F j, Y');
                                                         }
                                                         ?>">
                                                     </div>
@@ -568,8 +568,24 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
         <script type="text/javascript" src="common/assets/ckeditor/ckeditor.js"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            flatpickr(".flatpickr", {
+                maxDate: "today",
+                defaultDate: "today",
+                altInput: true,
+                altFormat: "F j, Y",
+                dateFormat: "Y-m-d",
+                disableMobile: "true"
+            });
+        });
+    </script>
 
     <script>
         $(document).ready(function () {

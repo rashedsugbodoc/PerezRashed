@@ -356,7 +356,7 @@
                     altInput: true,
                     altFormat: "F j, Y",
                     dateFormat: "Y-m-d",
-
+                    disableMobile: "true"
                 });
             });
         </script>
