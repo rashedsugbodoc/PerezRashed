@@ -18,6 +18,8 @@ class Finance extends MX_Controller {
         $this->load->model('company/company_model');
         $this->load->model('settings/settings_model');
         $this->load->model('companyuser/companyuser_model');
+        $this->load->model('branch/branch_model');
+        $this->load->model('location/location_model');
         $this->load->module('sms');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->module('paypal');
@@ -74,7 +76,7 @@ class Finance extends MX_Controller {
         $data['patientt'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['settings'] = $this->settings_model->getSettings();
-        $data['categories'] = $this->finance_model->getPaymentCategory();
+        $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
         $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
@@ -667,7 +669,7 @@ class Finance extends MX_Controller {
             $data = array();
             $data['discount_type'] = $this->finance_model->getDiscountType();
             $data['settings'] = $this->settings_model->getSettings();
-            $data['categories'] = $this->finance_model->getPaymentCategory();
+            $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
             // $data['patients'] = $this->patient_model->getPatient();
             //  $data['doctors'] = $this->doctor_model->getDoctor();
             $id = $this->input->get('id');
@@ -1448,6 +1450,8 @@ class Finance extends MX_Controller {
         $data['patient'] = $this->patient_model->getPatientById($data['payment']->patient);
         $data['encounter'] = $this->encounter_model->getEncounterByInvoiceId($id);
         $patient_hospital_id = $data['patient']->hospital_id;
+        $limit = 3;
+        $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
 
         if (!empty($data['patient']->birthdate)) {
             $birthDate = strtotime($data['patient']->birthdate);
