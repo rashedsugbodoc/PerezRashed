@@ -259,32 +259,44 @@
                                                         <label for="exampleInputEmail1"> <?php echo lang('select'); ?></label>
                                                         <select name="category_name[]" class="multi-selection" multiple="" id="my_multi_select3">
                                                             <?php foreach ($categories as $category) { ?>
-                                                                <option class="ooppttiioonn" data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->category; ?>" 
-                                                                        <?php
-                                                                        if (!empty($payment->category_name)) {
-                                                                            $category_name = $payment->category_name;
-                                                                            $category_name1 = explode(',', $category_name);
-                                                                            foreach ($category_name1 as $category_name2) {
-                                                                                $category_name3 = explode('*', $category_name2);
-                                                                                if ($category_name3[0] == $category->id) {
-                                                                                    echo 'data-qtity=' . $category_name3[3];
+                                                                <?php foreach ($doctors as $doctor) { ?>
+                                                                    <?php
+                                                                    $service_category_group = $this->finance_model->getServiceCategoryGroupById($category->service_category_group_id);
+                                                                    if (!empty($service_category_group->is_virtual)) {
+                                                                        $fee = $doctor->virtual_consultation_fee;
+                                                                    } else {
+                                                                        $fee = $doctor->physical_consultation_fee;
+                                                                    }
+                                                                    ?>
+                                                                    <option class="ooppttiioonn" data-doctor="<?php echo $doctor->name; ?>" data-id="<?php echo $fee; ?>" data-idd="<?php echo $category->id.'-'.$doctor->ion_user_id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->category.'-'.$doctor->ion_user_id; ?>" 
+                                                                            <?php
+                                                                            if (!empty($payment->category_name)) {
+                                                                                $category_name = $payment->category_name;
+                                                                                $category_name1 = explode(',', $category_name);
+                                                                                foreach ($category_name1 as $category_name2) {
+                                                                                    $category_name3 = explode('*', $category_name2);
+                                                                                    if ($category_name3[0] == $category->id.'-'.$doctor->ion_user_id) {
+                                                                                        echo 'data-qtity=' . $category_name3[3];
+                                                                                    }
                                                                                 }
                                                                             }
-                                                                        }
-                                                                        ?>
-                                                                        <?php
-                                                                        if (!empty($payment->category_name)) {
-                                                                            $category_name = $payment->category_name;
-                                                                            $category_name1 = explode(',', $category_name);
-                                                                            foreach ($category_name1 as $category_name2) {
-                                                                                $category_name3 = explode('*', $category_name2);
-                                                                                if ($category_name3[0] == $category->id) {
-                                                                                    echo 'selected';
+                                                                            ?>
+                                                                            <?php
+                                                                            if (!empty($payment->category_name)) {
+                                                                                $category_name = $payment->category_name;
+                                                                                $category_name1 = explode(',', $category_name);
+                                                                                foreach ($category_name1 as $category_name2) {
+                                                                                    $category_name3 = explode('*', $category_name2);
+                                                                                    $category_id = explode('-', $category_name3[0]);
+                                                                                    if ($category_name3[0] == $category->id.'-'.$doctor->ion_user_id) {
+                                                                                        echo 'selected';
+                                                                                    }
                                                                                 }
                                                                             }
-                                                                        }
-                                                                        ?>><?php echo $category->category; ?></option>
-                                                                    <?php } ?>
+                                                                            // if ($payment->category_name == $)
+                                                                            ?>><?php echo $category->category . ' ( ' . lang('dr') . '. ' .  $doctor->name . ' )'; ?></option>
+                                                                        <?php } ?>
+                                                                <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -703,7 +715,7 @@
                 $('#id-div' + idd).remove();
                 $('#idinput-' + idd).remove();
                 $('#categoryinput-' + idd).remove();
-                $('.br').remove();
+                $('.br'+idd).remove();
 
             });
             $.each($('select.multi-selection option:selected'), function () {
@@ -712,6 +724,8 @@
                 var qtity = $(this).data('qtity');
                 //  tot = tot + curr_val;
                 var cat_name = $(this).data('cat_name');
+                var doctor = $(this).data('doctor');
+                var dr = "<?php echo lang('dr') ?>";
                 if ($('#idinput-' + idd).length)
                 {
 
@@ -720,7 +734,7 @@
                     {
 
                     } else {
-                        $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + '- <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
+                        $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + ' ( ' + dr + '. ' + doctor + ') - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
                     }
 
 
@@ -741,7 +755,7 @@
                     }).appendTo('#editPaymentForm .qfloww');
 
                     $('<br>').attr({
-                        class: "br"
+                        class: "br"+idd,
                     }).appendTo('#editPaymentForm .qfloww');
                 }
 
@@ -843,13 +857,15 @@
                     $('#id-div' + idd).remove();
                     $('#idinput-' + idd).remove();
                     $('#categoryinput-' + idd).remove();
-                    $('.br').remove();
+                    $('.br'+idd).remove();
                 });
                 $.each($('select.multi-selection option:selected'), function () {
                     var curr_val = $(this).data('id');
                     var idd = $(this).data('idd');
                     //  tot = tot + curr_val;
                     var cat_name = $(this).data('cat_name');
+                    var doctor = $(this).data('doctor');
+                    var dr = "<?php echo lang('dr') ?>";
                     if ($('#idinput-' + idd).length)
                     {
 
@@ -858,13 +874,13 @@
                         {
 
                         } else {
-                            $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + '- <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
+                            $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + dr + doctor + ' - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
                         }
 
 
                         var input2 = $('<input>').attr({
                             type: 'text',
-                            class: "remove w-20",
+                            class: "remove",
                             id: 'idinput-' + idd,
                             name: 'quantity[]',
                             value: '1',
@@ -879,7 +895,7 @@
                         }).appendTo('#editPaymentForm .qfloww');
 
                         $('<br>').attr({
-                            class: "br"
+                            class: "br"+idd,
                         }).appendTo('#editPaymentForm .qfloww');
                     }
 
