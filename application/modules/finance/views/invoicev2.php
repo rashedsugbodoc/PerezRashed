@@ -38,6 +38,71 @@
                                     color: black;
                                 }
 
+                                @media print {
+                                    @page {
+                                      /*size: A4;*/
+                                      margin: 8mm 15mm 15mm 15mm;
+                                      width: 210mm;
+                                      height: 297mm;
+                                    }
+
+                                    footer {
+                                        display: flex;
+                                        position: fixed;
+                                        bottom: -28px;
+                                        width: 100% !important;
+                                    }
+                                    header {
+                                        position: fixed;
+                                        overflow: avoid;
+                                        width: 100%;
+                                    }
+
+                                    .content-block-body {
+                                        position: relative;
+                                        top: 18.5em !important;
+                                    }
+
+                                    .content-block-item {
+                                        page-break-inside: avoid;
+                                        position: relative;
+                                        width: 100%;
+                                        top:1em;   //match size of header
+                                        left:0px;
+                                        right:0px;
+                                        /*border: solid 2px black;*/
+                                    }
+
+                                    .clearfix {
+                                      overflow: auto;
+                                    }
+
+                                    .prescription-footer {
+                                        width: 100%;
+                                    }
+
+                                    .footer-area-height {
+                                        height: 38vh !important;
+                                        opacity: 0;
+                                    }
+
+                                    .company-logo {
+                                        max-height: 300px !important;
+                                        max-width: 300px !important;
+                                        width: 300px !important;
+                                        height: auto !important;
+                                    }
+
+                                  html, body {
+                                    /*width: 210mm;
+                                    height: 297mm;*/
+                                    font-size: 16.5pt;
+                                  }
+                                  .hidden-print{
+                                    display: none;
+                                    }
+                                }
+
                                 /* @media (min-width: 768px) {
                                  .new-pull-left {
                                     float: right;
@@ -83,6 +148,26 @@
                             </div>
                         </div>
 
+                        <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                            <div class="row mb-5 d-print-none">
+                                <div class="col-md-12 col-sm-12">
+                                    <div>
+                                        <label><strong>Print Settings: </strong></label>
+                                        <label class="custom-switch">
+                                            <span class="custom-switch-description mr-2 text-muted">Show Invoice Details</span>
+                                            <input type="checkbox" checked name="custom-switch-checkbox" id="invoice-opacity-change" class="custom-switch-input">
+                                            <span class="custom-switch-indicator custom-switch-indicator-xl custom-radius"></span>
+                                        </label>
+                                        <label class="custom-switch">
+                                            <span class="custom-switch-description mr-2 text-muted">Show Template</span>
+                                            <input type="checkbox" checked name="custom-switch-checkbox" id="template-opacity-change" class="custom-switch-input">
+                                            <span class="custom-switch-indicator custom-switch-indicator-xl custom-radius"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+
                         <div class="row" id="content">
                             <div class="col-md-12 col-sm-12">
                                 <div class="card">
@@ -90,21 +175,55 @@
                                         <div class="card-title" id="report">Report</div>
                                     </div> -->
                                     <div class="card-body pt-0">
-                                        <div class="row border-bottom border-dark">
-                                            <div class="col-md-3">
+                                        <div class="row border-bottom border-dark text-center">
+                                            <!-- <div class="col-md-3">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 header-brand pl-0">
                                                         <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-lgo" style="height: 60px;" alt="<?php echo $settings->title;?>">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 text-center">
-                                                <div class="row">
+                                            </div> -->
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="row template-opacity">
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h2 mb-1"><?php echo $settings->title ?></label>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <div class="row mb-1 template-opacity">
+                                                    <?php foreach($branches as $branch) { 
+                                                        $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
+                                                        $city_name = $this->location_model->getCityById($branch->city_id)->name;
+                                                    ?>
+                                                        <div class="col-md-12 col-sm-12 pl-0">
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <i class="fa fa-hospital-o text-primary"></i>
+                                                                    <span class="h6 mb-1 align-baseline"><strong><?php echo $branch->display_name; ?></strong></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <i class="fa fa-map-marker text-primary"></i>
+                                                                    <span class="h6 mb-1"><?php echo $branch->street_address; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <span class="h6 mb-1"><?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <i class="fe fe-phone text-primary"></i>
+                                                                    <?php if(!empty($branch->phone)) { ?>
+                                                                    <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php } ?>
+                                                </div>
+                                                <!-- <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h6 mb-1"><?php echo $settings->address ?></label>
                                                     </div>
@@ -113,16 +232,16 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h6 mb-3">Tel: <?php echo $settings->phone ?></label>
                                                     </div>
-                                                </div>
-                                                <div class="row">
+                                                </div> -->
+                                                <div class="row template-opacity">
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h3"><?php echo lang('invoice') ?></label>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-3">
+                                            <!-- <div class="col-md-3">
                                                 
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12 border-bottom border-dark p-0">
@@ -130,14 +249,14 @@
                                                     <table class="table text-nowrap mb-1 mt-1" id="example2">
                                                         <tbody>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0">
+                                                                <td class="w-15 p-0 template-opacity">
                                                                     <span><?php echo lang('patient'); ?> <?php echo lang('name'); ?> </span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span>
+                                                                    <span class="invoice-opacity">
                                                                         <?php
                                                                         if (!empty($patient)) {
                                                                             echo $patient->name . ' <br>';
@@ -146,25 +265,25 @@
                                                                     </span>
                                                                 </td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0">
+                                                                <td class="w-15 p-0 template-opacity">
                                                                     <span class="pull-right"><?php echo lang('encounter');?> <?php echo lang('id');?></span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span><?php echo $this->encounter_model->getEncounterById($payment->encounter_id)->encounter_number;?></span>
+                                                                    <span class="invoice-opacity"><?php echo $this->encounter_model->getEncounterById($payment->encounter_id)->encounter_number;?></span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0">
+                                                                <td class="w-15 p-0 template-opacity">
                                                                     <span><?php echo lang('patient_id'); ?></span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span>
+                                                                    <span class="invoice-opacity">
                                                                         <?php
                                                                         if (!empty($patient)) {
                                                                             echo $patient->id . ' <br>';
@@ -173,46 +292,46 @@
                                                                     </span>
                                                                 </td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0">
+                                                                <td class="w-15 p-0 template-opacity">
                                                                     <span class="pull-right"><?php echo lang('invoice');?> <?php echo lang('id');?></span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span><?php echo $payment->id;?></span>
+                                                                    <span class="invoice-opacity"><?php echo $payment->id;?></span>
                                                                 </td>
                                                             </tr>                                                        
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0">
+                                                                <td class="w-15 p-0 template-opacity">
                                                                     <span><?php echo lang('age');?> </span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
-                                                                <td class="w-63 p-0"><span><?php if (!empty($age)) { echo $age .' '. lang('yrs_old');} else {echo lang('not_given');}?></span></td>
+                                                                <td class="w-63 p-0"><span class="invoice-opacity"><?php if (!empty($age)) { echo $age .' '. lang('yrs_old');} else {echo lang('not_given');}?></span></td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0">
+                                                                <td class="w-15 p-0 template-opacity">
                                                                     <span class="pull-right"><?php echo lang('facility'); ?> <?php echo lang('id');?></span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span>
+                                                                    <span class="invoice-opacity">
                                                                         <?php echo $payment->hospital_id;?>
                                                                     </span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0">
+                                                                <td class="w-15 p-0 template-opacity">
                                                                     <span><?php echo lang('address'); ?> </span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span>
+                                                                    <span class="invoice-opacity">
                                                                         <?php
                                                                         if (!empty($patient)) {
                                                                             echo $patient->address . ' <br>';
@@ -221,14 +340,14 @@
                                                                     </span>
                                                                 </td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0">
+                                                                <td class="w-15 p-0 template-opacity">
                                                                     <span class="pull-right"><?php echo lang('doctor'); ?></span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span> 
+                                                                    <span class="invoice-opacity"> 
                                                                         <?php
                                                                         if (!empty($payment->doctor)) {
                                                                             $doc_details = $this->doctor_model->getDoctorById($payment->doctor);
@@ -243,22 +362,22 @@
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0">
+                                                                <td class="w-15 p-0 template-opacity">
                                                                     <span><?php echo lang('remarks');?> </span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
-                                                                <td class="w-63 p-0"><span><?php echo $payment->remarks;?></span></td>
+                                                                <td class="w-63 p-0"><span class="invoice-opacity"><?php echo $payment->remarks;?></span></td>
                                                                 <td></td>
                                                                 <td class="w-15 p-0">
-                                                                    <span class="pull-right"><?php echo lang('payer_account'); ?></span>
+                                                                    <span class="pull-right template-opacity"><?php echo lang('payer_account'); ?></span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
+                                                                <td class="w-7 p-0 template-opacity">
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span>
+                                                                    <span class="invoice-opacity">
                                                                         <?php
                                                                         if (!empty($payment->company_id)) {
                                                                             $company_details = $this->company_model->getCompanyById($payment->company_id);
@@ -288,14 +407,14 @@
                                                                 </td>
                                                                 <td class="w-63 p-0"><span></span></td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0">
-                                                                    <span class="pull-right"><?php echo lang('invoice'). ' ' . lang('status'); ?></span>
+                                                                <td class="w-15 p-0 template-opacity">
+                                                                    <span class="pull-right invoice-opacity"><?php echo lang('invoice'). ' ' . lang('status'); ?></span>
                                                                 </td>
-                                                                <td class="w-7 p-0">
-                                                                    <span>: </span>
+                                                                <td class="w-7 p-0 template-opacity">
+                                                                    <span class="invoice-opacity">: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span><?php echo $this->finance_model->getInvoicePaymentStatusById($payment->payment_status)->display_name;?></span>
+                                                                    <span class="invoice-opacity"><?php echo $this->finance_model->getInvoicePaymentStatusById($payment->payment_status)->display_name;?></span>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -310,13 +429,13 @@
                                                     <table class="table text-nowrap" id="example2">
                                                         <tbody>
                                                             <tr>
-                                                                <td class="w-8 pl-0">#</td>
-                                                                <td><?php echo lang('description'); ?></td>
-                                                                <td class="text-right"><?php echo lang('unit_price'); ?></td>
+                                                                <td class="w-8 pl-0 template-opacity">#</td>
+                                                                <td class="template-opacity"><?php echo lang('description'); ?></td>
+                                                                <td class="text-right template-opacity"><?php echo lang('unit_price'); ?></td>
                                                                 <td></td>
-                                                                <td><?php echo lang('qty'); ?></td>
+                                                                <td class="template-opacity"><?php echo lang('qty'); ?></td>
                                                                 <td></td>
-                                                                <td class="text-right"><?php echo lang('amount'); ?></td>
+                                                                <td class="text-right template-opacity"><?php echo lang('amount'); ?></td>
                                                                 <td></td>
                                                             </tr>
                                                             <?php
@@ -327,11 +446,13 @@
                                                                 foreach ($category_name1 as $category_name2) {
                                                                     $i = $i + 1;
                                                                     $category_name3 = explode('*', $category_name2);
+                                                                    $new_category_name = explode('-', $category_name3[0]);
+                                                                    $doctor_service = $this->doctor_model->getDoctorByIonUserId($new_category_name[1])->name;
                                                                     if ($category_name3[3] > 0) {
                                                                         ?>                                                          
-                                                                        <tr>
+                                                                        <tr class="invoice-opacity">
                                                                             <td class="pt-0 pb-0 pl-0"><?php echo $i; ?> </td>
-                                                                            <td class="pt-0 pb-0"><?php echo $this->finance_model->getPaymentcategoryById($category_name3[0])->category; ?></td>
+                                                                            <td class="pt-0 pb-0"><?php echo $this->finance_model->getPaymentcategoryById($new_category_name[0])->category.' ( '.lang('dr').'. '.$doctor_service.' )'; ?></td>
                                                                             <td class="pt-0 pb-0 text-right"><?php echo $settings->currency; ?> <?php echo number_format($category_name3[1],2); ?></td>
                                                                             <td></td>
                                                                             <td class="pt-0 pb-0"><?php echo $category_name3[3]; ?></td>
@@ -355,18 +476,18 @@
                                                 <table class="table mt-1">
                                                     <tbody>
                                                         <tr class="pb-5">
-                                                            <td class="pt-0 pb-0 border-top border-dark w-65 pl-0"><strong><?php echo lang('sub_total'); ?></strong></td>
+                                                            <td class="pt-0 pb-0 border-top border-dark w-65 pl-0 template-opacity"><strong><?php echo lang('sub_total'); ?></strong></td>
                                                             <td class="pt-0 pb-0 border-top border-dark"> </td>
                                                             <td class="pt-0 pb-0 border-top border-dark"> </td>
                                                             <td class="pt-0 pb-0 border-top border-dark"> </td>
                                                             <td class="pt-0 pb-0 border-top border-dark"> </td>
                                                             <td class=""></td>
-                                                            <td class="pt-0 pb-0 border-top border-dark text-right"><?php echo $settings->currency; ?> <?php echo number_format($payment->amount,2); ?></td>
+                                                            <td class="pt-0 pb-0 border-top border-dark text-right invoice-opacity"><?php echo $settings->currency; ?> <?php echo number_format($payment->amount,2); ?></td>
                                                             <td class="border-top border-dark"></td>
                                                         </tr>
                                                         <?php if (!empty($payment->discount)) { ?>
                                                         <tr>
-                                                            <td class="pt-0 pb-0 pl-0"><strong>LESS</strong></td>
+                                                            <td class="pt-0 pb-0 pl-0 template-opacity"><strong>LESS</strong></td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td></td>
@@ -376,7 +497,7 @@
                                                             <td></td>
                                                         </tr>
                                                         <tr>
-                                                            <td class="pt-0 pb-0 border-bottom border-dark pl-0"><?php echo lang('discount'); ?> 
+                                                            <td class="pt-0 pb-0 border-bottom border-dark pl-0 invoice-opacity"><?php echo lang('discount'); ?> 
                                                                 <?php
                                                                 if ($discount_type == 'percentage') {
                                                                     echo '(%) : ';
@@ -398,7 +519,7 @@
                                                             <td class="pt-0 pb-0 border-bottom border-dark"> </td>
                                                             <td class="pt-0 pb-0 border-bottom border-dark"> </td>
                                                             <td></td>
-                                                            <td class="pt-0 pb-0 border-bottom border-dark text-right">
+                                                            <td class="pt-0 pb-0 border-bottom border-dark text-right invoice-opacity">
                                                                 <?php
                                                                 if (!empty($discount[1])) {
                                                                     echo $settings->currency . ' ' . number_format($discount[1],2);
@@ -411,33 +532,33 @@
                                                         </tr>
                                                         <?php } ?>
                                                         <tr class="pb-5">
-                                                            <td class="pt-0 pb-0 pl-0"><strong><?php echo lang('grand_total'); ?></strong></td>
+                                                            <td class="pt-0 pb-0 pl-0 template-opacity"><strong><?php echo lang('grand_total'); ?></strong></td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td></td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td class=""></td>
-                                                            <td class="pt-0 text-right" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $g = $payment->gross_total;?> <?php echo number_format($g,2); ?></td>
+                                                            <td class="pt-0 text-right invoice-opacity" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $g = $payment->gross_total;?> <?php echo number_format($g,2); ?></td>
                                                             <td ></td>
                                                         </tr>
                                                         <tr class="pb-5">
-                                                            <td class="pt-0 pb-0 pl-0"><strong><?php echo lang('amount_received'); ?></strong></td>
+                                                            <td class="pt-0 pb-0 pl-0 template-opacity"><strong><?php echo lang('amount_received'); ?></strong></td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td></td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td class=""></td>
-                                                            <td class="pt-0 pb-0 text-right" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $r = $this->finance_model->getDepositAmountByPaymentId($payment->id);?> <?php echo number_format($r,2); ?></td>
+                                                            <td class="pt-0 pb-0 text-right invoice-opacity" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $r = $this->finance_model->getDepositAmountByPaymentId($payment->id);?> <?php echo number_format($r,2); ?></td>
                                                             <td class=""></td>
                                                         </tr>
                                                         <tr class="pt-5">
-                                                            <td class="pt-0 pb-0 pl-0"><strong><?php echo lang('amount_to_be_paid'); ?> </strong></td>
+                                                            <td class="pt-0 pb-0 pl-0 template-opacity"><strong><?php echo lang('amount_to_be_paid'); ?> </strong></td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td></td>
                                                             <td class="pt-0 pb-0"> </td>
                                                             <td class=""></td>
-                                                            <td class="pt-0 pb-5 text-right" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $balance = $g - $r;?> <?php echo number_format($balance,2); ?></td>
+                                                            <td class="pt-0 pb-5 text-right invoice-opacity" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $balance = $g - $r;?> <?php echo number_format($balance,2); ?></td>
                                                             <td class=""></td>
                                                         </tr>
                                                     </tbody>
@@ -448,7 +569,7 @@
                                     <div class="card-footer">
                                         <table class="table">
                                             <tbody>
-                                                <tr>
+                                                <tr class="template-opacity">
                                                     <td class="pt-0 pb-0"><?php echo lang('prepared_by');?>:</td>
                                                     <td class="pt-0 pb-0"> </td>
                                                     <td class="pt-0 pb-0"> </td>
@@ -456,13 +577,13 @@
                                                     <td class="pt-0 pb-0"><?php echo lang('received_by');?>:</td>
                                                 </tr>
                                                 <tr>
-                                                    <td class="border-bottom border-dark w-30"><?php echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
+                                                    <td class="border-bottom border-dark w-30 invoice-opacity"><?php echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
                                                     <td class="w-5"></td>
-                                                    <td class="border-bottom border-dark w-30 text-center"><?php echo date($settings->date_format_long.' - '.$settings->time_format,$payment->date);?></td>
+                                                    <td class="border-bottom border-dark w-30 text-center invoice-opacity"><?php echo date($settings->date_format_long.' - '.$settings->time_format,$payment->date);?></td>
                                                     <td class="w-5"></td>
-                                                    <td class="border-bottom border-dark w-30"></td>
+                                                    <td class="border-bottom border-dark w-30 template-opacity"></td>
                                                 </tr>
-                                                <tr>
+                                                <tr class="template-opacity">
                                                     <td class="w-30"></td>
                                                     <td class="w-5"></td>
                                                     <td class="w-30 text-center"><?php echo lang('date_time_generated');?></td>
@@ -548,3 +669,26 @@
                 html2pdf(element, opt);
             };
         </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#template-opacity-change').change(function () {
+                    if (!this.checked) 
+                       $('.template-opacity').animate({opacity:0});
+                    else 
+                        $('.template-opacity').animate({opacity:1});
+                });
+            });
+
+            $(document).ready(function () {
+                $('#invoice-opacity-change').change(function () {
+                    if (!this.checked) 
+                       $('.invoice-opacity').animate({opacity:0});
+                    else 
+                        $('.invoice-opacity').animate({opacity:1});
+                });
+            });
+        </script>
+
+    </body>
+</html>
