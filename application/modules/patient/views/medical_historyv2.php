@@ -1118,13 +1118,13 @@
                                         <form role="form" action="patient/addVitals" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-md-6 col-sm-12">
+                                                    <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('date'); ?> <?php echo lang('measured'); ?></label>
-                                                            <input class="form-control fc-datepicker" readonly name="date" placeholder="MM/DD/YYYY" type="text">
+                                                            <input class="form-control flatpickr" readonly name="datetime" placeholder="MM/DD/YYYY" type="text">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 col-sm-12">
+                                                    <!-- <div class="col-md-6 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('time'); ?> <?php echo lang('measured'); ?></label>
                                                             <div class="wd-150 mg-b-30">
@@ -1132,13 +1132,13 @@
                                                                     <div class="input-group-prepend">
                                                                         <div class="input-group-text">
                                                                             <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.25 12.15L11 13V7h1.5v5.25l4.5 2.67-.75 1.23z" opacity=".3"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                                                                        </div><!-- input-group-text -->
-                                                                    </div><!-- input-group-prepend -->
+                                                                        </div>
+                                                                    </div>
                                                                     <input class="form-control" id="tpBasic" name="time" placeholder="Set time" type="text">
                                                                 </div>
-                                                            </div><!-- wd-150 -->
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
@@ -1313,13 +1313,13 @@
                                         <form role="form" id="editVitalForm" class="clearfix" action="patient/addVitals" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <div class="row">
-                                                    <div class="col-md-6 col-sm-12">
+                                                    <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('date'); ?> <?php echo lang('measured'); ?></label>
-                                                            <input class="form-control fc-datepicker" readonly name="date" placeholder="MM/DD/YYYY" type="text">
+                                                            <input class="form-control flatpickr datetime" readonly name="datetime" placeholder="MM/DD/YYYY" type="text">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 col-sm-12">
+                                                    <!-- <div class="col-md-6 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('time'); ?> <?php echo lang('measured'); ?></label>
                                                             <div class="wd-150 mg-b-30">
@@ -1327,13 +1327,13 @@
                                                                     <div class="input-group-prepend">
                                                                         <div class="input-group-text">
                                                                             <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 0 24 24" width="18"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.25 12.15L11 13V7h1.5v5.25l4.5 2.67-.75 1.23z" opacity=".3"/><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/></svg>
-                                                                        </div><!-- input-group-text -->
-                                                                    </div><!-- input-group-prepend -->
+                                                                        </div>
+                                                                    </div>
                                                                     <input class="form-control" id="tpBasic2" name="time" placeholder="Set time" type="text">
                                                                 </div>
-                                                            </div><!-- wd-150 -->
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
@@ -2312,6 +2312,9 @@
         <script src="<?php echo base_url('public/assets/plugins/ion-rangeslider/js/ion.rangeSlider.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/rangeslider.js'); ?>"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
 
     <!-- <script type="text/javascript">
@@ -2320,6 +2323,20 @@
             console.log(slider);
         });
     </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            flatpickr(".flatpickr", {
+                maxDate: "today",
+                altInput: true,
+                altFormat: "F j, Y h:i K",
+                dateFormat: "Y-m-d h:i K",
+                disableMobile: "true",
+                enableTime: true,
+                defaultDate: "today",
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $('.myrangeslider1').ionRangeSlider({
@@ -2436,25 +2453,19 @@
                         var weight_unit = document.getElementById("weight_unit").value;
                         var height_unit = document.getElementById("height_unit").value;
                         // var date = vital.measured_at.split(" ");
-                        console.log(date);
+                        console.log(response.datetime);
                         $('#editVitalForm').find('[name="id"]').val(vital.id).end()
-                        $('#editVitalForm').find('[name="date"]').val(response.date).end()
-                        $('#editVitalForm').find('[name="time"]').val(response.time).end()
+                        $('#editVitalForm').find('[name="datetime"]').val(response.datetime).end()
+
+                        $('.datetime').flatpickr({
+                            dateFormat: "F j, Y h:i K",
+                            defaultDate: response.datetime,
+                        });
+
+                        // $('#editVitalForm').find('[name="time"]').val(response.time).end()
                         $('#editVitalForm').find('[name="weight"]').val(vital.weight_kg).end()
                         $('#editVitalForm').find('[name="height"]').val(vital.height_cm).end()
                         // $('#editVitalForm').find('[name="pain_level"]').val(vital.pain).end()
-
-                        // if (weight_unit == 'kg') {
-                        //     $('#editVitalForm').find('[name="weight"]').val(vital.weight_kg).end()
-                        // } else {
-                        //     $('#editVitalForm').find('[name="weight"]').val(vital.weight_lbs).end()
-                        // }
-
-                        // if (height_unit == 'cm') {
-                        //     $('#editVitalForm').find('[name="height"]').val(vital.height_cm).end()
-                        // } else {
-                        //     $('#editVitalForm').find('[name="height"]').val(vital.height_in).end()
-                        // }
 
                         $('#editVitalForm').find('[name="systolic"]').val(vital.systolic).end()
                         $('#editVitalForm').find('[name="diastolic"]').val(vital.diastolic).end()

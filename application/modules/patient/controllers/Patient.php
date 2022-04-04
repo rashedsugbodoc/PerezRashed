@@ -1096,6 +1096,7 @@ class Patient extends MX_Controller {
         $patient_id = (int)$id;
         $date_measured = $this->input->post('date');
         $time_measured = $this->input->post('time');
+        $date_time_measured = $this->input->post('datetime');
         $systolic = $this->input->post('systolic');
         $pain = $this->input->post('pain_level');
 
@@ -1167,7 +1168,7 @@ class Patient extends MX_Controller {
         }
         $blood_sugar_timing = $this->input->post('blood_sugar_timing');
 
-        $date_time_combined = strtotime($date_measured . ' ' . $time_measured);
+        $date_time_combined = strtotime($date_time_measured);
         $datetime_measured = gmdate('Y-m-d H:i:s', $date_time_combined);
 
         if ($this->ion_auth->in_group(array('Doctor', 'DoctorAdmin'))) {
@@ -1234,9 +1235,9 @@ class Patient extends MX_Controller {
             $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
             // Validating Date Measured Field
-            $this->form_validation->set_rules('date', 'Date Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('datetime', 'Date Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
             // Validating Time Measured Field   
-            $this->form_validation->set_rules('time', 'Time Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
+            // $this->form_validation->set_rules('time', 'Time Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
             // Validating Weight Field   
             $this->form_validation->set_rules('weight', 'Weight', 'trim|numeric|max_length[500]|xss_clean');
             // Validating height Field           
@@ -1341,8 +1342,8 @@ class Patient extends MX_Controller {
     function editVitalByJason() {
         $id = $this->input->get('id');
         $data['vital'] = $this->patient_model->getVitalById($id);
-        $data['date'] = date('m/d/Y' ,strtotime($data['vital']->measured_at.' UTC'));
-        $data['time'] = date('h:i A' ,strtotime($data['vital']->measured_at.' UTC'));
+        $data['datetime'] = date('F j, Y h:i A' ,strtotime($data['vital']->measured_at.' UTC'));
+        // $data['time'] = date('' ,strtotime($data['vital']->measured_at.' UTC'));
         echo json_encode($data);
     }
 
