@@ -10,6 +10,8 @@ class Lab extends MX_Controller {
         $this->load->model('lab_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('patient/patient_model');
+        $this->load->model('branch/branch_model');
+        $this->load->model('location/location_model');
         $this->load->model('accountant/accountant_model');
         $this->load->model('receptionist/receptionist_model');
         if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Laboratorist', 'Doctor', 'Patient'))) {
@@ -613,6 +615,8 @@ class Lab extends MX_Controller {
         $id = $this->input->get('id');
         $data['settings'] = $this->settings_model->getSettings();
         $data['lab'] = $this->lab_model->getLabById($id);
+        $limit = 3;
+        $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             $current_patient = $this->ion_auth->get_user_id();

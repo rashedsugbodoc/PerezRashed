@@ -101,6 +101,26 @@
                             </div>
                         </div>
 
+                        <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                            <div class="row mb-5 d-print-none">
+                                <div class="col-md-12 col-sm-12">
+                                    <div>
+                                        <label><strong>Print Settings: </strong></label>
+                                        <label class="custom-switch">
+                                            <span class="custom-switch-description mr-2 text-muted">Show Lab Details</span>
+                                            <input type="checkbox" checked name="custom-switch-checkbox" id="lab-opacity-change" class="custom-switch-input">
+                                            <span class="custom-switch-indicator custom-switch-indicator-xl custom-radius"></span>
+                                        </label>
+                                        <label class="custom-switch">
+                                            <span class="custom-switch-description mr-2 text-muted">Show Template</span>
+                                            <input type="checkbox" checked name="custom-switch-checkbox" id="template-opacity-change" class="custom-switch-input">
+                                            <span class="custom-switch-indicator custom-switch-indicator-xl custom-radius"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+
                         <div class="row" id="content">
                             <div class="col-md-12 col-sm-12">
                                 <div class="card">
@@ -108,8 +128,8 @@
                                         <div class="card-title" id="report">Report</div>
                                     </div> -->
                                     <div class="card-body pt-0">
-                                        <div class="row border-bottom border-dark mt-5">
-                                            <div class="col-md-2 col-sm-12">
+                                        <div class="row border-bottom border-dark">
+                                            <!-- <div class="col-md-2 col-sm-12">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 header-brand pl-0">
                                                         <div class="row">
@@ -122,14 +142,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-8 col-sm-12 text-center">
+                                            </div> -->
+                                            <div class="col-md-12 col-sm-12 text-center template-opacity">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h2 mb-1"><?php echo $settings->title ?></label>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <!-- <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h6 mb-0"><?php echo $settings->address ?></label>
                                                     </div>
@@ -143,20 +163,53 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h6 mb-3">Tel: <?php echo $settings->phone ?></label>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <label class="h4">
-                                                            <?php echo lang('lab_report') ?>
-                                                        </label>
-                                                    </div>
+                                                </div> -->
+                                            </div>
+                                            <!-- <div class="col-md-2">
+                                                
+                                            </div> -->
+                                            <div class="col-md-12 col-sm-12 text-center template-opacity">
+                                                <div class="row mb-1">
+                                                    <?php foreach($branches as $branch) { 
+                                                        $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
+                                                        $city_name = $this->location_model->getCityById($branch->city_id)->name;
+                                                    ?>
+                                                        <div class="col-md-12 col-sm-12 pl-0">
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <i class="fa fa-hospital-o text-primary"></i>
+                                                                    <span class="h6 mb-1 align-baseline"><strong><?php echo $branch->display_name; ?></strong></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <i class="fa fa-map-marker text-primary"></i>
+                                                                    <span class="h6 mb-1"><?php echo $branch->street_address; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <span class="h6 mb-1"><?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <i class="fe fe-phone text-primary"></i>
+                                                                    <?php if(!empty($branch->phone)) { ?>
+                                                                    <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php } ?>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
-                                                
+                                            <div class="col-md-12 col-sm-12 text-center template-opacity">
+                                                <label class="h4">
+                                                    <?php echo lang('lab_report') ?>
+                                                </label>
                                             </div>
                                         </div>
-                                        
                                         
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12 border-bottom border-top border-dark p-0">
@@ -165,9 +218,9 @@
                                                         <tbody>
                                                             <tr class="p-0">
                                                                 <?php $patient_info = $this->db->get_where('patient', array('id' => $lab->patient))->row(); ?>
-                                                                <td class="w-15 p-0"><?php echo lang('patient'); ?> <?php echo lang('name'); ?> </td>
-                                                                <td class="w-7 p-0"> : </td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('patient'); ?> <?php echo lang('name'); ?> </td>
+                                                                <td class="w-7 p-0 template-opacity"> : </td>
+                                                                <td class="w-63 p-0 lab-opacity">
                                                                     <?php 
                                                                         if (!empty($patient_info->name)) {
                                                                             echo $patient_info->name;
@@ -175,9 +228,9 @@
                                                                     ?>
                                                                 </td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0"><?php echo lang('lab'); ?> <?php echo lang('report'); ?> <?php echo lang('id'); ?>  </td>
-                                                                <td class="w-7 p-0"> : </td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('lab'); ?> <?php echo lang('report'); ?> <?php echo lang('id'); ?>  </td>
+                                                                <td class="w-7 p-0 template-opacity"> : </td>
+                                                                <td class="w-63 p-0 lab-opacity">
                                                                     <?php
                                                                         if (!empty($lab->id)) {
                                                                             echo $lab->id;
@@ -186,9 +239,9 @@
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0"><?php echo lang('patient_id'); ?> </td>
-                                                                <td class="w-7 p-0"> : </td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('patient_id'); ?> </td>
+                                                                <td class="w-7 p-0 template-opacity"> : </td>
+                                                                <td class="w-63 p-0 lab-opacity">
                                                                     <?php 
                                                                         if (!empty($patient_info->id)) {
                                                                             echo $patient_info->id;
@@ -196,20 +249,20 @@
                                                                     ?>
                                                                 </td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0"><?php echo lang('date'); ?> </td>
-                                                                <td class="w-7 p-0"> : </td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('date'); ?> </td>
+                                                                <td class="w-7 p-0 template-opacity"> : </td>
+                                                                <td class="w-63 p-0 lab-opacity">
                                                                     <?php
-                                                                        if (!empty($lab->date)) {
-                                                                            echo date($settings->date_format_long, $lab->date);
+                                                                        if (!empty($lab->lab_date)) {
+                                                                            echo date($settings->date_format_long, strtotime($lab->lab_date.' UTC'));
                                                                         }
                                                                     ?>
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0"><?php echo lang('address'); ?> </td>
-                                                                <td class="w-7 p-0"> : </td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('address'); ?> </td>
+                                                                <td class="w-7 p-0 template-opacity"> : </td>
+                                                                <td class="w-63 p-0 lab-opacity">
                                                                     <?php
                                                                         if (!empty($patient_info)) {
                                                                             echo $patient_info->address . ' <br>';
@@ -217,9 +270,9 @@
                                                                     ?>
                                                                 </td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0"><?php echo lang('doctor'); ?>  </td>
-                                                                <td class="w-7 p-0"> : </td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('doctor'); ?>  </td>
+                                                                <td class="w-7 p-0 template-opacity"> : </td>
+                                                                <td class="w-63 p-0 lab-opacity">
                                                                     <?php
                                                                         if (!empty($lab->doctor)) {
                                                                             $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
@@ -231,9 +284,9 @@
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0"><?php echo lang('phone'); ?> </td>
-                                                                <td class="w-7 p-0"> : </td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('phone'); ?> </td>
+                                                                <td class="w-7 p-0 template-opacity"> : </td>
+                                                                <td class="w-63 p-0 lab-opacity">
                                                                     <?php
                                                                         if (!empty($patient_info)) {
                                                                             echo $patient_info->phone . ' <br>';
@@ -252,7 +305,7 @@
                                         </div>
 
                                         <div class="row border-top border-dark">
-                                            <div class="col-md-12 col-sm-12 pl-0 pt-5">
+                                            <div class="col-md-12 col-sm-12 pl-0 pt-5 lab-opacity">
                                                 <?php
                                                     if (!empty($lab->report)) {
                                                         echo $lab->report;
@@ -314,6 +367,26 @@
         
 
         <!-- INTERNAL JS INDEX END -->
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#template-opacity-change').change(function () {
+                    if (!this.checked) 
+                       $('.template-opacity').animate({opacity:0});
+                    else 
+                        $('.template-opacity').animate({opacity:1});
+                });
+            });
+
+            $(document).ready(function () {
+                $('#lab-opacity-change').change(function () {
+                    if (!this.checked) 
+                       $('.lab-opacity').animate({opacity:0});
+                    else 
+                        $('.lab-opacity').animate({opacity:1});
+                });
+            });
+        </script>
 
         <script>
             document.getElementById('create_pdf').onclick = function() {
