@@ -100,6 +100,26 @@
                             </div>
                         </div>
 
+                        <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                            <div class="row mb-5 d-print-none">
+                                <div class="col-md-12 col-sm-12">
+                                    <div>
+                                        <label><strong>Print Settings: </strong></label>
+                                        <label class="custom-switch">
+                                            <span class="custom-switch-description mr-2 text-muted">Show Form Details</span>
+                                            <input type="checkbox" checked name="custom-switch-checkbox" id="form-opacity-change" class="custom-switch-input">
+                                            <span class="custom-switch-indicator custom-switch-indicator-xl custom-radius"></span>
+                                        </label>
+                                        <label class="custom-switch">
+                                            <span class="custom-switch-description mr-2 text-muted">Show Template</span>
+                                            <input type="checkbox" checked name="custom-switch-checkbox" id="template-opacity-change" class="custom-switch-input">
+                                            <span class="custom-switch-indicator custom-switch-indicator-xl custom-radius"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+
                         <div class="row" id="content">
                             <div class="col-md-12 col-sm-12">
                                 <div class="card">
@@ -108,7 +128,7 @@
                                     </div> -->
                                     <div class="card-body pt-0">
                                         <div class="row border-bottom border-dark">
-                                            <div class="col-md-2 col-sm-12">
+                                            <!-- <div class="col-md-2 col-sm-12">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12 header-brand pl-0">
                                                         <div class="row">
@@ -121,14 +141,14 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-8 col-sm-12 text-center">
+                                            </div> -->
+                                            <div class="col-md-12 col-sm-12 text-center template-opacity">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h2 mb-1"><?php echo $settings->title ?></label>
                                                     </div>
                                                 </div>
-                                                <div class="row">
+                                                <!-- <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h6 mb-0"><?php echo $settings->address ?></label>
                                                     </div>
@@ -142,23 +162,54 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <label class="h6 mb-3"><?php echo lang('phone');?>:  <?php echo $settings->phone ?></label>
                                                     </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <label class="h4">
-                                                            <?php
-                                                                if (!empty($form->name)) {
-                                                                    echo $form->name;
-                                                                } else {
-                                                                    echo lang('form_report');
-                                                                }
-                                                            ?>                                                            
-                                                        </label>
-                                                    </div>
+                                                </div> -->
+                                            </div>
+                                            <div class="col-md-12 col-sm-12 text-center template-opacity">
+                                                <div class="row mb-1">
+                                                    <?php foreach($branches as $branch) { 
+                                                        $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
+                                                        $city_name = $this->location_model->getCityById($branch->city_id)->name;
+                                                    ?>
+                                                        <div class="col-md-12 col-sm-12 pl-0">
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <i class="fa fa-hospital-o text-primary"></i>
+                                                                    <span class="h6 mb-1 align-baseline"><strong><?php echo $branch->display_name; ?></strong></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <i class="fa fa-map-marker text-primary"></i>
+                                                                    <span class="h6 mb-1"><?php echo $branch->street_address; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <span class="h6 mb-1"><?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12 pl-0">
+                                                                    <i class="fe fe-phone text-primary"></i>
+                                                                    <?php if(!empty($branch->phone)) { ?>
+                                                                    <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <?php } ?>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
-                                                
+                                            <div class="col-md-12 col-sm-12 text-center template-opacity">
+                                                <label class="h4">
+                                                    <?php
+                                                        if (!empty($form->name)) {
+                                                            echo $form->name;
+                                                        } else {
+                                                            echo lang('form_report');
+                                                        }
+                                                    ?>                                                            
+                                                </label>
                                             </div>
                                         </div>
                                         
@@ -170,9 +221,9 @@
                                                     <table class="table text-nowrap mb-1 mt-1" id="example2">
                                                         <tbody>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0"><?php echo lang('patient'); ?> <?php echo lang('name'); ?> </td>
-                                                                <td class="w-7 p-0">:</td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('patient'); ?> <?php echo lang('name'); ?> </td>
+                                                                <td class="w-7 p-0 template-opacity">:</td>
+                                                                <td class="w-63 p-0 form-opacity">
                                                                     <?php 
                                                                         if (!empty($patient->name)) {
                                                                             echo $patient->name;
@@ -180,9 +231,9 @@
                                                                     ?>
                                                                 </td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0"><?php echo lang('form'); ?> <?php echo lang('report'); ?> <?php echo lang('id'); ?>  </td>
-                                                                <td class="w-7 p-0">:</td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('form'); ?> <?php echo lang('report'); ?> <?php echo lang('id'); ?>  </td>
+                                                                <td class="w-7 p-0 template-opacity">:</td>
+                                                                <td class="w-63 p-0 form-opacity">
                                                                     <?php
                                                                         if (!empty($form->id)) {
                                                                             echo $form->id;
@@ -191,9 +242,9 @@
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0"><?php echo lang('patient_id'); ?>  </td>
-                                                                <td class="w-7 p-0">:</td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('patient_id'); ?>  </td>
+                                                                <td class="w-7 p-0 template-opacity">:</td>
+                                                                <td class="w-63 p-0 form-opacity">
                                                                     <?php
                                                                         if (!empty($patient->id)) {
                                                                             echo $patient->id;
@@ -201,9 +252,9 @@
                                                                     ?>
                                                                 </td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0"><?php echo lang('date'); ?>  </td>
-                                                                <td class="w-7 p-0">:</td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('date'); ?>  </td>
+                                                                <td class="w-7 p-0 template-opacity">:</td>
+                                                                <td class="w-63 p-0 form-opacity">
                                                                     <?php
                                                                         if (!empty($form->date)) {
                                                                             echo date($settings->date_format_long, $form->date);
@@ -212,9 +263,9 @@
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0"><?php echo lang('address'); ?> </td>
-                                                                <td class="w-7 p-0">:</td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('address'); ?> </td>
+                                                                <td class="w-7 p-0 template-opacity">:</td>
+                                                                <td class="w-63 p-0 form-opacity">
                                                                     <?php
                                                                         if (!empty($patient->address)) {
                                                                             echo $patient->address;
@@ -222,9 +273,9 @@
                                                                     ?>
                                                                 </td>
                                                                 <td></td>
-                                                                <td class="w-15 p-0"><?php echo lang('doctor'); ?>  </td>
-                                                                <td class="w-7 p-0">:</td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('doctor'); ?>  </td>
+                                                                <td class="w-7 p-0 template-opacity">:</td>
+                                                                <td class="w-63 p-0 form-opacity">
                                                                     <?php
                                                                         if (!empty($doctor->name)) {
                                                                             echo lang('dr') . '. '. $doctor->name;
@@ -233,9 +284,9 @@
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
-                                                                <td class="w-15 p-0"><?php echo lang('phone'); ?> </td>
-                                                                <td class="w-7 p-0">:</td>
-                                                                <td class="w-63 p-0">
+                                                                <td class="w-15 p-0 template-opacity"><?php echo lang('phone'); ?> </td>
+                                                                <td class="w-7 p-0 template-opacity">:</td>
+                                                                <td class="w-63 p-0 form-opacity">
                                                                     <?php
                                                                         if (!empty($patient->phone)) {
                                                                             echo $patient->phone;
@@ -254,7 +305,7 @@
                                         </div>
 
                                         <div class="row border-top border-dark">
-                                            <div class="col-md-12 col-sm-12 pl-0 pt-5">
+                                            <div class="col-md-12 col-sm-12 pl-0 pt-5 form-opacity">
                                                 <?php
                                                     if (!empty($form->report)) {
                                                         echo $form->report;
@@ -332,6 +383,26 @@
 
                 html2pdf(element, opt);
             };
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#template-opacity-change').change(function () {
+                    if (!this.checked) 
+                       $('.template-opacity').animate({opacity:0});
+                    else 
+                        $('.template-opacity').animate({opacity:1});
+                });
+            });
+
+            $(document).ready(function () {
+                $('#form-opacity-change').change(function () {
+                    if (!this.checked) 
+                       $('.form-opacity').animate({opacity:0});
+                    else 
+                        $('.form-opacity').animate({opacity:1});
+                });
+            });
         </script>
     </body>
 </html>

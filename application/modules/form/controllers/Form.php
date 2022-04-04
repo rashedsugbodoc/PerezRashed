@@ -9,6 +9,8 @@ class Form extends MX_Controller {
         parent::__construct();
         $this->load->model('form_model');
         $this->load->model('doctor/doctor_model');
+        $this->load->model('branch/branch_model');
+        $this->load->model('location/location_model');
         $this->load->model('patient/patient_model');
         $this->load->model('accountant/accountant_model');
         $this->load->model('receptionist/receptionist_model');
@@ -652,6 +654,9 @@ class Form extends MX_Controller {
         $data['form'] = $this->form_model->getFormById($id);
         $data['patient'] = $this->patient_model->getPatientById($data['form']->patient);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['form']->doctor);
+        $limit = 3;
+        $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
+
         if ($data['form']->hospital_id != $this->session->userdata('hospital_id')) {
             $this->load->view('home/permission');
         }
