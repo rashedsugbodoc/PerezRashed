@@ -1249,7 +1249,7 @@ class Appointment extends MX_Controller {
         echo json_encode($data);
     }
 
-    function treatmentReport() {
+    function consultationReport() {
         $data['settings'] = $this->settings_model->getSettings();
         $data['doctors'] = $this->doctor_model->getDoctor();
 
@@ -1268,7 +1268,7 @@ class Appointment extends MX_Controller {
         }
 
         $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('treatment_history', $data);
+        $this->load->view('consultation_history', $data);
         $this->load->view('home/footer'); // just the footer file
     }
 
