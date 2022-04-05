@@ -159,6 +159,7 @@ $lang['completed'] = 'Completed';
 $lang['completion_status'] = 'Completion Status';
 $lang['invoice'] = 'Invoice';
 $lang['invoices'] = 'Invoices';
+$lang['statement_of_account'] = 'Statement of Account';
 $lang['bill'] = 'Bill';
 $lang['bills'] = 'Bills';
 $lang['generate_bill'] = 'Generate Bill';

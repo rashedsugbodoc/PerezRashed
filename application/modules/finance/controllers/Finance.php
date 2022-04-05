@@ -1574,9 +1574,9 @@ class Finance extends MX_Controller {
 
 
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('patient_deposit', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('patient_depositv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function deposit() {
