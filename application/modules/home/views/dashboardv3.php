@@ -306,7 +306,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('doctor'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
                                         <li><a href="doctor" class="slide-item"><?php echo lang('list_of_doctors'); ?></a></li>
-                                        <li><a href="appointment/treatmentReport" class="slide-item"><?php echo lang('treatment_history'); ?></a></li>
+                                        <li><a href="appointment/consultationReport" class="slide-item"><?php echo lang('consultation_history'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>

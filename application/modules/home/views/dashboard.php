@@ -606,7 +606,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a href="doctor"><i class="fa fa-user"></i><?php echo lang('list_of_doctors'); ?></a></li>
-                                        <li><a href="appointment/treatmentReport"><i class="fa fa-history"></i><?php echo lang('treatment_history'); ?></a></li>
+                                        <li><a href="appointment/conultationReport"><i class="fa fa-history"></i><?php echo lang('consultation_history'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
