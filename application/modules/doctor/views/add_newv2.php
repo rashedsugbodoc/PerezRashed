@@ -41,7 +41,7 @@
                                                         if (!empty($doctor->professional_display_name)) {
                                                             echo $doctor->professional_display_name;
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -56,7 +56,7 @@
                                                         if (!empty($doctor->firstname)) {
                                                             echo $doctor->firstname;
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm12">
@@ -74,35 +74,38 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 col-sm12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100" value="<?php
-                                                            if (!empty($setval)) {
-                                                                echo set_value('l_name');
-                                                            }
-                                                            if (!empty($doctor->lastname)) {
-                                                                echo $doctor->lastname;
-                                                            }
-                                                            ?>">
-                                                            <div class="input-group-append br-tl-0 br-bl-0">
-                                                                <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
-                                                                    <option selected disabled><?php echo lang('none'); ?></option>
-                                                                    <option value="jr"><?php echo lang('jr'); ?></option>
-                                                                    <option value="sr"><?php echo lang('sr'); ?></option>
-                                                                    <option value="i"><?php echo lang('i'); ?></option>
-                                                                    <option value="ii"><?php echo lang('ii'); ?></option>
-                                                                    <option value="iii"><?php echo lang('iii'); ?></option>
-                                                                    <option value="iv"><?php echo lang('iv'); ?></option>
-                                                                    <option value="v"><?php echo lang('v'); ?></option>
-                                                                    <option value="vi"><?php echo lang('vi'); ?></option>
-                                                                    <option value="vii"><?php echo lang('vii'); ?></option>
-                                                                    <option value="viii"><?php echo lang('viii'); ?></option>
-                                                                    <option value="ix"><?php echo lang('ix'); ?></option>
-                                                                    <option value="x"><?php echo lang('x'); ?></option>
-                                                                </select>
-                                                            </div>
+                                                        <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('l_name');
+                                                        }
+                                                        if (!empty($doctor->lastname)) {
+                                                            echo $doctor->lastname;
+                                                        }
+                                                        ?>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('suffix'); ?></label>
+                                                        <div class="input-group-append br-tl-0 br-bl-0">
+                                                            <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                                <option value="0" ><?php echo lang('none'); ?></option>
+                                                                <option value="Jr."><?php echo lang('jr'); ?></option>
+                                                                <option value="Sr."><?php echo lang('sr'); ?></option>
+                                                                <option value="I"><?php echo lang('i'); ?></option>
+                                                                <option value="II"><?php echo lang('ii'); ?></option>
+                                                                <option value="III"><?php echo lang('iii'); ?></option>
+                                                                <option value="IV"><?php echo lang('iv'); ?></option>
+                                                                <option value="V"><?php echo lang('v'); ?></option>
+                                                                <option value="VI"><?php echo lang('vi'); ?></option>
+                                                                <option value="VII"><?php echo lang('vii'); ?></option>
+                                                                <option value="VIII"><?php echo lang('viii'); ?></option>
+                                                                <option value="IX"><?php echo lang('ix'); ?></option>
+                                                                <option value="X"><?php echo lang('x'); ?></option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -111,14 +114,14 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('email'); ?> <span class="text-red">*</span></label>
-                                                        <input type="text" name="email" class="form-control" value="<?php
+                                                        <input type="email" name="email" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('email');
                                                         }
                                                         if (!empty($doctor->email)) {
                                                             echo $doctor->email;
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -126,7 +129,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('password'); ?> <span class="text-red">*</span></label>
-                                                        <input type="password" name="password" class="form-control">
+                                                        <input type="password" name="password" class="form-control" minlength="8" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -141,7 +144,7 @@
                                                         if (!empty($doctor->address)) {
                                                             echo $doctor->address;
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -149,7 +152,7 @@
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="country_id" id="country">
+                                                        <select class="form-control select2-show-search" name="country_id" id="country" required>
                                                             <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
                                                             <?php foreach ($countries as $country) { ?>
                                                                 <option value="<?php echo $country->id; ?>" <?php
@@ -170,16 +173,16 @@
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('state_province'); ?></label>
-                                                        <select class="form-control select2-show-search" name="state_id" id="state" value='' disabled>
+                                                        <label class="form-label"><?php echo lang('state_province'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="state_id" id="state" value='' disabled required>
                                                             <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
                                                         </select>    
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('city_municipality'); ?></label>
-                                                        <select class="form-control select2-show-search" name="city_id" id="city" value='' disabled>
+                                                        <label class="form-label"><?php echo lang('city_municipality'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="city_id" id="city" value='' disabled required>
                                                             <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
                                                         </select> 
                                                     </div>
@@ -210,16 +213,11 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('mobile_number'); ?> <span class="text-red">*</span></label>
-                                                        <form>
-                                                            <input id="phone" name="phone" class="form-control" type="tel" maxlength="20" value="<?php
-                                                            if (!empty($setval)) {
-                                                                echo set_value('phone');
-                                                            }
-                                                            if (!empty($doctor->phone)) {
-                                                                echo $doctor->phone;
-                                                            }
-                                                            ?>">
-                                                        </form>
+                                                        
+                                                        <input id="mobile" name="mobile" class="form-control" type="tel" required>
+                                                        <input type="hidden" name="phone" id="phone">
+                                                        <span id="error-msg" class="hide"></span>
+                                                        <span id="valid-msg" class="hide"> Valid</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -227,7 +225,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1"><?php echo lang('specialization'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="specialization[]" id="specialtychoose" multiple="multiple">
+                                                        <select class="form-control select2-show-search" name="specialization[]" id="specialtychoose" multiple="multiple" required>
                                                             <!-- <?php foreach ($specialties as $specialty) { ?>
                                                                 <option value="<?php echo $specialty->display_name; ?>" <?php
                                                                 if (!empty($setval)) {
@@ -257,7 +255,7 @@
                                                         if (!empty($doctor->license)) {
                                                             echo $doctor->license;
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -287,7 +285,7 @@
                                                         if (!empty($doctor->tax_receipt_number)) {
                                                             echo $doctor->tax_receipt_number;
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -309,14 +307,29 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label">Virtual Consultation Fee <span class="text-danger">*</span></label>
-                                                        <input type="text" name="virtual_consultation_fee" class="form-control" placeholder="Enter Digit with/out decimal">
+                                                        <label class="form-label"><?php echo lang('virtual_consultation_fee');?><span class="text-danger"> *</span></label>
+                                                        <input type="number" name="virtual_consultation_fee" class="form-control" placeholder="Enter Digit without decimal" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('virtual_consultation_fee');
+                                                        }
+                                                        if (!empty($doctor->virtual_consultation_fee)) {
+                                                            echo $doctor->virtual_consultation_fee;
+                                                        }
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label">In-Person Consultation Fee <span class="text-danger">*</span></label>
-                                                        <input type="text" name="in_person_consultation_fee" class="form-control" placeholder="Enter Digit with/out decimal">
+                                                        <label class="form-label"><?php echo lang('in_person_consultation_fee');?><span class="text-danger"> *</span></label>
+                                                        <input type="number" name="in_person_consultation_fee" class="form-control" placeholder="Enter Digit without decimal" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('in_person_consultation_fee');
+                                                        }
+                                                        if (!empty($doctor->in_person_consultation_fee)) {
+                                                            echo $doctor->in_person_consultation_fee;
+                                                        }
+                                                        ?>"
+                                                        required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -326,7 +339,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('signature');?> <span class="text-red">*</span></label>
-                                                                <canvas id="signature-pad" class="signature-pad border border-dark" width=300 height=200></canvas>
+                                                                <canvas id="signature-pad" class="signature-pad border border-dark" width=300 height=200 required></canvas>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -347,9 +360,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
-                                                    <label class="form-label"><?php echo lang('profile_picture'); ?>:<span class="text-red">*</span></label>
+                                                    <label class="form-label"><?php echo lang('profile_picture'); ?>:<span class="text-red"> *</span></label>
                                                     <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
-                                                    <input type="file" name="img_url" id="img" class="dropify"/>
+                                                    <input type="file" name="img_url" id="img" required class="dropify"/>
                                                 </div>
                                             </div>
                                             <input type="hidden" name="id" id="doctor_id" value='<?php
@@ -472,9 +485,7 @@
         <script src="<?php echo base_url('public/assets/plugins/sumoselect/jquery.sumoselect.js'); ?>"></script>
 
         <!--intlTelInput js-->
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/intlTelInput.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/country-select.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/utils.js'); ?>"></script>
+        <script src="<?php echo base_url('common/assets/intl-tel-input/build/js/intlTelInput.js');?>"></script>
 
         <!--jquery transfer js-->
         <script src="<?php echo base_url('public/assets/plugins/jQuerytransfer/jquery.transfer.js'); ?>"></script>
@@ -489,6 +500,9 @@
 
         <!-- popover js -->
         <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
 
         <!-- Notifications js -->
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
@@ -992,6 +1006,57 @@
             var warning = "<?php unset($_SESSION['warning']); ?>";
             var notice = "<?php unset($_SESSION['notice']); ?>";
 
+        });
+    </script>
+    <script>
+        $('#doctorForm').parsley();
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var input = document.querySelector("#mobile");
+            var errorMsg = document.querySelector("#error-msg");
+            var validMsg = document.querySelector("#valid-msg");
+
+            // here, the index maps to the error code returned from getValidationError - see readme
+            var errorMap = ["Invalid mobile number", "Invalid country code", "Too short", "Too long", "Invalid mobile number", "Invalid length"];
+
+            // initialise plugin
+            var iti = window.intlTelInput(input, {
+                hiddenInput: "full_number",
+                preferredCountries: ['ph', 'sg', 'us'],
+                utilsScript: "<?php echo base_url('common/assets/intl-tel-input/build/js/utils.js?1638200991544');?>"
+            });
+
+            var reset = function() {
+              input.classList.remove("parsley-error");
+              input.classList.remove("is-valid");
+              errorMsg.innerHTML = "";
+              errorMsg.classList.add("hide");
+              validMsg.classList.add("hide");
+            };
+
+            // on blur: validate
+            input.addEventListener('blur', function() {
+              reset();
+              document.getElementById("phone").value = iti.getNumber();
+              if (input.value.trim()) {
+                if (iti.isValidNumber()) {
+                  validMsg.classList.remove("hide");
+                  input.classList.add("is-valid");
+                } else {
+                  input.classList.add("parsley-error");
+                  input.classList.remove("is-valid");
+                  var errorCode = iti.getValidationError();
+                  errorMsg.innerHTML = errorMap[errorCode];
+                  errorMsg.classList.remove("hide");
+                }
+              }
+            });
+
+            // on keyup / change flag: reset
+            input.addEventListener('change', reset);
+            input.addEventListener('keyup', reset);
         });
     </script>
 
