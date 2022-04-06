@@ -18727,6 +18727,9 @@ select [aria-selected=true] {
   color: #ff5c77;
   margin-top: 3px; }
 
+.parsley-error {
+  border-color: #ff5c77; }
+
 .input-group {
   position: relative;
   display: -ms-flexbox;
