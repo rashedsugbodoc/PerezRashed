@@ -67,6 +67,7 @@ class Finance extends MX_Controller {
         $data = array();
         $id = $this->input->get('id');
         $encounter_id = $this->input->get('encounter_id');
+        $data['patient_id'] = $this->input->get('patient_id');
         $data['id'] = $id;
         $data['encounter_id'] = $encounter_id;
         $data['staffs'] = $this->encounter_model->getUser();
@@ -1751,6 +1752,59 @@ class Finance extends MX_Controller {
         $id = $this->input->get('id');
         $data['deposit'] = $this->finance_model->getDepositById($id);
         echo json_encode($data);
+    }
+
+    function getDepositsByInvoiceIdByJason() {
+        $id = $this->input->get('invoice_id');
+        $data['deposit'] = $this->finance_model->getDepositByPaymentId($id);
+
+        $date = [];
+        foreach ($data['deposit'] as $deposit) {
+            $date[] = date('Y-m-d', $deposit->date.' UTC');
+        }
+
+        $data['date'] = $date;
+
+        echo json_encode($data);
+    }
+
+    function getDeposit() {
+        $invoice_id = $this->input->get('invoice_id');
+        $requestData = $_REQUEST;
+
+        $data['deposit'] = $this->finance_model->getDepositByPaymentId($invoice_id);
+
+        foreach ($data['deposit'] as $deposit) {
+            $options1 = '<button type="button" class="btn btn-info deposit-list"><i class="fa fa-eye"></i></button>';
+
+            $info[] = array(
+                date('Y-m-d' ,$deposit->date.' UTC'),
+                $deposit->payment_id,
+                $deposit->receipt_number,
+                $deposit->deposited_amount,
+                $deposit->status,
+                $options1,
+            );
+        }
+
+        if (!empty($data['deposit'])) {
+            $output = array(
+                "draw" => intval($requestData['draw']),
+                // "recordsTotal" => $this->finance_model->getDepositCount(),
+                // "recordsFilterd" => $this->finance_model->getDepositBySeachCount($search),
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => $info
+            );
+        } else {
+            $output = array(
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => []
+            );
+        }
+
+        echo json_encode($output);
     }
 
     function deleteDeposit() {

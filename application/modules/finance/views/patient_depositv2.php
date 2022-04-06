@@ -24,16 +24,16 @@
                                 <div class="row page-rightheader ml-auto .d-block">
                                     <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                                         <div class="flex-grow-1">
-                                            <a href="finance/addPaymentByPatientView?id=<?php echo $patient->id; ?>&type=gen" class="btn btn-cyan"><i class="fe fe-plus"></i><span class="button-text"><?php echo lang('invoice'); ?></span></a>
+                                            <a href="finance/addPaymentView?patient_id=<?php echo $patient->id; ?>" class="btn btn-cyan" target="_blank"><i class="fe fe-plus"></i><span class="button-text"><?php echo lang('invoice'); ?></span></a>
                                         </div>
                                     <?php } ?>
                                     <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class="flex-grow-1">
-                                            <a href="finance/addPaymentByPatientView?id=<?php echo $patient->id; ?>&type=gen" class="btn btn-cyan"><i class="fe fe-plus"></i><span class="button-text"><?php echo lang('invoice'); ?></span></a>
+                                            <a href="finance/addPaymentView?patient_id=<?php echo $patient->id; ?>" class="btn btn-cyan" target="_blank"><i class="fe fe-plus"></i><span class="button-text"><?php echo lang('invoice'); ?></span></a>
                                         </div>
                                     <?php } ?>
                                     <div class="flex-grow-2">
-                                        <button type="button" class="btn btn-info" id="create_pdf"><i class="fe fe-eye"></i><span class="button-text"> <?php echo lang('statement_of_account'); ?></span></button>
+                                        <a href="" class="btn btn-info" target="_blank"><i class="fe fe-eye"></i><span class="button-text"> <?php echo lang('statement_of_account'); ?></span></a>
                                         <!-- <button type="button" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></button> -->
                                         <!--a href="prescription/editPrescription?id=<?php echo $prescription->id;?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></a-->
                                     </div>
@@ -89,14 +89,14 @@
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12">
                                                 <div class="table-responsive">
-                                                    <table class="table table-responsive">
+                                                    <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample1" >
                                                         <thead>
                                                             <tr>
                                                                 <th class=""><?php echo lang('date'); ?></th>
-                                                                <th class=""><?php echo lang('invoice'); ?> #</th>
+                                                                <th class=""><?php echo lang('invoice_id'); ?></th>
                                                                 <th class=""><?php echo lang('bill_amount'); ?></th>
-                                                                <th class=""><?php echo lang('deposit'); ?></th>
-                                                                <th class=""><?php echo lang('deposit_type'); ?></th>
+                                                                <th class=""><?php echo lang('total_payments'); ?></th>
+                                                                <th class=""><?php echo lang('balance'); ?></th>
                                                                 <th class="no-print"><?php echo lang('options'); ?></th>
                                                             </tr>
                                                         </thead>
@@ -123,19 +123,26 @@
                                                             foreach ($dattt as $key => $value) {
                                                                 foreach ($payments as $payment) {
                                                                     if ($payment->date == $value) {
+                                                                        $total_deposit = $this->finance_model->getDepositAmountByPaymentId($payment->id);
+                                                                        $total_invoice_balance = number_format($payment->gross_total - $total_deposit, 2);
                                                                         ?>
                                                                         <tr class="">
-                                                                            <td><?php echo date('d-m-y', $payment->date); ?></td>
+                                                                            <td><?php echo date('y-m-d', $payment->date); ?></td>
                                                                             <td> <?php echo $payment->id; ?></td>
-                                                                            <td><?php echo $settings->currency; ?> <?php echo $payment->gross_total; ?></td>
-                                                                            <td><?php
+                                                                            <td><?php echo $settings->currency; ?> <?php echo number_format($payment->gross_total, 2); ?></td>
+                                                                            <!-- <td><?php
                                                                                 if (!empty($payment->amount_received)) {
                                                                                     echo $settings->currency;
                                                                                 }
                                                                                 ?> <?php echo $payment->amount_received; ?>
+                                                                            </td> -->
+                                                                            <td>
+                                                                                <?php
+                                                                                    echo $settings->currency . ' ' . number_format($total_deposit, 2);
+                                                                                ?>
                                                                             </td>
 
-                                                                            <td> <?php echo $payment->deposit_type; ?></td>
+                                                                            <td> <?php echo $settings->currency . ' ' . $total_invoice_balance; ?></td>
 
 
 
@@ -144,6 +151,8 @@
                                                                                     <a class="btn btn-info" title="<?php echo lang('edit'); ?>" href="finance/editPayment?id=<?php echo $payment->id; ?>"><i class="fa fa-edit"> </i></a>
                                                                                 <?php } ?>
                                                                                 <a class="btn btn-info" title="<?php echo lang('invoice'); ?>" href="finance/invoice?id=<?php echo $payment->id; ?>"><i class="fa fa-file"></i> </a>
+                                                                                <!-- <button class="btn btn-info"><i class="fa fa-eye"></i></button> -->
+                                                                                <button type="button" class="btn btn-info deposit-list" data-invoice="<?php echo $payment->id; ?>" title="<?php echo lang('deposits'); ?>"><i class="fa fa-eye"></i> <?php echo lang('deposits') ?></button>
                                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?> 
                                                                                     <a class="btn btn-danger delete_button" title="<?php echo lang('delete'); ?>" href="finance/delete?id=<?php echo $payment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                                                 <?php } ?>
@@ -156,14 +165,14 @@
                                                                 ?>
 
 
-                                                                <?php
+                                                                <!-- <?php
                                                                 foreach ($deposits as $deposit) {
                                                                     if ($deposit->date == $value) {
                                                                         if (!empty($deposit->deposited_amount) && empty($deposit->amount_received_id)) {
                                                                             ?>
 
                                                                             <tr class="">
-                                                                                <td><?php echo date('d-m-y', $deposit->date); ?></td>
+                                                                                <td><?php echo date('y-m-d', $deposit->date); ?></td>
                                                                                 <td><?php echo $deposit->payment_id; ?></td>
                                                                                 <td></td>
                                                                                 <td><?php echo $settings->currency; ?> <?php echo $deposit->deposited_amount; ?></td>
@@ -181,12 +190,42 @@
                                                                         }
                                                                     }
                                                                 }
-                                                                ?>
+                                                                ?> -->
                                                             <?php } ?>
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <?php echo lang('deposits') ?>
+                                        </div>
+                                        <div class="card-title">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample2">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('date') ?></th>
+                                                        <th><?php echo lang('invoice_id') ?></th>
+                                                        <th><?php echo lang('receipt') ?></th>
+                                                        <th><?php echo lang('payment') ?></th>
+                                                        <th><?php echo lang('status') ?></th>
+                                                        <th><?php echo lang('action') ?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="deposit-table">
+                                                    <?php?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -353,7 +392,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('invoice') ?></label>
-                                                        <select class="form-control" id="invoiceSelect">
+                                                        <select class="form-control" name="payment_id" id="invoiceSelect">
                                                             <?php foreach ($payments as $payment) { ?>
                                                                 <option value="<?php echo $payment->id; ?>" <?php
                                                                 if (!empty($deposit->payment_id)) {
@@ -530,6 +569,7 @@
         <script src="<?php echo base_url('public/assets/plugins/datatable/dataTables.responsive.min.js') ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.js') ?>"></script>
         <script src="<?php echo base_url('public/assets/js/datatables.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/date.format.js') ?>"></script>
         <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 
         <!--Select2 js -->
@@ -540,6 +580,101 @@
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.editable-sample1').DataTable({
+                    responsive: true,
+                    dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                    aLengthMenu: [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "All"]
+                    ],
+                    iDisplayLength: -1,
+                    "order": [[0, "desc"]],
+                    "language": {
+                        "lengthMenu": "_MENU_",
+                    }
+
+
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            // $(document).ready(function () {
+            //     $(".table").on("click", ".deposit-list", function () {
+            //         var invoice = $(this).data('invoice');
+            //         console.log("invoice: "+invoice);
+            //         $(".deposit-row").remove();
+            //         $.ajax({
+            //             url: 'finance/getDepositsByInvoiceIdByJason?invoice_id='+invoice,
+            //             method: 'GET',
+            //             data: '',
+            //             dataType: 'json',
+            //             success: function (response) {
+            //                 var deposit = response.deposit;
+            //                 console.log(response.deposit);
+
+            //                 $.each(deposit, function (key, value) {
+            //                     var date = new Date(value.date*1000);
+            //                     console.log(key);
+            //                     if (invoice == value.payment_id) {
+            //                         $(".deposit-table").append(
+            //                             '<tr class="deposit-row">\n\
+            //                                 <td>'+dateFormat(date, "yyyy/mm/dd")+'</td>\n\
+            //                                 <td>'+value.payment_id+'</td>\n\
+            //                                 <td>'+value.receipt_number+'</td>\n\
+            //                                 <td>'+value.deposited_amount+'</td>\n\
+            //                                 <td>'+value.status+'</td>\n\
+            //                                 <td><button type="button" class="btn btn-info deposit-list"><i class="fa fa-eye"></i></button></td>\n\
+            //                             </tr>\n\
+            //                             ');
+            //                     }
+            //                 });
+            //             }
+            //         });
+            //     });
+            // });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".table").on("click", ".deposit-list", function() {
+                    $('.deposit-table').find('tr').remove();
+
+                    var invoice = $(this).data('invoice');
+                    var str = $(".deposit-table").html();
+                    $('.editable-sample2').DataTable({
+                        "bDestroy": true,
+                        responsive: true,
+                        "ajax": {
+                            url: "finance/getDeposit?invoice_id="+invoice,
+                            type: 'GET',
+                        },
+                        scroller: {
+                            loadingIndicator: true
+                        },
+                        dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                                "<'row'<'col-sm-12'tr>>" +
+                                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                        aLengthMenu: [
+                            [10, 25, 50, 100, -1],
+                            [10, 25, 50, 100, "All"]
+                        ],
+                        iDisplayLength: -1,
+                        "order": [[0, "desc"]],
+                        "language": {
+                            "lengthMenu": "_MENU_",
+                        }
+                        
+
+                    });
+                });
+            });
+        </script>
 
         <script type="text/javascript">
             $(document).ready(function () {

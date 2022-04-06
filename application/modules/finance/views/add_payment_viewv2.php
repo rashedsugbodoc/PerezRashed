@@ -83,6 +83,15 @@
                                                                     <?php if (!empty($encounter_id)) { ?>
                                                                         <option value="<?php echo $patientt->id; ?>" selected><?php echo $patientt->name ?></option>
                                                                     <?php } ?>
+                                                                    <?php if (!empty($patient_id)) { ?>
+                                                                        <?php foreach($patients as $patient) { ?>
+                                                                            <?php if ($patient->id === $patient_id) { ?>
+                                                                                <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                                            <?php } else { ?>
+                                                                                <option value="<?php echo $patient->id; ?>"><?php echo $patient->name ?></option>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
+                                                                    <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter_id)) { ?>
                                                                     <input type="hidden" name="patient" value="<?php echo $patientt->id ?>">
@@ -416,7 +425,7 @@
                                                             <select class="form-control m-bot15 js-example-basic-single selecttype" id="selecttype" name="deposit_type" value=''> 
                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) { ?>
                                                                     <option value="Cash"> <?php echo lang('cash'); ?> </option>
-                                                                    <option value="Card"> <?php echo lang('card'); ?> </option>
+                                                                    <!-- <option value="Card"> <?php echo lang('card'); ?> </option> -->
                                                                 <?php } ?>
                                                             </select>
                                                             
