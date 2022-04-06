@@ -106,6 +106,9 @@ class Doctor extends MX_Controller {
         $mname = $this->input->post('m_name');
         $professional_display_name = $this->input->post('professional_display_name');
         $suffix = $this->input->post('suffix');
+        if ($suffix== '0') {
+            $suffix = null;
+        }
         $password = $this->input->post('password');
         $email = $this->input->post('email');
         $address = $this->input->post('address');
@@ -123,6 +126,7 @@ class Doctor extends MX_Controller {
         $postal = $this->input->post('postal');
         $virtual_consultation_fee = $this->input->post('virtual_consultation_fee');
         $in_person_consultation_fee = $this->input->post('in_person_consultation_fee');
+
         $name = $fname . ' ' . $mname . ' ' . $lname . ' ' . $suffix;
         $specialization = implode(',', $specialization);
 
@@ -147,7 +151,7 @@ class Doctor extends MX_Controller {
         $this->form_validation->set_rules('suffix', 'Suffix', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Password Field
         if (empty($id)) {
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|xss_clean');
         }
         // Validating Email Field
         if ($email !== $emailById) {
@@ -159,7 +163,7 @@ class Doctor extends MX_Controller {
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[1]|max_length[500]|xss_clean');
         // Validating Country Field   
-        $this->form_validation->set_rules('country', 'Country', 'trim|min_length[1]|max_length[500]|xss_clean');
+        $this->form_validation->set_rules('country', 'Country', 'trim|required|min_length[1]|max_length[500]|xss_clean');
         // Validating Postal Field   
         $this->form_validation->set_rules('postal', 'Postal', 'trim|alpha_numeric|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
@@ -168,12 +172,13 @@ class Doctor extends MX_Controller {
         $this->form_validation->set_rules('department', 'Department', 'trim|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
         // $this->form_validation->set_rules('profile', 'Profile', 'trim|required|min_length[1]|max_length[50]|xss_clean');
-        $this->form_validation->set_rules('license', 'License Number', 'trim|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('specialization[]', 'Specialization', 'required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('license', 'License Number', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('tin', 'TIN Number', 'trim|min_length[1]|max_length[50]|xss_clean');
-        $this->form_validation->set_rules('ptr', 'PTR Number', 'trim|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('ptr', 'PTR Number', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('s2', 'S2 Number', 'trim|min_length[1]|max_length[50]|xss_clean');
-        $this->form_validation->set_rules('virtual_consultation_fee', 'Virtual Consultation Fee', 'trim|required|decimal|max_length[15]|xss_clean');
-        $this->form_validation->set_rules('in_person_consultation_fee', 'In-Person Consultation Fee', 'trim|decimal|required|max_length[15]|xss_clean');
+        $this->form_validation->set_rules('virtual_consultation_fee', 'Virtual Consultation Fee', 'trim|required|numeric|max_length[15]|xss_clean');
+        $this->form_validation->set_rules('in_person_consultation_fee', 'In-Person Consultation Fee', 'trim|numeric|required|max_length[15]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
