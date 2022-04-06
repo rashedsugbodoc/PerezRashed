@@ -128,18 +128,18 @@
                                                             <label class="form-label"><?php echo lang('suffix');?></label>
                                                             <select class="form-control select2-show-search" name="suffix">
                                                                 <option value="0" selected><?php echo lang('none'); ?></option>
-                                                                <option value="jr"><?php echo lang('jr'); ?></option>
-                                                                <option value="sr"><?php echo lang('sr'); ?></option>
-                                                                <option value="i"><?php echo lang('i'); ?></option>
-                                                                <option value="ii"><?php echo lang('ii'); ?></option>
-                                                                <option value="iii"><?php echo lang('iii'); ?></option>
-                                                                <option value="iv"><?php echo lang('iv'); ?></option>
-                                                                <option value="v"><?php echo lang('v'); ?></option>
-                                                                <option value="vi"><?php echo lang('vi'); ?></option>
-                                                                <option value="vii"><?php echo lang('vii'); ?></option>
-                                                                <option value="viii"><?php echo lang('viii'); ?></option>
-                                                                <option value="ix"><?php echo lang('ix'); ?></option>
-                                                                <option value="x"><?php echo lang('x'); ?></option>
+                                                                <option value="Jr."><?php echo lang('jr'); ?></option>
+                                                                <option value="Sr."><?php echo lang('sr'); ?></option>
+                                                                <option value="I"><?php echo lang('i'); ?></option>
+                                                                <option value="II"><?php echo lang('ii'); ?></option>
+                                                                <option value="III"><?php echo lang('iii'); ?></option>
+                                                                <option value="IV"><?php echo lang('iv'); ?></option>
+                                                                <option value="V"><?php echo lang('v'); ?></option>
+                                                                <option value="VI"><?php echo lang('vi'); ?></option>
+                                                                <option value="VII"><?php echo lang('vii'); ?></option>
+                                                                <option value="VIII"><?php echo lang('viii'); ?></option>
+                                                                <option value="IX"><?php echo lang('ix'); ?></option>
+                                                                <option value="X"><?php echo lang('x'); ?></option>
                                                             </select>
                                                         </div>
                                                     </div>
