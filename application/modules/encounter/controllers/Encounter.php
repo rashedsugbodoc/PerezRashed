@@ -487,6 +487,19 @@ class Encounter extends MX_Controller {
         echo json_encode($response);
     }
 
+    public function getEncounterByPatientId() {
+        $patient_id = $this->input->get('patient_id');
+        $doctor_id = $this->input->get('doctor_id');
+
+        if (!empty($patient_id)) {
+            $data['encounter'] = $this->encounter_model->getEncounterByPatientId($patient_id);
+        } else if (!empty($doctor_id)) {
+            $data['encounter'] = $this->encounter_model->getEncounterByDoctorId($doctor_id);
+        }
+
+        echo json_encode($data);
+    }
+
     
 
 }
