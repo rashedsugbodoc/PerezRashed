@@ -51,7 +51,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('patient').' '.lang('invoice'); ?>
+                                            <?php echo lang('all').' '.lang('patient').' '.lang('invoice'); ?>
                                         </div>
                                     </div>
                                     <div class="card-body">
@@ -203,7 +203,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('deposits') ?>
+                                            <?php echo lang('all').' '.lang('deposits') ?>
                                         </div>
                                         <div class="card-title">
                                             
@@ -223,7 +223,25 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody class="deposit-table">
-                                                    <?php?>
+                                                    <?php
+                                                        if (!empty($payments)) {
+                                                            foreach ($payments as $payment) {
+                                                                $deposits_by_date = $this->finance_model->getDepositByPaymentId($payment->id);
+                                                                foreach ($deposits_by_date as $deposit_by_date) {
+                                                                ?>
+                                                                    <tr>
+                                                                        <td><?php echo date('y-m-d', $deposit_by_date->date.' UTC'); ?></td>
+                                                                        <td><?php echo $deposit_by_date->payment_id; ?></td>
+                                                                        <td><?php echo $deposit_by_date->receipt_number; ?></td>
+                                                                        <td><?php echo $deposit_by_date->deposited_amount; ?></td>
+                                                                        <td><?php echo $deposit_by_date->status; ?></td>
+                                                                        <td><button type="button" class="btn btn-info deposit-list"><i class="fa fa-eye"></i></button></td>
+                                                                    </tr>
+                                                                <?php
+                                                                }
+                                                            }
+                                                        }
+                                                    ?>
                                                 </tbody>
                                             </table>
                                         </div>
@@ -584,6 +602,29 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 $('.editable-sample1').DataTable({
+                    responsive: true,
+                    dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                    aLengthMenu: [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "All"]
+                    ],
+                    iDisplayLength: -1,
+                    "order": [[0, "desc"]],
+                    "language": {
+                        "lengthMenu": "_MENU_",
+                    }
+
+
+                });
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.editable-sample2').DataTable({
+                    "bDestroy": true,
                     responsive: true,
                     dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
                             "<'row'<'col-sm-12'tr>>" +
