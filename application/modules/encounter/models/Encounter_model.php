@@ -50,6 +50,13 @@ class Encounter_model extends CI_model {
         return $query->result();
     }
 
+    function getEncounterByDoctorId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('doctor_id', $id);
+        $query = $this->db->get('encounter');
+        return $query->result();
+    }
+
     function getEncounterByInvoiceId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('invoice_id', $id);
