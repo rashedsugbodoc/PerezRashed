@@ -283,15 +283,13 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><g opacity="1"><path d="M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g><g fill="currentColor" ><path d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g></svg>
                             <span class="side-menu__label"><?php echo lang('dashboard'); ?></span></a>
                         </li>
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
-                            <?php if (in_array('department', $this->modules)) { ?>
-                                <li class="slide">
-                                    <a class="side-menu__item" href="patient/addNewView">
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                            <li class="slide">
+                                <a class="side-menu__item" href="patient/addNewView">
 
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" ><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M15 16c-2.69 0-5.77 1.28-6 2h12c-.2-.71-3.3-2-6-2z" opacity=".3"></path><circle cx="15" cy="8" opacity=".6" r="2"></circle><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 8c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2 2.7 0 5.8 1.29 6 2H9zm-3-3v-3h3v-2H6V7H4v3H1v2h3v3z" fill="currentColor"></path></svg>
-                                    <span class="side-menu__label"><?php echo lang('register_new_patient'); ?></span></a>
-                                </li>
-                            <?php } ?>
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" ><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M15 16c-2.69 0-5.77 1.28-6 2h12c-.2-.71-3.3-2-6-2z" opacity=".3"></path><circle cx="15" cy="8" opacity=".6" r="2"></circle><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 8c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2 2.7 0 5.8 1.29 6 2H9zm-3-3v-3h3v-2H6V7H4v3H1v2h3v3z" fill="currentColor"></path></svg>
+                                <span class="side-menu__label"><?php echo lang('register_new_patient'); ?></span></a>
+                            </li>
                         <?php } ?>
                         <?php if ($this->ion_auth->in_group('admin')) { ?>
                             <?php if (in_array('department', $this->modules)) { ?>
