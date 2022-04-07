@@ -135,17 +135,37 @@ class Finance extends MX_Controller {
         $completion_status = $this->input->post('completion_status');
         $company_id = $this->input->post('company_id');
 
+        $doctor_item_selected_explode = [];
+        foreach ($item_selected as $selected) {
+            $doctor_item_selected_explode[] = explode('-', $selected);
+        }
+        $doctor_selected = [];
+        $items_selected = [];
+        foreach ($doctor_item_selected_explode as $doctor_item_selected) {
+            $items_selected[] = $doctor_item_selected[0];
+            $doctor_selected[] = $doctor_item_selected[1];
+        }
+
+        // $doctor_items = array_combine($items_selected, $doctor_selected);
+
         $item_quantity_array = array();
-        $item_quantity_array = array_combine($item_selected, $quantity);
+        // $item_quantity_array = array_combine($items_selected, $quantity);
+        $item_quantity_array = $items_selected;
         $cat_and_price = array();
         if (!empty($item_quantity_array)) {
             foreach ($item_quantity_array as $key => $value) {
-                $current_item = $this->finance_model->getPaymentCategoryById($key);
-                $category_price = $current_item->c_price;
+                $current_item = $this->finance_model->getPaymentCategoryById($value);
+                $items_service_type = $this->finance_model->getServiceCategoryGroupById($current_item->service_category_group_id);
+                if(!empty($items_service_type->is_virtual)) {
+                    $doctor_fee = $this->doctor_model->getDoctorByIonUserId($doctor_selected[$key])->virtual_consultation_fee;
+                } else {
+                    $doctor_fee = $this->doctor_model->getDoctorByIonUserId($doctor_selected[$key])->physical_consultation_fee;
+                }
+                // $category_price = $current_item->c_price;
                 $category_id = $current_item->category_id;
-                $qty = $value;
-                $cat_and_price[] = $key . '*' . $category_price . '*' . $category_id . '*' . $qty;
-                $amount_by_category[] = $category_price * $qty;
+                $qty = $quantity[$key];
+                $cat_and_price[] = $value . '-' . $doctor_selected[$key] . '*' . $doctor_fee . '*' . $category_id . '*' . $qty;
+                $amount_by_category[] = $doctor_fee * $qty;
             }
             $category_name = implode(',', $cat_and_price);
         }
@@ -587,10 +607,12 @@ class Finance extends MX_Controller {
                         'deposit_type' => $deposit_type,
                         'user' => $user
                     );
-                    $this->finance_model->insertDeposit($data1);
 
-                    $data_payment = array('amount_received' => $amount_received, 'deposit_type' => $deposit_type);
-                    $this->finance_model->updatePayment($inserted_id, $data_payment);
+                    if (!empty($amount_received)) {
+                        $this->finance_model->insertDeposit($data1);
+                        $data_payment = array('amount_received' => $amount_received, 'deposit_type' => $deposit_type);
+                        $this->finance_model->updatePayment($inserted_id, $data_payment);
+                    }
 
                     $this->session->set_flashdata('success', lang('record_added'));
 
@@ -636,28 +658,28 @@ class Finance extends MX_Controller {
                     'payment_status' => $payment_status
                 );
 
-                if (!empty($deposit_id->id)) {
-                    $data1 = array(
-                        'date' => $date,
-                        'patient' => $patient,
-                        'payment_id' => $id,
-                        'company_id' => $company_id,
-                        'deposited_amount' => $amount_received,
-                        'user' => $user
-                    );
-                    $this->finance_model->updateDeposit($deposit_id->id, $data1);
-                } else {
-                    $data1 = array(
-                        'date' => $date,
-                        'patient' => $patient,
-                        'payment_id' => $id,
-                        'company_id' => $company_id,
-                        'deposited_amount' => $amount_received,
-                        'amount_received_id' => $id . '.' . 'gp',
-                        'user' => $user
-                    );
-                    $this->finance_model->insertDeposit($data1);
-                }
+                // if (!empty($deposit_id->id)) {
+                //     $data1 = array(
+                //         'date' => $date,
+                //         'patient' => $patient,
+                //         'payment_id' => $id,
+                //         'company_id' => $company_id,
+                //         'deposited_amount' => $amount_received,
+                //         'user' => $user
+                //     );
+                //     $this->finance_model->updateDeposit($deposit_id->id, $data1);
+                // } else {
+                //     $data1 = array(
+                //         'date' => $date,
+                //         'patient' => $patient,
+                //         'payment_id' => $id,
+                //         'company_id' => $company_id,
+                //         'deposited_amount' => $amount_received,
+                //         'amount_received_id' => $id . '.' . 'gp',
+                //         'user' => $user
+                //     );
+                //     $this->finance_model->insertDeposit($data1);
+                // }
                 $this->finance_model->updatePayment($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
                 redirect("finance/invoice?id=" . "$id");
@@ -687,6 +709,7 @@ class Finance extends MX_Controller {
             $data['payment'] = $this->finance_model->getPaymentById($id);
             // $data['patients'] = $this->patient_model->getPatientById($data['payment']->patient);
             // $data['doctors'] = $this->doctor_model->getDoctorById($data['payment']->doctor);
+            $data['encounters'] = $this->encounter_model->getEncounter();
             $data['patients'] = $this->patient_model->getPatient();
             $data['doctors'] = $this->doctor_model->getDoctor();
             $data['company'] = $this->company_model->getCompanyById($data['payment']->company_id);
@@ -1549,22 +1572,32 @@ class Finance extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $date_from = strtotime($this->input->post('date_from'));
         $date_to = strtotime($this->input->post('date_to'));
+        
         if (!empty($date_to)) {
             $date_to = $date_to + 86399;
+            if (empty($date_from)) {
+                $date_from = 0;
+            }
+        } else {
+            if (!empty($date_from)) {
+                $date_to = strtotime(date('Y-m-d')) + 86399;
+            }
         }
+
+
 
         $data['date_from'] = $date_from;
         $data['date_to'] = $date_to;
 
-        if (!empty($date_from)) {
-            $data['payments'] = $this->finance_model->getPaymentByPatientIdByDate($patient, $date_from, $date_to);
-            $data['deposits'] = $this->finance_model->getDepositByPatientIdByDate($patient, $date_from, $date_to);
-            $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
-        } else {
+        if (empty($date_from) && empty($date_to)) {
             $data['payments'] = $this->finance_model->getPaymentByPatientId($patient);
             $data['pharmacy_payments'] = $this->pharmacy_model->getPaymentByPatientId($patient);
             $data['ot_payments'] = $this->finance_model->getOtPaymentByPatientId($patient);
             $data['deposits'] = $this->finance_model->getDepositByPatientId($patient);
+            $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
+        } else {
+            $data['payments'] = $this->finance_model->getPaymentByPatientIdByDate($patient, $date_from, $date_to);
+            $data['deposits'] = $this->finance_model->getDepositByPatientIdByDate($patient, $date_from, $date_to);
             $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
         }
 
