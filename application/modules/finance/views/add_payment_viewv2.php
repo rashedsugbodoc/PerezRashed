@@ -48,21 +48,6 @@
                                         <div class="card-body">
                                             <?php echo validation_errors(); ?>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
-                                                            <?php if (!empty($encounter->id)) { ?>
-                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . $encounter->created_at; ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                        <?php if (!empty($encounter_id)) { ?>
-                                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
-                                                        <?php } ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
@@ -228,6 +213,28 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                            <?php if (!empty($encounter->id)) { ?>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . $encounter->created_at; ?></option>
+                                                            <?php } ?>
+                                                            <?php if (!empty($payment->encounter_id)) { ?>
+                                                                <?php foreach($encounters as $encounter) { ?>
+                                                                    <?php if ($encounter->id === $payment->encounter_id) { ?>
+                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name . ' - ' . $encounter->created_at; ?></option>
+                                                                    <?php } ?>
+                                                                <?php } ?>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <?php if (!empty($encounter_id)) { ?>
+                                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -525,7 +532,7 @@
                                                                 <?php
                                                                 if (!empty($payment)) {
                                                                 ?>
-                                                                    <tr class="">
+                                                                    <!-- <tr class="">
                                                                         <td>1</td>
                                                                         <td><?php echo date('d/m/Y - h:i A', $payment->date);?> </td>
                                                                         <td><?php echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
@@ -537,16 +544,16 @@
                                                                             }
                                                                             ?>>
                                                                         </td>
-                                                                    </tr>
+                                                                    </tr> -->
                                                                     <?php
                                                                     $deposits = $this->finance_model->getDepositByPaymentId($payment->id);
-                                                                    $i = 1;
+                                                                    $i = 0;
                                                                     foreach ($deposits as $deposit) 
                                                                     { ?>
 
 
                                                                         <?php
-                                                                        if (empty($deposit->amount_received_id)) 
+                                                                        if (!empty($deposit->deposited_amount)) 
                                                                         {
                                                                             $i = $i + 1;
                                                                             ?>
@@ -711,6 +718,36 @@
         <script type="text/javascript" src="common/assets/jquery-multi-select/js/jquery.quicksearch.js"></script>
         <script src="common/js/advanced-form-components.js"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#pos_select").change(function () {
+                var patient_id = $("#pos_select").val();
+                var doctor_id = $("#add_doctor").val();
+                $("#encounter").find('option').remove();
+                console.log(doctor_id);
+                $.ajax({
+                    url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter = response.encounter;
+                        $.each(encounter, function (key, value) {
+                            $('#encounter').append($('<option>').text(value.encounter_number).val(value.id)).end();
+                        });
+                    }
+                });
+            });
+
+            // $("#add_doctor").change(function () {
+            //     var doctor_id = $("#add_doctor").val();
+            //     $.ajax({
+
+            //     })
+            // });
+        });
+    </script>
 
     <!-- Multi Select Script Start -->
         <script>
@@ -1045,7 +1082,7 @@
     <!-- Multi Select Script End -->
 
     <!-- Company Select Script Start -->
-        <script type="text/javascript">
+        <!-- <script type="text/javascript">
             $(document).ready(function () {
                 $("#encounter").select2({
                     placeholder: '<?php echo lang('select_payer'); ?>',
@@ -1070,7 +1107,7 @@
 
                 });
             });
-        </script>
+        </script> -->
     <!-- Company Select Script End -->
 
     <!-- Patient Select Script Start -->
