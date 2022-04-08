@@ -30,6 +30,7 @@ class Patient extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('branch/branch_model');
         $this->load->model('encounter/encounter_model');
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser'))) {
             redirect('home/permission');
         }
@@ -146,7 +147,7 @@ class Patient extends MX_Controller {
             $suffix = null;
         }
 
-        $password = $this->input->post('password');
+        $password = random_string('alnum', 8);
         $sms = $this->input->post('sms');
         $doctor = $this->input->post('doctor');
         $address = $this->input->post('address');
@@ -199,10 +200,6 @@ class Patient extends MX_Controller {
         $this->form_validation->set_rules('m_name', 'Middle Name', 'trim|min_length[2]|max_length[100]|xss_clean');
         // Validating Suffix Field
         $this->form_validation->set_rules('suffix', 'Suffix', 'trim|min_length[1]|max_length[5]|xss_clean');
-        // Validating Password Field
-        if (empty($id)) {
-            $this->form_validation->set_rules('password', 'Password', 'trim|min_length[5]|max_length[100]|xss_clean');
-        }
 
         if ($email !== $emailById) {
             $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|valid_email|is_unique[patient.email]|max_length[100]|xss_clean');
@@ -496,11 +493,9 @@ class Patient extends MX_Controller {
                             
 
                             $ion_user_id = $this->db->get_where('patient', array('id' => $id))->row()->ion_user_id;
-                            if (empty($password)) {
-                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                            } else {
-                                $password = $this->ion_auth_model->hash_password($password);
-                            }
+
+                            //Updating Patient so use existing patient password
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                             $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->patient_model->updatePatient($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
