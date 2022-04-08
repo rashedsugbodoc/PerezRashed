@@ -78,7 +78,7 @@
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('middle_name'); ?></label>
-                                                                <input type="text" class="form-control" name="m_name" placeholder="Middle Name" value="<?php
+                                                                <input type="text" class="form-control" name="m_name" placeholder="Middle Name" maxlength="100" value="<?php
                                                                 if (!empty($setval)) {
                                                                 echo set_value('m_name');
                                                                 }
@@ -94,34 +94,43 @@
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
-                                                                <div class="input-group">
-                                                                    <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100" required value="<?php
-                                                                        if (!empty($setval)) {
-                                                                        echo set_value('l_name');
-                                                                        }
-                                                                        if (!empty($patient->lastname)) {
-                                                                            echo $patient->lastname;
-                                                                        }
-                                                                    ?>">
-                                                                    <div class="input-group-append br-tl-0 br-bl-0">
-                                                                        <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
-                                                                            <option value="0" selected><?php echo lang('none'); ?></option>
-                                                                            <option value="jr"><?php echo lang('jr'); ?></option>
-                                                                            <option value="sr"><?php echo lang('sr'); ?></option>
-                                                                            <option value="i"><?php echo lang('i'); ?></option>
-                                                                            <option value="ii"><?php echo lang('ii'); ?></option>
-                                                                            <option value="iii"><?php echo lang('iii'); ?></option>
-                                                                            <option value="iv"><?php echo lang('iv'); ?></option>
-                                                                            <option value="v"><?php echo lang('v'); ?></option>
-                                                                        </select>
-                                                                    </div>
-                                                                </div>
+                                                                
+                                                                <input type="text" class="form-control" name="l_name" placeholder="Last Name" maxlength="100" required value="<?php
+                                                                    if (!empty($setval)) {
+                                                                    echo set_value('l_name');
+                                                                    }
+                                                                    if (!empty($patient->lastname)) {
+                                                                        echo $patient->lastname;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('suffix'); ?></label>
+                                                                <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                                    <option value="0" selected><?php echo lang('none'); ?></option>
+                                                                    <option value="Jr" <?php if ($patient->suffix ==='Jr') { echo 'selected'; } if(set_value('suffix')=='Jr') { echo 'selected';} ?>><?php echo lang('jr'); ?></option>
+                                                                    <option value="Sr" <?php if ($patient->suffix ==='Sr') { echo 'selected'; } if(set_value('suffix')=='Sr') { echo 'selected';} ?>><?php echo lang('sr'); ?></option>
+                                                                    <option value="I" <?php if ($patient->suffix ==='I') { echo 'selected'; } if(set_value('suffix')=='I') { echo 'selected';} ?>><?php echo lang('i'); ?></option>
+                                                                    <option value="II" <?php if ($patient->suffix ==='II') { echo 'selected'; } if(set_value('suffix')=='II') { echo 'selected';} ?>><?php echo lang('ii'); ?></option>
+                                                                    <option value="III" <?php if ($patient->suffix ==='III') { echo 'selected'; } if(set_value('suffix')=='III') { echo 'selected';} ?>><?php echo lang('iii'); ?></option>
+                                                                    <option value="IV" <?php if ($patient->suffix ==='IV') { echo 'selected'; } if(set_value('suffix')=='IV') { echo 'selected';} ?>><?php echo lang('iv'); ?></option>
+                                                                    <option value="V" <?php if ($patient->suffix ==='V') { echo 'selected'; } if(set_value('suffix')=='V') { echo 'selected';} ?>><?php echo lang('v'); ?></option>
+                                                                    <option value="VI" <?php if ($patient->suffix ==='VI') { echo 'selected'; } if(set_value('suffix')=='VI') { echo 'selected';} ?>><?php echo lang('vi'); ?></option>
+                                                                    <option value="VII" <?php if ($patient->suffix ==='VII') { echo 'selected'; } if(set_value('suffix')=='VII') { echo 'selected';} ?>><?php echo lang('vii'); ?></option>
+                                                                    <option value="VIII" <?php if ($patient->suffix ==='VIII') { echo 'selected'; } if(set_value('VIII')=='Jr') { echo 'selected';} ?>><?php echo lang('viii'); ?></option>
+                                                                    <option value="IX" <?php if ($patient->suffix ==='IX') { echo 'selected'; } if(set_value('suffix')=='IX') { echo 'selected';} ?>><?php echo lang('ix'); ?></option>
+                                                                    <option value="X" <?php if ($patient->suffix ==='X') { echo 'selected'; } if(set_value('suffix')=='X') { echo 'selected';} ?>><?php echo lang('x'); ?></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
-                                                                <input type="email" class="form-control" name="email" placeholder="Email" maxlength="1000" required value="<?php
+                                                                <input type="email" class="form-control" name="email" placeholder="Email" maxlength="100" required value="<?php
                                                                 if (!empty($setval)) {
                                                                     echo set_value('email');
                                                                 }
@@ -131,31 +140,22 @@
                                                                 ?>">
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('password'); ?> <?php if (empty($patient->id)) { ?> <span class="text-red">*</span><?php } ?></label>
-                                                            <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255" <?php
-                                                            if (empty($patient->id)) { ?>
-                                                                required
-                                                            <?php } ?>>
-                                                        </div>
-                                                        </div>
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('mobile_number'); ?> <span class="text-red">*</span></label>
-                                                                <form>
-                                                                    <input id="phone" name="phone" type="tel" maxlength="14" class="form-control" required value="<?php
+                                                                <input id="mobile" name="mobile" class="form-control" type="tel" required value=
+                                                                    "<?php
                                                                     if (!empty($setval)) {
-                                                                        echo set_value('phone');
+                                                                        echo set_value('mobile');
                                                                     } elseif (!empty($patient->phone)) {
                                                                         echo $patient->phone;
                                                                     } else {
-                                                                        echo '+63';
+                                                                        echo '';
                                                                     }
                                                                     ?>">
-                                                                 </form>
+                                                                <input type="hidden" name="phone" id="phone">
+                                                                <span id="error-msg" class="hide"></span>
+                                                                <span id="valid-msg" class="hide"> Valid</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -200,7 +200,7 @@
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('state_province'); ?></label>
-                                                                <select class="form-control select2-show-search" name="state_id" id="state" value='' disabled>
+                                                                <select class="form-control select2-show-search" name="state_id" id="state" value='' required disabled>
                                                                     <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
                                                                 </select>    
                                                             </div>
@@ -208,7 +208,7 @@
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('city_municipality'); ?></label>
-                                                                <select class="form-control select2-show-search" name="city_id" id="city" value='' disabled>
+                                                                <select class="form-control select2-show-search" name="city_id" id="city" value='' required disabled>
                                                                     <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
                                                                 </select> 
                                                             </div>
@@ -237,7 +237,7 @@
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('civil_status') ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" name="civil_status" data-placeholder="Choose one">
+                                                                <select class="form-control select2-show-search" name="civil_status" data-placeholder="Choose one" required>
                                                                     <?php foreach ($civil_status as $civil) { ?>
                                                                         <option value="<?php echo $civil->name ?>" <?php
                                                                             if (!empty($setval)) {
@@ -299,7 +299,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('birth_date'); ?> <span class="text-red">*</span></label>
-                                                                <input class="form-control flatpickr" placeholder="MM/DD/YYYY" name="birthdate" type="text" maxlength="100" required readonly value="<?php
+                                                                <input class="form-control flatpickr" placeholder="<?php echo lang('select').' '. lang('date');?>" name="birthdate" type="text" maxlength="100" required readonly value="<?php
                                                                 if (!empty($setval)) {
                                                                     echo set_value('birthdate');
                                                                 }
@@ -478,9 +478,7 @@
         <script src="<?php echo base_url('public/assets/plugins/sumoselect/jquery.sumoselect.js'); ?>"></script>
 
         <!--intlTelInput js-->
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/intlTelInput.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/country-select.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/utils.js'); ?>"></script>
+        <script src="<?php echo base_url('common/assets/intl-tel-input/build/js/intlTelInput.js');?>"></script>
 
         <!--jquery transfer js-->
         <script src="<?php echo base_url('public/assets/plugins/jQuerytransfer/jquery.transfer.js'); ?>"></script>
@@ -496,6 +494,9 @@
         <!-- popover js -->
         <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
         <!-- Notifications js -->
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
@@ -510,7 +511,10 @@
 
     <script type="text/javascript">
         flatpickr(".flatpickr", {
-            maxDate: "today"
+            altInput: true,
+            altFormat: "F j, Y",
+            maxDate: "today",
+            disableMobile: true
         });
     </script>
 
@@ -1012,6 +1016,60 @@
             var notice = "<?php unset($_SESSION['notice']); ?>";
 
         });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var input = document.querySelector("#mobile");
+            var errorMsg = document.querySelector("#error-msg");
+            var validMsg = document.querySelector("#valid-msg");
+            var form = document.getElementById("patientForm");
+
+            // here, the index maps to the error code returned from getValidationError - see readme
+            var errorMap = ["Invalid mobile number", "Invalid country code", "Too short", "Too long", "Invalid mobile number", "Invalid length"];
+
+            // initialise plugin
+            var iti = window.intlTelInput(input, {
+                hiddenInput: "full_number",
+                preferredCountries: ['ph', 'sg', 'us'],
+                utilsScript: "<?php echo base_url('common/assets/intl-tel-input/build/js/utils.js?1638200991544');?>"
+            });
+
+            var reset = function() {
+              input.classList.remove("parsley-error");
+              input.classList.remove("is-valid");
+              errorMsg.innerHTML = "";
+              errorMsg.classList.add("hide");
+              validMsg.classList.add("hide");
+            };
+
+            var execute = function() {
+              reset();
+              document.getElementById("phone").value = iti.getNumber();
+              if (input.value.trim()) {
+                if (iti.isValidNumber()) {
+                  validMsg.classList.remove("hide");
+                  input.classList.add("is-valid");
+                } else {
+                  input.classList.add("parsley-error");
+                  input.classList.remove("is-valid");
+                  var errorCode = iti.getValidationError();
+                  errorMsg.innerHTML = errorMap[errorCode];
+                  errorMsg.classList.remove("hide");
+                }
+              }
+            };
+
+            // on blur: validate
+            input.addEventListener('blur', execute);
+            form.addEventListener('submit', execute);
+            // on keyup / change flag: reset
+            input.addEventListener('change', reset);
+            input.addEventListener('keyup', reset);
+        });
+        
+    </script>
+    <script>
+        $('#patientForm').parsley();
     </script>
 
     </body>
