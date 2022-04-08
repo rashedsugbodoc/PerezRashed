@@ -80,6 +80,9 @@
                                                             <?php if (!empty($encounter_id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
+                                                            <?php if (!empty($encounter->id)) { ?>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                            <?php } ?>
                                                         </select>
                                                         <?php if (!empty($encounter_id)) { ?>
                                                             <input type="hidden" name="encounter_id" value="<?php
@@ -835,7 +838,7 @@
                                             <div class="row">\n\
                                                 <div class="col-sm-12">\n\
                                                     <div class="form-group">\n\
-                                                        <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                        <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
                                                         <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" placeholder="<?php echo lang("lab_test_instruction_placeholder"); ?>"></div>\n\
                                                     </div>\n\
                                                 </div>\n\
@@ -880,7 +883,7 @@
                                     <div class="row">\n\
                                         <div class="col-sm-12">\n\
                                             <div class="form-group">\n\
-                                                <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
                                                 <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" placeholder="<?php echo lang("lab_test_instruction_placeholder"); ?>"></div>\n\
                                             </div>\n\
                                         </div>\n\

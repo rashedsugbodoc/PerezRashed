@@ -243,6 +243,10 @@ class Labrequest extends MX_Controller {
 
         $data['request_number'] = $this->input->get('id');
         $data['labrequests'] = $this->labrequest_model->getLabrequestByLabrequestNumber($data['request_number']);
+        if (!empty($data['labrequests'][0]->encounter_id)) {
+            $data['encounter'] = $this->encounter_model->getEncounterById($data['labrequests'][0]->encounter_id);
+            $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+        }
         $data['labLoincItems'] = $this->labrequest_model->getLabLoinc();
         $data['patient'] = $this->patient_model->getPatientById($data['labrequests'][0]->patient_id);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['labrequests'][0]->doctor_id);
