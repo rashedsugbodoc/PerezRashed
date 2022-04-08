@@ -362,7 +362,7 @@
                                                 <div class="col-sm-12 col-md-6">
                                                     <label class="form-label"><?php echo lang('profile_picture'); ?>:<span class="text-red"> *</span></label>
                                                     <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
-                                                    <input type="file" name="img_url" id="img" required class="dropify"/>
+                                                    <input type="file" name="img_url" id="img" class="dropify"/>
                                                 </div>
                                             </div>
                                             <input type="hidden" name="id" id="doctor_id" value='<?php
