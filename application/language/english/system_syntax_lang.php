@@ -475,6 +475,7 @@ $lang['download'] = 'Download';
 $lang['file'] = 'File';
 $lang['files'] = 'Files';
 $lang['prescription'] = 'Prescription';
+$lang['prescribe_medication'] = 'Prescribe Medication';
 $lang['prescriptions'] = 'Prescriptions';
 $lang['prescription_id'] = 'Prescription ID';
 $lang['prescription_date'] = 'Prescription Date';
