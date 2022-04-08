@@ -254,9 +254,9 @@ class Encounter extends MX_Controller {
                 }
                 if ($this->ion_auth->in_group(array('Doctor'))) {
                     if (empty($prescription_encounter->encounter_id)) {
-                        $option8 = '<a href="prescription/addPrescriptionView?encounter_id='. $encounter->id .'" class="dropdown-item bg-info text-light"><i class="fa fa-file"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
+                        $option8 = '<a href="prescription/addPrescriptionView?encounter_id='. $encounter->id .'" class="dropdown-item bg-info text-light" target="_blank"><i class="fa fa-file"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
                     } else {
-                        $option8 = '<a href="prescription/addPrescriptionView?encounter_id='. $encounter->id .'" class="dropdown-item bg-success text-light"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
+                        $option8 = '<a href="prescription/addPrescriptionView?encounter_id='. $encounter->id .'" class="dropdown-item bg-success text-light" target="_blank"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('prescription') .'</a>';
                     }
                 }
                 if (empty($document_encounter->encounter_id)) {
@@ -273,13 +273,13 @@ class Encounter extends MX_Controller {
                 }
                 if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
                     if (empty($encounter->invoice_id)) {
-                        $option11 = '<a class="billbutton dropdown-item bg-info text-light" href="finance/addPaymentView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('generate_bill') . '</a>';
+                        $option11 = '<a class="billbutton dropdown-item bg-info text-light" href="finance/addPaymentView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-money"></i>  '. ' ' . lang('generate_bill') . '</a>';
                     } else {
-                        $option11 = '<a class="billbutton dropdown-item bg-success text-light" href="finance/addPaymentView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-check"></i>  '. ' ' . lang('generate_bill') . '</a>';
+                        $option11 = '<a class="billbutton dropdown-item bg-success text-light" href="finance/addPaymentView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-check"></i>  '. ' ' . lang('generate_bill') . '</a>';
                     }
                 }
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                        $option12 = '<a class="patientbutton dropdown-item bg-info text-light" href="patient/medicalHistory?id=' . $encounter->patient_id . '" data-id="' . $encounter->id . '"><i class="fa fa-eye"></i>  '. lang('view') .' ' .lang('patient') .' '. lang('history') . '</a>';
+                        $option12 = '<a class="patientbutton dropdown-item bg-info text-light" href="patient/medicalHistory?id=' . $encounter->patient_id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-eye"></i>  '. lang('view') .' ' .lang('patient') .' '. lang('history') . '</a>';
                 }
                 $option6 = '<div class="dropdown">
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
@@ -295,8 +295,8 @@ class Encounter extends MX_Controller {
                                     '.$option9.'
                                     '.$option10.'
                                     '.$option11.'
-                                    <a class="billbutton dropdown-item bg-info text-light" href="diagnosis/addDiagnosisView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('add') . ' ' . lang('diagnosis') . '</a>
-                                    <a class="billbutton dropdown-item bg-info text-light" href="labrequest/addLabRequestView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '"><i class="fa fa-money"></i>  '. ' ' . lang('add') . ' ' . lang('lab') . ' '. lang('request') . '</a>
+                                    <a class="billbutton dropdown-item bg-info text-light" href="diagnosis/addDiagnosisView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-money"></i>  '. ' ' . lang('add') . ' ' . lang('diagnosis') . '</a>
+                                    <a class="billbutton dropdown-item bg-info text-light" href="labrequest/addLabRequestView?encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-money"></i>  '. ' ' . lang('add') . ' ' . lang('lab') . ' '. lang('request') . '</a>
                                     <a class="delete_button dropdown-item bg-danger text-light" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>  ' . lang('delete') . '</a>
                                 </div>
                             </div>';
@@ -492,10 +492,12 @@ class Encounter extends MX_Controller {
         $doctor_id = $this->input->get('doctor_id');
 
         if (!empty($patient_id)) {
-            $data['encounter'] = $this->encounter_model->getEncounterByPatientId($patient_id);
+            $data['encounter'] = $this->encounter_model->getEncounterWithTypeNameByPatientId($patient_id);
         } else if (!empty($doctor_id)) {
-            $data['encounter'] = $this->encounter_model->getEncounterByDoctorId($doctor_id);
+            $data['encounter'] = $this->encounter_model->getEncounterWithTypeNameByDoctorId($doctor_id);
         }
+
+        // $data['encounter'] = array_merge($data['encounter'], $data['encounter_type']);
 
         echo json_encode($data);
     }
