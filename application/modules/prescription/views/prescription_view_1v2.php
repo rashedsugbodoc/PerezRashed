@@ -258,13 +258,19 @@
                                                         <h5 class="mb-1"><i class="fe fe-phone"></i> <?php echo $doctor->phone; ?></h5>
                                                         <h5 class="mb-1"><i class="fe fe-mail"></i> <?php echo $doctor->email; ?></h5>
                                                     </div>
-                                                </div>        -->         
+                                                </div>        -->   
+                                                
                                                 <div class="row mb-1">
                                                     <div class="col-md-12 pl-0 text-center">
-                                                        <h6 class="mb-1"><i class="fe fe-phone text-primary"></i> &nbsp;&nbsp;<?php echo $doctor->phone; ?></h6>
+                                                        <?php if (!empty($settings->prescription_display_doctor_phone)) { ?>
+                                                            <h6 class="mb-1"><i class="fe fe-phone text-primary"></i> &nbsp;&nbsp;<?php echo $doctor->phone; ?></h6>
+                                                        <?php } ?> 
+                                                        <?php if (!empty($settings->prescription_display_doctor_email)) { ?>
                                                         <h6 class="mb-1"><i class="fe fe-mail text-primary"></i> &nbsp;&nbsp;<?php echo $doctor->email; ?></h6>
+                                                        <?php } ?> 
                                                     </div>
-                                                </div>            
+                                                </div>
+                                                         
                                                 <div class="row mb-1">
                                                     <?php foreach($branches as $branch) { 
                                                         $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
