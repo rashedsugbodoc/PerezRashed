@@ -160,7 +160,22 @@
                                             </div>
                                             <div class="row mb-1 mt-1">
                                                 <div class="col-md-12 col-sm-12">
-                                                    <a href="" class="btn btn-success btn-md btn-block"><?php echo lang('bill'); ?> <?php echo lang('patient'); ?></a>
+                                                    <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $appointment_details->encounter_id ?>" class="btn btn-secondary btn-md btn-block" target="_blank"><?php echo lang('add').' '.lang('diagnosis'); ?></a>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-1 mt-1">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <a href="prescription/addPrescriptionView?patient_id=<?php echo $patient_details->id ?>&encounter_id=<?php echo $appointment_details->encounter_id ?>" class="btn btn-secondary btn-md btn-block" target="_blank"><?php echo lang('prescribe_medication'); ?></a>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-1 mt-1">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient_details->id ?>&encounter_id=<?php echo $appointment_details->encounter_id ?>" class="btn btn-secondary btn-md btn-block" target="_blank"><?php echo lang('add').' '.lang('lab').' '.lang('request'); ?></a>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-1 mt-1">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <a href="finance/addPaymentView?patient_id=<?php echo $patient_details->id ?>&encounter_id=<?php echo $appointment_details->encounter_id ?>" class="btn btn-success btn-md btn-block" target="_blank"><?php echo lang('bill'); ?> <?php echo lang('patient'); ?></a>
                                                 </div>
                                             </div>
                                             <div class="row">

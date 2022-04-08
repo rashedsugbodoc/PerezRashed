@@ -135,6 +135,10 @@ class Meeting extends MX_Controller {
 
             $this->encounter_model->insertEncounter($data_encounter);
             $inserted_id = $this->db->insert_id();
+            $data_appointment_encounter = array(
+                'encounter_id' => $inserted_id
+            );
+            $this->appointment_model->updateAppointment($appointment_id, $data_appointment_encounter);
 
             $encounter_number = date('ymd').format_number_with_digits($inserted_id, 3);
 
