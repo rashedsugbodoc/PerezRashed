@@ -53,7 +53,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
-                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?>>
                                                                     <option disabled>Search Patient</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
                                                                     <?php if (!empty($payment)) { ?>
@@ -65,7 +65,7 @@
                                                                             <?php } ?>
                                                                         <?php } ?>
                                                                     <?php } ?>
-                                                                    <?php if (!empty($encounter_id)) { ?>
+                                                                    <?php if (!empty($encounter->patient_id)) { ?>
                                                                         <option value="<?php echo $patientt->id; ?>" selected><?php echo $patientt->name ?></option>
                                                                     <?php } ?>
                                                                     <?php if (!empty($patient_id)) { ?>
@@ -78,7 +78,7 @@
                                                                         <?php } ?>
                                                                     <?php } ?>
                                                                 </select>
-                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                <?php if (!empty($encounter->patient_id)) { ?>
                                                                     <input type="hidden" name="patient" value="<?php echo $patientt->id ?>">
                                                                 <?php } ?>
                                                             </div>
@@ -160,7 +160,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
-                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter->doctor)) { echo "disabled"; } ?>>
                                                                     <option selected disabled>Search Doctor</option>
                                                                     <option value="add_new"><?php echo lang('add_new') ?></option>
                                                                     <?php if (!empty($payment)) { ?>
@@ -170,11 +170,11 @@
                                                                             <?php } ?>
                                                                         <?php } ?>
                                                                     <?php } ?>
-                                                                    <?php if (!empty($encounter_id)) { ?>
+                                                                    <?php if (!empty($encounter->doctor)) { ?>
                                                                         <option value="<?php echo $doctorr->id; ?>" selected><?php echo $doctorr->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
-                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                <?php if (!empty($encounter->doctor)) { ?>
                                                                     <input type="hidden" name="doctor" value="<?php echo $doctorr->id ?>">
                                                                 <?php } ?>
                                                             </div>
@@ -721,31 +721,26 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            console.log($("#pos_select").val());
             $("#pos_select").change(function () {
                 var patient_id = $("#pos_select").val();
                 var doctor_id = $("#add_doctor").val();
-                $("#encounter").find('option').remove();
-                console.log(doctor_id);
+                console.log("Patient: "+patient_id);
                 $.ajax({
                     url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
                     success: function (response) {
+                        $("#encounter").find('option').remove();
                         var encounter = response.encounter;
+                        var encounter_type = response.encounter_type;
                         $.each(encounter, function (key, value) {
-                            $('#encounter').append($('<option>').text(value.encounter_number).val(value.id)).end();
+                            $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
                         });
                     }
                 });
             });
-
-            // $("#add_doctor").change(function () {
-            //     var doctor_id = $("#add_doctor").val();
-            //     $.ajax({
-
-            //     })
-            // });
         });
     </script>
 
