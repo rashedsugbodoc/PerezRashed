@@ -359,6 +359,13 @@ class Prescription extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['patients'] = $this->patient_model->getPatientById($data['prescription']->patient);
         $data['doctors'] = $this->doctor_model->getDoctorById($data['prescription']->doctor);
+        if (!empty($data['prescription']->encounter_id)) {
+            $data['encounter_id'] = $data['prescription']->encounter_id;
+            $data['patient_id'] = $this->encounter_model->getEncounterById($data['encounter_id'])->patient_id;
+            $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
+            $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+        }
+
         if (!empty($data['prescription']->hospital_id)) {
             if ($data['prescription']->hospital_id != $this->session->userdata('hospital_id')) {
                 $this->load->view('home/permission');
