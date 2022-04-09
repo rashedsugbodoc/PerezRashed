@@ -178,9 +178,18 @@
                                                     <a href="finance/addPaymentView?patient_id=<?php echo $patient_details->id ?>&encounter_id=<?php echo $appointment_details->encounter_id ?>" class="btn btn-success btn-md btn-block" target="_blank"><?php echo lang('bill'); ?> <?php echo lang('patient'); ?></a>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <div class="row mb-1 mt-1">
                                                 <div class="col-md-12 col-sm-12">
                                                     <a href="appointment/todays" class="btn btn-info btn-md btn-block"><?php echo lang('back_to_appointment_list'); ?></a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12" id="endEncounterDiv">
+                                                    <?php if (!empty($this->encounter_model->getEncounterById($appointment_details->encounter_id)->ended_at)) { ?>
+                                                        <a class="btn btn-light btn-md btn-block"><?php echo lang('encounter'); ?> has <?php echo lang('ended'); ?></a>
+                                                    <?php } else { ?>
+                                                        <a class="btn btn-danger btn-md btn-block endEncounter" id="endEncounter"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a>
+                                                    <?php } ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -279,6 +288,12 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- Sweet alert js -->
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/sweet-alert.js'); ?>"></script>
+
+        <!-- INTERNAL JS END -->
         <!-- <script
             src="https://code.jquery.com/jquery-3.5.1.min.js"
             integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
@@ -287,6 +302,41 @@
 
 
         <script src="https://meet.jit.si/external_api.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#endEncounter").on("click", function(e){
+                    var encounter_id = <?php echo $appointment_details->encounter_id ?>;
+                    swal({
+                        title: "Notifiaction Styles",
+                        text: "New Notification from Dashtic",
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: 'End',
+                        cancelButtonText: 'Cancel',
+                    }, function (isConfirm) {
+                        if (!isConfirm) return;
+                        $.ajax({
+                            url: "encounter/endEncounterById?encounter_id="+encounter_id,
+                            type: "GET",
+                            data: '',
+                            dataType: "json",
+                            success: function (response) {
+                                swal("Done!", "You Successfully Ended", "success");
+                                console.log(response.encounter_id);
+                                $("#endEncounter").remove();
+                                $("#endEncounterDiv").append(
+                                    '<a class="btn btn-light btn-md btn-block">Encounter has Ended</a>');
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                swal("Error on Ending Encounter!", "Please try again", "error");
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
+
         <script type="text/javascript">
             function myFunction(){
                 var quill = document.getElementById('quillEditor').children[0].innerHTML;
