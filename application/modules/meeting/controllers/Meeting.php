@@ -127,6 +127,7 @@ class Meeting extends MX_Controller {
                 'patient_id' => $patient,
                 'rendering_staff_id' => $doctor,
                 'created_at' => $date,
+                'started_at' => $date,
                 'waiting_started' => $date,
                 'encounter_status' => 1,
                 'created_user_id' => $user,
@@ -1650,7 +1651,6 @@ class Meeting extends MX_Controller {
 
         echo json_encode($output);
     }
-
 }
 
 /* End of file meeting.php */
