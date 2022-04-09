@@ -163,6 +163,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <link href="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.min.css'); ?>" rel="stylesheet">
         <link href="<?php echo base_url('common/assets/flatpickr/dist/themes/sugbodoc_purple.css'); ?>" rel="stylesheet">
 
+        <!---Sweetalert css-->
+        <link href="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.css'); ?>" rel="stylesheet" />
+
         <!-- INTERNAL CSS END -->
 
         <style>
