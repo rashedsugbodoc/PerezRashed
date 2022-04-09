@@ -158,6 +158,7 @@ class Encounter extends MX_Controller {
                 'referral_facility_name' => $provider_name,
                 'referral_staff_id' => $ref_doctor_id,
                 'referral_staff_name' => $ref_name,
+                'started_at' => $date,
                 'waiting_started' => $date,
                 'created_at' => $date,
                 'created_user_id' => $user,
@@ -498,6 +499,19 @@ class Encounter extends MX_Controller {
         }
 
         // $data['encounter'] = array_merge($data['encounter'], $data['encounter_type']);
+
+        echo json_encode($data);
+    }
+
+    function endEncounterById() {
+        $encounter_id = $this->input->get('encounter_id');
+        $date = date("Y-m-d H:i:s", now('UTC'));
+
+        $data = array(
+            "ended_at" => $date,
+        );
+        $this->encounter_model->updateEncounter($encounter_id, $data);
+
 
         echo json_encode($data);
     }
