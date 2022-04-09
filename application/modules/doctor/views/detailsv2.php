@@ -73,7 +73,32 @@
                                                                                     </div>
                                                                                     <?php if ($todays_appointment->status == 'Confirmed') { ?>
                                                                                         <div class="btn-group mb-0">
-                                                                                            <a title=" <?php echo lang('start_video_call'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('start_video_call'); ?></a>
+                                                                                            <?php if (!empty($todays_appointment->encounter_id)) { ?>
+                                                                                                <?php
+                                                                                                    $encounter = $this->encounter_model->getEncounterById($todays_appointment->encounter_id);
+                                                                                                    $service_category_group = $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id);
+                                                                                                    if (!empty($service_category_group->is_virtual)) {
+                                                                                                        ?>
+                                                                                                            <a title=" <?php echo lang('start_video_call'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('start_video_call'); ?></a>
+                                                                                                        <?php
+                                                                                                    }
+                                                                                                    ?>
+                                                                                        </div>
+                                                                                        <div class="btn-group mb-0 endEncounterDiv">
+                                                                                                    <?php
+                                                                                                    if (empty($encounter->ended_at)) {
+                                                                                                        ?>
+                                                                                                            <a class="btn btn-danger btn-md btn-block endEncounter"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a>
+                                                                                                        <?php
+                                                                                                    } else {
+                                                                                                        ?>
+                                                                                                            <a class="btn btn-light btn-md btn-block"><?php echo lang('encounter'); ?> has <?php echo lang('ended'); ?></a>
+                                                                                                        <?php
+                                                                                                    }
+                                                                                                ?>
+                                                                                            <?php } else { ?>
+                                                                                                
+                                                                                            <?php } ?>
                                                                                         </div>
                                                                                     <?php } ?>
                                                                                 </td>
@@ -944,7 +969,45 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- Sweet alert js -->
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/sweet-alert.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#editable-sample").on("click", ".endEncounter", function(){
+                var encounter_id = <?php echo $todays_appointment->encounter_id ?>;
+                swal({
+                    title: "Notifiaction Styles",
+                    text: "New Notification from Dashtic",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: 'End',
+                    cancelButtonText: 'Cancel',
+                }, function (isConfirm) {
+                    if (!isConfirm) return;
+                    $.ajax({
+                        url: "encounter/endEncounterById?encounter_id="+encounter_id,
+                        type: "GET",
+                        data: '',
+                        dataType: "json",
+                        success: function (response) {
+                            swal("Done!", "You Successfully Ended", "success");
+                            // console.log(response.encounter_id);
+                            $(".endEncounter").remove();
+                            $(".endEncounterDiv").append('<a class="btn btn-light btn-md btn-block">Encounter has Ended</a>');
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            swal("Error on Ending Encounter!", "Please try again", "error");
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
