@@ -2136,7 +2136,8 @@ class Patient extends MX_Controller {
 
             $encounter_doctor_details = $this->doctor_model->getDoctorById($encounter->rendering_staff_id);
             $encounter_appointment = $this->appointment_model->getAppointmentById($encounter->appointment_id);
-            $encounter_appointment_time = date('H:i', strtotime($encounter->waiting_started.' UTC'));
+            // $encounter_appointment_time = date('H:i', strtotime($encounter->waiting_started.' UTC'));
+            $encounter_appointment_time = $encounter_appointment->s_time . ' to ' . $encounter_appointment->e_time;
             
 
             $hospital_details = $this->hospital_model->getHospitalById($encounter->hospital_id);
@@ -2163,12 +2164,83 @@ class Patient extends MX_Controller {
                 } else {
                     $encounter_ending_time = 'to _______';
                 }
+                $appointment_date = '<div class="form-group">
+                                        <div class="media mr-4 mb-4">
+                                            <div class="mr-3 mt-1 ml-3">
+                                                <i class="fa fa-calendar fa-2x text-primary"></i>
+                                            </div>
+                                            <div class="media-body">
+                                                <strong>' . $encounter_appointment_date . '</strong>
+                                                <div class="row">
+                                                    <div class="col-md-10 mb-3">
+                                                        <small class="text-muted">'. $encounter_appointment_time .'</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>';
+                $encounter_appointment_details = '<div class="form-group">
+                                                    <div class="media mr-4 mb-4">
+                                                        <div class="mr-3 mt-1 ml-3">
+                                                            <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                        </div>
+                                                        <div class="media-body">
+                                                            <strong>'. $encounter_appointment_service_group .'</strong>
+                                                            <div class="row">
+                                                                <div class="col-md-10 mb-3">
+                                                                    <small class="text-muted">' . $encounter_services . '</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ml-auto mt-1 mr-3">
+                                                            <span class="badge badge-pill badge-primary"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>';
             } else {
                 $encounter_appointment_service_group = "No Appointment";
                 $encounter_services = "No Appointment";
-                $encounter_appointment_date = "No Appointment";
+                if (!empty($encounter->started_at)) {
+                    $encounter_started_date = date('F j, Y H:i A', strtotime($encounter->started_at.' UTC'));
+                } else {
+                    $encounter_started_date = "_______";
+                }
+                if (!empty($encounter->ended_at)) {
+                    $encounter_ended_date = date('F j, Y H:i A', strtotime($encounter->ended_at.' UTC'));
+                } else {
+                    $encounter_ended_date = "_______";
+                }
                 $encounter_appointment_time = "No Appointment";
+                $encounter_number_type_group = "<div class='form-group'>
+                                                    <div class='media mr-4 mb-4'>
+                                                        <div class='mr-3 mt-1 ml-3'>
+                                                            <i class='fa fa-file-text-o fa-2x text-primary'></i>
+                                                        </div>
+                                                        <div class='media-body'>
+                                                            <strong>". $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name ."</strong>
+                                                            <div class='row'>
+                                                                <div class='col-md-10 mb-3'>
+                                                                    <small class='text-muted'>No Appointment</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class='ml-auto mt-1 mr-3'>
+                                                            <span class='badge badge-pill badge-primary'>" . $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name . "</span>
+                                                        </div>
+                                                    </div>
+                                                </div>";
                 // $encounter_ending_time = 'to _______';
+                $encounter_date = '<div class="form-group">
+                                        <div class="media mr-4 mb-4">
+                                            <div class="mr-3 mt-1 ml-3">
+                                                <i class="fa fa-calendar fa-2x text-primary"></i>
+                                            </div>
+                                            <div class="media-body">
+                                                <strong>' . lang("started") . ': ' . $encounter_started_date . '</strong><br>
+                                                <strong>' . lang("ended") . ': ' . $encounter_ended_date . '</strong>
+                                            </div>
+                                        </div>
+                                    </div>';
             }
             if (!empty($encounter_doctor_details)) {
                 $encounter_doctor = $encounter_doctor_details->name;
@@ -2185,39 +2257,11 @@ class Patient extends MX_Controller {
                                                     <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($encounter->created_at.' UTC')), 3) . '</span>
                                                     <h3 class="timelineleft-header"><span>' . lang('encounter') . '</span></h3>
                                                     <div class="timelineleft-body">
-                                                        <div class="form-group">
-                                                            <div class="media mr-4 mb-4">
-                                                                <div class="mr-3 mt-1 ml-3">
-                                                                    <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <strong>'. $encounter_appointment_service_group .'</strong>
-                                                                    <div class="row">
-                                                                        <div class="col-md-10 mb-3">
-                                                                            <small class="text-muted">' . $encounter_services . '</small>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="ml-auto mt-1 mr-3">
-                                                                    <span class="badge badge-pill badge-primary"></span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="media mr-4 mb-4">
-                                                                <div class="mr-3 mt-1 ml-3">
-                                                                    <i class="fa fa-calendar fa-2x text-primary"></i>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <strong>' . $encounter_appointment_date . '</strong>
-                                                                    <div class="row">
-                                                                        <div class="col-md-10 mb-3">
-                                                                            <small class="text-muted">'. $encounter_appointment_time . ' ' . $encounter_ending_time .'</small>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                        '. $encounter_appointment_details .'
+                                                        '. $encounter_number_type_group .'
+                                                        '. $appointment_id .'
+                                                        '. $appointment_date .'
+                                                        '. $encounter_date .'
                                                         <div class="form-group">
                                                             <div class="media mr-4 mb-4">
                                                                 <div class="mr-3 mt-1 ml-3">
@@ -3694,6 +3738,24 @@ class Patient extends MX_Controller {
                 $encounter_services = "No Appointment";
                 $encounter_appointment_date = "No Appointment";
                 $encounter_appointment_time = "No Appointment";
+                $encounter_number_type_group = "<div class='form-group'>
+                                                    <div class='media mr-4 mb-4'>
+                                                        <div class='mr-3 mt-1 ml-3'>
+                                                            <i class='fa fa-file-text-o fa-2x text-primary'></i>
+                                                        </div>
+                                                        <div class='media-body'>
+                                                            <strong>". $encounter->encounter_number ."</strong>
+                                                            <div class='row'>
+                                                                <div class='col-md-10 mb-3'>
+                                                                    <small class='text-muted'>" . $encounter->encounter_type_id . "</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class='ml-auto mt-1 mr-3'>
+                                                            <span class='badge badge-pill badge-primary'></span>
+                                                        </div>
+                                                    </div>
+                                                </div>";
                 // $encounter_ending_time = 'to _______';
             }
             if (!empty($encounter_doctor_details)) {
@@ -3711,6 +3773,7 @@ class Patient extends MX_Controller {
                                                     <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($encounter->created_at.' UTC')), 3) . '</span>
                                                     <h3 class="timelineleft-header"><span>' . lang('encounter') . '</span></h3>
                                                     <div class="timelineleft-body">
+                                                        '.$encounter_number_type_group.'
                                                         <div class="form-group">
                                                             <div class="media mr-4 mb-4">
                                                                 <div class="mr-3 mt-1 ml-3">
