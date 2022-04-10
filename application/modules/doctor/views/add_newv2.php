@@ -94,7 +94,7 @@
                                                         <div class="input-group-append br-tl-0 br-bl-0">
                                                             <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                                 <option value="0" ><?php echo lang('none'); ?></option>
-                                                                <option value="Jr." <?php if ($doctor->suffix ==='Jr.') { echo 'selected'; } if(set_value('suffix')=='Jr') { echo 'selected';} ?>><?php echo lang('jr'); ?></option>
+                                                                <option value="Jr." <?php if ($doctor->suffix ==='Jr.') { echo 'selected'; } if(set_value('suffix')=='Jr.') { echo 'selected';} ?>><?php echo lang('jr'); ?></option>
                                                                 <option value="Sr." <?php if ($doctor->suffix ==='Sr.') { echo 'selected'; } if(set_value('suffix')=='Sr.') { echo 'selected';} ?>><?php echo lang('sr'); ?></option>
                                                                 <option value="I" <?php if ($doctor->suffix ==='I') { echo 'selected'; } if(set_value('suffix')=='I') { echo 'selected';} ?>><?php echo lang('i'); ?></option>
                                                                 <option value="II" <?php if ($doctor->suffix ==='II') { echo 'selected'; } if(set_value('suffix')=='II') { echo 'selected';} ?>><?php echo lang('ii'); ?></option>
