@@ -110,7 +110,7 @@ class Doctor extends MX_Controller {
         if ($suffix== '0') {
             $suffix = null;
         }
-        $password = $this->input->post('password');
+        $password = random_string('alnum', 8);
         $email = $this->input->post('email');
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
@@ -150,10 +150,7 @@ class Doctor extends MX_Controller {
         $this->form_validation->set_rules('professional_display_name', 'Professional Display Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Password Field
         $this->form_validation->set_rules('suffix', 'Suffix', 'trim|min_length[1]|max_length[100]|xss_clean');
-        // Validating Password Field
-        if (empty($id)) {
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|xss_clean');
-        }
+
         // Validating Email Field
         if ($email !== $emailById) {
             $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[doctor.email]|max_length[100]|xss_clean');
@@ -164,7 +161,11 @@ class Doctor extends MX_Controller {
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[1]|max_length[500]|xss_clean');
         // Validating Country Field   
-        $this->form_validation->set_rules('country', 'Country', 'trim|required|min_length[1]|max_length[500]|xss_clean');
+        $this->form_validation->set_rules('country_id', 'Country', 'trim|required|min_length[1]|max_length[10]|xss_clean');
+        // Validating State Field   
+        $this->form_validation->set_rules('state_id', 'State', 'trim|required|min_length[1]|max_length[10]|xss_clean');
+        // Validating State Field   
+        $this->form_validation->set_rules('city_id', 'City', 'trim|required|min_length[1]|max_length[10]|xss_clean');
         // Validating Postal Field   
         $this->form_validation->set_rules('postal', 'Postal', 'trim|alpha_numeric|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
@@ -455,11 +456,12 @@ class Doctor extends MX_Controller {
                         if ($this->upload->do_upload('img_url')) {
 
                             $ion_user_id = $this->db->get_where('doctor', array('id' => $id))->row()->ion_user_id;
-                            if (empty($password)) {
-                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                            } else {
-                                $password = $this->ion_auth_model->hash_password($password);
-                            }
+                            // if (empty($password)) {
+                            //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                            // } else {
+                            //     $password = $this->ion_auth_model->hash_password($password);
+                            // }
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                             $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->doctor_model->updateDoctor($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
@@ -480,11 +482,12 @@ class Doctor extends MX_Controller {
                                 // $this->load->view('home/footer'); // just the footer file
                             } else {
                                 $ion_user_id = $this->db->get_where('doctor', array('id' => $id))->row()->ion_user_id;
-                                if (empty($password)) {
-                                    $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                                } else {
-                                    $password = $this->ion_auth_model->hash_password($password);
-                                }
+                                // if (empty($password)) {
+                                //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                                // } else {
+                                //     $password = $this->ion_auth_model->hash_password($password);
+                                // }
+                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                                 $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                                 $this->doctor_model->updateDoctor($id, $data);
                                 $this->session->set_flashdata('success', lang('record_updated'));
@@ -498,11 +501,12 @@ class Doctor extends MX_Controller {
                     if ($this->upload->do_upload('img_url')) {
                         
                         $ion_user_id = $this->db->get_where('doctor', array('id' => $id))->row()->ion_user_id;
-                        if (empty($password)) {
-                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                        } else {
-                            $password = $this->ion_auth_model->hash_password($password);
-                        }
+                        // if (empty($password)) {
+                        //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        // } else {
+                        //     $password = $this->ion_auth_model->hash_password($password);
+                        // }
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                         $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->doctor_model->updateDoctor($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
@@ -523,11 +527,12 @@ class Doctor extends MX_Controller {
                             // $this->load->view('home/footer'); // just the footer file
                         } else {
                             $ion_user_id = $this->db->get_where('doctor', array('id' => $id))->row()->ion_user_id;
-                            if (empty($password)) {
-                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                            } else {
-                                $password = $this->ion_auth_model->hash_password($password);
-                            }
+                            // if (empty($password)) {
+                            //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                            // } else {
+                            //     $password = $this->ion_auth_model->hash_password($password);
+                            // }
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                             $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->doctor_model->updateDoctor($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
@@ -550,9 +555,10 @@ class Doctor extends MX_Controller {
         // $data['states'] = $this->location_model->getState();
         // $data['cities'] = $this->location_model->getCity();
         // $data['barangays'] = $this->location_model->getBarangay();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $data['specialties'] = $this->specialty_model->getSpecialty();
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);        
+        //$this->load->view('home/footer'); // just the footer file
     }
 
     function details() {
@@ -659,7 +665,7 @@ class Doctor extends MX_Controller {
                                 <label><strong>In-Person:</strong> '. $settings->currency . ' ' . number_format($doctor->physical_consultation_fee,2) .'</label>';
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
-                $options1 = '<a type="button" class="btn btn-info btn-xs btn_width editbutton" title="' . lang('edit') . '" data-toggle="modal" data-id="' . $doctor->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = '<a type="button" class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '" href="doctor/editDoctor?id=' . $doctor->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
                 //   $options1 = '<a class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '" href="doctor/editDoctor?id='.$doctor->id.'"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
             $options2 = '<a class="btn btn-info btn-xs" title="' . lang('appointments') . '"  href="appointment/getAppointmentByDoctorId?id=' . $doctor->id . '"> <i class="fa fa-calendar"> </i> ' . lang('appointments') . '</a>';
