@@ -34,13 +34,14 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('professional_display_name'); ?> <span class="text-red">*</span></label>
-                                                        <input type="text" name="professional_display_name" placeholder="example: John Garcia, MD" class="form-control" value="<?php
-                                                        if (!empty($setval)) {
-                                                            echo set_value('professional_display_name');
-                                                        }
-                                                        if (!empty($doctor->professional_display_name)) {
-                                                            echo $doctor->professional_display_name;
-                                                        }
+                                                        <input type="text" name="professional_display_name" placeholder="example: John Garcia, MD" class="form-control" value=
+                                                        "<?php
+                                                            if (!empty($setval)) {
+                                                                echo set_value('professional_display_name');
+                                                            }
+                                                            if (!empty($doctor->professional_display_name)) {
+                                                                echo $doctor->professional_display_name;
+                                                            }
                                                         ?>" required>
                                                     </div>
                                                 </div>
@@ -93,25 +94,25 @@
                                                         <div class="input-group-append br-tl-0 br-bl-0">
                                                             <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                                 <option value="0" ><?php echo lang('none'); ?></option>
-                                                                <option value="Jr."><?php echo lang('jr'); ?></option>
-                                                                <option value="Sr."><?php echo lang('sr'); ?></option>
-                                                                <option value="I"><?php echo lang('i'); ?></option>
-                                                                <option value="II"><?php echo lang('ii'); ?></option>
-                                                                <option value="III"><?php echo lang('iii'); ?></option>
-                                                                <option value="IV"><?php echo lang('iv'); ?></option>
-                                                                <option value="V"><?php echo lang('v'); ?></option>
-                                                                <option value="VI"><?php echo lang('vi'); ?></option>
-                                                                <option value="VII"><?php echo lang('vii'); ?></option>
-                                                                <option value="VIII"><?php echo lang('viii'); ?></option>
-                                                                <option value="IX"><?php echo lang('ix'); ?></option>
-                                                                <option value="X"><?php echo lang('x'); ?></option>
+                                                                <option value="Jr." <?php if ($doctor->suffix ==='Jr.') { echo 'selected'; } if(set_value('suffix')=='Jr') { echo 'selected';} ?>><?php echo lang('jr'); ?></option>
+                                                                <option value="Sr." <?php if ($doctor->suffix ==='Sr.') { echo 'selected'; } if(set_value('suffix')=='Sr.') { echo 'selected';} ?>><?php echo lang('sr'); ?></option>
+                                                                <option value="I" <?php if ($doctor->suffix ==='I') { echo 'selected'; } if(set_value('suffix')=='I') { echo 'selected';} ?>><?php echo lang('i'); ?></option>
+                                                                <option value="II" <?php if ($doctor->suffix ==='II') { echo 'selected'; } if(set_value('suffix')=='II') { echo 'selected';} ?>><?php echo lang('ii'); ?></option>
+                                                                <option value="III" <?php if ($doctor->suffix ==='III') { echo 'selected'; } if(set_value('suffix')=='III') { echo 'selected';} ?>><?php echo lang('iii'); ?></option>
+                                                                <option value="IV" <?php if ($doctor->suffix ==='IV') { echo 'selected'; } if(set_value('suffix')=='IV') { echo 'selected';} ?>><?php echo lang('iv'); ?></option>
+                                                                <option value="V" <?php if ($doctor->suffix ==='V') { echo 'selected'; } if(set_value('suffix')=='V') { echo 'selected';} ?>><?php echo lang('v'); ?></option>
+                                                                <option value="VI" <?php if ($doctor->suffix ==='VI') { echo 'selected'; } if(set_value('suffix')=='VI') { echo 'selected';} ?>><?php echo lang('vi'); ?></option>
+                                                                <option value="VII" <?php if ($doctor->suffix ==='VII') { echo 'selected'; } if(set_value('suffix')=='VII') { echo 'selected';} ?>><?php echo lang('vii'); ?></option>
+                                                                <option value="VIII" <?php if ($doctor->suffix ==='VIII') { echo 'selected'; } if(set_value('suffix')=='VIII') { echo 'selected';} ?>><?php echo lang('viii'); ?></option>
+                                                                <option value="IX" <?php if ($doctor->suffix ==='IX') { echo 'selected'; } if(set_value('suffix')=='IX') { echo 'selected';} ?>><?php echo lang('ix'); ?></option>
+                                                                <option value="X" <?php if ($doctor->suffix ==='X') { echo 'selected'; } if(set_value('suffix')=='X') { echo 'selected';} ?>><?php echo lang('x'); ?></option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('email'); ?> <span class="text-red">*</span></label>
                                                         <input type="email" name="email" class="form-control" value="<?php
@@ -124,12 +125,23 @@
                                                         ?>" required>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('password'); ?> <span class="text-red">*</span></label>
-                                                        <input type="password" name="password" class="form-control" minlength="8" required>
+                                                        <label class="form-label"><?php echo lang('mobile_number'); ?> <span class="text-red">*</span></label>
+                                                        
+                                                        <input id="mobile" name="mobile" class="form-control" type="tel" required value= 
+                                                            "<?php
+                                                                if (!empty($setval)) {
+                                                                    echo set_value('mobile');
+                                                                } elseif (!empty($doctor->phone)) {
+                                                                    echo $doctor->phone;
+                                                                } else {
+                                                                    echo '';
+                                                                }
+                                                            ?>">
+                                                        <input type="hidden" name="phone" id="phone">
+                                                        <span id="error-msg" class="hide"></span>
+                                                        <span id="valid-msg" class="hide"> Valid</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -206,18 +218,6 @@
                                                             echo $doctor->postal;
                                                         }
                                                         ?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('mobile_number'); ?> <span class="text-red">*</span></label>
-                                                        
-                                                        <input id="mobile" name="mobile" class="form-control" type="tel" required>
-                                                        <input type="hidden" name="phone" id="phone">
-                                                        <span id="error-msg" class="hide"></span>
-                                                        <span id="valid-msg" class="hide"> Valid</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -325,8 +325,8 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('in_person_consultation_fee');
                                                         }
-                                                        if (!empty($doctor->in_person_consultation_fee)) {
-                                                            echo $doctor->in_person_consultation_fee;
+                                                        if (!empty($doctor->physical_consultation_fee)) {
+                                                            echo $doctor->physical_consultation_fee;
                                                         }
                                                         ?>"
                                                         required>
@@ -362,7 +362,7 @@
                                                 <div class="col-sm-12 col-md-6">
                                                     <label class="form-label"><?php echo lang('profile_picture'); ?>:<span class="text-red"> *</span></label>
                                                     <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
-                                                    <input type="file" name="img_url" id="img" class="dropify"/>
+                                                    <input type="file" name="img_url" id="img" class="dropify" data-default-file="<?php if(!empty($doctor->img_url)) echo $doctor->img_url; ?>"/>
                                                 </div>
                                             </div>
                                             <input type="hidden" name="id" id="doctor_id" value='<?php
@@ -1017,6 +1017,7 @@
             var input = document.querySelector("#mobile");
             var errorMsg = document.querySelector("#error-msg");
             var validMsg = document.querySelector("#valid-msg");
+            var form = document.getElementById("doctorForm");
 
             // here, the index maps to the error code returned from getValidationError - see readme
             var errorMap = ["Invalid mobile number", "Invalid country code", "Too short", "Too long", "Invalid mobile number", "Invalid length"];
@@ -1036,8 +1037,7 @@
               validMsg.classList.add("hide");
             };
 
-            // on blur: validate
-            input.addEventListener('blur', function() {
+            var execute = function() {
               reset();
               document.getElementById("phone").value = iti.getNumber();
               if (input.value.trim()) {
@@ -1052,7 +1052,10 @@
                   errorMsg.classList.remove("hide");
                 }
               }
-            });
+            };
+            // on blur: validate
+            input.addEventListener('blur', execute);
+            form.addEventListener('submit', execute);
 
             // on keyup / change flag: reset
             input.addEventListener('change', reset);
