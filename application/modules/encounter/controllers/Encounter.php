@@ -14,6 +14,7 @@ class Encounter extends MX_Controller {
         $this->load->model('profile/profile_model');
         $this->load->model('prescription/prescription_model');
         $this->load->model('form/form_model');
+        $this->load->model('appointment/appointment_model');
         $this->load->model('finance/finance_model');
 
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
@@ -501,6 +502,58 @@ class Encounter extends MX_Controller {
         // $data['encounter'] = array_merge($data['encounter'], $data['encounter_type']);
 
         echo json_encode($data);
+    }
+
+    function startEncounterFromAppointment() {
+        $appointment_id = $this->input->get('appointment_id');
+        $user = $this->session->userdata('user_id');
+        $appointment_details = $this->appointment_model->getAppointmentById($appointment_id);
+        $appointment_doctor = $appointment_details->doctor;
+        $appointment_patient = $appointment_details->patient;
+        $appointment_remarks = $appointment_details->remarks;
+
+        $date = date("Y-m-d H:i:s", now('UTC'));
+
+        $appointment_service_is_virtual = $this->appointment_model->getServiceCategoryById($appointment_details->service_category_group_id);
+
+        if (!empty($appointment_service_is_virtual->is_consultation) && !empty($appointment_service_is_virtual->is_virtual)) {
+            $encounter_type_name = "virtual_consult";
+        } else {
+            $encounter_type_name = "clinic_visit";
+        }
+
+        $encounter_type_id = $this->encounter_model->getEncounterTypeIdByName($encounter_type_name)->id;
+
+        $data_encounter = array(
+            'encounter_type_id' => $encounter_type_id,
+            'appointment_id' => $appointment_id,
+            'patient_id' => $appointment_patient,
+            'rendering_staff_id' => $appointment_doctor,
+            'created_at' => $date,
+            'started_at' => $date,
+            'waiting_started' => $date,
+            'encounter_status' => 1,
+            'created_user_id' => $user,
+            'reason' => $appointment_remarks,
+        );
+
+        $this->encounter_model->insertEncounter($data_encounter);
+        $inserted_id = $this->db->insert_id();
+        $data_appointment_encounter = array(
+            'encounter_id' => $inserted_id
+        );
+        $this->appointment_model->updateAppointment($appointment_id, $data_appointment_encounter);
+
+        $encounter_number = date('ymd').format_number_with_digits($inserted_id, 3);
+
+        $data_encounter = array(
+            'encounter_number' => $encounter_number,
+        );
+
+        $this->encounter_model->updateEncounter($inserted_id, $data_encounter);
+
+        redirect('encounter');
+
     }
 
     function endEncounterById() {
