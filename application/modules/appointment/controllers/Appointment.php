@@ -1436,11 +1436,12 @@ class Appointment extends MX_Controller {
                         if (!empty($appointment->encounter_id)) {
                             $encounter = $this->encounter_model->getEncounterById($appointment->encounter_id);
                             $service_category_group = $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id);
-                            if (!empty($service_category_group->is_virtual)) {
-                                $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
-                            }
+                            
 
                             if (empty($encounter->ended_at)) {
+                                if (!empty($service_category_group->is_virtual)) {
+                                    $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                                }
                                 $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-id="' . $appointment->encounter_id . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
                             } else {
                                 $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
@@ -1769,11 +1770,12 @@ class Appointment extends MX_Controller {
                     if (!empty($appointment->encounter_id)) {
                         $encounter = $this->encounter_model->getEncounterById($appointment->encounter_id);
                         $service_category_group = $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id);
-                        if (!empty($service_category_group->is_virtual)) {
-                            $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
-                        }
+                        
 
                         if (empty($encounter->ended_at)) {
+                            if (!empty($service_category_group->is_virtual)) {
+                                $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                            }
                             $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-id="' . $appointment->encounter_id . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
                         } else {
                             $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
