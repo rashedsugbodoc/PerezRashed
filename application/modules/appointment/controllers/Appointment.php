@@ -1433,7 +1433,21 @@ class Appointment extends MX_Controller {
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 if ($appointment->status == 'Confirmed') {
                     if ($appointment->status == 'Confirmed') {
-                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                        if (!empty($appointment->encounter_id)) {
+                            $encounter = $this->encounter_model->getEncounterById($appointment->encounter_id);
+                            $service_category_group = $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id);
+                            if (!empty($service_category_group->is_virtual)) {
+                                $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                            }
+
+                            if (empty($encounter->ended_at)) {
+                                $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-id="' . $appointment->encounter_id . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
+                            } else {
+                                $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
+                            }
+                        } else {
+                            $options7 = '<a href="encounter/startEncounterFromAppointment?appointment_id='.$appointment->id.'" data-id="' . $appointment->encounter_id . '" class="btn btn-primary">'. lang('start') .' '. lang('encounter') .'</a>';
+                        }
                     } else {
                         $options7 = '';
                     }
@@ -1452,7 +1466,7 @@ class Appointment extends MX_Controller {
                 date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment->status,
-                $option1 . ' ' . $option2 . ' ' . $options7
+                $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
             );
         }
 
@@ -1752,7 +1766,21 @@ class Appointment extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 if ($appointment->status == 'Confirmed') {
-                    $options7 = '<a class="btn btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                    if (!empty($appointment->encounter_id)) {
+                        $encounter = $this->encounter_model->getEncounterById($appointment->encounter_id);
+                        $service_category_group = $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id);
+                        if (!empty($service_category_group->is_virtual)) {
+                            $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                        }
+
+                        if (empty($encounter->ended_at)) {
+                            $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-id="' . $appointment->encounter_id . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
+                        } else {
+                            $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
+                        }
+                    } else {
+                        $options7 = '<a href="encounter/startEncounterFromAppointment?appointment_id='.$appointment->id.'" data-id="' . $appointment->encounter_id . '" class="btn btn-primary">'. lang('start') .' '. lang('encounter') .'</a>';
+                    }
                 } else {
                     $options7 = '';
                 }
@@ -1767,7 +1795,7 @@ class Appointment extends MX_Controller {
                 date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment->status,
-                $option1 . ' ' . $option2 . ' ' . $options7
+                $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
             );
             $i = $i + 1;
         }

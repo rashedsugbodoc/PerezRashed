@@ -647,7 +647,74 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
+        <!-- Sweet alert js -->
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/sweet-alert.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#editable-sample5").on("click", ".endEncounter", function(){
+                var encounter_id = $(this).attr('data-id');
+                swal({
+                    title: "Notifiaction Styles",
+                    text: "New Notification from Dashtic",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: 'End',
+                    cancelButtonText: 'Cancel',
+                }, function (isConfirm) {
+                    if (!isConfirm) return;
+                    $.ajax({
+                        url: "encounter/endEncounterById?encounter_id="+encounter_id,
+                        type: "GET",
+                        data: '',
+                        dataType: "json",
+                        success: function (response) {
+                            swal("Done!", "You Successfully Ended", "success");
+                            // console.log(response.encounter_id);
+                            $(".endEncounter").remove();
+                            $(".endEncounterDiv").append('<a class="btn btn-light btn-md btn-block">Encounter has Ended</a>');
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            swal("Error on Ending Encounter!", "Please try again", "error");
+                        }
+                    });
+                });
+            });
+
+            $("#editable-sample2").on("click", ".endEncounter", function(){
+                var encounter_id = $(this).attr('data-id');
+                swal({
+                    title: "Notifiaction Styles",
+                    text: "New Notification from Dashtic",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonText: 'End',
+                    cancelButtonText: 'Cancel',
+                }, function (isConfirm) {
+                    if (!isConfirm) return;
+                    $.ajax({
+                        url: "encounter/endEncounterById?encounter_id="+encounter_id,
+                        type: "GET",
+                        data: '',
+                        dataType: "json",
+                        success: function (response) {
+                            swal("Done!", "You Successfully Ended", "success");
+                            // console.log(response.encounter_id);
+                            $(".endEncounter").remove();
+                            $(".endEncounterDiv").append('<a class="btn btn-light btn-md btn-block">Encounter has Ended</a>');
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            swal("Error on Ending Encounter!", "Please try again", "error");
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
