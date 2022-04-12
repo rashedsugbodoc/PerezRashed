@@ -7,6 +7,7 @@ class pgateway extends MX_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->model('settings/settings_model');
         $this->load->model('pgateway_model');
         $this->load->model('patient/patient_model');
         $this->load->model('donor/donor_model');
@@ -15,6 +16,7 @@ class pgateway extends MX_Controller {
 
     public function index() {
         $data = array();
+
         $id = $this->ion_auth->get_user_id();
         $data['settings'] = $this->settings_model->getSettings();
         $data['pgateways'] = $this->pgateway_model->getPaymentGateway();

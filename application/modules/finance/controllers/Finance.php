@@ -64,9 +64,6 @@ class Finance extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
             redirect('home/permission');
         }
-        ini_set('display_errors', 1);
-        ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
 
         $data = array();
         $id = $this->input->get('id');
@@ -84,7 +81,9 @@ class Finance extends MX_Controller {
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
-        $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
+        if (!empty($data['settings']->payment_gateway)) {
+            $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
+        }
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $this->load->view('home/dashboardv2'); // just the header file
