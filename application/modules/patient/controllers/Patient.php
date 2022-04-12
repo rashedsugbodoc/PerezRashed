@@ -1528,7 +1528,7 @@ class Patient extends MX_Controller {
             $hospital_details = $this->hospital_model->getHospitalById($appointment->hospital_id);
             $branch_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
             $service_category_group = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
-            $services = $this->finance_model->getPaymentCategoryById($appointment->service_id)->description;
+            $services = $this->finance_model->getPaymentCategoryById($appointment->service_id)->category;
             if (empty($branch_name)) {
                 $branch_name = "Online";
             }
@@ -3061,7 +3061,7 @@ class Patient extends MX_Controller {
             $hospital_details = $this->hospital_model->getHospitalById($appointment->hospital_id);
             $branch_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
             $service_category_group = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
-            $services = $this->finance_model->getPaymentCategoryById($appointment->service_id)->description;
+            $services = $this->finance_model->getPaymentCategoryById($appointment->service_id)->category;
             if (empty($branch_name)) {
                 $branch_name = "Online";
             }
