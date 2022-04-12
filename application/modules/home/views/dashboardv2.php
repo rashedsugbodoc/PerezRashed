@@ -258,6 +258,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
     <body class="app sidebar-mini light-mode default-sidebar">
 
+
         <!---Global-loader-->
         <div id="global-loader" >
             <img src="<?php echo base_url('public/assets/images/svgs/loader.svg'); ?>" alt="loader">
