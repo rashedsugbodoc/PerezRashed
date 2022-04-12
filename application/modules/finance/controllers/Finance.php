@@ -74,7 +74,7 @@ class Finance extends MX_Controller {
         if (!empty($encounter_id)) {
             $data['encounter_id'] = $encounter_id;
             $data['encounter'] = $this->encounter_model->getEncounterById($encounter_id);
-            $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+            $data['encounter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
             $data['doctorr'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
             $data['patientt'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         }
