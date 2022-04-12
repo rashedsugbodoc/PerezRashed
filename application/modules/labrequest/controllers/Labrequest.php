@@ -147,6 +147,9 @@ class Labrequest extends MX_Controller {
                 $data = array();
 
                 foreach ($dataholder as $key => $value) {
+                    if (empty($labrequest_id[$key])) {
+                        $labrequest_id[$key] = null;
+                    }
                     $data[$value] = array(
                         'doctor_id' => $doctor,
                         'patient_id' => $patient,
