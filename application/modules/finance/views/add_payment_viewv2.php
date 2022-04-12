@@ -721,11 +721,10 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            console.log($("#pos_select").val());
+            
             $("#pos_select").change(function () {
                 var patient_id = $("#pos_select").val();
                 var doctor_id = $("#add_doctor").val();
-                console.log("Patient: "+patient_id);
                 $.ajax({
                     url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
                     method: 'GET',
@@ -1352,7 +1351,6 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
-                        console.log(response.encounter.patient_id);
                         $('#editPaymentForm').find('[name="patient"]').val(response.encounter.patient_id).change();
                         $('#editPaymentForm').find('[name="doctor"]').val(response.encounter.rendering_staff_id).change();
                     }
@@ -1364,7 +1362,6 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            console.log($("#subtotal").val());
             var amount_received = $(".amount_received").val();
             var deposit_edit_amount = $("input[name^=deposit_edit_amount").map(function (idx, elem) {
                 return $(elem).val();
@@ -1378,8 +1375,6 @@
 
             var totaldeposit = parseFloat(amount_received) + dep;
 
-            console.log(totaldeposit);
-            console.log(deposit_edit_amount);
             $("#payment_status").find('option').remove();
                 var company = $("#company").val();
                 $.ajax({
@@ -1389,7 +1384,6 @@
                     dataType: 'json',
                     success: function (response) {
                         var status = response.name;
-                        console.log(response.company_name);
 
                         $.each(status, function (key, value) {
                             if (response.company_name == "personal") {

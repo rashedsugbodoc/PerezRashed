@@ -64,17 +64,23 @@ class Finance extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
             redirect('home/permission');
         }
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+
         $data = array();
         $id = $this->input->get('id');
         $encounter_id = $this->input->get('encounter_id');
         $data['patient_id'] = $this->input->get('patient_id');
         $data['id'] = $id;
-        $data['encounter_id'] = $encounter_id;
         $data['staffs'] = $this->encounter_model->getUser();
-        $data['encounter'] = $this->encounter_model->getEncounterById($encounter_id);
-        $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
-        $data['doctorr'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
-        $data['patientt'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
+        if (!empty($encounter_id)) {
+            $data['encounter_id'] = $encounter_id;
+            $data['encounter'] = $this->encounter_model->getEncounterById($encounter_id);
+            $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+            $data['doctorr'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
+            $data['patientt'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
+        }
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
