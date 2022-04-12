@@ -510,7 +510,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="patient" hidden value='<?php echo $patient->id; ?>'>
+                                            <input type="hidden" name="patient">
                                             <input type="hidden" name="encounter_id">
                                             <input type="hidden" name="redirect" value="encounter">
                                             <div class="row">
@@ -1047,9 +1047,11 @@
         $(".table").on("click", ".vitalbutton", function () {
             var base_url = "<?php echo base_url() ?>";
             var iid = $(this).attr('data-id');
+            var patient_id = $(this).attr('data-patient');
 
             console.log(iid);
             $('#addVitalForm').find('[name="encounter_id"]').val(iid).end()
+            $('#addVitalForm').find('[name="patient"]').val(patient_id).end()
 
             $('#AddVital').modal('show');
         });
