@@ -230,7 +230,7 @@
                                                                 foreach ($deposits_by_date as $deposit_by_date) {
                                                                 ?>
                                                                     <tr>
-                                                                        <td><?php echo date('y-m-d', $deposit_by_date->date.' UTC'); ?></td>
+                                                                        <td><?php echo date('y-m-d', $deposit_by_date->date); ?></td>
                                                                         <td><?php echo $deposit_by_date->payment_id; ?></td>
                                                                         <td><?php echo $deposit_by_date->receipt_number; ?></td>
                                                                         <td><?php echo $deposit_by_date->deposited_amount; ?></td>
