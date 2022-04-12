@@ -54,8 +54,8 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
                                                                 <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?>>
-                                                                    <option disabled>Search Patient</option>
-                                                                    <option value="add_new"><?php echo lang('add_new') ?></option>
+                                                                    <!-- <option disabled>Search Patient</option>
+                                                                    <option value="add_new"><?php echo lang('add_new') ?></option> -->
                                                                     <?php if (!empty($payment)) { ?>
                                                                         <?php foreach($patients as $patient) { ?>
                                                                             <?php if ($patient->id === $payment->patient) { ?>
@@ -161,8 +161,8 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
                                                                 <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter->doctor)) { echo "disabled"; } ?>>
-                                                                    <option selected disabled>Search Doctor</option>
-                                                                    <option value="add_new"><?php echo lang('add_new') ?></option>
+                                                                    <!-- <option selected disabled>Search Doctor</option>
+                                                                    <option value="add_new"><?php echo lang('add_new') ?></option> -->
                                                                     <?php if (!empty($payment)) { ?>
                                                                         <?php foreach($doctors as $doctor) { ?>
                                                                             <?php if ($doctor->id === $payment->doctor) { ?>
@@ -220,7 +220,8 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" data-placeholder="Select Patient to Produce Encounter Records" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                            <option label="Choose one"></option>
                                                             <?php if (!empty($encounter->id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . $encounter->created_at; ?></option>
                                                             <?php } ?>
@@ -1128,7 +1129,7 @@
                     placeholder: '<?php echo lang('select_patient'); ?>',
                     allowClear: true,
                     ajax: {
-                        url: 'patient/getPatientinfoWithAddNewOption',
+                        url: 'patient/getPatientinfo',
                         type: "post",
                         dataType: 'json',
                         delay: 250,
@@ -1173,7 +1174,7 @@
                     placeholder: '<?php echo lang('select_doctor'); ?>',
                     allowClear: true,
                     ajax: {
-                        url: 'doctor/getDoctorWithAddNewOption',
+                        url: 'doctor/getDoctorInfo',
                         type: "post",
                         dataType: 'json',
                         delay: 250,
