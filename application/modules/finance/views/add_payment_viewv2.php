@@ -223,7 +223,7 @@
                                                         <select class="form-control select2-show-search" name="encounter_id" id="encounter" data-placeholder="Select Patient to Produce Encounter Records" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                             <option label="Choose one"></option>
                                                             <?php if (!empty($encounter->id)) { ?>
-                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . $encounter->created_at; ?></option>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encounter_type->display_name . ' - ' . $encounter->created_at; ?></option>
                                                             <?php } ?>
                                                             <?php if (!empty($payment->encounter_id)) { ?>
                                                                 <?php foreach($encounters as $encounter) { ?>
