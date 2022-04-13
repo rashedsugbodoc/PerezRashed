@@ -261,8 +261,10 @@
                                                                         <option value="<?php echo $staff->user_id ?>" selected><?php echo $staff->username ?></option>
                                                                     <?php } ?>
                                                                 <?php } else { ?>
-                                                                    <?php if ($encounter->rendering_staff_id === $staff->user_id) { ?>
-                                                                        <option value="<?php echo $staff->user_id ?>" selected><?php echo $staff->username ?></option>
+                                                                    <?php if (!empty($encounter_id)) { ?>
+                                                                        <?php if ($encounter->rendering_staff_id === $staff->user_id) { ?>
+                                                                            <option value="<?php echo $staff->user_id ?>" selected><?php echo $staff->username ?></option>
+                                                                        <?php } ?>
                                                                     <?php } ?>
                                                                 <?php } ?>
                                                             <?php }?>
