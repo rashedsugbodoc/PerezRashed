@@ -2134,7 +2134,9 @@ class Patient extends MX_Controller {
 
         foreach ($data['encounters'] as $encounter) {
 
-            $encounter_doctor_details = $this->doctor_model->getDoctorById($encounter->rendering_staff_id);
+            $encounter_doctor_details = $this->doctor_model->getDoctorByIonUserId($encounter->rendering_staff_id);
+            $encounter_doctor_profile_image = $this->getPatientProfileImageByIonUserId($encounter->created_user_id);
+            $encounter_doctor_profile_name = $this->getPatientProfileNameByIonUserId($encounter->created_user_id);
             $encounter_appointment = $this->appointment_model->getAppointmentById($encounter->appointment_id);
             // $encounter_appointment_time = date('H:i', strtotime($encounter->waiting_started.' UTC'));
             $encounter_appointment_time = $encounter_appointment->s_time . ' to ' . $encounter_appointment->e_time;
@@ -2152,7 +2154,13 @@ class Patient extends MX_Controller {
                 $encounter_specialty[] = '<span class="badge badge-light badge-pill">'. $encounter_specialties .'</span>';
             }
 
-            $encounter_spec = implode(' ', $encounter_specialty);
+            $group_id = $this->db->get_where('users_groups', array('user_id' => $encounter->created_user_id))->row()->group_id;
+            $group_name = $this->db->get_where('groups', array('id' => $group_id))->row()->name;
+            if ($group_name === 'Doctor') {
+                $encounter_spec = implode(' ', $encounter_specialty);
+            } else {
+                $encounter_spec = ucfirst($group_name);
+            }
             
             
             if (!empty($encounter_appointment)) {
@@ -2275,9 +2283,9 @@ class Patient extends MX_Controller {
                                                     </div>
                                                     <div class="timelineleft-footer border-top bg-light">
                                                         <div class="d-flex align-items-center mt-auto">
-                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $encounter_doctor_details->img_url .')"></div>
+                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $encounter_doctor_profile_image .')"></div>
                                                             <div>
-                                                                <p class="font-weight-semibold mb-1">'. $encounter_doctor .'</p>
+                                                                <p class="font-weight-semibold mb-1">'. $encounter_doctor_profile_name .'</p>
                                                                 <small class="d-block text-muted">' . $encounter_spec . '</small>
                                                             </div>
                                                             <div class="ml-auto mr-3 text-right">
@@ -2312,6 +2320,38 @@ class Patient extends MX_Controller {
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('medical_historyv2', $data);
         // $this->load->view('home/footer'); // just the footer file
+    }
+
+    function getPatientProfileImageByIonUserId($ion) {
+        $group_id = $this->db->get_where('users_groups', array('user_id' => $ion))->row()->group_id;
+        $group_name = $this->db->get_where('groups', array('id' => $group_id))->row()->name;
+        $group_name = strtolower($group_name);
+        $user = $this->db->get_where($group_name, array('ion_user_id' => $ion))->row();
+        $this->hospital_id = $user->hospital_id;
+        $this->timezone = $this->db->get_where('settings', array('hospital_id' => $this->hospital_id))->row()->timezone;
+        if (empty($user->img_url)) {
+            $profile_img_url = 'public/assets/images/users/placeholder.jpg';
+        } else {
+            $profile_img_url = $user->img_url;
+        }
+
+        return $profile_img_url;
+    }
+
+    function getPatientProfileNameByIonUserId($ion) {
+        $group_id = $this->db->get_where('users_groups', array('user_id' => $ion))->row()->group_id;
+        $group_name = $this->db->get_where('groups', array('id' => $group_id))->row()->name;
+        $group_name = strtolower($group_name);
+        $user = $this->db->get_where($group_name, array('ion_user_id' => $ion))->row();
+        $this->hospital_id = $user->hospital_id;
+        $this->timezone = $this->db->get_where('settings', array('hospital_id' => $this->hospital_id))->row()->timezone;
+        if (empty($user->name)) {
+            $profile_img_url = 'public/assets/images/users/placeholder.jpg';
+        } else {
+            $profile_img_url = $user->name;
+        }
+
+        return $profile_img_url;
     }
     
     function getUploaderImage($uploader_acc_type, $user_id) {
