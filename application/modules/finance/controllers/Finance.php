@@ -64,19 +64,11 @@ class Finance extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
             redirect('home/permission');
         }
-
         $data = array();
-        if (!empty($this->input->get('id'))) {
-            $id = $this->input->get('id');
-            $data['id'] = $id;
-        }
-        if (!empty($this->input->get('encounter_id'))) {
-            $encounter_id = $this->input->get('encounter_id');
-        }
-        if (!empty($this->input->get('patient_id'))) {
-            $data['patient_id'] = $this->input->get('patient_id');
-        }
-        
+        $id = $this->input->get('id');
+        $data['id'] = $id;
+        $encounter_id = $this->input->get('encounter_id');
+        $data['patient_id'] = $this->input->get('patient_id');
         $data['staffs'] = $this->encounter_model->getUser();
         if (!empty($encounter_id)) {
             $data['encounter_id'] = $encounter_id;
