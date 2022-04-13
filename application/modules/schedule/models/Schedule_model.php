@@ -99,15 +99,15 @@ class Schedule_model extends CI_model {
 
     function getAvailableSlotByDoctorByDate($date, $doctor, $location) {
         //$newDate = date("m-d-Y", strtotime($date));
-        $weekday = strftime("%A", $date);
+        $weekday = strftime("%A", (int)$date);
 
-        $this->db->where('date', $date);
+        $this->db->where('date', (int)$date);
         $this->db->where('doctor', $doctor);
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $holiday = $this->db->get('holidays')->result();
 
         if (empty($holiday)) {
-            $this->db->where('date', $date);
+            $this->db->where('date', (int)$date);
             $this->db->where('doctor', $doctor);
             $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
             $query = $this->db->get('appointment')->result();
@@ -187,6 +187,7 @@ class Schedule_model extends CI_model {
 
     function getAvailableSlotByDoctorByDateByAppointmentId($date, $doctor, $appointment_id) {
         //$newDate = date("m-d-Y", strtotime($date));
+        $date = (int)$date;
         $weekday = strftime("%A", $date);
 
         $this->db->where('date', $date);
