@@ -218,7 +218,7 @@ class Accountant extends MX_Controller {
         $id = $this->input->get('id');
         $user_data = $this->db->get_where('accountant', array('id' => $id))->row();
         $path = $user_data->img_url;
-        chmod($oldPicture, 0644);
+
         if (!empty($path)) {
             unlink($path);
         }
