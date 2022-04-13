@@ -576,6 +576,7 @@ $lang['message'] = 'Message';
 $lang['single_patient'] = 'Single Patient';
 $lang['select_patient'] = 'Search Patient Name';
 $lang['select_user'] = 'Search User';
+$lang['select_specialty'] = 'Select Specialty';
 $lang['staff'] = 'Staff';
 $lang['select_staff'] = 'Select Staff';
 $lang['sms'] = 'SMS';
