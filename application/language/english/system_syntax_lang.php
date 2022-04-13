@@ -575,6 +575,7 @@ $lang['select_blood_group'] = 'Select Blood Group';
 $lang['message'] = 'Message';
 $lang['single_patient'] = 'Single Patient';
 $lang['select_patient'] = 'Search Patient Name';
+$lang['select_user'] = 'Search User';
 $lang['staff'] = 'Staff';
 $lang['select_staff'] = 'Select Staff';
 $lang['sms'] = 'SMS';
