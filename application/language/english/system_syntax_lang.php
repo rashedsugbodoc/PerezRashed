@@ -1107,6 +1107,7 @@ $lang['select_encounter_type'] = 'Select Encounter Type';
 $lang['rendering_doctor'] = 'Rendering Doctor';
 $lang['rendering'] = 'Rendering';
 $lang['reason_for_visit_consultation'] = 'Reason for visit/consultation';
+$lang['enter'] = 'Enter';
 $lang['reason'] = 'Reason for visit/admission';
 $lang['mg_dl'] = 'mg/dL';
 $lang['mmol'] = 'mmol';
