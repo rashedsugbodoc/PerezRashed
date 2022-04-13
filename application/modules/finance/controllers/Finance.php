@@ -66,10 +66,17 @@ class Finance extends MX_Controller {
         }
 
         $data = array();
-        $id = $this->input->get('id');
-        $encounter_id = $this->input->get('encounter_id');
-        $data['patient_id'] = $this->input->get('patient_id');
-        $data['id'] = $id;
+        if (!empty($this->input->get('id'))) {
+            $id = $this->input->get('id');
+            $data['id'] = $id;
+        }
+        if (!empty($this->input->get('encounter_id'))) {
+            $encounter_id = $this->input->get('encounter_id');
+        }
+        if (!empty($this->input->get('patient_id'))) {
+            $data['patient_id'] = $this->input->get('patient_id');
+        }
+        
         $data['staffs'] = $this->encounter_model->getUser();
         if (!empty($encounter_id)) {
             $data['encounter_id'] = $encounter_id;
@@ -78,6 +85,7 @@ class Finance extends MX_Controller {
             $data['doctorr'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
             $data['patientt'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         }
+        
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
