@@ -415,6 +415,7 @@ $lang['ot_payments'] = 'OR Payments';
 $lang['add_ot_payment'] = 'Add OR Payment';
 $lang['activities_by'] = 'Activities By';
 $lang['all_users'] = 'All Users';
+$lang['users'] = 'Users';
 $lang['deposited_amount'] = 'Deposited Amount';
 $lang['payment_received'] = 'Payment Received';
 $lang['payment_history'] = 'Payment History';
