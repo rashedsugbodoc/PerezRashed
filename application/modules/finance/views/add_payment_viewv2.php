@@ -54,8 +54,6 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
                                                                 <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?>>
-                                                                    <!-- <option disabled>Search Patient</option>
-                                                                    <option value="add_new"><?php echo lang('add_new') ?></option> -->
                                                                     <?php if (!empty($payment)) { ?>
                                                                         <?php foreach($patients as $patient) { ?>
                                                                             <?php if ($patient->id === $payment->patient) { ?>
@@ -161,8 +159,6 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
                                                                 <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter->doctor)) { echo "disabled"; } ?>>
-                                                                    <!-- <option selected disabled>Search Doctor</option>
-                                                                    <option value="add_new"><?php echo lang('add_new') ?></option> -->
                                                                     <?php if (!empty($payment)) { ?>
                                                                         <?php foreach($doctors as $doctor) { ?>
                                                                             <?php if ($doctor->id === $payment->doctor) { ?>
@@ -389,36 +385,36 @@
                                                             ?>">
                                                         </div>
                                                         <!-- <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('completion_status');?></label>
-                                                            <select class="form-control select2-show-search" name="completion_status" value='<?php
+                                                            <label class="form-label"><?php /* echo lang('completion_status'); */?></label>
+                                                            <select class="form-control select2-show-search" name="completion_status" value='<?php /*
                                                             if (!empty($payment->completion_status)) {
                                                                 echo $payment->completion_status;
-                                                            }
+                                                            } */
                                                             ?>'>
-                                                                <option value="in progress" <?php
+                                                                <option value="in progress" <?php /*
                                                                         if (!empty($payment->completion_status)) {
                                                                             if ($payment->completion_status == 'in progress') {
                                                                             echo 'selected';
                                                                             }
-                                                                        }
+                                                                        } */
                                                                         ?>
-                                                                > <?php echo lang('in_progress'); ?> </option>
-                                                                <option value="completed" <?php
+                                                                > <?php /* echo lang('in_progress'); */ ?> </option>
+                                                                <option value="completed" <?php /*
                                                                         if (!empty($payment->completion_status)) {
                                                                             if ($payment->completion_status == 'completed') {
                                                                             echo 'selected';
                                                                             }
-                                                                        }
+                                                                        } */
                                                                         ?>
-                                                                > <?php echo lang('completed'); ?> </option>
-                                                                <option value="cancelled" <?php
+                                                                > <?php /* echo lang('completed'); */ ?> </option>
+                                                                <option value="cancelled" <?php /*
                                                                         if (!empty($payment->completion_status)) {
                                                                             if ($payment->completion_status == 'cancelled') {
                                                                             echo 'selected';
                                                                             }
-                                                                        }
+                                                                        } */
                                                                         ?>
-                                                                > <?php echo lang('cancelled'); ?> </option>                                        
+                                                                > <?php /* echo lang('cancelled'); */ ?> </option>                                        
                                                             </select>
                                                         </div> -->
                                                         <div class="form-group">
@@ -435,7 +431,7 @@
                                                             <select class="form-control m-bot15 js-example-basic-single selecttype" id="selecttype" name="deposit_type" value=''> 
                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) { ?>
                                                                     <option value="Cash"> <?php echo lang('cash'); ?> </option>
-                                                                    <!-- <option value="Card"> <?php echo lang('card'); ?> </option> -->
+                                                                    <!-- <option value="Card"> <?php /*echo lang('card');*/ ?> </option> -->
                                                                 <?php } ?>
                                                             </select>
                                                             
@@ -535,19 +531,19 @@
                                                                 <?php
                                                                 if (!empty($payment)) {
                                                                 ?>
-                                                                    <!-- <tr class="">
+                                                                    <tr class="">
                                                                         <td>1</td>
-                                                                        <td><?php echo date('d/m/Y - h:i A', $payment->date);?> </td>
-                                                                        <td><?php echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
-                                                                        <td><?php echo $payment->deposit_type;?></td>
+                                                                        <td><?php //echo date('d/m/Y - h:i A', $payment->date);?> </td>
+                                                                        <td><?php //echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
+                                                                        <td><?php //echo $payment->deposit_type;?></td>
                                                                         <td>
-                                                                            <input type="text" class="form-control amount_received" name="amount_received" id="amount_received" value='<?php if (!empty($payment->amount_received)) { echo $payment->amount_received; } ?>' <?php
-                                                                            if ($payment->deposit_type == 'Card') {
+                                                                            <input type="text" class="form-control amount_received" name="amount_received" id="amount_received" value='<?php //if (!empty($payment->amount_received)) { echo $payment->amount_received; } ?>' <?php
+                                                                            /*if ($payment->deposit_type == 'Card') {
                                                                                 echo 'readonly';
-                                                                            }
+                                                                            }*/
                                                                             ?>>
                                                                         </td>
-                                                                    </tr> -->
+                                                                    </tr>
                                                                     <?php
                                                                     $deposits = $this->finance_model->getDepositByPaymentId($payment->id);
                                                                     $i = 0;
