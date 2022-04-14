@@ -112,18 +112,7 @@
                                                         ?>">
                                                     </div>
                                                 </div>
-                                                <!-- <?php if (empty($encounter_id)) { ?>
-                                                    <div class="col-md-6 col-sm-12">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('patient') ?></label>
-                                                            <select class="select2-show-search form-control" id="patient" name="patient">
-                                                                <?php foreach ($patients as $patient) { ?>
-                                                                    <option value="<?php echo $patient->id ?>"><?php echo $patient->firstname.' '.$patient->lastname ?></option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                <?php } ?> -->
+                                                
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
@@ -178,7 +167,7 @@
                                                 <div class="col-md-10 col-sm-12 labrequest_block">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('select') . ' ' . lang('lab') . ' ' . lang('test') ?></label>
-                                                        <!-- <?php if (empty($labrequest->lab_loinc_id)) { ?>
+                                                        <?php /*if (empty($labrequest->lab_loinc_id)) { ?>
                                                             <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="">
 
                                                             </select>
@@ -190,7 +179,7 @@
                                                                     </option>
                                                                 <?php } ?>
                                                             </select>
-                                                        <?php } ?> -->
+                                                        <?php }*/ ?>
 
                                                         <?php if (empty($labrequests)) { ?>
                                                             <select class="select2-show-search form-control labrequest" name="labrequestInput" id="labrequest" value="">
@@ -223,44 +212,14 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('lab') . ' ' . lang('request'); ?></label>
                                                         <div class="labreq">
-                                                            <!-- <?php foreach($labrequests as $labrequest) { ?>
-                                                                <?php if (empty($labrequest->lab_loinc_id)) { ?>
-                                                                    <?php $i += 1; ?>
-                                                                    <section class="labreq_selected remove<?php echo $i; ?>" id="labreq_selected_section-<?php $labrequest->lab_loinc_id ?>">
-                                                                        <div class="row">
-                                                                            <div class="col-sm-1">
-                                                                                <button class="btn btn-danger" onclick="removeElem(<?php echo $i; ?>)" type="button"><i class="fe fe-trash"></i></button>
-                                                                            </div>
-                                                                            <div class="col-sm-11">
-                                                                                <div class="form-group labrequest_sect">
-                                                                                    <div class="row">
-                                                                                        <div class="col-sm-12">
-                                                                                            <div class="form-group">
-                                                                                                <input type="text" hidden name="labrequest_id[]" value="<?php echo $labrequest->id; ?>">
-                                                                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" value="<?php echo $labrequest->lab_request_text ?>" required>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="row">
-                                                                                        <div class="col-sm-12">
-                                                                                            <div class="form-group">
-                                                                                                <input type="text" name="dataholder[]" class="form-control" value="<?php echo $i; ?>">
-                                                                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="<?php echo $labrequest->instructions ?>"></div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        <div>
-                                                                    </section>
-                                                                <?php } ?>
-                                                            <?php } ?> -->
+                                                        <?php if (!empty($labrequests)) { ?>    
                                                             <?php foreach($labrequests as $labrequest) { ?>
                                                                 <?php if(empty($labrequest->loinc_num)) { ?>
                                                                     <?php $i += 1; ?>
                                                                     <input type="text" hidden name="manual_item[]" class="manual_item" value="<?php echo $labrequest->id.'*'.$labrequest->lab_request_text.'*'.$labrequest->instructions.'*'.$i; ?>">
                                                                 <?php } ?>
                                                             <?php } ?>
+                                                        <?php } ?>
                                                         </div>
                                                     </div>
                                                 </div>
