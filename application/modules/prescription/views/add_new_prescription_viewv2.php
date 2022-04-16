@@ -55,7 +55,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                <input type="text" class="form-control fc-datepicker" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php
+                                                <input type="text" class="form-control flatpickr" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php
                                                     if (!empty($setval)) {
                                                         echo set_value('date');
                                                     }
@@ -319,7 +319,27 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            flatpickr(".flatpickr", {
+                disable: [maxdate],
+                maxDate: maxdate,
+                altInput: true,
+                altFormat: "F j, Y h:i K",
+                dateFormat: "Y-m-d h:i K",
+                disableMobile: "true",
+                enableTime: true,
+                defaultDate: timenow,
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
