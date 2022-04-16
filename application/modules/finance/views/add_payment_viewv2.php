@@ -492,9 +492,7 @@
                                                             </button>
                                                         </div>
                                                         <div class="form-group cardsubmit col-md-12" hidden>
-                                                            <button type="submit" name="pay_now" id="submit-btn" class="btn btn-primary row pull-right" <?php if ($settings->payment_gateway == 'Stripe') {
-                                                                ?>onClick="stripePay(event);"<?php }
-                                                                ?>> <?php echo lang('submit'); ?>
+                                                            <button type="submit" name="pay_now" id="submit-btn" class="btn btn-primary row pull-right"> <?php echo lang('submit'); ?>
                                                             </button>
                                                         </div>
                                                     </div>
@@ -1296,7 +1294,7 @@
             return valid;
         }
     //set your publishable key
-        Stripe.setPublishableKey("<?php echo $gateway->publish; ?>");
+        Stripe.setPublishableKey("publish_key");
 
     //callback to handle the response from stripe
         function stripeResponseHandler(status, response) {
