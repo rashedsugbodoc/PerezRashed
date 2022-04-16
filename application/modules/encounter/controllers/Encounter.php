@@ -281,7 +281,7 @@ class Encounter extends MX_Controller {
                     }
                 }
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                        $option12 = '<a class="patientbutton dropdown-item bg-info text-light" href="patient/medicalHistory?id=' . $encounter->patient_id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-eye"></i>  '. lang('view') .' ' .lang('patient') .' '. lang('history') . '</a>';
+                        $option12 = '<a class="patientbutton dropdown-item bg-info text-light" href="patient/medicalHistory?id=' . $encounter->patient_id . '&encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-eye"></i>  '. lang('view') .' ' .lang('patient') .' '. lang('history') . '</a>';
                 }
                 $option6 = '<div class="dropdown">
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
