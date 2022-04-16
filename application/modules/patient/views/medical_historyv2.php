@@ -1147,8 +1147,8 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('date'); ?> <?php echo lang('measured'); ?></label>
-                                                            <input class="form-control flatpickr" readonly name="datetime" placeholder="MM/DD/YYYY" type="text">
+                                                            <label class="form-label"><?php echo lang('date'); ?> <?php echo lang('measured'); ?> <span class="text-danger">*</span></label>
+                                                            <input class="form-control flatpickr" readonly name="datetime" placeholder="MM/DD/YYYY" type="text" required>
                                                         </div>
                                                     </div>
                                                     <!-- <div class="col-md-6 col-sm-12">
@@ -1538,7 +1538,7 @@
                                         <div class="modal-header">
                                             <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('document'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                         </div>
-                                        <form role="form" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="addDocumentForm" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <div class="row">
@@ -1551,7 +1551,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
-                                                            <input type="text" class="form-control" name="title" placeholder="<?=lang('title');?>">
+                                                            <input type="text" class="form-control" name="title" placeholder="<?=lang('title');?>" required maxlength="100">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1559,7 +1559,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('description'); ?> <span class="text-red">*</span></label>
-                                                            <textarea class="form-control" id="documentDescription" name="description" placeholder="<?=lang('description');?>" rows="2"></textarea>
+                                                            <textarea class="form-control" id="documentDescription" name="description" placeholder="<?=lang('description');?>" rows="2" required maxlength="300"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1567,7 +1567,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search" name="category" id="category" data-placeholder="<?=lang('select').' '.lang('category');?>">
+                                                            <select class="form-control select2-show-search" name="category" id="category" data-placeholder="<?=lang('select').' '.lang('category');?>" required>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1577,7 +1577,7 @@
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
                                                             <span class="text-muted">(<?php echo lang('upload_less_than_10MB_image_or_pdf');?>)</span>
-                                                            <input type="file" name="img_url" id="document" class="dropify"/>
+                                                            <input type="file" name="img_url" id="document" class="dropify" required />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1612,7 +1612,7 @@
                                         <div class="modal-header">
                                             <h6 class="modal-title"><?php echo lang('add_case'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                         </div>
-                                        <form role="form" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();">
+                                        <form role="form" id="addFormsForm" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();">
                                             <div class="modal-body">
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <div class="row">
@@ -1625,22 +1625,22 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                            <input class="form-control flatpickr" readonly name="date" placeholder="MM/DD/YYYY" type="text">
+                                                            <input class="form-control flatpickr" readonly name="date" placeholder="MM/DD/YYYY" type="text" required>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></label>
-                                                            <input type="text" class="form-control" name="title" placeholder="Name">
+                                                            <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?> <span class="text-red">*</span></label>
+                                                            <input type="text" class="form-control" name="title" placeholder="Name" required maxlength="1000">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?></label>
+                                                            <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?> <span class="text-red">*</span></label>
                                                             <div class="ql-wrapper ql-wrapper-demo bg-light">
                                                                 <div id="quillEditor" class="bg-white quillEditor">
                                                                 </div>
@@ -1651,7 +1651,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <textarea id="description" name="description" readonly="" hidden="" class="form-control" rows="4"></textarea>
+                                                            <textarea id="description" name="description" readonly="" hidden="" class="form-control" rows="4" required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1690,34 +1690,27 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                            <input class="form-control fc-datepicker" readonly name="date" placeholder="MM/DD/YYYY" type="text">
+                                                            <input class="form-control fc-datepicker" readonly name="date" placeholder="MM/DD/YYYY" type="text" required>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></label>
-                                                            <input type="text" name="title" class="form-control" placeholder="Name">
+                                                            <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?> <span class="text-red">*</span></label>
+                                                            <input type="text" name="title" class="form-control" placeholder="Name" required>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?></label>
+                                                            <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?> <span class="text-red">*</span></label>
                                                             <div class="ql-wrapper ql-wrapper-demo bg-light">
                                                                 <div id="quillEditor2" class="bg-white">
                                                                     
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="form-group">
-                                                            <textarea id="description2" name="description" readonly="" class="form-control" rows="4"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1727,7 +1720,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <textarea id="description2" name="description" hidden="" readonly="" class="form-control" rows="4"></textarea>
+                                                            <textarea id="description2" name="description" hidden="" readonly="" class="form-control" required rows="4"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1761,13 +1754,13 @@
                                         <div class="modal-header">
                                             <h6 class="modal-title"><?php echo lang('add_appointment'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                         </div>
-                                        <form role="form" action="appointment/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="addAppointmentForm" action="appointment/addNew" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-sm-12 col-md-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('patient'); ?><span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one">
+                                                            <label class="form-label"> <?php echo lang('patient'); ?> <span class="text-red">*</span></label>
+                                                            <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" required>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -1833,8 +1826,8 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('doctor'); ?><span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search" name="doctor" id="adoctors" data-placeholder="Choose one">
+                                                            <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
+                                                            <select class="form-control select2-show-search" name="doctor" id="adoctors" data-placeholder="Choose one" required>
                                                                 
                                                             </select>
                                                         </div>
@@ -1843,7 +1836,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('service_type'); ?></label>
+                                                            <label class="form-label"><?php echo lang('service_type'); ?> <span class="text-red">*</span></label>
                                                             <select class="form-control select2-show-search service_cat" name="service_category_group" id="service_select" data-placeholder="Choose one (with searchbox)"  required="">
                                                                 
                                                             </select>
@@ -1853,7 +1846,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('service'); ?></label>
+                                                            <label class="form-label"> <?php echo lang('service'); ?> <span class="text-red">*</span></label>
                                                             <select class="form-control select2-show-search sub_service" id="sub_service" name="service" data-placeholder="Choose one (with searchbox)"  required="">
                                                                 
                                                             </select>
@@ -1863,7 +1856,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group branch_select">
-                                                            <label class="form-label"> <?php echo lang('location'); ?></label>
+                                                            <label class="form-label"> <?php echo lang('location'); ?> <span class="text-red">*</span></label>
                                                             <select class="form-control select2-show-search branch" name="branch" id="branch_select" data-placeholder="Choose one (with searchbox)">
                                                                 <option selected value="">Choose One</option>
                                                             </select>
@@ -1874,13 +1867,13 @@
                                                     <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"> <?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" name="date" readonly>
+                                                        <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" name="date" readonly required>
                                                     </div>
                                                     </div>
                                                     <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Available Slot <span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search aslot" name="time_slot" id="aslots" data-placeholder="Choose one">
+                                                            <select class="form-control select2-show-search aslot" name="time_slot" id="aslots" data-placeholder="Choose one" required>
                                                                 
                                                             </select>
                                                         </div>
@@ -1889,8 +1882,8 @@
                                                 <div class="row">
                                                     <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('appointment'); ?> <?php echo lang('status'); ?><span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search" name="status" data-placeholder="Choose one">
+                                                            <label class="form-label"><?php echo lang('appointment'); ?> <?php echo lang('status'); ?> <span class="text-red">*</span></label>
+                                                            <select class="form-control select2-show-search" name="status" data-placeholder="Choose one" required>
                                                                 <option value="Pending Confirmation" <?php
                                                                     ?> > <?php echo lang('pending_confirmation'); ?> </option>
                                                                 <option value="Confirmed" <?php
@@ -1903,7 +1896,7 @@
                                                     <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label"> <?php echo lang('complaint'); ?> <span class="text-red">*</span></label>
-                                                            <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" rows="3" maxlength="500"></textarea>
+                                                            <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" rows="3" maxlength="500" required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1946,7 +1939,7 @@
                                                     <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label"> <?php echo lang('patient'); ?><span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search pos_select patient" name="patient" id="pos_select" data-placeholder="Choose One">
+                                                            <select class="form-control select2-show-search pos_select patient" name="patient" id="pos_select" data-placeholder="Choose One" required>
                                                                 
                                                             </select>
                                                         </div>
@@ -1954,7 +1947,7 @@
                                                     <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">  <?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search doctor" id="adoctors1" name="doctor" data-placeholder="Choose One">
+                                                            <select class="form-control select2-show-search doctor" id="adoctors1" name="doctor" data-placeholder="Choose One" required>
                                                                 
                                                             </select>
                                                         </div>
@@ -1963,8 +1956,8 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('service_type'); ?></label>
-                                                            <select class="form-control select2-show-search service_cat1" name="service_category_group" id="service_select1" data-placeholder="Choose one (with searchbox)"  required="">
+                                                            <label class="form-label"><?php echo lang('service_type'); ?> <span class="text-red">*</span></label>
+                                                            <select class="form-control select2-show-search service_cat1" name="service_category_group" id="service_select1" data-placeholder="Choose one (with searchbox)"  required>
                                                                 
                                                             </select>
                                                         </div>
@@ -1973,8 +1966,8 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('service'); ?></label>
-                                                            <select class="form-control select2-show-search sub_service1" id="sub_service1" name="service" data-placeholder="Choose one (with searchbox)"  required="">
+                                                            <label class="form-label"> <?php echo lang('service'); ?> <span class="text-red">*</span></label>
+                                                            <select class="form-control select2-show-search sub_service1" id="sub_service1" name="service" data-placeholder="Choose one (with searchbox)"  required>
                                                                 
                                                             </select>
                                                         </div>
@@ -1983,7 +1976,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group branch_select1">
-                                                            <label class="form-label"> <?php echo lang('location'); ?></label>
+                                                            <label class="form-label"> <?php echo lang('location'); ?> <span class="text-red">*</span></label>
                                                             <select class="form-control select2-show-search branch1" name="branch" id="branch_select1" data-placeholder="Choose one (with searchbox)">
                                                                 <option selected value="">Choose One</option>
                                                             </select>
@@ -1994,13 +1987,13 @@
                                                     <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"> <?php echo lang('date'); ?><span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" name="date" id="date1" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                        <input class="form-control fc-datepicker" name="date" id="date1" placeholder="MM/DD/YYYY" type="text" readonly required>
                                                     </div>
                                                     </div>
                                                     <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label">Available Slot <span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search" name="time_slot" id="aslots1">
+                                                            <select class="form-control select2-show-search" name="time_slot" id="aslots1" required>
                                                                 
                                                             </select>
                                                         </div>
@@ -2009,8 +2002,8 @@
                                                 <div class="row">
                                                     <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
-                                                            <label class="form-label"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?><span class="text-red">*</span></label>
-                                                            <select class="form-control select2-show-search" name="status" data-placeholder="Choose one">
+                                                            <label class="form-label"> <?php echo lang('appointment'); ?> <?php echo lang('status'); ?> <span class="text-red">*</span></label>
+                                                            <select class="form-control select2-show-search" name="status" data-placeholder="Choose one" required>
                                                                 <option value="Pending Confirmation" <?php
                                                                     ?> > <?php echo lang('pending_confirmation'); ?> </option>
                                                                 <option value="Confirmed" <?php
@@ -2027,17 +2020,17 @@
                                                     <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('complaint'); ?> <span class="text-red">*</span></label>
-                                                            <textarea class="form-control mb-4" name="remarks" placeholder="Purpose" rows="3" maxlength="500"></textarea>
+                                                            <textarea class="form-control mb-4" name="remarks" placeholder="Purpose" rows="3" maxlength="500" required></textarea>
                                                         </div>
                                                     </div>
                                                     <input type="hidden" name="id" id="appointment_id" value=''>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
-                                                        <label class="custom-control custom-checkbox">
+                                                        <!-- <label class="custom-control custom-checkbox">
                                                             <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
                                                             <span class="custom-control-label">Send SMS</span>
-                                                        </label>
+                                                        </label> -->
                                                     </div>
                                                     <div class="col-md-6 col-sm-12">
                                                         <button class="btn btn-primary pull-right" name="EditAppointment" type="submit"><?php echo lang('submit'); ?></button>
@@ -2062,16 +2055,56 @@
                                             <div class="modal-body">
                                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                                     <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
+                                                        <div class="col-md-6 col-sm-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('name'); ?> <span class="text-red">*</span></label>
-                                                                <input type="text" id="exampleInputEmail1" class="form-control" name="name" placeholder="Name" maxlength="100">
+                                                                <label class="form-label"><?php echo lang('first_name') ?></label>
+                                                                <input type="text" name="f_name" class="form-control" required maxlength="100">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('middle_name') ?></label>
+                                                                <input type="text" name="m_name" class="form-control" required maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('last_name') ?></label>
+                                                                <input type="text" name="l_name" class="form-control" required maxlength="100">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('suffix'); ?></label>
+                                                                <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix" required>
+                                                                    <option value="0" selected><?php echo lang('none'); ?></option>
+                                                                    <option value="Jr." <?php if ($patient->suffix ==='Jr.') { echo 'selected'; } if(set_value('suffix')=='Jr.') { echo 'selected';} ?>><?php echo lang('jr'); ?></option>
+                                                                    <option value="Sr." <?php if ($patient->suffix ==='Sr.') { echo 'selected'; } if(set_value('suffix')=='Sr.') { echo 'selected';} ?>><?php echo lang('sr'); ?></option>
+                                                                    <option value="I" <?php if ($patient->suffix ==='I') { echo 'selected'; } if(set_value('suffix')=='I') { echo 'selected';} ?>><?php echo lang('i'); ?></option>
+                                                                    <option value="II" <?php if ($patient->suffix ==='II') { echo 'selected'; } if(set_value('suffix')=='II') { echo 'selected';} ?>><?php echo lang('ii'); ?></option>
+                                                                    <option value="III" <?php if ($patient->suffix ==='III') { echo 'selected'; } if(set_value('suffix')=='III') { echo 'selected';} ?>><?php echo lang('iii'); ?></option>
+                                                                    <option value="IV" <?php if ($patient->suffix ==='IV') { echo 'selected'; } if(set_value('suffix')=='IV') { echo 'selected';} ?>><?php echo lang('iv'); ?></option>
+                                                                    <option value="V" <?php if ($patient->suffix ==='V') { echo 'selected'; } if(set_value('suffix')=='V') { echo 'selected';} ?>><?php echo lang('v'); ?></option>
+                                                                    <option value="VI" <?php if ($patient->suffix ==='VI') { echo 'selected'; } if(set_value('suffix')=='VI') { echo 'selected';} ?>><?php echo lang('vi'); ?></option>
+                                                                    <option value="VII" <?php if ($patient->suffix ==='VII') { echo 'selected'; } if(set_value('suffix')=='VII') { echo 'selected';} ?>><?php echo lang('vii'); ?></option>
+                                                                    <option value="VIII" <?php if ($patient->suffix ==='VIII') { echo 'selected'; } if(set_value('VIII')=='Jr') { echo 'selected';} ?>><?php echo lang('viii'); ?></option>
+                                                                    <option value="IX" <?php if ($patient->suffix ==='IX') { echo 'selected'; } if(set_value('suffix')=='IX') { echo 'selected';} ?>><?php echo lang('ix'); ?></option>
+                                                                    <option value="X" <?php if ($patient->suffix ==='X') { echo 'selected'; } if(set_value('suffix')=='X') { echo 'selected';} ?>><?php echo lang('x'); ?></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <!-- <div class="col-sm-6 col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('name'); ?> <span class="text-red">*</span></label>
+                                                                <input type="text" id="exampleInputEmail1" class="form-control" name="name" placeholder="Name" maxlength="100" required>
+                                                            </div>
+                                                        </div> -->
+                                                        <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label">Email<span class="text-red">*</span></label>
-                                                                <input type="email" class="form-control" name="email" placeholder="Email">
+                                                                <input type="email" class="form-control" name="email" placeholder="Email" maxlength="1000" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2085,7 +2118,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">Phone <span class="text-red">*</span></label>
-                                                                <input id="phone" name="phone" value="+63" type="tel" maxlength="20" class="form-control">
+                                                                <input id="phone" name="phone" value="+63" type="tel" maxlength="20" class="form-control" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2093,7 +2126,7 @@
                                                         <div class="col-sm-12 col-md-12">
                                                             <div class="form-group">
                                                                 <label class="form-label">Address <span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="address" placeholder="text">
+                                                                <input type="text" class="form-control" name="address" placeholder="text" required maxlength="100">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2101,7 +2134,7 @@
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" name="country_id" id="edit_country">
+                                                                <select class="form-control select2-show-search" name="country_id" id="edit_country" required>
                                                                     <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
                                                                     <?php foreach ($countries as $country) { ?>
                                                                         <option value="<?php echo $country->id; ?>" <?php
@@ -2152,7 +2185,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">Sex <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one">
+                                                                <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one" required>
                                                                     <option value="Male" <?php
                                                                     if (!empty($patient->sex)) {
                                                                         if ($patient->sex == 'Male') {
@@ -2180,7 +2213,7 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label">Birth Date <span class="text-red">*</span></label>
-                                                                <input class="form-control fc-datepicker" name="birthdate" placeholder="MM/DD/YYYY" type="text">
+                                                                <input class="form-control fc-datepicker" name="birthdate" placeholder="MM/DD/YYYY" type="text" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -2190,7 +2223,7 @@
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
                                                                         <label class="form-label">Blood Group <span class="text-red">*</span></label>
-                                                                        <select class="form-control select2-show-search" name="bloodgroup" data-placeholder="Choose one">
+                                                                        <select class="form-control select2-show-search" name="bloodgroup" data-placeholder="Choose one" required>
                                                                             <?php foreach ($groups as $group) { ?>
                                                                             <option value="<?php echo $group->group; ?>" <?php
                                                                             if (!empty($patient->bloodgroup)) {
@@ -2206,7 +2239,7 @@
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
                                                                         <label class="form-label">Doctor <span class="text-red">*</span></label>
-                                                                        <select class="form-control select2" id="doctorchoose" name="doctor[]" data-placeholder="Choose Doctor(s)" multiple="multiple">
+                                                                        <select class="form-control select2" id="doctorchoose" name="doctor[]" data-placeholder="Choose Doctor(s)" multiple="multiple" required>
                                                                             
                                                                         </select>
                                                                     </div>
@@ -2352,6 +2385,9 @@
         <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/country-select.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/utils.js'); ?>"></script>
 
+        <!--intlTelInput js-->
+        <script src="<?php echo base_url('common/assets/intl-tel-input/build/js/intlTelInput.js');?>"></script>
+
         <!--jquery transfer js-->
         <script src="<?php echo base_url('public/assets/plugins/jQuerytransfer/jquery.transfer.js'); ?>"></script>
 
@@ -2383,6 +2419,9 @@
         <!-- flatpickr js -->
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
 
     <!-- <script type="text/javascript">
@@ -2391,6 +2430,15 @@
             console.log(slider);
         });
     </script> -->
+
+    <script>
+        $('#addAppointmentForm').parsley();
+        $('#editAppointmentForm').parsley();
+        $('#addFormsForm').parsley();
+        $('#medical_historyEditForm').parsley();
+        $('#addDocumentForm').parsley();
+        $('#editPatientForm').parsley();
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -2411,7 +2459,7 @@
 
     <script type="text/javascript">
         $('.myrangeslider1').ionRangeSlider({
-            grid: true,
+            grid: false,
             min: 0,
             max: 10,
             from: 0,
@@ -3495,7 +3543,10 @@
                         // Populate the form fields with the data returned from server
 
                         $('#editPatientForm').find('[name="id"]').val(response.patient.id).end()
-                        $('#editPatientForm').find('[name="name"]').val(response.patient.name).end()
+                        $('#editPatientForm').find('[name="f_name"]').val(response.patient.firstname).end()
+                        $('#editPatientForm').find('[name="m_name"]').val(response.patient.middlename).end()
+                        $('#editPatientForm').find('[name="l_name"]').val(response.patient.lastname).end()
+                        $('#editPatientForm').find('[name="suffix"]').val(response.patient.suffix).change();
                         $('#editPatientForm').find('[name="password"]').val(response.patient.password).end()
                         $('#editPatientForm').find('[name="email"]').val(response.patient.email).end()
                         $('#editPatientForm').find('[name="address"]').val(response.patient.address).end()
