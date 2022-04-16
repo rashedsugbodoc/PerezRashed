@@ -65,7 +65,7 @@ class Labrequest extends MX_Controller {
 
         $nowtime = date('H:i:s');
         $reqdate = $this->input->post('date');
-        $datetime = $reqdate .' '. $nowtime;
+        $datetime = $reqdate;
         $request_date = gmdate('Y-m-d H:i:s', strtotime($datetime));
         $date = gmdate('Y-m-d H:i:s');
 
@@ -246,6 +246,7 @@ class Labrequest extends MX_Controller {
 
         $data['request_number'] = $this->input->get('id');
         $data['labrequests'] = $this->labrequest_model->getLabrequestByLabrequestNumber($data['request_number']);
+        $data['lab_request_date'] = $data['labrequests'][0]->request_date;
         if (!empty($data['labrequests'][0]->encounter_id)) {
             $data['encounter'] = $this->encounter_model->getEncounterById($data['labrequests'][0]->encounter_id);
             $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);

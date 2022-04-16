@@ -98,18 +98,13 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('lab') . '  ' . lang('request') . ' ' . lang('date') ?></label>
-                                                        <input type="text" class="form-control fc-datepicker" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php
-                                                        if (!empty($request_id)) {
-                                                            if (!empty($labrequest->request_date)) {
-                                                                echo date('m/d/Y', strtotime($labrequest->request_date.' UTC'));
-                                                            }
-                                                        }
-                                                        if (!empty($request_number)) {
-                                                            if (!empty($labrequests[0]->request_date)) {
-                                                                echo date('m/d/Y', strtotime($labrequests[0]->request_date.' UTC'));
-                                                            }
-                                                        }
-                                                        ?>">
+                                                        <?php if (empty($lab_request_date)) { ?>
+                                                            <input type="text" class="form-control flatpickr" readonly placeholder="MM/DD/YYYY" name="date">
+                                                        <?php } else { ?>
+                                                            <input type="text" class="form-control flatpickr" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php
+                                                                echo date('Y-m-d H:i', strtotime($lab_request_date.' UTC'));
+                                                            ?>">
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                                 
@@ -361,11 +356,39 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var date = $('#date').val();
+            console.log(date);
+            if (date === undefined) {
+                var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            } else {
+                var timenow = date;
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            }
+            flatpickr(".flatpickr", {
+                disable: [maxdate],
+                maxDate: maxdate,
+                altInput: true,
+                altFormat: "F j, Y h:i K",
+                dateFormat: "Y-m-d h:i K",
+                disableMobile: "true",
+                enableTime: true,
+                defaultDate: timenow,
+            });
+        });
+    </script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $('#tpBasic').timepicker('setTime', new Date());
-            $('.fc-datepicker').datepicker('setDate', new Date());
+            // $('.fc-datepicker').datepicker('setDate', new Date());
         });
     </script>
 
