@@ -140,6 +140,7 @@ class Form extends MX_Controller {
 
         $id = $this->input->get('id');
         $data['patient_id'] = $this->input->get('patient_id');
+        $data['encounter_id'] = $this->input->get('encounter_id');
 
         if (!empty($id)) {
             $data['form'] = $this->form_model->getFormById($id);
@@ -213,16 +214,17 @@ class Form extends MX_Controller {
 
         $doctor = $this->input->post('doctor');
         $date = $this->input->post('date');
-        if (!empty($date)) {
-            if(empty($id)) {
-                $time = date('H:i:s');
-                $date = $date .' '. $time;
-            }
-            $date = strtotime($date);
-            $date = gmdate('Y-m-d H:i:s', $date);
-        } else {
-            $date = time();
-        }
+        $date = gmdate('Y-m-d H:i:s', strtotime($date));
+        // if (!empty($date)) {
+        //     if(empty($id)) {
+        //         $time = date('H:i:s');
+        //         $date = $date .' '. $time;
+        //     }
+        //     $date = strtotime($date);
+        //     $date = gmdate('Y-m-d H:i:s', $date);
+        // } else {
+        //     $date = time();
+        // }
         $date_string = date('d-m-y', $date);
         $discount = $this->input->post('discount');
         $amount_received = $this->input->post('amount_received');

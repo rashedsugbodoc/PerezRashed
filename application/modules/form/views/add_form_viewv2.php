@@ -52,6 +52,13 @@
                                                     <?php echo validation_errors(); ?>
                                                 </div>
                                             </div>
+                                            <?php if (!empty($encounter_id)) { ?>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
@@ -576,13 +583,17 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             flatpickr(".flatpickr", {
-                maxDate: "today",
-                defaultDate: "today",
+                disable: [maxdate],
+                maxDate: maxdate,
                 altInput: true,
-                altFormat: "F j, Y",
-                dateFormat: "Y-m-d",
-                disableMobile: "true"
+                altFormat: "F j, Y h:i K",
+                dateFormat: "Y-m-d h:i K",
+                disableMobile: "true",
+                enableTime: true,
+                defaultDate: timenow,
             });
         });
     </script>
