@@ -117,7 +117,18 @@
                         <?php } else { ?>
 
                         <!--/app header-->
-                        <div class="main-proifle mt-5 d-print-none">
+                        <div class="row mt-5">
+                            <div class="col-md-12 col-sm-12">
+                                <?php if (!empty($encounter_id)) { ?>
+                                    <div class="card bg-primary">
+                                        <div class="card-body text-white">
+                                            <span class="font-weight-bold"><?php echo lang('encounter')?></span><?php echo ' '.$encounter_details->encounter_number; ?><span class="font-weight-bold"><?php echo ' '.lang('for').' '.lang('patient').': ' ?></span><?php echo $patient->name ?> <span class="font-weight-bold"><?php echo ' '.lang('started').': ' ?></span><?php echo date('F j, Y h:i A', strtotime($encounter_details->started_at.' UTC')); ?> <span class="font-weight-bold"><?php echo ' '.lang('ended').': ' ?></span><?php echo $encounter_details->ended_at?date('F j, Y h:i A', strtotime($encounter_details->ended_at.' UTC')):"not ended"; ?>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="main-proifle d-print-none">
                         <?php } ?>
                             <div class="row">
                                 <div class="col-lg-10 col-sm-12 col-md-12">
@@ -666,7 +677,7 @@
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?patient_id=<?php echo $patient->id ?>">
+                                                                    <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id ?>" target="_blank">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                                                     </a>
                                                                 </div>
@@ -768,7 +779,7 @@
                                                             <?php echo lang('lab').' '.lang('request')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id; ?>" class="btn btn-primary" target="_blank"><?php echo lang('add_new') ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -836,7 +847,7 @@
                                                             <?php echo lang('forms')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="form/addFormView?patient_id=<?php echo $patient->id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <a href="form/addFormView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id; ?>" class="btn btn-primary" target="_blank"><?php echo lang('add_new') ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -1117,6 +1128,22 @@
                                         </div>
                                         <form role="form" action="patient/addVitals" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                                <!-- Redirect Area Start -->
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                                <!-- Redirect Area End -->
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
@@ -1513,6 +1540,13 @@
                                         </div>
                                         <form role="form" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
@@ -1547,6 +1581,15 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!-- Redirect Area Start -->
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                                <!-- Redirect Area End -->
                                                 <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
@@ -1571,11 +1614,18 @@
                                         </div>
                                         <form role="form" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();">
                                             <div class="modal-body">
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                            <input class="form-control fc-datepicker" readonly name="date" placeholder="MM/DD/YYYY" type="text">
+                                                            <input class="form-control flatpickr" readonly name="date" placeholder="MM/DD/YYYY" type="text">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1606,6 +1656,15 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!-- Redirect Area Start -->
+                                            <?php if (!empty($encounter_id)) { ?>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                            <!-- Redirect Area End -->
                                             <input type="hidden" name="patient_id" value='<?php echo $patient->id; ?>'>
                                             <input type="hidden" name="id" value=''>
                                             <div class="modal-footer">
@@ -1848,6 +1907,15 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <!-- Redirect Area Start -->
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                                <!-- Redirect Area End -->
                                                 <div class="row">
                                                     <div class="col-md-6 col-sm-12">
                                                         <!-- <label class="custom-control custom-checkbox">
@@ -2326,14 +2394,17 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             flatpickr(".flatpickr", {
-                maxDate: "today",
+                disable: [maxdate],
+                maxDate: maxdate,
                 altInput: true,
                 altFormat: "F j, Y h:i K",
                 dateFormat: "Y-m-d h:i K",
                 disableMobile: "true",
                 enableTime: true,
-                defaultDate: "today",
+                defaultDate: timenow,
             });
         });
     </script>

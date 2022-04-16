@@ -1373,16 +1373,17 @@ class Patient extends MX_Controller {
         $patient_id = $this->input->post('patient_id');
 
         $date = $this->input->post('date');
+        $date = gmdate('Y-m-d H:i:s', strtotime($date));
 
         $title = $this->input->post('title');
 
-        if (!empty($date)) {
-            $nowtime = date('H:i:s');
-            $date = strtotime($date . ' ' . $nowtime);
-            $date = gmdate('Y-m-d H:i:s', $date);
-        } else {
-            $date = time();
-        }
+        // if (!empty($date)) {
+        //     $nowtime = date('H:i:s');
+        //     $date = strtotime($date . ' ' . $nowtime);
+        //     $date = gmdate('Y-m-d H:i:s', $date);
+        // } else {
+        //     $date = time();
+        // }
 
         $description = $this->input->post('description');
         $this->load->library('form_validation');
@@ -1484,6 +1485,8 @@ class Patient extends MX_Controller {
     function medicalHistory() {
         $data = array();
         $id = $this->input->get('id');
+        $data['encounter_id'] = $this->input->get('encounter_id');
+        $data['encounter_details'] = $this->encounter_model->getEncounterById($data['encounter_id']);
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             $patient_ion_id = $this->ion_auth->get_user_id();
