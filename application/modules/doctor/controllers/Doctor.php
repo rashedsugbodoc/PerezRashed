@@ -657,7 +657,7 @@ class Doctor extends MX_Controller {
             $specialties = [];
             foreach ($specializations as $specialization) {
                 $specialty_name = $this->specialty_model->getSpecialtyById($specialization);
-                $specialties[] = $specialty_name->display_name;
+                $specialties[] = $specialty_name->display_name_ph;
             }
 
             $specialty_names = implode('<br>', $specialties);
