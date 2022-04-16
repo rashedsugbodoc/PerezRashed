@@ -188,7 +188,8 @@
                                 <div class="col-lg-2 col-sm-12 col-md-12">
                                     <div class="mt-4 mt-lg-0">
                                         <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                            <button type="button" class="btn btn-primary btn-xs btn_width editPatient" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $patient->id; ?>"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></button> 
+                                            <!-- <button type="button" class="btn btn-primary btn-xs btn_width editPatient" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $patient->id; ?>"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></button>  -->
+                                            <a href="patient/editPatient?id=<?php echo $patient->id; ?>" class="btn btn-primary btn-xs btn_width" target="_blank"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a>
                                         <?php } ?>
                                     </div>
                                 </div>
