@@ -78,9 +78,11 @@
                                                                                                     $encounter = $this->encounter_model->getEncounterById($todays_appointment->encounter_id);
                                                                                                     $service_category_group = $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id);
                                                                                                     if (!empty($service_category_group->is_virtual)) {
-                                                                                                        ?>
-                                                                                                            <a title=" <?php echo lang('start_video_call'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('start_video_call'); ?></a>
-                                                                                                        <?php
+                                                                                                        if (empty($encounter->ended_at)) {
+                                                                                                            ?>
+                                                                                                                <a title=" <?php echo lang('start_video_call'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('start_video_call'); ?></a>
+                                                                                                            <?php
+                                                                                                        }
                                                                                                     }
                                                                                                     ?>
                                                                                         </div>
@@ -88,7 +90,7 @@
                                                                                                     <?php
                                                                                                     if (empty($encounter->ended_at)) {
                                                                                                         ?>
-                                                                                                            <a class="btn btn-danger btn-md btn-block endEncounter"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a>
+                                                                                                            <a class="btn btn-danger btn-md btn-block endEncounter" data-patient="<?php echo $this->patient_model->getPatientById($todays_appointment->patient)->name ?>"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a>
                                                                                                         <?php
                                                                                                     } else {
                                                                                                         ?>
@@ -980,9 +982,11 @@
         $(document).ready(function () {
             $("#editable-sample").on("click", ".endEncounter", function(){
                 var encounter_id = <?php echo $todays_appointment->encounter_id ?>;
+                var patient = $(this).data('patient');
+                console.log(patient);
                 swal({
                     title: "End Encounter?",
-                    text: "This will end encounter for Patient",
+                    text: "This will end encounter for " + patient,
                     showCancelButton: true,
                     confirmButtonText: 'End',
                     cancelButtonText: 'Cancel',
@@ -998,6 +1002,7 @@
                             // console.log(response.encounter_id);
                             $(".endEncounter").remove();
                             $(".endEncounterDiv").append('<a class="btn btn-light btn-md btn-block">Encounter has Ended</a>');
+                            location.reload(true);
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             swal("Error on Ending Encounter!", "Please try again", "error");
