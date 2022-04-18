@@ -164,6 +164,7 @@ class Appointment extends MX_Controller {
         $location = $this->input->post('branch');
         $appointment_registration = gmdate('Y-m-d H:i:s');
         $staff = $this->input->post('staff');
+        $encounter_id = $this->input->post('encounter_id');
 
         $virtual = $this->appointment_model->getServiceCategoryById($service_category_group)->is_virtual;
 
@@ -371,10 +372,42 @@ class Appointment extends MX_Controller {
                 'appointment_registration_time' => $appointment_registration,
                 'appointment_date' => $appointment_date,
                 'service_type' => $service_type,
+                // 'encounter_id' => $encounter_id,
             );
             $username = $this->input->post('name');
             if (empty($id)) {     // Adding New department
                 $this->appointment_model->insertAppointment($data);
+                // $inserted_id = $this->db->insert_id();
+                // $encounter_details = $this->encounter_model->getEncounterById($encounter_id);
+
+                // if (empty($encounter_details->appointment_id)) {
+                //     $data_appointment = array(
+                //         'appointment_id' => $inserted_id,
+                //     );
+                //     $this->encounter_model->updateEncounter($encounter_id, $data_appointment);
+                // } 
+                // else {
+                //     $date = gmdate('Y-m-d H:i:s');
+
+                //     $data_encounter = array(
+                //         'encounter_type_id' => $encounter_details->,
+                //         'patient_id' => $encounter_details->patient_id,
+                //         'doctor' => $encounter_details->doctor,
+                //         'rendering_staff_id' => $encounter_details->rendering_staff_id,
+                //         'rendering_staff_name' => $encounter_details->,
+                //         'referral_facility_id' => $encounter_details->,
+                //         'referral_facility_name' => $encounter_details->,
+                //         'referral_staff_id' => $encounter_details->,
+                //         'referral_staff_name' => $encounter_details->,
+                //         'started_at' => $date,
+                //         'waiting_started' => $date,
+                //         'created_at' => $date,
+                //         'created_user_id' => $user,
+                //         'encounter_status' => $encounter_details->,
+                //         'location_id' => $encounter_details->,
+                //         'reason' => $encounter_details->,
+                //     );
+                // }
 
                 /* if (!empty($sms)) {
                   $this->sms->sendSmsDuringAppointment($patient, $doctor, $date, $s_time, $e_time);
@@ -1246,6 +1279,7 @@ class Appointment extends MX_Controller {
         $data['branch'] = $this->branch_model->getBranchById($data['appointment']->location_id);
         $data['patient'] = $this->patient_model->getPatientById($data['appointment']->patient);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
+        $data['datetime'] = date('F j, Y h:i A' ,strtotime($data['appointment']->appointment_date.' UTC'));
         echo json_encode($data);
     }
 
