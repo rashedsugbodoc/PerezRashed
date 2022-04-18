@@ -34,8 +34,6 @@
                                     <?php } ?>
                                     <div class="flex-grow-2">
                                         <a href="" class="btn btn-info" target="_blank"><i class="fe fe-eye"></i><span class="button-text"> <?php echo lang('statement_of_account'); ?></span></a>
-                                        <!-- <button type="button" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></button> -->
-                                        <!--a href="prescription/editPrescription?id=<?php echo $prescription->id;?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></a-->
                                     </div>
                                     <div class="flex-grow-1 mr-3">
                                         <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
@@ -811,7 +809,7 @@
                 return valid;
             }
         //set your publishable key
-            Stripe.setPublishableKey("<?php echo $gateway->publish; ?>");
+            Stripe.setPublishableKey("<?php if(!empty($gateway->publish)) { echo $gateway->publish; } ?>");
 
         //callback to handle the response from stripe
             function stripeResponseHandler(status, response) {
