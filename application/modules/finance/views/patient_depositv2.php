@@ -65,7 +65,7 @@
                                                             </div>
                                                             <input class="form-control flatpickr date_from" readonly name="date_from" placeholder="<?php echo lang('date_from'); ?>" type="text" value="<?php
                                                             if (!empty($date_from)) {
-                                                                echo date('m/d/Y', $date_from.' UTC');
+                                                                echo date('m/d/Y', $date_from);
                                                             }
                                                             ?>">
                                                             <div class="input-group-prepend">
@@ -75,7 +75,7 @@
                                                             </div>
                                                             <input class="form-control flatpickr date_to" readonly name="date_to" placeholder="<?php echo lang('date_to'); ?>" type="text" value="<?php
                                                             if (!empty($date_to)) {
-                                                                echo date('m/d/Y', $date_to.' UTC');
+                                                                echo date('m/d/Y', $date_to);
                                                             }
                                                             ?>">
                                                             <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit'); ?></button>
@@ -596,6 +596,14 @@
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".flatpickr").flatpickr({
+
+                });
+            })
+        </script>
 
         <script type="text/javascript">
             $(document).ready(function () {
