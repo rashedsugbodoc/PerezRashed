@@ -188,7 +188,7 @@
                                                     <?php if (!empty($this->encounter_model->getEncounterById($appointment_details->encounter_id)->ended_at)) { ?>
                                                         <a class="btn btn-light btn-md btn-block"><?php echo lang('encounter'); ?> has <?php echo lang('ended'); ?></a>
                                                     <?php } else { ?>
-                                                        <a class="btn btn-danger btn-md btn-block endEncounter" id="endEncounter"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a>
+                                                        <a class="btn btn-danger btn-md btn-block endEncounter" data-patient="<?php echo $this->patient_model->getPatientById($appointment_details->patient)->name; ?>" id="endEncounter"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a>
                                                     <?php } ?>
                                                 </div>
                                             </div>
@@ -307,10 +307,10 @@
             $(document).ready(function () {
                 $("#endEncounter").on("click", function(e){
                     var encounter_id = <?php echo $appointment_details->encounter_id ?>;
+                    var patient = $(this).data('patient');
                     swal({
-                        title: "Notifiaction Styles",
-                        text: "New Notification from Dashtic",
-                        type: "warning",
+                        title: "End Encounter?",
+                        text: "This will end encounter for " + patient,
                         showCancelButton: true,
                         confirmButtonText: 'End',
                         cancelButtonText: 'Cancel',
