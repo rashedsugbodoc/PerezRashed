@@ -2382,7 +2382,7 @@ class Patient extends MX_Controller {
     function editMedicalHistoryByJason() {
         $id = $this->input->get('id');
         $data['medical_history'] = $this->patient_model->getMedicalHistoryById($id);
-        $data['date'] = date('m/d/Y' ,strtotime($data['medical_history']->case_date.' UTC'));
+        $data['datetime'] = date('F j, Y h:i A' ,strtotime($data['medical_history']->case_date.' UTC'));
         $data['patient'] = $this->patient_model->getPatientById($data['medical_history']->patient_id);
         echo json_encode($data);
     }
