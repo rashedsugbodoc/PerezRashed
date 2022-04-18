@@ -55,7 +55,7 @@ class Diagnosis extends MX_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>');
-        $this->form_validation->set_rules('diagnosisInput', 'Diagnosis', 'trim|required|min_length[1]|xss_clean');
+        // $this->form_validation->set_rules('diagnosisInput', 'Diagnosis', 'trim|required|min_length[1]|xss_clean');
         $this->form_validation->set_rules('date', 'Diagnosis Date', 'trim|required|min_length[1]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
