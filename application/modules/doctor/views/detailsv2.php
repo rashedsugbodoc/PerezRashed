@@ -981,9 +981,8 @@
             $("#editable-sample").on("click", ".endEncounter", function(){
                 var encounter_id = <?php echo $todays_appointment->encounter_id ?>;
                 swal({
-                    title: "Notifiaction Styles",
-                    text: "New Notification from Dashtic",
-                    type: "warning",
+                    title: "End Encounter?",
+                    text: "This will end encounter for Patient",
                     showCancelButton: true,
                     confirmButtonText: 'End',
                     cancelButtonText: 'Cancel',
