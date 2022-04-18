@@ -19,6 +19,13 @@
                             </div>
                         </div>
                         <!--End Page header-->
+                        <?php if (empty($gateway)) {?>
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="alert alert-warning" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button><?php echo lang('warning_payment_gateway_not_set');?></div>
+                                </div>
+                            </div>
+                        <?php } ?>
                         <div class="row mb-5 mt-5 d-print-none" id="actionbuttons">
                             <div class="col-md-12 col-sm-12 col-lg-12">
                                 <div class="row page-rightheader ml-auto .d-block">
@@ -817,7 +824,7 @@
                 return valid;
             }
         //set your publishable key
-            Stripe.setPublishableKey("<?php if(!empty($gateway->publish)) { echo $gateway->publish; } ?>");
+            Stripe.setPublishableKey("<?php if(!empty($gateway)) { echo $gateway->publish; } else { echo 'publish_key'; } ?>");
 
         //callback to handle the response from stripe
             function stripeResponseHandler(status, response) {
