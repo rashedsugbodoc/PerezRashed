@@ -130,14 +130,28 @@
 
                         <!--/app header-->
                         <div class="row mt-5">
-                            <div class="col-md-12 col-sm-12">
+                            <div class="col-md-8 col-sm-12">
                                 <?php if (!empty($encounter_id)) { ?>
                                     <div class="card bg-primary">
-                                        <div class="card-body text-white">
-                                            <span class="font-weight-bold"><?php echo lang('encounter')?></span><?php echo ' '.$encounter_details->encounter_number; ?><span class="font-weight-bold"><?php echo ' '.lang('for').' '.lang('patient').': ' ?></span><?php echo $patient->name ?> <span class="font-weight-bold"><?php echo ' '.lang('started').': ' ?></span><?php echo date('F j, Y h:i A', strtotime($encounter_details->started_at.' UTC')); ?> <span class="font-weight-bold"><?php echo ' '.lang('ended').': ' ?></span><?php echo $encounter_details->ended_at?date('F j, Y h:i A', strtotime($encounter_details->ended_at.' UTC')):"not ended"; ?>
+                                        <div class="card-body text-white" id="encounterCard">
+                                            <div id="encounterBanner">
+                                                <span class="font-weight-bold"><?php echo lang('encounter')?></span><?php echo ' '.$encounter_details->encounter_number; ?><span class="font-weight-bold"><?php echo ' '.lang('for').' '.lang('patient').': ' ?></span><?php echo $patient->name ?><br>
+                                                <span class="font-weight-bold"><?php echo ' '.lang('started').': ' ?></span><?php echo date('F j, Y h:i A', strtotime($encounter_details->started_at.' UTC')); ?> <span class="font-weight-bold"><?php echo ' '.lang('ended').': ' ?></span><?php echo $encounter_details->ended_at?date('F j, Y h:i A', strtotime($encounter_details->ended_at.' UTC')):"not ended"; ?>
+                                            </div>
+                                            <div id="encounterSelect">
+                                                
+                                            </div>
                                         </div>
                                     </div>
                                 <?php } ?>
+                            </div>
+                            <div class="col-md-2 col-sm-12 pl-0">
+                                <button class="btn btn-primary w-100">Change</button>
+                            </div>
+                            <div class="col-md-2 col-sm-12 pl-0">
+                                <a href="encounter/addNewView?patient_id=<?php echo $patient->id ?>&root=patient&method=medicalHistory" class="btn btn-primary">
+                                    <center><?php echo lang('create_encounter'); ?></center>
+                                </a>
                             </div>
                         </div>
                         <div class="main-proifle d-print-none">
@@ -2283,6 +2297,24 @@
             console.log(slider);
         });
     </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#encounterChange").click(function () {
+                var encounterBanner = $("#encounterBanner");
+                var encounterSelect = $("#encounterSelect");
+
+                if (encounterBanner.attr("hidden", false)) {
+                    alert('zzzzz');
+                    encounterBanner.attr("hidden", true);
+                } else {
+                    alert('xxx');
+                }
+
+                // $("#encounterSelect").append('<p>zzzzzz</p>');
+            });
+        });
+    </script>
 
     <script>
         $('#addAppointmentForm').parsley();

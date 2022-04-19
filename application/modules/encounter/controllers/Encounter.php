@@ -42,6 +42,9 @@ class Encounter extends MX_Controller {
         $data = array();
 
         $data['patient_id'] = $this->input->get('patient_id');
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
+        $data['redirect'] = $root . '/' . $method . '?id=' . $data['patient_id'] . '&encounter_id=';
 
         $current_user = $this->ion_auth->get_user_id();
         if ($this->ion_auth->in_group('Doctor')) {
@@ -56,6 +59,7 @@ class Encounter extends MX_Controller {
     function addNew() {
         $id = $this->input->post('encounter_id');
 
+        $redirect = $this->input->post('redirect');
         $type = $this->input->post('type');
         $location = $this->input->post('location');
         if ($location == 0) {
@@ -172,6 +176,7 @@ class Encounter extends MX_Controller {
                 $this->session->set_flashdata('success', lang('record_added'));
 
                 $inserted_id = $this->db->insert_id();
+                $redirect = $redirect . $inserted_id;
 
                 $encounter_number = date('ymd').format_number_with_digits($inserted_id, 4);
 
@@ -181,10 +186,19 @@ class Encounter extends MX_Controller {
 
                 $this->encounter_model->updateEncounter($inserted_id, $data);
                 
-                redirect('encounter');
+                if(!empty($redirect)) {
+                    redirect($redirect);
+                } else {
+                    redirect('encounter');
+                }
             } else {
                 $this->encounter_model->updateEncounter($id, $data);
-                redirect('encounter');
+
+                if(!empty($redirect)) {
+                    redirect($redirect);
+                } else {
+                    redirect('encounter');
+                }
             }
         }
 

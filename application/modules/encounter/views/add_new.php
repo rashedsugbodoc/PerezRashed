@@ -13,6 +13,11 @@
                             <div class="card-body">
                                 <form method="POST" action="encounter/addnew">
                                     <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <input type="hidden" name="redirect" value="<?php echo $redirect ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('encounter_type'); ?></label>

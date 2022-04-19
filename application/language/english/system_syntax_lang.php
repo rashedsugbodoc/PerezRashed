@@ -1105,6 +1105,7 @@ $lang['measured_at'] = 'Measured At';
 $lang['encounter'] = 'Encounter';
 $lang['encounters'] = 'Encounters';
 $lang['encounter_number'] = 'Encounter Number';
+$lang['create_encounter'] = 'Create Encounter';
 $lang['add_encounter'] = 'Add Encounter';
 $lang['edit_encounter'] = 'Edit Encounter';
 $lang['encounter_type'] = 'Encounter Type';
