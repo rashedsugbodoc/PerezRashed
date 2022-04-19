@@ -86,8 +86,12 @@
                                         <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
                                             <div class="col-md-4 text-center">
                                                 <a href="patient/findDoctors">
-                                                    <i class="fa fa-search fa-5x"></i>
-                                                    <p style="margin-bottom: 0px;"><label class="form-label">Find Doctors</label></p>
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <i class="fa fa-search fa-5x"></i>
+                                                            <p style="margin-bottom: 0px;"><label class="form-label">Find Doctors</label></p>
+                                                        </div>
+                                                    </div>
                                                 </a>
                                             </div>
                                             <!-- <div class="col-md-4 text-center">
@@ -98,14 +102,22 @@
                                             </div> -->
                                             <div class="col-md-4 text-center">
                                                 <a href="appointment/bookConsultation">
-                                                    <i class="fa fa-calendar fa-5x"></i>
-                                                    <p style="margin-bottom: 0px;"><label class="form-label">Book Appointment</label></p>
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <i class="fa fa-calendar fa-5x"></i>
+                                                            <p style="margin-bottom: 0px;"><label class="form-label">Book Appointment</label></p>
+                                                        </div>
+                                                    </div>
                                                 </a>
                                             </div>
                                             <div class="col-md-4 text-center">
                                                 <a>
-                                                    <i class="fa fa-home fa-5x"></i>
-                                                    <p style="margin-bottom: 0px;"><label class="form-label">Find Hospital/Clinic</label></p>
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <i class="fa fa-home fa-5x"></i>
+                                                            <p style="margin-bottom: 0px;"><label class="form-label">Find Hospital/Clinic</label></p>
+                                                        </div>
+                                                    </div>
                                                 </a>
                                             </div>
                                         </div>
@@ -222,167 +234,6 @@
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="tab-7">
                                             <div class="mb-0">
-                                                <?php if ($this->ion_auth->in_group(array('Patient'))) { ?>
-                                                <div class="row">
-                                                    <div class="col-sm-12 col-md-6 col-xl-3 col-lg-4">
-                                                        <a data-target="#AddVital" data-toggle="modal" href="">
-                                                        <div class="card bg-primary">
-                                                            <div class="card-body">
-                                                                <div class="d-flex no-block align-items-center">
-                                                                    <div class="pl-5">
-                                                                        <span class="text-white display-5"><i class="fa fa-plus fa-2x"></i></span>
-                                                                    </div>
-                                                                    <div class="ml-auto pr-5">
-                                                                        <h2 class="text-white m-0 font-weight-bold">Add Vitals</h2>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        </a>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">Blood Pressure</p>
-                                                                <label class="mb-1 font-weight-bold h2">120 / 80</label> <span class="unit-block">mmHg</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">Systolic Blood Pressure</p>
-                                                                <label class="mb-1 font-weight-bold h2">120</label> <span>mmHg</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">Diastolic Blood Pressure</p>
-                                                                <label class="mb-1 font-weight-bold h2">80</label> <span>mmHg</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">Heart Rate</p>
-                                                                <label class="mb-1 font-weight-bold h2">84</label> <span>bpm</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">Breathing</p>
-                                                                <label class="mb-1 font-weight-bold h2">21</label> <span>bpm</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">Temperature</p>
-                                                                <label class="mb-1 font-weight-bold h2">36</label> <span>°C</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">SPO2</p>
-                                                                <label class="mb-1 font-weight-bold h2">99</label> <span>%</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">Height</p>
-                                                                <label class="mb-1 font-weight-bold h2">180</label> <span>cm</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">Weight</p>
-                                                                <label class="mb-1 font-weight-bold h2">92</label> <span>kg</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-4 col-md-6 col-xl-3 col-sm-12">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <svg class="card-custom-icon text-success icon-dropshadow-success" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
-                                                                    <path opacity=".0" d="M3.31,11 L5.51,19.01 L18.5,19 L20.7,11 L3.31,11 Z M12,17 C10.9,17 10,16.1 10,15 C10,13.9 10.9,13 12,13 C13.1,13 14,13.9 14,15 C14,16.1 13.1,17 12,17 Z"></path>
-                                                                    <path d="M22,9 L17.21,9 L12.83,2.44 C12.64,2.16 12.32,2.02 12,2.02 C11.68,2.02 11.36,2.16 11.17,2.45 L6.79,9 L2,9 C1.45,9 1,9.45 1,10 C1,10.09 1.01,10.18 1.04,10.27 L3.58,19.54 C3.81,20.38 4.58,21 5.5,21 L18.5,21 C19.42,21 20.19,20.38 20.43,19.54 L22.97,10.27 L23,10 C23,9.45 22.55,9 22,9 Z M12,4.8 L14.8,9 L9.2,9 L12,4.8 Z M18.5,19 L5.51,19.01 L3.31,11 L20.7,11 L18.5,19 Z M12,13 C10.9,13 10,13.9 10,15 C10,16.1 10.9,17 12,17 C13.1,17 14,16.1 14,15 C14,13.9 13.1,13 12,13 Z"></path>
-                                                                </svg>
-                                                                <p class=" mb-1 font-weight-bold">BMI</p>
-                                                                <label class="mb-1 font-weight-bold h2">12</label> <span>kg/㎡</span>
-                                                                <p>09/22/1998</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <?php } else { ?>
-
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h3 class="card-title"><?php echo lang('vital_signs') ?></h3>
@@ -438,6 +289,8 @@
                                                                                         <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
                                                                                         <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
                                                                                     </td>
+                                                                                <?php } else { ?>
+                                                                                    <td></td>
                                                                                 <?php } ?>
                                                                             </tr>
                                                                         <?php } ?>
@@ -447,7 +300,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <?php } ?>
 
 
                                                 <!-- <div class="row">
@@ -2674,10 +2526,11 @@
                         var date = $('#date1').val();
                         var doctorr = $('#adoctors1').val();
                         var appointment_id = $('#appointment_id').val();
+                        var branch = $('#branch_select1').val();
                         // $('#default').trigger("reset");
 
                         $.ajax({
-                            url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id,
+                            url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id + '&location=' + branch,
                             method: 'GET',
                             data: '',
                             dataType: 'json',
