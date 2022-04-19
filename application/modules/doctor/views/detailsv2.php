@@ -734,7 +734,7 @@
                                                 <div class="col-sm-6 col-md-6">
                                                 <div class="form-group">
                                                     <label class="form-label"> <?php echo lang('date'); ?><span class="text-red">*</span></label>
-                                                    <input class="form-control flatpickr" name="date" id="date1" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                    <input class="form-control flatpickr datetime" name="date" id="date1" placeholder="MM/DD/YYYY" type="text" readonly>
                                                 </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
@@ -1258,17 +1258,26 @@
                             var option4 = new Option(response.branch.display_name , response.branch.id, true, true);
                             $('#editAppointmentForm').find('[name="branch"]').append(option4).trigger('change');
                         }
-                        $('#editAppointmentForm').find('[name="date"]').val(da).end()
+                        // $('#editAppointmentForm').find('[name="date"]').val(da).end()
+
+                        $('.datetime').flatpickr({
+                            dateFormat: "F j, Y",
+                            defaultDate: response.datetime,
+                            altInput: true,
+                            altFormat: "F j, Y",
+                            disableMobile: true
+                        });
 
                         var service = response.appointment.service_id;
 
                         var date = $('#date1').val();
                         var doctorr = $('#adoctors1').val();
                         var appointment_id = $('#appointment_id').val();
+                        var branch = $('#branch_select1').val();
                         // $('#default').trigger("reset");
 
                         $.ajax({
-                            url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id,
+                            url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id + '&location=' + branch,
                             method: 'GET',
                             data: '',
                             dataType: 'json',
@@ -1430,6 +1439,46 @@
                 }
             });
         });
+
+        $(document).ready(function () {
+            $('#date').datepicker({
+                format: "dd-mm-yyyy",
+                autoclose: true,
+            })
+                    //Listen for the change even on the input
+                    .change(dateChanged)
+                    .on('changeDate', dateChanged);
+        });
+
+        function dateChanged() {
+            // Get the record's ID via attribute  
+            var iid = $('#date').val();
+            var doctorr = $('#adoctors').val();
+            var branch = $('#branch_select').val();
+            $('#aslots').find('option').remove();
+            // $('#default').trigger("reset");
+            $.ajax({
+                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var slots = response.aslots;
+                    $.each(slots, function (key, value) {
+                        $('#aslots').append($('<option>').text(value).val(value)).end();
+                    });
+                    //   $("#default-step-1 .button-next").trigger("click");
+                    if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+                        $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                    }
+
+
+                    // Populate the form fields with the data returned from server
+                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+                }
+            });
+
+        }
 
         $(document).ready(function () {
             $("#date1").change(function () {
