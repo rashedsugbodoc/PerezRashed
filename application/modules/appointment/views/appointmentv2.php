@@ -345,7 +345,7 @@
                                                 <div class="col-sm-6 col-md-6">
                                                 <div class="form-group">
                                                     <label class="form-label"> <?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                    <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" name="date" readonly>
+                                                    <input class="form-control flatpickr" placeholder="Select Date" id="date" name="date" readonly>
                                                 </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
@@ -464,10 +464,10 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-sm-6 col-md-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"> <?php echo lang('date'); ?><span class="text-red">*</span></label>
-                                                    <input class="form-control fc-datepicker" name="date" id="date1" placeholder="MM/DD/YYYY" type="text" readonly>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('date'); ?><span class="text-red">*</span></label>
+                                                        <input class="form-control datetime" name="date" id="date1" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                    </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="form-group">
@@ -509,7 +509,7 @@
 
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
-                                                    <button class="btn btn-primary pull-right" name="EditAppointment" type="submit"><?php echo lang('submit'); ?></button>
+                                                    <button class="btn btn-primary pull-right" name="EditAppointment" type="submit" onclick="return confirm('Are you sure you want to delete this item?');"><?php echo lang('submit'); ?></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -652,7 +652,20 @@
         <script src="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/sweet-alert.js'); ?>"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            flatpickr(".flatpickr", {
+                altInput: true,
+                altFormat: "F j, Y",
+                disableMobile: true
+            });
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -735,6 +748,7 @@
                         var de = response.appointment.date * 1000;
                         var d = new Date(de);
                         var da = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+                        console.log(da);
                         // Populate the form fields with the data returned from server
                         $('#editAppointmentForm').find('[name="id"]').val(response.appointment.id).end()
                         $('#editAppointmentForm').find('[name="patient"]').val(response.appointment.patient).end()
@@ -759,17 +773,26 @@
                             var option4 = new Option(response.branch.display_name , response.branch.id, true, true);
                             $('#editAppointmentForm').find('[name="branch"]').append(option4).trigger('change');
                         }
-                        $('#editAppointmentForm').find('[name="date"]').val(da).end()
+                        // $('#editAppointmentForm').find('[name="date"]').val(da).end()
+
+                        $('.datetime').flatpickr({
+                            dateFormat: "F j, Y",
+                            defaultDate: response.datetime,
+                            altInput: true,
+                            altFormat: "F j, Y",
+                            disableMobile: true
+                        });
 
                         var service = response.appointment.service_id;
 
                         var date = $('#date1').val();
                         var doctorr = $('#adoctors1').val();
                         var appointment_id = $('#appointment_id').val();
+                        var branch = $('#branch_select1').val();
                         // $('#default').trigger("reset");
 
                         $.ajax({
-                            url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id,
+                            url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id + '&location=' + branch,
                             method: 'GET',
                             data: '',
                             dataType: 'json',
@@ -777,6 +800,7 @@
                                 $('#aslots1').find('option').remove();
 
                                 var slots = response.aslots;
+                                console.log(slots);
                                 $.each(slots, function (key, value) {
                                     $('#aslots1').append($('<option>').text(value).val(value)).end();
                                 });
@@ -976,9 +1000,6 @@
             });
         });
 
-
-
-
         $(document).ready(function () {
             $('#date').datepicker({
                 format: "dd-mm-yyyy",
@@ -1159,48 +1180,36 @@
             });
         });
 
-
-
-
         $(document).ready(function () {
-            $('#date1').datepicker({
-                format: "dd-mm-yyyy",
-                autoclose: true,
-            })
-                    //Listen for the change even on the input
-                    .change(dateChanged1)
-                    .on('changeDate', dateChanged1);
-        });
+            $("#date1").change(function () {
+                var iid = $('#date1').val();
+                var doctorr = $('#adoctors1').val();
+                var branch = $('#branch_select1').val();
+                $('#aslots1').find('option').remove();
+                console.log(iid);
+                // $('#default').trigger("reset");
+                $.ajax({
+                    url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var slots = response.aslots;
+                        $.each(slots, function (key, value) {
+                            $('#aslots1').append($('<option>').text(value).val(value)).end();
+                        });
+                        //   $("#default-step-1 .button-next").trigger("click");
+                        if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
+                            $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+                        }
 
-        function dateChanged1() {
-            // Get the record's ID via attribute  
-            var iid = $('#date1').val();
-            var doctorr = $('#adoctors1').val();
-            var branch = $('#branch_select1').val();
-            $('#aslots1').find('option').remove();
-            // $('#default').trigger("reset");
-            $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var slots = response.aslots;
-                    $.each(slots, function (key, value) {
-                        $('#aslots1').append($('<option>').text(value).val(value)).end();
-                    });
-                    //   $("#default-step-1 .button-next").trigger("click");
-                    if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
-                        $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+
+                        // Populate the form fields with the data returned from server
+                        //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
                     }
-
-
-                    // Populate the form fields with the data returned from server
-                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
-                }
+                });
             });
-
-        }
+        });
 
     </script>
 
