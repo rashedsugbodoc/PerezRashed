@@ -1542,11 +1542,17 @@ class Schedule extends MX_Controller {
         $data = array();
         $appointment_id = $this->input->get('appointment_id');
         $date = $this->input->get('date');
+        $location = $this->input->get('location');
+
+        if ($location == "null") {
+            $location = '';
+        }
+
         if (!empty($date)) {
             $date = strtotime($date);
         }
         $doctor = $this->input->get('doctor');
-        $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDateByAppointmentId($date, $doctor, $appointment_id);
+        $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDateByAppointmentIdByLocation($date, $doctor, $appointment_id, $location);
         // $data['aslotsLocation'] = $this->schedule_model->getAvailableSlotByDoctorByDateByAppointmentIdForLocation($date, $doctor, $appointment_id);
         $data['current_value'] = $this->appointment_model->getAppointmentById($appointment_id)->time_slot;
         echo json_encode($data);
