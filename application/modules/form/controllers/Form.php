@@ -59,6 +59,10 @@ class Form extends MX_Controller {
         $data['templates'] = $this->form_model->getTemplate();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->form_model->getFormCategory();
+        $data['encounter_id'] = $this->input->get('encounter_id');
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
+        $data['redirect'] = $root.'/'.$method;
 
 
         $this->load->view('home/dashboardv2'); // just the header file
@@ -141,6 +145,9 @@ class Form extends MX_Controller {
         $id = $this->input->get('id');
         $data['patient_id'] = $this->input->get('patient_id');
         $data['encounter_id'] = $this->input->get('encounter_id');
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
+        $data['redirect'] = $root.'/'.$method;
 
         if (!empty($id)) {
             $data['form'] = $this->form_model->getFormById($id);
@@ -183,6 +190,7 @@ class Form extends MX_Controller {
         $category = $this->input->post('category');
 
         $redirect = $this->input->post('redirect');
+        $medical_redirect = $this->input->post('medical_history_redirect');
 
         // $p_name = $this->input->post('p_name');
         // $p_email = $this->input->post('p_email');
@@ -229,6 +237,10 @@ class Form extends MX_Controller {
         $discount = $this->input->post('discount');
         $amount_received = $this->input->post('amount_received');
         $user = $this->ion_auth->get_user_id();
+
+        if (!empty($medical_redirect)) {
+            $redirect = $medical_redirect . '?id=' . $patient . '&encounter_id=' . $encounter;
+        }
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');

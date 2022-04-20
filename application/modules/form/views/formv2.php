@@ -50,6 +50,22 @@
                                                                 ?>">
                                                             </div>
                                                         </div>
+                                                        <?php if (!empty($encounter_id)) { ?>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <input type="hidden" name="medical_history_redirect" value="<?php
+                                                                if (!empty($redirect)) {
+                                                                    echo $redirect;
+                                                                }
+                                                                ?>">
+                                                            </div>
+                                                        </div>
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('template'); ?> <span class="text-red">*</span></label>
