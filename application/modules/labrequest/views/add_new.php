@@ -46,6 +46,15 @@
                                                     }
                                                     ?>">
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <input type="hidden" name="medical_history_redirect" value="<?php
+                                                        if (!empty($redirect)) {
+                                                            echo $redirect;
+                                                        }
+                                                        ?>">
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <input type="text" hidden name="request_id" id="request_id" value="<?php
                                                     if (!empty($request_id)) {

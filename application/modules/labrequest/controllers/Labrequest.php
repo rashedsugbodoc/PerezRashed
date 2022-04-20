@@ -30,6 +30,10 @@ class Labrequest extends MX_Controller {
 
         $data['patient_id'] = $this->input->get('patient_id');
         $data['encounter_id'] = $this->input->get('encounter_id');
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
+        $data['redirect'] = $root.'/'.$method;
+
         if (!empty($data['encounter_id'])) {
             $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
             $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
@@ -62,6 +66,7 @@ class Labrequest extends MX_Controller {
         }
         $doctor_name = $this->doctor_model->getDoctorById($doctor)->name;
         $redirect = $this->input->post('redirect');
+        $medical_redirect = $this->input->post('medical_history_redirect');
 
         $nowtime = date('H:i:s');
         $reqdate = $this->input->post('date');
@@ -79,6 +84,10 @@ class Labrequest extends MX_Controller {
         $dataholder = $this->input->post('dataholder');
         $lab_request = $this->input->post('labrequest_id');
         $request_list = $this->labrequest_model->getLabrequestByLabrequestNumber($id);
+
+        if (!empty($medical_redirect)) {
+            $redirect = $medical_redirect . '?id=' . $patient . '&encounter_id=' . $encounter_id;
+        }
 
         if (!empty($id)) {
             $data = array();
@@ -247,6 +256,9 @@ class Labrequest extends MX_Controller {
         $data['request_number'] = $this->input->get('id');
         $data['labrequests'] = $this->labrequest_model->getLabrequestByLabrequestNumber($data['request_number']);
         $data['lab_request_date'] = $data['labrequests'][0]->request_date;
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
+        $data['redirect'] = $root.'/'.$method;
         if (!empty($data['labrequests'][0]->encounter_id)) {
             $data['encounter'] = $this->encounter_model->getEncounterById($data['labrequests'][0]->encounter_id);
             $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
