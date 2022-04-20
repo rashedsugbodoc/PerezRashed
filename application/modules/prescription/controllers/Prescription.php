@@ -65,6 +65,9 @@ class Prescription extends MX_Controller {
         $id = $this->input->get('id');
         $encounter_id = $this->input->get('encounter_id');
         $data['patient_id'] = $this->input->get('patient_id');
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
+        $data['redirect'] = $root.'/'.$method;
 
         if (!empty($id)) {
             $data['id'] = $id;
@@ -94,6 +97,7 @@ class Prescription extends MX_Controller {
         }
 
         $redirect = $this->input->post('redirect');
+        $medical_redirect = $this->input->post('medical_history_redirect');
         $encounter_id = $this->input->post('encounter_id');
 
         $id = $this->input->post('id');
@@ -148,9 +152,9 @@ class Prescription extends MX_Controller {
             $final_report = '';
         }
 
-
-
-
+        if (!empty($medical_redirect)) {
+            $redirect = $medical_redirect . '?id=' . $patient . '&encounter_id=' . $encounter_id;
+        }
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -360,6 +364,9 @@ class Prescription extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['patients'] = $this->patient_model->getPatientById($data['prescription']->patient);
         $data['doctors'] = $this->doctor_model->getDoctorById($data['prescription']->doctor);
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
+        $data['redirect'] = $root.'/'.$method;
         if (!empty($data['prescription']->encounter_id)) {
             $data['encounter_id'] = $data['prescription']->encounter_id;
             $data['patient_id'] = $this->encounter_model->getEncounterById($data['encounter_id'])->patient_id;

@@ -40,6 +40,15 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
+                                            <input type="hidden" name="medical_history_redirect" value="<?php
+                                            if (!empty($redirect)) {
+                                                echo $redirect;
+                                            }
+                                            ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('encounter'); ?></label>
                                                 <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
