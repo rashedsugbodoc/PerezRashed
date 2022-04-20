@@ -1485,8 +1485,17 @@ class Patient extends MX_Controller {
     function medicalHistory() {
         $data = array();
         $id = $this->input->get('id');
+        if (empty($id)) {
+            $id = $this->input->post('id');
+        }
         $data['encounter_id'] = $this->input->get('encounter_id');
+        if (empty($data['encounter_id'])) {
+            $data['encounter_id'] = $this->input->post('encounter_id');
+        }
         $data['encounter_details'] = $this->encounter_model->getEncounterById($data['encounter_id']);
+        if (empty($data['encounter_id'])) {
+            $data['encounter_details'] = $this->encounter_model->getEncounter();
+        }
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             $patient_ion_id = $this->ion_auth->get_user_id();

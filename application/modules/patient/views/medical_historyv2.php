@@ -129,31 +129,48 @@
                         <?php } else { ?>
 
                         <!--/app header-->
-                        <div class="row mt-5">
-                            <div class="col-md-8 col-sm-12">
-                                <?php if (!empty($encounter_id)) { ?>
-                                    <div class="card bg-primary">
-                                        <div class="card-body text-white" id="encounterCard">
-                                            <div id="encounterBanner">
-                                                <span class="font-weight-bold"><?php echo lang('encounter')?></span><?php echo ' '.$encounter_details->encounter_number; ?><span class="font-weight-bold"><?php echo ' '.lang('for').' '.lang('patient').': ' ?></span><?php echo $patient->name ?><br>
-                                                <span class="font-weight-bold"><?php echo ' '.lang('started').': ' ?></span><?php echo date('F j, Y h:i A', strtotime($encounter_details->started_at.' UTC')); ?> <span class="font-weight-bold"><?php echo ' '.lang('ended').': ' ?></span><?php echo $encounter_details->ended_at?date('F j, Y h:i A', strtotime($encounter_details->ended_at.' UTC')):"not ended"; ?>
-                                            </div>
-                                            <div id="encounterSelect">
-                                                
+                        <!-- <form method="POST" action="patient/medicalHistory"> -->
+                            <div class="row mt-5">
+                                <div class="col-md-8 col-sm-12">
+                                    <?php if (!empty($encounter_id)) { ?>
+                                        <div class="card bg-primary">
+                                            <div class="card-body text-white" id="encounterCard">
+                                                <div id="encounterBanner">
+                                                    <span class="font-weight-bold"><?php echo lang('encounter')?></span><?php echo ' '.$encounter_details->encounter_number; ?><span class="font-weight-bold"><?php echo ' '.lang('for').' '.lang('patient').': ' ?></span><?php echo $patient->name ?><br>
+                                                    <span class="font-weight-bold"><?php echo ' '.lang('started').': ' ?></span><?php echo date('F j, Y h:i A', strtotime($encounter_details->started_at.' UTC')); ?> <span class="font-weight-bold"><?php echo ' '.lang('ended').': ' ?></span><?php echo $encounter_details->ended_at?date('F j, Y h:i A', strtotime($encounter_details->ended_at.' UTC')):"not ended"; ?>
+                                                </div>
                                             </div>
                                         </div>
+                                    <?php } else { ?>
+                                        <select class="select2-show-search w-100" name="encounter_id" id="encounter_selection" data-placeholder="<?php echo lang('select').' '.lang('encounter') ?>">
+                                            <option></option>
+                                            <?php foreach($encounter_details as $encounter_detail) { ?>
+                                                <option value="<?php echo $encounter_detail->id ?>"><?php echo $encounter_detail->encounter_number; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    <?php } ?>
+                                </div>
+                                <div class="col-md-2 col-sm-12 pl-0">
+                                    <div class="form-group">
+                                        <!-- <button class="btn btn-primary w-100" id="encounterChange">Change</button> -->
+                                        <?php if(!empty($encounter_id)) { ?>
+                                            <a href="patient/medicalHistory?id=<?php echo $patient->id; ?>" class="btn btn-primary w-100"><center>Change</center></a>
+                                        <?php } else { ?>
+                                            <!-- <a href="patient/medicalHistory?id=<?php echo $patient->id; ?>" class="btn btn-primary"><center>Change</center></a> -->
+                                            <input type="hidden" name="id" id="patient_id" value="<?php echo $patient->id ?>">
+                                            <button class="btn btn-primary w-100" id="encounterSelect" type="submit">Apply</button>
+                                        <?php } ?>
                                     </div>
-                                <?php } ?>
+                                </div>
+                                <div class="col-md-2 col-sm-12 pl-0">
+                                    <div class="form-group">
+                                        <a href="encounter/addNewView?patient_id=<?php echo $patient->id ?>&root=patient&method=medicalHistory" class="btn btn-primary">
+                                            <center><?php echo lang('create_encounter'); ?></center>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-2 col-sm-12 pl-0">
-                                <button class="btn btn-primary w-100">Change</button>
-                            </div>
-                            <div class="col-md-2 col-sm-12 pl-0">
-                                <a href="encounter/addNewView?patient_id=<?php echo $patient->id ?>&root=patient&method=medicalHistory" class="btn btn-primary">
-                                    <center><?php echo lang('create_encounter'); ?></center>
-                                </a>
-                            </div>
-                        </div>
+                        <!-- </form> -->
                         <div class="main-proifle d-print-none">
                         <?php } ?>
                             <div class="row">
@@ -252,7 +269,9 @@
                                                     <div class="card-header">
                                                         <h3 class="card-title"><?php echo lang('vital_signs') ?></h3>
                                                         <div class="card-options">
-                                                            <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
+                                                            <?php if(!empty($encounter_id)) { ?>
+                                                                <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -298,11 +317,15 @@
                                                                                 }
                                                                                 ?></td>
                                                                                 <td><?php echo $vital->note; ?></td>
-                                                                                <?php if ($vital->recorded_user_id == $current_user) { ?>
-                                                                                    <td>
-                                                                                        <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
-                                                                                        <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
-                                                                                    </td>
+                                                                                <?php if(!empty($encounter_id)) { ?>
+                                                                                    <?php if ($vital->recorded_user_id == $current_user) { ?>
+                                                                                        <td>
+                                                                                            <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
+                                                                                            <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                                        </td>
+                                                                                    <?php } else { ?>
+                                                                                        <td></td>
+                                                                                    <?php } ?>
                                                                                 <?php } else { ?>
                                                                                     <td></td>
                                                                                 <?php } ?>
@@ -474,9 +497,11 @@
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                    </a>
+                                                                    <?php if(!empty($encounter_id)) { ?>
+                                                                        <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
+                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                        </a>
+                                                                    <?php } ?>
                                                                 </div>
                                                             <?php } ?>
                                                         </div>
@@ -513,15 +538,19 @@
                                                                                     echo $case_facility;
                                                                                 ?></td>
                                                                                 <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                        <td class="no-print">
-                                                                                            <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>
-                                                                                        </td>
-                                                                                    <?php } ?>
-                                                                                    <?php if ($this->ion_auth->in_group('admin')) { ?>   
-                                                                                        <td class="no-print">
-                                                                                            <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                                                        </td>
+                                                                                    <?php if(!empty($encounter_id)) { ?>
+                                                                                        <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                                            <td class="no-print">
+                                                                                                <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>
+                                                                                            </td>
+                                                                                        <?php } ?>
+                                                                                        <?php if ($this->ion_auth->in_group('admin')) { ?>   
+                                                                                            <td class="no-print">
+                                                                                                <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                                            </td>
+                                                                                        <?php } ?>
+                                                                                    <?php } else { ?>
+                                                                                        <td></td>
                                                                                     <?php } ?>
                                                                                 <?php } ?>
                                                                             </tr>
@@ -544,9 +573,11 @@
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id ?>" target="_blank">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                    </a>
+                                                                    <?php if(!empty($encounter_id)) { ?>
+                                                                        <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory' ?>">
+                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                        </a>
+                                                                    <?php } ?>
                                                                 </div>
                                                             <?php } ?>
                                                         </div>
@@ -611,22 +642,24 @@
                                                                                     echo $prescription_facility;
                                                                                 ?></td>
                                                                                 <td class="no-print">
-                                                                                    <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i></a> 
-                                                                                    <?php
-                                                                                    if ($this->ion_auth->in_group('Doctor')) {
-                                                                                        $current_user = $this->ion_auth->get_user_id();
-                                                                                        $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
-                                                                                        if ($prescription->doctor == $doctor_table_id) {
-                                                                                            ?>
-                                                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                                <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i></a>   
-                                                                                                <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
-                                                                                            <?php } ?>
-                                                                                            <?php
+                                                                                    <?php if(!empty($encounter_id)) { ?>
+                                                                                        <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i></a> 
+                                                                                        <?php
+                                                                                        if ($this->ion_auth->in_group('Doctor')) {
+                                                                                            $current_user = $this->ion_auth->get_user_id();
+                                                                                            $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
+                                                                                            if ($prescription->doctor == $doctor_table_id) {
+                                                                                                ?>
+                                                                                                <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                                                    <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->id.'&root=patient&method=medicalHistory'; ?>"><i class="fa fa-edit"></i></a>   
+                                                                                                    <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
+                                                                                                <?php } ?>
+                                                                                                <?php
+                                                                                            }
                                                                                         }
-                                                                                    }
-                                                                                    ?>
-                                                                                    <a class="btn btn-info btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i></a>
+                                                                                        ?>
+                                                                                        <a class="btn btn-info btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i></a>
+                                                                                    <?php } ?>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php } ?>
@@ -646,7 +679,9 @@
                                                             <?php echo lang('lab').' '.lang('request')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id; ?>" class="btn btn-primary" target="_blank"><?php echo lang('add_new') ?></a>
+                                                            <?php if(!empty($encounter_id)) { ?>
+                                                                <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -693,8 +728,10 @@
                                                                                 <td><?php echo $this->patient_model->getPatientById($labrequest->patient_id)->name ?></td>
                                                                                 <td><?php echo $this->doctor_model->getDoctorById($labrequest->doctor_id)->name ?></td>
                                                                                 <td>
-                                                                                    <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number ?>"><i class="fe fe-edit"></i></a>
-                                                                                    <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->id ?>"><i class="fe fe-eye"></i></a>
+                                                                                    <?php if(!empty($encounter_id)) { ?>
+                                                                                        <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory'; ?>"><i class="fe fe-edit"></i></a>
+                                                                                        <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->id ?>"><i class="fe fe-eye"></i></a>
+                                                                                    <?php } ?>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php } ?>
@@ -714,7 +751,9 @@
                                                             <?php echo lang('forms')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="form/addFormView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id; ?>" class="btn btn-primary" target="_blank"><?php echo lang('add_new') ?></a>
+                                                            <?php if(!empty($encounter_id)) { ?>
+                                                                <a href="form/addFormView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -743,7 +782,9 @@
                                                                                 </td>
                                                                                 <td><?php echo date('Y-m-d', strtotime($form->form_date.' UTC')); ?></td>
                                                                                 <td>
-                                                                                    <a href="form?id=<?php echo $form->id; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
+                                                                                    <?php if(!empty($encounter_id)) { ?>
+                                                                                        <a href="form?id=<?php echo $form->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
+                                                                                    <?php } ?>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php } ?>
@@ -821,9 +862,11 @@
                                                         <div class="row">
                                                             <div class="col-lg-8 col-md-8 col-sm-5 mb-4">
                                                                 <!-- <a  data-target="#AddDocument" data-toggle="modal" href="" class="btn btn-primary"><i class="fe fe-plus"></i> Upload New Document</a> -->
-                                                                <a class="btn btn-primary" data-toggle="modal" href="#myModal1">
-                                                                    <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                </a>
+                                                                <?php if(!empty($encounter_id)) { ?>
+                                                                    <a class="btn btn-primary" data-toggle="modal" href="#myModal1">
+                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                    </a>
+                                                                <?php } ?>
                                                             </div>
                                                             <div class="col-lg-4 col-md-4 col-sm-7 mb-4">
                                                                 <div class="form-group">
@@ -847,11 +890,13 @@
                                                                     <div class="card-body p-0">
                                                                         <div class="todo-widget-header d-flex pb-2 p-4">
                                                                             <div class="">
-                                                                                <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->id; ?>" target="_blank"><i class="fe fe-edit"></i></a>
-                                                                                <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
-                                                                                <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
-                                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
-                                                                                    <a class="btn btn-danger ml-5" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
+                                                                                <?php if(!empty($encounter_id)) { ?>
+                                                                                    <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->id; ?>" target="_blank"><i class="fe fe-edit"></i></a>
+                                                                                    <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
+                                                                                    <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
+                                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
+                                                                                        <a class="btn btn-danger ml-5" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
+                                                                                    <?php } ?>
                                                                                 <?php } ?>
                                                                             </div>
                                                                         </div>
@@ -918,9 +963,11 @@
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" href="encounter/addNewView?patient_id=<?php echo $patient->id ?>">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                    </a>
+                                                                    <?php if(!empty($encounter_id)) { ?>
+                                                                        <a class="btn btn-primary btn_width btn-xs" href="encounter/addNewView?patient_id=<?php echo $patient->id.'&root=patient&method=medicalHistory' ?>">
+                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                        </a>
+                                                                    <?php } ?>
                                                                 </div>
                                                             <?php } ?>
                                                         </div>
@@ -2300,21 +2347,51 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#encounterSelect").click(function () {
+                var encounter_id = $("#encounter_selection").val();
+                var patient_id = $("#patient_id").val();
+                window.location.href = 'patient/medicalHistory?id='+patient_id+'&encounter_id='+encounter_id;
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+        // $("#encounterChange").click(function () {
+        //     const nextURL = 'sugbodoc/patient/medicalHistory?id=<?php echo $patient->id ?>';
+        //     const nextTitle = 'My new page title';
+        //     const nextState = { additionalInformation: 'Updated the URL with JS' };
+
+        //     // This will create a new entry in the browser's history, without reloading
+        //     window.history.pushState(nextState, nextTitle, nextURL);
+
+        //     // This will replace the current entry in the browser's history, without reloading
+        //     window.history.replaceState(nextState, nextTitle, nextURL);
+        // })
+    </script>
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
             $("#encounterChange").click(function () {
                 var encounterBanner = $("#encounterBanner");
                 var encounterSelect = $("#encounterSelect");
 
-                if (encounterBanner.attr("hidden", false)) {
-                    alert('zzzzz');
-                    encounterBanner.attr("hidden", true);
-                } else {
-                    alert('xxx');
+                var encounter_id = "<?php echo $encounter_id ?>";
+                if (encounter_id == "") {
+                    encounter_id = "empty";
                 }
+
+                if (encounter_id == "empty") {
+                    window.location.href = "patient/medicalHistory?id=<?php echo $patient->id ?>";
+                } else {
+                    window.location.href = "patient/medicalHistory?id=<?php echo $patient->id ?>";
+                }
+
+                alert(encounter_id);
 
                 // $("#encounterSelect").append('<p>zzzzzz</p>');
             });
         });
-    </script>
+    </script> -->
 
     <script>
         $('#addAppointmentForm').parsley();
