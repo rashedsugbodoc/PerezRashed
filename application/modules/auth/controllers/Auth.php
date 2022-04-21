@@ -112,6 +112,7 @@ class Auth extends MX_Controller {
 
 		//log the user out
 		$logout = $this->ion_auth->logout();
+		unset($_SESSION['activeTab']);
 
 		//redirect them to the login page
 		$this->session->set_flashdata('message', $this->ion_auth->messages());
