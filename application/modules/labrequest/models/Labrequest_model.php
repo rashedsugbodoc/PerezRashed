@@ -104,6 +104,16 @@ class Labrequest_model extends CI_model {
         return $query->result();
     }
 
+    function getLabrequestByPatientIdByEncounterId($id, $encounter_id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('patient_id', $id);
+        $this->db->where('encounter_id', $encounter_id);
+        $this->db->order_by('id', 'desc');
+        $this->db->group_by('lab_request_number');
+        $query = $this->db->get('lab_request');
+        return $query->result();
+    }
+
     function getLabrequestById($id) {
         $this->db->where("id", $id);
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));

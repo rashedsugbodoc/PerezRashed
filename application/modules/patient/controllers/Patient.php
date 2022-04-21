@@ -1492,6 +1492,9 @@ class Patient extends MX_Controller {
         if (empty($data['encounter_id'])) {
             $data['encounter_id'] = $this->input->post('encounter_id');
         }
+        if ($data['encounter_id'] == "All") {
+            $data['encounter_id'] = null;
+        }
         $data['encounter_details'] = $this->encounter_model->getEncounterById($data['encounter_id']);
         if (empty($data['encounter_id'])) {
             $data['encounter_details'] = $this->encounter_model->getEncounter();
@@ -1512,22 +1515,49 @@ class Patient extends MX_Controller {
         }
 
         $data['current_user'] = (int)$this->ion_auth->get_user_id();
-        $data['vitals'] = $this->patient_model->getPatientVitalById($id);
+        if (empty($data['encounter_id'])) {
+            $data['vitals'] = $this->patient_model->getPatientVitalById($id);
+        } else {
+            $data['vitals'] = $this->patient_model->getPatientVitalByIdByEncounterId($id, $data['encounter_id']);
+        }
+        
         $data['settings'] = $this->settings_model->getSettings();
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['patient'] = $this->patient_model->getPatientById($id);
-        $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
+        if (empty($data['encounter_id'])) {
+            $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
+        } else {
+            $data['appointments'] = $this->appointment_model->getAppointmentByPatientByEncounterId($data['patient']->id, $data['encounter_id']);
+        }
+        
         $data['appointments_location'] = $this->appointment_model->getAppointmentByPatientForLocation($data['patient']->id);
-        $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientId($data['patient']->id);
+        
+        if (empty($data['encounter_id'])) {
+            $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientId($data['patient']->id);
+        } else {
+            $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientIdByEncounterId($data['patient']->id, $data['encounter_id']);
+        }
         // $data['service_category_group'] = $this->appointment_model->getServiceCategoryById($data['appointments_location']->service_category_group_id);
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
-        $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
-        $data['forms'] = $this->form_model->getFormByPatientId($id);
+        if (empty($data['encounter_id'])) {
+            $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
+        } else {
+            $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientIdByEncounterId($id, $data['encounter_id']);
+        }
+        if (empty($data['encounter_id'])) {
+            $data['forms'] = $this->form_model->getFormByPatientId($id);
+        } else {
+            $data['forms'] = $this->form_model->getFormByPatientIdByEncounterId($id, $data['encounter_id']);
+        }
         $data['labs'] = $this->lab_model->getLabByPatientId($id);
         $data['beds'] = $this->bed_model->getBedAllotmentsByPatientId($id);
         $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
-        $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
+        if (empty($data['encounter_id'])) {
+            $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
+        } else {
+            $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientIdByEncounterId($id, $data['encounter_id']);
+        }
         $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
         $data['countries'] = $this->location_model->getCountry();
         $data['states'] = $this->location_model->getState();

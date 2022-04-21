@@ -103,14 +103,15 @@ class Prescription extends MX_Controller {
         $id = $this->input->post('id');
         $tab = $this->input->post('tab');
         $date = $this->input->post('date');
-        if (!empty($date)) {
-            if(empty($id)) {
-                $time = date('H:i:s');
-                $date = $date .' '. $time;
-            }
-            $date = strtotime($date);
-            $date = gmdate('Y-m-d H:i:s', $date);
-        }
+        // if (!empty($date)) {
+        //     if(empty($id)) {
+        //         $time = date('H:i:s');
+        //         $date = $date .' '. $time;
+        //     }
+        //     $date = strtotime($date);
+        //     $date = gmdate('Y-m-d H:i:s', $date);
+        // }
+        $date = gmdate('Y-m-d H:i:s', strtotime($date));
 
         if (empty($encounter_id)) {
             $encounter_id = null;
@@ -361,6 +362,7 @@ class Prescription extends MX_Controller {
         // $data['doctors'] = $this->doctor_model->getDoctor();
         $data['medicines'] = $this->medicine_model->getMedicine();
         $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
+        $data['prescription_date'] = $data['prescription']->prescription_date;
         $data['settings'] = $this->settings_model->getSettings();
         $data['patients'] = $this->patient_model->getPatientById($data['prescription']->patient);
         $data['doctors'] = $this->doctor_model->getDoctorById($data['prescription']->doctor);

@@ -197,6 +197,15 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
+    function getAppointmentByPatientByEncounterId($patient, $encounter_id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $patient);
+        $this->db->where('encounter_id', $encounter_id);
+        $query = $this->db->get('appointment');
+        return $query->result();
+    }
+
     function getAppointmentByPatientForLocation($patient) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
