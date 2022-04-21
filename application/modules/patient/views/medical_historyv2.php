@@ -144,6 +144,7 @@
                                     <?php } else { ?>
                                         <select class="select2-show-search w-100" name="encounter_id" id="encounter_selection" data-placeholder="<?php echo lang('select').' '.lang('encounter') ?>">
                                             <option></option>
+                                            <option value="All"><?php echo lang("all").' '.lang("encounter") ?></option>
                                             <?php foreach($encounter_details as $encounter_detail) { ?>
                                                 <option value="<?php echo $encounter_detail->id ?>"><?php echo $encounter_detail->encounter_number; ?></option>
                                             <?php } ?>
@@ -241,7 +242,7 @@
                                 <div class="wideget-user-tab">
                                     <div class="tab-menu-heading p-0">
                                         <div class="tabs-menu1 px-3">
-                                            <ul class="nav">
+                                            <ul class="nav" id="mytab">
                                                 <li><a href="#tab-7" data-toggle="tab" class="active"><?php echo lang('vital_signs'); ?></a></li>
                                                 <li><a href="#tab-8" data-toggle="tab" class=""><?php echo lang('appointments'); ?></a></li>
                                                 <li><a href="#tab-9" data-toggle="tab" class=""><?php echo lang('case_notes'); ?></a></li>
@@ -598,7 +599,7 @@
                                                                     <tbody>
                                                                         <?php foreach ($prescriptions as $prescription) { ?>
                                                                             <tr class="">
-                                                                                <td><?php echo date('Y-m-d', strtotime($prescription->prescription_date.' UTC')); ?></td>
+                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($prescription->prescription_date.' UTC')); ?></td>
                                                                                 <td>
                                                                                     <?php
                                                                                     $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);
@@ -1253,6 +1254,20 @@
                                         </div>
                                         <form role="form" id="editVitalForm" class="clearfix" action="patient/addVitals" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
@@ -1600,6 +1615,25 @@
                                         </div>
                                         <form  role="form" id="medical_historyEditForm" class="clearfix" action="patient/addMedicalHistory" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction2();">
                                             <div class="modal-body">
+                                                <!-- <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <input type="text" name="encounter_id" value="<?php /*echo $encounter_id*/ ?>">
+                                                    </div>
+                                                </div> -->
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } ?>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
@@ -2344,6 +2378,18 @@
             console.log(slider);
         });
     </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+                sessionStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = sessionStorage.getItem('activeTab');
+            if(activeTab){
+                $('#mytab a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
