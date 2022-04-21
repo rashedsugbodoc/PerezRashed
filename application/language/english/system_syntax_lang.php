@@ -73,6 +73,7 @@ $lang['my_reports'] = 'My Reports';
 $lang['hms'] = 'Hospital Information System';
 $lang['see_all_patients'] = 'See All Patients';
 $lang['see_all_payments'] = 'See All Payments';
+$lang['see_all_invoices'] = 'See All Invoices';
 $lang['see_all_medicines'] = 'See All Medicine';
 $lang['payment_today'] = 'Payment Today';
 $lang['payments_today'] = 'Payments Today';
