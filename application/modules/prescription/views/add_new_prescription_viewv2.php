@@ -64,14 +64,19 @@
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                <input type="text" class="form-control flatpickr" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php
-                                                    if (!empty($setval)) {
+                                                <!-- <input type="text" class="form-control flatpickr" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php
+                                                    /*if (!empty($setval)) {
                                                         echo set_value('date');
                                                     }
                                                     if (!empty($prescription->prescription_date)) {
-                                                        echo date('m/d/Y', strtotime($prescription->prescription_date.' UTC'));
-                                                    }
-                                                ?>">
+                                                        echo date('Y-m-d H:i', strtotime($prescription->prescription_date.' UTC'));
+                                                    }*/
+                                                ?>"> -->
+                                                <?php if (empty($prescription_date)) { ?>
+                                                    <input type="text" class="form-control flatpickr" readonly placeholder="MM/DD/YYYY" name="date">
+                                                <?php } else { ?>
+                                                    <input type="text" class="form-control flatpickr" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php echo date('Y-m-d H:i', strtotime($prescription_date.' UTC')) ?>">
+                                                <?php } ?>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-12">
@@ -335,8 +340,15 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var timenow = "<?php echo date('Y-m-d H:i'); ?>";
-            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            var date = $('#date').val();
+            console.log(date);
+            if (date === undefined) {
+                var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            } else {
+                var timenow = date;
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            }
             flatpickr(".flatpickr", {
                 disable: [maxdate],
                 maxDate: maxdate,
