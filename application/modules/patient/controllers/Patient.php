@@ -1494,6 +1494,7 @@ class Patient extends MX_Controller {
         }
         if ($data['encounter_id'] == "All") {
             $data['encounter_id'] = null;
+            $data['all_encounter'] = $this->input->get('encounter_id');
         }
         $data['encounter_details'] = $this->encounter_model->getEncounterById($data['encounter_id']);
         if (empty($data['encounter_id'])) {
@@ -1552,13 +1553,21 @@ class Patient extends MX_Controller {
         }
         $data['labs'] = $this->lab_model->getLabByPatientId($id);
         $data['beds'] = $this->bed_model->getBedAllotmentsByPatientId($id);
-        $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
+        if (empty($data['encounter_id'])) {
+            $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
+        } else {
+            $data['encounters'] = $this->encounter_model->getEncounterByPatientIdByEncounterId($id, $data['encounter_id']);
+        }
         if (empty($data['encounter_id'])) {
             $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
         } else {
             $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientIdByEncounterId($id, $data['encounter_id']);
         }
-        $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
+        if (empty($data['encounter_id'])) {
+            $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
+        } else {
+            $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientIdByEncounterId($id, $data['encounter_id']);
+        }
         $data['countries'] = $this->location_model->getCountry();
         $data['states'] = $this->location_model->getState();
         $data['cities'] = $this->location_model->getCity();

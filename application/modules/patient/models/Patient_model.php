@@ -382,6 +382,15 @@ class Patient_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientMaterialByPatientIdByEncounterId($id, $encounter_id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $id);
+        $this->db->where('encounter_id', $encounter_id);
+        $query = $this->db->get('patient_material');
+        return $query->result();
+    }
+
     function deletePatientMaterial($id) {
         $this->db->where('id', $id);
         $this->db->delete('patient_material');
