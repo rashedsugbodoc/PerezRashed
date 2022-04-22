@@ -208,6 +208,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                 padding-top: 1px;
                 padding-bottom: 1px;
             }
+            .hidden {
+                display: none;
+            }
         </style>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
