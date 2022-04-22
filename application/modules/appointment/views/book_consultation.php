@@ -523,7 +523,7 @@
                 $('#res_request').val(request);
                 console.log(doctor_id + ' ' + services);
                 $.ajax({
-                    url: 'doctor/getDoctorById?id=' + doctor_id,
+                    url: 'doctor/getDoctorById?id=' + doctor_id + '&service_category=' + service_category,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -531,6 +531,8 @@
                         $('#summary_specialties').find('span').remove();
                         console.log(response.specialties);
                         document.getElementById('summary_doctor').innerHTML = response.doctor.name;
+                        document.getElementById('summary_c_price').innerHTML = currency + ' ' + response.consultation_fee;
+                        document.getElementById('summary_address').innerHTML = street + ', ' + barangay + ', ' + city + ', ' + state + ', ' + country + ', ' + postal;
                         // document.getElementById('summary_specialties').innerHTML = response.doctor.specialties;
                         if (response.specialties) {
                             $.each(response.specialties, function(key, value) {
@@ -540,19 +542,19 @@
                     }
                 });
 
-                $.ajax({
-                    url: 'appointment/getServicesByServiceId?id=' + services,
-                    method: 'GET',
-                    data: '',
-                    dataType: 'json',
-                    success: function (response) {
-                        if (response.services.c_price != null) {
-                            document.getElementById('summary_c_price').innerHTML = currency + ' ' + response.services.c_price;
-                        }
+                // $.ajax({
+                //     url: 'appointment/getServicesByServiceId?id=' + services,
+                //     method: 'GET',
+                //     data: '',
+                //     dataType: 'json',
+                //     success: function (response) {
+                //         if (response.services.c_price != null) {
+                //             document.getElementById('summary_c_price').innerHTML = currency + ' ' + response.services.c_price;
+                //         }
 
-                        document.getElementById('summary_address').innerHTML = street + ', ' + barangay + ', ' + city + ', ' + state + ', ' + country + ', ' + postal;
-                    }
-                })
+                //         document.getElementById('summary_address').innerHTML = street + ', ' + barangay + ', ' + city + ', ' + state + ', ' + country + ', ' + postal;
+                //     }
+                // })
             });
         });
     </script>

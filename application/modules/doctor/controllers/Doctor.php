@@ -773,10 +773,18 @@ class Doctor extends MX_Controller {
     public function getDoctorById() {
         $data = array();
         $id = $this->input->get('id');
+        $service_category = $this->input->get('service_category');
 
         $data['doctor'] = $this->doctor_model->getDoctorById($id);
         $doctor_specialty = $data['doctor']->specialties;
         $data['specialties'] = $this->getSpecialtyListArray($doctor_specialty);
+        $is_virtual = $this->finance_model->getServiceCategoryGroupById($service_category)->is_virtual;
+
+        if (!empty($is_virtual)) {
+            $data['consultation_fee'] = $data['doctor']->virtual_consultation_fee;
+        } else {
+            $data['consultation_fee'] = $data['doctor']->physical_consultation_fee;
+        }
 
         echo json_encode($data);        
     }
