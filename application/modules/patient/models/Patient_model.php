@@ -14,7 +14,7 @@ class Patient_model extends CI_model {
         $data1 = array(
             'hospital_id' => $this->session->userdata('hospital_id'),
             'visited_provider_id' => $this->session->userdata('hospital_id'),
-            'unrestricted_provider_id' => $this->session->userdata('hospital_id'),
+            'isolated_provider_id' => $this->session->userdata('hospital_id'),
         );
         $data2 = array_merge($data, $data1);
         $this->db->insert('patient', $data2);
@@ -25,7 +25,7 @@ class Patient_model extends CI_model {
         $data1 = array(
             'hospital_id' => $hospital_id,
             'visited_provider_id' => $hospital_id,
-            'unrestricted_provider_id' => $hospital_id,
+            'isolated_provider_id' => $hospital_id,
         );
         $data2 = array_merge($data, $data1);
         $this->db->insert('patient', $data2);
