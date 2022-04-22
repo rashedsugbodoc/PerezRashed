@@ -132,12 +132,16 @@
                         <!-- <form method="POST" action="patient/medicalHistory"> -->
                             <div class="row mt-5">
                                 <div class="col-md-8 col-sm-12">
-                                    <?php if (!empty($encounter_id)) { ?>
+                                    <?php if (!empty($encounter_id) || !empty($all_encounter)) { ?>
                                         <div class="card bg-primary">
                                             <div class="card-body text-white" id="encounterCard">
                                                 <div id="encounterBanner">
-                                                    <span class="font-weight-bold"><?php echo lang('encounter')?></span><?php echo ' '.$encounter_details->encounter_number; ?><span class="font-weight-bold"><?php echo ' '.lang('for').' '.lang('patient').': ' ?></span><?php echo $patient->name ?><br>
-                                                    <span class="font-weight-bold"><?php echo ' '.lang('started').': ' ?></span><?php echo date('F j, Y h:i A', strtotime($encounter_details->started_at.' UTC')); ?> <span class="font-weight-bold"><?php echo ' '.lang('ended').': ' ?></span><?php echo $encounter_details->ended_at?date('F j, Y h:i A', strtotime($encounter_details->ended_at.' UTC')):"not ended"; ?>
+                                                    <?php if (empty($all_encounter)) { ?>
+                                                        <span class="font-weight-bold"><?php echo lang('encounter')?></span><?php echo ' '.$encounter_details->encounter_number; ?><span class="font-weight-bold"><?php echo ' '.lang('for').' '.lang('patient').': ' ?></span><?php echo $patient->name ?><br>
+                                                        <span class="font-weight-bold"><?php echo ' '.lang('started').': ' ?></span><?php echo date('F j, Y h:i A', strtotime($encounter_details->started_at.' UTC')); ?> <span class="font-weight-bold"><?php echo ' '.lang('ended').': ' ?></span><?php echo $encounter_details->ended_at?date('F j, Y h:i A', strtotime($encounter_details->ended_at.' UTC')):"not ended"; ?>
+                                                    <?php } else { ?>
+                                                        <span class="font-weight-bold"><?php echo $all_encounter.' '.lang('encounter'); ?></span>
+                                                    <?php } ?>
                                                 </div>
                                             </div>
                                         </div>
@@ -154,7 +158,7 @@
                                 <div class="col-md-2 col-sm-12 pl-0">
                                     <div class="form-group">
                                         <!-- <button class="btn btn-primary w-100" id="encounterChange">Change</button> -->
-                                        <?php if(!empty($encounter_id)) { ?>
+                                        <?php if(!empty($encounter_id) || !empty($all_encounter)) { ?>
                                             <a href="patient/medicalHistory?id=<?php echo $patient->id; ?>" class="btn btn-primary w-100"><center>Change</center></a>
                                         <?php } else { ?>
                                             <!-- <a href="patient/medicalHistory?id=<?php echo $patient->id; ?>" class="btn btn-primary"><center>Change</center></a> -->
