@@ -23,9 +23,9 @@ class Settings extends MX_Controller {
         $data['states'] = $this->location_model->getState();
         $data['cities'] = $this->location_model->getCity();
         $data['barangays'] = $this->location_model->getBarangay();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('settings', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('settingsv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     public function getStateByCountryIdByJason() {
