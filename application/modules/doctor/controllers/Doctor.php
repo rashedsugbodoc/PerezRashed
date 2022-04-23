@@ -726,10 +726,11 @@ class Doctor extends MX_Controller {
     public function getDoctorInfoByCountry() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');
+        $provider = $this->input->get('provider');
         $patient_ion_id = $this->ion_auth->get_user_id();
         $country_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->country_id;
 // Get users
-        $response = $this->doctor_model->getDoctorInfoByCountry($searchTerm, $country_id);
+        $response = $this->doctor_model->getDoctorInfoByCountry($searchTerm, $country_id, $provider);
 
         echo json_encode($response);
     }

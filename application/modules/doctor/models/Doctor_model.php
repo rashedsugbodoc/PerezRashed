@@ -97,6 +97,12 @@ class Doctor_model extends CI_model {
         return $query->row();
     }
 
+    function getDoctorByIdFromConsultation($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('doctor');
+        return $query->row();
+    }
+
     function getDoctorByIonUserId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('ion_user_id', $id);
@@ -159,17 +165,22 @@ class Doctor_model extends CI_model {
         return $data;
     }
 
-    function getDoctorInfoByCountry($searchTerm, $country_id) {
+    function getDoctorInfoByCountry($searchTerm, $country_id, $provider) {
         if (!empty($searchTerm)) {
-            $query = $this->db->select('*')
-                    ->from('doctor')
-                    ->where('country_id', $country_id)
-                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
-                    ->get();
+            $this->db->select('*');
+            $this->db->where('country_id', $country_id);
+            $this->db->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE);
+            if (!empty($provider)) {
+                $this->db->where('hospital_id', $provider);
+            }
+            $query = $this->db->get('doctor');
             $users = $query->result_array();
         } else {
             $this->db->select('*');
             $this->db->where('country_id', $country_id);
+            if (!empty($provider)) {
+                $this->db->where('hospital_id', $provider);
+            }
             $this->db->limit(10);
             $fetched_records = $this->db->get('doctor');
             $users = $fetched_records->result_array();
