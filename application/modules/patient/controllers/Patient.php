@@ -58,6 +58,12 @@ class Patient extends MX_Controller {
         $this->load->view('find_doctors', $data);
     }
 
+    public function findClinicOrHospital() {
+        $data['hospitals'] = $this->hospital_model->getHospital();
+        $this->load->view('home/dashboardv2');
+        $this->load->view('find_clinic_hospital', $data);
+    }
+
     public function calendar() {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Patient'))) {
             redirect('home/permission');

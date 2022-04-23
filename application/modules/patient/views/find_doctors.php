@@ -80,7 +80,7 @@
                                                 }
                                             ?>
                                             </p></small>
-                                            <a href="#" class="btn btn-primary btn-pill btn-sm d-xl-inline">Book</a>
+                                            <a href="appointment/bookConsultation?doctor_id=<?php echo $doctor->id ?>" class="btn btn-primary btn-pill btn-sm d-xl-inline">Book</a>
                                             <a class="btn btn-white btn-pill btn-sm " data-target="#modaldemo3" data-toggle="modal" href="">Info</a>
                                         </div>
                                     </div>
