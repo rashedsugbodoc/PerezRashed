@@ -111,7 +111,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-md-4 text-center">
-                                                <a>
+                                                <a href="patient/findClinicOrHospital">
                                                     <div class="card">
                                                         <div class="card-body">
                                                             <i class="fa fa-home fa-5x"></i>
