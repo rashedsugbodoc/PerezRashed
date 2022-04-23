@@ -43,17 +43,30 @@ class Branch_model extends CI_model {
         return $query->row();
     }
 
-    function getBranchInfo($searchTerm) {
+    function getBranchByHospitalId($hospital_id) {
+        $this->db->where('hospital_id', $hospital_id);
+        $query = $this->db->get('location');
+        return $query->result();
+    }
+
+    function getBranchInfo($searchTerm, $provider) {
         if (!empty($searchTerm)) {
-            $query = $this->db->select('*')
-                    ->from('location')
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
-                    ->get();
+            $this->db->select('*');
+            if (!empty($provider)) {
+                $this->db->where('hospital_id', $provider);
+            } else {
+                $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            }
+            $this->db->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE);
+            $query = $this->db->get('location');
             $users = $query->result_array();
         } else {
             $this->db->select('*');
-            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            if (!empty($provider)) {
+                $this->db->where('hospital_id', $provider);
+            } else {
+                $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            }
             $this->db->limit(10);
             $fetched_records = $this->db->get('location');
             $users = $fetched_records->result_array();
