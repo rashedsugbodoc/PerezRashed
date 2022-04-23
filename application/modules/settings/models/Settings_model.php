@@ -55,4 +55,10 @@ class Settings_model extends CI_model {
         return $query->result();
     }
 
+    function getEntityTypeById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('entity_type');
+        return $query->row();
+    }
+
 }
