@@ -44,6 +44,9 @@ class Appointment extends MX_Controller {
         }
 
         $data['id'] = $this->input->get('id');
+        $data['doctor_id'] = $this->input->get('doctor_id');
+        $data['provider'] = $this->input->get('provider_id');
+        $data['doctor'] = $this->doctor_model->getDoctorByIdFromConsultation($data['doctor_id']);
 
         // $data['branches'] = $this->branch_model->getBranches();
         $data['settings'] = $this->settings_model->getSettings();
@@ -2430,9 +2433,10 @@ class Appointment extends MX_Controller {
     public function getBranchInfo() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');
+        $provider = $this->input->get('provider');
 
 // Get users
-        $response = $this->branch_model->getBranchInfo($searchTerm);
+        $response = $this->branch_model->getBranchInfo($searchTerm, $provider);
 
         echo json_encode($response);
     }

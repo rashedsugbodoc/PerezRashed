@@ -27,6 +27,11 @@
                                                         <form >
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12">
+                                                                    <input type="hidden" id="provider" value="<?php echo $provider; ?>">
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
                                                                         <label class="form-label"> I would like to request for a</label>
                                                                         <select class="form-control select2-show-search service_cat" name="service_category_group" id="service_select" data-placeholder="Choose one (with searchbox)"  required="">
@@ -36,8 +41,10 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="form-label"> Which Doctor do you wish to consult?</label>
-                                                                <select class="form-control select2-show-search pos_select" id="adoctors" name="doctor" data-placeholder="Choose one (with searchbox)"  required="">
-                                                                    
+                                                                <select class="form-control select2-show-search pos_select" id="adoctors" name="doctor" data-placeholder="Choose one (with searchbox)"  required="" <?php if (!empty($doctor_id)){echo "disabled";} ?>>
+                                                                    <?php if (!empty($doctor_id)) { ?>
+                                                                        <option value="<?php echo $doctor->id ?>"><?php echo $doctor->name; ?></option>
+                                                                    <?php } ?>
                                                                 </select>
                                                             </div>
                                                             <div class="form-group">
@@ -574,11 +581,12 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var provider = $("#provider").val();
             $("#adoctors").select2({
                 placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'doctor/getDoctorInfoByCountry',
+                    url: 'doctor/getDoctorInfoByCountry?provider='+provider,
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -601,11 +609,12 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var provider = $("#provider").val();
             $("#branch_select").select2({
                 placeholder: '<?php echo lang('select_branch'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'appointment/getBranchInfo',
+                    url: 'appointment/getBranchInfo?provider='+provider,
                     type: "post",
                     dataType: 'json',
                     delay: 250,
