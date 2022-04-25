@@ -99,7 +99,7 @@
                                                                                                     }
                                                                                                 ?>
                                                                                             <?php } else { ?>
-                                                                                                <a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>" class="btn btn-primary"><?php echo lang('start').' '.lang('encounter'); ?></a>
+                                                                                                <a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory" class="btn btn-primary"><?php echo lang('start').' '.lang('encounter'); ?></a>
                                                                                             <?php } ?>
                                                                                         </div>
                                                                                     <?php } ?>
