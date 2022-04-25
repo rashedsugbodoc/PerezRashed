@@ -358,6 +358,7 @@ class Doctor extends MX_Controller {
                             $this->session->set_flashdata('fileError', $fileError);
                             $this->session->set_flashdata('error', lang('validation_error'));
                             $data = array();
+                            $data['setval'] = 'setval';
                             $data['departments'] = $this->department_model->getDepartment();
                             $data['doctor'] = $this->doctor_model->getDoctorById($id);
                             $data['doctors'] = $this->doctor_model->getDoctor();
@@ -473,6 +474,7 @@ class Doctor extends MX_Controller {
                                 $this->session->set_flashdata('fileError', $fileError);
                                 $this->session->set_flashdata('error', lang('validation_error'));
                                 $data = array();
+                                $data['setval'] = 'setval';
                                 $data['departments'] = $this->department_model->getDepartment();
                                 $data['doctor'] = $this->doctor_model->getDoctorById($id);
                                 $data['doctors'] = $this->doctor_model->getDoctor();
@@ -518,6 +520,7 @@ class Doctor extends MX_Controller {
                             $this->session->set_flashdata('fileError', $fileError);
                             $this->session->set_flashdata('error', lang('validation_error'));
                             $data = array();
+                            $data['setval'] = 'setval';
                             $data['departments'] = $this->department_model->getDepartment();
                             $data['doctor'] = $this->doctor_model->getDoctorById($id);
                             $data['doctors'] = $this->doctor_model->getDoctor();
