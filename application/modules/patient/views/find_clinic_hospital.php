@@ -7,7 +7,7 @@
                         <!--Page header-->
                         <div class="page-header">
                             <div class="page-leftheader">
-                                <h4 class="page-title">Find Doctors</h4>
+                                <h4 class="page-title"><?php echo lang('find_clinic_hospital'); ?></h4>
                             </div>
                         </div>
                         <!--End Page header-->
@@ -17,11 +17,13 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="form-group">
                                     <div class="input-group">
-                                        <input type="text" class="form-control">
+                                        <input type="text" class="form-control searchbox-input">
                                         <div class="input-group-append">
                                             <select class="form-control select2-show-search" id="doctorchoose" data-placeholder="Choose one (with searchbox)">
-                                                <?php foreach ($specialties as $specialty) { ?>
-                                                    <option value="<?php echo $specialty->id; ?>"> <?php echo $specialty->display_name_ph ?> </option>
+                                                <option></option>
+                                                <option value=" "><?php echo lang('all'); ?></option>
+                                                <?php foreach ($entity_type as $entity) { ?>
+                                                    <option value="<?php echo $entity->display_name; ?>"> <?php echo $entity->display_name; ?> </option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -46,7 +48,7 @@
                                             <small class="text-muted">
                                                 <?php
                                                     $entity_type = $this->settings_model->getSettingsByHospitalId($hospital->id)->entity_type_id;
-                                                    echo ucfirst($this->settings_model->getEntityTypeById($entity_type)->name);
+                                                    echo ucfirst($this->settings_model->getEntityTypeById($entity_type)->display_name);
                                                 ?>
                                             </small><br>
                                             <?php $branches = $this->branch_model->getBranchByHospitalId($hospital->id); ?>
@@ -184,6 +186,26 @@
                 });
             });
         </script> -->
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+              $('.searchbox-input').on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".col-xl-4").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+              });
+            });
+
+            $(document).ready(function(){
+              $('.select2-show-search').on("change", function() {
+                var value = $(this).val().toLowerCase();
+                $(".col-xl-4").filter(function() {
+                  $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+              });
+            });
+        </script>
 
     </body>
 </html>         

@@ -60,6 +60,7 @@ class Patient extends MX_Controller {
 
     public function findClinicOrHospital() {
         $data['hospitals'] = $this->hospital_model->getHospital();
+        $data['entity_type'] = $this->settings_model->getEntityType();
         $this->load->view('home/dashboardv2');
         $this->load->view('find_clinic_hospital', $data);
     }
