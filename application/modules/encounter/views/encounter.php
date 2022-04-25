@@ -13,7 +13,7 @@
                                         <div class="card-title"><?php echo lang('encounter'); ?></div>
                                         <div class="card-options">
                                             <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
-                                                <a data-toggle="modal" href="#myModal">
+                                                <a href="encounter/addNewView">
                                                     <button id="" class="btn btn-primary btn-xs">
                                                         <i class="fa fa-plus"></i> <?php echo lang('add_encounter'); ?>
                                                     </button>

@@ -297,6 +297,7 @@
             $("#encounter_type").change(function () {
                 var encounter_type = $("#encounter_type").val();
                 $("#encounter_status").find('option').remove();
+                $("#location").find('option').remove();
 
                 $.ajax({
                     url: 'encounter/getStatusByEncounterType?id=' + encounter_type,
@@ -308,6 +309,20 @@
 
                         $.each(status, function (key, value) {
                             $('#encounter_status').append($('<option>').text(value.display_name).val(value.id)).end();
+                        });
+                    }
+                });
+
+                $.ajax({
+                    url: 'encounter/getLocationByEncounterType?type_id=' + encounter_type,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter_type = response.encounter_type;
+                        console.log(encounter_type);
+                        $.each(encounter_type, function (key, value) {
+                            $('#location').append($('<option>').text(value.display_name).val(value.id)).end();
                         });
                     }
                 });
@@ -443,24 +458,6 @@
             $("#location").select2({
                 placeholder: '<?php echo lang('select_online_or_location'); ?>',
                 allowClear: true,
-                ajax: {
-                    url: 'appointment/getBranchInfoWithHospital',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
-
             });
         });
 
