@@ -41,7 +41,7 @@
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="form-label"> Which Doctor do you wish to consult?</label>
-                                                                <select class="form-control select2-show-search pos_select" id="adoctors" name="doctor" data-placeholder="Choose one (with searchbox)"  required="" <?php if (!empty($doctor_id)){echo "disabled";} ?>>
+                                                                <select class="form-control select2-show-search pos_select" id="adoctors" name="doctor" data-placeholder="Choose one (with searchbox)"  required="">
                                                                     <?php if (!empty($doctor_id)) { ?>
                                                                         <option value="<?php echo $doctor->id ?>"><?php echo $doctor->name; ?></option>
                                                                     <?php } ?>
