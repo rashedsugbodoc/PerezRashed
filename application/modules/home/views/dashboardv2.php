@@ -1164,7 +1164,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                             <i class="fe fe-eye"></i>
                                                         </div>
                                                         <div>
-                                                            <div class="mt-2"><?php echo lang('see_all_payments'); ?></div>
+                                                            <div class="mt-2"><?php echo lang('see_all_invoices'); ?></div>
                                                         </div>
                                                     </a>
                                                 </div>
