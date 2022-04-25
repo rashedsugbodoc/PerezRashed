@@ -14,7 +14,11 @@
                                 <form method="POST" action="encounter/addnew">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
-                                            <input type="hidden" name="redirect" value="<?php echo $redirect ?>">
+                                            <input type="hidden" name="redirect" value="<?php
+                                            if (!empty($redirect)) {
+                                                echo $redirect;
+                                            }
+                                            ?>">
                                         </div>
                                     </div>
                                     <div class="row">
