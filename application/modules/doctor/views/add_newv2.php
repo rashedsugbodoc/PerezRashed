@@ -39,7 +39,7 @@
                                                             if (!empty($setval)) {
                                                                 echo set_value('professional_display_name');
                                                             }
-                                                            if (!empty($doctor->professional_display_name)) {
+                                                            elseif (!empty($doctor->professional_display_name)) {
                                                                 echo $doctor->professional_display_name;
                                                             }
                                                         ?>" required>
@@ -54,7 +54,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('f_name');
                                                         }
-                                                        if (!empty($doctor->firstname)) {
+                                                        elseif (!empty($doctor->firstname)) {
                                                             echo $doctor->firstname;
                                                         }
                                                         ?>" required>
@@ -67,7 +67,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('m_name');
                                                         }
-                                                        if (!empty($doctor->middlename)) {
+                                                        elseif (!empty($doctor->middlename)) {
                                                             echo $doctor->middlename;
                                                         }
                                                         ?>">
@@ -82,7 +82,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('l_name');
                                                         }
-                                                        if (!empty($doctor->lastname)) {
+                                                        elseif (!empty($doctor->lastname)) {
                                                             echo $doctor->lastname;
                                                         }
                                                         ?>" required>
@@ -94,18 +94,18 @@
                                                         <div class="input-group-append br-tl-0 br-bl-0">
                                                             <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                                 <option value="0" ><?php echo lang('none'); ?></option>
-                                                                <option value="Jr." <?php if ($doctor->suffix ==='Jr.') { echo 'selected'; } if(set_value('suffix')=='Jr.') { echo 'selected';} ?>><?php echo lang('jr'); ?></option>
-                                                                <option value="Sr." <?php if ($doctor->suffix ==='Sr.') { echo 'selected'; } if(set_value('suffix')=='Sr.') { echo 'selected';} ?>><?php echo lang('sr'); ?></option>
-                                                                <option value="I" <?php if ($doctor->suffix ==='I') { echo 'selected'; } if(set_value('suffix')=='I') { echo 'selected';} ?>><?php echo lang('i'); ?></option>
-                                                                <option value="II" <?php if ($doctor->suffix ==='II') { echo 'selected'; } if(set_value('suffix')=='II') { echo 'selected';} ?>><?php echo lang('ii'); ?></option>
-                                                                <option value="III" <?php if ($doctor->suffix ==='III') { echo 'selected'; } if(set_value('suffix')=='III') { echo 'selected';} ?>><?php echo lang('iii'); ?></option>
-                                                                <option value="IV" <?php if ($doctor->suffix ==='IV') { echo 'selected'; } if(set_value('suffix')=='IV') { echo 'selected';} ?>><?php echo lang('iv'); ?></option>
-                                                                <option value="V" <?php if ($doctor->suffix ==='V') { echo 'selected'; } if(set_value('suffix')=='V') { echo 'selected';} ?>><?php echo lang('v'); ?></option>
-                                                                <option value="VI" <?php if ($doctor->suffix ==='VI') { echo 'selected'; } if(set_value('suffix')=='VI') { echo 'selected';} ?>><?php echo lang('vi'); ?></option>
-                                                                <option value="VII" <?php if ($doctor->suffix ==='VII') { echo 'selected'; } if(set_value('suffix')=='VII') { echo 'selected';} ?>><?php echo lang('vii'); ?></option>
-                                                                <option value="VIII" <?php if ($doctor->suffix ==='VIII') { echo 'selected'; } if(set_value('suffix')=='VIII') { echo 'selected';} ?>><?php echo lang('viii'); ?></option>
-                                                                <option value="IX" <?php if ($doctor->suffix ==='IX') { echo 'selected'; } if(set_value('suffix')=='IX') { echo 'selected';} ?>><?php echo lang('ix'); ?></option>
-                                                                <option value="X" <?php if ($doctor->suffix ==='X') { echo 'selected'; } if(set_value('suffix')=='X') { echo 'selected';} ?>><?php echo lang('x'); ?></option>
+                                                                <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($doctor->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
+                                                                <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($doctor->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
+                                                                <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($doctor->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
+                                                                <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($doctor->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
+                                                                <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($doctor->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
+                                                                <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($doctor->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
+                                                                <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($doctor->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
+                                                                <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($doctor->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
+                                                                <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($doctor->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
+                                                                <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($doctor->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
+                                                                <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($doctor->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
+                                                                <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($doctor->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -119,7 +119,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('email');
                                                         }
-                                                        if (!empty($doctor->email)) {
+                                                        elseif (!empty($doctor->email)) {
                                                             echo $doctor->email;
                                                         }
                                                         ?>" required>
@@ -132,7 +132,7 @@
                                                         <input id="mobile" name="mobile" class="form-control" type="tel" required value= 
                                                             "<?php
                                                                 if (!empty($setval)) {
-                                                                    echo set_value('mobile');
+                                                                    echo set_value('phone');
                                                                 } elseif (!empty($doctor->phone)) {
                                                                     echo $doctor->phone;
                                                                 } else {
@@ -153,7 +153,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('address');
                                                         }
-                                                        if (!empty($doctor->address)) {
+                                                        elseif (!empty($doctor->address)) {
                                                             echo $doctor->address;
                                                         }
                                                         ?>" required>
@@ -173,7 +173,7 @@
                                                                         echo 'selected';
                                                                     }
                                                                 }
-                                                                if (!empty($doctors->country_id)) {
+                                                                elseif (!empty($doctors->country_id)) {
                                                                     if ($country->id == $doctors->country_id) {
                                                                         echo 'selected';
                                                                     }
@@ -214,7 +214,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('postal');
                                                         }
-                                                        if (!empty($doctor->postal)) {
+                                                        elseif (!empty($doctor->postal)) {
                                                             echo $doctor->postal;
                                                         }
                                                         ?>">
@@ -252,7 +252,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('license');
                                                         }
-                                                        if (!empty($doctor->license)) {
+                                                        elseif (!empty($doctor->license)) {
                                                             echo $doctor->license;
                                                         }
                                                         ?>" required>
@@ -267,7 +267,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('tin');
                                                         }
-                                                        if (!empty($doctor->tax_number)) {
+                                                        elseif (!empty($doctor->tax_number)) {
                                                             echo $doctor->tax_number;
                                                         }
                                                         ?>">
@@ -282,7 +282,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('ptr');
                                                         }
-                                                        if (!empty($doctor->tax_receipt_number)) {
+                                                        elseif (!empty($doctor->tax_receipt_number)) {
                                                             echo $doctor->tax_receipt_number;
                                                         }
                                                         ?>" required>
@@ -297,7 +297,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('s2');
                                                         }
-                                                        if (!empty($doctor->secondary_license_number)) {
+                                                        elseif (!empty($doctor->secondary_license_number)) {
                                                             echo $doctor->secondary_license_number;
                                                         }
                                                         ?>">
@@ -312,7 +312,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('virtual_consultation_fee');
                                                         }
-                                                        if (!empty($doctor->virtual_consultation_fee)) {
+                                                        elseif (!empty($doctor->virtual_consultation_fee)) {
                                                             echo $doctor->virtual_consultation_fee;
                                                         }
                                                         ?>" required>
@@ -325,7 +325,7 @@
                                                         if (!empty($setval)) {
                                                             echo set_value('in_person_consultation_fee');
                                                         }
-                                                        if (!empty($doctor->physical_consultation_fee)) {
+                                                        elseif (!empty($doctor->physical_consultation_fee)) {
                                                             echo $doctor->physical_consultation_fee;
                                                         }
                                                         ?>"
