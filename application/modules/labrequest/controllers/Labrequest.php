@@ -32,7 +32,9 @@ class Labrequest extends MX_Controller {
         $data['encounter_id'] = $this->input->get('encounter_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
-        $data['redirect'] = $root.'/'.$method;
+        if (!empty($root) && !empty($method)) {
+            $data['redirect'] = $root.'/'.$method;
+        }
 
         if (!empty($data['encounter_id'])) {
             $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
@@ -258,7 +260,9 @@ class Labrequest extends MX_Controller {
         $data['lab_request_date'] = $data['labrequests'][0]->request_date;
         $root = $this->input->get('root');
         $method = $this->input->get('method');
-        $data['redirect'] = $root.'/'.$method;
+        if (!empty($root) && !empty($method)) {
+            $data['redirect'] = $root.'/'.$method;
+        }
         if (!empty($data['labrequests'][0]->encounter_id)) {
             $data['encounter'] = $this->encounter_model->getEncounterById($data['labrequests'][0]->encounter_id);
             $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);

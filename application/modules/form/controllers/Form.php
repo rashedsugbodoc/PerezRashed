@@ -62,7 +62,9 @@ class Form extends MX_Controller {
         $data['encounter_id'] = $this->input->get('encounter_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
-        $data['redirect'] = $root.'/'.$method;
+        if (!empty($root) && !empty($method)) {
+            $data['redirect'] = $root.'/'.$method;
+        }
 
 
         $this->load->view('home/dashboardv2'); // just the header file
@@ -147,7 +149,9 @@ class Form extends MX_Controller {
         $data['encounter_id'] = $this->input->get('encounter_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
-        $data['redirect'] = $root.'/'.$method;
+        if (!empty($root) && !empty($method)) {
+            $data['redirect'] = $root.'/'.$method;
+        }
 
         if (!empty($id)) {
             $data['form'] = $this->form_model->getFormById($id);
@@ -388,7 +392,12 @@ class Form extends MX_Controller {
                 $inserted_id = $this->db->insert_id();
 
                 $this->session->set_flashdata('success', lang('record_added'));
-                redirect($redirect);
+                if (!empty($redirect)) {
+                    redirect($redirect);
+                } else {
+                    redirect('form');
+                }
+                
             } else {
                 $data = array(
                     'name' => $form_name,
@@ -404,7 +413,11 @@ class Form extends MX_Controller {
                 );
                 $this->form_model->updateForm($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
-                redirect($redirect);
+                if (!empty($redirect)) {
+                    redirect($redirect);
+                } else {
+                    redirect('form');
+                }
             }
         }
     }
@@ -884,7 +897,7 @@ class Form extends MX_Controller {
 
         foreach ($data['forms'] as $form) {
             if ($patient_id == $form->patient) {
-                $date = date('d-m-y', $form->date);
+                $date = date('d-m-y', strtotime($form->date.' UTC'));
 
                 $options2 = '<a class="btn btn-xs btn-info" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
 
