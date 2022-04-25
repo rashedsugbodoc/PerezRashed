@@ -383,6 +383,22 @@ class Encounter extends MX_Controller {
         echo json_encode($data);        
     }
 
+    public function getLocationByEncounterType() {
+        $data = array();
+        $type_id = $this->input->get('type_id');
+        $is_virtual = $this->encounter_model->getEncounterTypeById($type_id)->is_virtual;
+        if (empty($is_virtual)) {
+            $data['encounter_type'] = $this->branch_model->getBranches();
+        } else {
+            $data['encounter_type'] = array([
+                'id' => 0,
+                'display_name' => 'Online'
+            ]);
+        }
+
+        echo json_encode($data);
+    }
+
     public function editEncounterByJason() {
         $data = array();
         $id = $this->input->get('id');
@@ -529,6 +545,8 @@ class Encounter extends MX_Controller {
         $appointment_doctor = $appointment_details->doctor;
         $appointment_patient = $appointment_details->patient;
         $appointment_remarks = $appointment_details->remarks;
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
 
         $date = date("Y-m-d H:i:s", now('UTC'));
 
@@ -557,6 +575,9 @@ class Encounter extends MX_Controller {
 
         $this->encounter_model->insertEncounter($data_encounter);
         $inserted_id = $this->db->insert_id();
+        if (!empty($root) && !empty($method)) {
+            $redirect = $root . '/' . $method . '?id=' . $appointment_patient . '&encounter_id=' . $inserted_id;
+        }
         $data_appointment_encounter = array(
             'encounter_id' => $inserted_id
         );
@@ -570,7 +591,11 @@ class Encounter extends MX_Controller {
 
         $this->encounter_model->updateEncounter($inserted_id, $data_encounter);
 
-        redirect('encounter');
+        if (!empty($redirect)) {
+            redirect($redirect);
+        } else {
+            redirect('encounter');
+        }
 
     }
 
