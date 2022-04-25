@@ -35,7 +35,7 @@
 
                         <div class="row mb-4">
                             <div class="col-md-12 col-sm-12">
-                                Showing all Doctors
+                                Showing all Clinic/Hospital
                             </div>
                         </div>
 

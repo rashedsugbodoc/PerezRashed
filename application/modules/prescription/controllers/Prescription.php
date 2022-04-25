@@ -67,7 +67,9 @@ class Prescription extends MX_Controller {
         $data['patient_id'] = $this->input->get('patient_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
-        $data['redirect'] = $root.'/'.$method;
+        if (!empty($root) && !empty($method)) {
+            $data['redirect'] = $root.'/'.$method;
+        }
 
         if (!empty($id)) {
             $data['id'] = $id;
@@ -368,7 +370,9 @@ class Prescription extends MX_Controller {
         $data['doctors'] = $this->doctor_model->getDoctorById($data['prescription']->doctor);
         $root = $this->input->get('root');
         $method = $this->input->get('method');
-        $data['redirect'] = $root.'/'.$method;
+        if (!empty($root) && !empty($method)) {
+            $data['redirect'] = $root.'/'.$method;
+        }
         if (!empty($data['prescription']->encounter_id)) {
             $data['encounter_id'] = $data['prescription']->encounter_id;
             $data['patient_id'] = $this->encounter_model->getEncounterById($data['encounter_id'])->patient_id;
