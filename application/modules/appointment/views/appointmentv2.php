@@ -670,11 +670,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#editable-sample5").on("click", ".endEncounter", function(){
-                var encounter_id = $(this).attr('data-id');
+                var encounter_id = $(this).data('encounter');
+                var patient = $(this).data('patient');
                 swal({
-                    title: "Notifiaction Styles",
-                    text: "New Notification from Dashtic",
-                    type: "warning",
+                    title: "End Encounter?",
+                    text: "This will end encounter for " + patient,
                     showCancelButton: true,
                     confirmButtonText: 'End',
                     cancelButtonText: 'Cancel',
@@ -690,6 +690,9 @@
                             // console.log(response.encounter_id);
                             $(".endEncounter").remove();
                             $(".endEncounterDiv").append('<a class="btn btn-light btn-md btn-block">Encounter has Ended</a>');
+                            $(".confirm").click(function () {
+                                location.reload(true);
+                            });
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             swal("Error on Ending Encounter!", "Please try again", "error");
@@ -699,11 +702,11 @@
             });
 
             $("#editable-sample2").on("click", ".endEncounter", function(){
-                var encounter_id = $(this).attr('data-id');
+                var encounter_id = $(this).data('encounter');
+                var patient = $(this).data('patient');
                 swal({
-                    title: "Notifiaction Styles",
-                    text: "New Notification from Dashtic",
-                    type: "warning",
+                    title: "End Encounter?",
+                    text: "This will end encounter for " + patient,
                     showCancelButton: true,
                     confirmButtonText: 'End',
                     cancelButtonText: 'Cancel',
@@ -719,6 +722,9 @@
                             // console.log(response.encounter_id);
                             $(".endEncounter").remove();
                             $(".endEncounterDiv").append('<a class="btn btn-light btn-md btn-block">Encounter has Ended</a>');
+                            $(".confirm").click(function () {
+                                location.reload(true);
+                            });
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             swal("Error on Ending Encounter!", "Please try again", "error");
