@@ -72,6 +72,41 @@
                                                                                         <a title="<?php echo lang('history'); ?>"  href="patient/medicalHistory?id=<?php echo $todays_appointment->patient; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-stethoscope mr-2"></i><?php echo lang('patient'); ?> <?php echo lang('history'); ?></a>
                                                                                     </div>
                                                                                     <?php if ($todays_appointment->status == 'Confirmed') { ?>
+                                                                                        <?php
+                                                                                            $encounter = $this->encounter_model->getEncounterById($todays_appointment->encounter_id);
+                                                                                        ?>
+                                                                                        <div class="btn-group mb-0">
+                                                                                        <?php
+                                                                                            $service_category_group = $this->appointment_model->getServiceCategoryById($todays_appointment->service_category_group_id)->is_virtual;
+                                                                                            if (!empty($service_category_group)) { //Virtual
+                                                                                                if (empty($todays_appointment->encounter_id)) {
+                                                                                                    ?><a title=" <?php echo lang('start_video_call'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('start_video_call'); ?></a><?php
+                                                                                                } else {
+                                                                                                    if (empty($encounter->ended_at)) {
+                                                                                                        ?><a title=" <?php echo lang('start_video_call'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('start_video_call'); ?></a>
+                                                                                        </div>
+                                                                                        <div class="btn-group mb-0 endEncounterDiv">
+                                                                                                        <a class="btn btn-danger btn-md btn-block endEncounter" data-encounter="<?php echo $todays_appointment->encounter_id; ?>" data-patient="<?php echo $this->patient_model->getPatientById($todays_appointment->patient)->name ?>"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a><?php
+                                                                                                    } else {
+                                                                                                        ?><a class="btn btn-light btn-md btn-block"><?php echo lang('encounter'); ?> has <?php echo lang('ended'); ?></a><?php
+                                                                                                    }
+                                                                                                }
+
+                                                                                            } else { //Face To Face
+                                                                                                if (!empty($todays_appointment->encounter_id)) { //With Encounter
+                                                                                                    if (empty($encounter->ended_at)) {
+                                                                                                        ?><a class="btn btn-danger btn-md btn-block endEncounter" data-encounter="<?php echo $todays_appointment->encounter_id; ?>" data-patient="<?php echo $this->patient_model->getPatientById($todays_appointment->patient)->name ?>"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a><?php
+                                                                                                    } else {
+                                                                                                        ?><a class="btn btn-light btn-md btn-block"><?php echo lang('encounter'); ?> has <?php echo lang('ended'); ?></a><?php
+                                                                                                    }
+                                                                                                } else { // No Encounter
+                                                                                                    ?><a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory" class="btn btn-primary"><?php echo lang('start').' '.lang('encounter'); ?></a><?php
+                                                                                                }
+                                                                                            }
+                                                                                        ?>
+                                                                                        </div>
+                                                                                    <?php } ?>
+                                                                                    <?php /*if ($todays_appointment->status == 'Confirmed') { ?>
                                                                                         <div class="btn-group mb-0">
                                                                                             <?php if (!empty($todays_appointment->encounter_id)) { ?>
                                                                                                 <?php
@@ -102,7 +137,7 @@
                                                                                                 <a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory" class="btn btn-primary"><?php echo lang('start').' '.lang('encounter'); ?></a>
                                                                                             <?php } ?>
                                                                                         </div>
-                                                                                    <?php } ?>
+                                                                                    <?php }*/ ?>
                                                                                 </td>
                                                                             </tr>
                                                                             <?php
@@ -994,9 +1029,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#editable-sample").on("click", ".endEncounter", function(){
-                var encounter_id = <?php echo $todays_appointment->encounter_id ?>;
+                var encounter_id = $(this).data('encounter');
                 var patient = $(this).data('patient');
-                console.log(patient);
+                console.log(encounter_id);
                 swal({
                     title: "End Encounter?",
                     text: "This will end encounter for " + patient,
