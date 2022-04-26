@@ -1050,7 +1050,9 @@
                             // console.log(response.encounter_id);
                             $(".endEncounter").remove();
                             $(".endEncounterDiv").append('<a class="btn btn-light btn-md btn-block">Encounter has Ended</a>');
-                            location.reload(true);
+                            $(".confirm").click(function () {
+                                location.reload(true);
+                            });
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             swal("Error on Ending Encounter!", "Please try again", "error");
