@@ -1575,11 +1575,6 @@ class Patient extends MX_Controller {
         } else {
             $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientIdByEncounterId($id, $data['encounter_id']);
         }
-        $data['countries'] = $this->location_model->getCountry();
-        $data['states'] = $this->location_model->getState();
-        $data['cities'] = $this->location_model->getCity();
-        $data['barangays'] = $this->location_model->getBarangay();
-
 
         foreach ($data['appointments'] as $appointment) {
             $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
