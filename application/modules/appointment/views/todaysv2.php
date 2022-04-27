@@ -389,9 +389,51 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- Sweet alert js -->
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.min.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/sweet-alert.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#editable-sample1").on("click", ".endEncounter", function(){
+                var appointment_id = $(this).data('appointment');
+                var encounter_id = $(this).data('encounter');
+                var patient = $(this).data('patient');
+                swal({
+                    title: "End Encounter?",
+                    text: "This will end encounter for " + patient,
+                    showCancelButton: true,
+                    confirmButtonText: 'End',
+                    cancelButtonText: 'Cancel',
+                }, function (isConfirm) {
+                    if (!isConfirm) return;
+                    $.ajax({
+                        url: "encounter/endEncounterById?encounter_id="+encounter_id+"&appointment_id="+appointment_id,
+                        type: "GET",
+                        data: '',
+                        dataType: "json",
+                        success: function (response) {
+                            swal("Done!", "You Successfully Ended", "success");
+                            // console.log(response.encounter_id);
+                            $(".endEncounter").remove();
+                            $(".endEncounterDiv").append('<a class="btn btn-light btn-md btn-block">Encounter has Ended</a>');
+                            $(".confirm").click(function () {
+                                location.reload(true);
+                            });
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            swal("Error on Ending Encounter!", "Please try again", "error");
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
