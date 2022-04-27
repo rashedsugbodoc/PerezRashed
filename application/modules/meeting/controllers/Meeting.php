@@ -71,9 +71,9 @@ class Meeting extends MX_Controller {
         $remarks = $data['appointment_details']->remarks;
 
         if ($this->ion_auth->in_group(array('Doctor'))) {
-            $encounter_status = 3;
+            $encounter_status = ENCOUNTER_STATUS_STARTED;
         } elseif ($this->ion_auth->in_group(array('Patient'))) {
-            $encounter_status = 1;
+            $encounter_status = ENCOUNTER_STATUS_WAITING;
         }
 
         $this->createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor, $encounter_status);
@@ -157,7 +157,7 @@ class Meeting extends MX_Controller {
 
             $this->encounter_model->updateEncounter($inserted_id, $data_encounter);
         } else {
-            if ($encounter_status != 3) {
+            if ($encounter_status != ENCOUNTER_STATUS_STARTED) {
                 $encounter_status = $encounter->encounter_status;
             } else {
                 $encounter_status = $encounter_status;
