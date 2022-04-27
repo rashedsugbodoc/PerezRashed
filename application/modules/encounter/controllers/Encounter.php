@@ -601,12 +601,19 @@ class Encounter extends MX_Controller {
 
     function endEncounterById() {
         $encounter_id = $this->input->get('encounter_id');
+        $appointment_id = $this->input->get('appointment_id');
         $date = date("Y-m-d H:i:s", now('UTC'));
 
         $data = array(
             "ended_at" => $date,
+            "encounter_status" => 4
         );
         $this->encounter_model->updateEncounter($encounter_id, $data);
+
+        $data_appointment = array(
+            "status" => "Treated"
+        );
+        $this->appointment_model->updateAppointment($appointment_id, $data_appointment);
 
 
         echo json_encode($data);

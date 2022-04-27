@@ -86,7 +86,7 @@
                                                                                                         ?><a title=" <?php echo lang('start_video_call'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('start_video_call'); ?></a>
                                                                                         </div>
                                                                                         <div class="btn-group mb-0 endEncounterDiv">
-                                                                                                        <a class="btn btn-danger btn-md btn-block endEncounter" data-encounter="<?php echo $todays_appointment->encounter_id; ?>" data-patient="<?php echo $this->patient_model->getPatientById($todays_appointment->patient)->name ?>"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a><?php
+                                                                                                        <a class="btn btn-danger btn-md btn-block endEncounter" data-appointment="<?php echo $todays_appointment->id; ?>" data-encounter="<?php echo $todays_appointment->encounter_id; ?>" data-patient="<?php echo $this->patient_model->getPatientById($todays_appointment->patient)->name ?>"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a><?php
                                                                                                     } else {
                                                                                                         ?><a class="btn btn-light btn-md btn-block"><?php echo lang('encounter'); ?> has <?php echo lang('ended'); ?></a><?php
                                                                                                     }
@@ -95,7 +95,7 @@
                                                                                             } else { //Face To Face
                                                                                                 if (!empty($todays_appointment->encounter_id)) { //With Encounter
                                                                                                     if (empty($encounter->ended_at)) {
-                                                                                                        ?><a class="btn btn-danger btn-md btn-block endEncounter" data-encounter="<?php echo $todays_appointment->encounter_id; ?>" data-patient="<?php echo $this->patient_model->getPatientById($todays_appointment->patient)->name ?>"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a><?php
+                                                                                                        ?><a class="btn btn-danger btn-md btn-block endEncounter" data-appointment="<?php echo $todays_appointment->id; ?>" data-encounter="<?php echo $todays_appointment->encounter_id; ?>" data-patient="<?php echo $this->patient_model->getPatientById($todays_appointment->patient)->name ?>"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a><?php
                                                                                                     } else {
                                                                                                         ?><a class="btn btn-light btn-md btn-block"><?php echo lang('encounter'); ?> has <?php echo lang('ended'); ?></a><?php
                                                                                                     }
@@ -1029,6 +1029,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#editable-sample").on("click", ".endEncounter", function(){
+                var appointment_id = $(this).data('appointment');
                 var encounter_id = $(this).data('encounter');
                 var patient = $(this).data('patient');
                 console.log(encounter_id);
@@ -1041,7 +1042,7 @@
                 }, function (isConfirm) {
                     if (!isConfirm) return;
                     $.ajax({
-                        url: "encounter/endEncounterById?encounter_id="+encounter_id,
+                        url: "encounter/endEncounterById?encounter_id="+encounter_id+"&appointment_id="+appointment_id,
                         type: "GET",
                         data: '',
                         dataType: "json",

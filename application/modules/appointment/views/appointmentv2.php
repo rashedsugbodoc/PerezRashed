@@ -509,7 +509,7 @@
 
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
-                                                    <button class="btn btn-primary pull-right" name="EditAppointment" type="submit" onclick="return confirm('Are you sure you want to delete this item?');"><?php echo lang('submit'); ?></button>
+                                                    <button class="btn btn-primary pull-right" name="EditAppointment" type="submit"><?php echo lang('submit'); ?></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -670,6 +670,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#editable-sample5").on("click", ".endEncounter", function(){
+                var appointment_id = $(this).data('appointment');
                 var encounter_id = $(this).data('encounter');
                 var patient = $(this).data('patient');
                 swal({
@@ -681,7 +682,7 @@
                 }, function (isConfirm) {
                     if (!isConfirm) return;
                     $.ajax({
-                        url: "encounter/endEncounterById?encounter_id="+encounter_id,
+                        url: "encounter/endEncounterById?encounter_id="+encounter_id+"&appointment_id="+appointment_id,
                         type: "GET",
                         data: '',
                         dataType: "json",
@@ -702,6 +703,7 @@
             });
 
             $("#editable-sample2").on("click", ".endEncounter", function(){
+                var appointment_id = $(this).data('appointment');
                 var encounter_id = $(this).data('encounter');
                 var patient = $(this).data('patient');
                 swal({
@@ -713,7 +715,7 @@
                 }, function (isConfirm) {
                     if (!isConfirm) return;
                     $.ajax({
-                        url: "encounter/endEncounterById?encounter_id="+encounter_id,
+                        url: "encounter/endEncounterById?encounter_id="+encounter_id+"&appointment_id="+appointment_id,
                         type: "GET",
                         data: '',
                         dataType: "json",
