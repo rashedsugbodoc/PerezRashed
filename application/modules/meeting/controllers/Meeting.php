@@ -70,7 +70,13 @@ class Meeting extends MX_Controller {
         $doctor = $data['appointment_details']->doctor;
         $remarks = $data['appointment_details']->remarks;
 
-        $this->createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor);
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $encounter_status = 3;
+        } elseif ($this->ion_auth->in_group(array('Patient'))) {
+            $encounter_status = 1;
+        }
+
+        $this->createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor, $encounter_status);
 
         if(!empty($birthdate)){
             $data['age'] = computeAge($birthdate);
@@ -110,8 +116,10 @@ class Meeting extends MX_Controller {
         redirect('meeting/jitsiLive?id=' . $appointment_id);
     }
 
-    function createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor) {
+    function createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor, $encounter_status) {
         $appointment_exist = $this->encounter_model->getEncounterByAppointmentId($appointment_id)->appointment_id;
+        $encounter = $this->encounter_model->getEncounterByAppointmentId($appointment_id);
+        $appointment_encounter_status = $this->encounter_model->getEncounterByAppointmentId($appointment_id)->encounter_status;
 
         if(empty($appointment_exist)) {
             $encounter_type_name = "virtual_consult";
@@ -129,7 +137,7 @@ class Meeting extends MX_Controller {
                 'created_at' => $date,
                 'started_at' => $date,
                 'waiting_started' => $date,
-                'encounter_status' => 1,
+                'encounter_status' => $encounter_status,
                 'created_user_id' => $user,
                 'reason' => $remarks,
             );
@@ -148,6 +156,18 @@ class Meeting extends MX_Controller {
             );
 
             $this->encounter_model->updateEncounter($inserted_id, $data_encounter);
+        } else {
+            if ($encounter_status != 3) {
+                $encounter_status = $encounter->encounter_status;
+            } else {
+                $encounter_status = $encounter_status;
+            }
+
+            $data_encounter = array(
+                'encounter_status' => $encounter_status,
+            );
+
+            $this->encounter_model->updateEncounter($encounter->id, $data_encounter);
         }
     }
 
