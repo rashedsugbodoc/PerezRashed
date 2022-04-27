@@ -897,7 +897,7 @@ class Form extends MX_Controller {
 
         foreach ($data['forms'] as $form) {
             if ($patient_id == $form->patient) {
-                $date = date('d-m-y', strtotime($form->date.' UTC'));
+                $date = date('d-m-y', strtotime($form->form_date.' UTC'));
 
                 $options2 = '<a class="btn btn-xs btn-info" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
 
