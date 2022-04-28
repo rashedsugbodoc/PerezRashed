@@ -64,7 +64,7 @@
                                                                                 <td>
                                                                                     <div class="btn-group mb-0">
                                                                                         <!-- <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fe fe-edit"></i></button> -->
-                                                                                        <a href="appointment/editAppointment?id=<?php echo $todays_appointment->id; ?>" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>
+                                                                                        <a href="appointment/editAppointment?id=<?php echo $todays_appointment->id; ?>&root=doctor&method=details" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>
                                                                                     </div>
                                                                                     <div class="btn-group mb-0">
                                                                                         <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $todays_appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
