@@ -611,7 +611,7 @@ class Encounter extends MX_Controller {
         $this->encounter_model->updateEncounter($encounter_id, $data);
 
         $data_appointment = array(
-            "status" => "Treated"
+            "status" => "Consulted"
         );
         $this->appointment_model->updateAppointment($appointment_id, $data_appointment);
 
