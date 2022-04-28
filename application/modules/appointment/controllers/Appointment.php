@@ -2176,7 +2176,7 @@ class Appointment extends MX_Controller {
         foreach ($data['appointments'] as $appointment) {
             //$i = $i + 1;
             $appointment_encounter = $appointment->encounter_id;
-            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
+            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'&root=appointment&method=todays" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
@@ -2325,7 +2325,7 @@ class Appointment extends MX_Controller {
         foreach ($data['appointments'] as $appointment) {
             //$i = $i + 1;
 
-            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
+            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'&root=appointment&method=upcoming" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
