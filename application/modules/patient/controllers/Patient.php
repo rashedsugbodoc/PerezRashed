@@ -4011,7 +4011,7 @@ class Patient extends MX_Controller {
             <td>'.
             $facility .'<br>'.'( '. $branch .' )'
             .'</td>
-            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i></a>
+            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '&root=appointment&method=calendar" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i></a>
                 <a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>
             </td>
             </tr>';
@@ -4044,7 +4044,7 @@ class Patient extends MX_Controller {
             <td>'.
             $facility .'<br>'.'( '. $branch .' )'
             .'</td>
-            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i></a>
+            <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '&root=appointment&method=calendar" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i></a>
                 <a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>
             </td>
             </tr>';
