@@ -35,7 +35,7 @@
                                                     <div class="row mb-3">
                                                         <div class="col-md-12">
                                                             <label class="h3 pull-left"><?php echo lang('todays_appointments'); ?></label>
-                                                            <a class="btn btn-primary pull-right" data-target="#myModal" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
+                                                            <a class="btn btn-primary pull-right" href="appointment/addNewView?root=doctor&method=details"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
                                                         </div>
                                                     </div>
                                                     <div class="mb-0">
@@ -63,7 +63,8 @@
                                                                                 <td><?php echo $todays_appointment->status; ?></td>
                                                                                 <td>
                                                                                     <div class="btn-group mb-0">
-                                                                                        <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fe fe-edit"></i></button>
+                                                                                        <!-- <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fe fe-edit"></i></button> -->
+                                                                                        <a href="appointment/editAppointment?id=<?php echo $todays_appointment->id; ?>" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>
                                                                                     </div>
                                                                                     <div class="btn-group mb-0">
                                                                                         <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $todays_appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
