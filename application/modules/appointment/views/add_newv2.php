@@ -171,9 +171,9 @@
                                         <div class="col-sm-12 col-md-12">
                                         <div class="form-group">
                                             <label class="form-label"><?php echo lang('date'); ?><span class="text-red">*</span></label>
-                                            <input class="form-control fc-datepicker" id="date" placeholder="MM/DD/YYYY" name="date" type="text" value="<?php
+                                            <input class="form-control flatpickr" id="date" placeholder="MM/DD/YYYY" name="date" type="text" value="<?php
                                             if (!empty($appointment->date)) {
-                                                echo date('d-m-Y', $appointment->date);
+                                                echo $appointment->appointment_date;
                                             }
                                             ?>" readonly>
                                         </div>
@@ -242,11 +242,16 @@
                                     }
                                     ?>'>
                                     <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-md-6 col-sm-12">
-                                            <label class="custom-control custom-checkbox">
+                                            <!-- <label class="custom-control custom-checkbox">
                                                 <input type="checkbox" class="custom-control-input pull-left" name="sms" value="sms">
                                                 <span class="custom-control-label">Send SMS</span>
-                                            </label>
+                                            </label> -->
                                         </div>
                                         <div class="col-md-6 col-sm-12">
                                             <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
@@ -357,7 +362,32 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
         <!-- INTERNAL JS INDEX END -->
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var appointment = $("#appointment_id").val();
+                if (appointment === "") {
+                    flatpickr(".flatpickr", {
+                        altInput: true,
+                        altFormat: "F j, Y",
+                        disableMobile: true,
+                        minDate: "today",
+                    });
+                } else {
+                    flatpickr(".flatpickr", {
+                        altInput: true,
+                        altFormat: "F j, Y",
+                        disableMobile: true,
+                    });
+                }
+                
+            })
+        </script>
 
         <script>
             $(document).ready(function () {
@@ -641,13 +671,14 @@
                 });
 
                 $(document).ready(function () {
-                    var iid = $('#date').val();
+                    var date = $('#date').val();
                     var doctorr = $('#adoctors').val();
                     var branch = $('#branch_select').val();
+                    var appointment_id = $('#appointment_id').val();
                     $('#aslots').find('option').remove();
                     // $('#default').trigger("reset");
                     $.ajax({
-                        url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+                        url: 'schedule/getAvailableSlotByDoctorByDateByAppointmentIdByJason?date=' + date + '&doctor=' + doctorr + '&appointment_id=' + appointment_id + '&location=' + branch,
                         method: 'GET',
                         data: '',
                         dataType: 'json',
@@ -656,6 +687,7 @@
                             $.each(slots, function (key, value) {
                                 $('#aslots').append($('<option>').text(value).val(value)).end();
                             });
+                            $("#aslots").val(response.current_value).find("option[value=" + response.current_value + "]").attr('selected', true);
                             //   $("#default-step-1 .button-next").trigger("click");
                             if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
                                 $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();

@@ -28,7 +28,8 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <label class="h3 pull-left"><?php echo lang('pending'); ?> <?php echo lang('appointments'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?> </a>
+                                                        <!-- <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?> </a> -->
+                                                        <a class="btn btn-primary pull-right" href="appointment/addNewView?redirect=appointment"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
 
@@ -59,7 +60,8 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <label class="h3 pull-left"><?php echo lang('confirmed'); ?> <?php echo lang('appointments'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
+                                                        <!-- <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a> -->
+                                                        <a class="btn btn-primary pull-right" href="appointment/addNewView?redirect=appointment"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
                                                 <div class="mb-0">
@@ -89,7 +91,8 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <label class="h3 pull-left"><?php echo lang('consulted'); ?> <?php echo lang('appointments'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
+                                                        <!-- <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a> -->
+                                                        <a class="btn btn-primary pull-right" href="appointment/addNewView?redirect=appointment"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
 
@@ -120,7 +123,8 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <label class="h3 pull-left"><?php echo lang('cancelled'); ?> <?php echo lang('appointments'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
+                                                        <!-- <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a> -->
+                                                        <a class="btn btn-primary pull-right" href="appointment/addNewView?redirect=appointment"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
 
@@ -152,7 +156,8 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <label class="h3 pull-left"><?php echo lang('all'); ?> <?php echo lang('appointments'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
+                                                        <!-- <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a> -->
+                                                        <a class="btn btn-primary pull-right" href="appointment/addNewView?redirect=appointment"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
 
@@ -183,7 +188,8 @@
                                                 <div class="row mb-3">
                                                     <div class="col-md-12">
                                                         <label class="h3 pull-left"><?php echo lang('requested'); ?> <?php echo lang('appointments'); ?></label>
-                                                        <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('appointment'); ?></a>
+                                                        <!-- <a class="btn btn-primary pull-right" data-toggle="modal" href="#myModal"><i class="fe fe-plus"></i><?php echo lang('appointment'); ?></a> -->
+                                                        <a class="btn btn-primary pull-right" href="appointment/addNewView?redirect=appointment"><i class="fe fe-plus"></i><?php echo lang('add_appointment'); ?></a>
                                                     </div>
                                                 </div>
 
