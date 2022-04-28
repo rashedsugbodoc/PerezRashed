@@ -362,9 +362,10 @@
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
+                                                                    <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                    </a>
+                                                                    </a> -->
+                                                                    <a class="btn btn-primary pull-right" href="appointment/addNewView?root=patient&method=medicalHistory&patient_id=<?php echo $patient->id ?>"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
                                                                 </div>
                                                             <?php } ?>
                                                             <?php if ($this->ion_auth->in_group('Patient')) { ?>
@@ -475,7 +476,8 @@
                                                                                 <td><?php echo $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name; ?></td>
                                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                                     <td class="no-print">
-                                                                                        <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                                                                        <!-- <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"></i> </button> -->
+                                                                                        <a href="appointment/editAppointment?id=<?php echo $appointment->id; ?>&root=patient&method=medicalHistory&patient_id=<?php echo $patient->id ?>" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>   
                                                                                         <?php if ($this->ion_auth->in_group('admin')) { ?>
                                                                                             <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                                                         <?php } ?>
