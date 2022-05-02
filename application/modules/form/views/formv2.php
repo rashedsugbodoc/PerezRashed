@@ -41,7 +41,7 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                                <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly value="<?php
+                                                                <input class="form-control fc-datepicker" name="date" id="date" placeholder="MM/DD/YYYY" type="text" required readonly value="<?php
                                                                 if (!empty($form_single->date)) {
                                                                     echo date('m/d/Y', $form_single->form_date.' UTC');
                                                                 } else {
@@ -80,7 +80,7 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" style="width:100%;">
+                                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" style="width:100%;" required>
                                                                     <?php if (!empty($form_single->patient)) { ?>
                                                                         <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
                                                                     <?php } ?>
@@ -89,8 +89,8 @@
                                                         </div>
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?></label>
-                                                                <select class="select2-show-search form-control" name="category" data-placeholder="Choose one" style="width:100%;">
+                                                                <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?><span class="text-red"> *</span></label>
+                                                                <select class="select2-show-search form-control" name="category" id="category" data-placeholder="Choose one" style="width:100%;" required>
                                                                     <?php foreach ($categories as $category) { ?>
                                                                         <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
                                                                     <?php } ?>
@@ -160,7 +160,7 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one" style="width:100%;">
+                                                                <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one" style="width:100%;" required>
                                                                     <?php if (!empty($form_single->doctor)) { ?>
                                                                         <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
                                                                     <?php } ?>
@@ -220,7 +220,7 @@
                                                     <div class="row">
                                                         <div class="form-group col-md-12">
                                                             <label for="exampleInputEmail1"><?php echo lang('name'); ?> <span class="text-red">*</span></label>
-                                                            <input type="text" class="form-control" name="form_name" value='<?php
+                                                            <input type="text" class="form-control" name="form_name" id="name" required value='<?php
                                                             if (!empty($form_single->name)) {
                                                                 echo $form_single->name;
                                                             }
@@ -229,8 +229,8 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12 form-group">
-                                                            <label for="exampleInputEmail1"> <?php echo lang('report'); ?></label>
-                                                            <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10"><?php
+                                                            <label for="exampleInputEmail1"> <?php echo lang('report'); ?><span class="text-red"> *</span></label>
+                                                            <textarea class="ckeditor form-control" id="editor" name="report" value="" rows="10" required><?php
                                                                 if (!empty($setval)) {
                                                                     echo set_value('report');
                                                                 }
@@ -256,7 +256,7 @@
                                                     <div class="row mt-5">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                                                <button class="btn btn-primary pull-right" type="submit" id="submit" name="submit"><?php echo lang('submit'); ?></button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -417,7 +417,34 @@
         <!-- Accordion js-->
         <script src="<?php echo base_url('public/assets/plugins/accordion/accordion.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/accordion.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var date = $('#date').parsley();
+                var patient = $('#pos_select').parsley();
+                var name = $('#name').parsley();
+                var editor = $('#editor').parsley();
+                var category = $('#category').parsley();
+                var doctor = $('#add_doctor').parsley();
+
+                if (date.isValid() && patient.isValid() && name.isValid() && editor.isValid() && category.isValid() && doctor.isValid()) {
+                    return true;
+                } else {
+                    date.validate();
+                    patient.validate();
+                    name.validate();
+                    editor.validate();
+                    category.validate();
+                    doctor.validate();
+                }
+            })
+        })
+    </script>
 
     <script>
         $(document).ready(function () {
