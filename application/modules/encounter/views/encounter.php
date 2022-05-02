@@ -39,7 +39,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th><?php echo lang('date'); ?></th>
-                                                            <th><?php echo lang('encounter'); ?> <?php echo lang('id'); ?></th>
+                                                            <th><?php echo lang('encounter'); ?> <?php echo lang('number'); ?></th>
                                                             <th><?php echo lang('patient'); ?></th>
                                                             <th><?php echo lang('doctor'); ?></th>
                                                             <th><?php echo lang('balance'); ?></th>
