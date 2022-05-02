@@ -44,7 +44,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
+                                                        <select class="form-control select2-show-search" required name="encounter_id" id="encounter" <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
                                                             <?php if (!empty($encounter->id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
@@ -63,13 +63,13 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('diagnosis') . '  ' . lang('date') ?></label>
-                                                        <input type="text" class="form-control fc-datepicker1" id="date" readonly placeholder="MM/DD/YYYY" name="date">
+                                                        <input type="text" class="form-control fc-datepicker1" required id="date" readonly placeholder="MM/DD/YYYY" name="date">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('onset') . '  ' . lang('date') ?></label>
-                                                        <input type="text" class="form-control fc-datepicker" id="on_date" readonly placeholder="MM/DD/YYYY" name="on_date">
+                                                        <input type="text" class="form-control fc-datepicker" required id="on_date" readonly placeholder="MM/DD/YYYY" name="on_date">
                                                     </div>
                                                 </div>
                                             </div>
@@ -79,7 +79,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
-                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?>>
+                                                                <select class="select2-show-search form-control pos_select" required id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($encounter->patient_id)) { ?>
                                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
                                                                     <?php } ?>
@@ -96,7 +96,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
-                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter->doctor)) { echo "disabled"; } ?>>
+                                                                <select class="select2-show-search form-control add_doctor" required id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter->doctor)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($encounter->doctor)) { ?>
                                                                         <option value="<?php echo $doctor->id; ?>" selected><?php echo $doctor->name ?></option>
                                                                     <?php } ?>
@@ -136,7 +136,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12 text-right">
-                                                    <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit') ?></button>
+                                                    <button type="submit" name="submit" id="submit" class="btn btn-primary"><?php echo lang('submit') ?></button>
                                                 </div>
                                             </div>
                                         </form>
@@ -271,7 +271,32 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var date = $('#date').parsley();
+                var on_date = $('#on_date').parsley();
+                var patient = $('#pos_select').parsley();
+                var doctor = $('#add_doctor').parsley();
+                var encounter = $('#encounter').parsley();
+
+                if (date.isValid() && on_date.isValid() && patient.isValid() && doctor.isValid() && encounter.isValid()) {
+                    return true;
+                } else {
+                    date.validate();
+                    on_date.validate();
+                    patient.validate();
+                    doctor.validate();
+                    encounter.validate();
+                }
+            })
+        })
+    </script>
 
     <script type="text/javascript">
         $('.fc-datepicker1').datepicker({
