@@ -30,13 +30,13 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                                <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="date" type="text" readonly>
+                                                                <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" required name="date" type="text" readonly>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search" id="patientchoose" name="patient_id">
+                                                                <select class="form-control select2-show-search" required id="patientchoose" name="patient_id">
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -44,15 +44,15 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></label>
-                                                                <input type="text" class="form-control" name="title" placeholder="Name">
+                                                                <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?><span class="text-red"> *</span></label>
+                                                                <input type="text" class="form-control" id="title" required name="title" placeholder="Name">
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?></label>
+                                                                <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?><span class="text-red"> *</span></label>
                                                                 <div class="ql-wrapper ql-wrapper-demo bg-light">
                                                                     <div id="quillEditor" class="bg-white quillEditor">
                                                                     </div>
@@ -63,7 +63,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <textarea id="description" name="description" readonly="" hidden="" class="form-control" rows="4"></textarea>
+                                                                <textarea id="description" required name="description" readonly="" hidden="" class="form-control" rows="4"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -80,7 +80,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
+                                                                <button type="submit" name="submit" id="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -355,7 +355,30 @@
         <script src="<?php echo base_url('public/assets/plugins/accordion/accordion.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/accordion.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var date = $('#date').parsley();
+                var patient = $('#patientchoose').parsley();
+                var title = $('#title').parsley();
+                var description = $('#description').parsley();
+
+                if (date.isValid() && patient.isValid() && title.isValid() && description.isValid()) {
+                    return true;
+                } else {
+                    date.validate();
+                    patient.validate();
+                    title.validate();
+                    description.validate();
+                }
+            })
+        })
+    </script>
 
     <script type="text/javascript">
         $(".table").on("click", ".editbutton", function () {
