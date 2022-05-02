@@ -84,8 +84,8 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                        <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
+                                                        <select class="form-control select2-show-search" name="encounter_id" required id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                             <?php if (!empty($encounter_id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
@@ -106,11 +106,11 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('lab') . '  ' . lang('request') . ' ' . lang('date') ?></label>
+                                                        <label class="form-label"><?php echo lang('lab') . '  ' . lang('request') . ' ' . lang('date') ?><span class="text-red"> *</span></label>
                                                         <?php if (empty($lab_request_date)) { ?>
-                                                            <input type="text" class="form-control flatpickr" readonly placeholder="MM/DD/YYYY" name="date">
+                                                            <input type="text" class="form-control flatpickr" id="date1" required readonly placeholder="MM/DD/YYYY" name="date">
                                                         <?php } else { ?>
-                                                            <input type="text" class="form-control flatpickr" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php
+                                                            <input type="text" class="form-control flatpickr" id="date" required readonly placeholder="MM/DD/YYYY" name="date" value="<?php
                                                                 echo date('Y-m-d H:i', strtotime($lab_request_date.' UTC'));
                                                             ?>">
                                                         <?php } ?>
@@ -123,8 +123,8 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('patient'); ?></label>
-                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                <label class="form-label"><?php echo lang('patient'); ?><span class="text-red"> *</span></label>
+                                                                <select class="select2-show-search form-control pos_select" required id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($encounter_id)) { ?>
                                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
                                                                     <?php } ?>
@@ -146,8 +146,8 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
-                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                <label class="form-label"><?php echo lang('rendering_doctor'); ?><span class="text-red"> *</span></label>
+                                                                <select class="select2-show-search form-control add_doctor" required id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($encounter->id)) { ?>
                                                                         <option value="<?php echo $doctor->id; ?>" selected><?php echo $doctor->name ?></option>
                                                                     <?php } ?>
@@ -230,7 +230,7 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12 text-right">
-                                                    <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit') ?></button>
+                                                    <button type="submit" name="submit" id="submit" class="btn btn-primary"><?php echo lang('submit') ?></button>
                                                 </div>
                                             </div>
                                         </form>
@@ -368,7 +368,30 @@
         <!-- flatpickr js -->
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var date = $('#date1').parsley();
+                var patient = $('#pos_select').parsley();
+                var doctor = $('#add_doctor').parsley();
+                var encounter = $('#encounter').parsley();
+
+                if (date.isValid() && patient.isValid() && doctor.isValid() && encounter.isValid()) {
+                    return true;
+                } else {
+                    date.validate();
+                    patient.validate();
+                    doctor.validate();
+                    encounter.validate();
+                }
+            })
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
