@@ -280,7 +280,7 @@ class Patient extends MX_Controller {
             }
             $config = array(
                 'file_name' => $new_file_name,
-                'encrypt_name' => True,
+                'encrypt_name' => FALSE,
                 'upload_path' => "./uploads/",
                 'allowed_types' => "jpg|png|jpeg",
                 'overwrite' => False,
