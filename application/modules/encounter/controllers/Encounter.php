@@ -155,25 +155,26 @@ class Encounter extends MX_Controller {
         } else {
             $data = array();
 
-            $data = array(
-                'encounter_type_id' => $type,
-                'patient_id' => $patient_id,
-                'doctor' => $rendering_doctor_id,
-                'rendering_staff_id' => $rendering_user_id,
-                'rendering_staff_name' => $render_name,
-                'referral_facility_id' => $provider_id,
-                'referral_facility_name' => $provider_name,
-                'referral_staff_id' => $ref_doctor_id,
-                'referral_staff_name' => $ref_name,
-                'started_at' => $date,
-                'waiting_started' => $date,
-                'created_at' => $date,
-                'created_user_id' => $user,
-                'encounter_status' => $encounter_status,
-                'location_id' => $location,
-                'reason' => $reason,
-            );
             if (empty($id)) {
+                $data = array(
+                    'encounter_type_id' => $type,
+                    'patient_id' => $patient_id,
+                    'doctor' => $rendering_doctor_id,
+                    'rendering_staff_id' => $rendering_user_id,
+                    'rendering_staff_name' => $render_name,
+                    'referral_facility_id' => $provider_id,
+                    'referral_facility_name' => $provider_name,
+                    'referral_staff_id' => $ref_doctor_id,
+                    'referral_staff_name' => $ref_name,
+                    'started_at' => $date,
+                    'waiting_started' => $date,
+                    'created_at' => $date,
+                    'created_user_id' => $user,
+                    'encounter_status' => $encounter_status,
+                    'location_id' => $location,
+                    'reason' => $reason,
+                );
+
                 $this->encounter_model->insertEncounter($data);
                 $this->session->set_flashdata('success', lang('record_added'));
 
@@ -196,6 +197,23 @@ class Encounter extends MX_Controller {
                     redirect('encounter');
                 }
             } else {
+                $data = array(
+                    'encounter_type_id' => $type,
+                    'patient_id' => $patient_id,
+                    'doctor' => $rendering_doctor_id,
+                    'rendering_staff_id' => $rendering_user_id,
+                    'rendering_staff_name' => $render_name,
+                    'referral_facility_id' => $provider_id,
+                    'referral_facility_name' => $provider_name,
+                    'referral_staff_id' => $ref_doctor_id,
+                    'referral_staff_name' => $ref_name,
+                    'created_user_id' => $user,
+                    'encounter_status' => $encounter_status,
+                    'location_id' => $location,
+                    'reason' => $reason,
+                );
+
+
                 $this->encounter_model->updateEncounter($id, $data);
 
                 if(!empty($redirect)) {
