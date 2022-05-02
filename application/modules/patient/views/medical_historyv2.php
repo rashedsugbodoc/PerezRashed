@@ -1485,7 +1485,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
-                                                            <input type="text" class="form-control" name="title" placeholder="<?=lang('title');?>" required maxlength="100">
+                                                            <input type="text" class="form-control" name="title" id="title" placeholder="<?=lang('title');?>" required maxlength="100" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1493,7 +1493,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('description'); ?> <span class="text-red">*</span></label>
-                                                            <textarea class="form-control" id="documentDescription" name="description" placeholder="<?=lang('description');?>" rows="2" required maxlength="300"></textarea>
+                                                            <textarea class="form-control" id="documentDescription" name="description" id="description" placeholder="<?=lang('description');?>" rows="2" required maxlength="300" required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1527,7 +1527,7 @@
                                                 <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                        <button class="btn btn-primary pull-right" name="submit" id="documentSubmit" type="submit"><?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1559,7 +1559,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                            <input class="form-control flatpickr" readonly name="date" placeholder="MM/DD/YYYY" type="text" required>
+                                                            <input class="form-control flatpickr" id="caseDate" readonly name="date" placeholder="MM/DD/YYYY" type="text" required>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1567,7 +1567,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?> <span class="text-red">*</span></label>
-                                                            <input type="text" class="form-control" name="title" placeholder="Name" required maxlength="1000">
+                                                            <input type="text" class="form-control" id="caseTitle" name="title" placeholder="Name" required maxlength="1000">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1585,7 +1585,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <textarea id="description" name="description" readonly="" hidden="" class="form-control" rows="4" required></textarea>
+                                                            <textarea id="description" name="description" id="caseDescription" readonly="" hidden="" class="form-control" rows="4" required></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1603,7 +1603,7 @@
                                             <input type="hidden" name="id" value=''>
                                             <div class="modal-footer">
                                                 <div class="form-group">
-                                                    <button class="btn btn-primary" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                                    <button class="btn btn-primary" type="submit" id="caseSubmit" name="submit"><?php echo lang('submit'); ?></button>
                                                 </div>
                                             </div>
                                         </form>
@@ -2157,6 +2157,38 @@
             console.log(slider);
         });
     </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#caseSubmit").click(function () {
+                var date = $('#caseDate').parsley();
+                var title = $('#caseTitle').parsley();
+                var description = $('#caseDescription').parsley();
+
+                if (date.isValid() && title.isValid() && description.isValid()) {
+                    return true;
+                } else {
+                    date.validate();
+                    title.validate();
+                    description.validate();
+                }
+            })
+
+            $("#documentSubmit").click(function () {
+                var title = $('#title').parsley();
+                var category = $('#category').parsley();
+                var description = $('#description').parsley();
+
+                if (category.isValid() && title.isValid() && description.isValid()) {
+                    return true;
+                } else {
+                    title.validate();
+                    category.validate();
+                    description.validate();
+                }
+            })
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function(){
