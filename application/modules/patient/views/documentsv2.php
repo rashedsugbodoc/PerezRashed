@@ -73,13 +73,13 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="title" placeholder="<?=lang('title');?>" required>
+                                                        <input type="text" class="form-control" name="title" id="title" placeholder="<?=lang('title');?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('description'); ?></label>
-                                                        <input type="text" class="form-control" name="description" placeholder="<?=lang('description');?>">
+                                                        <input type="text" class="form-control" name="description" id="description" required placeholder="<?=lang('description');?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -89,7 +89,7 @@
                                                 </div>
                                                 <input type="hidden" name="redirect" value='patient/documents'>
                                                 <div class="col-md-12 col-sm-12">
-                                                    <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                    <button class="btn btn-primary pull-right" name="submit" id="submit" type="submit"><?php echo lang('submit'); ?></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -225,8 +225,31 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var title = $('#title').parsley();
+                var category = $('#category').parsley();
+                var patient = $('#patientchoose').parsley();
+                var description = $('#description').parsley();
+
+                if (patient.isValid() && category.isValid() && title.isValid() && description.isValid()) {
+                    return true;
+                } else {
+                    title.validate();
+                    category.validate();
+                    patient.validate();
+                    description.validate();
+                }
+            })
+        })
+    </script>
 
     <script>
         $(document).ready(function () {
