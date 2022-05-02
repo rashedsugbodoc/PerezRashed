@@ -51,7 +51,7 @@
                                         <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
+                                                <select class="form-control select2-show-search" name="encounter_id" id="encounter" required <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
                                                     <?php if (!empty($encounter_id)) { ?>
                                                         <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                     <?php } ?>
@@ -73,16 +73,16 @@
                                                     }*/
                                                 ?>"> -->
                                                 <?php if (empty($prescription_date)) { ?>
-                                                    <input type="text" class="form-control flatpickr" readonly placeholder="MM/DD/YYYY" name="date">
+                                                    <input type="text" class="form-control flatpickr" id="date1" required readonly placeholder="MM/DD/YYYY" name="date">
                                                 <?php } else { ?>
-                                                    <input type="text" class="form-control flatpickr" id="date" readonly placeholder="MM/DD/YYYY" name="date" value="<?php echo date('Y-m-d H:i', strtotime($prescription_date.' UTC')) ?>">
+                                                    <input type="text" class="form-control flatpickr" id="date" required readonly placeholder="MM/DD/YYYY" name="date" value="<?php echo date('Y-m-d H:i', strtotime($prescription_date.' UTC')) ?>">
                                                 <?php } ?>
                                             </div>
                                         </div>
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                <select class="select2-show-search form-control" name="patient" id="patientchoose">
+                                                <select class="select2-show-search form-control" name="patient" required id="patientchoose">
                                                     <?php if (!empty($prescription->patient)) { ?>
                                                         <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patients->id; ?>)</option>  
                                                     <?php } ?>
@@ -102,7 +102,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
-                                                <select class="select2-show-search form-control" name="doctor" id="doctorchoose">
+                                                <select class="select2-show-search form-control" required name="doctor" id="doctorchoose">
                                                     <?php if (!empty($prescription->doctor)) { ?>
                                                         <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
                                                     <?php } ?>
@@ -125,7 +125,7 @@
                                                         <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
                                                     </select>
                                                 <?php } else { ?>
-                                                    <select class="select2-show-search form-control" id="doctorchoose1" name="doctor" value=''>
+                                                    <select class="select2-show-search form-control" required id="doctorchoose1" name="doctor" value=''>
                                                         <?php if (!empty($prescription->doctor)) { ?>
                                                             <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctors->id; ?>)</option>  
                                                         <?php } ?>
@@ -189,7 +189,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
-                                            <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                            <button class="btn btn-primary pull-right" id="submit" type="submit" name="submit"><?php echo lang('submit'); ?></button>
                                         </div>
                                     </div>
                                 </form>
@@ -336,7 +336,30 @@
 
         <!-- flatpickr js -->
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var date = $('#date1').parsley();
+                var patient = $('#patientchoose').parsley();
+                var doctor = $('#doctorchoose1').parsley();
+                var encounter = $('#encounter').parsley();
+
+                if (date.isValid() && patient.isValid() && doctor.isValid() && encounter.isValid()) {
+                    return true;
+                } else {
+                    date.validate();
+                    patient.validate();
+                    doctor.validate();
+                    encounter.validate();
+                }
+            })
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
