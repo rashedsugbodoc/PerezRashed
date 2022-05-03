@@ -256,8 +256,8 @@
                                                                 <td class="w-7 p-0 template-opacity">:</td>
                                                                 <td class="w-63 p-0 form-opacity">
                                                                     <?php
-                                                                        if (!empty($form->date)) {
-                                                                            echo date($settings->date_format_long, $form->date);
+                                                                        if (!empty($form->form_date)) {
+                                                                            echo date($settings->date_format_long, strtotime($form->form_date.' UTC'));
                                                                         }
                                                                     ?>                                                                    
                                                                 </td>
