@@ -70,19 +70,19 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('category'); ?></label>
-                                                        <input type="text" class="form-control" name="category" id="exampleInputEmail1" value='' placeholder="">    
+                                                        <label class="form-label"><?php echo lang('category'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="category" id="category" value='' placeholder="" required>    
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('description'); ?></label>
-                                                        <input type="text" class="form-control" name="description" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('description'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="description" id="description" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
+                                                        <button type="submit" name="submit" id="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -258,8 +258,27 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var category = $('#category').parsley();
+                var description = $('#description').parsley();
+
+                if (category.isValid() && description.isValid()) {
+                    return true;
+                } else {
+                    category.validate();
+                    description.validate();
+                }
+            })
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {

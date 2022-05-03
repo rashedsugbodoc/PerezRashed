@@ -12,7 +12,7 @@
                                     <div class="card-header">
                                         <div class="card-title"><?php echo lang('medicine'); ?> </div>
                                         <div class="card-options">
-                                            <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                            <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) { ?>
                                                 <a data-toggle="modal" href="#myModal">
                                                     <button id="" class="btn btn-primary btn-xs">
                                                         <i class="fa fa-plus"></i> <?php echo lang('add_medicine'); ?>
@@ -65,14 +65,14 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('generic_name'); ?></label>
-                                                        <input type="text" class="form-control" name="generic" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('generic_name'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="generic" id="generic" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('category'); ?></label>
-                                                        <select class="form-control select2-show-search" name="category" value=''>
+                                                        <label class="form-label"><?php echo lang('category'); ?><span class="text-red"> *</span></label>
+                                                        <select class="form-control select2-show-search" name="category" id="category" value='' required>
                                                             <?php foreach ($categories as $category) { ?>
                                                                 <option value="<?php echo $category->category; ?>" <?php
                                                                 if (!empty($medicine->category)) {
@@ -87,68 +87,68 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('brand_name'); ?></label>
-                                                        <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('brand_name'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="name" id="brand" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('form'); ?></label>
-                                                        <input type="text" class="form-control" name="form">
+                                                        <label class="form-label"><?php echo lang('form'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="form" id="form" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('uses'); ?></label>
-                                                        <input type="text" class="form-control" name="uses" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('uses'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="uses" id="uses" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('side_effects'); ?></label>
-                                                        <input type="text" class="form-control" name="effects" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('side_effects'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="effects" id="side_effects" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('p_price'); ?></label>
-                                                        <input type="text" class="form-control" name="price" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('p_price'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="price" id="p_price" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('s_price'); ?></label>
-                                                        <input type="text" class="form-control" name="s_price" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('s_price'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="s_price" id="s_price" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('quantity'); ?></label>
-                                                        <input type="text" class="form-control" name="quantity" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('quantity'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="quantity" id="quantity" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('company'); ?></label>
-                                                        <input type="text" class="form-control" name="company" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('company'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="company" id="company" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('store_box'); ?></label>
-                                                        <input type="text" class="form-control" name="box" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"><?php echo lang('store_box'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="box" id="store_box" value='' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('expiry_date'); ?></label>
-                                                        <input type="text" class="form-control fc-datepicker" name="e_date" value='' placeholder="" readonly="">
+                                                        <label class="form-label"><?php echo lang('expiry_date'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control fc-datepicker" name="e_date" id="date" value='' placeholder="" readonly="" required>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="id" value=''>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <button type="submit" name="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
+                                                        <button type="submit" name="submit" id="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -430,8 +430,47 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var generic = $('#generic').parsley();
+                var category = $('#category').parsley();
+                var brand = $('#brand').parsley();
+                var form = $('#form').parsley();
+                var uses = $('#uses').parsley();
+                var side_effects = $('#side_effects').parsley();
+                var p_price = $('#p_price').parsley();
+                var s_price = $('#s_price').parsley();
+                var quantity = $('#quantity').parsley();
+                var company = $('#company').parsley();
+                var store_box = $('#store_box').parsley();
+                var date = $('#date').parsley();
+
+                if (generic.isValid() && category.isValid() && brand.isValid() && form.isValid() && uses.isValid() && side_effects.isValid() && p_price.isValid() && s_price.isValid() && quantity.isValid() && company.isValid() && store_box.isValid() && date.isValid()) {
+                    return true;
+                } else {
+                    generic.validate();
+                    category.validate();
+                    brand.validate();
+                    form.validate();
+                    uses.validate();
+                    side_effects.validate();
+                    p_price.validate();
+                    s_price.validate();
+                    quantity.validate();
+                    company.validate();
+                    store_box.validate();
+                    date.validate();
+                }
+            })
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
