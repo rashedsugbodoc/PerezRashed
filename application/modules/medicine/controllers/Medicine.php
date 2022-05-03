@@ -254,11 +254,12 @@ class Medicine extends MX_Controller {
     }
 
     function editMedicineByJason() {
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
             redirect('home/permission');
         }
         $id = $this->input->get('id');
         $data['medicine'] = $this->medicine_model->getMedicineById($id);
+        $data['expire_date'] = date("F j, Y", strtotime($data['medicine']->e_date.' UTC'));
         echo json_encode($data);
     }
 
@@ -401,10 +402,10 @@ class Medicine extends MX_Controller {
             } else {
                 $quan = $medicine->quantity;
             }
-            if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
                 $load = '<button type="button" class="btn btn-info btn-xs btn_width load" data-toggle="modal" data-id="' . $medicine->id . '">' . lang('load') . '</button>';
             }
-            if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
                 $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $medicine->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
 
                 $option2 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="medicine/delete?id=' . $medicine->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
