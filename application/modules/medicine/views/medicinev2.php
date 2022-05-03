@@ -38,7 +38,7 @@
                                                     <th> <?php echo lang('uses'); ?></th>
                                                     <th> <?php echo lang('side_effects'); ?></th>
                                                     <th> <?php echo lang('expiry_date'); ?></th>
-                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) { ?>
                                                         <th> <?php echo lang('options'); ?></th>
                                                     <?php } ?>
                                                 </tr>
@@ -142,7 +142,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('expiry_date'); ?><span class="text-red"> *</span></label>
-                                                        <input type="text" class="form-control fc-datepicker" name="e_date" id="date" value='' placeholder="" readonly="" required>
+                                                        <input type="text" class="form-control flatpickr" name="e_date" id="date" value='' placeholder="" readonly="" required>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="id" value=''>
@@ -254,7 +254,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('expiry_date'); ?></label>
-                                                        <input type="text" class="form-control fc-datepicker" name="e_date" value='' placeholder="" readonly="">
+                                                        <input type="text" class="form-control editflatpickr" name="e_date" value='' placeholder="" readonly="">
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="id" value=''>
@@ -433,8 +433,20 @@
 
         <!-- parlsey js -->
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        flatpickr(".flatpickr", {
+            altInput: true,
+            altFormat: "F j, Y",
+            minDate: "today",
+            disableMobile: true
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -497,7 +509,15 @@
                         $('#editMedicineForm').find('[name="form"]').val(response.medicine.form).end()
                         $('#editMedicineForm').find('[name="uses"]').val(response.medicine.uses).end()
                         $('#editMedicineForm').find('[name="effects"]').val(response.medicine.effects).end()
-                        $('#editMedicineForm').find('[name="e_date"]').val(response.medicine.e_date).end()
+                        // $('#editMedicineForm').find('[name="e_date"]').val(response.medicine.e_date).end()
+                        var expire = response.expire_date;
+                        $('.editflatpickr').flatpickr({
+                            dateFormat: "F j, Y",
+                            defaultDate: expire,
+                            altInput: true,
+                            altFormat: "F j, Y",
+                            disableMobile: true
+                        });
                     }
                 });
             });
