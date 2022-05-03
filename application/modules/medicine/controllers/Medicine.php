@@ -125,7 +125,7 @@ class Medicine extends MX_Controller {
     }
 
     public function addNewMedicine() {
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
             redirect('home/permission');
         }
 
@@ -294,7 +294,7 @@ class Medicine extends MX_Controller {
     }
 
     public function addNewCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
