@@ -2220,10 +2220,15 @@ class Patient extends MX_Controller {
                 $encounter_appointment_service_group = $this->appointment_model->getServiceCategoryById($encounter_appointment->service_category_group_id)->display_name;
                 $encounter_services = $this->finance_model->getPaymentCategoryById($encounter_appointment->service_id)->description;
                 $encounter_appointment_date = date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter_appointment->appointment_date.' UTC'));
-                if (!empty($encounter->ended_at)) {
-                    $encounter_ending_time = date('H:i', strtotime($encounter->ended_at.' UTC'));
+                if (!empty($encounter->started_at)) {
+                    $encounter_started_date = date('F j, Y H:i A', strtotime($encounter->started_at.' UTC'));
                 } else {
-                    $encounter_ending_time = 'to _______';
+                    $encounter_started_date = "_______";
+                }
+                if (!empty($encounter->ended_at)) {
+                    $encounter_ended_date = date('F j, Y H:i A', strtotime($encounter->ended_at.' UTC'));
+                } else {
+                    $encounter_ended_date = "_______";
                 }
                 $appointment_date = '<div class="form-group">
                                         <div class="media mr-4 mb-4">
@@ -2258,6 +2263,35 @@ class Patient extends MX_Controller {
                                                         </div>
                                                     </div>
                                                 </div>';
+                $encounter_date = '<div class="form-group">
+                                        <div class="media mr-4 mb-4">
+                                            <div class="mr-3 mt-1 ml-3">
+                                                <i class="fa fa-calendar fa-2x text-primary"></i>
+                                            </div>
+                                            <div class="media-body">
+                                                <strong>' . lang("started") . ': ' . $encounter_started_date . '</strong><br>
+                                                <strong>' . lang("ended") . ': ' . $encounter_ended_date . '</strong>
+                                            </div>
+                                        </div>
+                                    </div>';
+                $encounter_number_type_group = "<div class='form-group'>
+                                                    <div class='media mr-4 mb-4'>
+                                                        <div class='mr-3 mt-1 ml-3'>
+                                                            <i class='fa fa-file-text-o fa-2x text-primary'></i>
+                                                        </div>
+                                                        <div class='media-body'>
+                                                            <strong>". $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name ."</strong>
+                                                            <div class='row'>
+                                                                <div class='col-md-10 mb-3'>
+                                                                    <small class='text-muted'>No Appointment</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class='ml-auto mt-1 mr-3'>
+                                                            <span class='badge badge-pill badge-primary'>" . $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name . "</span>
+                                                        </div>
+                                                    </div>
+                                                </div>";
             } else {
                 $encounter_appointment_service_group = "No Appointment";
                 $encounter_services = "No Appointment";
