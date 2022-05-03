@@ -27,7 +27,7 @@
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label">Patient <span class="text-red">*</span></label>
-                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one">
+                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" required>
                                                     <?php if (!empty($patients)) { ?>
                                                         <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
                                                     <?php } ?>
@@ -113,7 +113,7 @@
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('doctor'); ?><span class="text-red">*</span></label>
-                                                <select class="form-control select2-show-search pos_select" id="adoctors" name="doctor" data-placeholder="Choose one">
+                                                <select class="form-control select2-show-search pos_select" id="adoctors" name="doctor" data-placeholder="Choose one" required>
                                                     <?php if (!empty($doctors)) { ?>
                                                         <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
                                                     <?php } ?>
@@ -134,8 +134,8 @@
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('service_type'); ?></label>
-                                                <select class="form-control select2-show-search service_cat" name="service_category_group" id="service_select" data-placeholder="Choose one (with searchbox)"  required="">
+                                                <label class="form-label"><?php echo lang('service_type'); ?><span class="text-red">*</span></label>
+                                                <select class="form-control select2-show-search service_cat" name="service_category_group" id="service_select" data-placeholder="Choose one (with searchbox)"  required>
                                                     <?php if (!empty($appointment->service_category_group_id)) { ?>
                                                         <option value="<?php echo $appointment->service_category_group_id ?>" selected><?php echo $this->finance_model->getServiceCategoryGroupById($appointment->service_category_group_id)->display_name; ?></option>
                                                     <?php } ?>
@@ -146,8 +146,8 @@
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
-                                                <label class="form-label"> <?php echo lang('service'); ?></label>
-                                                <select class="form-control select2-show-search sub_service" id="sub_service" name="service" data-placeholder="Choose one (with searchbox)"  required="">
+                                                <label class="form-label"> <?php echo lang('service'); ?><span class="text-red">*</span></label>
+                                                <select class="form-control select2-show-search sub_service" id="sub_service" name="service" data-placeholder="Choose one (with searchbox)" required>
                                                     <?php if (!empty($appointment->service_id)) { ?>
                                                         <option value="<?php echo $appointment->service_id ?>" selected><?php echo $this->appointment_model->getServicesByServiceId($appointment->service_id)->category; ?></option>
                                                     <?php } ?>
@@ -171,7 +171,7 @@
                                         <div class="col-sm-12 col-md-12">
                                         <div class="form-group">
                                             <label class="form-label"><?php echo lang('date'); ?><span class="text-red">*</span></label>
-                                            <input class="form-control flatpickr" id="date" placeholder="MM/DD/YYYY" name="date" type="text" value="<?php
+                                            <input class="form-control flatpickr" id="date" placeholder="MM/DD/YYYY" required name="date" type="text" value="<?php
                                             if (!empty($appointment->date)) {
                                                 echo $appointment->appointment_date;
                                             }
@@ -183,7 +183,7 @@
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('available_slots'); ?><span class="text-red">*</span></label>
-                                                <select class="form-control m-bot15 select2-show-search" name="time_slot" id="aslots" value=''> 
+                                                <select class="form-control m-bot15 select2-show-search" name="time_slot" id="aslots" value='' required> 
 
                                                 </select>
                                             </div>
@@ -193,7 +193,7 @@
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('appointment'); ?> <?php echo lang('status'); ?><span class="text-red">*</span></label>
-                                                <select class="form-control select2-show-search" name="status" data-placeholder="Choose one" value=''>
+                                                <select class="form-control select2-show-search" name="status" id="status" data-placeholder="Choose one" value='' required>
                                                     <option value="Pending Confirmation" <?php
                                                     if (!empty($appointment->status)) {
                                                         if ($appointment->status == 'Pending Confirmation') {
@@ -228,7 +228,7 @@
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('complaint'); ?><span class="text-red">*</span></label>
-                                                <textarea class="form-control mb-4" placeholder="Purpose" name="remarks" rows="3" maxlength="500"><?php
+                                                <textarea class="form-control mb-4" placeholder="Purpose" required id="remarks" name="remarks" rows="3" maxlength="500"><?php
                                                 if (!empty($appointment->remarks)) {
                                                     echo $appointment->remarks;
                                                 }
@@ -254,7 +254,7 @@
                                             </label> -->
                                         </div>
                                         <div class="col-md-6 col-sm-12">
-                                            <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                            <button class="btn btn-primary pull-right" type="submit" id="submit" name="submit"><?php echo lang('submit'); ?></button>
                                         </div>
                                     </div>
                                 </div>
@@ -366,7 +366,38 @@
         <!-- flatpickr js -->
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
         <!-- INTERNAL JS INDEX END -->
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#submit").click(function () {
+                    var patient = $('#pos_select').parsley();
+                    var doctor = $('#adoctors').parsley();
+                    var service_type = $('#service_select').parsley();
+                    var service = $('#sub_service').parsley();
+                    var date = $('#date').parsley();
+                    var slot = $('#aslots').parsley();
+                    var status = $('#status').parsley();
+                    var remarks = $('#remarks').parsley();
+
+                    if (patient.isValid() && doctor.isValid() && service_type.isValid() && service.isValid() && date.isValid() && slot.isValid() && status.isValid() && remarks.isValid()) {
+                        return true;
+                    } else {
+                        patient.validate();
+                        doctor.validate();
+                        service_type.validate();
+                        service.validate();
+                        date.validate();
+                        slot.validate();
+                        status.validate();
+                        remarks.validate();
+                    }
+                })
+            })
+        </script>
 
         <script type="text/javascript">
             $(document).ready(function () {
