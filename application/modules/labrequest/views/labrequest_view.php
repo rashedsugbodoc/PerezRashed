@@ -571,7 +571,7 @@
                 console.log(table_size_left);
                 var opt = {
                     margin: [0, 0.2, 0, 0.2],
-                    filename: '<?php echo $patient->name; ?> Prescription.pdf',
+                    filename: '<?php echo $patient->name; ?> LabRequest.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2, scrollY: 0 },
                     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
