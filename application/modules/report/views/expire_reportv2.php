@@ -11,7 +11,7 @@
                                 <div class="card-title"><?php echo lang('expire_report'); ?></div>
                                 <div class="card-options">
                                     <?php if ($this->ion_auth->in_group('Doctor')) { ?>
-                                        <a data-toggle="modal" href="#myModal">
+                                        <a href="report/addReportView">
                                             <button id="" class="btn btn-primary btn-xs">
                                                 <i class="fa fa-plus"></i> <?php echo lang('add_new_report'); ?>
                                             </button>
@@ -45,7 +45,7 @@
                                                                 <td class="center"><?php echo $report->date; ?></td>
                                                                 <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                     <td class="no-print">
-                                                                        <button type="button" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $report->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                                                        <a href="report/editReport?id=<?php echo $report->id; ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>  
                                                                         <a class="btn btn-danger btn-xs" href="report/delete?id=<?php echo $report->id; ?>" title="<?php echo lang('delete'); ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                                     </td>
                                                                 <?php } ?>

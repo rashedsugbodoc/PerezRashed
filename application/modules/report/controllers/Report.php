@@ -80,9 +80,9 @@ class Report extends MX_Controller {
         $data = array();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['patients'] = $this->patient_model->getPatient();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_report', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_reportv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addReport() {
@@ -170,9 +170,10 @@ class Report extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $id = $this->input->get('id');
         $data['report'] = $this->report_model->getReportById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_report', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $data['date'] = date("F j, Y", strtotime($data['report']->date.' UTC'));
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_reportv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
     
     function editReportByJason(){

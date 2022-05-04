@@ -11,7 +11,7 @@
                                 <div class="card-title"><?php echo lang('birth_report'); ?></div>
                                 <div class="card-options">
                                     <?php if ($this->ion_auth->in_group('Doctor')) { ?>
-                                        <a data-toggle="modal" href="#myModal">
+                                        <a href="report/addReportView">
                                             <button id="" class="btn btn-primary btn-xs">
                                                 <i class="fa fa-plus"></i> <?php echo lang('add_new_report'); ?>
                                             </button>
@@ -45,7 +45,7 @@
                                                                 <td class="center"><?php echo $report->date; ?></td>
                                                                 <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                     <td class="no-print">
-                                                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $report->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                                                        <a href="report/editReport?id=<?php echo $report->id; ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>
                                                                         <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="report/delete?id=<?php echo $report->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                                     </td>
                                                                 <?php } ?>
@@ -73,7 +73,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('select_type'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" data-placeholder="report" name="type">
+                                                        <select class="form-control select2-show-search" data-placeholder="report" name="type" id="type" required>
                                                             <option value="birth" <?php
                                                             if (!empty($report->report_type)) {
                                                                 if ($report->report_type == 'birth') {
@@ -121,7 +121,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?><span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="patient" data-placeholder="Choose one">
+                                                        <select class="form-control select2-show-search" name="patient" id="patient" data-placeholder="Choose one" required>
                                                             <option selected disabled><?php echo lang('select_item'); ?></option>
                                                             <?php foreach ($patients as $patient) { ?>
                                                             <option value="<?php echo $patient->name . '*' . $patient->ion_user_id; ?>" <?php
@@ -135,7 +135,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('doctor'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="doctor" data-placeholder="Choose one">
+                                                        <select class="form-control select2-show-search" name="doctor" id="doctor" data-placeholder="Choose one" required>
                                                             <option selected disabled><?php echo lang('select_item'); ?></option>
                                                             <?php foreach ($doctors as $doctor) { ?>
                                                             <option value="<?php echo $doctor->name; ?>" <?php
@@ -149,7 +149,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                        <input class="form-control fc-datepicker" name="date" id="date" placeholder="MM/DD/YYYY" type="text" readonly required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -157,7 +157,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                                        <button class="btn btn-primary pull-right" type="submit" id="submit" name="submit"><?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -414,7 +414,30 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var type = $('#type').parsley();
+                var patient = $('#patient').parsley();
+                var doctor = $('#doctor').parsley();
+                var date = $('#date').parsley();
+
+                if (type.isValid() && patient.isValid() && doctor.isValid() && date.isValid()) {
+                    return true;
+                } else {
+                    type.validate();
+                    patient.validate();
+                    doctor.validate();
+                    date.validate();
+                }
+            })
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
