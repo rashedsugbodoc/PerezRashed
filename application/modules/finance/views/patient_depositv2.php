@@ -258,7 +258,7 @@
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12">
                                         <div class="card box-widget widget-user">
-                                            <div class="widget-user-image mx-auto mt-5 text-center"><img alt="User Avatar" class="rounded-circle" src="<?php echo base_url('public/assets/images/users/16.jpg'); ?>"></div>
+                                            <div class="widget-user-image mx-auto mt-5 text-center"><img alt="User Avatar" style="width: 150px; height: 150px;" width="auto" height="auto" class="rounded-circle p-1" src="<?php echo $patient->img_url ?>"></div>
                                             <div class="card-body text-center">
                                                 <div class="pro-user">
                                                     <h4 class="pro-user-username text-dark mb-1 font-weight-bold"><?php echo $patient->name; ?></h4>
