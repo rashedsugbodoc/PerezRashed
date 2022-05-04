@@ -285,8 +285,8 @@ class Patient extends MX_Controller {
                 'allowed_types' => "jpg|png|jpeg",
                 'overwrite' => False,
                 'max_size' => "2000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-                'max_height' => "10000",
-                'max_width' => "10000"
+                'max_height' => "2000",
+                'max_width' => "2000"
             );
 
             $this->load->library('Upload', $config);
