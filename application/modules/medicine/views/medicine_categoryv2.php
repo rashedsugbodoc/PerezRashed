@@ -13,7 +13,7 @@
                                         <div class="card-title"><?php echo lang('medicine_categories'); ?> </div>
                                         <div class="card-options">
                                             <?php if ($this->ion_auth->in_group(array('admin', 'Doctor','Pharmacist'))) { ?>
-                                                <a data-toggle="modal" href="#myModal">
+                                                <a href="medicine/addCategoryView">
                                                     <button id="" class="btn btn-primary btn-xs">
                                                         <i class="fa fa-plus"></i> <?php echo lang('create_medicine_category'); ?>
                                                     </button>
@@ -40,7 +40,8 @@
                                                         <?php if ($this->ion_auth->in_group(array('admin', 'Doctor','Pharmacist'))) { ?>
                                                             <td>
                                                                 <?php if(!empty($category->hospital_id)) { ?>
-                                                                    <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
+                                                                    <!-- <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>    -->
+                                                                    <a href="medicine/edit_category?id=<?php echo $category->id ?>" class="btn btn-info"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>
                                                                 <?php } ?>
                                                                 <?php if(!empty($category->hospital_id)) { ?>
                                                                     <a class="btn btn-danger btn-xs" href="medicine/deleteMedicineCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>

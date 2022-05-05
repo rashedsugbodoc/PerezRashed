@@ -13,7 +13,7 @@
                                         <div class="card-title"><?php echo lang('medicine'); ?> </div>
                                         <div class="card-options">
                                             <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) { ?>
-                                                <a data-toggle="modal" href="#myModal">
+                                                <a href="medicine/addMedicineView">
                                                     <button id="" class="btn btn-primary btn-xs">
                                                         <i class="fa fa-plus"></i> <?php echo lang('add_medicine'); ?>
                                                     </button>
