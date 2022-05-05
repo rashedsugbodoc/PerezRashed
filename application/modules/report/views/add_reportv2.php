@@ -303,7 +303,10 @@
             data: '',
             dataType: 'json',
             success: function (response) {
+                var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
                 flatpickr(".editflatpickr", {
+                    maxDate: "today",
                     altInput: true,
                     altFormat: "F j, Y h:i K",
                     dateFormat: "F j, Y h:i K",
