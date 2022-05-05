@@ -94,12 +94,13 @@ class Report extends MX_Controller {
         $description = $this->input->post('description');
         $patient = $this->input->post('patient');
         $doctor = $this->input->post('doctor');
-        $date = $this->input->post('date');
-        if ((empty($id))) {
-            $add_date = date('m/d/y');
-        } else {
-            $add_date = $this->db->get_where('report', array('id' => $id))->row()->add_date;
-        }
+        $report_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date')));
+        // if ((empty($id))) {
+        //     $add_date = date('m/d/y');
+        // } else {
+        //     $add_date = $this->db->get_where('report', array('id' => $id))->row()->add_date;
+        // }
+        $date = gmdate('Y-m-d H:i:s');
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
@@ -137,17 +138,24 @@ class Report extends MX_Controller {
             }
         } else {
             $data = array();
-            $data = array('report_type' => $type,
-                'description' => $description,
-                'patient' => $patient,
-                'doctor' => $doctor,
-                'date' => $date,
-                'add_date' => $add_date
-            );
             if (empty($id)) {
+                $data = array('report_type' => $type,
+                    'description' => $description,
+                    'patient_id' => $patient,
+                    'doctor_id' => $doctor,
+                    'report_date' => $report_date,
+                    'created_at' => $date
+                );
                 $this->report_model->insertReport($data); 
                 $this->session->set_flashdata('success', lang('record_added'));
             } else {
+                $data = array('report_type' => $type,
+                    'description' => $description,
+                    'patient_id' => $patient,
+                    'doctor_id' => $doctor,
+                    'report_date' => $report_date,
+                    'last_modified' => $date
+                );
                 $this->report_model->updateReport($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
@@ -170,7 +178,7 @@ class Report extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $id = $this->input->get('id');
         $data['report'] = $this->report_model->getReportById($id);
-        $data['date'] = date("F j, Y", strtotime($data['report']->date.' UTC'));
+        $data['date'] = date("F j, Y H:i:s", strtotime($data['report']->report_date.' UTC'));
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_reportv2', $data);
         // $this->load->view('home/footer'); // just the footer file
@@ -179,6 +187,7 @@ class Report extends MX_Controller {
     function editReportByJason(){
         $id = $this->input->get('id');
         $data['report'] = $this->report_model->getReportById($id);
+        $data['date'] = date('F j, Y H:i:s', strtotime($data['report']->report_date.' UTC'));
         echo json_encode($data);
     }
 
