@@ -23,7 +23,7 @@
                                     <div class="card-body">
                                         <?php echo validation_errors(); ?>
                                         <form role="form" action="medicine/addNewMedicine" class="clearfix" method="post" enctype="multipart/form-data">
-                                            <div class="row">
+                                            <!-- <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('generic_name'); ?></label>
@@ -160,6 +160,140 @@
                                                         <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
+                                            </div> -->
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('generic_name'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="generic" id="generic" value='<?php
+                                                        if (!empty($medicine->generic)) {
+                                                            echo $medicine->generic;
+                                                        }
+                                                        ?>' placeholder="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('category'); ?><span class="text-red"> *</span></label>
+                                                        <select class="form-control select2-show-search" name="category" id="category" value='' required>
+                                                            <?php foreach ($categories as $category) { ?>
+                                                                <option value="<?php echo $category->category; ?>" <?php
+                                                                if (!empty($medicine->category)) {
+                                                                    if ($category->category == $medicine->category) {
+                                                                        echo 'selected';
+                                                                    }
+                                                                }
+                                                                ?> > <?php echo $category->category; ?> </option>
+                                                                    <?php } ?> 
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('brand_name'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="name" id="brand" value='<?php
+                                                        if (!empty($medicine->name)) {
+                                                            echo $medicine->name;
+                                                        }
+                                                        ?>' placeholder="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('form'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="form" id="form" value="<?php
+                                                        if (!empty($medicine->form)) {
+                                                            echo $medicine->form;
+                                                        }
+                                                        ?>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('uses'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="uses" id="uses" value='<?php
+                                                        if (!empty($medicine->uses)) {
+                                                            echo $medicine->uses;
+                                                        }
+                                                        ?>' placeholder="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('side_effects'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="effects" id="side_effects" value='<?php
+                                                        if (!empty($medicine->effects)) {
+                                                            echo $medicine->effects;
+                                                        }
+                                                        ?>' placeholder="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('p_price'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="price" id="p_price" value='<?php
+                                                        if (!empty($medicine->price)) {
+                                                            echo $medicine->price;
+                                                        }
+                                                        ?>' placeholder="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('s_price'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="s_price" id="s_price" value='<?php
+                                                        if (!empty($medicine->s_price)) {
+                                                            echo $medicine->s_price;
+                                                        }
+                                                        ?>' placeholder="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('quantity'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="quantity" id="quantity" value='<?php
+                                                        if (!empty($medicine->quantity)) {
+                                                            echo $medicine->quantity;
+                                                        }
+                                                        ?>' placeholder="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('company'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="company" id="company" value='<?php
+                                                        if (!empty($medicine->company)) {
+                                                            echo $medicine->company;
+                                                        }
+                                                        ?>' placeholder="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('store_box'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control" name="box" id="store_box" value='<?php
+                                                        if (!empty($medicine->box)) {
+                                                            echo $medicine->box;
+                                                        }
+                                                        ?>' placeholder="" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('expiry_date'); ?><span class="text-red"> *</span></label>
+                                                        <input type="text" class="form-control flatpickr" name="e_date" id="date" value='' placeholder="" readonly="" required>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="id" value='<?php
+                                                    if (!empty($medicine->id)) {
+                                                        echo $medicine->id;
+                                                    }
+                                                ?>'>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <button type="submit" name="submit" id="submit" class="btn btn-primary pull-right"> <?php echo lang('submit'); ?></button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -268,8 +402,81 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var generic = $('#generic').parsley();
+                var category = $('#category').parsley();
+                var brand = $('#brand').parsley();
+                var form = $('#form').parsley();
+                var uses = $('#uses').parsley();
+                var side_effects = $('#side_effects').parsley();
+                var p_price = $('#p_price').parsley();
+                var s_price = $('#s_price').parsley();
+                var quantity = $('#quantity').parsley();
+                var company = $('#company').parsley();
+                var store_box = $('#store_box').parsley();
+                var date = $('#date').parsley();
+
+                if (generic.isValid() && category.isValid() && brand.isValid() && form.isValid() && uses.isValid() && side_effects.isValid() && p_price.isValid() && s_price.isValid() && quantity.isValid() && company.isValid() && store_box.isValid() && date.isValid()) {
+                    return true;
+                } else {
+                    generic.validate();
+                    category.validate();
+                    brand.validate();
+                    form.validate();
+                    uses.validate();
+                    side_effects.validate();
+                    p_price.validate();
+                    s_price.validate();
+                    quantity.validate();
+                    company.validate();
+                    store_box.validate();
+                    date.validate();
+                }
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var medicine_id = "<?php echo $medicine->id; ?>";
+            if (medicine_id === "") {
+                flatpickr(".flatpickr", {
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    minDate: "today",
+                    disableMobile: true
+                });
+            } else {
+                $.ajax({
+                    url: 'medicine/editMedicineByJason?id=' + medicine_id,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var expire = response.expire_date;
+                        $('.flatpickr').flatpickr({
+                            dateFormat: "F j, Y",
+                            defaultDate: expire,
+                            altInput: true,
+                            altFormat: "F j, Y",
+                            disableMobile: true
+                        });
+                    }
+                });
+            }
+        })
+    </script>
 
     <script>
         $(document).ready(function () {

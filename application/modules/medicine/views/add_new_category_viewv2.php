@@ -27,21 +27,21 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('category'); ?></label>
-                                                        <input type="text" class="form-control" name="category" id="exampleInputEmail1" value='<?php
+                                                        <input type="text" class="form-control" name="category" id="category" value='<?php
                                                         if (!empty($medicine->category)) {
                                                             echo $medicine->category;
                                                         }
-                                                        ?>' placeholder="">
+                                                        ?>' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('description'); ?></label>
-                                                        <input type="text" class="form-control" name="description" id="exampleInputEmail1" value='<?php
+                                                        <input type="text" class="form-control" name="description" id="description" value='<?php
                                                         if (!empty($medicine->description)) {
                                                             echo $medicine->description;
                                                         }
-                                                        ?>' placeholder="">
+                                                        ?>' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <input type="hidden" name="id" value='<?php
@@ -51,7 +51,7 @@
                                                 ?>'>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                                        <button class="btn btn-primary pull-right" type="submit" id="submit" name="submit"><?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -149,8 +149,28 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var category = $('#category').parsley();
+                var description = $('#description').parsley();
+                
+
+                if (description.isValid() && category.isValid()) {
+                    return true;
+                } else {
+                    description.validate();
+                    category.validate();
+                }
+            })
+        })
+    </script>
 
     <script>
         $(document).ready(function () {
