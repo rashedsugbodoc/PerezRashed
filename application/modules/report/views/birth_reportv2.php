@@ -39,10 +39,10 @@
                                                     <tbody>
                                                         <?php foreach ($reports as $report) { ?>
                                                             <tr class="">
-                                                                <td><?php echo explode('*', $report->patient)[0]; ?></td>
+                                                                <td><?php echo $this->patient_model->getPatientById($report->patient_id)->name; ?></td>
                                                                 <td> <?php echo $report->description; ?></td>
-                                                                <td><?php echo $report->doctor; ?></td>
-                                                                <td class="center"><?php echo $report->date; ?></td>
+                                                                <td><?php echo $this->doctor_model->getDoctorById($report->doctor_id)->name; ?></td>
+                                                                <td class="center"><?php echo date('F j, Y h:i A', strtotime($report->report_date.' UTC')); ?></td>
                                                                 <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                     <td class="no-print">
                                                                         <a href="report/editReport?id=<?php echo $report->id; ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>
