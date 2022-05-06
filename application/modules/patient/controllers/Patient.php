@@ -748,9 +748,12 @@ class Patient extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
-        $id = $this->input->get('id');
+        $case_note_number = $this->input->get('id');
+        $id = $this->patient_model->getMedicalHistoryByCaseNoteNumber($case_note_number)->id;
 
-        $data['case_lists'] = $this->patient_model->getMedicalHistoryById($id);
+        if (!empty($id)) {
+            $data['case_lists'] = $this->patient_model->getMedicalHistoryById($id);
+        }
         $data['settings'] = $this->settings_model->getSettings();
         $data['patients'] = $this->patient_model->getPatient();
         $data['medical_histories'] = $this->patient_model->getMedicalHistory();
@@ -1386,6 +1389,8 @@ class Patient extends MX_Controller {
         $date = gmdate('Y-m-d H:i:s', strtotime($date));
 
         $title = $this->input->post('title');
+        $raw_case_number = 'N'.random_string('alnum', 6);
+        $case_number = strtoupper($raw_case_number);
 
         // if (!empty($date)) {
         //     $nowtime = date('H:i:s');
@@ -1443,19 +1448,21 @@ class Patient extends MX_Controller {
 
             //$error = array('error' => $this->upload->display_errors());
             $data = array();
-            $data = array(
-                'patient_id' => $patient_id,
-                'case_date' => $date,
-                'title' => $title,
-                'description' => $description,
-                'patient_name' => $patient_name,
-                'patient_phone' => $patient_phone,
-                'patient_address' => $patient_address,
-                'doctor_id' => $current_user,
-                'encounter_id' => $encounter,
-            );
+            
 
             if (empty($id)) {     // Adding New department
+                $data = array(
+                    'patient_id' => $patient_id,
+                    'case_date' => $date,
+                    'title' => $title,
+                    'description' => $description,
+                    'patient_name' => $patient_name,
+                    'patient_phone' => $patient_phone,
+                    'patient_address' => $patient_address,
+                    'doctor_id' => $current_user,
+                    'encounter_id' => $encounter,
+                    'case_note_number' => $case_number
+                );
                 // $data['setval'] = 'setval';
                 $this->patient_model->insertMedicalHistory($data);
                 $this->session->set_flashdata('success', lang('record_added'));
@@ -1463,6 +1470,17 @@ class Patient extends MX_Controller {
                 // $this->load->view('home/dashboardv2'); // just the header file
                 // $this->load->view('jitsiv2', $data);
             } else { // Updating department
+                $data = array(
+                    'patient_id' => $patient_id,
+                    'case_date' => $date,
+                    'title' => $title,
+                    'description' => $description,
+                    'patient_name' => $patient_name,
+                    'patient_phone' => $patient_phone,
+                    'patient_address' => $patient_address,
+                    'doctor_id' => $current_user,
+                    'encounter_id' => $encounter,
+                );
                 $this->patient_model->updateMedicalHistory($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
@@ -3011,7 +3029,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a href="patient/caselist?id='.$case->id.'" class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '"><i class="fa fa-edit"> </i> </a>';
+                $options1 = ' <a href="patient/caselist?id='.$case->case_note_number.'" class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '"><i class="fa fa-edit"> </i> </a>';
             }
 
             if ($this->ion_auth->in_group(array('admin'))) {

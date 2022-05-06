@@ -244,6 +244,12 @@ class Patient_model extends CI_model {
         return $query->row();
     }
 
+    function getMedicalHistoryByCaseNoteNumber($case_note_number) {
+        $this->db->where('case_note_number', $case_note_number);
+        $query = $this->db->get('case_note');
+        return $query->row();
+    }
+
     function getMedicalHistoryByEncounterId($id) {
         $this->db->where('encounter_id', $id);
         $query = $this->db->get('case_note');
