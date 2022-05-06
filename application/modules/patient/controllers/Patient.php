@@ -1521,9 +1521,9 @@ class Patient extends MX_Controller {
         }
 
         $patient_hospital_id = $this->patient_model->getPatientById($id)->hospital_id;
-        if ($patient_hospital_id != $this->session->userdata('hospital_id')) {
-            redirect('home/permission');
-        }
+        // if ($patient_hospital_id != $this->session->userdata('hospital_id')) {
+        //     redirect('home/permission');
+        // }
 
         $data['current_user'] = (int)$this->ion_auth->get_user_id();
         if (empty($data['encounter_id'])) {
