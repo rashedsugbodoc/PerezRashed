@@ -145,10 +145,11 @@ class Appointment extends MX_Controller {
             redirect('home/permission');
         }
         $redirect = $this->input->get('redirect');
+        $patient = $this->input->get('patient_id');
         if (empty($redirect)) {
             $root = $this->input->get('root');
             $method = $this->input->get('method');
-            $redirect = $root.'/'.$method;
+            $redirect = $root.'/'.$method.'?id='.$patient;
         }
         $data['redirect'] = $redirect;
         $data['patients'] = $this->patient_model->getPatient();
