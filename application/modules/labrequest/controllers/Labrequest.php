@@ -291,7 +291,8 @@ class Labrequest extends MX_Controller {
 
     function labrequestView() {
         $id = $this->input->get('id');
-        $data['labrequest'] = $this->labrequest_model->getLabrequestById($id);
+        $labrequest_number = $this->labrequest_model->getLabrequestByLabrequestNumber($id)[0]->id;
+        $data['labrequest'] = $this->labrequest_model->getLabrequestById($labrequest_number);
         $data['lab_request_number'] = $this->labrequest_model->getLabrequestByLabrequestNumber($data['labrequest']->lab_request_number);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['labrequest']->doctor_id);
         $data['signature'] = $this->doctor_model->getUserSignatureByUserId($data['doctor']->ion_user_id);
@@ -333,7 +334,7 @@ class Labrequest extends MX_Controller {
 
         foreach ($data['labrequests'] as $labrequest) {
             $option1 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-edit"></i></a>';
-            $option2 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->id.'"><i class="fe fe-eye"></i></a>';
+            $option2 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-eye"></i></a>';
             $option3 = '<a class="btn btn-danger" href="labrequest/deleteLabrequestByRequestNumber?request_number='.$labrequest->lab_request_number.'"><i class="fe fe-trash-2"></i></a>';
 
             $doctor = $this->doctor_model->getDoctorById($labrequest->doctor_id);
