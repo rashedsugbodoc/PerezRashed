@@ -30,13 +30,20 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                                <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" required name="date" type="text" readonly>
+                                                                <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" required name="date" type="text" readonly value="<?php
+                                                                if (!empty($case_lists->id)) {
+                                                                    echo date('m/d/y', strtotime($case_lists->case_date.' UTC'));
+                                                                }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
                                                                 <select class="form-control select2-show-search" required id="patientchoose" name="patient_id">
+                                                                    <?php if(!empty($case_lists->id)) { ?>
+                                                                        <option value="<?php echo $case_lists->patient_id ?>"><?php echo $this->patient_model->getPatientById($case_lists->patient_id)->name ?></option>
+                                                                    <?php } ?>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -45,7 +52,11 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?><span class="text-red"> *</span></label>
-                                                                <input type="text" class="form-control" id="title" required name="title" placeholder="Name">
+                                                                <input type="text" class="form-control" id="title" required name="title" placeholder="Name" value="<?php
+                                                                if (!empty($case_lists->id)) {
+                                                                    echo $case_lists->title;
+                                                                }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -53,20 +64,29 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label><?php echo lang('case'); ?> <?php echo lang('summary'); ?><span class="text-red"> *</span></label>
-                                                                <div class="ql-wrapper ql-wrapper-demo bg-light">
+                                                                <!-- <div class="ql-wrapper ql-wrapper-demo bg-light">
                                                                     <div id="quillEditor" class="bg-white quillEditor">
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
+                                                                    <textarea class="ckeditor form-control" id="editor" name="description" value="" rows="10" required><?php
+                                                                    if (!empty($setval)) {
+                                                                        echo set_value('description');
+                                                                    }
+                                                                    if (!empty($case_lists->id)) {
+                                                                        echo $case_lists->description;
+                                                                    }
+                                                                    ?>
+                                                                </textarea>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
+                                                    <!-- <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <textarea id="description" required name="description" readonly="" hidden="" class="form-control" rows="4"></textarea>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <!-- <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
@@ -358,6 +378,8 @@
         <!-- parlsey js -->
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
 
+        <script type="text/javascript" src="common/assets/ckeditor/ckeditor.js"></script>
+
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
@@ -497,6 +519,26 @@
                     z.style.backgroundColor = "";
                 }
             });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var form_id = $("#form_id").val();
+            var z = document.getElementById("accordHeader");
+            var x = document.getElementById("collapseOne31");
+            if (form_id !== "") {
+                z.className = "collapsed text-dark border-bottom";
+                z.style.backgroundColor = "#fff";
+                x.className = "panel-collapse collapse show";
+                $("#accordHeader").attr("aria-expanded", true);
+
+                /*USE THIS TO GET THE ID ON URL*/
+                    // var baseUrl = (window.location).href;
+                    // var koopId = baseUrl.substring(baseUrl.lastIndexOf('=') + 1);
+                    // alert(koopId)
+                /*END*/
+            }
         });
     </script>
 

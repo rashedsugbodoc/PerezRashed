@@ -748,6 +748,9 @@ class Patient extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
+        $id = $this->input->get('id');
+
+        $data['case_lists'] = $this->patient_model->getMedicalHistoryById($id);
         $data['settings'] = $this->settings_model->getSettings();
         $data['patients'] = $this->patient_model->getPatient();
         $data['medical_histories'] = $this->patient_model->getMedicalHistory();
@@ -3008,7 +3011,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a type="button" class="btn btn-info btn-xs btn_width editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"> </i> </a>';
+                $options1 = ' <a href="patient/caselist?id='.$case->id.'" class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '"><i class="fa fa-edit"> </i> </a>';
             }
 
             if ($this->ion_auth->in_group(array('admin'))) {
