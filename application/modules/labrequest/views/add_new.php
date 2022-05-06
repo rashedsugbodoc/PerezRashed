@@ -890,7 +890,7 @@
                                                 <input type="text" hidden name="labrequest_id[]" value="">\n\
                                                 <input type="text" hidden class = "form-control labreq-div" name = "labrequest_long[]" value = "" placeholder="">\n\
                                                 <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="<?php echo lang("lab_test_name_placeholder"); ?>" required>\n\
-                                                <input type="text" name="loinc_num[]" class="form-control" value="" readonly>\n\
+                                                <input type="text" name="loinc_num[]" class="form-control" value="" readonly hidden>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\

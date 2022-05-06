@@ -15,6 +15,7 @@ class Labrequest extends MX_Controller {
         $this->load->model('branch/branch_model');
         $this->load->model('location/location_model');
         $this->load->model('specialty/specialty_model');
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
             redirect('home/permission');
         }
@@ -229,7 +230,8 @@ class Labrequest extends MX_Controller {
                 // }
 
                 $inserted_id = $this->db->insert_id();
-                $lab_request_number = format_number_with_digits($this->session->userdata('hospital_id'),4).gmdate('ymd').format_number_with_digits($inserted_id, 3);
+                // $lab_request_number = 'L'.format_number_with_digits($this->session->userdata('hospital_id'),4).gmdate('ymd').format_number_with_digits($inserted_id, 3);
+                $lab_request_number = 'L'.random_string('alnum', 6);
                 $data2 = array(
                     'lab_request_number' => $lab_request_number,
                 );
