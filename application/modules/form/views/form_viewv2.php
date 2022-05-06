@@ -235,8 +235,8 @@
                                                                 <td class="w-7 p-0 template-opacity">:</td>
                                                                 <td class="w-63 p-0 form-opacity">
                                                                     <?php
-                                                                        if (!empty($form->id)) {
-                                                                            echo $form->id;
+                                                                        if (!empty($form->form_number)) {
+                                                                            echo $form->form_number;
                                                                         }
                                                                     ?>
                                                                 </td>

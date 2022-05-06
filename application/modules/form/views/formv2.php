@@ -281,7 +281,7 @@
                                                 <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100">
                                                     <thead>
                                                         <tr>
-                                                            <th><?php echo lang('report_id'); ?></th>
+                                                            <th><?php echo lang('report').' '.lang('number'); ?></th>
                                                             <th><?php echo lang('name'); ?></th>
                                                             <th><?php echo lang('patient'); ?></th>
                                                             <th><?php echo lang('date'); ?></th>

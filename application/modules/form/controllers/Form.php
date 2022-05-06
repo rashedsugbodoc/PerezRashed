@@ -14,6 +14,7 @@ class Form extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('accountant/accountant_model');
         $this->load->model('receptionist/receptionist_model');
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Doctor', 'Patient'))) {
             redirect('home/permission');
         }
@@ -37,12 +38,13 @@ class Form extends MX_Controller {
             redirect('home/permission');
         }
 
-        $id = $this->input->get('id');
+        $form_number = $this->input->get('id');
+        $id = $this->form_model->getFormByFormNumber($form_number)->id;
 
 
         if (!empty($id)) {
             $form_details = $this->form_model->getFormById($id);
-            if ($form_details->hospital_id != $this->session->userdata('hospital_id')) {
+            if ($form_details->hospital_id !== $this->session->userdata('hospital_id')) {
                 redirect('home/permission');
             }
         }
@@ -81,11 +83,11 @@ class Form extends MX_Controller {
             redirect('home/permission');
         }
 
-        $id = $this->input->get('id');
-
+        $form_number = $this->input->get('id');
+        $id = $this->form_model->getFormByFormNumber($form_number)->id;
         if (!empty($id)) {
             $form_details = $this->form_model->getFormById($id);
-            if ($form_details->hospital_id != $this->session->userdata('hospital_id')) {
+            if ($form_details->hospital_id !== $this->session->userdata('hospital_id')) {
                 redirect('home/permission');
             }
         }
@@ -195,6 +197,8 @@ class Form extends MX_Controller {
 
         $redirect = $this->input->post('redirect');
         $medical_redirect = $this->input->post('medical_history_redirect');
+        $raw_form_number = 'F'.random_string('alnum', 6);
+        $form_number = strtoupper($raw_form_number);
 
         // $p_name = $this->input->post('p_name');
         // $p_email = $this->input->post('p_email');
@@ -385,6 +389,7 @@ class Form extends MX_Controller {
                     'doctor_name' => $doctor_name,
                     'rendering_staff_id' => $rendering_user,
                     'encounter_id' => $encounter,
+                    'form_number' => $form_number,
                 );
 
 
@@ -676,7 +681,8 @@ class Form extends MX_Controller {
 
     function formView() {
         $data = array();
-        $id = $this->input->get('id');
+        $form_number = $this->input->get('id');
+        $id = $this->form_model->getFormByFormNumber($form_number)->id;
         $data['settings'] = $this->settings_model->getSettings();
         $data['form'] = $this->form_model->getFormById($id);
         $data['patient'] = $this->patient_model->getPatientById($data['form']->patient);
@@ -788,12 +794,12 @@ class Form extends MX_Controller {
         foreach ($data['forms'] as $form) {
             $date = date('d-m-y', $form->date);
             if ($this->ion_auth->in_group(array('admin', 'Laboratorist', 'Doctor'))) {
-                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="form?id=' . $form->id . '"><i class="fa fa-edit"> </i> ' . lang('') . '</a>';
+                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="form?id=' . $form->form_number . '"><i class="fa fa-edit"> </i> ' . lang('') . '</a>';
             } else {
                 $options1 = '';
             }
 
-            $options2 = '<a class="btn btn-xs btn-info" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
+            $options2 = '<a class="btn btn-xs btn-info" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->form_number . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin'))) {
                 $options3 = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="form/delete?id=' . $form->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>' . lang('') . '</a>';
@@ -820,7 +826,7 @@ class Form extends MX_Controller {
                 $patient_details = ' ';
             }
             $info[] = array(
-                $form->id,
+                $form->form_number,
                 $form->name,
                 $patient_details,
                 date('Y-m-d', strtotime($form->form_date.' UTC')),
