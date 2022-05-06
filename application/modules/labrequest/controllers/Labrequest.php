@@ -231,7 +231,8 @@ class Labrequest extends MX_Controller {
 
                 $inserted_id = $this->db->insert_id();
                 // $lab_request_number = 'L'.format_number_with_digits($this->session->userdata('hospital_id'),4).gmdate('ymd').format_number_with_digits($inserted_id, 3);
-                $lab_request_number = 'L'.random_string('alnum', 6);
+                $raw_lab_request_number = 'L'.random_string('alnum', 6);
+                $lab_request_number = strtoupper($raw_lab_request_number);
                 $data2 = array(
                     'lab_request_number' => $lab_request_number,
                 );
