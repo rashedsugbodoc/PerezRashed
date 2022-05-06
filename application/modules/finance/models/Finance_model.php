@@ -107,6 +107,13 @@ class Finance_model extends CI_model {
         return $query->row();
     }
 
+    function getPaymentByFinanceNumber($invoice_number) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('invoice_number', $invoice_number);
+        $query = $this->db->get('invoice');
+        return $query->row();
+    }
+
     function getPaymentByPatientId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');

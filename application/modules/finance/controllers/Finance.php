@@ -23,7 +23,7 @@ class Finance extends MX_Controller {
         $this->load->module('sms');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->module('paypal');
-
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Doctor', 'Patient', 'CompanyUser'))) {
             redirect('home/permission');
         }
@@ -221,6 +221,8 @@ class Finance extends MX_Controller {
         $company_classification = $this->company_model->getClassificationByCompanyId($company_id);
         $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
         $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+        $raw_invoice_number = 'I'.random_string('alnum', 6);
+        $invoice_number = strtoupper($raw_invoice_number);
 
         foreach ($payment_status_list as $status_list) {
             if ($status_list->name === "paid") {
@@ -427,7 +429,8 @@ class Finance extends MX_Controller {
                     'completion_status' => $completion_status,
                     'company_id' => $company_id,
                     'payment_status' => $payment_status,
-                    'encounter_id' => $encounter_id
+                    'encounter_id' => $encounter_id,
+                    'invoice_number' => $invoice_number,
                 );
 
 
@@ -697,10 +700,12 @@ class Finance extends MX_Controller {
             $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
             // $data['patients'] = $this->patient_model->getPatient();
             //  $data['doctors'] = $this->doctor_model->getDoctor();
+            $invoice_number = $this->input->get('finance_id');
             $id = $this->input->get('id');
+            $finance_id = $this->finance_model->getPaymentByFinanceNumber($invoice_number)->id;
 
             if (!empty($id)) {
-                $payment_details = $this->finance_model->getPaymentById($id);
+                $payment_details = $this->finance_model->getPaymentById($finance_id);
                 if ($payment_details->hospital_id != $this->session->userdata('hospital_id')) {
                     redirect('home/permission');
                 }
@@ -708,7 +713,7 @@ class Finance extends MX_Controller {
 
             $data['encounter'] = $this->encounter_model->getEncounterById($id);
             $data['staffs'] = $this->encounter_model->getUser();
-            $data['payment'] = $this->finance_model->getPaymentById($id);
+            $data['payment'] = $this->finance_model->getPaymentById($finance_id);
             // $data['patients'] = $this->patient_model->getPatientById($data['payment']->patient);
             // $data['doctors'] = $this->doctor_model->getDoctorById($data['payment']->doctor);
             $data['encounters'] = $this->encounter_model->getEncounter();
@@ -1471,7 +1476,8 @@ class Finance extends MX_Controller {
     //end service category
 
     function invoice() {
-        $id = $this->input->get('id');
+        $invoice_number = $this->input->get('id');
+        $id = $this->finance_model->getPaymentByFinanceNumber($invoice_number)->id;
         $data['payment'] = $this->finance_model->getPaymentById($id);
         $data['patient'] = $this->patient_model->getPatientById($data['payment']->patient);
         $data['encounter'] = $this->encounter_model->getEncounterByInvoiceId($id);
@@ -1500,7 +1506,8 @@ class Finance extends MX_Controller {
     }
 
     function printInvoice() {
-        $id = $this->input->get('id');
+        $invoice_number = $this->input->get('id');
+        $id = $this->finance_model->getPaymentByFinanceNumber($invoice_number)->id;
         $data['settings'] = $this->settings_model->getSettings();
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['payment'] = $this->finance_model->getPaymentById($id);
@@ -2427,11 +2434,11 @@ class Finance extends MX_Controller {
             }
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor'))) {
-                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?id=' . $payment->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?finance_id=' . $payment->invoice_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
-            $options2 = '<a class="btn btn-success btn-xs" title="' . lang('invoice') . '" href="finance/invoice?id=' . $payment->id . '"><i class="fa fa-file-invoice"></i> ' . lang('invoice') . '</a>';
-            $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" href="finance/printInvoice?id=' . $payment->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
+            $options2 = '<a class="btn btn-success btn-xs" title="' . lang('invoice') . '" href="finance/invoice?id=' . $payment->invoice_number . '"><i class="fa fa-file-invoice"></i> ' . lang('invoice') . '</a>';
+            $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" href="finance/printInvoice?id=' . $payment->invoice_number . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
             if ($this->ion_auth->in_group(array('admin'))) {
                 $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/delete?id=' . $payment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }

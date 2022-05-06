@@ -151,7 +151,7 @@
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span><?php echo $payment->id;?></span>
+                                                                    <span><?php echo $payment->invoice_number;?></span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">
