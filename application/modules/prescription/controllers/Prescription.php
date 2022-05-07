@@ -15,6 +15,7 @@ class Prescription extends MX_Controller {
         $this->load->model('branch/branch_model');
         $this->load->model('specialty/specialty_model');
         $this->load->model('encounter/encounter_model');
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
@@ -159,6 +160,9 @@ class Prescription extends MX_Controller {
             $redirect = $medical_redirect . '?id=' . $patient . '&encounter_id=' . $encounter_id;
         }
 
+        $raw_prescription_number = 'P'.random_string('alnum', 6);
+        $prescription_number = strtoupper($raw_prescription_number);
+
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Date Field
@@ -223,16 +227,16 @@ class Prescription extends MX_Controller {
             $data = array();
             $patientname = $this->patient_model->getPatientById($patient)->name;
             $doctorname = $this->doctor_model->getDoctorById($doctor)->name;
-            $data = array('prescription_date' => $date,
-                'patient' => $patient,
-                'doctor' => $doctor,
-                'medicine' => $final_report,
-                'patientname' => $patientname,
-                'doctorname' => $doctorname,
-                'encounter_id' => $encounter_id,
-                
-            );
             if (empty($id)) {
+                $data = array('prescription_date' => $date,
+                    'patient' => $patient,
+                    'doctor' => $doctor,
+                    'medicine' => $final_report,
+                    'patientname' => $patientname,
+                    'doctorname' => $doctorname,
+                    'encounter_id' => $encounter_id,
+                    'prescription_number' => $prescription_number,
+                );
                 if ($this->prescription_model->insertPrescription($data)) {
                     $this->session->set_flashdata('success', lang('record_added'));    
                 } else {
@@ -240,6 +244,14 @@ class Prescription extends MX_Controller {
                 }
                 
             } else {
+                $data = array('prescription_date' => $date,
+                    'patient' => $patient,
+                    'doctor' => $doctor,
+                    'medicine' => $final_report,
+                    'patientname' => $patientname,
+                    'doctorname' => $doctorname,
+                    'encounter_id' => $encounter_id,
+                );
                 if ($this->prescription_model->updatePrescription($id, $data)) {
                     $this->session->set_flashdata('success', lang('record_updated'));    
                 } else {
@@ -274,7 +286,8 @@ class Prescription extends MX_Controller {
 
     function viewPrescription() {
 
-        $id = $this->input->get('id');
+        $prescription_number = $this->input->get('id');
+        $id = $this->prescription_model->getPrescriptionByPrescriptionNumber($prescription_number)->id;
         $data['settings'] = $this->settings_model->getSettings();
         $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['prescription']->doctor);
@@ -304,7 +317,7 @@ class Prescription extends MX_Controller {
             $current_doctor = $this->ion_auth->get_user_id();
             $doctor_id = $this->doctor_model->getDoctorByIonUserId($current_doctor)->id;
             //if patient logged in isn't the owner of the invoice being viewed, then prohibit him from viewing invoice
-            if ($doctor_id != $data['prescription']->doctor) {
+            if ($doctor_id !== $data['prescription']->doctor) {
                 redirect('home/permission');
             }
 
@@ -327,7 +340,8 @@ class Prescription extends MX_Controller {
     }
 
     function viewPrescriptionPrint() {
-        $id = $this->input->get('id');
+        $prescription_number = $this->input->get('id');
+        $id = $this->prescription_model->getPrescriptionByPrescriptionNumber($prescription_number)->id;
         $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
 
         if ($this->ion_auth->in_group(array('Patient'))) {
@@ -359,7 +373,8 @@ class Prescription extends MX_Controller {
         }
 
         $data = array();
-        $id = $this->input->get('id');
+        $prescription_number = $this->input->get('id');
+        $id = $this->prescription_model->getPrescriptionByPrescriptionNumber($prescription_number)->id;
         // $data['patients'] = $this->patient_model->getPatient();
         // $data['doctors'] = $this->doctor_model->getDoctor();
         $data['medicines'] = $this->medicine_model->getMedicine();
@@ -548,14 +563,14 @@ class Prescription extends MX_Controller {
             //$i = $i + 1;
             $settings = $this->settings_model->getSettings();
 
-            $option1 = '<a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>';
-            $option3 = '<a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=' . $prescription->id . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . ' ' .lang('edit') . ' ' . '</a>';
+            $option1 = '<a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->prescription_number . '"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>';
+            $option3 = '<a class="btn btn-info btn-xs btn_width" href="prescription/editPrescription?id=' . $prescription->prescription_number . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . ' ' .lang('edit') . ' ' . '</a>';
 
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 
-            $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=' . $prescription->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
+            $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=' . $prescription->prescription_number . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
 
             if (!empty($prescription->medicine)) {
                 $medicine = explode('###', $prescription->medicine);
@@ -577,7 +592,7 @@ class Prescription extends MX_Controller {
                 $patientname = $prescription->patientname;
             }
             $info[] = array(
-                $prescription->id,
+                $prescription->prescription_number,
                 date('d-m-Y', strtotime($prescription->prescription_date.' UTC')),
                 $patientname,
                 $prescription->patient,

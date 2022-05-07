@@ -345,7 +345,7 @@
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 pb-1">
                                                     <div class="form-group mb-0 prescription-opacity">
-                                                        <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <strong><span class="h5"><?php echo $prescription->id; ?></span></strong></label>
+                                                        <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <strong><span class="h5"><?php echo $prescription->prescription_number; ?></span></strong></label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 pb-1">

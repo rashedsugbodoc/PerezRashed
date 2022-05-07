@@ -180,7 +180,7 @@
                                             </div>
                                             <div class="col-md-3 p-0">
                                                 <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <?php echo $prescription->id; ?></label>
+                                                    <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <?php echo $prescription->prescription_number; ?></label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3 p-0">
