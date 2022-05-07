@@ -2007,9 +2007,9 @@ class Finance extends MX_Controller {
         $data['from'] = $this->input->post('date_from');
         $data['to'] = $this->input->post('date_to');
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('financial_report', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('financial_reportv2', $data);
+        // $this->load->view('home/footer'); // just the footer fi
     }
 
     function UserActivityReport() {
