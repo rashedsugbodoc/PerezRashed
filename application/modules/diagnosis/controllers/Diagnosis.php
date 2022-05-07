@@ -12,6 +12,7 @@ class Diagnosis extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('encounter/encounter_model');
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
             redirect('home/permission');
         }
@@ -52,6 +53,8 @@ class Diagnosis extends MX_Controller {
         $dataholder = $this->input->post('dataholder');
         $patient_diagnosis_text = $this->input->post('patient_diagnosis_text');
         $instruction_manual = $this->input->post('instruction_manual');
+        $raw_diagnosis_number = 'P'.random_string('alnum', 6);
+        $diagnosis_number = strtoupper($raw_diagnosis_number);
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>');
@@ -127,6 +130,7 @@ class Diagnosis extends MX_Controller {
                         'is_primary_diagnosis' => $primary[$key],
                         'is_secondary_diagnosis' => $secondary[$key],
                         'diagnosis_code' => $diagnosis_code[$key],
+                        'patient_diagnosis_number' => $diagnosis_number,
                     );
                     $this->diagnosis_model->insertDiagnosis($data[$value]);
                     $inserted_id[] = $this->db->insert_id();
