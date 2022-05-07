@@ -2542,6 +2542,8 @@ class Patient extends MX_Controller {
         $category = $this->input->post('category');
         $redirect = $this->input->post('redirect');
         $date = gmdate('Y-m-d H:i:s');
+        $raw_document_number = 'M'.random_string('alnum', 6);
+        $document_number = strtoupper($raw_document_number);
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             if (empty($patient_id)) {
@@ -2646,7 +2648,8 @@ class Patient extends MX_Controller {
                     'description' => $description,
                     'encounter_id' => $encounter,
                     'rendering_doctor_id' => $rendering_doctor_id,
-                    'rendering_staff_id' => $rendering_user_id
+                    'rendering_staff_id' => $rendering_user_id,
+                    'patient_document_number' => $document_number,
                 );
 
                 $this->patient_model->insertPatientMaterial($data);
@@ -2684,7 +2687,8 @@ class Patient extends MX_Controller {
         if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin'))) {
             redirect('home/permission');
         }
-        $document_id = $this->input->get('id');
+        $document_number = $this->input->get('id');
+        $document_id = $this->patient_model->getPatientMaterialByDocumentNumber($document_number)->id;
         if (empty($document_id)) {
             redirect('home/permission');
         }
@@ -2736,7 +2740,8 @@ class Patient extends MX_Controller {
     }
 
     function deletePatientMaterial() {
-        $id = $this->input->get('id');
+        $document_number = $this->input->get('id');
+        $id = $this->patient_model->getPatientMaterialByDocumentNumber($document_number)->id;
         $redirect = $this->input->get('redirect');
         $patient_material = $this->patient_model->getPatientMaterialById($id);
         $path = $patient_material->url;
@@ -3108,10 +3113,10 @@ class Patient extends MX_Controller {
                 $options1 = '<a class="btn btn-info btn-xs" href="' . $document->url . '?m='. $document->last_modified .'" download="'. $document->title .'"> ' . lang('download') . ' </a>';
             }
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
-                $options2 = '<a class="btn btn-danger btn-xs delete_button" href="patient/deletePatientMaterial?id=' . $document->id . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> <i class="fa fa-trash"></i> </a>';
+                $options2 = '<a class="btn btn-danger btn-xs delete_button" href="patient/deletePatientMaterial?id=' . $document->patient_document_number . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> <i class="fa fa-trash"></i> </a>';
             }
             if ($document->created_user_id === $current_user) {
-                $option3 = '<a class="btn btn-info" href="patient/editUpload?id='. $document->id .'" target="_blank"><i class="fe fe-edit"></i></a>';
+                $option3 = '<a class="btn btn-info" href="patient/editUpload?id='. $document->patient_document_number .'" target="_blank"><i class="fe fe-edit"></i></a>';
             }
 
             if (!empty($document->patient)) {

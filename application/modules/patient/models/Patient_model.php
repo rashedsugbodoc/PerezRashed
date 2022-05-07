@@ -373,6 +373,13 @@ class Patient_model extends CI_model {
         return $query->row();
     }
 
+    function getPatientMaterialByDocumentNumber($document_number) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('patient_document_number', $document_number);
+        $query = $this->db->get('patient_material');
+        return $query->row();
+    }
+
     function getPatientMaterialByEncounterId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('encounter_id', $id);
