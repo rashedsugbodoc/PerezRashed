@@ -64,7 +64,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                        <input class="form-control flatpickr" name="date" placeholder="MM/DD/YYYY" type="text" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -96,7 +96,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" value="20-08-2021" type="text" readonly>
+                                                        <input class="form-control editflatpickr" name="date" placeholder="MM/DD/YYYY" value="20-08-2021" type="text" readonly>
                                                     </div>
                                                 </div>
                                             </div>
@@ -242,9 +242,20 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".flatpickr").flatpickr({
+
+            });
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -263,7 +274,14 @@
                         // Populate the form fields with the data returned from server
                         var date = new Date(response.holiday.date * 1000);
                         $('#editHolidayForm').find('[name="id"]').val(response.holiday.id).end()
-                        $('#editHolidayForm').find('[name="date"]').val(date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()).end()
+                        // $('#editHolidayForm').find('[name="date"]').val(date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()).end()
+                        $('.editflatpickr').flatpickr({
+                            dateFormat: "F j, Y",
+                            defaultDate: response.datetime,
+                            altInput: true,
+                            altFormat: "F j, Y",
+                            disableMobile: true
+                        });
                     }
                 });
             });

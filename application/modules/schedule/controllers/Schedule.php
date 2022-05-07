@@ -1673,6 +1673,7 @@ class Schedule extends MX_Controller {
         $id = $this->input->get('id');
         $data['holiday'] = $this->schedule_model->getHolidayById($id);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['holiday']->doctor);
+        $data['datetime'] = date('F j, Y h:i A' , $data['holiday']->date);
         echo json_encode($data);
     }
 
