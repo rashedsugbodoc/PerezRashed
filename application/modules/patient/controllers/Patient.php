@@ -1763,7 +1763,7 @@ class Patient extends MX_Controller {
                                                             <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                             <div class="timelineleft-body">
                                                                 '. $all_meds .'
-                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
+                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->prescription_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
                                                             </div>
                                                             <div class="timelineleft-footer border-top bg-light">
                                                                 <div class="d-flex align-items-center mt-auto">
@@ -1842,7 +1842,7 @@ class Patient extends MX_Controller {
                                                             <h3 class="timelineleft-header"><span>' . lang('lab').' '.lang('test') . '</span></h3>
                                                             <div class="timelineleft-body">
                                                                 '. $alltest .'
-                                                                <a class="btn btn-info btn-xs btn_width" href="labrequest/labrequestView?id=' . $labrequest->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
+                                                                <a class="btn btn-info btn-xs btn_width" href="labrequest/labrequestView?id=' . $labrequest->lab_request_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
                                                             </div>
                                                             <div class="timelineleft-footer border-top bg-light">
                                                                 <div class="d-flex align-items-center mt-auto">
@@ -2170,7 +2170,7 @@ class Patient extends MX_Controller {
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="ml-3"><a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a></div>
+                                                                                <div class="ml-3"><a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->form_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a></div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="timelineleft-footer border-top bg-light">

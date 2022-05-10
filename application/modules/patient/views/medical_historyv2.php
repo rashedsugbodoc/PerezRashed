@@ -649,7 +649,7 @@
                                                                                 ?></td>
                                                                                 <td class="no-print">
                                                                                     <?php if(!empty($encounter_id)) { ?>
-                                                                                        <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i></a> 
+                                                                                        <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->prescription_number; ?>"><i class="fa fa-eye"></i></a> 
                                                                                         <?php
                                                                                         if ($this->ion_auth->in_group('Doctor')) {
                                                                                             $current_user = $this->ion_auth->get_user_id();
@@ -657,7 +657,7 @@
                                                                                             if ($prescription->doctor == $doctor_table_id) {
                                                                                                 ?>
                                                                                                 <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                                    <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->id.'&root=patient&method=medicalHistory'; ?>"><i class="fa fa-edit"></i></a>   
+                                                                                                    <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->prescription_number.'&root=patient&method=medicalHistory'; ?>"><i class="fa fa-edit"></i></a>   
                                                                                                     <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
                                                                                                 <?php } ?>
                                                                                                 <?php
@@ -736,7 +736,7 @@
                                                                                 <td>
                                                                                     <?php if(!empty($encounter_id)) { ?>
                                                                                         <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory'; ?>"><i class="fe fe-edit"></i></a>
-                                                                                        <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->id ?>"><i class="fe fe-eye"></i></a>
+                                                                                        <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->lab_request_number ?>"><i class="fe fe-eye"></i></a>
                                                                                     <?php } ?>
                                                                                 </td>
                                                                             </tr>
@@ -789,7 +789,7 @@
                                                                                 <td><?php echo date('Y-m-d', strtotime($form->form_date.' UTC')); ?></td>
                                                                                 <td>
                                                                                     <?php if(!empty($encounter_id)) { ?>
-                                                                                        <a href="form?id=<?php echo $form->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
+                                                                                        <a href="form?id=<?php echo $form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
                                                                                     <?php } ?>
                                                                                 </td>
                                                                             </tr>
@@ -901,7 +901,7 @@
                                                                                     <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
                                                                                     <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
-                                                                                        <a class="btn btn-danger ml-5" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
+                                                                                        <a class="btn btn-danger ml-5" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
                                                                                     <?php } ?>
                                                                                 <?php } ?>
                                                                             </div>
