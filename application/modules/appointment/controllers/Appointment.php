@@ -1521,7 +1521,7 @@ class Appointment extends MX_Controller {
                 $appointment->id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment->status,
                 $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
@@ -1622,7 +1622,7 @@ class Appointment extends MX_Controller {
                 $appointment->id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment->status,
                 $option1 . ' ' . $option2
@@ -1724,7 +1724,7 @@ class Appointment extends MX_Controller {
                 $appointment->id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment->status,
                 $option1 . ' ' . $option2
@@ -1888,7 +1888,7 @@ class Appointment extends MX_Controller {
                 $appointment->id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment->status,
                 $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
@@ -1999,7 +1999,7 @@ class Appointment extends MX_Controller {
                 $appointment->id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment->status,
                 $option1 . ' ' . $option2
@@ -2101,7 +2101,7 @@ class Appointment extends MX_Controller {
                 $appointment->id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                 $appointment->remarks,
                 $appointment->status,
                 $option1 . ' ' . $option2
@@ -2249,7 +2249,7 @@ class Appointment extends MX_Controller {
                     $appointment->id,
                     $patientname,
                     $doctorname,
-                    date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                    date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                     $appointment->remarks,
                     $appointment->status,
                     $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
@@ -2360,7 +2360,7 @@ class Appointment extends MX_Controller {
                     $appointment->id,
                     $patientname,
                     $doctorname,
-                    date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                    date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                     $appointment->remarks,
                     $appointment->status,
                     $option1 . ' ' . $option2 . ' ' . $options7
@@ -2485,7 +2485,7 @@ class Appointment extends MX_Controller {
                         $appointment->id,
                         $patientname,
                         $doctorname,
-                        date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                        date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                         $appointment->remarks,
                         $appointment->status,
                         $options7
@@ -2495,7 +2495,7 @@ class Appointment extends MX_Controller {
                     $info1[] = array($appointment->id,
                         $appointment->patientname,
                         $appointment->doctorname,
-                        date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                        date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                         $appointment->remarks,
                         $appointment->status,
                         $options7
