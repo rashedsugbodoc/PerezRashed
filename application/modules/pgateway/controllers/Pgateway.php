@@ -21,18 +21,18 @@ class pgateway extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['pgateways'] = $this->pgateway_model->getPaymentGateway();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('pgateway', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('pgatewayv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     public function settings() {
         $data = array();
         $id = $this->input->get('id');
         $data['settings'] = $this->pgateway_model->getPaymentGatewaySettingsById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('settings', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('settingsv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     public function addNewSettings() {
