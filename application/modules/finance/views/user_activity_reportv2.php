@@ -125,7 +125,7 @@
                                     </div>
                                     <?php } ?>
 
-                                    <?php if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('Accountant', 'Receptionist', 'Doctor'))) { ?>
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12">
@@ -137,7 +137,7 @@
                                                                     Date Range
                                                                 </div>
                                                             </div>
-                                                            <input class="form-control fc-datepicker form-control" readonly name="date_from" placeholder="<?php echo lang('date_from'); ?>" type="text" value="<?php
+                                                            <input class="form-control flatpickr form-control" readonly name="date_from" placeholder="<?php echo lang('date_from'); ?>" type="text" value="<?php
                                                             if (!empty($date_from)) {
                                                                 echo date('m/d/Y', $date_from);
                                                             }
@@ -147,7 +147,7 @@
                                                                     <?php echo lang('to'); ?>
                                                                 </div>
                                                             </div>
-                                                            <input class="form-control fc-datepicker form-control" readonly name="date_to" placeholder="<?php echo lang('date_to'); ?>" type="text" value="<?php
+                                                            <input class="form-control flatpickr form-control" readonly name="date_to" placeholder="<?php echo lang('date_to'); ?>" type="text" value="<?php
                                                             if (!empty($date_to)) {
                                                                 echo date('m/d/Y', $date_to);
                                                             }
@@ -174,7 +174,7 @@
                                                                     Date Range
                                                                 </div>
                                                             </div>
-                                                            <input class="form-control fc-datepicker form-control" readonly name="date_from" placeholder="<?php echo lang('date_from'); ?>" type="text" value="<?php
+                                                            <input class="form-control flatpickr form-control" readonly name="date_from" placeholder="<?php echo lang('date_from'); ?>" type="text" value="<?php
                                                             if (!empty($date_from)) {
                                                                 echo date('m/d/Y', $date_from);
                                                             }
@@ -184,7 +184,7 @@
                                                                     <?php echo lang('to'); ?>
                                                                 </div>
                                                             </div>
-                                                            <input class="form-control fc-datepicker form-control" readonly name="date_to" placeholder="<?php echo lang('date_to'); ?>" type="text" value="<?php
+                                                            <input class="form-control flatpickr form-control" readonly name="date_to" placeholder="<?php echo lang('date_to'); ?>" type="text" value="<?php
                                                             if (!empty($date_to)) {
                                                                 echo date('m/d/Y', $date_to);
                                                             }
@@ -469,7 +469,18 @@
         <script src="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.js') ?>"></script>
         <script src="<?php echo base_url('public/assets/js/datatables.js') ?>"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".flatpickr").flatpickr({
+
+            });
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
