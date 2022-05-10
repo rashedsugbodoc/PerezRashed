@@ -244,9 +244,9 @@ class Settings extends MX_Controller {
         //$bc = array(array('link' => site_url('settings'), 'page' => lang('settings')), array('link' => '#', 'page' => lang('backups')));
         //$meta = array('page_title' => lang('backups'), 'bc' => $bc);
         // $this->page_construct('settings/backups', $this->data, $meta);
-        $this->load->view('home/dashboard', $data);
-        $this->load->view('language', $data);
-        $this->load->view('home/footer');
+        $this->load->view('home/dashboardv2', $data);
+        $this->load->view('languagev2', $data);
+        // $this->load->view('home/footer');
     }
 
     function changeLanguage() {
