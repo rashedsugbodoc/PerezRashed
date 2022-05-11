@@ -38,7 +38,7 @@
                                                     ?> 
                                                     <tr class="">
                                                         <td> <?php echo $i; ?></td>
-                                                        <td> <?php echo date('d-m-Y', $holiday->date); ?></td> 
+                                                        <td> <?php echo date('Y-m-d', $holiday->date); ?></td> 
                                                         <td>
                                                             <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $holiday->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
                                                             <a class="btn btn-danger btn-xs delete_button" href="schedule/deleteHoliday?id=<?php echo $holiday->id; ?>&doctor=<?php echo $doctorr; ?>&redirect=schedule/holidays?doctor=<?php echo $doctorr; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
