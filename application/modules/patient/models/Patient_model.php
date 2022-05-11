@@ -566,4 +566,10 @@ class Patient_model extends CI_model {
         $query = $this->db->get('blood_group');
         return $query->result();
     }
+
+    function validateCaseNumber($case_number) {
+        $this->db->where('case_note_number', $case_number);
+        $query = $this->db->get('case_note');
+        return $query->row();
+    }
 }

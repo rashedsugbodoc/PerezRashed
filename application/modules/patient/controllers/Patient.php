@@ -1389,8 +1389,14 @@ class Patient extends MX_Controller {
         $date = gmdate('Y-m-d H:i:s', strtotime($date));
 
         $title = $this->input->post('title');
-        $raw_case_number = 'N'.random_string('alnum', 6);
+
+        do {
+            $raw_case_number = 'N'.random_string('alnum', 6);
+            $validate_number = $this->patient_model->validateCaseNumber($raw_case_number);
+        } while($validate_number != 0);
+
         $case_number = strtoupper($raw_case_number);
+        
 
         // if (!empty($date)) {
         //     $nowtime = date('H:i:s');
