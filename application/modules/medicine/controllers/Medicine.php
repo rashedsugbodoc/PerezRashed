@@ -54,9 +54,9 @@ class Medicine extends MX_Controller {
         $data['pagee_number'] = $page_number;
         $data['settings'] = $this->settings_model->getSettings();
         $data['alert'] = 'Alert Stock';
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('medicine_stock_alert', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('medicine_stock_alertv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function medicineStockAlertByPageNumber() {
