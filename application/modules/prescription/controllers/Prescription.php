@@ -160,7 +160,11 @@ class Prescription extends MX_Controller {
             $redirect = $medical_redirect . '?id=' . $patient . '&encounter_id=' . $encounter_id;
         }
 
-        $raw_prescription_number = 'P'.random_string('alnum', 6);
+        do {
+            $raw_prescription_number = 'P'.random_string('alnum', 6);
+            $validate_number = $this->prescription_model->validatePrescriptionNumber($raw_prescription_number);
+        } while($validate_number != 0);
+
         $prescription_number = strtoupper($raw_prescription_number);
 
         $this->load->library('form_validation');

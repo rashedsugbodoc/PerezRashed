@@ -171,4 +171,10 @@ class Prescription_model extends CI_model {
         return $query->result();
     }
 
+    function validatePrescriptionNumber($prescription_number) {
+        $this->db->where('prescription_number', $prescription_number);
+        $query = $this->db->get('prescription');
+        return $query->row();
+    }
+
 }
