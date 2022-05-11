@@ -221,7 +221,12 @@ class Finance extends MX_Controller {
         $company_classification = $this->company_model->getClassificationByCompanyId($company_id);
         $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
         $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
-        $raw_invoice_number = 'I'.random_string('alnum', 6);
+
+        do {
+            $raw_invoice_number = 'I'.random_string('alnum', 6);
+            $validate_number = $this->finance_model->validateInvoiceNumber($raw_invoice_number);
+        } while($validate_number != 0);
+
         $invoice_number = strtoupper($raw_invoice_number);
 
         foreach ($payment_status_list as $status_list) {
@@ -621,7 +626,7 @@ class Finance extends MX_Controller {
 
                     $this->session->set_flashdata('success', lang('record_added'));
 
-                    redirect("finance/invoice?id=" . "$inserted_id");
+                    redirect("finance/invoice?id=" . "$invoice_number");
                 }
             } else {
                 $deposit_edit_amount = $this->input->post('deposit_edit_amount');

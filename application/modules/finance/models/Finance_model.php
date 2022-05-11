@@ -1278,4 +1278,10 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function validateInvoiceNumber($invoice_number) {
+        $this->db->where('invoice_number', $invoice_number);
+        $query = $this->db->get('invoice');
+        return $query->row();
+    }
+
 }
