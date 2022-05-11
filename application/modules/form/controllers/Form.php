@@ -197,7 +197,12 @@ class Form extends MX_Controller {
 
         $redirect = $this->input->post('redirect');
         $medical_redirect = $this->input->post('medical_history_redirect');
-        $raw_form_number = 'F'.random_string('alnum', 6);
+
+        do {
+            $raw_form_number = 'F'.random_string('alnum', 6);
+            $validate_number = $this->form_model->validateFormNumber($raw_form_number);
+        } while($validate_number != 0);
+        
         $form_number = strtoupper($raw_form_number);
 
         // $p_name = $this->input->post('p_name');

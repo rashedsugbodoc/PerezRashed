@@ -255,9 +255,15 @@ class Form_model extends CI_model {
         return $query->row();
     }
     
-     function deletetemplate($id) {
+    function deletetemplate($id) {
         $this->db->where('id', $id);
         $this->db->delete('form_template');
+    }
+
+    function validateFormNumber($form_number) {
+        $this->db->where('form_number', $form_number);
+        $query = $this->db->get('form');
+        return $query->row();
     }
 
 }
