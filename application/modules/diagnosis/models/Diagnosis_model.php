@@ -44,4 +44,10 @@ class Diagnosis_model extends CI_model {
         return $data;
     }
 
+    function validateDiagnosisNumber($diagnosis_number) {
+        $this->db->where('patient_diagnosis_number', $diagnosis_number);
+        $query = $this->db->get('patient_diagnosis');
+        return $query->row();
+    }
+
 }
