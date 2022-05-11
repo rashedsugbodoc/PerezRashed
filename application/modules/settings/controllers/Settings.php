@@ -64,9 +64,9 @@ class Settings extends MX_Controller {
     function subscription() {
         $data['settings'] = $this->settings_model->getSettings();
         $data['subscription'] = $this->settings_model->getSubscription();
-        $this->load->view('home/dashboard', $data);
-        $this->load->view('subscription', $data);
-        $this->load->view('home/footer');
+        $this->load->view('home/dashboardv2', $data);
+        $this->load->view('subscriptionv2', $data);
+        // $this->load->view('home/footer');
     }
 
     public function update() {
