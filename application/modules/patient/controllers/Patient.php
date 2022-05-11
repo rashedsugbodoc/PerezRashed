@@ -2548,7 +2548,12 @@ class Patient extends MX_Controller {
         $category = $this->input->post('category');
         $redirect = $this->input->post('redirect');
         $date = gmdate('Y-m-d H:i:s');
-        $raw_document_number = 'M'.random_string('alnum', 6);
+
+        do {
+            $raw_document_number = 'M'.random_string('alnum', 6);
+            $validate_number = $this->patient_model->validateDocumentNumber($raw_document_number);
+        } while($validate_number != 0);
+
         $document_number = strtoupper($raw_document_number);
 
         if ($this->ion_auth->in_group(array('Patient'))) {

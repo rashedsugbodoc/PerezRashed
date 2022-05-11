@@ -572,4 +572,10 @@ class Patient_model extends CI_model {
         $query = $this->db->get('case_note');
         return $query->row();
     }
+
+    function validateDocumentNumber($document_number) {
+        $this->db->where('patient_document_number', $document_number);
+        $query = $this->db->get('patient_material');
+        return $query->row();
+    }
 }
