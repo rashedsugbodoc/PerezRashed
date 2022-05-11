@@ -176,4 +176,10 @@ class Labrequest_model extends CI_model {
         return $query->num_rows();            
     }
 
+    function validateLabRequestNumber($lab_request_number) {
+        $this->db->where('lab_request_number', $lab_request_number);
+        $query = $this->db->get('lab_request');
+        return $query->row();
+    }
+
 }
