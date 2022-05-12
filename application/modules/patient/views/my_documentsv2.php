@@ -77,6 +77,8 @@
                                                     <?php
                                                     if (!empty($file->created_user_id)) {
                                                         echo $this->hospital_model->getIonUserById($file->created_user_id)->username;
+                                                    } elseif(!empty($file->patient)) {
+                                                        echo $this->patient_model->getPatientById($file->patient)->name;
                                                     } else {
                                                         echo '';
                                                     }
