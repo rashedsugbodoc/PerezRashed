@@ -213,7 +213,7 @@
                                                                         <tbody>
                                                                             <?php foreach ($prescriptions as $prescription) { ?>
                                                                                 <tr>
-                                                                                    <td><?php echo date('Y/m/d', strtotime($prescription->prescription_date.' UTC')); ?></td>
+                                                                                    <td><?php echo date('Y-m-d', strtotime($prescription->prescription_date.' UTC')); ?></td>
                                                                                     <td><?php echo $this->patient_model->getPatientById($prescription->patient)->name; ?></td>
                                                                                     <td>
                                                                                         <?php
@@ -231,11 +231,11 @@
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="btn-group mb-0">
-                                                                                            <a href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>" class="btn btn-info" aria-expanded="false"><i class="fe fe-eye"></i> <?php echo lang('view'); ?></a>
+                                                                                            <a href="prescription/viewPrescription?id=<?php echo $prescription->prescription_number; ?>" class="btn btn-info" aria-expanded="false"><i class="fe fe-eye"></i> <?php echo lang('view'); ?></a>
                                                                                         </div>
                                                                                         <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                                             <div class="btn-group mb-0">
-                                                                                                <a href="prescription/editPrescription?id=<?php echo $prescription->id; ?>" class="btn btn-info" aria-expanded="false"><i class="fe fe-edit"></i> <?php echo lang('edit'); ?></a>
+                                                                                                <a href="prescription/editPrescription?id=<?php echo $prescription->prescription_number; ?>" class="btn btn-info" aria-expanded="false"><i class="fe fe-edit"></i> <?php echo lang('edit'); ?></a>
                                                                                             </div>
                                                                                             <div class="btn-group mb-0">
                                                                                                 <a class="btn btn-danger" href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i> <?php echo lang('delete'); ?></a>
