@@ -34,7 +34,7 @@
                                             <tbody>
                                                 <?php foreach ($prescriptions as $prescription) { ?>
                                                     <tr class="">
-                                                        <td><?php echo date('d-m-Y', strtotime($prescription->prescription_date.' UTC')); ?></td>
+                                                        <td><?php echo date('Y-m-d', strtotime($prescription->prescription_date.' UTC')); ?></td>
                                                         <td> <?php echo $this->patient_model->getPatientById($prescription->patient)->name; ?></td>
                                                         <td>
 
@@ -55,7 +55,7 @@
 
                                                         </td>
                                                         <td>
-                                                            <a class="btn btn-info" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?></a>   
+                                                            <a class="btn btn-info" href="prescription/viewPrescription?id=<?php echo $prescription->prescription_number; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?></a>   
                                                         </td>
                                                     </tr>
                                                 <?php } ?>
