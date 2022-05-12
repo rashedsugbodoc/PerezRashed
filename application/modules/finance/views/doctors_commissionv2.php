@@ -21,7 +21,7 @@
                                                             Date Range
                                                         </div>
                                                     </div>
-                                                    <input class="form-control fc-datepicker form-control" readonly name="date_from" placeholder="<?php echo lang('date_from'); ?>" type="text" value="<?php
+                                                    <input class="form-control flatpickr form-control" readonly name="date_from" placeholder="<?php echo lang('date_from'); ?>" type="text" value="<?php
                                                     if (!empty($from)) {
                                                         echo $from;
                                                     }
@@ -31,7 +31,7 @@
                                                             to
                                                         </div>
                                                     </div>
-                                                    <input class="form-control fc-datepicker form-control" readonly name="date_to" placeholder="<?php echo lang('date_to'); ?>" type="text" value="<?php
+                                                    <input class="form-control flatpickr form-control" readonly name="date_to" placeholder="<?php echo lang('date_to'); ?>" type="text" value="<?php
                                                     if (!empty($to)) {
                                                         echo $to;
                                                     }
@@ -225,7 +225,18 @@
         <script src="<?php echo base_url('public/assets/js/form-elements.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/file-upload.js'); ?>"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".flatpickr").flatpickr({
+                disableMobile: true
+            });
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {

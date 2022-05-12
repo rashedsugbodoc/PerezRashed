@@ -15,7 +15,7 @@
                         </div>
                         
                         <div class="row">
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-12 col-sm-12 col-lg-9">
                                 <div class="card">
                                     
                                     <div class="card-body">
@@ -112,7 +112,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3 col-sm-12">
+                            <div class="col-md-12 col-sm-12 col-lg-3">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="card bg-primary">
@@ -224,7 +224,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $(".flatpickr").flatpickr({
-
+                disableMobile: true
             });
         })
     </script>

@@ -58,7 +58,7 @@
                         ?>
 
                         <div class="row">
-                            <div class="col-md-7">
+                            <div class="col-md-12 col-sm-12 col-lg-7">
                                 <div class="card">
                                     <div class="card-header">
                                         <?php echo lang('income'); ?> 
@@ -319,7 +319,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-12 col-sm-12 col-lg-5">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="card bg-primary">
@@ -594,7 +594,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $(".flatpickr").flatpickr({
-
+                disableMobile: true
             });
         })
     </script>
