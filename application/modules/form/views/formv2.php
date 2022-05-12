@@ -41,7 +41,7 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                                <input class="form-control fc-datepicker" name="date" id="date" placeholder="MM/DD/YYYY" type="text" required readonly value="<?php
+                                                                <input class="form-control flatpickr" name="date" id="date" placeholder="MM/DD/YYYY" type="text" required readonly value="<?php
                                                                 if (!empty($form_single->date)) {
                                                                     echo date('m/d/Y', $form_single->form_date.' UTC');
                                                                 } else {
@@ -420,7 +420,37 @@
 
         <!-- parlsey js -->
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var form_id = "<?php echo $form_single->id ?>";
+            var form_date = "<?php echo date("F j, Y H:i A", strtotime($form_single->form_date.' UTC')); ?>";
+            console.log(form_date);
+            if (form_id === "") {
+                flatpickr(".flatpickr", {
+                    altInput: true,
+                    altFormat: "F j, Y H:i K",
+                    maxDate: "today",
+                    disableMobile: true,
+                    enableTime: true,
+                    defaultDate: "today",
+                });
+            } else {
+                flatpickr(".flatpickr", {
+                    altInput: true,
+                    altFormat: "F j, Y H:i K",
+                    dateFormat: "F j, Y H:i K",
+                    disableMobile: true,
+                    enableTime: true,
+                    defaultDate: form_date,
+                });
+            }
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
