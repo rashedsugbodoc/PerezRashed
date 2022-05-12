@@ -152,7 +152,7 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit'); ?></button>
+                                                        <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>
