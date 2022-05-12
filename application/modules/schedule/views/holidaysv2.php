@@ -252,7 +252,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $(".flatpickr").flatpickr({
-
+                disableMobile: true,
             });
         })
     </script>
