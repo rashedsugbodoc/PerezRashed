@@ -7,8 +7,14 @@
                         <!--Page header-->
 
                         <style>
-                            @media screen and (max-width: 500px) {
+                            @media screen and (max-width: 1000px) {
                                 .button-text {
+                                    display: none;
+                                }
+                            }
+
+                            @media screen and (min-width: 1001px) {
+                                .icon {
                                     display: none;
                                 }
                             }
@@ -169,8 +175,8 @@
                                 </div>
                                 <div class="col-md-2 col-sm-12 pl-0">
                                     <div class="form-group">
-                                        <a href="encounter/addNewView?patient_id=<?php echo $patient->id ?>&root=patient&method=medicalHistory" class="btn btn-primary">
-                                            <center><?php echo lang('create_encounter'); ?></center>
+                                        <a href="encounter/addNewView?patient_id=<?php echo $patient->id ?>&root=patient&method=medicalHistory" class="btn btn-primary pull-right">
+                                            <i class="fe fe-plus icon"></i><center class="button-text"><?php echo lang('create_encounter'); ?></center>
                                         </a>
                                     </div>
                                 </div>
