@@ -294,7 +294,7 @@
                                             <?php } ?>
                                         <?php } ?>
 
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-12 col-sm-12 col-lg-4">
                                             <div class="card">
                                                 <div class="card-header">
                                                     <h3 class="card-title"><?php echo date('D, d F Y'); ?></h3>
@@ -335,7 +335,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-12 col-sm-12 col-lg-4">
                                             <div class="card">
                                                 <div class="card-header">
                                                     <h3 class="card-title"><?php echo date('F Y'); ?></h3>
@@ -376,7 +376,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-md-4 col-sm-12">
+                                        <div class="col-md-12 col-sm-12 col-lg-4">
                                             <div class="card">
                                                 <div class="card-header">
                                                     <h3 class="card-title"><?php echo date('Y'); ?></h3>
