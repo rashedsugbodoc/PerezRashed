@@ -702,7 +702,7 @@
                                                                 <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100 editable-sample5">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th class="border-bottom-0"><?php echo lang('id'); ?></th>
+                                                                            <th class="border-bottom-0"><?php echo lang('lab').' '.lang('request').' '.lang('number'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('lab').' '.lang('test'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
@@ -712,7 +712,7 @@
                                                                     <tbody>
                                                                         <?php foreach($labrequests as $labrequest) { ?>
                                                                             <tr>
-                                                                                <td><?php echo $labrequest->id ?></td>
+                                                                                <td><?php echo $labrequest->lab_request_number ?></td>
                                                                                 <td>
                                                                                     <?php
                                                                                         $labtests = $this->labrequest_model->getLabrequestByLabrequestNumber($labrequest->lab_request_number);
@@ -774,7 +774,7 @@
                                                                 <table id="editable-sample7" class="table table-bordered text-nowrap key-buttons w-100 editable-sample7">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th><?php echo lang('id') ?></th>
+                                                                            <th><?php echo lang('form').' '.lang('number') ?></th>
                                                                             <th><?php echo lang('name') ?></th>
                                                                             <th><?php echo lang('patient') ?></th>
                                                                             <th><?php echo lang('date') ?></th>
@@ -784,7 +784,7 @@
                                                                     <tbody>
                                                                         <?php foreach($forms as $form) { ?>
                                                                             <tr>
-                                                                                <td><?php echo $form->id; ?></td>
+                                                                                <td><?php echo $form->form_number; ?></td>
                                                                                 <td><?php echo $form->name; ?></td>
                                                                                 <td>
                                                                                     <?php
