@@ -606,14 +606,6 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
-                $(".flatpickr").flatpickr({
-
-                });
-            })
-        </script>
-
-        <script type="text/javascript">
-            $(document).ready(function () {
                 $('.editable-sample1').DataTable({
                     responsive: true,
                     dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
@@ -741,15 +733,18 @@
                         altInput: true,
                         altFormat: "F j, Y",
                         dateFormat: "Y-m-d",
+                        disableMobile: true
                     });
                 } else {
                     $(".date_from").flatpickr({
                         dateFormat: "F j, Y",
                         defaultDate: datefrom,
+                        disableMobile: true
                     });
                     $(".date_to").flatpickr({
                         dateFormat: "F j, Y",
                         defaultDate: dateto,
+                        disableMobile: true
                     });
                 }
             });
