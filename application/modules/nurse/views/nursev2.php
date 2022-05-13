@@ -86,13 +86,13 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('name'); ?><span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="name" placeholder="Name" maxlength="100">
+                                                                <input type="text" class="form-control" name="name" id="name" placeholder="Name" maxlength="100" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
-                                                                <input type="email" class="form-control" name="email" placeholder="Email">
+                                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -100,14 +100,14 @@
                                                         <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('password'); ?><span class="text-red">*</span></label>
-                                                            <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255">
+                                                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" maxlength="255" required>
                                                         </div>
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
                                                                 <form>
-                                                                    <input id="phone" class="form-control" name="phone" value="+63" type="tel" maxlength="20">
+                                                                    <input id="phone" class="form-control" name="phone" id="phone" value="+63" type="tel" maxlength="20" required>
                                                                  </form>
                                                             </div>
                                                         </div>
@@ -116,7 +116,7 @@
                                                         <div class="col-sm-12 col-md-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('address'); ?><span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" placeholder="Address" name="address">
+                                                                <input type="text" class="form-control" placeholder="Address" id="address" name="address" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -128,7 +128,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-12 col-md-12">
-                                                            <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                            <button class="btn btn-primary pull-right" name="submit" id="submit" type="submit"><?php echo lang('submit'); ?></button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -153,13 +153,13 @@
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('name'); ?><span class="text-red">*</span></label>
-                                                                <input type="text" value="Mrs Nurse" class="form-control" name="name" placeholder="Name" maxlength="100">
+                                                                <input type="text" value="Mrs Nurse" class="form-control" name="name" id="nameEdit" placeholder="Name" maxlength="100" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
-                                                                <input type="email" value="nurse@rygel.biz" class="form-control" name="email" placeholder="Email">
+                                                                <input type="email" value="nurse@rygel.biz" class="form-control" name="email" id="emailEdit" placeholder="Email" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -167,14 +167,14 @@
                                                         <div class="col-sm-6 col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('password'); ?><span class="text-red">*</span></label>
-                                                            <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255">
+                                                            <input type="password" class="form-control" name="password" id="passwordEdit" placeholder="Password" maxlength="255" required>
                                                         </div>
                                                         </div>
                                                         <div class="col-sm-6 col-md-6">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
                                                                 <form>
-                                                                    <input id="phone2" name="phone" value="+639163456789" class="form-control" type="tel" maxlength="20">
+                                                                    <input id="phone2" name="phone" id="phoneEdit" value="+639163456789" class="form-control" type="tel" maxlength="20" required>
                                                                  </form>
                                                             </div>
                                                         </div>
@@ -183,7 +183,7 @@
                                                         <div class="col-sm-12 col-md-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('address'); ?><span class="text-red">*</span></label>
-                                                                <input type="text" value="Gotoc Lapu lapu City" class="form-control" placeholder="Address" name="address">
+                                                                <input type="text" value="Gotoc Lapu lapu City" class="form-control" placeholder="Address" name="address" id="addressEdit" required>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -196,7 +196,7 @@
                                                     <input type="hidden" name="id" value=''>
                                                     <div class="row">
                                                         <div class="col-sm-12 col-md-12">
-                                                            <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                            <button class="btn btn-primary pull-right" name="submit" id="submitEdit" type="submit"><?php echo lang('submit'); ?></button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -334,9 +334,52 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var name = $('#name').parsley();
+                var email = $('#email').parsley();
+                var password = $('#password').parsley();
+                var phone = $('#phone').parsley();
+                var address = $('#address').parsley();
+                
+
+                if (name.isValid() && email.isValid() && password.isValid() && phone.isValid() && address.isValid()) {
+                    return true;
+                } else {
+                    name.validate();
+                    email.validate();
+                    password.validate();
+                    phone.validate();
+                    address.validate();
+                }
+            });
+
+            $("#submitEdit").click(function () {
+                var name = $('#nameEdit').parsley();
+                var email = $('#emailEdit').parsley();
+                var phone = $('#phoneEdit').parsley();
+                var address = $('#addressEdit').parsley();
+                
+
+                if (name.isValid() && email.isValid() && phone.isValid() && address.isValid()) {
+                    return true;
+                } else {
+                    name.validate();
+                    email.validate();
+                    phone.validate();
+                    address.validate();
+                }
+            });
+        })
+    </script>
 
     <script type="text/javascript">
         $(".table").on("click", ".editbutton", function () {
