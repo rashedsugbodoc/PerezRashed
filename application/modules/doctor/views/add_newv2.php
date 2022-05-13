@@ -277,7 +277,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('ptr'); ?> <span class="text-red">*</span></label>
+                                                        <label class="form-label"><?php echo lang('ptr'); ?></label>
                                                         <input type="text" name="ptr" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('ptr');
@@ -285,7 +285,7 @@
                                                         elseif (!empty($doctor->tax_receipt_number)) {
                                                             echo $doctor->tax_receipt_number;
                                                         }
-                                                        ?>" required>
+                                                        ?>">
                                                     </div>
                                                 </div>
                                             </div>
