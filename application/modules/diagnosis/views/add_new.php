@@ -110,7 +110,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-9 col-sm-12 diagnosis_block">
+                                                <div class="col-md-6 col-sm-12 col-lg-9 diagnosis_block">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('select') . ' ' . lang('diagnosis') ?></label>
                                                         <select class="select2-show-search form-control diagnosis" name="diagnosisInput" id="diagnosis" value="">
@@ -118,7 +118,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-12 diagnosis_block">
+                                                <div class="col-md-6 col-sm-12 col-lg-3 diagnosis_block">
                                                     <div class="form-group">
                                                         <label class="form-label">or Type Manually</label>
                                                         <button class="btn btn-primary" id="add_manual" type="button">Add Diagnosis Test</button>
@@ -474,7 +474,7 @@
                                     <div class="col-sm-11">\n\
                                         <div class="form-group diagnosis_sect">\n\
                                             <div class="row">\n\
-                                                <div class="col-sm-8">\n\
+                                                <div class="col-lg-8 col-md-6 col-sm-12">\n\
                                                     <div class="form-group">\n\
                                                         <input type="text" class = "form-control diag-div" name = "diag_description[]" value = "' + diag_desc + '" placeholder="" required readonly>\n\
                                                         <input type="hidden" id="diag_id-' + id + '" class = "diag-div" name = "diagnosis[]" value = "' + id + '" placeholder="" required disabled>\n\
@@ -482,7 +482,7 @@
                                                         <input type="text" hidden class = "form-control diag-div" name = "patient_diagnosis_text[]" placeholder="">\n\
                                                     </div>\n\
                                                 </div>\n\
-                                                <div class="col-sm-4">\n\
+                                                <div class="col-lg-4 col-md-6 col-sm-12">\n\
                                                     <div class="form-group">\n\
                                                         <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
                                                         <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
@@ -523,13 +523,13 @@
                             <div class="col-sm-11">\n\
                                 <div class="form-group diagnosis_sect">\n\
                                     <div class="row">\n\
-                                        <div class="col-sm-8">\n\
+                                        <div class="col-lg-8 col-md-6 col-sm-12">\n\
                                             <div class="form-group">\n\
                                                 <input type="text" hidden class = "form-control diag-div" name = "diag_description[]" value = "" placeholder="" required readonly>\n\
                                                 <input type="text" class = "form-control diag-div" name = "patient_diagnosis_text[]" placeholder="" required>\n\
                                             </div>\n\
                                         </div>\n\
-                                        <div class="col-sm-4">\n\
+                                        <div class="col-lg-4 col-md-6 col-sm-12">\n\
                                             <div class="form-group">\n\
                                                 <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
                                                 <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
