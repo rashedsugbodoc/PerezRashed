@@ -359,23 +359,23 @@ class Form extends MX_Controller {
 //                 $doctor = $doctor_user_id;
 //             }
 
-//             if (!empty($patient)) {
-//                 $patient_details = $this->patient_model->getPatientById($patient);
-//                 $patient_name = $patient_details->name;
-//                 $patient_phone = $patient_details->phone;
-//                 $patient_address = $patient_details->address;
-//             } else {
-//                 $patient_name = 0;
-//                 $patient_phone = 0;
-//                 $patient_address = 0;
-//             }
+            if (!empty($patient)) {
+                $patient_details = $this->patient_model->getPatientById($patient);
+                $patient_name = $patient_details->name;
+                $patient_phone = $patient_details->phone;
+                $patient_address = $patient_details->address;
+            } else {
+                $patient_name = 0;
+                $patient_phone = 0;
+                $patient_address = 0;
+            }
 
-//             if (!empty($doctor)) {
-//                 $doctor_details = $this->doctor_model->getDoctorById($doctor);
-//                 $doctor_name = $doctor_details->name;
-//             } else {
-//                 $doctor_name = 0;
-//             }
+            if (!empty($doctor)) {
+                $doctor_details = $this->doctor_model->getDoctorById($doctor);
+                $doctor_name = $doctor_details->name;
+            } else {
+                $doctor_name = 0;
+            }
 
             $data = array();
 
@@ -392,7 +392,7 @@ class Form extends MX_Controller {
                     'patient_phone' => $patient_phone,
                     'patient_address' => $patient_address,
                     'doctor_name' => $doctor_name,
-                    'rendering_staff_id' => $rendering_user,
+                    // 'rendering_staff_id' => $rendering_user,
                     'encounter_id' => $encounter,
                     'form_number' => $form_number,
                 );

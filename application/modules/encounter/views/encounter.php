@@ -1101,7 +1101,18 @@
             console.log(iid);
             $('#addDocumentForm').find('[name="encounter_id"]').val(iid).end()
 
-            $('#addDocument').modal('show');
+            $.ajax({
+                url: "encounter/getEncounterById?id=" + iid,
+                method: "GET",
+                data: "",
+                dataType: "json",
+                success: function (response) {
+                    var patient_id = response.encounter.patient_id;
+                    $('#addDocumentForm').find('[name="patient"]').val(patient_id).change();
+
+                    $('#addDocument').modal('show');
+                }
+            });
         });
     </script>
 
