@@ -184,18 +184,17 @@ class Appointment extends MX_Controller {
             $service_type = "Inperson";
         }
 
-        $date1 = $date;
-        if (!empty($date)) {
-            $date = strtotime($date);
-        }
-
-
         $time_slot = $this->input->post('time_slot');
 
         $time_slot_explode = explode('To', $time_slot);
 
         $s_time = trim($time_slot_explode[0]);
         $e_time = trim($time_slot_explode[1]);
+
+        $date1 = $date;
+        if (!empty($date)) {
+            $date = strtotime($date);
+        }
 
         $date_time_combined = strtotime($date1 . ' ' . $s_time);
 

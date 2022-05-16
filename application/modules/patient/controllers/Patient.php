@@ -1627,7 +1627,7 @@ class Patient extends MX_Controller {
             }
             
 
-            $timeline[$appointment->date + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', $appointment->date) . '</span></li>
+            $timeline[strtotime($appointment->appointment_registration_time.' UTC') + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', $appointment->date) . '</span></li>
                                                 <li>
                                                     <i class="fa fa-download bg-success"></i>
                                                     <div class="timelineleft-item">
