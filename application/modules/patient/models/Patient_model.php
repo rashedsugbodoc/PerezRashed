@@ -578,4 +578,77 @@ class Patient_model extends CI_model {
         $query = $this->db->get('patient_material');
         return $query->row();
     }
+
+    function searchPatientByPatientNumberFirstnameLastname($patient_number, $f_name, $l_name, $details) {
+        $data_exploded = explode(",", $details);
+
+        if (!empty($details)) {
+            if (!empty($data_exploded[1])) {
+                $m_name = $data_exploded[1];
+            }
+            if (!empty($data_exploded[3])) {
+                $suffix = $data_exploded[3];
+            }
+            if (!empty($data_exploded[4])) {
+                $sex = $data_exploded[4];
+            }
+            if (!empty($data_exploded[5])) {
+                $bdate = $data_exploded[5];
+            }
+            if (!empty($data_exploded[6])) {
+                $country = $data_exploded[6];
+            }
+            if (!empty($data_exploded[7])) {
+                $state = $data_exploded[7];
+            }
+            if (!empty($data_exploded[0])) {
+                if (empty($f_name)) {
+                    $f_name = data_exploded[0];
+                }
+            }
+            if (!empty($data_exploded[2])) {
+                if (empty($l_name)) {
+                    $l_name = data_exploded[2];
+                }
+            }
+
+            if ($country === "null") {
+                $country = null;
+            }
+            if ($state === "null") {
+                $state = null;
+            }
+        }
+
+        if (!empty($patient_number)) {
+            $this->db->where('patient_id', $patient_number);
+        }
+        if (!empty($f_name)) {
+            $this->db->where('firstname', $f_name);
+        }
+        if (!empty($m_name)) {
+            $this->db->where('middlename', $m_name);
+        }
+        if (!empty($l_name)) {
+            $this->db->where('lastname', $l_name);
+        }
+        if (!empty($suffix)) {
+            $this->db->where('suffix', $suffix);
+        }
+        if (!empty($sex)) {
+            $this->db->where('sex', $sex);
+        }
+        if (!empty($bdate)) {
+            $this->db->where('birthdate', $bdate);
+        }
+        if (!empty($country)) {
+            $this->db->where('country_id', $country);
+        }
+        if (!empty($state)) {
+            $this->db->where('state_id', $state);
+        }
+        $query = $this->db->get('patient');
+
+        return $query->result();
+    }
 }
