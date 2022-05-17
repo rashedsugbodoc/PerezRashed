@@ -4934,6 +4934,25 @@ class Patient extends MX_Controller {
         echo json_encode($response);
     }
 
+    public function searchPatientByPatientNumber() {
+        $patient_number = $this->input->get('patient_number');
+        $f_name = $this->input->get('f_name');
+        $l_name = $this->input->get('l_name');
+        $details = $this->input->get('data');
+
+        $data['patient_lists'] = $this->patient_model->searchPatientByPatientNumberFirstnameLastname($patient_number, $f_name, $l_name, $details);
+        $data['total_patients'] = count($data['patient_lists']);
+        $patient_age = [];
+        foreach ($data['patient_lists'] as $patient_list) {
+            $age = time_elapsed_string($patient_list->birthdate,1 ,"short_age");
+            $patient_age[] = $age . ' ' . lang('old');
+        }
+
+        $data['details'] = $patient_age;
+
+        echo json_encode($data);
+    }
+
 }
 
 /* End of file patient.php */
