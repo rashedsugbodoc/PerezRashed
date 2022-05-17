@@ -5,9 +5,127 @@
                 <!--div class="app-content main-content"-->
                     <!--div class="side-app"-->
                         <!--Page header-->
-                        <section id="main-content">
-                            <section class="wrapper site-min-height">
-                                <div class="card mt-5">
+                        <div class="row mt-5">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">Add Patient Via Search</div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-5">
+                                            <div class="col-md-12 col-sm-12 col-lg-2">
+                                                <span class="card-title">Search By </span>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-lg-5">
+                                                <button class="btn btn-primary w-100" id="patient_number"><?php echo lang('patient').' '.lang('number') ?></button>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 col-lg-5">
+                                                <button class="btn btn-light w-100" id="patient_details"><?php echo lang('patient').' '.lang('details') ?></button>
+                                            </div>
+                                        </div>
+                                        <form>
+                                            <div class="row" id="patient_number_form">
+                                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Sugbodoc <?php echo lang('patient').' '.lang('number') ?></label>
+                                                        <input type="text" name="patient_number" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('first_name') ?></label>
+                                                        <input type="text" name="f_name" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('last_name') ?></label>
+                                                        <input type="text" name="l_name" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    <button class="btn btn-primary w-100" id="patient_number_submit" type="submit"><?php echo lang('search') ?></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="row" id="patient_details_form" hidden>
+                                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('first_name') ?></label>
+                                                    <input type="text" name="f_name" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('middle_name') ?></label>
+                                                    <input type="text" name="m_name" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('last_name') ?></label>
+                                                    <input type="text" name="l_name" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('suffix') ?></label>
+                                                    <input type="text" name="suffix" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('sex') ?></label>
+                                                    <input type="text" name="sex" class="form-control">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('birth_date') ?></label>
+                                                    <input class="form-control flatpickr" placeholder="<?php echo lang('select').' '. lang('date');?>" name="bdate" type="text" maxlength="100" required readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('country') ?></label>
+                                                    <select class="form-control select2-show-search" name="country_id" id="searchcountry" required>
+                                                        <option value="" disabled selected><?php echo lang('country_placeholder'); ?></option>
+                                                        <?php foreach ($countries as $country) { ?>
+                                                            <option value="<?php echo $country->id; ?>" <?php
+                                                            // if (!empty($setval)) {
+                                                            //     if ($country->id == set_value('country_id')) {
+                                                            //         echo 'selected';
+                                                            //     }
+                                                            // }
+                                                            if (!empty($patient->country_id)) {
+                                                                if ($country->id == $patient->country_id) {
+                                                                    echo 'selected';
+                                                                }
+                                                            }
+                                                            ?> > <?php echo $country->name; ?> </option>
+                                                                <?php } ?>
+                                                    </select>     
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-12 col-lg-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('state_province') ?></label>
+                                                    <select class="form-control select2-show-search" name="state_id" id="searchstate" value='' required disabled>
+                                                        <option value="" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <button class="btn btn-primary w-100" id="patient_details_submit"><?php echo lang('search') ?></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
                                             <?php
@@ -372,8 +490,31 @@
                                         </div>
                                     </form>
                                 </div>
-                            </section>
-                        </section>
+                            </div>
+                        </div>
+
+
+                        <div id="searchModal" class="modal fade">
+                            <div class="modal-dialog modal-md" role="document">
+                                <div class="modal-content ">
+                                    <div class="modal-header pd-x-20">
+                                        <h6 class="modal-title" id="modalTitle"></h6>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body pd-20">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div id="searchResult">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- modal-body -->
+                                </div>
+                            </div><!-- modal-dialog -->
+                        </div>
 
                     </div>
                 </div>
@@ -509,6 +650,111 @@
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#patient_details").click(function() {
+                $("#patient_details").removeClass("btn-primary");
+                $("#patient_details").removeClass("btn-light");
+                $("#patient_details").addClass("btn-primary");
+                $("#patient_number").addClass("btn-light");
+                $("#patient_details_form").attr("hidden", false);
+                $("#patient_number_form").attr("hidden", true);
+            });
+
+            $("#patient_number").click(function() {
+                $("#patient_number").removeClass("btn-light");
+                $("#patient_number").addClass("btn-primary");
+                $("#patient_details").addClass("btn-light");
+                $("#patient_details_form").attr("hidden", true);
+                $("#patient_number_form").attr("hidden", false);
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#patient_number_submit").click(function() {
+                var patient_number = $('#patient_number_form').find('[name="patient_number"]').val();
+                var f_name = $('#patient_number_form').find('[name="f_name"]').val();
+                var l_name = $('#patient_number_form').find('[name="l_name"]').val();
+                $('#modalTitle').html("").end()
+                $('#searchResult').html("").end()
+                $.ajax({
+                    url: 'patient/searchPatientByPatientNumber?patient_number='+patient_number+'&f_name='+f_name+'&l_name='+l_name,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#modalTitle").append(response.total_patients+' Patient Found. '+'Select One.');
+                        $.each(response.patient_lists, function(key, value) {
+                            $("#searchResult").append(
+                                "<div class='row mb-5'>\n\
+                                    <div class='col-md-12 col-sm-12'>\n\
+                                        <div class='custom-controls-stacked'>\n\
+                                            <label class='custom-control custom-radio'>\n\
+                                                <h5>\n\
+                                                    <input type='radio' class='custom-control-input' name='patient_id' value='"+value.id+"' checked=''>\n\
+                                                    <span class='custom-control-label'>\n\
+                                                        <p class='mb-1'>"+value.name+" - "+value.sex.charAt(0).toUpperCase()+value.sex.slice(1)+" - "+response.details[key]+"</p>\n\
+                                                        <p class='mb-1'><i class='fe fe-mail mr-2'></i>"+value.email+"</p>\n\
+                                                        <p class='mb-1'><i class='fe fe-phone mr-2'></i>"+value.phone+"</p>\n\
+                                                    </span>\n\
+                                                </h5>\n\
+                                            </label>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>");
+                        })
+                        $('#searchModal').modal('show');
+                    }
+                });
+            });
+
+            $("#patient_details_submit").click(function() {
+                var f_name = $('#patient_details_form').find('[name="f_name"]').val();
+                var m_name = $('#patient_details_form').find('[name="m_name"]').val();
+                var l_name = $('#patient_details_form').find('[name="l_name"]').val();
+                var suffix = $('#patient_details_form').find('[name="suffix"]').val();
+                var sex = $('#patient_details_form').find('[name="sex"]').val();
+                var birthdate = $('#patient_details_form').find('[name="bdate"]').val();
+                var country = $('#patient_details_form').find('[name="country_id"]').val();
+                var state = $('#patient_details_form').find('[name="state_id"]').val();
+                var data = f_name +','+ m_name +','+ l_name +','+ suffix +','+ sex +','+ birthdate +','+ country +','+ state;
+                $('#modalTitle').html("").end()
+                $('#searchResult').html("").end()
+                $.ajax({
+                    url: 'patient/searchPatientByPatientNumber?data='+data,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        $("#modalTitle").append(response.total_patients+' Patient Found. '+'Select One.');
+                        $.each(response.patient_lists, function(key, value) {
+                            $("#searchResult").append(
+                                "<div class='row mb-5'>\n\
+                                    <div class='col-md-12 col-sm-12'>\n\
+                                        <div class='custom-controls-stacked'>\n\
+                                            <label class='custom-control custom-radio'>\n\
+                                                <h5>\n\
+                                                    <input type='radio' class='custom-control-input' name='patient_id' value='"+value.id+"' checked=''>\n\
+                                                    <span class='custom-control-label'>\n\
+                                                        <p class='mb-1'>"+value.name+" - "+value.sex.charAt(0).toUpperCase()+value.sex.slice(1)+" - "+response.details[key]+"</p>\n\
+                                                        <p class='mb-1'><i class='fe fe-mail mr-2'></i>"+value.email+"</p>\n\
+                                                        <p class='mb-1'><i class='fe fe-phone mr-2'></i>"+value.phone+"</p>\n\
+                                                    </span>\n\
+                                                </h5>\n\
+                                            </label>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>");
+                        })
+                        $('#searchModal').modal('show');
+                    }
+                });
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         flatpickr(".flatpickr", {
@@ -745,6 +991,30 @@
                         $("#city").val("0");
                         $("#barangay").val("0");
                     }
+
+                }
+            });
+        });
+
+        $("#searchcountry").change(function () {
+            var country = $("#searchcountry").val();
+
+            $("#searchstate").find('option').remove();
+
+            $('#searchstate').attr("disabled", false);
+            $('#searchstate').append($('<option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
+
+            $.ajax({
+                url: 'patient/getStateByCountryIdByJason?country=' + country,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var state = response.state;
+
+                    $.each(state, function (key, value) {
+                        $('#searchstate').append($('<option>').text(value.name).val(value.id)).end();
+                    });
 
                 }
             });
