@@ -4953,6 +4953,38 @@ class Patient extends MX_Controller {
         echo json_encode($data);
     }
 
+    public function addPatientDoctorBySearch() {
+        $patient_id = $this->input->post('patient_id');
+        $user = $this->ion_auth->get_user_id();
+
+        $doctor_id = $this->doctor_model->getDoctorByIonUserId($user)->id;
+        $patient_details = $this->patient_model->getPatientById($patient_id);
+        $patients_doctor = explode(',', $patient_details->doctor);
+        // foreach($patients_doctor as $doctors) {
+        //     if
+        // }
+        $doctor_check = in_array($doctor_id, $patients_doctor);
+        if ($doctor_check === TRUE) {
+            $add_patient_doctor = $patient_details->doctor;
+            $this->session->set_flashdata('error', "You already have access to Patient ".$patient_details->name);
+        } elseif($doctor_check === FALSE) {
+            if (!empty($patient_details->doctor)) {
+                $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
+            } else {
+                $add_patient_doctor = $doctor_id;
+            }
+            $this->session->set_flashdata('success', lang('record_updated'));
+
+            $data = array(
+                "doctor" => $add_patient_doctor,
+            );
+
+            $this->patient_model->updatePatient($patient_id, $data);
+        }
+
+        redirect('patient/addNewView');
+    }
+
 }
 
 /* End of file patient.php */

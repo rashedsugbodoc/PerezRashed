@@ -603,12 +603,12 @@ class Patient_model extends CI_model {
             }
             if (!empty($data_exploded[0])) {
                 if (empty($f_name)) {
-                    $f_name = data_exploded[0];
+                    $f_name = $data_exploded[0];
                 }
             }
             if (!empty($data_exploded[2])) {
                 if (empty($l_name)) {
-                    $l_name = data_exploded[2];
+                    $l_name = $data_exploded[2];
                 }
             }
 
