@@ -4956,31 +4956,280 @@ class Patient extends MX_Controller {
     public function addPatientDoctorBySearch() {
         $patient_id = $this->input->post('patient_id');
         $user = $this->ion_auth->get_user_id();
+        $provider = 0;
 
-        $doctor_id = $this->doctor_model->getDoctorByIonUserId($user)->id;
-        $patient_details = $this->patient_model->getPatientById($patient_id);
-        $patients_doctor = explode(',', $patient_details->doctor);
-        // foreach($patients_doctor as $doctors) {
-        //     if
-        // }
-        $doctor_check = in_array($doctor_id, $patients_doctor);
-        if ($doctor_check === TRUE) {
-            $add_patient_doctor = $patient_details->doctor;
-            $this->session->set_flashdata('error', "You already have access to Patient ".$patient_details->name);
-        } elseif($doctor_check === FALSE) {
-            if (!empty($patient_details->doctor)) {
-                $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
-            } else {
-                $add_patient_doctor = $doctor_id;
-            }
-            $this->session->set_flashdata('success', lang('record_updated'));
-
-            $data = array(
-                "doctor" => $add_patient_doctor,
-            );
-
-            $this->patient_model->updatePatient($patient_id, $data);
+        if (empty($patient_id)) {
+            $patient_id = $this->input->post('patient_id2');
         }
+        $doctor_id = $this->doctor_model->getDoctorByIonUserId($user)->id;
+        $patient_details = $this->patient_model->getPatientById($patient_id, $provider);
+        $provider_logged = $this->session->userdata('hospital_id');
+        $patient_isolated_provider = explode(',', $patient_details->isolated_provider_id);
+        $patient_authorized_provider = explode(',', $patient_details->authorized_provider_id);
+        $patient_unrestricted_provider = explode(',', $patient_details->unrestricted_provider_id);
+        $patient_visited_provider = explode(',', $patient_details->visited_provider_id);
+        $patients_doctor = explode(',', $patient_details->doctor);
+        $patient_privacy_level_id = $this->patient_model->getPrivacyLevelById($patient_details->privacy_level_id);
+
+        $doctor_check = in_array($doctor_id, $patients_doctor);
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            if ($patient_privacy_level_id->name === "isolated") {
+                $patient_privacy = in_array($provider_logged, $patient_isolated_provider);
+                if ($doctor_check === TRUE) {
+                    $add_patient_doctor = $patient_details->doctor;
+                    $this->session->set_flashdata('error', "You already have access to Patient ".$patient_details->name);
+                } elseif ($doctor_check === FALSE) {
+                    if (empty($patient_details->doctor)) {
+                        $add_patient_doctor = $doctor_id;
+                        if ($patient_privacy === TRUE) {
+                            $add_i_provider = $patient_details->isolated_provider_id;
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "isolated_provider_id" => $add_i_provider,
+                            );
+                            if ($patient_details->doctor !== $add_patient_doctor ) {
+                                $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
+                            } else {
+                                $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                            }
+
+                        } elseif ($patient_privacy === FALSE) {
+                            if (empty($patient_details->isolated_provider_id)) {
+                                $add_i_provider = $provider_logged;
+                            } else {
+                                $add_i_provider = $patient_details->isolated_provider_id.','.$provider_logged;
+                            }
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "isolated_provider_id" => $add_i_provider,
+                            );
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                        }
+                    } else {
+                        $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
+                        if ($patient_privacy === TRUE) {
+                            $add_i_provider = $patient_details->isolated_provider_id;
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "isolated_provider_id" => $add_i_provider,
+                            );
+                            if ($patient_details->doctor !== $add_patient_doctor ) {
+                                $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
+                            } else {
+                                $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                            }
+
+                        } elseif ($patient_privacy === FALSE) {
+                            if (empty($patient_details->isolated_provider_id)) {
+                                $add_i_provider = $provider_logged;
+                            } else {
+                                $add_i_provider = $patient_details->isolated_provider_id.','.$provider_logged;
+                            }
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "isolated_provider_id" => $add_i_provider,
+                            );
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                        }
+                    }
+                }
+                // $data = array(
+                //     "doctor" => $add_patient_doctor,
+                //     "isolated_provider_id" => $add_i_provider,
+                // );
+            } elseif ($patient_privacy_level_id->name === "authorized") {
+                $patient_privacy = in_array($provider_logged, $patient_authorized_provider);
+                if ($doctor_check === TRUE) {
+                    $add_patient_doctor = $patient_details->doctor;
+                    $this->session->set_flashdata('error', "You already have access to Patient ".$patient_details->name);
+                } elseif ($doctor_check === FALSE) {
+                    if (empty($patient_details->doctor)) {
+                        $add_patient_doctor = $doctor_id;
+                        if ($patient_privacy === TRUE) {
+                            $add_a_provider = $patient_details->authorized_provider_id;
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "authorized_provider_id" => $add_a_provider,
+                            );
+                            if ($patient_details->doctor !== $add_patient_doctor ) {
+                                $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
+                            } else {
+                                $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                            }
+
+                        } elseif ($patient_privacy === FALSE) {
+                            if (empty($patient_details->authorized_provider_id)) {
+                                $add_a_provider = $provider_logged;
+                            } else {
+                                $add_a_provider = $patient_details->authorized_provider_id.','.$provider_logged;
+                            }
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "authorized_provider_id" => $add_a_provider,
+                            );
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                        }
+                    } else {
+                        $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
+                        if ($patient_privacy === TRUE) {
+                            $add_a_provider = $patient_details->authorized_provider_id;
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "authorized_provider_id" => $add_a_provider,
+                            );
+                            if ($patient_details->doctor !== $add_patient_doctor ) {
+                                $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
+                            } else {
+                                $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                            }
+                            
+                        } elseif ($patient_privacy === FALSE) {
+                            if (empty($patient_details->authorized_provider_id)) {
+                                $add_a_provider = $provider_logged;
+                            } else {
+                                $add_a_provider = $patient_details->authorized_provider_id.','.$provider_logged;
+                            }
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "authorized_provider_id" => $add_a_provider,
+                            );
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                        }
+                    }
+                }
+                // $data = array(
+                //     "doctor" => $add_patient_doctor,
+                //     "isolated_provider_id" => $add_i_provider,
+                // );
+            } elseif ($patient_privacy_level_id->name === "unrestricted") {
+                $patient_privacy = in_array($provider_logged, $patient_unrestricted_provider);
+                if ($doctor_check === TRUE) {
+                    $add_patient_doctor = $patient_details->doctor;
+                    $this->session->set_flashdata('error', "You already have access to Patient ".$patient_details->name);
+                } elseif ($doctor_check === FALSE) {
+                    if (empty($patient_details->doctor)) {
+                        $add_patient_doctor = $doctor_id;
+                        if ($patient_privacy === TRUE) {
+                            $add_u_provider = $patient_details->unrestricted_provider_id;
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "authorized_provider_id" => $add_a_provider,
+                            );
+                            if ($patient_details->doctor !== $add_patient_doctor ) {
+                                $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
+                            } else {
+                                $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                            }
+
+                        } elseif ($patient_privacy === FALSE) {
+                            if (empty($patient_details->unrestricted_provider_id)) {
+                                $add_u_provider = $provider_logged;
+                            } else {
+                                $add_u_provider = $patient_details->unrestricted_provider_id.','.$provider_logged;
+                            }
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "unrestricted_provider_id" => $add_u_provider,
+                            );
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                        }
+                    } else {
+                        $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
+                        if ($patient_privacy === TRUE) {
+                            $add_u_provider = $patient_details->unrestricted_provider_id;
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "authorized_provider_id" => $add_a_provider,
+                            );
+                            if ($patient_details->doctor !== $add_patient_doctor ) {
+                                $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
+                            } else {
+                                $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                            }
+
+                        } elseif ($patient_privacy === FALSE) {
+                            if (empty($patient_details->unrestricted_provider_id)) {
+                                $add_u_provider = $provider_logged;
+                            } else {
+                                $add_u_provider = $patient_details->unrestricted_provider_id.','.$provider_logged;
+                            }
+                            $data = array(
+                                "doctor" => $add_patient_doctor,
+                                "unrestricted_provider_id" => $add_u_provider,
+                            );
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                        }
+                    }
+                }
+                // $data = array(
+                //     "doctor" => $add_patient_doctor,
+                //     "unrestricted_provider_id" => $add_u_provider,
+                // );
+            }
+
+        } elseif ($this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            if ($patient_privacy_level_id->name === "isolated") {
+                $patient_privacy = in_array($provider_logged, $patient_isolated_provider);
+                if ($patient_privacy === TRUE) {
+                    $add_i_provider = $patient_details->isolated_provider_id;
+                    $data = array(
+                        "isolated_provider_id" => $add_i_provider,
+                    );
+                    $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                } elseif ($patient_privacy === FALSE) {
+                    if (empty($patient_details->isolated_provider_id)) {
+                        $add_i_provider = $provider_logged;
+                    } else {
+                        $add_i_provider = $patient_details->isolated_provider_id.','.$provider_logged;
+                    }
+                    $data = array(
+                        "isolated_provider_id" => $add_i_provider,
+                    );
+                    $this->session->set_flashdata('success', lang('record_updated'));
+                }
+            } elseif ($patient_privacy_level_id->name === "authorized") {
+                $patient_privacy = in_array($provider_logged, $patient_authorized_provider);
+                if ($patient_privacy === TRUE) {
+                    $add_a_provider = $patient_details->authorized_provider_id;
+                    $data = array(
+                        "authorized_provider_id" => $add_a_provider,
+                    );
+                    $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                } elseif ($patient_privacy === FALSE) {
+                    if (empty($patient_details->authorized_provider_id)) {
+                        $add_a_provider = $provider_logged;
+                    } else {
+                        $add_a_provider = $patient_details->authorized_provider_id.','.$provider_logged;
+                    }
+                    $data = array(
+                        "authorized_provider_id" => $add_a_provider,
+                    );
+                    $this->session->set_flashdata('success', lang('record_updated'));
+                }
+            } elseif ($patient_privacy_level_id->name === "unrestricted") {
+                $patient_privacy = in_array($provider_logged, $patient_unrestricted_provider);
+                if ($patient_privacy === TRUE) {
+                    $add_u_provider = $patient_details->unrestricted_provider_id;
+                    $data = array(
+                        "unrestricted_provider_id" => $add_u_provider,
+                    );
+                    $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                } elseif ($patient_privacy === FALSE) {
+                    if (empty($patient_details->unrestricted_provider_id)) {
+                        $add_u_provider = $provider_logged;
+                    } else {
+                        $add_u_provider = $patient_details->unrestricted_provider_id.','.$provider_logged;
+                    }
+                    $data = array(
+                        "unrestricted_provider_id" => $add_u_provider,
+                    );
+                    $this->session->set_flashdata('success', lang('record_updated'));
+                }
+            }
+        }
+
+        $this->patient_model->updatePatient($patient_id, $data);
 
         redirect('patient/addNewView');
     }

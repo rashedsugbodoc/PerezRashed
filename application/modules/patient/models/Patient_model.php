@@ -132,8 +132,10 @@ class Patient_model extends CI_model {
         return $query->result();
     }
 
-    function getPatientById($id) {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+    function getPatientById($id, $provider = null) {
+        if ($provider !== 0) {
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        }
         $this->db->where('id', $id);
         $query = $this->db->get('patient');
         return $query->row();
@@ -650,5 +652,11 @@ class Patient_model extends CI_model {
         $query = $this->db->get('patient');
 
         return $query->result();
+    }
+
+    function getPrivacyLevelById($id){
+        $this->db->where('id', $id);
+        $query = $this->db->get('privacy_level');
+        return $query->row();
     }
 }

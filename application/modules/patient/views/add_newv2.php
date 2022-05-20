@@ -795,7 +795,12 @@
                         data: '',
                         dataType: 'json',
                         success: function (response) {
-                            $("#modalTitle").append(response.total_patients+' Patient Found. '+'Select One.');
+                            if (response.total_patients > 1) {
+                                var num = 's';
+                            } else {
+                                var num = '';
+                            }
+                            $("#modalTitle").append(response.total_patients+' Patient'+num+' Found. '+'Select One.');
                             $.each(response.patient_lists, function(key, value) {
                                 $("#searchResult").append(
                                     "<div class='row mb-5' id='item'>\n\
@@ -803,7 +808,7 @@
                                             <div class='custom-controls-stacked' id='item-"+value.id+"' data-item='"+value.id+"' onmouseleave='inactive("+value.id+")' onmouseenter='active("+value.id+")'>\n\
                                                 <label class='custom-control custom-radio'>\n\
                                                     <h5>\n\
-                                                        <input type='radio' class='custom-control-input' id='select-"+value.id+"' name='patient_id' value='"+value.id+"' onclick='selected("+value.id+")' checked=''>\n\
+                                                        <input type='radio' class='custom-control-input' id='select-"+value.id+"' name='patient_id2' value='"+value.id+"' onclick='selected("+value.id+")' checked=''>\n\
                                                         <span class='custom-control-label'>\n\
                                                             <p class='mb-1'>"+value.name+" - "+value.sex.charAt(0).toUpperCase()+value.sex.slice(1)+" - "+response.details[key]+"</p>\n\
                                                             <p class='mb-1'><i class='fe fe-mail mr-2'></i>"+value.email+"</p>\n\
