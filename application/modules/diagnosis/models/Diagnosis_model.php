@@ -22,6 +22,18 @@ class Diagnosis_model extends CI_model {
         return $query->row();
     }
 
+    function getPatientDiagnosisById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('patient_diagnosis');
+        return $query->row();
+    }
+
+    function getPatientDiagnosisByNumber($number) {
+        $this->db->where('patient_diagnosis_number', $number);
+        $query = $this->db->get('patient_diagnosis');
+        return $query->row();
+    }
+
     function getDiagnosisInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
@@ -44,10 +56,31 @@ class Diagnosis_model extends CI_model {
         return $data;
     }
 
+    function getDiagnosis() {
+        $this->db->select('*');
+        $this->db->where("header_indicator", 1);
+        $this->db->limit(10);
+        $query = $this->db->get('diagnosis_icd10');
+        return $query->result();
+    }
+
     function validateDiagnosisNumber($diagnosis_number) {
         $this->db->where('patient_diagnosis_number', $diagnosis_number);
         $query = $this->db->get('patient_diagnosis');
         return $query->row();
+    }
+
+    function getDiagnosisByPatient($patient) {
+        $this->db->where('patient_id', $patient);
+        $query = $this->db->get('patient_diagnosis');
+        return $query->result();
+    }
+
+    function getDiagnosisByPatientByEncounterId($patient, $encounter_id) {
+        $this->db->where('patient_id', $patient);
+        $this->db->where('encounter_id', $encounter_id);
+        $query = $this->db->get('patient_diagnosis');
+        return $query->result();
     }
 
 }

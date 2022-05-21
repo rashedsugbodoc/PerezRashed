@@ -183,6 +183,20 @@ class Diagnosis extends MX_Controller {
         echo json_encode($response);
     }
 
+    public function editDiagnosis() {
+        $diagnosis_number = $this->input->get('id');
+
+        $diagnosis = $this->diagnosis_model->getPatientDiagnosisByNumber($diagnosis_number);
+        $data['id'] = $diagnosis->id;
+        $data['encounter'] = $this->encounter_model->getEncounterById($diagnosis->encounter_id);
+        $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+
+        $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisById($data['id']);
+        $data['diagnosis_list'] = $this->diagnosis_model->getDiagnosis();
+
+        $this->load->view('home/dashboardv2');
+        $this->load->view('add_new', $data);
+    }
 
 }
 
