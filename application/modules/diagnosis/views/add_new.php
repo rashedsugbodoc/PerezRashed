@@ -48,6 +48,9 @@
                                                             <?php if (!empty($encounter->id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
+                                                            <?php if (!empty($id)) { ?>
+                                                                <option value="<?php echo $id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                            <?php } ?>
                                                         </select>
                                                         <?php if (!empty($encounter->id)) { ?>
                                                             <input type="hidden" name="encounter_id" value="<?php
@@ -63,13 +66,25 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('diagnosis') . '  ' . lang('date') ?></label>
-                                                        <input type="text" class="form-control fc-datepicker1" required id="date" readonly placeholder="MM/DD/YYYY" name="date">
+                                                        <?php if (empty($diagnosis->diagnosis_date)) { ?>
+                                                            <input type="text" class="form-control flatpickr" id="date1" required readonly placeholder="MM/DD/YYYY" name="date">
+                                                        <?php } else { ?>
+                                                            <input type="text" class="form-control flatpickr" id="date" required readonly placeholder="MM/DD/YYYY" name="date" value="<?php
+                                                                echo date('Y-m-d H:i', strtotime($diagnosis->diagnosis_date.' UTC'));
+                                                            ?>">
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('onset') . '  ' . lang('date') ?></label>
-                                                        <input type="text" class="form-control fc-datepicker" required id="on_date" readonly placeholder="MM/DD/YYYY" name="on_date">
+                                                        <?php if (empty($diagnosis->onset_date)) { ?>
+                                                            <input type="text" class="form-control flatpickr" id="on_date1" required readonly placeholder="MM/DD/YYYY" name="on_date">
+                                                        <?php } else { ?>
+                                                            <input type="text" class="form-control flatpickr" id="on_date" required readonly placeholder="MM/DD/YYYY" name="on_date" value="<?php
+                                                                echo date('Y-m-d H:i', strtotime($diagnosis->onset_date.' UTC'));
+                                                            ?>">
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -82,6 +97,9 @@
                                                                 <select class="select2-show-search form-control pos_select" required id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($encounter->patient_id)) { ?>
                                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($diagnosis->patient_id)) { ?>
+                                                                        <option value="<?php echo $diagnosis->patient_id; ?>" selected><?php echo $this->patient_model->getPatientById($diagnosis->patient_id)->name; ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter->patient_id)) { ?>
@@ -100,6 +118,9 @@
                                                                     <?php if (!empty($encounter->doctor)) { ?>
                                                                         <option value="<?php echo $doctor->id; ?>" selected><?php echo $doctor->name ?></option>
                                                                     <?php } ?>
+                                                                    <?php if (!empty($diagnosis->doctor_id)) { ?>
+                                                                        <option value="<?php echo $diagnosis->doctor_id; ?>" selected><?php echo $this->doctor_model->getDoctorById($diagnosis->doctor_id)->name ?></option>
+                                                                    <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter->doctor)) { ?>
                                                                     <input type="hidden" name="doctor" value="<?php echo $doctor->id ?>">
@@ -113,9 +134,15 @@
                                                 <div class="col-md-6 col-sm-12 col-lg-9 diagnosis_block">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('select') . ' ' . lang('diagnosis') ?></label>
-                                                        <select class="select2-show-search form-control diagnosis" name="diagnosisInput" id="diagnosis" value="">
-                                                            
-                                                        </select>
+                                                        <?php if (empty($diagnosis)) { ?>
+                                                            <select class="select2-show-search form-control diagnosis" name="diagnosisInput" id="diagnosis" value="">
+                                                                
+                                                            </select>
+                                                        <?php } else { ?>
+                                                            <select class="select2-show-search form-control diagnosis" name="diagnosisInput" id="diagnosis" value="" multiple>
+                                                                <option value="<?php echo $diag_list->id; ?>"><?php echo $diag_list->long_description; ?></option>
+                                                            </select>
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12 col-lg-3 diagnosis_block">
@@ -274,6 +301,9 @@
         <!-- parlsey js -->
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
@@ -296,6 +326,30 @@
                 }
             })
         })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var date = $('#date').val();
+            console.log(date);
+            if (date === undefined) {
+                var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            } else {
+                var timenow = date;
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            }
+            flatpickr(".flatpickr", {
+                disable: [maxdate],
+                maxDate: maxdate,
+                altInput: true,
+                altFormat: "F j, Y h:i K",
+                dateFormat: "Y-m-d h:i K",
+                disableMobile: "true",
+                enableTime: true,
+                defaultDate: timenow,
+            });
+        });
     </script>
 
     <script type="text/javascript">
