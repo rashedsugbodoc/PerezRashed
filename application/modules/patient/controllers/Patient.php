@@ -325,7 +325,8 @@ class Patient extends MX_Controller {
                 'birthdate' => $birthdate,
                 'bloodgroup' => $bloodgroup,
                 'add_date' => $add_date,
-                'registration_time' => $registration_time
+                'registration_time' => $registration_time,
+                'privacy_level_id' => 3
             );
 
             if (empty($id)) {     // Adding New Patient

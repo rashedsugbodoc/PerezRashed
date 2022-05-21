@@ -510,6 +510,7 @@ class Auth extends MX_Controller {
 				'postal'	    => $postal,
 				'registration_time' => $today,
 				'how_added' => 'auth/register',
+				'privacy_level_id' => 3
 			);
 		}
 		if ($this->form_validation->run() == true && $this->ion_auth->register($fullname, $password, $email, $dfg))
