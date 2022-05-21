@@ -18,6 +18,7 @@ class Patient extends MX_Controller {
         $this->load->model('labrequest/labrequest_model');
         $this->load->model('finance/finance_model');
         $this->load->model('finance/pharmacy_model');
+        $this->load->model('diagnosis/diagnosis_model');
         $this->load->model('sms/sms_model');
         $this->load->model('company/company_model');
         $this->load->module('sms');
@@ -1603,6 +1604,13 @@ class Patient extends MX_Controller {
         } else {
             $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientIdByEncounterId($id, $data['encounter_id']);
         }
+
+        if (empty($data['encounter_id'])) {
+            $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($id);
+        } else {
+            $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatientByEncounterId($id, $data['encounter_id']);
+        }
+        
 
         foreach ($data['appointments'] as $appointment) {
             $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);

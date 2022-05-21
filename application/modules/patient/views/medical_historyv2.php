@@ -252,7 +252,8 @@
                                     <div class="tab-menu-heading p-0">
                                         <div class="tabs-menu1 px-3">
                                             <ul class="nav" id="mytab">
-                                                <li><a href="#tab-7" data-toggle="tab" class="active"><?php echo lang('vital_signs'); ?></a></li>
+                                                <li><a href="#tab-6" data-toggle="tab" class="active"><?php echo lang('diagnosis'); ?></a></li>
+                                                <li><a href="#tab-7" data-toggle="tab"><?php echo lang('vital_signs'); ?></a></li>
                                                 <li><a href="#tab-8" data-toggle="tab" class=""><?php echo lang('appointments'); ?></a></li>
                                                 <li><a href="#tab-9" data-toggle="tab" class=""><?php echo lang('case_notes'); ?></a></li>
                                                 <li><a href="#tab-10" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
@@ -273,7 +274,87 @@
                             <div class="col-xl-12 col-lg-12 col-md-12">
                                 <div class="border-0">
                                     <div class="tab-content">
-                                        <div class="tab-pane active" id="tab-7">
+                                        <div class="tab-pane active" id="tab-6">
+                                            <div class="mb-0">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title"><?php echo lang('diagnosis') ?></h3>
+                                                        <div class="card-options">
+                                                            <?php if(!empty($encounter_id)) { ?>
+                                                                <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
+                                                            <?php } ?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="">
+                                                            <div class="table-responsive">
+                                                                <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="text-center normal-caps"><?php echo lang('diagnosis').' '.lang('date'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('onset').' '.lang('date'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('diagnosis'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('icd'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('p/s'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('encounter'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php foreach ($diagnosis as $diag) { ?>
+                                                                            <tr class="text-center">
+                                                                                <td><?php echo date('Y-m-d H:i A', strtotime($diag->diagnosis_date.' UTC')); ?></td>
+                                                                                <td><?php echo date('Y-m-d H:i A', strtotime($diag->onset_date.' UTC')); ?></td>
+                                                                                <td><?php
+                                                                                    $diagnosis_long = $this->diagnosis_model->getDiagnosisById($diag->diagnosis_id)->long_description;
+                                                                                    if (!empty($diagnosis_long)) {
+                                                                                        echo $diagnosis_long;
+                                                                                    } else {
+                                                                                        echo $diag->patient_diagnosis_text;
+                                                                                    }
+                                                                                ?></td>
+                                                                                <td><?php
+                                                                                    if (!empty($diag->diagnosis_code)) {
+                                                                                        echo $diag->diagnosis_code;
+                                                                                    } else {
+                                                                                        echo "Unregistered ICD10";
+                                                                                    }
+                                                                                ?></td>
+                                                                                <td><?php
+                                                                                    if ($diag->is_primary_diagnosis == 1) {
+                                                                                        echo 'P';
+                                                                                    } else {
+                                                                                        echo 'S';
+                                                                                    }
+                                                                                ?></td>
+                                                                                <td><?php echo $diag->diagnosis_notes; ?></td>
+                                                                                <td><?php echo $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number; ?></td>
+                                                                                <td>
+                                                                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                                        <a href="diagnosis/editDiagnosis?id=<?php echo $diag->patient_diagnosis_number ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
+                                                                                    <?php } ?>
+                                                                                </td>
+                                                                            </tr>
+                                                                        <?php } ?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <!-- <div class="row">
+                                                    
+                                                </div>
+
+                                                <div class="row">
+                                                    
+                                                </div> -->
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="tab-7">
                                             <div class="mb-0">
                                                 <div class="card">
                                                     <div class="card-header">
