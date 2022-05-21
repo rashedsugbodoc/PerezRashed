@@ -745,7 +745,7 @@
                             }
                             if (response.patient_lists.length === 0) {
                                 $("#searchResult").append("<div class='row mb-5'><div class='col-md-12 col-sm-12'><center><p class='h3'><strong>No Patient Found that matches search criteria</strong></p></center></div></div>");
-                                $("#submitButtons").append("<button class='btn btn-primary cancel mr-5'>OK</button><button class='btn btn-primary cancel'>New Search</button>");
+                                $("#submitButtons").append("<button class='btn btn-primary mr-5' data-dismiss='modal' aria-label='Close'>OK</button><button class='btn btn-primary cancel'>New Search</button>");
                             } else {
                                 $("#modalTitle").append(response.total_patients+' Patient Found. '+'Select One.');
                                 $.each(response.patient_lists, function(key, value) {
@@ -814,7 +814,7 @@
                             }
                             if (response.patient_lists.length === 0) {
                                 $("#searchResult").append("<div class='row mb-5'><div class='col-md-12 col-sm-12'><center><p class='h3'><strong>No Patient Found that matches search criteria</strong></p></center></div></div>");
-                                $("#submitButtons").append("<button class='btn btn-primary cancel mr-5'>OK</button><button class='btn btn-primary cancel'>New Search</button>");
+                                $("#submitButtons").append("<button class='btn btn-primary cancel mr-5' data-dismiss='modal' aria-label='Close'>OK</button><button class='btn btn-primary cancel'>New Search</button>");
                             } else {
                                 $("#modalTitle").append(response.total_patients+' Patient'+num+' Found. '+'Select One.');
                                 $.each(response.patient_lists, function(key, value) {
