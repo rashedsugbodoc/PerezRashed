@@ -529,9 +529,8 @@
                                                     </div>
                                                     <div class='row mb-5'>
                                                         <div class='col-md-12 col-sm-12'>
-                                                            <center>
-                                                                <button class='btn btn-primary'>Add Patient</button>
-                                                                <button class='btn btn-primary cancel'>Cancel</button>
+                                                            <center id='submitButtons'>
+                                                                
                                                             </center>
                                                         </div>
                                                     </div>
@@ -732,32 +731,44 @@
                     var l_name = $('#patient_number_form').find('[name="l_name"]').val();
                     $('#modalTitle').html("").end()
                     $('#searchResult').html("").end()
+                    $('#submitButtons').html("").end()
                     $.ajax({
                         url: 'patient/searchPatientByPatientNumber?patient_number='+patient_number+'&f_name='+f_name+'&l_name='+l_name,
                         method: 'GET',
                         data: '',
                         dataType: 'json',
                         success: function (response) {
-                            $("#modalTitle").append(response.total_patients+' Patient Found. '+'Select One.');
-                            $.each(response.patient_lists, function(key, value) {
-                                $("#searchResult").append(
-                                    "<div class='row mb-5'>\n\
-                                        <div class='col-md-12 col-sm-12'>\n\
-                                            <div class='custom-controls-stacked' id='item-"+value.id+"' data-item='"+value.id+"' onmouseleave='inactive("+value.id+")' onmouseenter='active("+value.id+")'>\n\
-                                                <label class='custom-control custom-radio'>\n\
-                                                    <h5>\n\
-                                                        <input type='radio' class='custom-control-input' name='patient_id' value='"+value.id+"' checked=''>\n\
-                                                        <span class='custom-control-label'>\n\
-                                                            <p class='mb-1'>"+value.name+" - "+value.sex.charAt(0).toUpperCase()+value.sex.slice(1)+" - "+response.details[key]+"</p>\n\
-                                                            <p class='mb-1'><i class='fe fe-mail mr-2'></i>"+value.email+"</p>\n\
-                                                            <p class='mb-1'><i class='fe fe-phone mr-2'></i>"+value.phone+"</p>\n\
-                                                        </span>\n\
-                                                    </h5>\n\
-                                                </label>\n\
+                            if (response.total_patients > 1) {
+                                var num = 's';
+                            } else {
+                                var num = '';
+                            }
+                            if (response.patient_lists.length === 0) {
+                                $("#searchResult").append("<div class='row mb-5'><div class='col-md-12 col-sm-12'><center><p class='h3'><strong>No Patient Found that matches search criteria</strong></p></center></div></div>");
+                                $("#submitButtons").append("<button class='btn btn-primary cancel mr-5'>OK</button><button class='btn btn-primary cancel'>New Search</button>");
+                            } else {
+                                $("#modalTitle").append(response.total_patients+' Patient Found. '+'Select One.');
+                                $.each(response.patient_lists, function(key, value) {
+                                    $("#searchResult").append(
+                                        "<div class='row mb-5'>\n\
+                                            <div class='col-md-12 col-sm-12'>\n\
+                                                <div class='custom-controls-stacked' id='item-"+value.id+"' data-item='"+value.id+"' onmouseleave='inactive("+value.id+")' onmouseenter='active("+value.id+")'>\n\
+                                                    <label class='custom-control custom-radio'>\n\
+                                                        <h5>\n\
+                                                            <input type='radio' class='custom-control-input' name='patient_id' value='"+value.id+"' checked=''>\n\
+                                                            <span class='custom-control-label'>\n\
+                                                                <p class='mb-1'>"+value.name+" - "+value.sex.charAt(0).toUpperCase()+value.sex.slice(1)+" - "+response.details[key]+"</p>\n\
+                                                                <p class='mb-1'><i class='fe fe-mail mr-2'></i>"+value.email+"</p>\n\
+                                                                <p class='mb-1'><i class='fe fe-phone mr-2'></i>"+value.phone+"</p>\n\
+                                                            </span>\n\
+                                                        </h5>\n\
+                                                    </label>\n\
+                                                </div>\n\
                                             </div>\n\
-                                        </div>\n\
-                                    </div>");
-                            })
+                                        </div>");
+                                })
+                                $("#submitButtons").append("<button class='btn btn-primary mr-5'>Add Patient</button><button class='btn btn-primary cancel'>Cancel</button>");
+                            }
                             $('#searchModal').modal('show');
                         }
                     });
@@ -789,6 +800,7 @@
                     var data = f_name +','+ m_name +','+ l_name +','+ suffix +','+ sex +','+ birthdate +','+ country +','+ state;
                     $('#modalTitle').html("").end()
                     $('#searchResult').html("").end()
+                    $('#submitButtons').html("").end()
                     $.ajax({
                         url: 'patient/searchPatientByPatientNumber?data='+data,
                         method: 'GET',
@@ -800,26 +812,32 @@
                             } else {
                                 var num = '';
                             }
-                            $("#modalTitle").append(response.total_patients+' Patient'+num+' Found. '+'Select One.');
-                            $.each(response.patient_lists, function(key, value) {
-                                $("#searchResult").append(
-                                    "<div class='row mb-5' id='item'>\n\
-                                        <div class='col-md-12 col-sm-12'>\n\
-                                            <div class='custom-controls-stacked' id='item-"+value.id+"' data-item='"+value.id+"' onmouseleave='inactive("+value.id+")' onmouseenter='active("+value.id+")'>\n\
-                                                <label class='custom-control custom-radio'>\n\
-                                                    <h5>\n\
-                                                        <input type='radio' class='custom-control-input' id='select-"+value.id+"' name='patient_id2' value='"+value.id+"' onclick='selected("+value.id+")' checked=''>\n\
-                                                        <span class='custom-control-label'>\n\
-                                                            <p class='mb-1'>"+value.name+" - "+value.sex.charAt(0).toUpperCase()+value.sex.slice(1)+" - "+response.details[key]+"</p>\n\
-                                                            <p class='mb-1'><i class='fe fe-mail mr-2'></i>"+value.email+"</p>\n\
-                                                            <p class='mb-1'><i class='fe fe-phone mr-2'></i>"+value.phone+"</p>\n\
-                                                        </span>\n\
-                                                    </h5>\n\
-                                                </label>\n\
+                            if (response.patient_lists.length === 0) {
+                                $("#searchResult").append("<div class='row mb-5'><div class='col-md-12 col-sm-12'><center><p class='h3'><strong>No Patient Found that matches search criteria</strong></p></center></div></div>");
+                                $("#submitButtons").append("<button class='btn btn-primary cancel mr-5'>OK</button><button class='btn btn-primary cancel'>New Search</button>");
+                            } else {
+                                $("#modalTitle").append(response.total_patients+' Patient'+num+' Found. '+'Select One.');
+                                $.each(response.patient_lists, function(key, value) {
+                                    $("#searchResult").append(
+                                        "<div class='row mb-5' id='item'>\n\
+                                            <div class='col-md-12 col-sm-12'>\n\
+                                                <div class='custom-controls-stacked' id='item-"+value.id+"' data-item='"+value.id+"' onmouseleave='inactive("+value.id+")' onmouseenter='active("+value.id+")'>\n\
+                                                    <label class='custom-control custom-radio'>\n\
+                                                        <h5>\n\
+                                                            <input type='radio' class='custom-control-input' id='select-"+value.id+"' name='patient_id2' value='"+value.id+"' onclick='selected("+value.id+")' checked=''>\n\
+                                                            <span class='custom-control-label'>\n\
+                                                                <p class='mb-1'>"+value.name+" - "+value.sex.charAt(0).toUpperCase()+value.sex.slice(1)+" - "+response.details[key]+"</p>\n\
+                                                                <p class='mb-1'><i class='fe fe-mail mr-2'></i>"+value.email+"</p>\n\
+                                                                <p class='mb-1'><i class='fe fe-phone mr-2'></i>"+value.phone+"</p>\n\
+                                                            </span>\n\
+                                                        </h5>\n\
+                                                    </label>\n\
+                                                </div>\n\
                                             </div>\n\
-                                        </div>\n\
-                                    </div>");
-                            })
+                                        </div>");
+                                })
+                                $("#submitButtons").append("<button class='btn btn-primary mr-5'>Add Patient</button><button class='btn btn-primary cancel'>Cancel</button>");
+                            }
                             $('#searchModal').modal('show');
                         }
                     });
