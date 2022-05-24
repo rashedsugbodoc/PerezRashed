@@ -36,10 +36,19 @@
                                                     <input type="hidden" name="redirect" value="<?php
                                                     if (!empty($encounter_id)) {
                                                         echo "encounter";
+                                                    } elseif (!empty($redirect)) {
+                                                        echo $redirect;
                                                     }
                                                     ?>">
                                                 </div>
                                             </div>
+                                            <?php if (!empty($diagnosis[0]->patient_diagnosis_number)) { ?>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <input type="hidden" name="id" value="<?php echo $diagnosis[0]->patient_diagnosis_number; ?>">
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -49,13 +58,15 @@
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
                                                             <?php if (!empty($id)) { ?>
-                                                                <option value="<?php echo $id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
                                                         </select>
                                                         <?php if (!empty($encounter->id)) { ?>
                                                             <input type="hidden" name="encounter_id" value="<?php
                                                             if (!empty($encounter_id)) {
                                                                 echo $encounter_id;
+                                                            } elseif (!empty($encounter->id)) {
+                                                                echo $encounter->id;
                                                             }
                                                             ?>">
                                                         <?php } ?>
@@ -98,8 +109,8 @@
                                                                     <?php if (!empty($encounter->patient_id)) { ?>
                                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
                                                                     <?php } ?>
-                                                                    <?php if (!empty($diagnosis->patient_id)) { ?>
-                                                                        <option value="<?php echo $diagnosis->patient_id; ?>" selected><?php echo $this->patient_model->getPatientById($diagnosis->patient_id)->name; ?></option>
+                                                                    <?php if (!empty($diagnosis[0]->patient_id)) { ?>
+                                                                        <option value="<?php echo $diagnosis[0]->patient_id; ?>" selected><?php echo $this->patient_model->getPatientById($diagnosis[0]->patient_id)->name; ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter->patient_id)) { ?>
@@ -118,8 +129,8 @@
                                                                     <?php if (!empty($encounter->doctor)) { ?>
                                                                         <option value="<?php echo $doctor->id; ?>" selected><?php echo $doctor->name ?></option>
                                                                     <?php } ?>
-                                                                    <?php if (!empty($diagnosis->doctor_id)) { ?>
-                                                                        <option value="<?php echo $diagnosis->doctor_id; ?>" selected><?php echo $this->doctor_model->getDoctorById($diagnosis->doctor_id)->name ?></option>
+                                                                    <?php if (!empty($diagnosis[0]->doctor_id)) { ?>
+                                                                        <option value="<?php echo $diagnosis[0]->doctor_id; ?>" selected><?php echo $this->doctor_model->getDoctorById($diagnosis[0]->doctor_id)->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter->doctor)) { ?>
@@ -140,7 +151,14 @@
                                                             </select>
                                                         <?php } else { ?>
                                                             <select class="select2-show-search form-control diagnosis" name="diagnosisInput" id="diagnosis" value="" multiple>
-                                                                <option value="<?php echo $diag_list->id; ?>"><?php echo $diag_list->long_description; ?></option>
+                                                                <?php foreach($diagnosis as $diag) { ?>
+                                                                    <?php if (!empty($diag->diagnosis_code)) { ?>
+                                                                        <?php $i += 1; ?>
+                                                                        <option value="<?php echo $diag->diagnosis_id . '*' . $diag->diagnosis_long_description . '*' . $diag->diagnosis_code . '*' . $diag->diagnosis_notes . '*' . $diag->is_primary_diagnosis; ?>" <?php echo 'data-notes="' . $diag->diagnosis_notes . '"data-request="' . $diag->id . '"' ?> selected="selected">
+                                                                            <?php echo $diag->diagnosis_long_description; ?>
+                                                                        </option>
+                                                                    <?php } ?>
+                                                                <?php } ?>
                                                             </select>
                                                         <?php } ?>
                                                     </div>
@@ -157,6 +175,14 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('diagnosis'); ?></label>
                                                         <div class="diag">
+                                                            <?php if (!empty($diagnosis)) { ?>
+                                                                <?php foreach($diagnosis as $diag) { ?>
+                                                                    <?php if (empty($diag->diagnosis_code)) { ?>
+                                                                        <?php $i += 1; ?>
+                                                                        <input type="text" hidden name="manual_item[]" class="manual_item" value="<?php echo $diag->id.'*'.$diag->patient_diagnosis_text.'*'.$diag->diagnosis_notes.'*'.$i.'*'.$diag->is_primary_diagnosis; ?>">
+                                                                    <?php } ?>
+                                                                <?php } ?>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -330,7 +356,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var date = $('#date').val();
+            var date = "<?php echo date('Y-m-d H:i A', strtotime($diagnosis[0]->diagnosis_date.' UTC')); ?>";
             console.log(date);
             if (date === undefined) {
                 var timenow = "<?php echo date('Y-m-d H:i'); ?>";
@@ -480,6 +506,151 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var selected = $('#diagnosis').find('option:selected');
+            var unselected = $('#diagnosis').find('option:not(:selected)');
+            selected.attr('data-selected', '1');
+            
+            $.each(unselected, function (index, value1) {
+                num--;
+                var countdiag = $(".diag_selected").length;
+                var count = parseInt(countdiag) - 1;
+                // console.log(count);
+                if ($(this).attr('data-selected') == '1') {
+                    var value = $(this).val();
+                    var res = value.split("*");
+                    // var unit_price = res[1];
+                    var id = res[0];
+
+                    // console.log(id);
+                    $('#diag_selected_section-' + id).remove();
+                    // $('#removediv' + $(this).val() + '').remove();
+                    //this option was selected before
+
+                }
+            });
+
+            $.each($('select.diagnosis option:selected'), function ( index ) {
+                var countdiag = $(".diag_selected").length;
+                var count = parseInt(countdiag) + 1;
+                var value = $(this).val();
+                var res = value.split("*");
+                var id = res[0];
+                var diag_desc = res[1];
+                var diag_notes = res[3];
+                var diag_primary = res[4];
+                if (diag_primary == 1) {
+                    var checked = "checked";
+                } else {
+                    var checked = "";
+                }
+
+                console.log(diag_primary);
+
+                if ($('#labreq_id-' + id).length)
+                {
+
+                } else {
+                    $(".diag").append(
+                        '<section class="diag_selected remove'+ count +'" id="diag_selected_section-' + id + '">\n\
+                            <div class="row">\n\
+                                <div class="col-sm-1">\n\
+                                    <button class="btn btn-danger" hidden onclick="removeElem('+ count +')" type="button"><i class="fe fe-trash"></i></button>\n\
+                                </div>\n\
+                                <div class="col-sm-11">\n\
+                                    <div class="form-group diagnosis_sect">\n\
+                                        <div class="row">\n\
+                                            <div class="col-lg-8 col-md-6 col-sm-12">\n\
+                                                <div class="form-group">\n\
+                                                    <input type="text" class = "form-control diag-div" name = "diag_description[]" value = "' + diag_desc + '" placeholder="" required readonly>\n\
+                                                    <input type="hidden" id="diag_id-' + id + '" class = "diag-div" name = "diagnosis[]" value = "' + id + '" placeholder="" required disabled>\n\
+                                                    <input class = "form-control diag-div" name = "diag[]" hidden value = "' + id + '" placeholder="" required>\n\
+                                                    <input type="text" hidden class = "form-control diag-div" name = "patient_diagnosis_text[]" placeholder="">\n\
+                                                </div>\n\
+                                            </div>\n\
+                                            <div class="col-lg-4 col-md-6 col-sm-12">\n\
+                                                <div class="form-group">\n\
+                                                    <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary"'+diag_primary+'"</span><input type="radio" name="type" '+checked+' value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                        <div class="row">\n\
+                                            <div class="col-sm-12">\n\
+                                                <div class="form-group">\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("diagnosis") . " " . lang("note")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="'+ diag_notes +'"></div>\n\
+                                                </div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            <div>\n\
+                        </section>\n\
+                    ');
+                }
+
+            });
+
+            $.each($('input.manual_item'), function (index) {
+                var value = $(this).val();
+                var res = value.split("*");
+                var id = res[0];
+                var diagnosis_text = res[1];
+                var diagnosis_notes = res[2];
+                var i = res[3];
+                var diag_primary = res[4];
+                var countdiagReq = $(".diag_selected").length;
+                var count = parseInt(countdiagReq) + 1;
+
+                if (diag_primary == 1) {
+                    var checked = "checked";
+                } else {
+                    var checked = "";
+                }
+                console.log(count);
+                // console.log(value);
+                $(".diag").append(
+                    '<section class="diag_selected remove'+ count +'" id="diag_selected_section">\n\
+                        <div class="row">\n\
+                            <div class="col-sm-1">\n\
+                                <button class="btn btn-danger" onclick="removeElem('+ count +')" type="button"><i class="fe fe-trash"></i></button>\n\
+                            </div>\n\
+                            <div class="col-sm-11">\n\
+                                <div class="form-group diagnosis_sect">\n\
+                                    <div class="row">\n\
+                                        <div class="col-lg-8 col-md-6 col-sm-12">\n\
+                                            <div class="form-group">\n\
+                                                <input type="text" hidden class = "form-control diag-div" name = "diag_description[]" value = "" placeholder="" required readonly>\n\
+                                                <input type="hidden" id="diag_id-' + id + '" class = "diag-div" name = "diagnosis[]" value = "" placeholder="" required disabled>\n\
+                                                <input class = "form-control diag-div" name = "diag[]" hidden value = "" placeholder="" required>\n\
+                                                <input type="text" class = "form-control diag-div" name = "patient_diagnosis_text[]" placeholder="" value="'+diagnosis_text+'" required>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                        <div class="col-lg-4 col-md-6 col-sm-12">\n\
+                                            <div class="form-group">\n\
+                                                <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary"'+diag_primary+'"</span><input type="radio" name="type" '+checked+' value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class="row">\n\
+                                        <div class="col-sm-12">\n\
+                                            <div class="form-group">\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("diagnosis") . " " . lang("note")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="'+diagnosis_notes+'"></div>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>\n\
+                        <div>\n\
+                    </section>\n\
+                ');
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             $(".diagnosis").change(function () {
                 
 
@@ -488,6 +659,12 @@
                 selected.attr('data-selected', '1');
                 var num = 0;
                 var countdiag = $(".diag_selected").length;
+                var type = parseInt($(".type").length) + 1;
+                if (type <= 1) {
+                    var active = "checked";
+                } else {
+                    var active = '';
+                }
                 $.each(unselected, function (index, value1) {
                     num--;
                     var count = parseInt(countdiag) - 1;
@@ -538,8 +715,8 @@
                                                 </div>\n\
                                                 <div class="col-lg-4 col-md-6 col-sm-12">\n\
                                                     <div class="form-group">\n\
-                                                        <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
-                                                        <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
+                                                        <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                        <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" '+active+' value="' + count + '" class="custom-switch-input type"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
                                                     </div>\n\
                                                 </div>\n\
                                             </div>\n\
@@ -567,7 +744,13 @@
                 // // console.log(count);
                 var countdiag = $(".diag_selected").length;
                 var count = parseInt(countdiag) + 1;
-                console.log(count);
+                var type = parseInt($(".type").length) + 1;
+                if (type <= 1) {
+                    var active = "checked";
+                } else {
+                    var active = '';
+                }
+                // console.log(count);
                 $(".diag").append(
                     '<section class="diag_selected remove'+ count +'" id="diag_selected_section">\n\
                         <div class="row">\n\
@@ -581,12 +764,13 @@
                                             <div class="form-group">\n\
                                                 <input type="text" hidden class = "form-control diag-div" name = "diag_description[]" value = "" placeholder="" required readonly>\n\
                                                 <input type="text" class = "form-control diag-div" name = "patient_diagnosis_text[]" placeholder="" required>\n\
+                                                <input class = "form-control diag-div" name = "diag[]" hidden value = "" placeholder="">\n\
                                             </div>\n\
                                         </div>\n\
                                         <div class="col-lg-4 col-md-6 col-sm-12">\n\
                                             <div class="form-group">\n\
-                                                <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
-                                                <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
+                                                <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" '+active+' value="' + count + '" class="custom-switch-input type"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\
@@ -601,7 +785,7 @@
                             </div>\n\
                         <div>\n\
                     </section>\n\
-                    ');
+                ');
             });
         });
     </script>

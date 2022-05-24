@@ -16,6 +16,11 @@ class Diagnosis_model extends CI_model {
         $this->db->insert('patient_diagnosis', $data2);
     }
 
+    function updateDiagnosis($number, $data) {
+        $this->db->where('id', $number);
+        $this->db->update('patient_diagnosis', $data);
+    }
+
     function getDiagnosisById($id) {
         $this->db->where('id', $id);
         $query = $this->db->get('diagnosis_icd10');
@@ -31,7 +36,7 @@ class Diagnosis_model extends CI_model {
     function getPatientDiagnosisByNumber($number) {
         $this->db->where('patient_diagnosis_number', $number);
         $query = $this->db->get('patient_diagnosis');
-        return $query->row();
+        return $query->result();
     }
 
     function getDiagnosisInfo($searchTerm) {

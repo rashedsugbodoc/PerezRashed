@@ -41,14 +41,15 @@ class Diagnosis extends MX_Controller {
         $patient_phone = $this->patient_model->getPatientById($patient)->phone;
         $doctor = $this->encounter_model->getEncounterById($encounter_id)->doctor;
         $nowtime = date('H:i:s');
-        $diag_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date') . ' ' . $nowtime));
-        $on_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('on_date') . ' ' . $nowtime));
+        $diag_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date')));
+        $on_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('on_date')));
         $diagnosis = $this->input->post('diag');
         $diagnosis_description = $this->input->post('diag_description');
         $type = $this->input->post('type');
         $note = $this->input->post('instruction');
         $date = gmdate('Y-m-d H:i:s');
         $redirect = $this->input->post('redirect');
+        $number = $this->input->post('id');
 
         $dataholder = $this->input->post('dataholder');
         $patient_diagnosis_text = $this->input->post('patient_diagnosis_text');
@@ -117,27 +118,56 @@ class Diagnosis extends MX_Controller {
                         $diagnosis_description[$key] = null;
                     }
 
+                    if (empty($diagnosis[$key])) {
+                        $diagnosis[$key] = null;
+                    }
+
                     $data = array();
-                    $data[$value] = array(
-                        'patient_id' => $patient,
-                        'diagnosis_id' => $diagnosis[$key],
-                        'diagnosis_long_description' => $diagnosis_description[$key],
-                        'patient_diagnosis_text' => $patient_diagnosis_text[$key],
-                        'patient_name' => $patient_name,
-                        'patient_address' => $patient_address,
-                        'patient_phone' => $patient_phone,
-                        'diagnosis_notes' => $note[$key],
-                        'onset_date' => $on_date,
-                        'diagnosis_date' => $diag_date,
-                        'doctor_id' => $doctor,
-                        'created_at' => $date,
-                        'encounter_id' => $encounter_id,
-                        'is_primary_diagnosis' => $primary[$key],
-                        'is_secondary_diagnosis' => $secondary[$key],
-                        'diagnosis_code' => $diagnosis_code[$key],
-                        'patient_diagnosis_number' => $diagnosis_number,
-                    );
-                    $this->diagnosis_model->insertDiagnosis($data[$value]);
+                    if (empty($number)) {
+                        $data[$value] = array(
+                            'patient_id' => $patient,
+                            'diagnosis_id' => $diagnosis[$key],
+                            'diagnosis_long_description' => $diagnosis_description[$key],
+                            'patient_diagnosis_text' => $patient_diagnosis_text[$key],
+                            'patient_name' => $patient_name,
+                            'patient_address' => $patient_address,
+                            'patient_phone' => $patient_phone,
+                            'diagnosis_notes' => $note[$key],
+                            'onset_date' => $on_date,
+                            'diagnosis_date' => $diag_date,
+                            'doctor_id' => $doctor,
+                            'created_at' => $date,
+                            'encounter_id' => $encounter_id,
+                            'is_primary_diagnosis' => $primary[$key],
+                            'is_secondary_diagnosis' => $secondary[$key],
+                            'diagnosis_code' => $diagnosis_code[$key],
+                            'patient_diagnosis_number' => $diagnosis_number,
+                        );
+
+                        $this->diagnosis_model->insertDiagnosis($data[$value]);
+                    } else {
+                        $data[$value] = array(
+                            'patient_id' => $patient,
+                            'diagnosis_id' => $diagnosis[$key],
+                            'diagnosis_long_description' => $diagnosis_description[$key],
+                            'patient_diagnosis_text' => $patient_diagnosis_text[$key],
+                            'patient_name' => $patient_name,
+                            'patient_address' => $patient_address,
+                            'patient_phone' => $patient_phone,
+                            'diagnosis_notes' => $note[$key],
+                            'onset_date' => $on_date,
+                            'diagnosis_date' => $diag_date,
+                            'doctor_id' => $doctor,
+                            'updated_at' => $date,
+                            'encounter_id' => $encounter_id,
+                            'is_primary_diagnosis' => $primary[$key],
+                            'is_secondary_diagnosis' => $secondary[$key],
+                            'diagnosis_code' => $diagnosis_code[$key],
+                            'patient_diagnosis_number' => $number,
+                        );
+                        $diagnosis_ids = $this->diagnosis_model->getPatientDiagnosisByNumber($number);
+                        $this->diagnosis_model->updateDiagnosis($diagnosis_ids[$key]->id, $data[$value]);
+                    }
                     $inserted_id[] = $this->db->insert_id();
                 }
 
@@ -186,13 +216,17 @@ class Diagnosis extends MX_Controller {
     public function editDiagnosis() {
         $diagnosis_number = $this->input->get('id');
 
-        $diagnosis = $this->diagnosis_model->getPatientDiagnosisByNumber($diagnosis_number);
-        $data['id'] = $diagnosis->id;
-        $data['encounter'] = $this->encounter_model->getEncounterById($diagnosis->encounter_id);
+        $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisByNumber($diagnosis_number);
+        $data['id'] = $data['diagnosis']->id;
+        $data['encounter'] = $this->encounter_model->getEncounterById($data['diagnosis'][0]->encounter_id);
         $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
-
-        $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisById($data['id']);
+        $data['patient'] = $this->patient_model->getPatientById($data['diagnosis'][0]->patient_id);
+        $data['doctor'] = $this->doctor_model->getDoctorById($data['diagnosis'][0]->doctor_id);
+        // $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisById($data['id']);
         $data['diagnosis_list'] = $this->diagnosis_model->getDiagnosis();
+        $data['root'] = $this->input->get('root');
+        $data['method'] = $this->input->get('method');
+        $data['redirect'] = $data['root'].'/'.$data['method'].'?id='.$data['patient']->id.'&encounter_id='.$data['encounter']->id;
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
