@@ -596,8 +596,8 @@ class Prescription extends MX_Controller {
                 $patientname = $prescription->patientname;
             }
             $info[] = array(
+                date('Y-m-d', strtotime($prescription->prescription_date.' UTC')),
                 $prescription->prescription_number,
-                date('d-m-Y', strtotime($prescription->prescription_date.' UTC')),
                 $patientname,
                 $prescription->patient,
                 $medicinelist,

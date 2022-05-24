@@ -30,8 +30,8 @@
                                         <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100">
                                             <thead>
                                                 <tr>
-                                                    <th> <?php echo lang('prescription'); ?> <?php echo lang('number'); ?> </th>
                                                     <th> <?php echo lang('date'); ?></th>                                  
+                                                    <th> <?php echo lang('prescription'); ?> <?php echo lang('number'); ?> </th>
                                                     <th> <?php echo lang('patient'); ?></th>
                                                     <th> <?php echo lang('patient'); ?> <?php echo lang('id'); ?> </th>
                                                     <th> <?php echo lang('medicine'); ?> </th>
