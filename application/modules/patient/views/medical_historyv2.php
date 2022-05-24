@@ -281,7 +281,7 @@
                                                         <h3 class="card-title"><?php echo lang('diagnosis') ?></h3>
                                                         <div class="card-options">
                                                             <?php if(!empty($encounter_id)) { ?>
-                                                                <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
+                                                                <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
@@ -332,7 +332,7 @@
                                                                                 <td><?php echo $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number; ?></td>
                                                                                 <td>
                                                                                     <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                        <a href="diagnosis/editDiagnosis?id=<?php echo $diag->patient_diagnosis_number ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
+                                                                                        <a href="diagnosis/editDiagnosis?id=<?php echo $diag->patient_diagnosis_number ?>&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>
                                                                                     <?php } ?>
                                                                                 </td>
                                                                             </tr>
