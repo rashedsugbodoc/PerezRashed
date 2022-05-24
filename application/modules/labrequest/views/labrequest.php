@@ -23,11 +23,12 @@
                                                 <table class="table table-bordered text-nowrap key-buttons" id="editable-sample">
                                                     <thead>
                                                         <tr>
-                                                            <th class="border-bottom-0"><?php echo lang('id'); ?></th>
-                                                            <th class="border-bottom-0"><?php echo lang('lab').' '.lang('test'); ?></th>
-                                                            <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
-                                                            <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
-                                                            <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
+                                                            <th class="border-bottom-0 w-20"><?php echo lang('date'); ?></th>
+                                                            <th class="border-bottom-0 w-10"><?php echo lang('lab').''.lang('request').' '.lang('number'); ?></th>
+                                                            <th class="border-bottom-0 w-40"><?php echo lang('lab').' '.lang('test'); ?></th>
+                                                            <th class="border-bottom-0 w-10"><?php echo lang('patient'); ?></th>
+                                                            <th class="border-bottom-0 w-10"><?php echo lang('doctors'); ?></th>
+                                                            <th class="border-bottom-0 w-10"><?php echo lang('actions'); ?></th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>

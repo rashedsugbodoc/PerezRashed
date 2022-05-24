@@ -367,6 +367,7 @@ class Labrequest extends MX_Controller {
             $alltest = $labtestdata;
 
             $info[] = array(
+                date('Y-m-d H:i A', strtotime($labrequest->created_at.' UTC')),
                 $labrequest->lab_request_number,
                 $alltest,
                 $labrequest->patientname,
