@@ -2431,7 +2431,7 @@ class Finance extends MX_Controller {
         //  $data['payments'] = $this->finance_model->getPayment();
 
         foreach ($data['payments'] as $payment) {
-            $date = date('d-m-y', $payment->date);
+            $date = date('Y-m-d', $payment->date);
 
             $flat_discount = $payment->flat_discount;
             if (empty($flat_discount)) {
@@ -2476,10 +2476,10 @@ class Finance extends MX_Controller {
             }
 
             $info[] = array(
+                $date,
                 $payment->id,
                 $patient_details,
                 $doctor,
-                $date,
                 $settings->currency . '' . number_format($payment->amount,2),
                 $settings->currency . '' . number_format($flat_discount,2),
                 $settings->currency . '' . number_format($payment->gross_total,2),
