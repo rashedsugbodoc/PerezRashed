@@ -831,10 +831,10 @@ class Form extends MX_Controller {
                 $patient_details = ' ';
             }
             $info[] = array(
+                date('Y-m-d', strtotime($form->form_date.' UTC')),
                 $form->form_number,
                 $form->name,
                 $patient_details,
-                date('Y-m-d', strtotime($form->form_date.' UTC')),
                 $options1 . ' ' . $options2 . ' ' . $options3,
                     // $options2 . ' ' . $options3
             );
