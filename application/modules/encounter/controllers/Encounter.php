@@ -317,14 +317,14 @@ class Encounter extends MX_Controller {
                     }
                 }
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                        $option12 = '<a class="patientbutton dropdown-item bg-info text-light" href="patient/medicalHistory?id=' . $encounter->patient_id . '&encounter_id=' . $encounter->id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-eye"></i>  '. lang('view') .' ' .lang('patient') .' '. lang('history') . '</a>';
+                        $option12 = '<a class="patientbutton dropdown-item bg-info text-light" href="patient/medicalHistory?id=' . $encounter->patient_id . '" data-id="' . $encounter->id . '" target="_blank"><i class="fa fa-eye"></i>  '. lang('view') .' ' .lang('patient') .' '. lang('history') . '</a>';
                 }
                 $option6 = '<div class="dropdown">
                                 <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
                                     <i class="fa fa-caret-down mr-2"></i>'. lang('actions') .'
                                 </button>
                                 <div class="dropdown-menu" style="overflow: auto; height: 200px; scrollbar-width: auto;">
-                                    <button type="button" class="view_button dropdown-item bg-info text-light" data-toggle="modal" data-id="'. $encounter->id .'"><i class="fa fa-eye"></i>  '. lang('view') . ' ' . lang('encounter') .'</button>
+                                    <a class="view_button dropdown-item bg-info text-light" href="patient/medicalHistory?id=' . $encounter->patient_id . '&encounter_id=' . $encounter->id . '" target="_blank"><i class="fa fa-eye"></i>  '. lang('view') . ' ' . lang('encounter') .'</a>
                                     <button type="button" class="editbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-edit"> </i>  '. lang('edit') . ' ' . lang('encounter') .'</button>
                                     '.$option12.'
                                     '.$option3.'
