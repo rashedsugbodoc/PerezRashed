@@ -168,7 +168,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-10 col-sm-12 labrequest_block">
+                                                <div class="col-lg-10 col-md-8 col-sm-12 labrequest_block">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('select') . ' ' . lang('lab') . ' ' . lang('test') ?></label>
                                                         <?php /*if (empty($labrequest->lab_loinc_id)) { ?>
@@ -204,7 +204,7 @@
                                                         <?php } ?>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-2 col-sm-12 labrequest_block">
+                                                <div class="col-lg-2 col-md-4 col-sm-12 labrequest_block">
                                                     <div class="form-group">
                                                         <label class="form-label">or Type Manually</label>
                                                         <button class="btn btn-primary" id="add_manual" type="button">Add Lab Test</button>
