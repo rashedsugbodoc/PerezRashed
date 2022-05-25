@@ -164,13 +164,13 @@
                                                     </div>
                                                 </div> -->
                                             </div>
-                                            <div class="col-md-12 col-sm-12 text-center template-opacity">
+                                            <div class="col-md-12 col-sm-12 template-opacity">
                                                 <div class="row mb-1">
                                                     <?php foreach($branches as $branch) { 
                                                         $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
                                                         $city_name = $this->location_model->getCityById($branch->city_id)->name;
                                                     ?>
-                                                        <div class="col-md col-sm pl-0">
+                                                        <div class="col-md col-sm">
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12 pl-0">
                                                                     <i class="fa fa-hospital-o text-primary"></i>
