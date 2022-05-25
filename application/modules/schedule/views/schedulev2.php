@@ -16,7 +16,7 @@
                             <div class="card-body">
                                 <div class="">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered text-nowrap key-buttons" id="editable-sample">
+                                        <table class="table table-bordered text-nowrap key-buttons editable-sample" id="editable-sample">
                                             <thead>
                                                 <tr>
                                                     <th> # </th>
@@ -79,7 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table table-bordered text-nowrap key-buttons w-100" id="editable-sample">
+                                    <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="editable-sample">
                                         <thead>
                                             <tr>
                                                 <th> # </th>
@@ -574,14 +574,13 @@
 
         <script>
             $(document).ready(function () {
-                var table = $('#editable-sample').DataTable({
+                var table = $('.editable-sample').DataTable({
                     responsive: true,
 
-                    dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                    dom: "<'row'<'col-lg-3 col-md-12 col-sm-12'l><'col-lg-5 col-md-6 col-sm-6 text-center'B><'col-lg-4 col-md-6 col-sm-6'f>>" +
                             "<'row'<'col-sm-12'tr>>" +
                             "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                     buttons: [
-                        'copyHtml5',
                         'excelHtml5',
                         'csvHtml5',
                         'pdfHtml5',
