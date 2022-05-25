@@ -334,7 +334,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-12">
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
@@ -354,12 +354,12 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <textarea id='signature-result' class="form-control" name="signature-result" hidden></textarea>
+                                                                <textarea id='signature-result' class="form-control" name="signature-result" hidden required></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-12 col-md-6">
+                                                <div class="col-sm-12 col-md-12 col-lg-6">
                                                     <label class="form-label"><?php echo lang('profile_picture'); ?>:<span class="text-red"> *</span></label>
                                                     <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
                                                     <input type="file" name="img_url" id="img" class="dropify" data-default-file="<?php if(!empty($doctor->img_url)) echo $doctor->img_url; ?>"/>
