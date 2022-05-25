@@ -33,7 +33,7 @@
                                                     <table id="editable-sample" class="table table-bordered text-nowrap key-buttons">
                                                         <thead>
                                                             <tr>
-                                                                <th class="border-bottom-0"><?php echo lang('patient_id'); ?></th>
+                                                                <th class="border-bottom-0"><?php echo lang('patient').' '.lang('number'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('name'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('phone'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>

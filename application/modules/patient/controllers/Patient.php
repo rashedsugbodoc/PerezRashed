@@ -182,7 +182,7 @@ class Patient extends MX_Controller {
         }
         if ((empty($id))) {
             $add_date = date('m/d/y');
-            $registration_time = time();
+            $registration_time = gmdate('Y-m-d H:i:s');
         } else {
             $add_date = $this->patient_model->getPatientById($id)->add_date;
             $registration_time = $this->patient_model->getPatientById($id)->registration_time;
@@ -305,7 +305,7 @@ class Patient extends MX_Controller {
             $data = array();
 
             $data = array(
-                'patient_id' => $patient_id,
+                // 'patient_id' => $patient_id,
                 'img_url' => $img_url,
                 'name' => $name,
                 'firstname' => $fname,
@@ -348,10 +348,12 @@ class Patient extends MX_Controller {
 
                         $dfg = 5;
                         $this->ion_auth->register($username, $password, $email, $dfg);
+                        $countryname = $this->location_model->getCountryById($country)->name;
                         $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
                         $this->patient_model->insertPatient($data);
                         $patient_user_id = $this->db->get_where('patient', array('email' => $email))->row()->id;
-                        $id_info = array('ion_user_id' => $ion_user_id);
+                        $patient_number = $countryname[0]. gmdate("y") .dechex(gmdate("n")). format_number_with_digits($patient_user_id, 4);
+                        $id_info = array('ion_user_id' => $ion_user_id, 'patient_id' => $patient_number);
                         $this->patient_model->updatePatient($patient_user_id, $id_info);
                         $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
                         //sms
@@ -423,10 +425,12 @@ class Patient extends MX_Controller {
                         } else {
                             $dfg = 5;
                             $this->ion_auth->register($username, $password, $email, $dfg);
+                            $countryname = $this->location_model->getCountryById($country)->name;
                             $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
                             $this->patient_model->insertPatient($data);
                             $patient_user_id = $this->db->get_where('patient', array('email' => $email))->row()->id;
-                            $id_info = array('ion_user_id' => $ion_user_id);
+                            $patient_number = $countryname[0]. gmdate("y") .dechex(gmdate("n")). format_number_with_digits($patient_user_id, 4);
+                            $id_info = array('ion_user_id' => $ion_user_id, 'patient_id' => $patient_number);
                             $this->patient_model->updatePatient($patient_user_id, $id_info);
                             $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
                             //sms
@@ -2877,7 +2881,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('admin'))) {
                 $info[] = array(
-                    $patient->id,
+                    $patient->patient_id,
                     $patient->name,
                     $patient->phone,
                     $doctorNames,
@@ -2889,7 +2893,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) {
                 $info[] = array(
-                    $patient->id,
+                    $patient->patient_id,
                     $patient->name,
                     $patient->phone,
                     $doctorNames,
@@ -2901,7 +2905,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Laboratorist', 'Nurse', 'Doctor'))) {
                 $info[] = array(
-                    $patient->id,
+                    $patient->patient_id,
                     $patient->name,
                     $patient->phone,
                     $doctorNames,
