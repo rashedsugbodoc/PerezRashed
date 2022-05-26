@@ -243,7 +243,7 @@
                                                                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                                                                             <a class="btn btn-info" title="<?php echo lang('edit'); ?>" href="finance/editPayment?id=<?php echo $payment->id; ?>"><i class="fa fa-edit"> </i></a>
                                                                                         <?php } ?>
-                                                                                        <a class="btn btn-info" title="<?php echo lang('invoice'); ?>" href="finance/invoice?id=<?php echo $payment->id; ?>"><i class="fa fa-file"></i> </a>
+                                                                                        <a class="btn btn-info" title="<?php echo lang('invoice'); ?>" href="finance/invoice?id=<?php echo $payment->invoice_number; ?>"><i class="fa fa-file"></i> </a>
                                                                                         <!-- <button class="btn btn-info"><i class="fa fa-eye"></i></button> -->
                                                                                         <button type="button" class="btn btn-info deposit-list" data-invoice="<?php echo $payment->id; ?>" title="<?php echo lang('deposits'); ?>"><i class="fa fa-eye"></i> <?php echo lang('deposits') ?></button>
                                                                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?> 
