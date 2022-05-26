@@ -24,19 +24,21 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-bordered" id="editable-sample">
-                                            <thead>
-                                                <tr>
-                                                    <th><?php echo lang('expense'); ?> <?php echo lang('name'); ?></th>
-                                                    <th><?php echo lang('date'); ?></th>
-                                                    <th><?php echo lang('note'); ?></th>
-                                                    <th><?php echo lang('amount'); ?></th>
-                                                    <th class="no-print"><?php echo lang('options'); ?></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="editable-sample">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('expense'); ?> <?php echo lang('name'); ?></th>
+                                                        <th><?php echo lang('date'); ?></th>
+                                                        <th><?php echo lang('note'); ?></th>
+                                                        <th><?php echo lang('amount'); ?></th>
+                                                        <th class="no-print"><?php echo lang('options'); ?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -170,22 +172,47 @@
                 scroller: {
                     loadingIndicator: true
                 },
-                dom: "<'row'<'col-md-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                dom: "<'row'<'col-sm-2'l><'col-sm-6 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                // buttons: [
+                //     'copyHtml5',
+                //     'excelHtml5',
+                //     'csvHtml5',
+                //     'pdfHtml5',
+                //     {
+                //         extend: 'print',
+                //         exportOptions: {
+                //          columns: [0,1,2,3],
+                //         }
+                //     },
+                // ],
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                         columns: [0,1,2,3],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export Option',
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0,1,2,3],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0,1,2,3],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0,1,2,3],
+                                }
+                            }
+                        ]
+                    }
                 ],
-
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
