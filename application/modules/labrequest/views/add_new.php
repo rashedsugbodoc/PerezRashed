@@ -878,10 +878,10 @@
                 $(".labreq").append(
                     '<section class="labreq_selected remove'+ count +'" id="labreq_selected_section">\n\
                         <div class="row">\n\
-                            <div class="col-sm-1">\n\
+                            <div class="col-sm-12 col-md-2 col-lg-1">\n\
                                 <button class="btn btn-danger" onclick="removeElem('+ count +')" type="button"><i class="fe fe-trash"></i></button>\n\
                             </div>\n\
-                            <div class="col-sm-11">\n\
+                            <div class="col-sm-12 col-md-10 col-lg-11">\n\
                                 <div class="form-group labrequest_sect">\n\
                                     <div class="row">\n\
                                         <div class="col-sm-12">\n\
