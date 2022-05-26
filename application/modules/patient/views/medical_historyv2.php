@@ -137,7 +137,7 @@
                         <!--/app header-->
                         <!-- <form method="POST" action="patient/medicalHistory"> -->
                             <div class="row mt-5">
-                                <div class="col-lg-8 col-md-8 col-sm-6">
+                                <div class="col-lg-8 col-md-8 col-sm-7">
                                     <?php if (!empty($encounter_id) || !empty($all_encounter)) { ?>
                                         <div class="card bg-primary">
                                             <div class="card-body text-white" id="encounterCard">
@@ -173,7 +173,7 @@
                                         <?php } ?>
                                     </div>
                                 </div>
-                                <div class="col-lg-2 col-md-2 col-sm-3 pl-0">
+                                <div class="col-lg-2 col-md-2 col-sm-2 pl-0">
                                     <div class="form-group">
                                         <a href="encounter/addNewView?patient_id=<?php echo $patient->id ?>&root=patient&method=medicalHistory" class="btn btn-primary pull-right">
                                             <i class="fe fe-plus icon"></i><center class="button-text"><?php echo lang('create_encounter'); ?></center>
@@ -251,18 +251,18 @@
                                 <div class="col-md-5 col-lg-3 col-sm-12 pr-1">
                                     <div class="box-widget widget-user">
                                         <div class="widget-user-image d-lg-flex">
-                                            <img alt="User Avatar" class="rounded-circle p-1 text-sm-center" src="<?php echo $patient->img_url?$patient->img_url:base_url('public/assets/images/users/placeholder.jpg'); ?>" style="width: 150px; height: 150px;" width="auto" height="auto">
+                                            <center><img alt="User Avatar" class="rounded-circle p-1" src="<?php echo $patient->img_url?$patient->img_url:base_url('public/assets/images/users/placeholder.jpg'); ?>" style="width: 150px; height: 150px;" width="auto" height="auto"></center>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-7 col-lg-9 col-sm-12 pl-0">
                                     <div class="row mt-md-1 mt-sm-1 mr-lg-3 mr-mb-0 mr-sm-0">
                                         <div class="col-lg-9 col-md-12 col-sm-12">
-                                            <h4 class="mb-3 mt-1 font-weight-bold h-6"><?php echo $patient->name; ?></h4>
+                                            <h4 class="mb-3 mt-1 font-weight-bold h-6 text-md-center text-lg-left text-sm-center"><?php echo $patient->name; ?></h4>
                                         </div>
                                         <div class="col-lg-3 col-md-12 col-sm-12">
                                             <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                <a href="patient/editPatient?id=<?php echo $patient->id; ?>" class="btn btn-primary btn-xs btn_width" target="_blank"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a>
+                                                <center><a href="patient/editPatient?id=<?php echo $patient->id; ?>" class="btn btn-primary btn-xs btn_width" target="_blank"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a></center>
                                             <?php } ?>
                                         </div>
                                     </div>
