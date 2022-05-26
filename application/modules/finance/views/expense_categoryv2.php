@@ -24,35 +24,37 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-bordered w-100" id="editable-sample">
-                                            <thead>
-                                                <tr>
-                                                    <th><?php echo lang('category').' '.lang('name'); ?></th>
-                                                    <th><?php echo lang('description'); ?></th>
-                                                    <?php if ($this->ion_auth->in_group('admin')) { ?>
-                                                        <th class="no-print"><?php echo lang('options'); ?></th>
-                                                    <?php } ?>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($categories as $category) { ?>
-                                                    <tr class="">
-                                                        <td><?php echo $category->category; ?></td>
-                                                        <td> <?php echo $category->description; ?></td>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="editable-sample">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('category').' '.lang('name'); ?></th>
+                                                        <th><?php echo lang('description'); ?></th>
                                                         <?php if ($this->ion_auth->in_group('admin')) { ?>
-                                                            <td class="no-print">
-                                                                <?php if(!empty($category->hospital_id)) { ?>
-                                                                <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editExpenseCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"></i> </a>
-                                                                <?php } ?>
-                                                                <?php if(!empty($category->hospital_id)) { ?>
-                                                                <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deleteExpenseCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                                <?php } ?>
-                                                            </td>
+                                                            <th class="no-print"><?php echo lang('options'); ?></th>
                                                         <?php } ?>
                                                     </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($categories as $category) { ?>
+                                                        <tr class="">
+                                                            <td><?php echo $category->category; ?></td>
+                                                            <td> <?php echo $category->description; ?></td>
+                                                            <?php if ($this->ion_auth->in_group('admin')) { ?>
+                                                                <td class="no-print">
+                                                                    <?php if(!empty($category->hospital_id)) { ?>
+                                                                    <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editExpenseCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"></i> </a>
+                                                                    <?php } ?>
+                                                                    <?php if(!empty($category->hospital_id)) { ?>
+                                                                    <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deleteExpenseCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            <?php } ?>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -141,20 +143,34 @@
            var table = $('#editable-sample').DataTable({
                 responsive: true,
 
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                dom: "<'row'<'col-sm-2'l><'col-sm-6 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0,1],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export Option',
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0,1],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0,1],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0,1],
+                                }
+                            }
+                        ]
+                    }
                 ],
 
                 aLengthMenu: [
