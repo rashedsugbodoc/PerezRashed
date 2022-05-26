@@ -137,7 +137,7 @@
                         <!--/app header-->
                         <!-- <form method="POST" action="patient/medicalHistory"> -->
                             <div class="row mt-5">
-                                <div class="col-md-8 col-sm-12">
+                                <div class="col-lg-8 col-md-8 col-sm-6">
                                     <?php if (!empty($encounter_id) || !empty($all_encounter)) { ?>
                                         <div class="card bg-primary">
                                             <div class="card-body text-white" id="encounterCard">
@@ -161,7 +161,7 @@
                                         </select>
                                     <?php } ?>
                                 </div>
-                                <div class="col-md-2 col-sm-12 pl-0">
+                                <div class="col-lg-2 col-md-2 col-sm-3">
                                     <div class="form-group">
                                         <!-- <button class="btn btn-primary w-100" id="encounterChange">Change</button> -->
                                         <?php if(!empty($encounter_id) || !empty($all_encounter)) { ?>
@@ -173,7 +173,7 @@
                                         <?php } ?>
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-sm-12 pl-0">
+                                <div class="col-lg-2 col-md-2 col-sm-3 pl-0">
                                     <div class="form-group">
                                         <a href="encounter/addNewView?patient_id=<?php echo $patient->id ?>&root=patient&method=medicalHistory" class="btn btn-primary pull-right">
                                             <i class="fe fe-plus icon"></i><center class="button-text"><?php echo lang('create_encounter'); ?></center>
@@ -182,9 +182,9 @@
                                 </div>
                             </div>
                         <!-- </form> -->
-                        <div class="main-proifle d-print-none">
+                        <div class="main-proifle d-print-none mt-5">
                         <?php } ?>
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-lg-10 col-sm-12 col-md-12">
                                     <div class="box-widget widget-user">
                                         <div class="widget-user-image d-lg-flex">
@@ -244,6 +244,102 @@
                                         <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
                                             <a href="patient/editPatient?id=<?php echo $patient->id; ?>" class="btn btn-primary btn-xs btn_width" target="_blank"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a>
                                         <?php } ?>
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="row">
+                                <div class="col-md-5 col-lg-3 col-sm-12 pr-1">
+                                    <div class="box-widget widget-user">
+                                        <div class="widget-user-image d-lg-flex">
+                                            <img alt="User Avatar" class="rounded-circle p-1 text-sm-center" src="<?php echo $patient->img_url?$patient->img_url:base_url('public/assets/images/users/placeholder.jpg'); ?>" style="width: 150px; height: 150px;" width="auto" height="auto">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 col-lg-9 col-sm-12 pl-0">
+                                    <div class="row mt-md-1 mt-sm-1 mr-lg-3 mr-mb-0 mr-sm-0">
+                                        <div class="col-lg-9 col-md-12 col-sm-12">
+                                            <h4 class="mb-3 mt-1 font-weight-bold h-6"><?php echo $patient->name; ?></h4>
+                                        </div>
+                                        <div class="col-lg-3 col-md-12 col-sm-12">
+                                            <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                                <a href="patient/editPatient?id=<?php echo $patient->id; ?>" class="btn btn-primary btn-xs btn_width" target="_blank"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex mb-1">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g><path d="M20,10V8h-4V4h-2v4h-4V4H8v4H4v2h4v4H4v2h4v4h2v-4h4v4h2v-4h4v-2h-4v-4H20z M14,14h-4v-4h4V14z"/></g></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1"><?php echo $patient->id; ?></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex mb-1">
+                                                        <?php if ($patient->sex === 'male') { ?>
+                                                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M12,7.5c0.97,0,1.75-0.78,1.75-1.75S12.97,4,12,4s-1.75,0.78-1.75,1.75S11.03,7.5,12,7.5z M14,20v-5h1v-4.5 c0-1.1-0.9-2-2-2h-2c-1.1,0-2,0.9-2,2V15h1v5H14z"/></g></g></svg>
+                                                            <div class="h6 mb-0 ml-1 mt-1">Male</div>
+                                                        <?php } ?>
+                                                        <?php if ($patient->sex === 'female') { ?>
+                                                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g><g><path d="M12,7.5c0.97,0,1.75-0.78,1.75-1.75S12.97,4,12,4s-1.75,0.78-1.75,1.75S11.03,7.5,12,7.5z M14,16v4h-4v-4H8l2.38-6.38 C10.63,8.95,11.28,8.5,12,8.5s1.37,0.45,1.62,1.12L16,16H14z"/></g></g></svg>
+                                                            <div class="h6 mb-0 ml-1 mt-1">Female</div>
+                                                        <?php } ?>
+                                                        <?php if ($patient->sex === 'other') { ?>
+                                                            <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M.01 0h24v24h-24V0z" fill="none"/><path d="M5.5 22v-7.5H4V9c0-1.1.9-2 2-2h3c1.1 0 2 .9 2 2v5.5H9.5V22h-4zM18 22v-6h3l-2.54-7.63C18.18 7.55 17.42 7 16.56 7h-.12c-.86 0-1.63.55-1.9 1.37L12 16h3v6h3zM7.5 6c1.11 0 2-.89 2-2s-.89-2-2-2-2 .89-2 2 .89 2 2 2zm9 0c1.11 0 2-.89 2-2s-.89-2-2-2-2 .89-2 2 .89 2 2 2z"/></svg>
+                                                            <div class="h6 mb-0 ml-1 mt-1">Other</div>
+                                                        <?php } ?>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex mb-1">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M15.53 14.92l-1.08 1.07c-1.3 1.3-3.58 1.31-4.89 0l-1.07-1.07-1.09 1.07c-.64.64-1.5 1-2.4 1.01v3h14v-3c-.9-.01-1.76-.37-2.4-1.01l-1.07-1.07zM18 11H6c-.55 0-1 .45-1 1v3.5c.51-.01.99-.21 1.34-.57l2.14-2.13 2.13 2.13c.74.74 2.03.74 2.77 0l2.14-2.13 2.13 2.13c.36.36.84.56 1.35.57V12c0-.55-.45-1-1-1z" opacity=".3"/><path d="M12 6c1.11 0 2-.9 2-2 0-.38-.1-.73-.29-1.03L12 0l-1.71 2.97c-.19.3-.29.65-.29 1.03 0 1.1.9 2 2 2zm6 3h-5V7h-2v2H6c-1.66 0-3 1.34-3 3v9c0 .55.45 1 1 1h16c.55 0 1-.45 1-1v-9c0-1.66-1.34-3-3-3zm1 11H5v-3c.9-.01 1.76-.37 2.4-1.01l1.09-1.07 1.07 1.07c1.31 1.31 3.59 1.3 4.89 0l1.08-1.07 1.07 1.07c.64.64 1.5 1 2.4 1.01v3zm0-4.5c-.51-.01-.99-.2-1.35-.57l-2.13-2.13-2.14 2.13c-.74.74-2.03.74-2.77 0L8.48 12.8l-2.14 2.13c-.35.36-.83.56-1.34.57V12c0-.55.45-1 1-1h12c.55 0 1 .45 1 1v3.5z"/></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1"><?php echo time_elapsed_string($patient->birthdate,1 ,"short_age").' '.lang('old'); ?></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-5">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex mb-1">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7 4h9v14H7z" opacity=".3"/><path d="M15.5 1h-8C6.12 1 5 2.12 5 3.5v17C5 21.88 6.12 23 7.5 23h8c1.38 0 2.5-1.12 2.5-2.5v-17C18 2.12 16.88 1 15.5 1zm-4 21c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm4.5-4H7V4h9v14z"/></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1"><?php echo $patient->phone; ?></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="d-flex mb-1 pr-0">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 8l-8 5-8-5v10h16zm0-2H4l8 4.99z" opacity=".3"/><path d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM20 6l-8 4.99L4 6h16zM4 8l8 5 8-5v10H4V8z"/></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1"><?php echo $patient->email; ?></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="d-flex mb-1">
+                                                        <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3zm5 15h-2v-6H9v6H7v-7.81l5-4.5 5 4.5V18z"></path><path d="M7 10.19V18h2v-6h6v6h2v-7.81l-5-4.5z" opacity=".3"></path></svg>
+                                                        <div class="h6 mb-0 ml-1 mt-1"><?php echo $patient->address; ?></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="d-flex mb-1">
+                                                        <span class="h6 mb-0 ml-1 mt-1"><?php echo lang('allergies').': '.$patient->allergies; ?></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12">
+                                                    
+                                                </div>
+                                                <div class="col-md-12">
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
