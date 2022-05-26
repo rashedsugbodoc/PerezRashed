@@ -22141,7 +22141,7 @@ i.fa.round {
 .text-center {
   text-align: center !important; }
 
-@media (min-width: 576px) {
+@media (min-width: 375px) {
   .text-sm-left {
     text-align: left !important; }
   .text-sm-right {
@@ -23826,7 +23826,7 @@ a.icon {
 .offset-11 {
   margin-left: 91.66666667%; }
 
-@media (min-width: 576px) {
+@media (min-width: 375px) {
   .col-sm {
     -ms-flex-preferred-size: 0;
     flex-basis: 0;
