@@ -21,7 +21,7 @@
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered text-nowrap key-buttons w-100" id="editable-sample">
+                                    <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="editable-sample">
                                         <thead>
                                             <tr>
                                                 <th> # </th>
@@ -79,42 +79,44 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <table class="table table-bordered text-nowrap key-buttons w-100" id="editable-sample">
-                                        <thead>
-                                            <tr>
-                                                <th> # </th>
-                                                <th> <?php echo lang('doctor') ?> </th>
-                                                <th> <?php echo lang('weekday'); ?></th>
-                                                <th> <?php echo lang('start_time'); ?></th>
-                                                <th> <?php echo lang('end_time'); ?></th>
-                                                <th> <?php echo lang('duration'); ?></th>
-                                                <th> <?php echo lang('options'); ?></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $i = 0;
-                                            foreach ($schedules as $schedule) {
-                                                $i = $i + 1;
-                                                if ($schedule->location_id == $branch->id) {
-                                                ?>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="editable-sample">
+                                            <thead>
                                                 <tr>
-                                                    <td style=""> <?php echo $i; ?></td> 
-                                                    <td> <?php echo $this->doctor_model->getDoctorById($schedule->doctor)->name; ?></td>
-                                                    <td> <?php echo $schedule->weekday; ?></td> 
-                                                    <td><?php echo $schedule->s_time; ?></td>
-                                                    <td><?php echo $schedule->e_time; ?></td>
-                                                    <td><?php echo $schedule->duration * 5 . ' ' . lang('minutes'); ?></td>
-                                                    <td>
-                                                        <!--
-                                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $schedule->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
-                                                        -->
-                                                        <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $doctorr; ?>&weekday=<?php echo $schedule->weekday; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
-                                                    </td>
+                                                    <th> # </th>
+                                                    <th> <?php echo lang('doctor') ?> </th>
+                                                    <th> <?php echo lang('weekday'); ?></th>
+                                                    <th> <?php echo lang('start_time'); ?></th>
+                                                    <th> <?php echo lang('end_time'); ?></th>
+                                                    <th> <?php echo lang('duration'); ?></th>
+                                                    <th> <?php echo lang('options'); ?></th>
                                                 </tr>
-                                            <?php } } ?>
-                                        </tbody>
-                                    </table>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $i = 0;
+                                                foreach ($schedules as $schedule) {
+                                                    $i = $i + 1;
+                                                    if ($schedule->location_id == $branch->id) {
+                                                    ?>
+                                                    <tr>
+                                                        <td style=""> <?php echo $i; ?></td> 
+                                                        <td> <?php echo $this->doctor_model->getDoctorById($schedule->doctor)->name; ?></td>
+                                                        <td> <?php echo $schedule->weekday; ?></td> 
+                                                        <td><?php echo $schedule->s_time; ?></td>
+                                                        <td><?php echo $schedule->e_time; ?></td>
+                                                        <td><?php echo $schedule->duration * 5 . ' ' . lang('minutes'); ?></td>
+                                                        <td>
+                                                            <!--
+                                                            <button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="<?php echo $schedule->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
+                                                            -->
+                                                            <a class="btn btn-danger btn-xs btn_width delete_button" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $doctorr; ?>&weekday=<?php echo $schedule->weekday; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
+                                                        </td>
+                                                    </tr>
+                                                <?php } } ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         <?php } ?>
@@ -527,22 +529,28 @@
 
     <script>
         $(document).ready(function () {
-        var table = $('#editable-sample').DataTable({
+        var table = $('.editable-sample').DataTable({
         responsive: true,
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                dom: "<'row'<'col-lg-3 col-md-12 col-sm-12'l><'col-lg-5 col-md-5 col-sm-5 text-center'B><'col-lg-4 col-md-7 col-sm-7'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                // buttons: [
+                //         'excelHtml5',
+                //         'csvHtml5',
+                //         'pdfHtml5',
+                // {
+                // extend: 'print',
+                //         exportOptions: {
+                //         columns: [0, 1, 2, 3, 4],
+                //         }
+                // },
+                // ],
                 buttons: [
-                        'copyHtml5',
-                        'excelHtml5',
-                        'csvHtml5',
-                        'pdfHtml5',
-                {
-                extend: 'print',
-                        exportOptions: {
-                        columns: [0, 1, 2, 3, 4],
-                        }
-                },
+                    {
+                        extend: 'collection',
+                        text: 'Export Option',
+                        buttons: ['csv', 'excel', 'pdf']
+                    }
                 ],
                 aLengthMenu: [
                 [10, 25, 50, 100, - 1],
