@@ -742,9 +742,6 @@ class Patient extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['countries'] = $this->location_model->getCountry();
-        $data['states'] = $this->location_model->getState();
-        $data['cities'] = $this->location_model->getCity();
-        $data['barangays'] = $this->location_model->getBarangay();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('patient_paymentsv2', $data);
         // $this->load->view('home/footer'); // just the header file
