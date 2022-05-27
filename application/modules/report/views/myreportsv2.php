@@ -15,34 +15,37 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-bordered" id="editable-sample1">
-                                            <thead>
-                                                <tr>
-                                                    <th><?php echo lang('patient'); ?></th>
-                                                    <th><?php echo lang('type'); ?></th>
-                                                    <th><?php echo lang('description'); ?></th>
-                                                    <th><?php echo lang('doctor'); ?></th>
-                                                    <th><?php echo lang('date'); ?></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                foreach ($reports as $report) {
-                                                    if ($user_id == explode('*', $report->patient)[1]) {
-                                                        ?>
-                                                        <tr class="">
-                                                            <td><?php echo explode('*', $report->patient)[0]; ?></td>
-                                                            <td> <?php echo $report->report_type; ?></td>
-                                                            <td> <?php echo $report->description; ?></td>
-                                                            <td><?php echo $report->doctor; ?></td>
-                                                            <td class="center"><?php echo $report->date; ?></td>
-                                                        </tr>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered text-nowrap key-buttons" id="editable-sample">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('patient'); ?></th>
+                                                        <th><?php echo lang('type'); ?></th>
+                                                        <th><?php echo lang('description'); ?></th>
+                                                        <th><?php echo lang('doctor'); ?></th>
+                                                        <th><?php echo lang('date'); ?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
                                                     <?php
+                                                    foreach ($reports as $report) {
+                                                        $user = $this->ion_auth->get_user_id();
+                                                        if ($user === $this->patient_model->getPatientById($report->patient_id)->ion_user_id) {
+                                                            ?>
+                                                                <tr class="">
+                                                                    <td><?php echo $this->patient_model->getPatientById($report->patient_id)->name; ?></td>
+                                                                    <td> <?php echo $report->report_type; ?></td>
+                                                                    <td> <?php echo $report->description; ?></td>
+                                                                    <td><?php echo $this->doctor_model->getDoctorById($report->doctor_id)->name; ?></td>
+                                                                    <td class="center"><?php echo date('Y-m-d', strtotime($report->created_at.' UTC')); ?></td>
+                                                                </tr>
+                                                            <?php
+                                                        }
                                                     }
-                                                }
-                                                ?>
-                                            </tbody>
-                                        </table>
+                                                    ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -132,17 +135,43 @@
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                // buttons: [
+                //     'copyHtml5',
+                //     'excelHtml5',
+                //     'csvHtml5',
+                //     'pdfHtml5',
+                //     {
+                //         extend: 'print',
+                //         exportOptions: {
+                //             columns: [0,1,2,3],
+                //         }
+                //     },
+                // ],
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0,1,2,3],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export Options',
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0,1,2,3],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0,1,2,3],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0,1,2,3],
+                                }
+                            }
+                        ]
+                    }
                 ],
 
                 aLengthMenu: [
