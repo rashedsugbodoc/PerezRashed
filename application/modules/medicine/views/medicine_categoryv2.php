@@ -22,36 +22,38 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-bordered" id="editable-sample">
-                                            <thead>
-                                                <tr>
-                                                    <th> <?php echo lang('category'); ?></th>
-                                                    <th> <?php echo lang('description'); ?></th>
-                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor','Pharmacist'))) { ?>
-                                                        <th> <?php echo lang('options'); ?></th>
-                                                    <?php } ?>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($categories as $category) { ?>
-                                                    <tr class="">
-                                                        <td><?php echo $category->category; ?></td>
-                                                        <td> <?php echo $category->description; ?></td>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered text-nowrap key-buttons" id="editable-sample">
+                                                <thead>
+                                                    <tr>
+                                                        <th> <?php echo lang('category'); ?></th>
+                                                        <th> <?php echo lang('description'); ?></th>
                                                         <?php if ($this->ion_auth->in_group(array('admin', 'Doctor','Pharmacist'))) { ?>
-                                                            <td>
-                                                                <?php if(!empty($category->hospital_id)) { ?>
-                                                                    <!-- <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>    -->
-                                                                    <a href="medicine/edit_category?id=<?php echo $category->id ?>" class="btn btn-info"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>
-                                                                <?php } ?>
-                                                                <?php if(!empty($category->hospital_id)) { ?>
-                                                                    <a class="btn btn-danger btn-xs" href="medicine/deleteMedicineCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
-                                                                <?php } ?>
-                                                            </td>
+                                                            <th> <?php echo lang('options'); ?></th>
                                                         <?php } ?>
                                                     </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($categories as $category) { ?>
+                                                        <tr class="">
+                                                            <td><?php echo $category->category; ?></td>
+                                                            <td> <?php echo $category->description; ?></td>
+                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor','Pharmacist'))) { ?>
+                                                                <td>
+                                                                    <?php if(!empty($category->hospital_id)) { ?>
+                                                                        <!-- <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>    -->
+                                                                        <a href="medicine/edit_category?id=<?php echo $category->id ?>" class="btn btn-info"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>
+                                                                    <?php } ?>
+                                                                    <?php if(!empty($category->hospital_id)) { ?>
+                                                                        <a class="btn btn-danger btn-xs" href="medicine/deleteMedicineCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                    <?php } ?>
+                                                                </td>
+                                                            <?php } ?>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -323,6 +325,32 @@
                             columns: [0, 1],
                         }
                     },
+                ],
+                buttons: [
+                    {
+                        extend: 'collection',
+                        text: 'Export Options',
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1],
+                                },
+                            }
+                        ]
+                    }
                 ],
 
                 aLengthMenu: [

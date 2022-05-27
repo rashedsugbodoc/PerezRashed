@@ -562,22 +562,6 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    {
-                        extend: 'pdfHtml5',
-                        orientation: 'landscape',
-                        pageSize: 'LEGAL'
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                        }
-                    },
-                ],
-                buttons: [
                     {
                         extend: 'collection',
                         text: 'Export Options',
