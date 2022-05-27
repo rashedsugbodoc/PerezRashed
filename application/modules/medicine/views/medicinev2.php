@@ -22,30 +22,32 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-bordered" id="editable-sample1">
-                                            <thead>
-                                                <tr>
-                                                    <th> <?php echo lang('id'); ?></th>
-                                                    <th> <?php echo lang('generic_name'); ?></th>
-                                                    <th> <?php echo lang('name'); ?></th>
-                                                    <th> <?php echo lang('form'); ?></th>
-                                                    <th> <?php echo lang('category'); ?></th>
-                                                    <th> <?php echo lang('store_box'); ?></th>
-                                                    <th> <?php echo lang('p_price'); ?></th>
-                                                    <th> <?php echo lang('s_price'); ?></th>
-                                                    <th> <?php echo lang('quantity'); ?></th>
-                                                    <th> <?php echo lang('company'); ?></th>
-                                                    <th> <?php echo lang('uses'); ?></th>
-                                                    <th> <?php echo lang('side_effects'); ?></th>
-                                                    <th> <?php echo lang('expiry_date'); ?></th>
-                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) { ?>
-                                                        <th> <?php echo lang('options'); ?></th>
-                                                    <?php } ?>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered text-nowrap key-buttons" id="editable-sample1">
+                                                <thead>
+                                                    <tr>
+                                                        <th> <?php echo lang('id'); ?></th>
+                                                        <th> <?php echo lang('generic_name'); ?></th>
+                                                        <th> <?php echo lang('name'); ?></th>
+                                                        <th> <?php echo lang('form'); ?></th>
+                                                        <th> <?php echo lang('category'); ?></th>
+                                                        <th> <?php echo lang('store_box'); ?></th>
+                                                        <th> <?php echo lang('p_price'); ?></th>
+                                                        <th> <?php echo lang('s_price'); ?></th>
+                                                        <th> <?php echo lang('quantity'); ?></th>
+                                                        <th> <?php echo lang('company'); ?></th>
+                                                        <th> <?php echo lang('uses'); ?></th>
+                                                        <th> <?php echo lang('side_effects'); ?></th>
+                                                        <th> <?php echo lang('expiry_date'); ?></th>
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) { ?>
+                                                            <th> <?php echo lang('options'); ?></th>
+                                                        <?php } ?>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -574,6 +576,34 @@
                             columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                         }
                     },
+                ],
+                buttons: [
+                    {
+                        extend: 'collection',
+                        text: 'Export Options',
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                },
+                                orientation: 'landscape',
+                                pageSize: 'LEGAL'
+                            }
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
