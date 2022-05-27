@@ -1824,7 +1824,7 @@ class Patient extends MX_Controller {
                 }
 
                 $labloinc = 'Loinc Number '.$labtest->loinc_num;
-                if (empty($labloinc)) {
+                if (empty($labtest->loinc_num)) {
                     $labloinc = '';
                 }
 
@@ -2150,8 +2150,8 @@ class Patient extends MX_Controller {
                     $diagnosis_text = $diagtest->patient_diagnosis_text;
                 }
 
-                $diagnosis_code = 'Diagnosis Code '.$diagtest->diagnosis_code;
-                if (empty($diagnosis_code)) {
+                $diagnosis_code = 'ICD10 Code '.$diagtest->diagnosis_code;
+                if (empty($diagtest->diagnosis_code)) {
                     $diagnosis_code = '';
                 }
 
@@ -2162,7 +2162,7 @@ class Patient extends MX_Controller {
                     $primary = '';
                 }
 
-                $diagnosis_single = '<div class="mb-3"><p class="mb-0"><strong>'.$diagnosis_text.'</strong>'.$primary.'</p><p class="mb-0">'.$diagtest->notes.'</p><p class="mb-0">'.$diagnosis_code.'</p></div>';
+                $diagnosis_single = '<div class="mb-3"><p class="mb-0"><strong>'.$diagnosis_text.'</strong>'.$primary.'</p><p class="mb-0">'.$diagtest->diagnosis_notes.'</p><p class="mb-0">'.$diagnosis_code.'</p></div>';
                 $diagtestdata .= $diagnosis_single;
             }
             $alltest = $diagtestdata;
