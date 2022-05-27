@@ -1823,7 +1823,7 @@ class Patient extends MX_Controller {
                     $labrequest_text = $labtest->lab_request_text;
                 }
 
-                $labloinc = $labtest->loinc_num;
+                $labloinc = 'Loinc Number '.$labtest->loinc_num;
                 if (empty($labloinc)) {
                     $labloinc = '';
                 }
@@ -2137,6 +2137,92 @@ class Patient extends MX_Controller {
                 '';
             }
 
+        }
+
+        foreach ($data['diagnosis'] as $diag) {
+
+            $diagtests = $this->diagnosis_model->getPatientDiagnosisByNumber($diag->patient_diagnosis_number);
+            $diagtestdata = '';
+
+            foreach ($diagtests as $diagtest) {
+                $diagnosis_text = $diagtest->diagnosis_long_description;
+                if (empty($diagnosis_text)) {
+                    $diagnosis_text = $diagtest->patient_diagnosis_text;
+                }
+
+                $diagnosis_code = 'Diagnosis Code '.$diagtest->diagnosis_code;
+                if (empty($diagnosis_code)) {
+                    $diagnosis_code = '';
+                }
+
+                $is_primary = $diagtest->is_primary_diagnosis;
+                if ($is_primary == 1) {
+                    $primary = '<span class="badge badge-primary badge-pill ml-3">Primary</span>';
+                } else {
+                    $primary = '';
+                }
+
+                $diagnosis_single = '<div class="mb-3"><p class="mb-0"><strong>'.$diagnosis_text.'</strong>'.$primary.'</p><p class="mb-0">'.$diagtest->notes.'</p><p class="mb-0">'.$diagnosis_code.'</p></div>';
+                $diagtestdata .= $diagnosis_single;
+            }
+            $alltest = $diagtestdata;
+
+            $doctor = $this->doctor_model->getDoctorById($diag->doctor_id);
+            $diagnosis_specialty = [];
+            $diagnosis_doctor_specialty_explode = explode(',', $doctor->specialties);
+
+            foreach($diagnosis_doctor_specialty_explode as $diagnosis_doctor_specialty) {
+                $diagnosis_specialties = $this->specialty_model->getSpecialtyById($diagnosis_doctor_specialty)->display_name_ph;
+                $diagnosis_specialty[] = '<span class="badge badge-light badge-pill">'. $diagnosis_specialties .'</span>';
+            }
+
+            $diagnosis_spec = implode(' ', $diagnosis_specialty);
+
+            $hospital_details = $this->hospital_model->getHospitalById($diag->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
+
+            if (!empty($diag->created_at)) {
+                $timeline[strtotime($diag->created_at.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($diag->created_at.' UTC')) . '</span></li>
+                                                        <li><i class="fa fa-download bg-cyan"></i>
+                                                        <div class="timelineleft-item">
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($diag->created_at.' UTC')), 3) . '</span>
+                                                            <h3 class="timelineleft-header"><span>' . lang('diagnosis') . '</span></h3>
+                                                            <div class="timelineleft-body">
+                                                                '. $alltest .'
+                                                            </div>
+                                                            <div class="timelineleft-footer border-top bg-light">
+                                                                <div class="d-flex align-items-center mt-auto">
+                                                                    <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor->img_url .')"></div>
+                                                                    <div>
+                                                                        <p class="font-weight-semibold mb-1">'. $doctor->name .'</p>
+                                                                        <small class="d-block text-muted">'. $diagnosis_spec .'</small>
+                                                                    </div>
+                                                                    <div class="ml-auto mr-3 text-right">
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <strong>'. $hospital_details->name .'</strong>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <small>'. $branch_name .'</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div>
+                                                                            <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div></li>';
+            } else {
+                '';
+            }
         }
 
         foreach ($data['forms'] as $form) {
