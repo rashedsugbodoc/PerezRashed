@@ -3313,7 +3313,9 @@ class Patient extends MX_Controller {
         $labs = $this->lab_model->getLabByPatientId($id);
         $medical_histories = $this->patient_model->getMedicalHistoryByPatientId($id);
         $patient_materials = $this->patient_model->getPatientMaterialByPatientId($id);
-
+        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($id);
+        $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientId($patient->id);
+        $data['vitals'] = $this->patient_model->getPatientVitalById($id);
 
 
         foreach ($appointments as $appointment) {
@@ -3338,111 +3340,87 @@ class Patient extends MX_Controller {
             } else {
                 $doctor_name = '';
             }
+            
 
-            $timeline[$appointment->date + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', $appointment->date) . '</span></li>
-                                            <li>
-                                                <i class="fa fa-download bg-success"></i>
-                                                <div class="timelineleft-item">
-                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($appointment->appointment_registration_time.' UTC')), 3) . '</span>
-                                                    <h3 class="timelineleft-header"><span>' . lang('appointment') . '</span></h3>
-                                                    <div class="timelineleft-body">
-                                                        <div class="form-group">
-                                                            <div class="media mr-4 mb-4">
-                                                                <div class="mr-3 mt-1 ml-3">
-                                                                    <i class="fa fa-calendar fa-2x text-primary"></i>
+            $timeline[strtotime($appointment->appointment_registration_time.' UTC') + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', $appointment->date) . '</span></li>
+                                                <li>
+                                                    <i class="fa fa-download bg-success"></i>
+                                                    <div class="timelineleft-item">
+                                                        <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($appointment->appointment_registration_time.' UTC')), 3) . '</span>
+                                                        <h3 class="timelineleft-header"><span>' . lang('appointment') . '</span></h3>
+                                                        <div class="timelineleft-body">
+                                                            <div class="form-group">
+                                                                <div class="media mr-4 mb-4">
+                                                                    <div class="mr-3 mt-1 ml-3">
+                                                                        <i class="fa fa-calendar fa-2x text-primary"></i>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <strong>' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', $appointment->date) . '</strong>
+                                                                        <div class="row">
+                                                                            <div class="col-md-10 mb-3">
+                                                                                <small class="text-muted">' . $appointment->s_time . ' - ' . $appointment->e_time . '</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="ml-auto mt-1 mr-3">
+                                                                        <span class="badge badge-pill badge-primary">'. $appointment->status .'</span>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="media-body">
-                                                                    <strong>' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', $appointment->date) . '</strong>
-                                                                    <div class="row">
-                                                                        <div class="col-md-10 mb-3">
-                                                                            <small class="text-muted">' . $appointment->s_time . ' - ' . $appointment->e_time . '</small>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <div class="media mr-4 mb-4">
+                                                                    <div class="mr-3 mt-1 ml-3">
+                                                                        <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <strong>' . $service_category_group . '</strong>
+                                                                        <div class="row">
+                                                                            <div class="col-md-10 mb-3">
+                                                                                <small class="text-muted">' . $services . '</small>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="ml-auto mt-1 mr-3">
-                                                                    <span class="badge badge-pill badge-primary">'. $appointment->status .'</span>
-                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <div class="media mr-4 mb-4">
-                                                                <div class="mr-3 mt-1 ml-3">
-                                                                    <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <strong>' . $service_category_group . '</strong>
-                                                                    <div class="row">
-                                                                        <div class="col-md-10 mb-3">
-                                                                            <small class="text-muted">' . $services . '</small>
-                                                                        </div>
+                                                            <div class="form-group">
+                                                                <div class="media mr-4 mb-4">
+                                                                    <div class="mr-3 mt-1 ml-3">
+                                                                        <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                    </div>
+                                                                    <div class="media-body">
+                                                                        <strong>' . $appointment->remarks . '</strong>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group">
-                                                            <div class="media mr-4 mb-4">
-                                                                <div class="mr-3 mt-1 ml-3">
-                                                                    <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                                </div>
-                                                                <div class="media-body">
-                                                                    <strong>' . $appointment->remarks . '</strong>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="timelineleft-footer border-top bg-light">
-                                                        <div class="d-flex align-items-center mt-auto">
-                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
-                                                            <div>
-                                                                <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
-                                                                <small class="d-block text-muted">' . $appointment_spec . '</small>
-                                                            </div>
-                                                            <div class="ml-auto mr-3 text-right">
-                                                                <div class="row">
-                                                                    <div class="col-md-12 col-sm-12">
-                                                                        <strong>'. $hospital_details->name .'</strong>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12 col-sm-12">
-                                                                        <small>'. $branch_name .'</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div>
+                                                        <div class="timelineleft-footer border-top bg-light">
+                                                            <div class="d-flex align-items-center mt-auto">
+                                                                <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
                                                                 <div>
-                                                                    <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                    <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
+                                                                    <small class="d-block text-muted">' . $appointment_spec . '</small>
+                                                                </div>
+                                                                <div class="ml-auto mr-3 text-right">
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 col-sm-12">
+                                                                            <strong>'. $hospital_details->name .'</strong>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-md-12 col-sm-12">
+                                                                            <small>'. $branch_name .'</small>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <div>
+                                                                        <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </li>';
-
-            // $timeline[$appointment->date + 1] = '<div class="card-body profile-activity" >
-            //     <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('appointment') . '</span></h5>
-            //                                 <h5 class="pull-right">' . date('d-m-Y', $appointment->date) . '</h5>
-            //                                 <div class="activity terques">
-            //                                     <span>
-            //                                         <i class="fa fa-stethoscope"></i>
-            //                                     </span>
-            //                                     <div class="activity-desk">
-            //                                         <div class="card col-md-12">
-            //                                             <div class="card-body">
-            //                                                 <div class="arrow"></div>
-            //                                                 <i class=" fa fa-calendar"></i>
-            //                                                 <h4>' . date('d-m-Y', $appointment->date) . '</h4>
-            //                                                 <p></p>
-            //                                                 <i class=" fa fa-user-md"></i>
-            //                                                     <h4>' . $doctor_name . '</h4>
-            //                                                         <p></p>
-            //                                                         <i class=" fa fa-clock"></i>
-            //                                                     <p>' . $appointment->s_time . ' - ' . $appointment->e_time . '</p>
-            //                                             </div>
-            //                                         </div>
-            //                                     </div>
-            //                                 </div>
-            //                             </div>';
+                                                </li>';
         }
 
         foreach ($data['prescriptions'] as $prescription) {
@@ -3469,9 +3447,7 @@ class Patient extends MX_Controller {
             if (!empty($prescription->medicine)) {
                 $medicine = explode('###', $prescription->medicine);
                 $medss = '';
-                $i = 0;
                 foreach($medicine as $key => $value) {
-                    $i += 1;
                     $single_medicine = explode('***', $value);
                     $med_model = $this->medicine_model->getMedicineById($single_medicine[0]);
                         $meds = '<div class="form-group">
@@ -3498,15 +3474,17 @@ class Patient extends MX_Controller {
             } else {
                 $all_meds = '';
             }
+            
+
             if (!empty($prescription->prescription_date)) {
-                $timeline[strtotime($prescription->prescription_date.' UTC') + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($prescription->prescription_date.' UTC')) . '</span></li>
+                $timeline[strtotime($prescription->prescription_date.' UTC') + 2] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($prescription->prescription_date.' UTC')) . '</span></li>
                                                         <li><i class="fa fa-download bg-cyan"></i>
                                                         <div class="timelineleft-item">
                                                             <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($prescription->prescription_date.' UTC')), 3) . '</span>
                                                             <h3 class="timelineleft-header"><span>' . lang('prescription') . '</span></h3>
                                                             <div class="timelineleft-body">
                                                                 '. $all_meds .'
-                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
+                                                                <a class="btn btn-info btn-xs btn_width" href="prescription/viewPrescription?id=' . $prescription->prescription_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
                                                             </div>
                                                             <div class="timelineleft-footer border-top bg-light">
                                                                 <div class="d-flex align-items-center mt-auto">
@@ -3538,29 +3516,85 @@ class Patient extends MX_Controller {
             } else {
                 '';
             }
+        }
 
-            // $timeline[strtotime($prescription->date) + 6] = '<div class="card-body profile-activity" >
-            //                                <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('prescription') . '</span></h5>
-            //                                 <h5 class="pull-right">' . date('d-m-Y', strtotime($prescription->date)) . '</h5>
-            //                                 <div class="activity violet">
-            //                                     <span>
-            //                                         <i class="fa fa-medkit"></i>
-            //                                     </span>
-            //                                     <div class="activity-desk">
-            //                                         <div class="card col-md-12">
-            //                                             <div class="card-body">
-            //                                                 <div class="arrow"></div>
-            //                                                 <i class=" fa fa-calendar"></i>
-            //                                                 <h4>' . date('d-m-Y', strtotime($prescription->date)) . '</h4>
-            //                                                 <p></p>
-            //                                                 <i class=" fa fa-user-md"></i>
-            //                                                     <h4>' . $doctor_name . '</h4>
-            //                                                         <a class="btn btn-primary btn-xs" title="View" href="prescription/viewPrescription?id=' . $prescription->id . '" target="_blank">' . lang('view') . '</a>
-            //                                             </div>
-            //                                         </div>
-            //                                     </div>
-            //                                 </div>
-            //                             </div>';
+        foreach ($data['labrequests'] as $labrequest) {
+
+            $labtests = $this->labrequest_model->getLabrequestByLabrequestNumber($labrequest->lab_request_number);
+            $labtestdata = '';
+            foreach ($labtests as $labtest) {
+                $labrequest_text = $labtest->long_common_name;
+                if (empty($labrequest_text)) {
+                    $labrequest_text = $labtest->lab_request_text;
+                }
+
+                $labloinc = 'Loinc Number '.$labtest->loinc_num;
+                if (empty($labtest->loinc_num)) {
+                    $labloinc = '';
+                }
+
+                $labtestsingle = '<div class="mb-3"><p class="mb-0"><strong>'.$labrequest_text.'</strong></p><p class="mb-0">'.$labtest->instructions.'</p><p class="mb-0">'.$labloinc.'</p></div>';
+                $labtestdata .= $labtestsingle;
+            }
+            $alltest = $labtestdata;
+
+            $doctor = $this->doctor_model->getDoctorById($labrequest->doctor_id);
+            $labrequest_specialty = [];
+            $labrequest_doctor_specialty_explode = explode(',', $doctor->specialties);
+
+            foreach($labrequest_doctor_specialty_explode as $labrequest_doctor_specialty) {
+                $labrequest_specialties = $this->specialty_model->getSpecialtyById($labrequest_doctor_specialty)->display_name_ph;
+                $labrequest_specialty[] = '<span class="badge badge-light badge-pill">'. $labrequest_specialties .'</span>';
+            }
+
+            $labrequest_spec = implode(' ', $labrequest_specialty);
+
+            $hospital_details = $this->hospital_model->getHospitalById($labrequest->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
+
+            if(!empty($labrequest->created_at)) {
+                $timeline[strtotime($labrequest->created_at.' UTC') + 7] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($labrequest->created_at.' UTC')) . '</span></li>
+                                                        <li><i class="fa fa-download bg-cyan"></i>
+                                                        <div class="timelineleft-item">
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($labrequest->created_at.' UTC')), 3) . '</span>
+                                                            <h3 class="timelineleft-header"><span>' . lang('lab').' '.lang('test') . '</span></h3>
+                                                            <div class="timelineleft-body">
+                                                                '. $alltest .'
+                                                                <a class="btn btn-info btn-xs btn_width" href="labrequest/labrequestView?id=' . $labrequest->lab_request_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
+                                                            </div>
+                                                            <div class="timelineleft-footer border-top bg-light">
+                                                                <div class="d-flex align-items-center mt-auto">
+                                                                    <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor->img_url .')"></div>
+                                                                    <div>
+                                                                        <p class="font-weight-semibold mb-1">'. $doctor->name .'</p>
+                                                                        <small class="d-block text-muted">'. $labrequest_spec .'</small>
+                                                                    </div>
+                                                                    <div class="ml-auto mr-3 text-right">
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <strong>'. $hospital_details->name .'</strong>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <small>'. $branch_name .'</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div>
+                                                                            <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div></li>';
+            } else {
+                '';
+            }
         }
 
         foreach ($labs as $lab) {
@@ -3657,6 +3691,7 @@ class Patient extends MX_Controller {
         }
 
         foreach ($forms as $form) {
+
             $formspecialty = [];
             $form_doctor = $this->doctor_model->getDoctorById($form->doctor);
             $form_category = $this->form_model->getFormCategoryById($form->category_id)->name;
@@ -3675,13 +3710,13 @@ class Patient extends MX_Controller {
 
 
             if (!empty($form_doctor)) {
-                $form_doctor_name = $form_doctor->name;
+                $doctor_name = $form_doctor->name;
             } else {
-                $form_doctor_name = '';
+                $doctor_name = '';
             }
 
             if (!empty($form->form_date)) {
-                $timeline[strtotime($form->form_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($form->form_date.' UTC')) . ' </span></li>
+                $timeline[strtotime($form->form_date.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($form->form_date.' UTC')) . ' </span></li>
                                                                 <li>
                                                                     <i class="fa fa-download bg-secondary"></i>
                                                                     <div class="timelineleft-item">
@@ -3702,14 +3737,14 @@ class Patient extends MX_Controller {
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="ml-3"><a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->id . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a></div>
+                                                                                <div class="ml-3"><a class="btn btn-info btn-xs btn_width" href="form/formView?id=' . $form->form_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a></div>
                                                                             </div>
                                                                         </div>
                                                                         <div class="timelineleft-footer border-top bg-light">
                                                                             <div class="d-flex align-items-center mt-auto">
                                                                                 <div class="avatar brround avatar-md mr-3" style="background-image: url('. $form_doctor->img_url .')"></div>
                                                                                 <div>
-                                                                                    <p class="font-weight-semibold mb-1">'. $form_doctor_name .'</p>
+                                                                                    <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
                                                                                     <small class="d-block text-muted">' . $formspec . '</small>
                                                                                 </div>
                                                                                 <div class="ml-auto mr-3 text-right">
@@ -3736,7 +3771,6 @@ class Patient extends MX_Controller {
             } else {
                 '';
             }
-
         }
 
         foreach ($medical_histories as $medical_history) {
@@ -3761,9 +3795,9 @@ class Patient extends MX_Controller {
             } else {
                 $doctor_name = '';
             }
-
+            
             if (!empty($medical_history->case_date)) {
-                $timeline[strtotime($medical_history->case_date.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($medical_history->case_date.' UTC')) . '</span></li>
+                $timeline[strtotime($medical_history->case_date.' UTC') + 4] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($medical_history->case_date.' UTC')) . '</span></li>
                                                         <li>
                                                             <i class="fa fa-download bg-info"></i>
                                                             <div class="timelineleft-item">
@@ -3806,28 +3840,6 @@ class Patient extends MX_Controller {
             } else {
                 '';
             }
-
-            // $timeline[$medical_history->date + 4] = '<div class="card-body profile-activity" >
-            //                                 <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('case_history') . '</span></h5>
-            //                                 <h5 class="pull-right">' . date('d-m-Y', $medical_history->date) . '</h5>
-            //                                 <div class="activity greenn">
-            //                                     <span>
-            //                                         <i class="fa fa-file"></i>
-            //                                     </span>
-            //                                     <div class="activity-desk">
-            //                                         <div class="card col-md-12">
-            //                                             <div class="card-body">
-            //                                                 <div class="arrow"></div>
-            //                                                 <i class=" fa fa-calendar"></i>
-            //                                                 <h4>' . date('d-m-Y', $medical_history->date) . '</h4>
-            //                                                 <p></p>
-            //                                                  <i class=" fa fa-note"></i> 
-            //                                                     <p>' . $medical_history->description . '</p>
-            //                                             </div>
-            //                                         </div> 
-            //                                     </div>
-            //                                 </div>
-            //                             </div>';
         }
 
         foreach ($patient_materials as $patient_material) {
@@ -3878,9 +3890,8 @@ class Patient extends MX_Controller {
             if (empty($document_date_time)) {
                 $document_date_time = $patient_material->created_at;
             }
-
             if (!empty($patient_material->created_at)) {
-                $timeline[strtotime($document_date_time.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($document_date_time.' UTC')) . ' </span></li>
+                $timeline[strtotime($document_date_time.' UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($document_date_time.' UTC')) . ' </span></li>
                                                             <li>
                                                                 <i class="fa fa-download bg-secondary"></i>
                                                                 <div class="timelineleft-item">
@@ -3914,11 +3925,11 @@ class Patient extends MX_Controller {
                                                                         </div>
                                                                         <div>
                                                                             <div class="media mr-4 mb-4">
-                                                                                <img src="'. $patient_material->url . '?m=' . $patient_material->last_modified . '" width="150" height="150"/>
+                                                                                <img src="'. $patient_material->url .'" width="150" height="150"/>
                                                                             </div>
                                                                         </div>
-                                                                        <a class="btn btn-xs btn-info" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '?m=' . $patient_material->last_modified . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
-                                                                        <a class="btn btn-xs btn-info" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
+                                                                        <a class="btn btn-sm btn-primary" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . ' ' . lang('view') . '</a>
+                                                                        <a class="btn btn-sm btn-outline-primary text-primary" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . ' ' . lang('download') . '</a>
                                                                     </div>
                                                                     <div class="timelineleft-footer border-top bg-light">
                                                                         <div class="d-flex align-items-center mt-auto">
@@ -3936,37 +3947,102 @@ class Patient extends MX_Controller {
                 '';
             }
 
+        }
 
-            // $timeline[$patient_material->date + 5] = '<div class="card-body profile-activity" >
-            //                                <h5 class="pull-left"><span class="label pull-right r-activity">' . lang('documents') . '</span></h5>
-            //                                 <h5 class="pull-right">' . date('d-m-Y', $patient_material->date) . '</h5>
-            //                                 <div class="activity purplee">
-            //                                     <span>
-            //                                         <i class="fa fa-file"></i>
-            //                                     </span>
-            //                                     <div class="activity-desk">
-            //                                         <div class="card col-md-12">
-            //                                             <div class="card-body">
-            //                                                 <div class="arrow"></div>
-            //                                                 <i class=" fa fa-calendar"></i>
-            //                                                 <h4>' . date('d-m-Y', $patient_material->date) . ' </h4>
-            //                                                     <i class=" fa fa-book"></i>
-            //                                                     <h4>' . $patient_material->title . '</h4>
-            //                                                     <a class="btn btn-xs btn-purple" title="' . lang('view') . '" style="color: #fff;" href="' . $patient_material->url . '" target="_blank"><i class="fa fa-file-text"></i>' . lang('view') . '</a>
-            //                                                     <a class="btn btn-xs btn-purple" title="' . lang('download') . '" style="color: #fff;" href="' . $patient_material->url . '" download=""><i class="fa fa-file-text"></i>' . lang('download') . '</a>
-                                                                
-            //                                             </div>
-            //                                         </div> 
-            //                                     </div>
-            //                                 </div>
-            //                             </div>';
+        foreach ($data['diagnosis'] as $diag) {
+
+            $diagtests = $this->diagnosis_model->getPatientDiagnosisByNumber($diag->patient_diagnosis_number);
+            $diagtestdata = '';
+
+            foreach ($diagtests as $diagtest) {
+                $diagnosis_text = $diagtest->diagnosis_long_description;
+                if (empty($diagnosis_text)) {
+                    $diagnosis_text = $diagtest->patient_diagnosis_text;
+                }
+
+                $diagnosis_code = 'ICD10 Code '.$diagtest->diagnosis_code;
+                if (empty($diagtest->diagnosis_code)) {
+                    $diagnosis_code = '';
+                }
+
+                $is_primary = $diagtest->is_primary_diagnosis;
+                if ($is_primary == 1) {
+                    $primary = '<span class="badge badge-primary badge-pill ml-3">Primary</span>';
+                } else {
+                    $primary = '';
+                }
+
+                $diagnosis_single = '<div class="mb-3"><p class="mb-0"><strong>'.$diagnosis_text.'</strong>'.$primary.'</p><p class="mb-0">'.$diagtest->diagnosis_notes.'</p><p class="mb-0">'.$diagnosis_code.'</p></div>';
+                $diagtestdata .= $diagnosis_single;
+            }
+            $alltest = $diagtestdata;
+
+            $doctor = $this->doctor_model->getDoctorById($diag->doctor_id);
+            $diagnosis_specialty = [];
+            $diagnosis_doctor_specialty_explode = explode(',', $doctor->specialties);
+
+            foreach($diagnosis_doctor_specialty_explode as $diagnosis_doctor_specialty) {
+                $diagnosis_specialties = $this->specialty_model->getSpecialtyById($diagnosis_doctor_specialty)->display_name_ph;
+                $diagnosis_specialty[] = '<span class="badge badge-light badge-pill">'. $diagnosis_specialties .'</span>';
+            }
+
+            $diagnosis_spec = implode(' ', $diagnosis_specialty);
+
+            $hospital_details = $this->hospital_model->getHospitalById($diag->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            if (empty($branch_name)) {
+                $branch_name = "Online";
+            }
+
+            if (!empty($diag->created_at)) {
+                $timeline[strtotime($diag->created_at.' UTC') + 6] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($diag->created_at.' UTC')) . '</span></li>
+                                                        <li><i class="fa fa-download bg-cyan"></i>
+                                                        <div class="timelineleft-item">
+                                                            <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($diag->created_at.' UTC')), 3) . '</span>
+                                                            <h3 class="timelineleft-header"><span>' . lang('diagnosis') . '</span></h3>
+                                                            <div class="timelineleft-body">
+                                                                '. $alltest .'
+                                                            </div>
+                                                            <div class="timelineleft-footer border-top bg-light">
+                                                                <div class="d-flex align-items-center mt-auto">
+                                                                    <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor->img_url .')"></div>
+                                                                    <div>
+                                                                        <p class="font-weight-semibold mb-1">'. $doctor->name .'</p>
+                                                                        <small class="d-block text-muted">'. $diagnosis_spec .'</small>
+                                                                    </div>
+                                                                    <div class="ml-auto mr-3 text-right">
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <strong>'. $hospital_details->name .'</strong>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-12 col-sm-12">
+                                                                                <small>'. $branch_name .'</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div>
+                                                                        <div>
+                                                                            <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div></li>';
+            } else {
+                '';
+            }
         }
 
         foreach ($encounters as $encounter) {
 
-            $encounter_doctor_details = $this->doctor_model->getDoctorById($encounter->rendering_staff_id);
+            $encounter_doctor_details = $this->doctor_model->getDoctorByIonUserId($encounter->rendering_staff_id);
+            $encounter_doctor_profile_image = $this->getPatientProfileImageByIonUserId($encounter->created_user_id);
+            $encounter_doctor_profile_name = $this->getPatientProfileNameByIonUserId($encounter->created_user_id);
             $encounter_appointment = $this->appointment_model->getAppointmentById($encounter->appointment_id);
-            $encounter_appointment_time = date('H:i', strtotime($encounter->waiting_started.' UTC'));
+            // $encounter_appointment_time = date('H:i', strtotime($encounter->waiting_started.' UTC'));
+            $encounter_appointment_time = $encounter_appointment->s_time . ' to ' . $encounter_appointment->e_time;
             
 
             $hospital_details = $this->hospital_model->getHospitalById($encounter->hospital_id);
@@ -3981,17 +4057,28 @@ class Patient extends MX_Controller {
                 $encounter_specialty[] = '<span class="badge badge-light badge-pill">'. $encounter_specialties .'</span>';
             }
 
-            $encounter_spec = implode(' ', $encounter_specialty);
+            $group_id = $this->db->get_where('users_groups', array('user_id' => $encounter->created_user_id))->row()->group_id;
+            $group_name = $this->db->get_where('groups', array('id' => $group_id))->row()->name;
+            if ($group_name === 'Doctor') {
+                $encounter_spec = implode(' ', $encounter_specialty);
+            } else {
+                $encounter_spec = ucfirst($group_name);
+            }
             
             
             if (!empty($encounter_appointment)) {
                 $encounter_appointment_service_group = $this->appointment_model->getServiceCategoryById($encounter_appointment->service_category_group_id)->display_name;
                 $encounter_services = $this->finance_model->getPaymentCategoryById($encounter_appointment->service_id)->description;
                 $encounter_appointment_date = date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter_appointment->appointment_date.' UTC'));
-                if (!empty($encounter->ended_at)) {
-                    $encounter_ending_time = date('H:i', strtotime($encounter->ended_at.' UTC'));
+                if (!empty($encounter->started_at)) {
+                    $encounter_started_date = date('F j, Y H:i A', strtotime($encounter->started_at.' UTC'));
                 } else {
-                    $encounter_ending_time = 'to _______';
+                    $encounter_started_date = "_______";
+                }
+                if (!empty($encounter->ended_at)) {
+                    $encounter_ended_date = date('F j, Y H:i A', strtotime($encounter->ended_at.' UTC'));
+                } else {
+                    $encounter_ended_date = "_______";
                 }
                 $appointment_date = '<div class="form-group">
                                         <div class="media mr-4 mb-4">
@@ -4026,6 +4113,35 @@ class Patient extends MX_Controller {
                                                         </div>
                                                     </div>
                                                 </div>';
+                $encounter_date = '<div class="form-group">
+                                        <div class="media mr-4 mb-4">
+                                            <div class="mr-3 mt-1 ml-3">
+                                                <i class="fa fa-calendar fa-2x text-primary"></i>
+                                            </div>
+                                            <div class="media-body">
+                                                <strong>' . lang("started") . ': ' . $encounter_started_date . '</strong><br>
+                                                <strong>' . lang("ended") . ': ' . $encounter_ended_date . '</strong>
+                                            </div>
+                                        </div>
+                                    </div>';
+                $encounter_number_type_group = "<div class='form-group'>
+                                                    <div class='media mr-4 mb-4'>
+                                                        <div class='mr-3 mt-1 ml-3'>
+                                                            <i class='fa fa-file-text-o fa-2x text-primary'></i>
+                                                        </div>
+                                                        <div class='media-body'>
+                                                            <strong>". $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name ."</strong>
+                                                            <div class='row'>
+                                                                <div class='col-md-10 mb-3'>
+                                                                    <small class='text-muted'>No Appointment</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class='ml-auto mt-1 mr-3'>
+                                                            <span class='badge badge-pill badge-primary'>" . $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name . "</span>
+                                                        </div>
+                                                    </div>
+                                                </div>";
             } else {
                 $encounter_appointment_service_group = "No Appointment";
                 $encounter_services = "No Appointment";
@@ -4079,14 +4195,13 @@ class Patient extends MX_Controller {
 
             
             if (!empty($encounter->created_at)) {
-                $timeline[strtotime($encounter->created_at.' UTC') + 7] = '<li class="timeleft-label"><span class="bg-danger">' . date($settings->date_format_long?$settings->date_format_long:'F j, Y', strtotime($encounter->created_at.' UTC')) . '</span></li>
+                $timeline[strtotime($encounter->created_at.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter->created_at.' UTC')) . '</span></li>
                                             <li>
                                                 <i class="fa fa-envelope bg-primary"></i>
                                                 <div class="timelineleft-item">
                                                     <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($encounter->created_at.' UTC')), 3) . '</span>
                                                     <h3 class="timelineleft-header"><span>' . lang('encounter') . '</span></h3>
                                                     <div class="timelineleft-body">
-                                                        '.$encounter_number_type_group.'
                                                         '. $encounter_appointment_details .'
                                                         '. $encounter_number_type_group .'
                                                         '. $appointment_id .'
@@ -4105,9 +4220,9 @@ class Patient extends MX_Controller {
                                                     </div>
                                                     <div class="timelineleft-footer border-top bg-light">
                                                         <div class="d-flex align-items-center mt-auto">
-                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $encounter_doctor_details->img_url .')"></div>
+                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $encounter_doctor_profile_image .')"></div>
                                                             <div>
-                                                                <p class="font-weight-semibold mb-1">'. $encounter_doctor .'</p>
+                                                                <p class="font-weight-semibold mb-1">'. $encounter_doctor_profile_name .'</p>
                                                                 <small class="d-block text-muted">' . $encounter_spec . '</small>
                                                             </div>
                                                             <div class="ml-auto mr-3 text-right">
@@ -4148,7 +4263,167 @@ class Patient extends MX_Controller {
             }
         }
 
+        $all_diagnosis = '';
 
+        if ($this->ion_auth->in_group(array('admin'))) {
+            foreach ($data['diagnosis'] as $diag) {
+                $diagnosis_long = $this->diagnosis_model->getDiagnosisById($diag->diagnosis_id);
+                if (!empty($diagnosis_long->long_description)) {
+                    $diagnosis_long = $diagnosis_long->long_description;
+                } else {
+                    $diagnosis_long = $diag->patient_diagnosis_text;
+                }
+                if (!empty($diag->diagnosis_code)) {
+                    $diag_code = $diag->diagnosis_code;
+                } else {
+                    $diag_code = "Unregistered ICD10";
+                }
+                if ($diag->is_primary_diagnosis == 1) {
+                    $is_primary = 'P';
+                } else {
+                    $is_primary = 'S';
+                }
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $option1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number .'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                }
+                $patient_diagnosis = '<tr>
+                    <td>'.date("Y-m-d", strtotime($diag->diagnosis_date." UTC")).'</td>
+                    <td>'.date("Y-m-d", strtotime($diag->onset_date." UTC")).'</td>
+                    <td>'.$diagnosis_long.'</td>
+                    <td>'.$diag_code.'</td>
+                    <td>'.$is_primary.'</td>
+                    <td>'.$diag->diagnosis_notes.'</td>
+                    <td>'.$this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number.'</td>
+                    <td></td>
+                <tr/>';
+
+                $all_diagnosis .= $patient_diagnosis;
+            }
+        } else {
+            foreach ($data['diagnosis'] as $diag) {
+                $diagnosis_long = $this->diagnosis_model->getDiagnosisById($diag->diagnosis_id);
+                if (!empty($diagnosis_long->long_description)) {
+                    $diagnosis_long = $diagnosis_long->long_description;
+                } else {
+                    $diagnosis_long = $diag->patient_diagnosis_text;
+                }
+                if (!empty($diag->diagnosis_code)) {
+                    $diag_code = $diag->diagnosis_code;
+                } else {
+                    $diag_code = "Unregistered ICD10";
+                }
+                if ($diag->is_primary_diagnosis == 1) {
+                    $is_primary = 'P';
+                } else {
+                    $is_primary = 'S';
+                }
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $option1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number .'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                }
+                $patient_diagnosis = '<tr>
+                    <td>'.date("Y-m-d", strtotime($diag->diagnosis_date." UTC")).'</td>
+                    <td>'.date("Y-m-d", strtotime($diag->onset_date." UTC")).'</td>
+                    <td>'.$diagnosis_long.'</td>
+                    <td>'.$diag_code.'</td>
+                    <td>'.$is_primary.'</td>
+                    <td>'.$diag->diagnosis_notes.'</td>
+                    <td>'.$this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number.'</td>
+                    <td>'.$option1.'</td>
+                <tr/>';
+
+                $all_diagnosis .= $patient_diagnosis;
+            }
+        }
+
+        $all_vitals = '';
+
+        if ($this->ion_auth->in_group(array('admin'))) {
+            foreach ($data['vitals'] as $vital) {
+                if (!empty($vital->pain)) {
+                    $pain = $vital->pain; 
+                } else {
+                    $pain = '0';
+                }
+                $patient_vital = '<tr>
+                    <td>'.date("Y-m-d h:i A", strtotime($vital->measured_at.' UTC')).'</td>
+                    <td>'.$vital->heart_rate.'</td>
+                    <td>'.$vital->height_cm.'</td>
+                    <td>'.$vital->weight_kg.'</td>
+                    <td>'.$vital->bmi.'</td>
+                    <td>'.$vital->systolic . ' / ' . $vital->diastolic.'</td>
+                    <td>'.$vital->temperature_celsius.'</td>
+                    <td>'.$vital->spo2.'</td>
+                    <td>'.$vital->respiration_rate.'</td>
+                    <td>'.$pain.'</td>
+                    <td>'.$vital->note.'</td>
+                    <td></td>
+                </tr>';
+
+                $all_vitals .= $patient_vital;
+            }
+        } else {
+            foreach ($data['vitals'] as $vital) {
+                if (!empty($vital->pain)) {
+                    $pain = $vital->pain; 
+                } else {
+                    $pain = '0';
+                }
+                $patient_vital = '<tr>
+                    <td>'.date("Y-m-d h:i A", strtotime($vital->measured_at.' UTC')).'</td>
+                    <td>'.$vital->heart_rate.'</td>
+                    <td>'.$vital->height_cm.'</td>
+                    <td>'.$vital->weight_kg.'</td>
+                    <td>'.$vital->bmi.'</td>
+                    <td>'.$vital->systolic . ' / ' . $vital->diastolic.'</td>
+                    <td>'.$vital->temperature_celsius.'</td>
+                    <td>'.$vital->spo2.'</td>
+                    <td>'.$vital->respiration_rate.'</td>
+                    <td>'.$pain.'</td>
+                    <td>'.$vital->note.'</td>
+                    <td><button type="button" class="btn btn-info editVitals" title="'.lang('edit').'" data-toggle="modal" data-id="'. $vital->id .'"><i class="fa fa-edit"></i> </button>
+                        <a class="btn btn-danger btn-xs " href="patient/deleteVital?id='. $vital->id .'" onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i> '. lang('delete') .'</a></td>
+                </tr>';
+
+                $all_vitals .= $patient_vital;
+            }
+        }
+
+        $all_labrequests = '';
+
+        if ($this->ion_auth->in_group(array('admin'))) {
+
+        } else {
+            foreach ($data['labrequests'] as $labrequest) {
+                $labtests = $this->labrequest_model->getLabrequestByLabrequestNumber($labrequest->lab_request_number);
+                $labtestdata = '';
+                foreach ($labtests as $labtest) {
+                    $labrequest_text = $labtest->long_common_name;
+                    if (empty($labrequest_text)) {
+                        $labrequest_text = $labtest->lab_request_text;
+                    }
+
+                    $labloinc = $labtest->loinc_num;
+                    if (empty($labloinc)) {
+                        $labloinc = '';
+                    }
+
+                    $labtestsingle = '<div class="mb-3"><p class="mb-0"><strong>'.$labrequest_text.'</strong></p><p class="mb-0">'.$labtest->instructions.'</p><p class="mb-0">'.$labloinc.'</p></div>';
+                    $labtestdata .= $labtestsingle;
+                }
+                $alltest = $labtestdata;
+
+                $patient_labrequest = '<tr>
+                    <td>'.$labrequest->lab_request_number.'</td>
+                    <td>'.$alltest.'</td>
+                    <td>'.$this->patient_model->getPatientById($labrequest->patient_id)->name.'</td>
+                    <td>'.$this->doctor_model->getDoctorById($labrequest->doctor_id)->name.'</td>
+                    <td><a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->lab_request_number.'&root=patient&method=medicalHistory"><i class="fe fe-edit"></i></a>
+                        <a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-eye"></i></a></td>
+                </tr>';
+
+                $all_labrequests .= $patient_labrequest;
+            }
+        }
 
         $all_appointments = '';
 
@@ -4197,8 +4472,9 @@ class Patient extends MX_Controller {
                     $appointment_doctor = "";
                 }
 
-
-
+                if (empty($branch)) {
+                    $branch = "Online";
+                }
                 $patient_appointments = '<tr class = "">
 
             <td>' . date("Y-m-d", $appointment->date) . '
@@ -4211,6 +4487,7 @@ class Patient extends MX_Controller {
             <td>'.
             $facility .'<br>'.'( '. $branch .' )'
             .'</td>
+            <td>'. $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name .'</td>
             <td><a type="button" href="appointment/editAppointment?id=' . $appointment->id . '&root=appointment&method=calendar" class="btn btn-info btn-xs" title="Edit" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i></a>
                 <a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>
             </td>
@@ -4254,6 +4531,7 @@ class Patient extends MX_Controller {
                                         <td>' . $doctor_details->name . '</td>
                                         <td>' . $medical_history->title . '</td>
                                         <td>' . $medical_history->description . '</td>
+                                        <td></td>
                                     </tr>';
 
                 $all_case .= $patient_case;
@@ -4291,17 +4569,25 @@ class Patient extends MX_Controller {
                 $medicinelist = '';
             }
 
-            $option1Prescription = '<a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i></a>';
+            $facility = $this->hospital_model->getHospitalById($prescription->hospital_id);
+            if (!empty($prescription->hospital_id)) {
+                $prescription_facility = $facility->name;
+            } else {
+                $prescription_facility = '';
+            }
+
+            $option1Prescription = '<a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->prescription_number . '"><i class="fa fa-eye"></i></a>';
             if ($this->ion_auth->in_group(array('Doctor'))) {
-                $option2Prescription = '<a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id='. $prescription->id .'"><i class="fa fa-edit"></i>' . lang('edit') . '</a>';
+                $option2Prescription = '<a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id='. $prescription->prescription_number .'"><i class="fa fa-edit"></i>' . lang('edit') . '</a>';
             }
             if ($this->ion_auth->in_group(array('admin'))) {
-                $option3Prescription = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option3Prescription = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->prescription_number . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
             $prescription_case = ' <tr class="">
                                                     <td>' . date('Y-m-d', strtotime($prescription->prescription_date.' UTC')) . '</td>
                                                     <td>' . $prescription_doctor . '</td>
                                                     <td>' . $medicinelist . '</td>
+                                                    <td>' . $prescription_facility . '</td>
                                                          <td>' . $option1Prescription . ' ' . $option2Prescription . ' ' . $option3Prescription . '</td>
                                                 </tr>';
 
@@ -4323,7 +4609,7 @@ class Patient extends MX_Controller {
                 $form_doctor_name = "";
             }
             $form_class = ' <tr class="">
-                                <td>' . $form->id . '</td>
+                                <td>' . $form->form_number . '</td>
                                 <td>' . $form->name . '</td>
                                 <td>' . $form_doctor_name . '</td>
                                 <td>' . date("Y-m-d", strtotime($form->form_date.' UTC')) . '</td>
@@ -4399,11 +4685,11 @@ class Patient extends MX_Controller {
             $encounter_facility = $this->branch_model->getBranchById($encounter->location_id)->display_name;
 
             if (empty($encounter_type)) {
-                $encounter_type = "Not Specified";
+                $encounter_type = "Online";
             }
 
             if (empty($encounter_facility)) {
-                $encounter_facility = "Not Specified";
+                $encounter_facility = "Online";
             }
 
             $encounter_case = '<tr class="">
@@ -4477,9 +4763,9 @@ class Patient extends MX_Controller {
                                             <div class="card-body p-0">
                                                 <div class="todo-widget-header d-flex pb-2 p-4">
                                                     <div class="">
-                                                        <a class="btn btn-info" href="patient/editUpload?id='. $patient_material->id .'" target="_blank"><i class="fe fe-edit"></i></a>
+                                                        <a class="btn btn-info" href="patient/editUpload?id='. $patient_material->patient_document_number .'" target="_blank"><i class="fe fe-edit"></i></a>
                                                         <a class="btn btn-info" href="'. $patient_material->url .'" download><i class="fe fe-download"></i></a>
-                                                        <a class="btn btn-danger ml-5" data-target="#Delete" data-toggle="modal"  href="patient/deletePatientMaterial?id='. $patient_material->id .'"onclick="return confirm("Are you sure you want to delete this item?");"><i class="fe fe-trash-2"></i></a>
+                                                        <a class="btn btn-danger ml-5" href="patient/deletePatientMaterial?id='. $patient_material->patient_document_number .'"onclick="return confirm("Are you sure you want to delete this item?");"><i class="fe fe-trash-2"></i></a>
                                                     </div>
                                                 </div>
                                                 <div class="px-5 pb-5 text-center">
@@ -4597,11 +4883,13 @@ class Patient extends MX_Controller {
                                         <div class="tabs-menu1 ">
                                             <!-- Tabs -->
                                             <ul class="nav panel-tabs">
-                                                <li class=""><a href="#tab5" class="active" data-toggle="tab">' . lang('appointments') . '</a></li>
-                                                <li><a href="#tab6" data-toggle="tab">' . lang('case_history') . '</a></li>
+                                                <li><a href="#tab3" class="active" data-toggle="tab">' . lang('diagnosis') . '</a></li>
+                                                <li><a href="#tab4" data-toggle="tab">' . lang('vital_signs') . '</a></li>
+                                                <li><a href="#tab5" data-toggle="tab">' . lang('appointments') . '</a></li>
+                                                <li><a href="#tab6" data-toggle="tab">' . lang('case_notes') . '</a></li>
                                                 <li><a href="#tab7" data-toggle="tab">' . lang('prescription') . '</a></li>
-                                                <li><a href="#tab8" data-toggle="tab">' . lang('form') . '</a></li>
-                                                <li><a href="#tab9" data-toggle="tab">' . lang('lab') . '</a></li>
+                                                <li><a href="#tab13" data-toggle="tab">' . lang('lab').' '.lang('request') . '</a></li>
+                                                <li><a href="#tab8" data-toggle="tab">' . lang('forms') . '</a></li>
                                                 <li><a href="#tab10" data-toggle="tab">' . lang('documents') . '</a></li>
                                                 <li><a href="#tab11" data-toggle="tab">' . lang('encounters') . '</a></li>
                                                 <li><a href="#tab12" data-toggle="tab">' . lang('timeline') . '</a></li>
@@ -4610,10 +4898,60 @@ class Patient extends MX_Controller {
                                     </div>
                                     <div class="panel-body tabs-menu-body">
                                         <div class="tab-content">
-                                            <div class="tab-pane active " id="tab5">
+                                            <div class="tab-pane active " id="tab3">
                                                 <div class="table-responsive">
                                                     <div class="adv-table editable-table">
-                                                        <table id="" class="table table-hover table-bordered">
+                                                        <table id="" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>' . lang('diagnosis').' '.lang('date') . '</th>
+                                                                    <th>' . lang('onset').' '.lang('date') . '</th>
+                                                                    <th>' . lang('diagnosis') . '</th>
+                                                                    <th>' . lang('icd') . '</th>
+                                                                    <th>' . lang('p/s') . '</th>
+                                                                    <th>' . lang('note') . '</th>
+                                                                    <th>' . lang('encounter') . '</th>
+                                                                    <th>' . lang('actions') . '</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                    '.$all_diagnosis.'
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="tab4">
+                                                <div class="table-responsive">
+                                                    <div class="adv-table editable-table">
+                                                        <table id="" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>' . lang("measured_at") . '</th>
+                                                                    <th>' . lang('heart_rate').'<br>'.'('.lang('bpm').')' . '</th>
+                                                                    <th>' . lang('height').'<br>'.'(cm)' . '</th>
+                                                                    <th>' . lang('weight').'<br>'.'(kg)' . '</th>
+                                                                    <th>' . lang("bmi") . '</th>
+                                                                    <th>' . lang('bp').'<br>'.'(mmHg)' . '</th>
+                                                                    <th>' . lang('temperature').'<br>'.'(&#176;C)' . '</th>
+                                                                    <th>' . lang('spo2').'<br>'.'(%)' . '</th>
+                                                                    <th>' . lang('respiration_rate').'<br>'.'('.lang('bpm').')' . '</th>
+                                                                    <th>' . lang('pain_level').'<br>'.'('.lang('10_highest').')' . '</th>
+                                                                    <th>' . lang('note') . '</th>
+                                                                    <th>' . lang('actions') . '</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                    '.$all_vitals.'
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="tab5">
+                                                <div class="table-responsive">
+                                                    <div class="adv-table editable-table">
+                                                        <table id="" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
                                                             <thead>
                                                                 <tr>
                                                                     <th>' . lang("date") . '</th>
@@ -4621,6 +4959,7 @@ class Patient extends MX_Controller {
                                                                     <th>' . lang("doctor") . '</th>
                                                                     <th>' . lang("status") . '</th>
                                                                     <th>' . lang("facility") . '</th>
+                                                                    <th>' . lang("service_type") . '</th>
                                                                     <th>' . lang("option") . '</th>
                                                                 </tr>
                                                             </thead>
@@ -4634,7 +4973,7 @@ class Patient extends MX_Controller {
                                             <div class="tab-pane " id="tab6">
                                                 <div class="table-responsive">
                                                     <div class="adv-table editable-table ">
-                                                        <table class="table table-hover table-bordered" id="">
+                                                        <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="">
                                                             <thead>
                                                                 <tr>
                                                                     <th class="w-15">' . lang("date") . '</th>
@@ -4654,12 +4993,13 @@ class Patient extends MX_Controller {
                                             <div class="tab-pane " id="tab7">
                                                 <div class="table-responsive">
                                                     <div class="adv-table editable-table ">
-                                                        <table class="table table-hover table-bordered" id="">
+                                                        <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="">
                                                             <thead>
                                                                 <tr>
                                                                     <th>' . lang("date") . '</th>
                                                                     <th>' . lang("doctor") . '</th>
                                                                     <th>' . lang("medicine") . '</th>
+                                                                    <th>' . lang("facility") . '</th>
                                                                     <th>' . lang("options") . '</th>
                                                                 </tr>
                                                             </thead>
@@ -4673,10 +5013,10 @@ class Patient extends MX_Controller {
                                             <div class="tab-pane " id="tab8">
                                                 <div class="table-responsive">
                                                     <div class="adv-table editable-table ">
-                                                        <table class="table table-hover table-bordered" id="">
+                                                        <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>' . lang("id") . '</th>
+                                                                    <th>' . lang('form').' '.lang('number') . '</th>
                                                                     <th>' . lang("name") . '</th>
                                                                     <th>' . lang("doctor") . '</th>
                                                                     <th>' . lang("date") . '</th>
@@ -4689,20 +5029,21 @@ class Patient extends MX_Controller {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="tab-pane " id="tab9">
+                                            <div class="tab-pane " id="tab13">
                                                 <div class="table-responsive">
                                                     <div class="adv-table editable-table ">
-                                                        <table class="table table-hover table-bordered" id="">
+                                                        <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="">
                                                             <thead>
                                                                 <tr>
-                                                                    <th>' . lang("id") . '</th>
-                                                                    <th>' . lang("date") . '</th>
-                                                                    <th>' . lang("doctor") . '</th>
+                                                                    <th>' . lang("lab").' '.lang("request").' '.lang("number") . '</th>
+                                                                    <th>' . lang("lab").' '.lang("test") . '</th>
+                                                                    <th>' . lang("patient") . '</th>
+                                                                    <th>' . lang("doctors") . '</th>
                                                                     <th>' . lang("options") . '</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>'
-                                                                . $all_lab .
+                                                                . $all_labrequests .
                                                             '</tbody>
                                                         </table>
                                                     </div>
@@ -4735,7 +5076,7 @@ class Patient extends MX_Controller {
                                             <div class="tab-pane " id="tab11">
                                                 <div class="table-responsive">
                                                     <div class="adv-table editable-table ">
-                                                        <table class="table table-hover table-bordered" id="">
+                                                        <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="">
                                                             <thead>
                                                                 <tr>
                                                                     <th>' . lang("date") . '</th>

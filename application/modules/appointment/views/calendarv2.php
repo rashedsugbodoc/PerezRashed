@@ -91,6 +91,21 @@
         <!--Moment js-->
         <script src="<?php echo base_url('public/assets/plugins/moment/moment.js') ?>"></script>
 
+        <!-- Data tables js-->
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/jquery.dataTables.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/dataTables.bootstrap4.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/dataTables.buttons.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.bootstrap4.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/jszip.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/pdfmake.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/vfs_fonts.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.html5.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.print.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/js/buttons.colVis.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/dataTables.responsive.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.js') ?>"></script>
+        <script src="<?php echo base_url('public/assets/js/datatables.js') ?>"></script>
+
         <!-- Full-calendar js-->
         <script src='<?php echo base_url('public/assets/plugins/fullcalendar/moment.min.js'); ?>'></script>
         <script src='<?php echo base_url('public/assets/plugins/fullcalendar/fullcalendar.min.js'); ?>'></script>
@@ -178,6 +193,47 @@
             });
         });
 
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.editable-sample').DataTable({
+                responsive: true,
+                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    'copyHtml5',
+                    {
+                        extend: 'excelHtml5',
+                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                    },
+                    {
+                        extend: 'print',
+                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                    },
+                ],
+                aLengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                iDisplayLength: -1,
+                "order": [[0, "desc"]],
+                "language": {
+                    "lengthMenu": "_MENU_",
+                }
+
+
+            });
+        });
     </script>
 
     </body>
