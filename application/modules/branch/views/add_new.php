@@ -11,7 +11,13 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('add'); ?> <?php echo lang('locations'); ?>
+                                            <?php
+                                                if (!empty($branch->id)) {
+                                                    echo lang('edit'); ?> <?php echo lang('locations');
+                                                } else {
+                                                    echo lang('add'); ?> <?php echo lang('locations');
+                                                }
+                                            ?>
                                         </div>
                                     </div>
                                     <div class="card-body">
