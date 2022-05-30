@@ -41,11 +41,11 @@
                                         <div class="card-body p-0">
                                             <div class="todo-widget-header d-flex pb-2 p-4">
                                                 <div class="">
-                                                    <a class="btn btn-info" href="<?php echo $file->url; ?>" target="_blank"><i class="fe fe-edit"></i></a>
+                                                    <a class="btn btn-info" href="patient/editUpload?id=<?php echo $file->patient_document_number; ?>" target="_blank"><i class="fe fe-edit"></i></a>
                                                     <a class="btn btn-info" href="<?php echo $file->url; ?>" download><i class="fe fe-download"></i></a>
                                                     <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
-                                                        <a class="btn btn-danger ml-5" data-target="#Delete" data-toggle="modal"  href="patient/deletePatientMaterial?id=<?php echo $file->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
+                                                        <a class="btn btn-danger ml-5" href="patient/deletePatientMaterial?id=<?php echo $file->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
                                                     <?php } ?>
                                                 </div>
                                             </div>
@@ -60,8 +60,8 @@
                                                     </div>
                                                 <?php } else { ?>
                                                     <div class="panel-body text-center">
-                                                        <a class="example-image-link" href="<?php echo $file->url; ?>" data-lightbox="example-1" target="_blank">
-                                                            <img class="example-image" src="<?php echo $file->url; ?>" alt="image-1" width="120" height="120"/>
+                                                        <a class="example-image-link" href="<?php echo $file->url.'?m='.$file->last_modified; ?>" data-lightbox="example-1" target="_blank">
+                                                            <img class="example-image" src="<?php echo $file->url.'?m='.$file->last_modified; ?>" alt="image-1" width="120" height="120"/>
                                                         </a>
                                                     </div>
                                                 <?php } ?>
