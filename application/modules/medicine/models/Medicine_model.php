@@ -215,7 +215,7 @@ class Medicine_model extends CI_model {
     function getMedicineInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
-            $this->db->where("id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%'");
+            $this->db->where("id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR generic LIKE '%" . $searchTerm . "%'");
             $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
             $fetched_records = $this->db->get('medicine');
             $users = $fetched_records->result_array();
