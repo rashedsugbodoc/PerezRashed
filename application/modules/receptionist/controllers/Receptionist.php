@@ -93,12 +93,13 @@ class Receptionist extends MX_Controller {
             }
             $config = array(
                 'file_name' => $new_file_name,
-                'upload_path' => "./uploads/",
+                'encrypt_name' => TRUE,
+                'upload_path' => "./uploads/profile/",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "20480000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-                'max_height' => "1768",
-                'max_width' => "2024"
+                'max_size' => "2000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_height' => "2000",
+                'max_width' => "2000"
             );
 
             $this->load->library('Upload', $config);
@@ -106,7 +107,7 @@ class Receptionist extends MX_Controller {
 
             if ($this->upload->do_upload('img_url')) {
                 $path = $this->upload->data();
-                $img_url = "uploads/" . $path['file_name'];
+                $img_url = "uploads/profile/" . $path['file_name'];
                 $data = array();
                 $data = array(
                     'img_url' => $img_url,
