@@ -431,10 +431,10 @@ class Patient extends MX_Controller {
                             $dfg = 5;
                             $upload_data = $this->upload->data();
                             $image_url = "uploads/profile/" . $upload_data['file_name'];
-                            $data1 = array(
+                            $data2 = array(
                                 'img_url' => $image_url
                             );
-                            $data = array_merge($data, $data1);
+                            $data = array_merge($data, $data2);
                             $this->ion_auth->register($username, $password, $email, $dfg);
                             $countryname = $this->location_model->getCountryById($country)->name;
                             $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
