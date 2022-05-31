@@ -6,139 +6,141 @@
                     <!--div class="side-app"-->
                         <!--Page header-->
                         <div class="row mt-5">
-                            <div class="col-md-12 col-sm-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">Add Patient Via Search</div>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row mb-5">
-                                            <div class="col-md-12 col-sm-12 col-lg-2">
-                                                <span class="card-title">Search By </span>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6 col-lg-5">
-                                                <button class="btn btn-primary w-100" id="patient_number"><?php echo lang('patient').' '.lang('number') ?></button>
-                                            </div>
-                                            <div class="col-md-6 col-sm-6 col-lg-5">
-                                                <button class="btn btn-light w-100" id="patient_details"><?php echo lang('patient').' '.lang('details') ?></button>
-                                            </div>
+                            <?php if (empty($patient->id)) { ?>
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <div class="card-title">Add Patient Via Search</div>
                                         </div>
-                                        <div class="row" id="patient_number_form">
-                                            <div class="col-md-12 col-sm-12 col-lg-12">
-                                                <div class="form-group">
-                                                    <label class="form-label">Sugbodoc <?php echo lang('patient').' '.lang('number') ?><span class="text-red"> *</span></label>
-                                                    <input type="text" name="patient_number" class="form-control" required>
+                                        <div class="card-body">
+                                            <div class="row mb-5">
+                                                <div class="col-md-12 col-sm-12 col-lg-2">
+                                                    <span class="card-title">Search By </span>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-lg-5">
+                                                    <button class="btn btn-primary w-100" id="patient_number"><?php echo lang('patient').' '.lang('number') ?></button>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6 col-lg-5">
+                                                    <button class="btn btn-light w-100" id="patient_details"><?php echo lang('patient').' '.lang('details') ?></button>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('first_name') ?><span class="text-red"> *</span></label>
-                                                    <input type="text" name="f_name" class="form-control" required>
+                                            <div class="row" id="patient_number_form">
+                                                <div class="col-md-12 col-sm-12 col-lg-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Sugbodoc <?php echo lang('patient').' '.lang('number') ?><span class="text-red"> *</span></label>
+                                                        <input type="text" name="patient_number" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('first_name') ?><span class="text-red"> *</span></label>
+                                                        <input type="text" name="f_name" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('last_name') ?><span class="text-red"> *</span></label>
+                                                        <input type="text" name="l_name" class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    <button class="btn btn-primary w-100" id="patient_number_submit" type="submit"><?php echo lang('search') ?></button>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('last_name') ?><span class="text-red"> *</span></label>
-                                                    <input type="text" name="l_name" class="form-control" required>
+                                            <div class="row" id="patient_details_form" hidden>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('first_name') ?><span class="text-red"> *</span></label>
+                                                        <input type="text" name="f_name" class="form-control" required>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                                <button class="btn btn-primary w-100" id="patient_number_submit" type="submit"><?php echo lang('search') ?></button>
-                                            </div>
-                                        </div>
-                                        <div class="row" id="patient_details_form" hidden>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('first_name') ?><span class="text-red"> *</span></label>
-                                                    <input type="text" name="f_name" class="form-control" required>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('middle_name') ?></label>
+                                                        <input type="text" name="m_name" class="form-control">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('middle_name') ?></label>
-                                                    <input type="text" name="m_name" class="form-control">
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('last_name') ?><span class="text-red"> *</span></label>
+                                                        <input type="text" name="l_name" class="form-control" required>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('last_name') ?><span class="text-red"> *</span></label>
-                                                    <input type="text" name="l_name" class="form-control" required>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('suffix') ?></label>
+                                                        <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                            <option value="" ><?php echo lang('none'); ?></option>
+                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($patient->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
+                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($patient->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
+                                                            <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($patient->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
+                                                            <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($patient->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
+                                                            <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($patient->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
+                                                            <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($patient->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
+                                                            <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($patient->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
+                                                            <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($patient->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
+                                                            <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($patient->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
+                                                            <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($patient->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
+                                                            <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($patient->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
+                                                            <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($patient->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('suffix') ?></label>
-                                                    <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
-                                                        <option value="" ><?php echo lang('none'); ?></option>
-                                                        <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($patient->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
-                                                        <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($patient->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
-                                                        <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($patient->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
-                                                        <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($patient->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
-                                                        <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($patient->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
-                                                        <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($patient->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
-                                                        <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($patient->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
-                                                        <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($patient->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
-                                                        <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($patient->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
-                                                        <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($patient->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
-                                                        <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($patient->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
-                                                        <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($patient->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
-                                                    </select>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('sex') ?><span class="text-red"> *</span></label>
+                                                        <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one" required>
+                                                            <option></option>
+                                                            <option value="male"> Male </option>
+                                                            <option value="female"> Female </option>
+                                                            <option value="other"> <?php echo lang('other'); ?> </option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('sex') ?><span class="text-red"> *</span></label>
-                                                    <select class="form-control select2-show-search" name="sex" data-placeholder="Choose one" required>
-                                                        <option></option>
-                                                        <option value="male"> Male </option>
-                                                        <option value="female"> Female </option>
-                                                        <option value="other"> <?php echo lang('other'); ?> </option>
-                                                    </select>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('birth_date') ?><span class="text-red"> *</span></label>
+                                                        <input class="form-control flatpickr" placeholder="<?php echo lang('select').' '. lang('date');?>" name="bdate" type="text" maxlength="100" required readonly>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('birth_date') ?><span class="text-red"> *</span></label>
-                                                    <input class="form-control flatpickr" placeholder="<?php echo lang('select').' '. lang('date');?>" name="bdate" type="text" maxlength="100" required readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('country') ?><span class="text-red"> *</span></label>
-                                                    <select class="form-control select2-show-search" name="country_id" id="searchcountry" required>
-                                                        <option value="" disabled selected><?php echo lang('country_placeholder'); ?></option>
-                                                        <?php foreach ($countries as $country) { ?>
-                                                            <option value="<?php echo $country->id; ?>" <?php
-                                                            // if (!empty($setval)) {
-                                                            //     if ($country->id == set_value('country_id')) {
-                                                            //         echo 'selected';
-                                                            //     }
-                                                            // }
-                                                            if (!empty($patient->country_id)) {
-                                                                if ($country->id == $patient->country_id) {
-                                                                    echo 'selected';
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('country') ?><span class="text-red"> *</span></label>
+                                                        <select class="form-control select2-show-search" name="country_id" id="searchcountry" required>
+                                                            <option value="" disabled selected><?php echo lang('country_placeholder'); ?></option>
+                                                            <?php foreach ($countries as $country) { ?>
+                                                                <option value="<?php echo $country->id; ?>" <?php
+                                                                // if (!empty($setval)) {
+                                                                //     if ($country->id == set_value('country_id')) {
+                                                                //         echo 'selected';
+                                                                //     }
+                                                                // }
+                                                                if (!empty($patient->country_id)) {
+                                                                    if ($country->id == $patient->country_id) {
+                                                                        echo 'selected';
+                                                                    }
                                                                 }
-                                                            }
-                                                            ?> > <?php echo $country->name; ?> </option>
-                                                                <?php } ?>
-                                                    </select>     
+                                                                ?> > <?php echo $country->name; ?> </option>
+                                                                    <?php } ?>
+                                                        </select>     
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-6 col-sm-12 col-lg-6">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('state_province') ?><span class="text-red"> *</span></label>
-                                                    <select class="form-control select2-show-search" name="state_id" id="searchstate" value='' required disabled>
-                                                        <option value="" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
-                                                    </select>
+                                                <div class="col-md-6 col-sm-12 col-lg-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('state_province') ?><span class="text-red"> *</span></label>
+                                                        <select class="form-control select2-show-search" name="state_id" id="searchstate" value='' required disabled>
+                                                            <option value="" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-12 col-md-12 col-lg-12">
-                                                <button class="btn btn-primary w-100" id="patient_details_submit"><?php echo lang('search') ?></button>
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    <button class="btn btn-primary w-100" id="patient_details_submit"><?php echo lang('search') ?></button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php } ?>
                         </div>
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
