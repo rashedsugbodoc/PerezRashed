@@ -335,7 +335,7 @@
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 pb-1">
                                                     <div class="form-group mb-0 prescription-opacity">
-                                                        <label class="form-label mb-0"><?php echo lang('lab').' '.lang('request').' '.lang('id');?> : <strong><span class="h5"><?php echo $labrequest->id; ?></span></strong></label>
+                                                        <label class="form-label mb-0"><?php echo lang('lab').' '.lang('request').' '.lang('id');?> : <strong><span class="h5"><?php echo $labrequest->lab_request_number; ?></span></strong></label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 pb-1">
