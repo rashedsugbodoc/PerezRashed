@@ -246,7 +246,7 @@ class Doctor extends MX_Controller {
 
             $data = array();
             $data = array(
-                'img_url' => $img_url,
+                // 'img_url' => $img_url,
                 'name' => $name,
                 'firstname' => $fname,
                 'lastname' => $lname,
@@ -287,7 +287,12 @@ class Doctor extends MX_Controller {
                     // $this->load->view('home/footer'); // just the footer file
                 } else {
                     if ($this->upload->do_upload('img_url')) {
-
+                        $upload_data = $this->upload->data();
+                        $image_url = "uploads/profile/" . $upload_data['file_name'];
+                        $data2 = array(
+                            'img_url' => $image_url
+                        );
+                        $data = array_merge($data, $data2);
                         $dfg = 4;
                         $this->ion_auth->register($username, $password, $email, $dfg);
                         $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
@@ -368,6 +373,12 @@ class Doctor extends MX_Controller {
                             $this->load->view('add_newv2', $data);
                             // $this->load->view('home/footer'); // just the footer file
                         } else {
+                            $upload_data = $this->upload->data();
+                            $image_url = "uploads/profile/" . $upload_data['file_name'];
+                            $data2 = array(
+                                'img_url' => $image_url
+                            );
+                            $data = array_merge($data, $data2);
                             $dfg = 4;
                             $this->ion_auth->register($username, $password, $email, $dfg);
                             $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
@@ -456,7 +467,12 @@ class Doctor extends MX_Controller {
                         // $this->load->view('home/footer'); // just the footer file
                     } else {
                         if ($this->upload->do_upload('img_url')) {
-
+                            $upload_data = $this->upload->data();
+                            $image_url = "uploads/profile/" . $upload_data['file_name'];
+                            $data2 = array(
+                                'img_url' => $image_url
+                            );
+                            $data = array_merge($data, $data2);
                             $ion_user_id = $this->db->get_where('doctor', array('id' => $id))->row()->ion_user_id;
                             // if (empty($password)) {
                             //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
@@ -484,6 +500,12 @@ class Doctor extends MX_Controller {
                                 $this->load->view('add_newv2', $data);
                                 // $this->load->view('home/footer'); // just the footer file
                             } else {
+                                $upload_data = $this->upload->data();
+                                $image_url = "uploads/profile/" . $upload_data['file_name'];
+                                $data2 = array(
+                                    'img_url' => $image_url
+                                );
+                                $data = array_merge($data, $data2);
                                 $ion_user_id = $this->db->get_where('doctor', array('id' => $id))->row()->ion_user_id;
                                 // if (empty($password)) {
                                 //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
@@ -502,7 +524,12 @@ class Doctor extends MX_Controller {
                     }
                 } else {
                     if ($this->upload->do_upload('img_url')) {
-                        
+                        $upload_data = $this->upload->data();
+                        $image_url = "uploads/profile/" . $upload_data['file_name'];
+                        $data2 = array(
+                            'img_url' => $image_url
+                        );
+                        $data = array_merge($data, $data2);
                         $ion_user_id = $this->db->get_where('doctor', array('id' => $id))->row()->ion_user_id;
                         // if (empty($password)) {
                         //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
@@ -530,6 +557,12 @@ class Doctor extends MX_Controller {
                             $this->load->view('add_newv2', $data);
                             // $this->load->view('home/footer'); // just the footer file
                         } else {
+                            $upload_data = $this->upload->data();
+                            $image_url = "uploads/profile/" . $upload_data['file_name'];
+                            $data2 = array(
+                                'img_url' => $image_url
+                            );
+                            $data = array_merge($data, $data2);
                             $ion_user_id = $this->db->get_where('doctor', array('id' => $id))->row()->ion_user_id;
                             // if (empty($password)) {
                             //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
