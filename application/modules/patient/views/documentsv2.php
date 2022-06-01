@@ -47,47 +47,96 @@
                             </div>
                         </div>
 
-                        <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal fade" id="myModal1">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content modal-content-demo">
                                     <div class="modal-header">
                                         <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('document'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form role="form" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form role="form" action="patient/addPatientMaterial" data-parsley-validate class="clearfix" method="post" enctype="multipart/form-data">
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
+                                                    <select class="form-control select2-show-search" id="patientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>" required>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
+                                                    <select class="form-control select2-show-search" name="category" id="category" data-placeholder="<?=lang('select').' '.lang('category');?>" required>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
+                                                    <input type="text" class="form-control" name="title" id="title" placeholder="<?=lang('title');?>" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('description'); ?></label>
+                                                    <input type="text" class="form-control" name="description" id="description" placeholder="<?=lang('description');?>">
+                                                </div>
+                                            </div>
+                                            <input type="hidden" name="redirect" value='patient/documents'>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
+                                                    <span class="text-muted">(<?php echo lang('upload_less_than_10MB_image_or_pdf');?>)</span>
+                                                    <input type="file" name="img_url" id="document" class="dropify" required />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <button class="btn btn-primary pull-right" name="submit" id="documentSubmit" type="submit"><?php echo lang('submit'); ?></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title"><?php echo lang('edit'); ?> <?php echo lang('document'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form role="form" id="editDocumentForm" action="patient/addPatientMaterial" data-parsley-validate class="clearfix" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" id="patientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>" required>
+                                                        <select class="form-control select2-show-search" id="editpatientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>" required>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="category" id="category" data-placeholder="<?=lang('select').' '.lang('category');?>" required>
+                                                        <select class="form-control select2-show-search" name="category" id="editcategory" data-placeholder="<?=lang('select').' '.lang('category');?>" required>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
-                                                        <input type="text" class="form-control" name="title" id="title" placeholder="<?=lang('title');?>" required>
+                                                        <input type="text" class="form-control" name="title" id="edittitle" placeholder="<?=lang('title');?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('description'); ?></label>
-                                                        <input type="text" class="form-control" name="description" id="description" required placeholder="<?=lang('description');?>">
+                                                        <input type="text" class="form-control" name="description" id="editdescription" required placeholder="<?=lang('description');?>">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
-                                                    <span class="text-muted">(<?php echo lang('upload_less_than_10MB_image_or_pdf');?>)</span>
-                                                    <input type="file" name="img_url" id="document" class="dropify"/>
-                                                </div>
                                                 <input type="hidden" name="redirect" value='patient/documents'>
+                                                <input type="hidden" name="id" value=''>
                                                 <div class="col-md-12 col-sm-12">
                                                     <button class="btn btn-primary pull-right" name="submit" id="submit" type="submit"><?php echo lang('submit'); ?></button>
                                                 </div>
@@ -232,23 +281,33 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var title = $('#title').parsley();
-                var category = $('#category').parsley();
-                var patient = $('#patientchoose').parsley();
-                var description = $('#description').parsley();
+        $(".table").on("click", ".editbutton", function () {
+            $('#editDocumentForm').trigger("reset");
+            var iid = $(this).attr('data-id');
+            $.ajax({
+                url: 'patient/editPatientMaterialByJason?id='+iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var patients = response.patients;
+                    var categories = response.categories;
+                    $('#editDocumentForm').find('[name="id"]').val(response.documents.id).end()
+                    $.each(patients, function (key, value) {
+                        $('#editpatientchoose').append($('<option>').text(value.name).val(value.id)).end();
+                    });
+                    $.each(categories, function (key, value) {
+                        $('#editcategory').append($('<option>').text(value.display_name).val(value.id)).end();
+                    });
+                    $('#editDocumentForm').find('[name="patient"]').val(response.documents.patient).change()
+                    $('#editDocumentForm').find('[name="category"]').val(response.documents.category_id).change()
+                    $('#editDocumentForm').find('[name="title"]').val(response.documents.title).end()
+                    $('#editDocumentForm').find('[name="description"]').val(response.documents.description).end()
 
-                if (patient.isValid() && category.isValid() && title.isValid() && description.isValid()) {
-                    return true;
-                } else {
-                    title.validate();
-                    category.validate();
-                    patient.validate();
-                    description.validate();
+                    $('#myModal2').modal('show');
                 }
             })
-        })
+        });
     </script>
 
     <script>
@@ -271,16 +330,38 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [1, 2, 3],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export Options',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [1, 2, 3],
+                                },
+                                orientation: 'landscape',
+                                pageSize: 'LEGAL'
+                            }
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -332,6 +413,18 @@
         });
     </script>
 
+    <script>
+        $(document).ready(function () {
+            $("#editpatientchoose").select2({
+                placeholder: '<?php echo lang('select_patient'); ?>',
+                allowClear: true,
+            });
+        
+
+
+        });
+    </script>
+
     <script type="text/javascript">
         $(document).ready(function () {
             $("#category").select2({
@@ -355,6 +448,16 @@
                     cache: true
                 }
 
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#editcategory").select2({
+                placeholder: '<?php echo lang('select_doctor'); ?>',
+                allowClear: true,
             });
 
         });

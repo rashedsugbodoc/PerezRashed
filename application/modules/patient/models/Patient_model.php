@@ -153,6 +153,11 @@ class Patient_model extends CI_model {
         return $query->row();
     }
 
+    function getDocumentCategories() {        
+        $query = $this->db->get('document_upload_category');
+        return $query->result();
+    }
+
     function getPatientByIonUserId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('ion_user_id', $id);

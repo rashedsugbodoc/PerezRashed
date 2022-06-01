@@ -1553,7 +1553,8 @@ class Patient extends MX_Controller {
 
     function medicalHistory() {
         $data = array();
-        $id = $this->input->get('id');
+        $patient_number = $this->input->get('id');
+        $id = $this->patient_model->getPatientByPatientNumber($patient_number)->id;
         if (empty($id)) {
             $id = $this->input->post('id');
         }
@@ -2676,6 +2677,7 @@ class Patient extends MX_Controller {
         $category = $this->input->post('category');
         $redirect = $this->input->post('redirect');
         $date = gmdate('Y-m-d H:i:s');
+        $id = $this->input->post('id');
 
         do {
             $raw_document_number = 'M'.random_string('alnum', 6);
@@ -2695,7 +2697,7 @@ class Patient extends MX_Controller {
 
 
         if (empty($redirect)) {
-            $redirect = "patient/medicalHistory?id=" . $patient_id;
+            $redirect = "patient/documents";
         }
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>');
@@ -2758,65 +2760,86 @@ class Patient extends MX_Controller {
             }
             $config = array(
                 'file_name' => $new_file_name,
-                'upload_path' => "./uploads/",
+                'encrypt_name' => TRUE,
+                'upload_path' => "./uploads/document",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "10000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-                'max_height' => "10000",
-                'max_width' => "10000"
+                'max_size' => "2000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_height' => "2000",
+                'max_width' => "2000"
             );
 
             $this->load->library('Upload', $config);
             $this->upload->initialize($config);
 
+            if (empty($id)) {
+                if ($this->upload->do_upload('img_url')) {
+                    $path = $this->upload->data();
+                    $img_url = "uploads/document/" . $path['file_name'];
+                    $data = array();
+                    $data = array(
+                        'created_at' => $date,
+                        'title' => $title,
+                        'category_id' => $category,
+                        'url' => $img_url,
+                        'patient' => $patient_id,
+                        'patient_name' => $patient_name,
+                        'patient_address' => $patient_address,
+                        'patient_phone' => $patient_phone,
+                        'created_user_id' => $current_user,
+                        'description' => $description,
+                        'encounter_id' => $encounter,
+                        'rendering_doctor_id' => $rendering_doctor_id,
+                        'rendering_staff_id' => $rendering_user_id,
+                        'patient_document_number' => $document_number,
+                    );
 
-            if ($this->upload->do_upload('img_url')) {
-                $path = $this->upload->data();
-                $img_url = "uploads/" . $path['file_name'];
-                $data = array();
+                    $this->patient_model->insertPatientMaterial($data);
+                    $this->session->set_flashdata('success', lang('record_added'));
+
+                    redirect($redirect);
+                } else {
+                    $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                    $this->session->set_flashdata('fileError', $fileError);
+                    if ($this->ion_auth->in_group(array('Patient'))) {
+                        $this->session->set_flashdata('error', lang('validation_error'));
+                        $patient_ion_id = $this->ion_auth->get_user_id();
+                        $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+                        $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('my_documentsv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
+                    } elseif ($this->ion_auth->in_group(array('admin' ,'Doctor', 'Nurse', 'Laboratorist', 'Receptionist'))) {
+                        $this->session->set_flashdata('error', lang('validation_error'));
+
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        }
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('documentsv2');
+                    } else {
+                        redirect('home/permission');
+                    }
+                }
+
+            } else {
                 $data = array(
-                    'created_at' => $date,
+                    'last_modified' => $date,
                     'title' => $title,
                     'category_id' => $category,
-                    'url' => $img_url,
                     'patient' => $patient_id,
                     'patient_name' => $patient_name,
                     'patient_address' => $patient_address,
                     'patient_phone' => $patient_phone,
-                    'created_user_id' => $current_user,
                     'description' => $description,
-                    'encounter_id' => $encounter,
                     'rendering_doctor_id' => $rendering_doctor_id,
                     'rendering_staff_id' => $rendering_user_id,
-                    'patient_document_number' => $document_number,
                 );
 
-                $this->patient_model->insertPatientMaterial($data);
-                $this->session->set_flashdata('success', lang('record_added'));
+                $this->patient_model->updatePatientMaterial($id, $data);
+                $this->session->set_flashdata('success', lang('record_updated'));
 
                 redirect($redirect);
-            } else {
-                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
-                $this->session->set_flashdata('fileError', $fileError);
-                if ($this->ion_auth->in_group(array('Patient'))) {
-                    $this->session->set_flashdata('error', lang('validation_error'));
-                    $patient_ion_id = $this->ion_auth->get_user_id();
-                    $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
-                    $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
-                    $this->load->view('home/dashboardv2'); // just the header file
-                    $this->load->view('my_documentsv2', $data);
-                    // $this->load->view('home/footer'); // just the footer file
-                } elseif ($this->ion_auth->in_group(array('admin' ,'Doctor', 'Nurse', 'Laboratorist', 'Receptionist'))) {
-                    $this->session->set_flashdata('error', lang('validation_error'));
-
-                    if (!empty($redirect)) {
-                        redirect($redirect);
-                    }
-                    $this->load->view('home/dashboardv2'); // just the header file
-                    $this->load->view('documentsv2');
-                } else {
-                    redirect('home/permission');
-                }
             }
 
         }
@@ -2973,7 +2996,7 @@ class Patient extends MX_Controller {
             $options2 = '<a class="btn btn-info" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
             if (!$this->ion_auth->in_group(array('Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser'))) {
-                $options3 = '<a class="btn btn-secondary" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
+                $options3 = '<a class="btn btn-secondary" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->patient_id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
             }
 
             $options4 = '<a class="btn btn-success" title="' . lang('payment') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
@@ -3248,14 +3271,14 @@ class Patient extends MX_Controller {
         foreach ($data['documents'] as $document) {
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
-                //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
+                $options4 = '<a type="button" class="btn btn-info editbutton" title="Edit" data-toggle="modal" data-id="'.$document->id.'"><i class="fa fa-edit"> </i> Edit</a>';
                 $options1 = '<a class="btn btn-info btn-xs" href="' . $document->url . '?m='. $document->last_modified .'" download="'. $document->title .'"> ' . lang('download') . ' </a>';
             }
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
                 $options2 = '<a class="btn btn-danger btn-xs delete_button" href="patient/deletePatientMaterial?id=' . $document->patient_document_number . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> <i class="fa fa-trash"></i> </a>';
             }
             if ($document->created_user_id === $current_user) {
-                $option3 = '<a class="btn btn-info" href="patient/editUpload?id='. $document->patient_document_number .'" target="_blank"><i class="fe fe-edit"></i></a>';
+                $option3 = '<a class="btn btn-info" href="patient/editUpload?id='. $document->patient_document_number .'" target="_blank"><i class="fa fa-paint-brush"></i></a>';
             }
 
             if (!empty($document->patient)) {
@@ -3278,7 +3301,7 @@ class Patient extends MX_Controller {
                     $document->title,
                     $document->description,
                     '<a class="example-image-link" href="' . $document->url . '" data-title="' . $document->title . '" target="_blank"">' . '<img class="example-image" src="uploads/PDF_DefaultImage.png" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
-                    $options1 . ' ' . $options2 . ' ' . $option3
+                    $options1 . ' ' . $options2 . ' ' . $option3 . ' ' . $options4
                         // $options4
                 );
             } else {
@@ -3288,7 +3311,7 @@ class Patient extends MX_Controller {
                     $document->title,
                     $document->description,
                     '<a class="example-image-link" href="' . $document->url . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '?m='. $document->last_modified .'" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
-                    $options1 . ' ' . $options2 . ' ' . $option3
+                    $options1 . ' ' . $options2 . ' ' . $option3 . ' ' . $options4
                         // $options4
                 );
             }
@@ -5738,6 +5761,16 @@ class Patient extends MX_Controller {
         $this->patient_model->updatePatient($patient_id, $data);
 
         redirect('patient/addNewView');
+    }
+
+    public function editPatientMaterialByJason() {
+        $id = $this->input->get('id');
+
+        $data['documents'] = $this->patient_model->getPatientMaterialById($id);
+        $data['patients'] = $this->patient_model->getPatient();
+        $data['categories'] = $this->patient_model->getDocumentCategories();
+
+        echo json_encode($data);
     }
 
 }
