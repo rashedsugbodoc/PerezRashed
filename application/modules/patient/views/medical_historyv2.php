@@ -165,10 +165,10 @@
                                     <div class="form-group">
                                         <!-- <button class="btn btn-primary w-100" id="encounterChange">Change</button> -->
                                         <?php if(!empty($encounter_id) || !empty($all_encounter)) { ?>
-                                            <a href="patient/medicalHistory?id=<?php echo $patient->id; ?>" class="btn btn-primary w-100"><center>Change</center></a>
+                                            <a href="patient/medicalHistory?id=<?php echo $patient->patient_id; ?>" class="btn btn-primary w-100"><center>Change</center></a>
                                         <?php } else { ?>
                                             <!-- <a href="patient/medicalHistory?id=<?php echo $patient->id; ?>" class="btn btn-primary"><center>Change</center></a> -->
-                                            <input type="hidden" name="id" id="patient_id" value="<?php echo $patient->id ?>">
+                                            <input type="hidden" name="id" id="patient_id" value="<?php echo $patient->patient_id ?>">
                                             <button class="btn btn-primary w-100" id="encounterSelect" type="submit">Apply</button>
                                         <?php } ?>
                                     </div>
