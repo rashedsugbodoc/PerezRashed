@@ -250,7 +250,7 @@ class Encounter extends MX_Controller {
             $patient = $this->patient_model->getPatientById($encounter->patient_id)->name;
             // $user = $this->profile_model->getProfileById($encounter->rendering_staff_id)->username;
             $doctor = $this->doctor_model->getDoctorById($encounter->doctor)->name;
-            $due = $this->settings_model->getSettings()->currency .' '. number_format($this->patient_model->getDueBalanceByPatientId($encounter->patient_id),2);
+            $due = $this->settings_model->getSettings()->currency .' '. number_format($this->encounter_model->getDueBalanceByPatientIdByEncounterId($encounter->patient_id, $encounter->id),2);
             $payment_status = $this->finance_model->getInvoicePaymentStatusById($encounter->payment_status)->display_name;
             if (empty($doctor)) {
                 if (!empty($encounter->rendering_staff_name)) {

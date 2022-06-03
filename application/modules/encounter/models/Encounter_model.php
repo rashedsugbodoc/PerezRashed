@@ -73,6 +73,39 @@ class Encounter_model extends CI_model {
         return $query->result();
     }
 
+    function getDueBalanceByPatientIdByEncounterId($patient, $encounter) {
+        $query = $this->db->get_where('invoice', array(
+            'encounter_id' => $encounter,
+            'patient' => $patient
+        ))->result();
+        $balance = array();
+        $invoice = array();
+        $deposit_amount = array();
+        foreach ($query as $gross) {
+            $balance[] = $gross->gross_total;
+            $invoice [] = $gross->id;
+        }
+
+        $balance = array_sum($balance);
+        $invoice_id = $invoice;
+
+        foreach ($invoice_id as $invoice_details) {
+            $inv = $invoice_details;
+            $deposit_details = array();
+            $deposit_details[] = $this->db->get_where('patient_deposit', array('payment_id' => $inv))->result();
+                foreach($deposit_details as $deposit_detail) {
+                    foreach($deposit_detail as $dep_detail) {
+                        $deposit_amount[] = $dep_detail->deposited_amount;
+                    }
+                }
+        }
+
+        $deposit_amount_total = array_sum($deposit_amount);
+
+        return $balance - $deposit_amount_total;
+
+    }
+
     function getEncounterByDoctorId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor_id', $id);
