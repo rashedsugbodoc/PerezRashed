@@ -18,7 +18,7 @@
                                         <table id="editable-sample" class="table table-bordered text-nowrap key-buttons">
                                             <thead>
                                                 <tr>
-                                                    <th class="border-bottom-0"><?php echo lang('patient_id'); ?></th>
+                                                    <th class="border-bottom-0"><?php echo lang('patient').' '.lang('number'); ?></th>
                                                     <th class="border-bottom-0"><?php echo lang('name'); ?></th>
                                                     <th class="border-bottom-0"><?php echo lang('phone'); ?></th>
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) { ?>
@@ -495,6 +495,9 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
                 "ajax": {
                     url: "patient/getPatientPayments",
                     type: 'POST',
@@ -543,7 +546,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: 100,
+                iDisplayLength: -1,
                 "order": [[0, "desc"]],
 
                 "language": {

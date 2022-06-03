@@ -1168,7 +1168,9 @@
                 responsive: true,
                 //   dom: 'lfrBtip',
 
-                
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
                 "ajax": {
                     url: "patient/getPatient",
                     type: 'POST',
@@ -1176,7 +1178,7 @@
                 scroller: {
                     loadingIndicator: true
                 },
-                dom: "<'row'<'col-sm-4 col-md-12 col-lg-12'f><'col-sm-12 col-md-12 col-lg-2'l><'col-sm-12 col-md-12 col-lg-10 text-right'B>>" +
+                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
@@ -1209,7 +1211,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: 100,
+                iDisplayLength: 50,
                 "order": [[0, "desc"]],
 
                 "language": {
