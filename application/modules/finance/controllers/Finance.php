@@ -1570,16 +1570,37 @@ class Finance extends MX_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
-        $patient = $this->input->get('patient');
-        if (empty($patient)) {
-            $patient = $this->input->post('patient');
+        $patient_number = $this->input->get('patient');
+        if (empty($patient_number)) {
+            $patient_number = $this->input->post('patient');
+        }
+        $patient = $this->patient_model->getPatientByPatientNumber($patient_number)->id;
+        $provider_logged = $this->session->userdata('hospital_id');
+        $patient_details = $this->patient_model->getPatientById($patient, 0);
+        $patient_isolated_provider = explode(',', $patient_details->isolated_provider_id);
+        $patient_unrestricted_provider = explode(',', $patient_details->unrestricted_provider_id);
+        $patient_authorized_provider = explode(',', $patient_details->authorized_provider_id);
+        $patient_privacy_level_id = $this->patient_model->getPrivacyLevelById($patient_details->privacy_level_id);
+        $user = $this->ion_auth->get_user_id();
+
+        if ($this->ion_auth->in_group(array('admin'))) {
+            if ($provider_logged !== $patient_details->hospital_id) {
+                redirect('home/permission');
+            }
         }
 
-
-        $patient_hospital_id = $this->patient_model->getPatientById($patient)->hospital_id;
-        if ($patient_hospital_id != $this->session->userdata('hospital_id')) {
-            redirect('home/permission');
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_id = $this->doctor_model->getDoctorByIonUserId($user)->id;
+            $visited_provider = explode(',', $patient_details->visited_provider_id);
+            $privacy = in_array($provider_logged, $visited_provider);
+            if ($privacy === FALSE) {
+                redirect('home/permission');
+            }
         }
+
+        // if ($patient_hospital_id != $this->session->userdata('hospital_id')) {
+        //     redirect('home/permission');
+        // }
 
 
 
@@ -1604,7 +1625,11 @@ class Finance extends MX_Controller {
         $data['date_to'] = $date_to;
 
         if (empty($date_from) && empty($date_to)) {
-            $data['payments'] = $this->finance_model->getPaymentByPatientId($patient);
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                $data['payments'] = $this->finance_model->getPaymentByPatientIdByDoctorId($patient, $doctor_id);
+            } else {
+                $data['payments'] = $this->finance_model->getPaymentByPatientId($patient);
+            }
             $data['pharmacy_payments'] = $this->pharmacy_model->getPaymentByPatientId($patient);
             $data['ot_payments'] = $this->finance_model->getOtPaymentByPatientId($patient);
             $data['deposits'] = $this->finance_model->getDepositByPatientId($patient);
@@ -1622,7 +1647,7 @@ class Finance extends MX_Controller {
 
 
 
-        $data['patient'] = $this->patient_model->getPatientByid($patient);
+        $data['patient'] = $this->patient_model->getPatientById($patient, 0);
 
 
 

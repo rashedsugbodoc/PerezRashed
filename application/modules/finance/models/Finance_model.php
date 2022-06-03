@@ -122,6 +122,23 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getPaymentByPatientIdByDoctorId($id, $doctor_id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $id);
+        $this->db->where('doctor', $id);
+        $query = $this->db->get('invoice');
+        return $query->result();
+    }
+
+    function getPaymentByPatientIdByVisitedProviderId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $id);
+        $query = $this->db->get('invoice');
+        return $query->result();
+    }
+
     function getPaymentByPatientIdByDate($id, $date_from, $date_to) {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
