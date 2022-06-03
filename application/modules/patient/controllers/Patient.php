@@ -2957,29 +2957,29 @@ class Patient extends MX_Controller {
         if ($limit == -1) {
             if (!empty($search)) {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['patients'] = $this->patient_model->getPatientListBySearchByDoctorId($search, $doctor);
+                    $data['patients'] = $this->patient_model->getPatientListBySearchByDoctorIdByVisitedProviderId($search, $doctor);
                 } else {
-                    $data['patients'] = $this->patient_model->getPatientBySearch($search);
+                    $data['patients'] = $this->patient_model->getPatientBySearchByVisitedProviderId($search);
                 }
             } else {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['patients'] = $this->patient_model->getPatientListByDoctorId($doctor);
+                    $data['patients'] = $this->patient_model->getPatientListByDoctorIdByVisitedProviderId($doctor);
                 } else {
-                    $data['patients'] = $this->patient_model->getPatient();
+                    $data['patients'] = $this->patient_model->getPatientByVisitedProviderId();
                 }
             }
         } else {
             if (!empty($search)) {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['patients'] = $this->patient_model->getPatientByLimitBySearchByDoctorId($limit, $start, $search, $doctor);
+                    $data['patients'] = $this->patient_model->getPatientByLimitBySearchByDoctorIdByVisitedProviderId($limit, $start, $search, $doctor);
                 } else {
-                    $data['patients'] = $this->patient_model->getPatientByLimitBySearch($limit, $start, $search);
+                    $data['patients'] = $this->patient_model->getPatientByLimitBySearchByVisitedProviderId($limit, $start, $search);
                 }
             } else {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['patients'] = $this->patient_model->getPatientByLimitByDoctorId($limit, $start, $doctor);
+                    $data['patients'] = $this->patient_model->getPatientByLimitByDoctorIdByVisitedProviderId($limit, $start, $doctor);
                 } else {
-                    $data['patients'] = $this->patient_model->getPatientByLimit($limit, $start);
+                    $data['patients'] = $this->patient_model->getPatientByLimitByVisitedProviderId($limit, $start);
                 }
                 
             }
@@ -3084,29 +3084,29 @@ class Patient extends MX_Controller {
         if ($limit == -1) {
             if (!empty($search)) {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['patients'] = $this->patient_model->getPatientListBySearchByDoctorId($search, $doctor);
+                    $data['patients'] = $this->patient_model->getPatientListBySearchByDoctorIdByVisitedProviderId($search, $doctor);
                 } else {
-                    $data['patients'] = $this->patient_model->getPatientBySearch($search);
+                    $data['patients'] = $this->patient_model->getPatientBySearchByVisitedProviderId($search);
                 }
             } else {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['patients'] = $this->patient_model->getPatientListByDoctorId($doctor);
+                    $data['patients'] = $this->patient_model->getPatientListByDoctorIdByVisitedProviderId($doctor);
                 } else {
-                    $data['patients'] = $this->patient_model->getPatient();
+                    $data['patients'] = $this->patient_model->getPatientByVisitedProviderId();
                 }
             }
         } else {
             if (!empty($search)) {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['patients'] = $this->patient_model->getPatientByLimitBySearchByDoctorId($limit, $start, $search, $doctor);
+                    $data['patients'] = $this->patient_model->getPatientByLimitBySearchByDoctorIdByVisitedProviderId($limit, $start, $search, $doctor);
                 } else {
-                    $data['patients'] = $this->patient_model->getPatientByLimitBySearch($limit, $start, $search);
+                    $data['patients'] = $this->patient_model->getPatientByLimitBySearchByVisitedProviderId($limit, $start, $search);
                 }
             } else {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['patients'] = $this->patient_model->getPatientByLimitByDoctorId($limit, $start, $doctor);
+                    $data['patients'] = $this->patient_model->getPatientByLimitByDoctorIdByVisitedProviderId($limit, $start, $doctor);
                 } else {
-                    $data['patients'] = $this->patient_model->getPatientByLimit($limit, $start);
+                    $data['patients'] = $this->patient_model->getPatientByLimitByVisitedProviderId($limit, $start);
                 }
                 
             }
@@ -3130,7 +3130,9 @@ class Patient extends MX_Controller {
                 $options5 = '<a class="btn btn-danger" title="' . lang('delete') . '" href="patient/delete?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
-            $due = $this->settings_model->getSettings()->currency .' '. $this->patient_model->getDueBalanceByPatientId($patient->id);
+            $provider = $patient->hospital_id;
+
+            $due = $this->settings_model->getSettings()->currency .' '. $this->patient_model->getDueBalanceByPatientIdByProviderId($patient->id, $provider);
 
             if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
                 $info[] = array(
