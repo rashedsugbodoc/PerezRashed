@@ -634,7 +634,8 @@ class Patient extends MX_Controller {
             redirect('home/permission');
         }
         $data = array();
-        $id = $this->input->get('id');
+        $patient_id = $this->input->get('id');
+        $id = $this->patient_model->getPatientByPatientNumber($patient_id)->id;
         $data['patient'] = $this->patient_model->getPatientById($id);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['groups'] = $this->patient_model->getBloodGroup();
@@ -2990,7 +2991,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a class="btn btn-info editbutton" title="' . lang('edit') . '" href="patient/editPatient?id=' . $patient->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a class="btn btn-info editbutton" title="' . lang('edit') . '" href="patient/editPatient?id=' . $patient->patient_id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
             $options2 = '<a class="btn btn-info" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
