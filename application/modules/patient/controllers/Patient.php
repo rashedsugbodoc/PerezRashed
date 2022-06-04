@@ -879,7 +879,7 @@ class Patient extends MX_Controller {
         $data['date_from'] = $date_from;
         $data['date_to'] = $date_to;
 
-        if (!empty($date_from)) {
+        if (!empty($date_from) && !empty($date_to)) {
             $data['payments'] = $this->finance_model->getPaymentByPatientIdByDate($patient, $date_from, $date_to);
             $data['deposits'] = $this->finance_model->getDepositByPatientIdByDate($patient, $date_from, $date_to);
             $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);

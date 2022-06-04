@@ -138,13 +138,13 @@
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <form role="form" class="f_report" action="patient/myPaymentHistory" method="post" enctype="multipart/form-data">
+                                                <form role="form" class="f_report" action="patient/myPaymentHistory?patient=<?php echo $patient->patient_id; ?>" method="post" enctype="multipart/form-data">
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label><strong><?php echo lang('select'); ?> <?php echo lang('dates'); ?></strong></label>
                                                                 <div class="btn-group mr-0">
-                                                                    <input class="form-control fc-datepicker form-control" name="date_from" placeholder="From Date" type="text" value="<?php
+                                                                    <input class="form-control flatpickr form-control" readonly name="date_from" placeholder="From Date" type="text" value="<?php
                                                                     if (!empty($date_from)) {
                                                                         echo date('m/d/Y', $date_from);
                                                                     }
@@ -154,7 +154,7 @@
                                                                             <?php echo lang('to'); ?>
                                                                         </div>
                                                                     </div>
-                                                                    <input class="form-control fc-datepicker form-control" name="date_to" placeholder="To Date" type="text" value="<?php
+                                                                    <input class="form-control flatpickr form-control" readonly name="date_to" placeholder="To Date" type="text" value="<?php
                                                                     if (!empty($date_to)) {
                                                                         echo date('m/d/Y', $date_to);
                                                                     }
@@ -175,8 +175,8 @@
                                                                         <th class=""><?php echo lang('date'); ?></th>
                                                                         <th class=""><?php echo lang('bill'); ?> #</th>
                                                                         <th class=""><?php echo lang('bill_amount'); ?></th>
-                                                                        <th class=""><?php echo lang('deposit'); ?></th>
-                                                                        <th class=""><?php echo lang('deposit_type'); ?></th>
+                                                                        <th class=""><?php echo lang('total_payments'); ?></th>
+                                                                        <th class=""><?php echo lang('balance'); ?></th>
                                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                                     </tr>
                                                                 </thead>
@@ -203,29 +203,31 @@
                                                                     foreach ($dattt as $key => $value) {
                                                                         foreach ($payments as $payment) {
                                                                             if ($payment->date == $value) {
+                                                                                $total_deposit = $this->finance_model->getDepositAmountByPaymentId($payment->id);
+                                                                                $total_invoice_balance = number_format($payment->gross_total - $total_deposit, 2);
                                                                                 ?>
                                                                                 <tr class="">
                                                                                     <td><?php echo date('Y-m-d', $payment->date); ?></td>
-                                                                                    <td> <?php echo $payment->id; ?></td>
-                                                                                    <td><?php echo $settings->currency; ?> <?php echo $payment->gross_total; ?></td>
-                                                                                    <td><?php
-                                                                                        if (!empty($payment->amount_received)) {
-                                                                                            echo $settings->currency;
-                                                                                        }
-                                                                                        ?> <?php echo $payment->amount_received; ?>
+                                                                                    <td> <?php echo $payment->invoice_number; ?></td>
+                                                                                    <td><?php echo $settings->currency; ?> <?php echo number_format($payment->gross_total, 2); ?></td>
+                                                                                    <td>
+                                                                                        <?php
+                                                                                            echo $settings->currency . ' ' . number_format($total_deposit, 2);
+                                                                                        ?>
                                                                                     </td>
 
-                                                                                    <td> <?php echo $payment->deposit_type; ?></td>
+                                                                                    <td> <?php echo $settings->currency . ' ' . $total_invoice_balance; ?></td>
 
                                                                                     <td  class="no-print"> 
                                                                                         <a class="btn btn-xs btn-info" title="<?php echo lang('invoice'); ?>" href="patient/myInvoice?id=<?php echo $payment->id; ?>"><i class="fa fa-file"></i> </a>
+                                                                                        <button type="button" class="btn btn-info deposit-list" data-invoice="<?php echo $payment->id; ?>" title="<?php echo lang('deposits'); ?>"><i class="fa fa-eye"></i> <?php echo lang('deposits') ?></button>
                                                                                     </td>
                                                                                 </tr>
                                                                                 <?php
                                                                             }
                                                                         }
                                                                         ?>
-                                                                        <?php
+                                                                        <!-- <?php
                                                                         foreach ($deposits as $deposit) {
                                                                             if ($deposit->date == $value) {
                                                                                 if (!empty($deposit->deposited_amount) && empty($deposit->amount_received_id)) {
@@ -244,7 +246,7 @@
                                                                                 }
                                                                             }
                                                                         }
-                                                                        ?>
+                                                                        ?> -->
                                                                     <?php } ?>
                                                                 </tbody>
                                                             </table>
@@ -252,6 +254,54 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="card-title">
+                                            <?php echo lang('all').' '.lang('deposits') ?>
+                                        </div>
+                                        <div class="card-title">
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample2">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('date') ?></th>
+                                                        <th><?php echo lang('bill') ?> #</th>
+                                                        <th><?php echo lang('receipt') ?></th>
+                                                        <th><?php echo lang('payment') ?></th>
+                                                        <th><?php echo lang('status') ?></th>
+                                                        <th><?php echo lang('action') ?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="deposit-table">
+                                                    <?php
+                                                        if (!empty($payments)) {
+                                                            foreach ($payments as $payment) {
+                                                                $deposits_by_date = $this->finance_model->getDepositByPaymentId($payment->id);
+                                                                foreach ($deposits_by_date as $deposit_by_date) {
+                                                                ?>
+                                                                    <tr>
+                                                                        <td><?php echo date('y-m-d', $deposit_by_date->date); ?></td>
+                                                                        <td><?php echo $this->finance_model->getPaymentById($deposit_by_date->payment_id)->invoice_number; ?></td>
+                                                                        <td><?php echo $deposit_by_date->receipt_number; ?></td>
+                                                                        <td><?php echo $deposit_by_date->deposited_amount; ?></td>
+                                                                        <td><?php echo $deposit_by_date->status; ?></td>
+                                                                        <td><button type="button" class="btn btn-info deposit-list"><i class="fa fa-eye"></i></button></td>
+                                                                    </tr>
+                                                                <?php
+                                                                }
+                                                            }
+                                                        }
+                                                    ?>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
@@ -264,7 +314,7 @@
                                             <div class="card-body text-center">
                                                 <div class="pro-user">
                                                     <h4 class="pro-user-username text-dark mb-1 font-weight-bold"><?php echo $patient->name; ?></h4>
-                                                    <h6 class="pro-user-desc text-muted">ID : <?php echo $patient->id; ?></h6>
+                                                    <h6 class="pro-user-desc text-muted">ID : <?php echo $patient->patient_id; ?></h6>
                                                     <h6 class="pro-user-desc text-muted"><i class="fe fe-mail text-info"></i> <?php echo $patient->email; ?></h6>
                                                     <h6 class="pro-user-desc text-muted"><i class="fe fe-phone text-info"></i> <?php echo $patient->phone; ?></h6>
                                                 </div>
@@ -650,6 +700,9 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
 
@@ -779,6 +832,93 @@
             }
         }
 
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.editable-sample2').DataTable({
+                "bDestroy": true,
+                responsive: true,
+                dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                aLengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                iDisplayLength: -1,
+                "order": [[0, "desc"]],
+                "language": {
+                    "lengthMenu": "_MENU_",
+                }
+
+
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".table").on("click", ".deposit-list", function() {
+                $('.deposit-table').find('tr').remove();
+
+                var invoice = $(this).data('invoice');
+                var str = $(".deposit-table").html();
+                $('.editable-sample2').DataTable({
+                    "bDestroy": true,
+                    responsive: true,
+                    "ajax": {
+                        url: "finance/getDeposit?invoice_id="+invoice,
+                        type: 'GET',
+                    },
+                    scroller: {
+                        loadingIndicator: true
+                    },
+                    dom: "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                    aLengthMenu: [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "All"]
+                    ],
+                    iDisplayLength: -1,
+                    "order": [[0, "desc"]],
+                    "language": {
+                        "lengthMenu": "_MENU_",
+                    }
+                    
+
+                });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var datefrom = "<?php echo date('F j, Y h:i A' , $date_from.' UTC') ?>";
+            var dateto = "<?php echo date('F j, Y h:i A' , $date_to.' UTC') ?>";
+            console.log(datefrom);
+            if (datefrom == "") {
+                $(".flatpickr").flatpickr({
+                    maxDate: "today",
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    dateFormat: "Y-m-d",
+                    disableMobile: true
+                });
+            } else {
+                $(".date_from").flatpickr({
+                    dateFormat: "F j, Y",
+                    defaultDate: datefrom,
+                    disableMobile: true
+                });
+                $(".date_to").flatpickr({
+                    dateFormat: "F j, Y",
+                    defaultDate: dateto,
+                    disableMobile: true
+                });
+            }
+        });
     </script>
 
     <script>
