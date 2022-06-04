@@ -5503,21 +5503,24 @@ class Patient extends MX_Controller {
         $patient_privacy_level_id = $this->patient_model->getPrivacyLevelById($patient_details->privacy_level_id);
 
         $doctor_check = in_array($doctor_id, $patients_doctor);
+        $visited_provider_check = in_array($provider_logged, $patient_visited_provider);
 
         if ($this->ion_auth->in_group(array('Doctor'))) {
             if ($patient_privacy_level_id->name === "isolated") {
                 $patient_privacy = in_array($provider_logged, $patient_isolated_provider);
-                if ($doctor_check === TRUE) {
+                if ($doctor_check === TRUE && $visited_provider_check === TRUE) {
                     $add_patient_doctor = $patient_details->doctor;
                     $this->session->set_flashdata('error', "You already have access to Patient ".$patient_details->name);
-                } elseif ($doctor_check === FALSE) {
+                } elseif ($doctor_check === FALSE && $visited_provider_check === FALSE) {
                     if (empty($patient_details->doctor)) {
                         $add_patient_doctor = $doctor_id;
                         if ($patient_privacy === TRUE) {
                             $add_i_provider = $patient_details->isolated_provider_id;
+                            $add_v_provider = $patient_details->visited_provider_id;
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "isolated_provider_id" => $add_i_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             if ($patient_details->doctor !== $add_patient_doctor ) {
                                 $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
@@ -5531,9 +5534,15 @@ class Patient extends MX_Controller {
                             } else {
                                 $add_i_provider = $patient_details->isolated_provider_id.','.$provider_logged;
                             }
+                            if (empty($patient_details->visited_provider_id)) {
+                                $add_v_provider = $provider_logged;
+                            } else {
+                                $add_v_provider = $patient_details->visited_provider_id.','.$provider_logged;
+                            }
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "isolated_provider_id" => $add_i_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             $this->session->set_flashdata('success', lang('record_updated'));
                         }
@@ -5541,9 +5550,11 @@ class Patient extends MX_Controller {
                         $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
                         if ($patient_privacy === TRUE) {
                             $add_i_provider = $patient_details->isolated_provider_id;
+                            $add_v_provider = $patient_details->visited_provider_id;
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "isolated_provider_id" => $add_i_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             if ($patient_details->doctor !== $add_patient_doctor ) {
                                 $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
@@ -5557,13 +5568,21 @@ class Patient extends MX_Controller {
                             } else {
                                 $add_i_provider = $patient_details->isolated_provider_id.','.$provider_logged;
                             }
+                            if (empty($patient_details->visited_provider_id)) {
+                                $add_v_provider = $provider_logged;
+                            } else {
+                                $add_v_provider = $patient_details->visited_provider_id.','.$provider_logged;
+                            }
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "isolated_provider_id" => $add_i_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             $this->session->set_flashdata('success', lang('record_updated'));
                         }
                     }
+                } else {
+                    $this->session->set_flashdata('error', "Something went wrong");
                 }
                 // $data = array(
                 //     "doctor" => $add_patient_doctor,
@@ -5571,17 +5590,19 @@ class Patient extends MX_Controller {
                 // );
             } elseif ($patient_privacy_level_id->name === "authorized") {
                 $patient_privacy = in_array($provider_logged, $patient_authorized_provider);
-                if ($doctor_check === TRUE) {
+                if ($doctor_check === TRUE && $visited_provider_check === TRUE) {
                     $add_patient_doctor = $patient_details->doctor;
                     $this->session->set_flashdata('error', "You already have access to Patient ".$patient_details->name);
-                } elseif ($doctor_check === FALSE) {
+                } elseif ($doctor_check === FALSE && $visited_provider_check === FALSE) {
                     if (empty($patient_details->doctor)) {
                         $add_patient_doctor = $doctor_id;
                         if ($patient_privacy === TRUE) {
                             $add_a_provider = $patient_details->authorized_provider_id;
+                            $add_v_provider = $patient_details->visited_provider_id;
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "authorized_provider_id" => $add_a_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             if ($patient_details->doctor !== $add_patient_doctor ) {
                                 $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
@@ -5595,9 +5616,15 @@ class Patient extends MX_Controller {
                             } else {
                                 $add_a_provider = $patient_details->authorized_provider_id.','.$provider_logged;
                             }
+                            if (empty($patient_details->visited_provider_id)) {
+                                $add_v_provider = $provider_logged;
+                            } else {
+                                $add_v_provider = $patient_details->visited_provider_id.','.$provider_logged;
+                            }
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "authorized_provider_id" => $add_a_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             $this->session->set_flashdata('success', lang('record_updated'));
                         }
@@ -5605,9 +5632,11 @@ class Patient extends MX_Controller {
                         $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
                         if ($patient_privacy === TRUE) {
                             $add_a_provider = $patient_details->authorized_provider_id;
+                            $add_v_provider = $patient_details->visited_provider_id;
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "authorized_provider_id" => $add_a_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             if ($patient_details->doctor !== $add_patient_doctor ) {
                                 $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
@@ -5621,13 +5650,21 @@ class Patient extends MX_Controller {
                             } else {
                                 $add_a_provider = $patient_details->authorized_provider_id.','.$provider_logged;
                             }
+                            if (empty($patient_details->visited_provider_id)) {
+                                $add_v_provider = $provider_logged;
+                            } else {
+                                $add_v_provider = $patient_details->visited_provider_id.','.$provider_logged;
+                            }
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "authorized_provider_id" => $add_a_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             $this->session->set_flashdata('success', lang('record_updated'));
                         }
                     }
+                } else {
+                    $this->session->set_flashdata('error', "Something went wrong");
                 }
                 // $data = array(
                 //     "doctor" => $add_patient_doctor,
@@ -5635,17 +5672,19 @@ class Patient extends MX_Controller {
                 // );
             } elseif ($patient_privacy_level_id->name === "unrestricted") {
                 $patient_privacy = in_array($provider_logged, $patient_unrestricted_provider);
-                if ($doctor_check === TRUE) {
+                if ($doctor_check === TRUE && $visited_provider_check === TRUE) {
                     $add_patient_doctor = $patient_details->doctor;
                     $this->session->set_flashdata('error', "You already have access to Patient ".$patient_details->name);
-                } elseif ($doctor_check === FALSE) {
+                } elseif ($doctor_check === FALSE && $visited_provider_check === FALSE) {
                     if (empty($patient_details->doctor)) {
                         $add_patient_doctor = $doctor_id;
                         if ($patient_privacy === TRUE) {
                             $add_u_provider = $patient_details->unrestricted_provider_id;
+                            $add_v_provider = $patient_details->visited_provider_id;
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "authorized_provider_id" => $add_a_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             if ($patient_details->doctor !== $add_patient_doctor ) {
                                 $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
@@ -5659,9 +5698,15 @@ class Patient extends MX_Controller {
                             } else {
                                 $add_u_provider = $patient_details->unrestricted_provider_id.','.$provider_logged;
                             }
+                            if (empty($patient_details->visited_provider_id)) {
+                                $add_v_provider = $provider_logged;
+                            } else {
+                                $add_v_provider = $patient_details->visited_provider_id.','.$provider_logged;
+                            }
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "unrestricted_provider_id" => $add_u_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             $this->session->set_flashdata('success', lang('record_updated'));
                         }
@@ -5669,9 +5714,11 @@ class Patient extends MX_Controller {
                         $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
                         if ($patient_privacy === TRUE) {
                             $add_u_provider = $patient_details->unrestricted_provider_id;
+                            $add_v_provider = $patient_details->visited_provider_id;
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "authorized_provider_id" => $add_a_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             if ($patient_details->doctor !== $add_patient_doctor ) {
                                 $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
@@ -5685,13 +5732,21 @@ class Patient extends MX_Controller {
                             } else {
                                 $add_u_provider = $patient_details->unrestricted_provider_id.','.$provider_logged;
                             }
+                            if (empty($patient_details->visited_provider_id)) {
+                                $add_v_provider = $provider_logged;
+                            } else {
+                                $add_v_provider = $patient_details->visited_provider_id.','.$provider_logged;
+                            }
                             $data = array(
                                 "doctor" => $add_patient_doctor,
                                 "unrestricted_provider_id" => $add_u_provider,
+                                "visited_provider_id" => $add_v_provider,
                             );
                             $this->session->set_flashdata('success', lang('record_updated'));
                         }
                     }
+                } else {
+                    $this->session->set_flashdata('error', "Something went wrong");
                 }
                 // $data = array(
                 //     "doctor" => $add_patient_doctor,
@@ -5714,8 +5769,14 @@ class Patient extends MX_Controller {
                     } else {
                         $add_i_provider = $patient_details->isolated_provider_id.','.$provider_logged;
                     }
+                    if (empty($patient_details->visited_provider_id)) {
+                        $add_v_provider = $provider_logged;
+                    } else {
+                        $add_v_provider = $patient_details->visited_provider_id.','.$provider_logged;
+                    }
                     $data = array(
                         "isolated_provider_id" => $add_i_provider,
+                        "visited_provider_id" => $add_v_provider,
                     );
                     $this->session->set_flashdata('success', lang('record_updated'));
                 }
@@ -5733,8 +5794,14 @@ class Patient extends MX_Controller {
                     } else {
                         $add_a_provider = $patient_details->authorized_provider_id.','.$provider_logged;
                     }
+                    if (empty($patient_details->visited_provider_id)) {
+                        $add_v_provider = $provider_logged;
+                    } else {
+                        $add_v_provider = $patient_details->visited_provider_id.','.$provider_logged;
+                    }
                     $data = array(
                         "authorized_provider_id" => $add_a_provider,
+                        "visited_provider_id" => $add_v_provider,
                     );
                     $this->session->set_flashdata('success', lang('record_updated'));
                 }
@@ -5752,8 +5819,14 @@ class Patient extends MX_Controller {
                     } else {
                         $add_u_provider = $patient_details->unrestricted_provider_id.','.$provider_logged;
                     }
+                    if (empty($patient_details->visited_provider_id)) {
+                        $add_v_provider = $provider_logged;
+                    } else {
+                        $add_v_provider = $patient_details->visited_provider_id.','.$provider_logged;
+                    }
                     $data = array(
                         "unrestricted_provider_id" => $add_u_provider,
+                        "visited_provider_id" => $add_v_provider,
                     );
                     $this->session->set_flashdata('success', lang('record_updated'));
                 }
