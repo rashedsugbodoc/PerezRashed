@@ -150,7 +150,7 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <form role="form" action="finance/patientPaymentHistory?patient=<?php echo $patient->id; ?>" class="f_report" method="post" enctype="multipart/form-data">
+                                                        <form role="form" action="finance/patientPaymentHistory?patient=<?php echo $patient->patient_id; ?>" class="f_report" method="post" enctype="multipart/form-data">
                                                             <div class="form-group">
                                                                 <div class="btn-group mr-0">
                                                                     <div class="input-group-prepend">
@@ -186,7 +186,7 @@
                                                                 <thead>
                                                                     <tr>
                                                                         <th class=""><?php echo lang('date'); ?></th>
-                                                                        <th class=""><?php echo lang('invoice_id'); ?></th>
+                                                                        <th class=""><?php echo lang('bill'); ?> #</th>
                                                                         <th class=""><?php echo lang('bill_amount'); ?></th>
                                                                         <th class=""><?php echo lang('total_payments'); ?></th>
                                                                         <th class=""><?php echo lang('balance'); ?></th>
@@ -221,7 +221,7 @@
                                                                                 ?>
                                                                                 <tr class="">
                                                                                     <td><?php echo date('y-m-d', $payment->date); ?></td>
-                                                                                    <td> <?php echo $payment->id; ?></td>
+                                                                                    <td> <?php echo $payment->invoice_number; ?></td>
                                                                                     <td><?php echo $settings->currency; ?> <?php echo number_format($payment->gross_total, 2); ?></td>
                                                                                     <!-- <td><?php
                                                                                         if (!empty($payment->amount_received)) {
@@ -310,7 +310,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th><?php echo lang('date') ?></th>
-                                                        <th><?php echo lang('invoice_id') ?></th>
+                                                        <th><?php echo lang('bill') ?> #</th>
                                                         <th><?php echo lang('receipt') ?></th>
                                                         <th><?php echo lang('payment') ?></th>
                                                         <th><?php echo lang('status') ?></th>
@@ -326,7 +326,7 @@
                                                                 ?>
                                                                     <tr>
                                                                         <td><?php echo date('y-m-d', $deposit_by_date->date); ?></td>
-                                                                        <td><?php echo $deposit_by_date->payment_id; ?></td>
+                                                                        <td><?php echo $this->finance_model->getPaymentById($deposit_by_date->payment_id)->invoice_number; ?></td>
                                                                         <td><?php echo $deposit_by_date->receipt_number; ?></td>
                                                                         <td><?php echo $deposit_by_date->deposited_amount; ?></td>
                                                                         <td><?php echo $deposit_by_date->status; ?></td>
@@ -352,7 +352,7 @@
                                             <div class="card-body text-center">
                                                 <div class="pro-user">
                                                     <h4 class="pro-user-username text-dark mb-1 font-weight-bold"><?php echo $patient->name; ?></h4>
-                                                    <h6 class="pro-user-desc text-muted">ID : <?php echo $patient->id; ?></h6>
+                                                    <h6 class="pro-user-desc text-muted">ID : <?php echo $patient->patient_id; ?></h6>
                                                 </div>
                                             </div>
                                             <div class="card-body border-top">
