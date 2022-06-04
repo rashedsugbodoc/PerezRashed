@@ -33,7 +33,7 @@
                                                     <th> <?php echo lang('date'); ?></th>                                  
                                                     <th> <?php echo lang('prescription'); ?> <?php echo lang('number'); ?> </th>
                                                     <th> <?php echo lang('patient'); ?></th>
-                                                    <th> <?php echo lang('patient'); ?> <?php echo lang('id'); ?> </th>
+                                                    <th> <?php echo lang('patient'); ?> <?php echo lang('number'); ?> </th>
                                                     <th> <?php echo lang('medicine'); ?> </th>
                                                     <th> <?php echo lang('options'); ?></th>
                                                 </tr>

@@ -599,7 +599,7 @@ class Prescription extends MX_Controller {
                 date('Y-m-d', strtotime($prescription->prescription_date.' UTC')),
                 $prescription->prescription_number,
                 $patientname,
-                $prescription->patient,
+                $this->patient_model->getPatientById($prescription->patient)->patient_id,
                 $medicinelist,
                 $option1 . ' ' . $option3 . ' ' . $options4 . ' ' . $option2
             );
