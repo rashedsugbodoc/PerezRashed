@@ -45,7 +45,7 @@
                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
                                                 <select class="select2-show-search form-control pos_select" name="patient" id="pos_select">
                                                     <?php if (!empty($patient_id)) { ?>
-                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
+                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientByPatientNumber($patient_id)->name; ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>
@@ -100,10 +100,10 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12 ref_provider_client">
+                                                <div class="col-md-12 col-sm-12 ref_provider_client ml-4 pr-4">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('name'); ?></label>
-                                                        <input type="text" name="provider_name" class="form-control">
+                                                        <label class="text-info form-label"><?php echo lang('referral_provider').' '.lang('name'); ?></label>
+                                                        <input type="text" name="provider_name" class="border-info form-control" placeholder="<?php echo lang('referral_clinic_hospital_facility');?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -120,10 +120,10 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12 ref_doctor_client">
+                                                <div class="col-md-12 col-sm-12 ref_doctor_client ml-4 pr-4">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('name'); ?></label>
-                                                        <input type="text" name="ref_name" class="form-control">
+                                                        <label class="text-info form-label"><?php echo lang('referring_doctor').' '.lang('name'); ?></label>
+                                                        <input type="text" name="ref_name" class="border-info form-control" placeholder="<?php echo lang('full_name').' '.lang('of').' '.lang('referring_doctor');?>">
                                                     </div>
                                                 </div>
                                             </div>

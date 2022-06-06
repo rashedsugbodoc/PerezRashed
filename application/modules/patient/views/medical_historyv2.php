@@ -175,7 +175,7 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-2 pl-0">
                                     <div class="form-group">
-                                        <a href="encounter/addNewView?patient_id=<?php echo $patient->id ?>&root=patient&method=medicalHistory" class="btn btn-primary pull-right">
+                                        <a href="encounter/addNewView?patient_id=<?php echo $patient->patient_id ?>&root=patient&method=medicalHistory" class="btn btn-primary pull-right">
                                             <i class="fe fe-plus icon"></i><center class="button-text"><?php echo lang('create_encounter'); ?></center>
                                         </a>
                                     </div>
