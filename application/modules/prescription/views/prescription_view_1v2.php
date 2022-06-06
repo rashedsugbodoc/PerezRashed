@@ -226,7 +226,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-md-12 col-sm-12 pl-0 text-center">
+                                                            <div class="col-md-12 col-sm-12 text-center">
                                                                 <h5 class="mb-1"><?php
                                                                 if (!empty($doctor)) {
                                                                     echo $spec;
@@ -276,39 +276,80 @@
                                                         $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
                                                         $city_name = $this->location_model->getCityById($branch->city_id)->name;
                                                     ?>
-                                                        <div class="col-md col-sm pl-0">
+                                                        <!-- <div class="col-md col-sm">
                                                             <div class="row">
-                                                                <div class="col-md-1 col-sm-1 mb-0">
+                                                                <div class="d-flex mr-3">
                                                                     <i class="fa fa-hospital-o text-primary"></i>
                                                                 </div>
-                                                                <div class="col-md-11 col-sm-11 pl-0">
+                                                                <div class="media-body">
                                                                     <span class="h6 mb-1 align-baseline"><strong><?php echo $branch->display_name; ?></strong></span>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-md-1 col-sm-1 mb-0">
+                                                                <div class="d-flex mr-3">
                                                                     <i class="fa fa-map-marker text-primary"></i>
                                                                 </div>
-                                                                <div class="col-md-11 col-sm-11 pl-0">
+                                                                <div class="media-body">
                                                                     <span class="h6 mb-1"><?php echo $branch->street_address; ?></span>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-md-1 col-sm-1 mb-0">
+                                                                <div class="d-flex mr-3">
                                                                     
                                                                 </div>
-                                                                <div class="col-md-11 col-sm-11 pl-0">
+                                                                <div class="media-body ml-2">
                                                                     <span class="h6 mb-1"><?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></span>
                                                                 </div>
                                                             </div>
                                                             <div class="row">
-                                                                <div class="col-md-1 col-sm-1 mb-0">
+                                                                <div class="d-flex mr-3">
                                                                     <i class="fe fe-phone text-primary"></i>
                                                                 </div>
-                                                                <div class="col-md-11 col-sm-11 pl-0">
+                                                                <div class="media-body">
                                                                     <?php if(!empty($branch->phone)) {?>
-                                                                    <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
+                                                                        <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
                                                                     <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </div> -->
+                                                        <div class="col-md col-sm" <?php if (count($branches)<=1) { echo 'style="text-align: center;"'; } ?>>
+                                                            <div style="display: inline-block; text-align: left;">
+                                                                <div class="row">
+                                                                    <!-- <div class="col-md-1 col-sm-1 mb-0">
+                                                                        <i class="fa fa-hospital-o text-primary"></i>
+                                                                    </div> -->
+                                                                    <div class="col-md-12 col-sm-12 pl-0">
+                                                                        <i class="fa fa-hospital-o text-primary"></i>
+                                                                        <span class="h6 mb-1 align-baseline"><strong><?php echo $branch->display_name; ?></strong></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <!-- <div class="col-md-1 col-sm-1 mb-0">
+                                                                        <i class="fa fa-map-marker text-primary"></i>
+                                                                    </div> -->
+                                                                    <div class="col-md-12 col-sm-12 pl-0">
+                                                                        <i class="fa fa-map-marker text-primary"></i>
+                                                                        <span class="h6 mb-1"><?php echo $branch->street_address; ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <!-- <div class="col-md-1 col-sm-1 mb-0">
+                                                                        
+                                                                    </div> -->
+                                                                    <div class="col-md-12 col-sm-12 pl-0">
+                                                                        <span class="h6 mb-1"><?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <!-- <div class="col-md-1 col-sm-1 mb-0">
+                                                                        <i class="fe fe-phone text-primary"></i>
+                                                                    </div> -->
+                                                                    <div class="col-md-12 col-sm-12 pl-0">
+                                                                        <?php if(!empty($branch->phone)) {?>
+                                                                        <i class="fe fe-phone text-primary"></i>
+                                                                        <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
+                                                                        <?php } ?>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -327,7 +368,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-6 pb-1">
+                                                <div class="col-md-6 col-sm-6 pb-1 pl-0 pr-0">
                                                     <div class="form-group mb-0">
                                                         <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('name'); ?>: </span>
                                                         <strong>
@@ -343,9 +384,9 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-3 pb-1">
+                                                <div class="col-md-3 col-sm-3 pb-1 pl-0">
                                                     <div class="form-group mb-0 prescription-opacity">
-                                                        <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <strong><span><?php echo $prescription->prescription_number; ?></span></strong></label>
+                                                        <label class="form-label mb-0"><?php echo lang('prescription_id');?>: <strong><span><?php echo $prescription->prescription_number; ?></span></strong></label>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3 col-sm-3 pb-1">
@@ -355,7 +396,7 @@
                                                 </div>
                                             </div>
                                             <div class="row pb-2">
-                                                <div class="col-md-6 col-sm-6 pt-1">
+                                                <div class="col-md-6 col-sm-6 pt-1 pl-0 pr-0">
                                                     <div class="form-group mb-0">
                                                         <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('address');?> : </span><strong><span class="h5 prescription-opacity"><?php
                                                             if (!empty($patient->barangay_id)) {
@@ -367,7 +408,7 @@
                                                         ?></span></strong></label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-3 col-sm-3 pt-1">
+                                                <div class="col-md-3 col-sm-3 pt-1 pl-0">
                                                     <div class="form-group mb-0">
                                                         <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('age'); ?>: </span>
                                                         <strong>
