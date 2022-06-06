@@ -2502,7 +2502,7 @@ class Finance extends MX_Controller {
 
             $info[] = array(
                 $date,
-                $payment->id,
+                $payment->invoice_number,
                 $patient_details,
                 $doctor,
                 $settings->currency . '' . number_format($payment->amount,2),

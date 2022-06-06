@@ -28,7 +28,7 @@
                                             <thead>
                                                 <tr>
                                                     <th><?php echo lang('date'); ?></th>
-                                                    <th><?php echo lang('invoice_id'); ?></th>
+                                                    <th><?php echo lang('invoice').' '.lang('number'); ?></th>
                                                     <th><?php echo lang('patient'); ?></th>
                                                     <th><?php echo lang('doctor'); ?></th>
                                                     <th><?php echo lang('sub_total'); ?></t>
