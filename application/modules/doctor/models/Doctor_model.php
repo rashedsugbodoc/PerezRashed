@@ -160,7 +160,7 @@ class Doctor_model extends CI_model {
         // Initialize Array with fetched data
         $data = array();
         foreach ($users as $user) {
-            $data[] = array("id" => $user['id'], "text" => $user['name'] . ' (' . lang('id') . ': ' . $user['id'] . ')');
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
         }
         return $data;
     }
