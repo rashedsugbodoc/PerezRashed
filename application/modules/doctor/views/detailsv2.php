@@ -70,7 +70,7 @@
                                                                                         <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $todays_appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                                                     </div>
                                                                                     <div class="btn-group mb-0">
-                                                                                        <a title="<?php echo lang('history'); ?>"  href="patient/medicalHistory?id=<?php echo $todays_appointment->patient; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-stethoscope mr-2"></i><?php echo lang('patient'); ?> <?php echo lang('history'); ?></a>
+                                                                                        <a title="<?php echo lang('history'); ?>"  href="patient/medicalHistory?id=<?php echo $patient_details->patient_id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-stethoscope mr-2"></i><?php echo lang('history'); ?></a>
                                                                                     </div>
                                                                                     <?php if ($todays_appointment->status == 'Confirmed') { ?>
                                                                                         <?php
@@ -177,7 +177,7 @@
                                                                                 <td><?php echo $appointed_patient->name; ?></td>
                                                                                 <td>
                                                                                     <div class="btn-group mb-0">
-                                                                                        <a href="patient/medicalHistory?id=<?php echo $appointed_patient->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false" title="<?php echo lang('history'); ?>"><i class="fa fa-stethoscope mr-2"></i><?php echo lang('history'); ?></a>
+                                                                                        <a href="patient/medicalHistory?id=<?php echo $appointed_patient->patient_id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false" title="<?php echo lang('history'); ?>"><i class="fa fa-stethoscope mr-2"></i><?php echo lang('history'); ?></a>
                                                                                     </div>
                                                                                 </td>
                                                                             </tr>
