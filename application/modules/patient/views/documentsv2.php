@@ -332,33 +332,39 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export Options',
+                        text: 'Export',
                         buttons: [
                             {
                                 extend: 'copyHtml5',
                                 exportOptions: {
-                                    columns: [1, 2, 3],
+                                    columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
-                                    columns: [1, 2, 3],
+                                    columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
                                 exportOptions: {
-                                    columns: [1, 2, 3],
+                                    columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
                                 exportOptions: {
-                                    columns: [1, 2, 3],
+                                    columns: [0, 1, 2, 3],
                                 },
                                 orientation: 'landscape',
                                 pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
                             }
                         ]
                     }
