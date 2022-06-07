@@ -31,16 +31,13 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <meta name="description" content="">
         <meta name="author" content="Rygel">
         <meta name="keywords" content="Hospital Information System, Clinic, Management, Software, Finance">
-        <title> <?php echo $this->router->fetch_class(); ?> | 
-            <?php
+        <title> <?php echo $this->router->fetch_class(); ?> | <?php
             if ($this->ion_auth->in_group(array('superadmin'))) {
                 $this->db->where('hospital_id', 'superadmin');
             } else {
                 $this->db->where('hospital_id', $this->hospital_id);
             }
-            ?>
-            <?php
-            echo $this->db->get('settings')->row()->system_vendor;
+            ?><?php echo $this->db->get('settings')->row()->system_vendor;
             ?>  
         </title>
         
