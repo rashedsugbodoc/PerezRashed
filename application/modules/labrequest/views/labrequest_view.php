@@ -10,6 +10,10 @@
                                         .button-text {
                                             display: none;
                                         }
+                                        .ziconDisplay {
+                                            position: absolute !important;
+                                            top: 380px !important;
+                                        }
                                     }
 
                                     @media (max-width: 275px) {
@@ -56,7 +60,7 @@
                                       position: absolute; 
                                       bottom: 0; 
                                       background: rgb(0, 0, 0);
-                                      background: rgba(0, 0, 0, 0.5); /* Black see-through */
+                                      background: rgba(0, 0, 0, 0.5);
                                       color: #f1f1f1; 
                                       width: 100%;
                                       transition: .5s ease;
@@ -71,52 +75,68 @@
                                       opacity: 1;
                                     }
 
+                                    #content{
+                                        color: black;
+                                    }
+
+                                    .ziconDisplay {
+                                        position: absolute;
+                                        top: 280px;
+                                    }
+
+                                    @page {
+                                      margin: 5mm 5mm 15mm 10mm;
+                                      /*width: 210mm;
+                                      height: 297mm;*/
+                                      /*margin: 20mm*/
+                                    }
+
                                     @media print {
-                                        @page {
-                                          /*size: A4;*/
-                                          margin: 8mm 15mm 15mm 15mm;
-                                          width: 210mm;
-                                          height: 297mm;
+                                        .page-headerz, .page-header-space {
+                                            height: 376px;
+                                          /*height: 393px;*/
+                                          /*height: 100px;*/
                                         }
 
-                                        footer {
-                                            display: flex;
-                                            position: fixed;
-                                            bottom: -28px;
-                                            width: 100% !important;
-                                        }
-                                        header {
-                                            position: fixed;
-                                            overflow: avoid;
-                                            width: 100%;
+                                        .page-headerz, .page-header-space-phone {
+                                            height: 2px;
                                         }
 
-                                        .content-block-body {
-                                            position: relative;
-                                            top: 18.5em !important;
+                                        .page-footerz, .page-footer-space {
+                                          height: 275px;
+
                                         }
 
-                                        .content-block-item {
-                                            page-break-inside: avoid;
-                                            position: relative;
-                                            width: 100%;
-                                            top:1em;   //match size of header
-                                            left:0px;
-                                            right:0px;
-                                            /*border: solid 2px black;*/
+                                        .page-footerz {
+                                          position: fixed;
+                                          bottom: 0;
+                                          width: 100%;
+                                          /*border-top: 1px solid black; /* for demo */*/
+                                          background: yellow; /* for demo */
                                         }
 
-                                        .clearfix {
-                                          overflow: auto;
+                                        .page-headerz {
+                                          position: fixed;
+                                          top: 0mm;
+                                          width: 100%;
+                                          /*border-bottom: 1px solid black; /* for demo */*/
+                                          background: yellow; /* for demo */
                                         }
 
-                                        .prescription-footer {
-                                            width: 100%;
+                                        /*.pagez {
+                                          page-break-after: always;
+                                          break-before: avoid;
+                                        }*/
+
+                                        td {
+                                            margin: 0 !important;
+                                            padding: 0 !important;
+                                            border: 0 !important;
                                         }
 
-                                        .footer-area-height {
-                                            height: 38vh !important;
-                                            opacity: 0;
+                                        .region {
+                                          /*page-break-after: always;*/
+                                          break-inside: avoid;
                                         }
 
                                         .company-logo {
@@ -126,13 +146,27 @@
                                             height: auto !important;
                                         }
 
-                                      html, body {
-                                        /*width: 210mm;
-                                        height: 297mm;*/
-                                        font-size: 16.5pt;
-                                      }
-                                      .hidden-print{
-                                        display: none;
+                                        .logo-print {
+                                            margin-bottom: 0;
+                                            padding-bottom: 0;
+                                            border-bottom: 0;
+                                            /*vertical-align: baseline;*/
+                                        }
+
+                                        .zicon {
+                                            position: absolute;
+                                            top: 370px;
+                                        }
+
+                                        thead {display: table-header-group;} 
+                                        tfoot {display: table-footer-group;}
+                                       
+                                        button {display: none;}
+                                       
+                                        body {margin: 0;}
+
+                                        html, body {
+                                            font-size: 16pt;
                                         }
                                     }
 
@@ -150,7 +184,7 @@
                         ?>
                         <div class="page-header d-print-none">
                             <div class="page-leftheader">
-                                <h4 class="page-title"><?php echo lang('lab').' '.lang('request') ;?> <?php echo lang('details');?></h4>
+                                <h4 class="page-title"><?php echo lang('lab').' '.lang('request');?> <?php echo lang('details');?></h4>
                             </div>
                         </div>
                         <!--End Page header-->
@@ -169,7 +203,7 @@
                                     <?php } ?>
                                     <div class="flex-grow-2">
                                         <button type="button" class="btn btn-info" id="create_pdf"><i class="fe fe-download"></i><span class="button-text"> <?php echo lang('download'); ?></span></button>
-                                        <button type="button" id="print" class="btn btn-info" onClick="javascript:window.print();"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
+                                        <button type="button" id="print" class="btn btn-info"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
                                         <!-- <button type="button" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></button> -->
                                         <!--a href="prescription/editPrescription?id=<?php echo $prescription->id;?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></a-->
                                     </div>
@@ -188,7 +222,7 @@
                                     <div>
                                         <label><strong>Print Settings: </strong></label>
                                         <label class="custom-switch">
-                                            <span class="custom-switch-description mr-2 text-muted">Show Prescription Details</span>
+                                            <span class="custom-switch-description mr-2 text-muted">Show Labrequest Details</span>
                                             <input type="checkbox" checked name="custom-switch-checkbox" id="prescription-opacity-change" class="custom-switch-input">
                                             <span class="custom-switch-indicator custom-switch-indicator-xl custom-radius"></span>
                                         </label>
@@ -202,298 +236,291 @@
                             </div>
                         <?php } ?>
 
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12" id="content">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <header>
-                                            <div class="template-opacity">
-                                                <div class="row mb-1">
-                                                    <div class="col-md-12">
-                                                        <div class="row">
-                                                            <!-- <div class="col-md-1">
-                                                                <div class="form-group text-center">
-                                                                    <img src="<?php echo base_url('uploads/sugbodoc-square.png'); ?>" width="auto" height="auto" style="max-width: 100px;max-height: 100px;">
-                                                                </div>
-                                                            </div> -->
-                                                            <div class="col-md-12 col-sm-12 text-center">
-                                                                <h3 class="mb-2"><?php
-                                                                if (!empty($doctor)) {
-                                                                    echo $doctor->professional_display_name;
-                                                                } 
-                                                                    ?>
-                                                                </h3>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12 col-sm-12 pl-0 text-center">
-                                                                <h5 class="mb-1"><?php
-                                                                if (!empty($doctor)) {
-                                                                    echo $spec;
-                                                                }
-                                                                ?>
-                                                                </h5>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <!-- <div class="col-md-6">
-                                                        <div class="row">
-                                                            <div class="col-md-12 col-sm-12 header-brand pl-0">
-                                                                <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-lgo pull-right" style="height: 60px;" alt="<?php echo $settings->title;?>">
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
-                                                </div>
-                                                <!-- <?php if (!empty($doctor->license)) { ?>
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-sm-12 pl-0 text-center">
-                                                            <i class="fa fa-stethoscope"></i>  <?php echo lang('license');?> # : <span class="h4"><?php echo $doctor->license; ?></span>
-                                                        </div>
-                                                    </div>
-                                                <?php } ?> -->
-                                                <!-- <div class="row mb-5">
-                                                    <div class="col-md-12 col-sm-12 pl-0 text-center">
-                                                        <h5 class="mb-1"><i class="fa fa-map-marker"></i> <?php echo $settings->address; ?></h5>
-                                                        <h5 class="mb-1"><?php echo $this->location_model->getBarangayById($settings->barangay_id)->name; ?>, <?php echo $this->location_model->getCityById($settings->city_id)->name; ?></h5>
-                                                        <h5 class="mb-1"><i class="fe fe-phone"></i> <?php echo $doctor->phone; ?></h5>
-                                                        <h5 class="mb-1"><i class="fe fe-mail"></i> <?php echo $doctor->email; ?></h5>
-                                                    </div>
-                                                </div>        -->         
-                                                <div class="row mb-1">
-                                                    <div class="col-md-12 pl-0 text-center">
-                                                        <h6 class="mb-1"><i class="fe fe-phone text-primary"></i> &nbsp;&nbsp;<?php echo $doctor->phone; ?></h6>
-                                                        <h6 class="mb-1"><i class="fe fe-mail text-primary"></i> &nbsp;&nbsp;<?php echo $doctor->email; ?></h6>
-                                                    </div>
-                                                </div>            
-                                                <div class="row mb-1">
-                                                    <?php foreach($branches as $branch) { 
-                                                        $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
-                                                        $city_name = $this->location_model->getCityById($branch->city_id)->name;
-                                                    ?>
-                                                        <div class="col-md col-sm pl-0">
-                                                            <div class="row">
-                                                                <div class="col-md-1 col-sm-1 mb-0">
-                                                                    <i class="fa fa-hospital-o text-primary"></i>
-                                                                </div>
-                                                                <div class="col-md-11 col-sm-11 pl-0">
-                                                                    <span class="h6 mb-1 align-baseline"><strong><?php echo $branch->display_name; ?></strong></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-1 col-sm-1 mb-0">
-                                                                    <i class="fa fa-map-marker text-primary"></i>
-                                                                </div>
-                                                                <div class="col-md-11 col-sm-11 pl-0">
-                                                                    <span class="h6 mb-1"><?php echo $branch->street_address; ?></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-1 col-sm-1 mb-0">
-                                                                    
-                                                                </div>
-                                                                <div class="col-md-11 col-sm-11 pl-0">
-                                                                    <span class="h6 mb-1"><?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-1 col-sm-1 mb-0">
-                                                                    <i class="fe fe-phone text-primary"></i>
-                                                                </div>
-                                                                <div class="col-md-11 col-sm-11 pl-0">
-                                                                    <?php if(!empty($branch->phone)) {?>
-                                                                    <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
-                                                                    <?php } ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <?php } ?>
-                                                </div>
-                                                <!-- <div class="row mb-5">
-                                                    <div class="col-md-12 col-sm-12 pl-0 text-center">
-                                                        <i class="fe fe-phone"></i> <span class="h4"><?php echo $settings->phone; ?></span>
-                                                    </div>
-                                                </div> -->
-                                                <div class="row border-bottom border-dark">
-                                                    
-                                                </div>
-                                                <div class="row border-top border-dark pt-2">
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6 col-sm-6 pb-1">
-                                                    <div class="form-group mb-0">
-                                                        <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('name'); ?>: </span>
-                                                        <strong>
-                                                            <span class="h5 prescription-opacity">
-                                                                <?php echo $patient->name ?>
-                                                            </span>
-                                                        </strong>
-                                                        
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-sm-3 pb-1">
-                                                    <div class="form-group mb-0 prescription-opacity">
-                                                        <label class="form-label mb-0"><?php echo lang('lab').' '.lang('request').' '.lang('id');?> : <strong><span class="h5"><?php echo $labrequest->lab_request_number; ?></span></strong></label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-sm-3 pb-1">
-                                                    <div class="form-group mb-0">
-                                                        <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('date');?> : </span><strong><span class="h5 prescription-opacity"><?php echo date('M j, Y',strtotime($labrequest->request_date.' UTC')); ?></span></strong></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row pb-2">
-                                                <div class="col-md-6 col-sm-6 pt-1">
-                                                    <div class="form-group mb-0">
-                                                        <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('address');?> : </span><strong><span class="h5 prescription-opacity"><?php
-                                                            if (!empty($patient->barangay_id)) {
-                                                                echo $this->location_model->getBarangayById($patient->barangay_id)->name . ', ';
-                                                            }
-                                                            if (!empty($patient->city_id)) {
-                                                                echo $this->location_model->getCityById($patient->city_id)->name;
-                                                            }
-                                                        ?></span></strong></label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-sm-3 pt-1">
-                                                    <div class="form-group mb-0">
-                                                        <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('age'); ?>: </span>
-                                                        <strong>
-                                                            <span class="h5 prescription-opacity">
-                                                                <?php
-                                                                if (!empty($patient)) {
-                                                                    $birthDate = strtotime($patient->birthdate);
-                                                                    $age = time_elapsed_string(date('d-m-Y H:i:s', $birthDate),2,"short_age");
-                                                                    echo $age;
-                                                                }
-                                                                ?>
-                                                            </span>
-                                                        </strong>
-                                                        
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-3 col-sm-3 pt-1">
-                                                    <div class="form-group mb-0">
-                                                        <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('sex'); ?>: </span><strong><span class="h5 prescription-opacity"><?php echo $patient->sex; ?></span></strong></label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row border-bottom border-dark template-opacity">
-                                                
-                                            </div>
-                                            <div class="row border-top border-dark template-opacity">
-                                                    
-                                            </div>
-                                        </header>
-                                        <div class="row mt-3">
+                        <div class="row" id="content">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="page-headerz">
+                                        <div class="row mb-0 template-opacity">
                                             <div class="col-md-12">
-                                                <div class="row content-block-body">
-                                                    <div class="col-md-1 col-sm-1 template-opacity">
-                                                        <!-- <h1><strong>℞</strong></h1> -->
-                                                        <header>
-                                                            <h1 class="fs-50">&#8478;</h1>
-                                                        </header>
-                                                    </div>
-                                                    <div class="col-md-11 col-sm-11 pl-0 prescription-opacity">
-                                                        <div class="form-group">
-                                                            <?php
-                                                            if (!empty($labrequest->id)) {
-                                                            $i = 0;
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 text-center">
+                                                        <h3 class="mb-1"><?php
+                                                        if (!empty($doctor)) {
+                                                            echo $doctor->professional_display_name;
+                                                        } 
                                                             ?>
-                                                            <table class="table prescription-table">
-                                                                <tbody>
-                                                                    <?php foreach($lab_request_number as $labrequest_number) { ?>
-                                                                        <tr class="content-block-item">
-                                                                            <td class="pb-0 pt-2"><h4><?php echo $i += 1; ?>.</h4></td>
-                                                                            <td class="pl-0 pb-0 pt-2">
-                                                                                <h4><p class="mb-2"><strong>
-                                                                                <?php
-                                                                                    if (!empty($labrequest_number->long_common_name)) {
-                                                                                        echo $labrequest_number->long_common_name;
-                                                                                    } else {
-                                                                                        echo $labrequest_number->lab_request_text;
-                                                                                    }
-                                                                                ?>
-                                                                                </strong></p>
-                                                                                <p class="mb-2"><?php echo $labrequest_number->instructions; ?></p>
-                                                                                <?php if (!empty($labrequest_number->loinc_num)) { ?>
-                                                                                    <p class="mb-2"><span><?php echo lang('loinc_code'); ?>: </span><?php echo $labrequest_number->loinc_num; ?></p></h4>
-                                                                                <?php } ?>
-                                                                            </td>
-                                                                        </tr>
-                                                                    <?php } ?>
-                                                                </tbody>
-                                                            </table>
-                                                            <?php } ?>
-                                                        </div>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12 text-center">
+                                                        <h5 class="mb-1"><?php
+                                                        if (!empty($doctor)) {
+                                                            echo $spec;
+                                                        }
+                                                        ?>
+                                                        </h5>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row white_space">
+                                        <div class="row mb-1">
+                                            <div class="col-md-12 pl-0 text-center template-opacity">
+                                                <h6 class="mb-1"><i class="fe fe-mail text-primary"></i> &nbsp;&nbsp;<?php echo $doctor->email; ?></h6>
+                                                <h6 class="mb-0"><i class="fe fe-phone text-primary"></i> &nbsp;&nbsp;<?php echo $doctor->phone; ?></h6>
+                                            </div>
+                                        </div>
+                                        <div class="row template-opacity">
+                                            <?php foreach($branches as $branch) { 
+                                                $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
+                                                $city_name = $this->location_model->getCityById($branch->city_id)->name;
+                                            ?>
+                                                <div class="col-md col-sm" <?php if (count($branches)<=1) { echo 'style="text-align: center;"'; } ?>>
+                                                    <div style="display: inline-block; text-align: left;">
+                                                        <div class="row">
+                                                            <!-- <div class="col-md-1 col-sm-1 mb-0">
+                                                                <i class="fa fa-hospital-o text-primary"></i>
+                                                            </div> -->
+                                                            <div class="col-md-12 col-sm-12 pl-0">
+                                                                <i class="fa fa-hospital-o text-primary"></i>
+                                                                <span class="h6 mb-1 align-baseline"><strong><?php echo $branch->display_name; ?></strong></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <!-- <div class="col-md-1 col-sm-1 mb-0">
+                                                                <i class="fa fa-map-marker text-primary"></i>
+                                                            </div> -->
+                                                            <div class="col-md-12 col-sm-12 pl-0">
+                                                                <i class="fa fa-map-marker text-primary"></i>
+                                                                <span class="h6 mb-1"><?php echo $branch->street_address.', '; if(!empty($barangay_name)) { echo $barangay_name.', ';} echo $city_name; ?></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <!-- <div class="col-md-1 col-sm-1 mb-0">
+                                                                <i class="fe fe-phone text-primary"></i>
+                                                            </div> -->
+                                                            <div class="col-md-12 col-sm-12 pl-0">
+                                                                <?php if(!empty($branch->phone)) {?>
+                                                                <i class="fe fe-phone text-primary"></i>
+                                                                <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                        <div class="row border-bottom border-dark pt-1 template-opacity">
                                             
                                         </div>
-                                        <div class="clearfix">
-                                            <footer>
-                                                <div class="row template-opacity prescription-footer">
-                                                    <div class="col-md-4 col-sm-4">
-                                                        <div class="row">
-                                                            <div class="form-group text-center">
-                                                                <img class="company-logo" src="<?php echo base_url('public/assets/images/brand/logo.png'); ?>" width="auto" height="auto" style="max-width: 200px;max-height: 200px;margin-top: 160px;">
-                                                                <h4 class="text-primary">www.sugbodoc.com</h4>
+                                        <div class="row border-top border-dark template-opacity">
+                                            
+                                        </div>
+                                        <div class="row pt-1">
+                                            <div class="col-md-6 col-sm-6 pb-1 pl-0 pr-0">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('name'); ?>: </span>
+                                                    <strong>
+                                                        <span class="h5 prescription-opacity">
+                                                            <?php
+                                                            if (!empty($patient)) {
+                                                                echo $patient->name;
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                    </strong>
+                                                    
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 pb-1 pl-0">
+                                                <div class="form-group mb-0 prescription-opacity">
+                                                    <label class="form-label mb-0"><?php echo lang('lab').' '.lang('request').' '.lang('id');?> : <strong><span class="h5"><?php echo $labrequest->lab_request_number; ?></span></strong></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 pb-1">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('date');?> : </span><strong><span class="h5 prescription-opacity"><?php echo date('M j, Y',strtotime($labrequest->request_date.' UTC')); ?></span></strong></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pb-2">
+                                            <div class="col-md-6 col-sm-6 pt-1 pl-0 pr-0">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('address');?> : </span><strong><span class="h5 prescription-opacity"><?php
+                                                        if (!empty($patient->barangay_id)) {
+                                                            echo $this->location_model->getBarangayById($patient->barangay_id)->name . ', ';
+                                                        }
+                                                        if (!empty($patient->city_id)) {
+                                                            echo $this->location_model->getCityById($patient->city_id)->name;
+                                                        }
+                                                    ?></span></strong></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 pt-1 pl-0">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('age'); ?>: </span>
+                                                    <strong>
+                                                        <span class="h5 prescription-opacity">
+                                                            <?php
+                                                            if (!empty($patient)) {
+                                                                $birthDate = strtotime($patient->birthdate);
+                                                                $age = time_elapsed_string(date('d-m-Y H:i:s', $birthDate),2,"short_age");
+                                                                echo $age;
+                                                            }
+                                                            ?>
+                                                        </span>
+                                                    </strong>
+                                                    
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 pt-1">
+                                                <div class="form-group mb-0">
+                                                    <label class="form-label mb-0"><span class="template-opacity"><?php echo lang('sex'); ?>: </span><strong><span class="h5 prescription-opacity"><?php echo ucfirst($patient->sex); ?></span></strong></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row border-bottom border-dark template-opacity">
+                                            
+                                        </div>
+                                        <div class="row border-top border-dark template-opacity">
+                                                
+                                        </div>
+                                        <div class="row">
+                                            <h1 class="fs-100 zicon" hidden>&#8478;</h1>
+                                            <h1 class="fs-100 ziconDisplay template-opacity">&#8478;</h1>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-1 col-sm-1 page-headerz">
+                                            
+                                        </div>
+                                        <div class="col-md-11 col-sm-11">
+                                            <table class="prescription-table">
+                                                <thead>
+                                                  <tr>
+                                                    <td>
+                                                      <!--place holder for the fixed-position header-->
+                                                      <div class="page-header-space"></div>
+                                                      <?php if (!empty($doctor->phone)) { ?>
+                                                        <div class="page-header-space-phone"></div>
+                                                      <?php } ?>
+                                                    </td>
+                                                  </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                          <!--*** CONTENT GOES HERE ***-->
+                                                            <div class="pagez">
+                                                            <br/>
+                                                                <?php
+                                                                if (!empty($labrequest->id)) {
+                                                                $i = 0;
+                                                                ?>
+                                                                    <?php foreach($lab_request_number as $labrequest_number) { ?>
+                                                                        <div class="region">
+                                                                            <div class="row">
+                                                                                <div class="col-md-1 col-sm-1 col-lg-1">
+                                                                                    
+                                                                                </div>
+                                                                                <div class="col-md-1 col-sm-1 col-lg-1 pr-0 prescription-opacity">
+                                                                                    <h4><?php echo $i += 1; ?>.</h4>
+                                                                                </div>
+                                                                                <div class="col-md-10 col-sm-10 col-lg-10 pl-0 prescription-opacity">
+                                                                                    <h4><p class="mb-2"><strong>
+                                                                                    <?php
+                                                                                        if (!empty($labrequest_number->long_common_name)) {
+                                                                                            echo $labrequest_number->long_common_name;
+                                                                                        } else {
+                                                                                            echo $labrequest_number->lab_request_text;
+                                                                                        }
+                                                                                    ?>
+                                                                                    </strong></p>
+                                                                                    <p class="mb-2"><?php echo $labrequest_number->instructions; ?></p>
+                                                                                    <?php if (!empty($labrequest_number->loinc_num)) { ?>
+                                                                                        <p class="mb-2"><span><?php echo lang('loinc_code'); ?>: </span><?php echo $labrequest_number->loinc_num; ?></p></h4>
+                                                                                    <?php } ?>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php } ?>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+
+                                                <tfoot>
+                                                  <tr>
+                                                    <td>
+                                                      <!--place holder for the fixed-position footer-->
+                                                      <div class="page-footer-space"></div>
+                                                    </td>
+                                                  </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                      <div class="page-footerz">
+                                        <div class="row template-opacity prescription-footer">
+                                            <div class="col-md-4 col-sm-4 pb-0 mb-0">
+                                                <div class="row pb-0 mb-0">
+                                                    <div class="form-group text-center mb-0 logo-print pb-0 mb-0">
+                                                        <img class="company-logo" src="<?php echo base_url('public/assets/images/brand/logo.png'); ?>" width="auto" height="auto" style="max-width: 200px;max-height: 200px;margin-top: 180px;">
+                                                        <h4 class="text-primary mb-0 pb-0">www.sugbodoc.com</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 col-sm-2 pb-0 mb-0">
+                                                
+                                            </div>
+                                            <div class="col-md-6 col-sm-6 pull-right pb-0 mb-0">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="row border-bottom border-dark text-center template-opacity">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <img src="<?php echo $signature->signature; ?>" class="prescription-opacity" width="auto" height="auto" style="max-width:200px;max-height:200px; margin-bottom:-30px;"/>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-2 col-sm-2">
-                                                        
-                                                    </div>
-                                                    <div class="col-md-6 col-sm-6 pull-right">
                                                         <div class="row">
-                                                            <div class="col-md-12">
-                                                                <div class="row border-bottom border-dark text-center template-opacity">
-                                                                    <div class="col-md-12 col-sm-12">
-                                                                        <img src="<?php echo $signature->signature; ?>" class="prescription-opacity" width="auto" height="auto" style="max-width:200px;max-height:200px; margin-bottom:-30px;"/>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12 col-sm-12">
-                                                                        <h4 class="mb-1 pt-3"><strong><?php echo $doctor->firstname . ' ' . $doctor->middlename . ' ' . $doctor->lastname; ?>, M.D.</strong></h4>
-                                                                    </div>
-                                                                </div>
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <h4 class="mb-1 pt-3"><strong><?php echo $doctor->firstname . ' ' . $doctor->middlename . ' ' . $doctor->lastname; ?>, M.D.</strong></h4>
                                                             </div>
-                                                        </div>
-                                                        <div class="template-opacity">
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <label class="mb-1 h5"><?php echo lang('license').' #'; ?>: <?php echo $doctor->license; ?></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <label class="mb-1 h5"><?php echo lang('tin') ?>: <?php echo $doctor->tax_number; ?></label>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <label class="mb-1 h5"><?php echo lang('ptr') ?>: <?php echo $doctor->tax_receipt_number; ?></label>
-                                                                </div>
-                                                            </div>
-                                                            <?php if (!empty($doctor->secondary_license_number)) { ?>
-                                                            <div class="row">
-                                                                <div class="col-md-12">
-                                                                    <label class="mb-1 h5"><?php echo lang('s2') ?>: <?php echo $doctor->secondary_license_number; ?></label>
-                                                                </div>
-                                                            </div>
-                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </footer>
+                                                <div class="template-opacity">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label class="mb-1 h5"><?php echo lang('license').' #'; ?>: <?php echo $doctor->license; ?></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label class="mb-1 h5"><?php echo lang('tin') ?>: <?php echo $doctor->tax_number; ?></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label class="mb-1 h5"><?php echo lang('ptr') ?>: <?php echo $doctor->tax_receipt_number; ?></label>
+                                                        </div>
+                                                    </div>
+                                                    <?php if (!empty($doctor->secondary_license_number)) { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <label class="mb-1 h5"><?php echo lang('s2') ?>: <?php echo $doctor->secondary_license_number; ?></label>
+                                                        </div>
+                                                    </div>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                      </div>
                                 </div>
                             </div>
                         </div>
@@ -554,6 +581,17 @@
 
         <script src="<?php echo base_url('public/assets/plugins/signature/signature_plugin.min.js'); ?>"></script>
 
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#print").click(function () {
+                    $(".zicon").attr("hidden", false);
+                    $(".ziconDisplay").attr("hidden", true);
+                    window.print();
+                    $(".zicon").attr("hidden", true);
+                    $(".ziconDisplay").attr("hidden", false);
+                })
+            })
+        </script>
 
         <script>
             document.getElementById('create_pdf').onclick = function() {

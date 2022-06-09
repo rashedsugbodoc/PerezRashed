@@ -303,7 +303,7 @@ class Labrequest extends MX_Controller {
         $data['signature'] = $this->doctor_model->getUserSignatureByUserId($data['doctor']->ion_user_id);
         $data['patient'] = $this->patient_model->getPatientById($data['labrequest']->patient_id);
         $specializations = explode(',', $data['doctor']->specialties);
-        $limit = 3;
+        $limit = 4;
         $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
         foreach ($specializations as $specialization) {
             $specialties = $this->specialty_model->getSpecialtyById($specialization)->display_name_ph;
