@@ -692,7 +692,7 @@ class Form extends MX_Controller {
         $data['form'] = $this->form_model->getFormById($id);
         $data['patient'] = $this->patient_model->getPatientById($data['form']->patient);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['form']->doctor);
-        $limit = 3;
+        $limit = 4;
         $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
 
         if ($data['form']->hospital_id != $this->session->userdata('hospital_id')) {
