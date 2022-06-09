@@ -398,7 +398,7 @@
                                             
                                         </div>
                                         <div class="col-md-11 col-sm-11">
-                                            <table>
+                                            <table class="prescription-table">
                                                 <thead>
                                                   <tr>
                                                     <td>
