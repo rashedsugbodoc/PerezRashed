@@ -158,24 +158,43 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export Option',
+                        text: 'Export',
                         buttons: [
                             {
-                                extend: 'excelHtml5',
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('charge').' '.lang('categories');?>',
                                 exportOptions: {
-                                    columns: [0,1],
+                                    columns: [0, 1],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('charge').' '.lang('categories');?>',
+                                exportOptions: {
+                                    columns: [0, 1],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
+                                title: '<?php echo lang('charge').' '.lang('categories');?>',
                                 exportOptions: {
-                                    columns: [0,1],
+                                    columns: [0, 1],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
+                                title: '<?php echo lang('charge').' '.lang('categories');?>',
                                 exportOptions: {
-                                    columns: [0,1],
+                                    columns: [0, 1],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('charge').' '.lang('categories');?>',
+                                exportOptions: {
+                                    columns: [0, 1],
                                 }
                             }
                         ]
