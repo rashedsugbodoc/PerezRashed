@@ -1112,6 +1112,7 @@ $lang['mouth'] = 'Mouth';
 $lang['measured_at'] = 'Measured At';
 $lang['encounter'] = 'Encounter';
 $lang['encounters'] = 'Encounters';
+$lang['list_of_encounters'] = 'List of Encounters';
 $lang['encounter_number'] = 'Encounter Number';
 $lang['create_encounter'] = 'Create Encounter';
 $lang['add_encounter'] = 'Add Encounter';

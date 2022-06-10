@@ -738,7 +738,7 @@
                     success: function (response) {
                         // console.log(response.services);
                         $.each(response.services, function (key, value) {
-                            $('#sub_service').append($('<option>').text(value.description).val(value.id)).end();
+                            $('#sub_service').append($('<option>').text(value.category).val(value.id)).end();
                         });
                     }
                 })
