@@ -43,10 +43,11 @@
                                                             <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th class="wd-lg-10p"><?php echo lang('date'); ?></th>
+                                                                        <th class="wd-lg-10p"><?php echo lang('appointment').' '.lang('date'); ?></th>
                                                                         <th class="wd-lg-20p"><?php echo lang('patient_id'); ?></th>
-                                                                        <th class="wd-lg-20p"><?php echo lang('patient'); ?></th>
-                                                                        <th class="wd-lg-20p"><?php echo lang('status'); ?></th>
+                                                                        <th class="wd-lg-20p"><?php echo lang('patient').' '.lang('name'); ?></th>
+                                                                        <th class="wd-lg-20p"><?php echo lang('appointment').' '.lang('status'); ?></th>
+                                                                        <th class="wd-lg-20p"><?php echo lang('details'); ?></th>
                                                                         <th class="wd-lg-20p"><?php echo lang('options'); ?></th>
                                                                     </tr>
                                                                 </thead>
@@ -54,13 +55,20 @@
                                                                     <?php
                                                                     foreach ($todays_appointments as $todays_appointment) {
                                                                         $patient_details = $this->patient_model->getPatientById($todays_appointment->patient);
+                                                                        $location_name = $this->branch_model->getBranchById($todays_appointment->location_id)->display_name;
+                                                                        $todays_appointment_service_type = $this->appointment_model->getServiceCategoryById($todays_appointment->service_category_group_id)->display_name;
+                                                                        $todays_appointment_service = $this->appointment_model->getServicesByServiceId($todays_appointment->service_id)->category;
+                                                                        if(empty($location_name)) {
+                                                                            $location_name = 'Online';
+                                                                        }
                                                                         if (!empty($patient_details)) {
                                                                             ?>
                                                                             <tr>
-                                                                                <td><?php echo date('d-m-Y', $todays_appointment->date); ?></td>
-                                                                                <td><?php echo $todays_appointment->patient; ?></td>
+                                                                                <td><?php echo date('Y-m-d', $todays_appointment->date).'<br>'.$todays_appointment->s_time.' to '.$todays_appointment->e_time; ?></td>
+                                                                                <td><?php echo $patient_details->patient_id; ?></td>
                                                                                 <td><?php echo $patient_details->name; ?></td>
                                                                                 <td><?php echo $todays_appointment->status; ?></td>
+                                                                                <td><?php echo '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('chief_complaint').': </strong>'.$todays_appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$todays_appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$todays_appointment_service; ?></td>
                                                                                 <td>
                                                                                     <div class="btn-group mb-0">
                                                                                         <!-- <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fe fe-edit"></i></button> -->
@@ -158,24 +166,40 @@
                                                     </div>
                                                     <div class="mb-0">
                                                         <div class="table-responsive">
-                                                            <?php if (!empty($appointment_patients)) { ?>
+                                                            <?php if (!empty($upcoming_appointments)) { ?>
                                                                 <table id="editable-sample2" class="table card-table table-vcenter text-nowrap mb-0 border w-100">
                                                                     <thead>
                                                                         <tr>
+                                                                            <th class="border-bottom-0"><?php echo lang('appointment').' '.lang('date'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('patient_id'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('patient'); ?> <?php echo lang('name'); ?></th>
+                                                                            <th class="border-bottom-0"><?php echo lang('appointment').' '.lang('status'); ?></th>
+                                                                            <th class="wd-lg-20p"><?php echo lang('details'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('options'); ?></th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         <?php
-                                                                        foreach ($appointment_patients as $appointment_patient) {
-                                                                            $appointed_patient = $this->patient_model->getPatientById($appointment_patient);
+                                                                        foreach ($upcoming_appointments as $upcoming_appointment) {
+                                                                            $appointed_patient = $this->patient_model->getPatientById($upcoming_appointment->patient);
+                                                                            $upcoming_appointment_location_name = $this->branch_model->getBranchById($upcoming_appointment->location_id)->display_name;
+                                                                            $upcoming_appointment_service_type = $this->appointment_model->getServiceCategoryById($upcoming_appointment->service_category_group_id)->display_name;
+                                                                            $upcoming_appointment_service = $this->appointment_model->getServicesByServiceId($upcoming_appointment->service_id)->category;
+                                                                            if(empty($upcoming_appointment_location_name)) {
+                                                                                $upcoming_appointment_location_name = 'Online';
+                                                                            }
                                                                             ?>
                                                                             <tr>
-                                                                                <td><?php echo $appointed_patient->id; ?></td>
+                                                                                <td><?php echo date('Y-m-d', $upcoming_appointment->date).'<br>'.$upcoming_appointment->s_time.' to '.$upcoming_appointment->e_time; ?></td>
+                                                                                <td><?php echo $appointed_patient->patient_id; ?></td>
                                                                                 <td><?php echo $appointed_patient->name; ?></td>
+                                                                                <td><?php echo $upcoming_appointment->status; ?></td>
+                                                                                <td><?php echo '<strong>'.lang('location').': </strong>'.$upcoming_appointment_location_name.'<br>'.'<strong>'.lang('chief_complaint').': </strong>'.$upcoming_appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$upcoming_appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$upcoming_appointment_service; ?></td>
                                                                                 <td>
+                                                                                    <div class="btn-group mb-0">
+                                                                                        <!-- <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fe fe-edit"></i></button> -->
+                                                                                        <a href="appointment/editAppointment?id=<?php echo $upcoming_appointment->id; ?>&root=doctor&method=details" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>
+                                                                                    </div>
                                                                                     <div class="btn-group mb-0">
                                                                                         <a href="patient/medicalHistory?id=<?php echo $appointed_patient->patient_id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false" title="<?php echo lang('history'); ?>"><i class="fa fa-stethoscope mr-2"></i><?php echo lang('history'); ?></a>
                                                                                     </div>
@@ -191,7 +215,7 @@
                                                 <div class="tab-pane" id="prescription">
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <label class="h3 pull-left"><?php echo lang('prescriptions'); ?></label>
+                                                            <label class="h3 pull-left"><?php echo lang('all').' '.lang('prescriptions'); ?></label>
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <a class="btn btn-primary pull-right" href="prescription/addPrescriptionView"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?></a>
                                                             <?php } ?>
@@ -290,7 +314,7 @@
                                                                             <td><?php echo $schedule->weekday; ?></td>
                                                                             <td><?php echo $schedule->s_time; ?></td>
                                                                             <td><?php echo $schedule->e_time; ?></td>
-                                                                            <td><?php echo $schedule->duration * 5 . ' ' . lang('minitues'); ?></td>
+                                                                            <td><?php echo $schedule->duration * 5 . ' ' . lang('mins'); ?></td>
                                                                             <td>
                                                                                 <div class="btn-group mb-0">
                                                                                     <a class="btn btn-danger" href="schedule/deleteSchedule?id=<?php echo $schedule->id; ?>&doctor=<?php echo $schedule->doctor; ?>&weekday=<?php echo $schedule->weekday; ?>&all=all" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i> <?php echo lang('delete'); ?></a>
@@ -315,7 +339,7 @@
                                                             <table id="editable-sample5" class="table card-table table-vcenter text-nowrap mb-0 border w-100">
                                                                 <thead>
                                                                     <tr>
-                                                                        <th class="wd-lg-10p">#</th>
+                                                                        
                                                                         <th class="wd-lg-20p"><?php echo lang('date'); ?></th>
                                                                         <th class="wd-lg-20p"><?php echo lang('options'); ?></th>
                                                                     </tr>
@@ -327,8 +351,8 @@
                                                                         $i = $i + 1;
                                                                         ?>
                                                                         <tr>
-                                                                            <td><?php echo $i; ?></td>
-                                                                            <td><?php echo date('Y-m-d', $holiday->date); ?></td>
+                                                                            
+                                                                            <td><?php echo date('j M Y, l', $holiday->date); ?></td>
                                                                             <td>
                                                                                 <div class="btn-group mb-0">
                                                                                     <a class="btn btn-info pull-right editHoliday" data-toggle="modal" data-id="<?php echo $holiday->id; ?>" href=""><i class="fe fe-edit"></i> <?php echo lang('edit'); ?></a>
@@ -1740,20 +1764,53 @@
         $(document).ready(function () {
             $('#editable-sample').DataTable({
                 responsive: true,
-                dom: "<'row'<'col-sm-2'l><'col-sm-6 text-center'B><'col-sm-4'f>>" +
+                dom: "<'row'<'col-sm-2'l><'col-sm-4 text-center'B><'col-sm-6'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            }
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -1773,21 +1830,53 @@
         $(document).ready(function () {
             $('#editable-sample2').DataTable({
                 responsive: true,
-                dom: "<'row'<'col-md-8 col-sm-12 text-center'B><'col-md-4 col-sm-12'f>>" +
+                dom: "<'row'<'col-sm-2'l><'col-sm-4 text-center'B><'col-sm-6'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1],
-                        }
-                    },
-                    'colvis'
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('all_patient') . ' ' . lang('with') . ' ' . lang('upcoming') . ' ' . lang('appointments');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('all_patient') . ' ' . lang('with') . ' ' . lang('upcoming') . ' ' . lang('appointments');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('all_patient') . ' ' . lang('with') . ' ' . lang('upcoming') . ' ' . lang('appointments');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('all_patient') . ' ' . lang('with') . ' ' . lang('upcoming') . ' ' . lang('appointments');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('all_patient') . ' ' . lang('with') . ' ' . lang('upcoming') . ' ' . lang('appointments');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            }
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -1807,21 +1896,53 @@
         $(document).ready(function () {
             $('#editable-sample3').DataTable({
                 responsive: true,
-                dom: "<'row'<'col-md-8 col-sm-12 text-center'B><'col-md-4 col-sm-12'f>>" +
+                dom: "<'row'<'col-sm-2'l><'col-sm-4 text-center'B><'col-sm-6'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1],
-                        }
-                    },
-                    'colvis'
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('all').' '.lang('prescriptions'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('all').' '.lang('prescriptions'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('all').' '.lang('prescriptions'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('all').' '.lang('prescriptions'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('all').' '.lang('prescriptions'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                }
+                            }
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -1841,21 +1962,54 @@
         $(document).ready(function () {
             $('#editable-sample4').DataTable({
                 responsive: true,
-                dom: "<'row'<'col-md-8 col-sm-12 text-center'B><'col-md-4 col-sm-12'f>>" +
+                dom: "<'row'<'col-md-4 col-sm-4 text-left'B><'col-md-7 col-sm-7'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1],
-                        }
-                    },
-                    'colvis'
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('schedule'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('schedule'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('schedule'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('schedule'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('schedule'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            'colvis'
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -1875,21 +2029,53 @@
         $(document).ready(function () {
             $('#editable-sample5').DataTable({
                 responsive: true,
-                dom: "<'row'<'col-md-8 col-sm-12 text-center'B><'col-md-4 col-sm-12'f>>" +
+                dom: "<'row'<'col-md-4 col-sm-4 text-left'B><'col-md-7 col-sm-7'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1],
-                        }
-                    },
-                    'colvis'
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('holidays'); ?>',
+                                exportOptions: {
+                                    columns: [0],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('holidays'); ?>',
+                                exportOptions: {
+                                    columns: [0],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('holidays'); ?>',
+                                exportOptions: {
+                                    columns: [0],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('holidays'); ?>',
+                                exportOptions: {
+                                    columns: [0],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('holidays'); ?>',
+                                exportOptions: {
+                                    columns: [0],
+                                }
+                            },
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
