@@ -11,7 +11,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('expense'); ?> 
+                                            <?php echo lang('expenses'); ?> 
                                         </div>
                                         <div class="card-options">
                                             <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
@@ -190,24 +190,43 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export Option',
+                        text: 'Export',
                         buttons: [
                             {
-                                extend: 'excelHtml5',
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('expenses');?>',
                                 exportOptions: {
-                                    columns: [0,1,2,3],
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('expenses');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
+                                title: '<?php echo lang('expenses');?>',
                                 exportOptions: {
-                                    columns: [0,1,2,3],
+                                    columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
+                                title: '<?php echo lang('expenses');?>',
                                 exportOptions: {
-                                    columns: [0,1,2,3],
+                                    columns: [0, 1, 2, 3],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('expenses');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
                                 }
                             }
                         ]
