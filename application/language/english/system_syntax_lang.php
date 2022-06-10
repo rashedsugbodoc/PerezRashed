@@ -93,6 +93,7 @@ $lang['edit_company'] = 'Edit Company';
 $lang['edit_company_type'] = 'Edit Company Type';
 $lang['list_of_companies'] = 'List of Companies';
 $lang['list_of'] = 'List of';
+$lang['list'] = 'List';
 $lang['name'] = 'Name';
 $lang['full_name'] = 'Full Name';
 $lang['first_name'] = 'First Name';
