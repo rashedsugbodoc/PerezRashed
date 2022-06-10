@@ -10,7 +10,7 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <div class="card-title"><?php echo lang('encounter'); ?></div>
+                                        <div class="card-title"><?php echo lang('list_of_encounters'); ?></div>
                                         <div class="card-options">
                                             <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                 <a href="encounter/addNewView">
@@ -1733,16 +1733,49 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 4],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('list_of_encounters');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('list_of_encounters');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('list_of_encounters');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('list_of_encounters');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('list_of_encounters');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                }
+                            }
+                        ],
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
