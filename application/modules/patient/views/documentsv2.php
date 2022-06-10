@@ -336,24 +336,28 @@
                         buttons: [
                             {
                                 extend: 'copyHtml5',
+                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'excelHtml5',
+                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
+                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
+                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3],
                                 },
@@ -362,6 +366,7 @@
                             },
                             {
                                 extend: 'print',
+                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3],
                                 }
