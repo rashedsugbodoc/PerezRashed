@@ -690,9 +690,10 @@ class Finance extends MX_Controller {
                 //     );
                 //     $this->finance_model->insertDeposit($data1);
                 // }
+                $invoice_number = $this->finance_model->getPaymentById($id)->invoice_number;
                 $this->finance_model->updatePayment($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
-                redirect("finance/invoice?id=" . "$id");
+                redirect("finance/invoice?id=" . "$invoice_number");
             }
         }
     }
@@ -1487,7 +1488,7 @@ class Finance extends MX_Controller {
         $data['patient'] = $this->patient_model->getPatientById($data['payment']->patient);
         $data['encounter'] = $this->encounter_model->getEncounterByInvoiceId($id);
         $patient_hospital_id = $data['patient']->hospital_id;
-        $limit = 3;
+        $limit = 4;
         $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
 
         if (!empty($data['patient']->birthdate)) {

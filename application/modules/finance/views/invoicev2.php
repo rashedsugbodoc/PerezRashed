@@ -5,117 +5,127 @@
                 <!--div class="app-content main-content"-->
                     <!--div class="side-app"-->
                         <!--Page header-->
-                            <style>
-                                @media screen and (max-width: 1000px) {
-                                    .button-text {
-                                        display: none;
+                                <style>
+                                    @media screen and (max-width: 1000px) {
+                                        .button-text {
+                                            display: none;
+                                        }
                                     }
-                                }
 
-                                @media (max-width: 275px) {
-                                 .pull-right {
-                                    float: left;
-                                  }
-                                }
+                                    @media (max-width: 275px) {
+                                     .pull-right {
+                                        float: left;
+                                      }
+                                    }
 
-                                @media (max-width: 213px) {
-                                 .pull-center {
-                                    float: left;
-                                  }
-                                }
+                                    @media (max-width: 213px) {
+                                     .pull-center {
+                                        float: left;
+                                      }
+                                    }
 
-                                @media (min-width: 214px) {
-                                 .pull-center {
-                                    float: center;
-                                  }
-                                }
+                                    @media (min-width: 214px) {
+                                     .pull-center {
+                                        float: center;
+                                      }
+                                    }
 
-                                #content{
-                                    color: black;
-                                }
+                                    #content{
+                                        color: black;
+                                    }
 
-                                .td{
-                                    color: black;
-                                }
+                                    .td{
+                                        color: black;
+                                    }
 
-                                @media print {
                                     @page {
-                                      /*size: A4;*/
-                                      margin: 8mm 15mm 15mm 15mm;
-                                      width: 210mm;
-                                      height: 297mm;
+                                      margin: 5mm 10mm 15mm 10mm;
+                                      /*width: 210mm;
+                                      height: 297mm;*/
+                                      /*margin: 20mm*/
                                     }
 
-                                    footer {
-                                        display: flex;
-                                        position: fixed;
-                                        bottom: -28px;
-                                        width: 100% !important;
-                                    }
-                                    header {
-                                        position: fixed;
-                                        overflow: avoid;
-                                        width: 100%;
+                                    @media print {
+                                        .page-headerz, .page-header-space {
+                                            background-color: transparent;
+                                            height: 360px;
+                                          /*height: 393px;*/
+                                          /*height: 100px;*/
+                                        }
+
+                                        .page-headerz, .page-header-space-one-page {
+                                            background-color: transparent;
+                                            height: 290px;
+                                          /*height: 393px;*/
+                                          /*height: 100px;*/
+                                        }
+
+                                        .page-footerz, .page-footer-space {
+                                          height: 100px;
+
+                                        }
+
+                                        .page-footerz {
+                                          position: fixed;
+                                          bottom: 0;
+                                          width: 100%;
+                                          /*border-top: 1px solid black; /* for demo */*/
+                                          background: yellow; /* for demo */
+                                        }
+
+                                        .page-headerz {
+                                          position: fixed;
+                                          top: 0mm;
+                                          width: 100%;
+                                          /*border-bottom: 1px solid black; /* for demo */*/
+                                          background: yellow; /* for demo */
+                                        }
+
+                                        /*.pagez {
+                                          page-break-after: always;
+                                          break-before: avoid;
+                                        }*/
+
+                                        td {
+                                            margin: 0 !important;
+                                            padding: 0 !important;
+                                            border: 0 !important;
+                                        }
+
+                                        .region {
+                                          /*page-break-after: always;*/
+                                          break-inside: avoid;
+                                        }
+
+                                        thead {display: table-header-group;} 
+                                        tfoot {display: table-footer-group;}
+                                       
+                                        button {display: none;}
+                                       
+                                        body {margin: 0;}
+
+                                        html, body {
+                                            font-size: 14pt;
+                                        }
                                     }
 
-                                    .content-block-body {
-                                        position: relative;
-                                        top: 18.5em !important;
-                                    }
 
-                                    .content-block-item {
-                                        page-break-inside: avoid;
-                                        position: relative;
-                                        width: 100%;
-                                        top:1em;   //match size of header
-                                        left:0px;
-                                        right:0px;
-                                        /*border: solid 2px black;*/
-                                    }
+                                    /* @media (min-width: 768px) {
+                                     .new-pull-left {
+                                        float: right;
+                                      }
+                                    }*/
+                                </style>
 
-                                    .clearfix {
-                                      overflow: auto;
-                                    }
-
-                                    .prescription-footer {
-                                        width: 100%;
-                                    }
-
-                                    .footer-area-height {
-                                        height: 38vh !important;
-                                        opacity: 0;
-                                    }
-
-                                    .company-logo {
-                                        max-height: 300px !important;
-                                        max-width: 300px !important;
-                                        width: 300px !important;
-                                        height: auto !important;
-                                    }
-
-                                  html, body {
-                                    /*width: 210mm;
-                                    height: 297mm;*/
-                                    font-size: 16.5pt;
-                                  }
-                                  .hidden-print{
-                                    display: none;
-                                    }
-                                }
-
-                                /* @media (min-width: 768px) {
-                                 .new-pull-left {
-                                    float: right;
-                                  }
-                                }*/
-                            </style>
-
-                        <!--Page header-->
-                        <!-- <div class="page-header">
+                        <?php
+                        
+                        
+                        ?>
+                        <div class="page-header d-print-none">
                             <div class="page-leftheader">
-                                <h4 class="page-title">Doctor Dashboard</h4>
+                                <h4 class="page-title"><?php echo lang('form');?> <?php echo lang('details');?></h4>
                             </div>
-                        </div> -->
+                        </div>
                         <!--End Page header-->
                         <div class="row mt-5 mb-5" id="actionbuttons">
                             <div class="col-md-12 col-sm-12 col-lg-12">
@@ -134,7 +144,7 @@
                                     </div>
                                     <div class="flex-grow-2">
                                         <button type="button" class="btn btn-info" id="create_pdf"><i class="fe fe-download"></i><span class="button-text"> <?php echo lang('download'); ?></span></button>
-                                        <button type="button" id="print" class="btn btn-info" onClick="javascript:window.print();"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
+                                        <button type="button" id="print" class="btn btn-info"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                             <a href="finance/editPayment?id=<?php echo $payment->id; ?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> <?php echo lang('edit'); ?> <?php echo lang('invoice'); ?></span></a>
                                         <?php } ?>
@@ -169,84 +179,56 @@
                         <?php } ?>
 
                         <div class="row" id="content">
-                            <div class="col-md-12 col-sm-12">
-                                <div class="card">
-                                    <!-- <div class="card-header">
-                                        <div class="card-title" id="report">Report</div>
-                                    </div> -->
-                                    <div class="card-body pt-0">
-                                        <div class="row border-bottom border-dark text-center">
-                                            <!-- <div class="col-md-3">
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12 header-brand pl-0">
-                                                        <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-lgo" style="height: 60px;" alt="<?php echo $settings->title;?>">
-                                                    </div>
-                                                </div>
-                                            </div> -->
-                                            <div class="col-md-12 col-sm-12">
-                                                <div class="row template-opacity">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <label class="h2 mb-1"><?php echo $settings->title ?></label>
-                                                    </div>
-                                                </div>
-                                                <div class="row mb-1 template-opacity">
-                                                    <?php foreach($branches as $branch) { 
-                                                        $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
-                                                        $city_name = $this->location_model->getCityById($branch->city_id)->name;
-                                                    ?>
-                                                        <div class="col-md col-sm pl-0">
-                                                            <div class="row">
-                                                                <div class="col-md-12 col-sm-12 pl-0">
-                                                                    <i class="fa fa-hospital-o text-primary"></i>
-                                                                    <span class="h6 mb-1 align-baseline"><strong><?php echo $branch->display_name; ?></strong></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12 col-sm-12 pl-0">
-                                                                    <i class="fa fa-map-marker text-primary"></i>
-                                                                    <span class="h6 mb-1"><?php echo $branch->street_address; ?></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12 col-sm-12 pl-0">
-                                                                    <span class="h6 mb-1"><?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></span>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-md-12 col-sm-12 pl-0">
-                                                                    <i class="fe fe-phone text-primary"></i>
-                                                                    <?php if(!empty($branch->phone)) { ?>
-                                                                    <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
-                                                                    <?php } ?>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <?php } ?>
-                                                </div>
-                                                <!-- <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <label class="h6 mb-1"><?php echo $settings->address ?></label>
-                                                    </div>
-                                                </div>
+                            <div class="card">
+                                <div class="card-body pt-0">
+                                    <div class="page-headerz">
+                                        <div class="row mb-1 template-opacity">
+                                            <div class="col-md-12 col-sm-12 text-center">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <label class="h6 mb-3">Tel: <?php echo $settings->phone ?></label>
-                                                    </div>
-                                                </div> -->
-                                                <div class="row template-opacity">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <label class="h3"><?php echo lang('invoice') ?></label>
+                                                        <label class="h2 mb-0"><?php echo $settings->title ?></label>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- <div class="col-md-3">
-                                                
-                                            </div> -->
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12 border-bottom border-dark p-0">
+                                        <div class="row mb-1 template-opacity">
+                                            <?php foreach($branches as $branch) { 
+                                                $barangay_name = $this->location_model->getBarangayById($branch->barangay_id)->name;
+                                                $city_name = $this->location_model->getCityById($branch->city_id)->name;
+                                            ?>
+                                                <div class="col-md col-sm" <?php if (count($branches)<=1) { echo 'style="text-align: center;"'; } ?>>
+                                                    <div style="display: inline-block; text-align: left;">
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12 pl-0">
+                                                                <i class="fa fa-hospital-o text-primary"></i>
+                                                                <span class="h6 mb-1"><strong><?php echo $branch->display_name; ?></strong></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12 pl-0">
+                                                                <i class="fa fa-map-marker text-primary"></i>
+                                                                <span class="h6 mb-1"><?php echo $branch->street_address; ?>, <?php if(!empty($barangay_name)) echo $barangay_name.', '; ?><?php if(!empty($city_name)) echo $city_name; ?></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12 pl-0">
+                                                                <i class="fe fe-phone text-primary"></i>
+                                                                <?php if(!empty($branch->phone)) { ?>
+                                                                <span class="h6 mb-1"><?php echo $branch->phone; ?></span>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
+                                        </div>
+                                        <div class="row border-bottom border-dark template-opacity">
+                                            
+                                        </div>
+                                        <div class="row border-bottom border-top border-dark">
+                                            <div class="col-md-12 col-sm-12 pb-0 pl-0">
                                                 <div class="table-responsive">
-                                                    <table class="table text-nowrap mb-1 mt-1" id="example2">
+                                                    <table class="table text-nowrap mb-0 mt-0" id="example2">
                                                         <tbody>
                                                             <tr class="p-0">
                                                                 <td class="w-15 p-0 template-opacity">
@@ -420,24 +402,69 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12 pl-0">
-                                                <div class="table-responsive">
-                                                    <table class="table text-nowrap" id="example2">
-                                                        <tbody>
+                                        <div class="row border-top border-dark template-opacity">
+                                                
+                                        </div>
+                                        <!-- <div class="row">
+                                            <div class="col-md-12 col-sm-12 text-center">
+                                                <label class="h3 mb-1 mt-1"><?php echo lang('invoice') ?></label>
+                                            </div>
+                                        </div> -->
+                                    </div>
+
+                                    <!-- <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <table class="prescription-table">
+                                                <thead>
+                                                  <tr>
+                                                    <td>
+                                                      
+                                                      <div class="page-header-space"></div>
+                                                    </td>
+                                                  </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div> -->
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <table class="table mb-0">
+                                                <thead>
+                                                    <?php
+                                                        $category_name = $payment->category_name;
+                                                        $category_name1 = explode(',', $category_name);
+                                                    ?>
+                                                  <tr class="<?php
+                                                        if (count($category_name1) <= 27) {
+                                                            echo "page-header-space-one-page";
+                                                        } else {
+                                                            echo "page-header-space";
+                                                        }
+                                                    ?>">
+                                                    
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <div class="row template-opacity text-center">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <tr>
+                                                                <td colspan="8" class="text-center pt-0 pb-0 mt-0">
+                                                                    <label class="h3 mb-1 mt-0"><?php echo lang('invoice') ?></label>
+                                                                </td>
+                                                            </tr>
                                                             <tr>
                                                                 <td class="w-8 pl-0 template-opacity">#</td>
                                                                 <td class="template-opacity"><?php echo lang('description'); ?></td>
                                                                 <td class="text-right template-opacity"><?php echo lang('unit_price'); ?></td>
-                                                                <td></td>
+                                                                <td class="w-5"></td>
                                                                 <td class="template-opacity"><?php echo lang('qty'); ?></td>
                                                                 <td></td>
                                                                 <td class="text-right template-opacity"><?php echo lang('amount'); ?></td>
-                                                                <td></td>
+                                                                <!-- <td></td> -->
                                                             </tr>
+                                                            
                                                             <?php
                                                             if (!empty($payment->category_name)) {
                                                                 $category_name = $payment->category_name;
@@ -450,162 +477,167 @@
                                                                     $doctor_service = $this->doctor_model->getDoctorByIonUserId($new_category_name[1])->name;
                                                                     if ($category_name3[3] > 0) {
                                                                         ?>                                                          
-                                                                        <tr class="invoice-opacity">
+                                                                        <tr class="invoice-opacity region">
                                                                             <td class="pt-0 pb-0 pl-0"><?php echo $i; ?> </td>
                                                                             <td class="pt-0 pb-0"><?php echo $this->finance_model->getPaymentcategoryById($new_category_name[0])->category.' ( '.lang('dr').'. '.$doctor_service.' )'; ?></td>
                                                                             <td class="pt-0 pb-0 text-right"><?php echo $settings->currency; ?> <?php echo number_format($category_name3[1],2); ?></td>
                                                                             <td></td>
                                                                             <td class="pt-0 pb-0"><?php echo $category_name3[3]; ?></td>
-                                                                            <td class=""></td>
-                                                                            <td class="pt-0 pb-0 text-right"><?php echo $settings->currency; ?> <?php echo number_format($category_name3[1] * $category_name3[3],2); ?></td>
                                                                             <td></td>
+                                                                            <td class="pt-0 pb-0 text-right"><?php echo $settings->currency; ?> <?php echo number_format($category_name3[1] * $category_name3[3],2); ?></td>
+                                                                            <!-- <td></td> -->
                                                                         </tr>
                                                                         <?php
                                                                     }
                                                                 }
                                                             }
-                                                            ?>                                                                    
-                                                        </tbody>
-                                                    </table>                                                    
-                                                </div>
+                                                            ?>
 
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12 col-sm-12 pl-0">
-                                                <table class="table mt-1">
-                                                    <tbody>
-                                                        <tr class="pb-5">
-                                                            <td class="pt-0 pb-0 border-top border-dark w-65 pl-0 template-opacity"><strong><?php echo lang('sub_total'); ?></strong></td>
-                                                            <td class="pt-0 pb-0 border-top border-dark"> </td>
-                                                            <td class="pt-0 pb-0 border-top border-dark"> </td>
-                                                            <td class="pt-0 pb-0 border-top border-dark"> </td>
-                                                            <td class="pt-0 pb-0 border-top border-dark"> </td>
-                                                            <td class=""></td>
-                                                            <td class="pt-0 pb-0 border-top border-dark text-right invoice-opacity"><?php echo $settings->currency; ?> <?php echo number_format($payment->amount,2); ?></td>
-                                                            <td class="border-top border-dark"></td>
-                                                        </tr>
-                                                        <?php if (!empty($payment->discount)) { ?>
-                                                        <tr>
-                                                            <td class="pt-0 pb-0 pl-0 template-opacity"><strong>LESS</strong></td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td></td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td></td>
-                                                            <td class="pt-0 pb-0 text-right"></td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="pt-0 pb-0 border-bottom border-dark pl-0 invoice-opacity"><?php echo lang('discount'); ?> 
-                                                                <?php
-                                                                if ($discount_type == 'percentage') {
-                                                                    echo '(%) : ';
-                                                                } else {
-                                                                    echo ': ' . $settings->currency;
-                                                                }
-                                                                ?>
-                                                                <?php $discount = explode('*', $payment->discount); ?>
-                                                                <?php
-                                                                if (!empty($discount[1])) {
-                                                                    echo $discount[0] . ' %';
-                                                                } else {
-                                                                    echo $discount[0];
-                                                                }
-                                                                ?>
-                                                            </td>
-                                                            <td class="pt-0 pb-0 border-bottom border-dark"> </td>
-                                                            <td class="pt-0 pb-0 border-bottom border-dark"> </td>
-                                                            <td class="pt-0 pb-0 border-bottom border-dark"> </td>
-                                                            <td class="pt-0 pb-0 border-bottom border-dark"> </td>
-                                                            <td></td>
-                                                            <td class="pt-0 pb-0 border-bottom border-dark text-right invoice-opacity">
-                                                                <?php
-                                                                if (!empty($discount[1])) {
-                                                                    echo $settings->currency . ' ' . number_format($discount[1],2);
-                                                                } else {
-                                                                    echo $settings->currency . ' ' . number_format($discount[0],2);
-                                                                }
-                                                                ?>
-                                                            </td>
-                                                            <td></td>
-                                                        </tr>
-                                                        <?php } ?>
-                                                        <tr class="pb-5">
-                                                            <td class="pt-0 pb-0 pl-0 template-opacity"><strong><?php echo lang('grand_total'); ?></strong></td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td></td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td class=""></td>
-                                                            <td class="pt-0 text-right invoice-opacity" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $g = $payment->gross_total;?> <?php echo number_format($g,2); ?></td>
-                                                            <td ></td>
-                                                        </tr>
-                                                        <tr class="pb-5">
-                                                            <td class="pt-0 pb-0 pl-0 template-opacity"><strong><?php echo lang('amount_received'); ?></strong></td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td></td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td class=""></td>
-                                                            <td class="pt-0 pb-0 text-right invoice-opacity" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $r = $this->finance_model->getDepositAmountByPaymentId($payment->id);?> <?php echo number_format($r,2); ?></td>
-                                                            <td class=""></td>
-                                                        </tr>
-                                                        <tr class="pt-5">
-                                                            <td class="pt-0 pb-0 pl-0 template-opacity"><strong><?php echo lang('amount_to_be_paid'); ?> </strong></td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td></td>
-                                                            <td class="pt-0 pb-0"> </td>
-                                                            <td class=""></td>
-                                                            <td class="pt-0 pb-5 text-right invoice-opacity" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $balance = $g - $r;?> <?php echo number_format($balance,2); ?></td>
-                                                            <td class=""></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                                            <tr class="pb-5">
+                                                                <td colspan="3" class="pt-0 pb-0 border-top border-dark pl-0 template-opacity"><strong><?php echo lang('sub_total'); ?></strong></td>
+                                                                <!-- <td class="pt-0 pb-0 border-top border-dark"> </td>
+                                                                <td class="pt-0 pb-0 border-top border-dark"> </td> -->
+                                                                <td class="pt-0 pb-0 border-top border-dark"> </td>
+                                                                <td class="pt-0 pb-0 border-top border-dark"> </td>
+                                                                <td class=""></td>
+                                                                <td class="pt-0 pb-0 border-top border-dark text-right invoice-opacity"><?php echo $settings->currency; ?> <?php echo number_format($payment->amount,2); ?></td>
+                                                                <!-- <td class="border-top border-dark"></td> -->
+                                                            </tr>
+                                                            <?php if (!empty($payment->discount)) { ?>
+                                                            <tr>
+                                                                <td colspan="3" class="pt-0 pb-0 pl-0 template-opacity"><strong>LESS</strong></td>
+                                                                <!-- <td class="pt-0 pb-0"> </td>
+                                                                <td class="pt-0 pb-0"> </td> -->
+                                                                <td></td>
+                                                                <td class="pt-0 pb-0"> </td>
+                                                                <td></td>
+                                                                <td class="pt-0 pb-0 text-right"></td>
+                                                                <!-- <td></td> -->
+                                                            </tr>
+                                                            <tr>
+                                                                <td colspan="3" class="pt-0 pb-0 border-bottom border-dark pl-0 invoice-opacity"><?php echo lang('discount'); ?> 
+                                                                    <?php
+                                                                    if ($discount_type == 'percentage') {
+                                                                        echo '(%) : ';
+                                                                    } else {
+                                                                        echo ': ' . $settings->currency;
+                                                                    }
+                                                                    ?>
+                                                                    <?php 
+                                                                        $discount = $payment->discount; 
+                                                                        $flat_discount = $payment->flat_discount;
+                                                                    ?>
+                                                                    <?php
+                                                                    if ($discount_type == 'percentage') {
+                                                                        echo $discount . ' %';
+                                                                    } else {
+                                                                        echo $flat_discount;
+                                                                    }
+                                                                    ?>
+                                                                </td>
+                                                                <!-- <td class="pt-0 pb-0 border-bottom border-dark"> </td>
+                                                                <td class="pt-0 pb-0 border-bottom border-dark"> </td> -->
+                                                                <td class="pt-0 pb-0 border-bottom border-dark"> </td>
+                                                                <td class="pt-0 pb-0 border-bottom border-dark"> </td>
+                                                                <td></td>
+                                                                <td class="pt-0 pb-0 border-bottom border-dark text-right invoice-opacity">
+                                                                    <?php
+                                                                    echo $settings->currency . ' ' . number_format($flat_discount,2);
+                                                                    ?>
+                                                                </td>
+                                                                <!-- <td></td> -->
+                                                            </tr>
+                                                            <?php } ?>
+                                                            <tr class="pb-5">
+                                                                <td colspan="3" class="pt-0 pb-0 pl-0 template-opacity"><strong><?php echo lang('grand_total'); ?></strong></td>
+                                                                <!-- <td class="pt-0 pb-0"> </td>
+                                                                <td class="pt-0 pb-0"> </td> -->
+                                                                <td></td>
+                                                                <td class="pt-0 pb-0"> </td>
+                                                                <td class=""></td>
+                                                                <td class="pt-0 text-right invoice-opacity" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $g = $payment->gross_total;?> <?php echo number_format($g,2); ?></td>
+                                                                <!-- <td ></td> -->
+                                                            </tr>
+                                                            <tr class="pb-5">
+                                                                <td colspan="3" class="pt-0 pb-0 pl-0 template-opacity"><strong><?php echo lang('amount_received'); ?></strong></td>
+                                                                <!-- <td class="pt-0 pb-0"> </td>
+                                                                <td class="pt-0 pb-0"> </td> -->
+                                                                <td></td>
+                                                                <td class="pt-0 pb-0"> </td>
+                                                                <td class=""></td>
+                                                                <td class="pt-0 pb-0 text-right invoice-opacity" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $r = $this->finance_model->getDepositAmountByPaymentId($payment->id);?> <?php echo number_format($r,2); ?></td>
+                                                                <!-- <td class=""></td> -->
+                                                            </tr>
+                                                            <tr class="pt-5">
+                                                                <td colspan="3" class="pt-0 pb-0 pl-0 template-opacity"><strong><?php echo lang('amount_to_be_paid'); ?> </strong></td>
+                                                                <!-- <td class="pt-0 pb-0"> </td>
+                                                                <td class="pt-0 pb-0"> </td> -->
+                                                                <td></td>
+                                                                <td class="pt-0 pb-0"> </td>
+                                                                <td class=""></td>
+                                                                <td class="pt-0 pb-5 text-right invoice-opacity" style="text-decoration-line: underline; text-decoration-style: double; text-decoration-skip-ink: none;"><?php echo $settings->currency; $balance = $g - $r;?> <?php echo number_format($balance,2); ?></td>
+                                                                <!-- <td class=""></td> -->
+                                                            </tr>
+                                                        </div>
+                                                    </div>
+                                                </tbody>
+
+                                                <tfoot>
+                                                  <tr>
+                                                    <td colspan="8" class="text-center pt-0 pb-0 mt-0">
+                                                      <div class="page-footer-space"></div>
+                                                    </td>
+                                                  </tr>
+                                                </tfoot>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="card-footer">
-                                        <table class="table">
-                                            <tbody>
-                                                <tr class="template-opacity">
-                                                    <td class="pt-0 pb-0"><?php echo lang('prepared_by');?>:</td>
-                                                    <td class="pt-0 pb-0"> </td>
-                                                    <td class="pt-0 pb-0"> </td>
-                                                    <td class="pt-0 pb-0"> </td>
-                                                    <td class="pt-0 pb-0"><?php echo lang('received_by');?>:</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="border-bottom border-dark w-30 invoice-opacity"><?php echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
-                                                    <td class="w-5"></td>
-                                                    <td class="border-bottom border-dark w-30 text-center invoice-opacity"><?php echo date($settings->date_format_long.' - '.$settings->time_format,$payment->date);?></td>
-                                                    <td class="w-5"></td>
-                                                    <td class="border-bottom border-dark w-30 template-opacity"></td>
-                                                </tr>
-                                                <tr class="template-opacity">
-                                                    <td class="w-30"></td>
-                                                    <td class="w-5"></td>
-                                                    <td class="w-30 text-center"><?php echo lang('date_time_generated');?></td>
-                                                    <td class="w-5"></td>
-                                                    <td class="w-30"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+
+                                    
+                                </div>
+
+                                    <div class="page-footerz">
+                                        <div class="card-footer">
+                                            <table class="table">
+                                                <tbody>
+                                                    <tr class="template-opacity">
+                                                        <td class="pt-0 pb-0"><?php echo lang('prepared_by');?>:</td>
+                                                        <td class="pt-0 pb-0"> </td>
+                                                        <td class="pt-0 pb-0"> </td>
+                                                        <td class="pt-0 pb-0"> </td>
+                                                        <td class="pt-0 pb-0"><?php echo lang('received_by');?>:</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="border-bottom border-dark w-30 invoice-opacity"><?php echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
+                                                        <td class="w-5"></td>
+                                                        <td class="border-bottom border-dark w-30 text-center invoice-opacity"><?php echo date($settings->date_format_long.' - '.$settings->time_format,$payment->date);?></td>
+                                                        <td class="w-5"></td>
+                                                        <td class="border-bottom border-dark w-30 template-opacity"></td>
+                                                    </tr>
+                                                    <tr class="template-opacity">
+                                                        <td class="w-30"></td>
+                                                        <td class="w-5"></td>
+                                                        <td class="w-30 text-center"><?php echo lang('date_time_generated');?></td>
+                                                        <td class="w-5"></td>
+                                                        <td class="w-30"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div><!-- end app-content-->
-            </div>                                                
+            </div>
+
             <!--Footer-->
             <footer class="footer">
                 <div class="container">
                     <div class="row align-items-center flex-row-reverse">
                         <div class="col-md-12 col-sm-12 mt-3 mt-lg-0 text-center">
-                            Copyright © 2021 <a href="home">SugboDoc</a>. All rights reserved.
+                            Copyright © 2021 <a href="#">Rygel Dash</a>. Deployed by <a href="#">Rygel Technology Solutions</a> All rights reserved.
                         </div>
                     </div>
                 </div>
@@ -614,7 +646,7 @@
         </div>
 
         <!-- Back to top -->
-        <a href="#top" id="back-to-top">
+        <a href="#top" id="back-to-top" class="d-print-none">
             <svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></svg>
         </a>
 
@@ -643,24 +675,35 @@
 
         <!-- Custom js-->
         <script src="<?php echo base_url('public/assets/js/custom.js'); ?>"></script>
+
         <!--Page specific declarations here. Transferred from head to here-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.0/html2canvas.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.0/html2canvas.esm.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.0/html2canvas.esm.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.0/html2canvas.js"></script>
+        
 
         <script src="https://code.jquery.com/jquery-1.12.4.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
         <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
+        <script src="<?php echo base_url('public/assets/plugins/signature/signature_plugin.min.js'); ?>"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $("#print").click(function () {
+                    $(".zicon").attr("hidden", false);
+                    $(".ziconDisplay").attr("hidden", true);
+                    window.print();
+                    $(".zicon").attr("hidden", true);
+                    $(".ziconDisplay").attr("hidden", false);
+                })
+            })
+        </script>
 
         <script>
             document.getElementById('create_pdf').onclick = function() {
                 var element = document.getElementById('content');
 
                 var opt = {
-                    margin: 0.2,
-                    filename: 'Invoice_ID_<?php echo $payment->id;?><?php if (!empty($patient)) { echo '_Patient_ID_'.$patient->id; } ?>.pdf',
+                    margin: [0, 0.2, 0, 0.2],
+                    filename: 'Form_ID_<?php echo $form->id; ?>_<?php echo $form->name; ?>.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2 },
                     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
@@ -681,14 +724,14 @@
             });
 
             $(document).ready(function () {
-                $('#invoice-opacity-change').change(function () {
+                $('#form-opacity-change').change(function () {
                     if (!this.checked) 
-                       $('.invoice-opacity').animate({opacity:0});
+                       $('.form-opacity').animate({opacity:0});
                     else 
-                        $('.invoice-opacity').animate({opacity:1});
+                        $('.form-opacity').animate({opacity:1});
                 });
             });
         </script>
-
     </body>
-</html>
+</html>         
+<!--OLD Starts Here-->
