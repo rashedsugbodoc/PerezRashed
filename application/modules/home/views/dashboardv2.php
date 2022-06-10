@@ -4,8 +4,8 @@
 <html lang="en" <?php
 if (!$this->ion_auth->in_group(array('superadmin'))) {
     $this->db->where('hospital_id', $this->hospital_id);
-    $settings_lang = $this->db->get('settings')->row()->language;
-    if ($settings_lang == 'arabic') {
+    $settings = $this->db->get('settings')->row();
+    if ($settings->language == 'arabic') {
         ?>     
               dir="rtl"
           <?php } else { ?>
@@ -14,8 +14,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
           }
       } else {
           $this->db->where('hospital_id', 'superadmin');
-          $settings_lang = $this->db->get('settings')->row()->language;
-          if ($settings_lang == 'arabic') {
+          if ($settings->language == 'arabic') {
               ?>
               dir="rtl"     
           <?php } else { ?> 
@@ -218,7 +217,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
         <?php
         if (!$this->ion_auth->in_group(array('superadmin'))) {
-            if ($settings_lang == 'arabic') {
+            if ($settings->language == 'arabic') {
                 ?>
                 <style>
                     #main-content {
@@ -235,7 +234,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                 <?php
             }
         } else {
-            if ($settings_lang == 'arabic') {
+            if ($settings->language == 'arabic') {
                 ?>
                 <style>
                     #main-content {
@@ -1043,6 +1042,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             </a>
                                         </div>
                                     </div>
+                                    <!-- All Notification start -->
+                                    <?php if ($settings->is_display_notification_panel == 1) { ?>
                                     <!-- Bed Notification start -->
                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse'))) { ?> 
                                         <?php if (in_array('bed', $this->modules)) { ?>                                    
@@ -1370,7 +1371,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
-                                    <!-- report notification end -->            
+                                    <!-- report notification end -->
+                                    <?php } ?>
+                                    <!-- All Notification end -->            
                                     <div class="d-flex order-lg-2 ml-auto">
                                         
                                         <div class="dropdown profile-dropdown">
