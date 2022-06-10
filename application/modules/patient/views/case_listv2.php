@@ -52,7 +52,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?><span class="text-red"> *</span></label>
-                                                                <input type="text" class="form-control" id="title" required name="title" placeholder="Name" value="<?php
+                                                                <input type="text" class="form-control" id="title" required name="title" placeholder="<?php echo lang('clinical'); ?> <?php echo lang('impression'); ?>" value="<?php
                                                                 if (!empty($case_lists->id)) {
                                                                     echo $case_lists->title;
                                                                 }
@@ -127,7 +127,7 @@
                                                         <tr>
                                                             <th class="border-bottom-0"><?php echo lang('date'); ?></th>
                                                             <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
-                                                            <th class="border-bottom-0"><?php echo lang('case'); ?> <?php echo lang('title'); ?></th>
+                                                            <th class="border-bottom-0"><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></th>
                                                             <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
                                                         </tr>
                                                     </thead>
@@ -236,7 +236,7 @@
                                 <div class="row mt-5 border-bottom">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label font-weight-bold"><?php echo lang('title'); ?></label>
+                                            <label class="form-label font-weight-bold"><?php echo lang('clinical').' '.lang('impression'); ?></label>
                                             <label class="case_title"></label>
                                         </div>
                                     </div>
@@ -246,7 +246,7 @@
                                 <div class="row mt-5">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="form-label font-weight-bold"><?php echo lang('details'); ?></label>
+                                            <label class="form-label font-weight-bold"><?php echo lang('case').' '.lang('summary'); ?></label>
                                             <label class="case_details"></label>
                                         </div>
                                     </div>
@@ -576,15 +576,49 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('all') . ' ' . lang('cases');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('all') . ' ' . lang('cases');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('all') . ' ' . lang('cases');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('all') . ' ' . lang('cases');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('all') . ' ' . lang('cases');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            }
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
