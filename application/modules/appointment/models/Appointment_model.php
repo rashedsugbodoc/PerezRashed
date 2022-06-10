@@ -165,6 +165,20 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
+    function getAppointmentByDoctorByDate($doctor, $date_from, $date_to) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('doctor', $doctor);
+        if(!empty($date_from)) {
+            $this->db->where('date >=', $date_from);
+        }
+        if(!empty($date_to)) {
+            $this->db->where('date <=', $date_to);
+        }
+        $query = $this->db->get('appointment');
+        return $query->result();
+    }
+
     function getAppointmentRequest() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');

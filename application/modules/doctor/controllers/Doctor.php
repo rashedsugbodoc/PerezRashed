@@ -614,7 +614,8 @@ class Doctor extends MX_Controller {
         $data['todays_appointments'] = $this->appointment_model->getAppointmentByDoctorByToday($id);
         $data['appointments'] = $this->appointment_model->getAppointmentByDoctor($id);
         $data['patients'] = $this->patient_model->getPatient();
-        $data['appointment_patients'] = $this->patient->getPatientByAppointmentByDctorId($id);
+        $date_from = strtotime(gmdate("Y-m-d"));
+        $data['upcoming_appointments'] = $this->appointment_model->getAppointmentByDoctorByDate($id, $date_from, $date_to);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['prescriptions'] = $this->prescription_model->getPrescriptionByDoctorId($id);
         $data['holidays'] = $this->schedule_model->getHolidaysByDoctor($id);
