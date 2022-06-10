@@ -68,7 +68,7 @@
                                                                                 <td><?php echo $patient_details->patient_id; ?></td>
                                                                                 <td><?php echo $patient_details->name; ?></td>
                                                                                 <td><?php echo $todays_appointment->status; ?></td>
-                                                                                <td><?php echo '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('chief_complaint').': </strong>'.$todays_appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$todays_appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$todays_appointment_service; ?></td>
+                                                                                <td><?php echo '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$todays_appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$todays_appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$todays_appointment_service; ?></td>
                                                                                 <td>
                                                                                     <div class="btn-group mb-0">
                                                                                         <!-- <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fe fe-edit"></i></button> -->
@@ -194,7 +194,7 @@
                                                                                 <td><?php echo $appointed_patient->patient_id; ?></td>
                                                                                 <td><?php echo $appointed_patient->name; ?></td>
                                                                                 <td><?php echo $upcoming_appointment->status; ?></td>
-                                                                                <td><?php echo '<strong>'.lang('location').': </strong>'.$upcoming_appointment_location_name.'<br>'.'<strong>'.lang('chief_complaint').': </strong>'.$upcoming_appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$upcoming_appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$upcoming_appointment_service; ?></td>
+                                                                                <td><?php echo '<strong>'.lang('location').': </strong>'.$upcoming_appointment_location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$upcoming_appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$upcoming_appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$upcoming_appointment_service; ?></td>
                                                                                 <td>
                                                                                     <div class="btn-group mb-0">
                                                                                         <!-- <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $todays_appointment->id; ?>"><i class="fe fe-edit"></i></button> -->
