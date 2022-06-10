@@ -635,6 +635,11 @@ class Patient extends MX_Controller {
         }
         $data = array();
         $patient_id = $this->input->get('id');
+        $patient = $this->patient_model->getPatientByPatientNumber($patient_id);
+        $active_status = $this->db->get_where('users', array('id' => $patient->ion_user_id))->row()->active;
+        if ($active_status == 1) {
+            redirect('home/permission');
+        }
         $id = $this->patient_model->getPatientByPatientNumber($patient_id)->id;
         $data['patient'] = $this->patient_model->getPatientById($id);
         $data['doctors'] = $this->doctor_model->getDoctor();
@@ -2989,9 +2994,15 @@ class Patient extends MX_Controller {
 
         foreach ($data['patients'] as $patient) {
 
+            $active_status = $this->db->get_where('users', array('id' => $patient->ion_user_id))->row()->active;
             if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a class="btn btn-info editbutton" title="' . lang('edit') . '" href="patient/editPatient?id=' . $patient->patient_id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                if ($active_status == 1) {
+                    $options1 = '';
+                } else {
+                    $options1 = ' <a class="btn btn-info editbutton" title="' . lang('edit') . '" href="patient/editPatient?id=' . $patient->patient_id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';    
+                }
+                
             }
 
             $options2 = '<a class="btn btn-info" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
@@ -3025,7 +3036,7 @@ class Patient extends MX_Controller {
                     $patient->phone,
                     $doctorNames,
                     $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
-                    $options1 . ' ' . $options6 . ' ' . $options4 . ' ' . $options5,
+                    $active_status?$options1:'' . ' ' . $options6 . ' ' . $options4 . ' ' . $options5,
                         //  $options2
                 );
             }
@@ -3048,7 +3059,7 @@ class Patient extends MX_Controller {
                     $patient->name,
                     $patient->phone,
                     $doctorNames,
-                    $options1 . ' ' . $options6 . ' ' . $options3,
+                    $options1  . ' ' . $options6 . ' ' . $options3,
                         //  $options2
                 );
             }
