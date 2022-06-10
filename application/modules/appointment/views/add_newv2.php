@@ -29,7 +29,7 @@
                                                 <label class="form-label">Patient <span class="text-red">*</span></label>
                                                 <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" required>
                                                     <?php if (!empty($patients)) { ?>
-                                                        <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
+                                                        <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> (ID:<?php echo $patients->id; ?>)</option>  
                                                     <?php } ?>
                                                 </select>
                                             </div>
@@ -148,9 +148,7 @@
                                             <div class="form-group">
                                                 <label class="form-label"> <?php echo lang('service'); ?><span class="text-red">*</span></label>
                                                 <select class="form-control select2-show-search sub_service" id="sub_service" name="service" data-placeholder="Choose one (with searchbox)" required>
-                                                    <?php if (!empty($appointment->service_id)) { ?>
-                                                        <option value="<?php echo $appointment->service_id ?>" selected><?php echo $this->appointment_model->getServicesByServiceId($appointment->service_id)->category; ?></option>
-                                                    <?php } ?>
+
                                                 </select>
                                             </div>
                                         </div>
@@ -227,8 +225,8 @@
                                         </div>
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('complaint'); ?><span class="text-red">*</span></label>
-                                                <textarea class="form-control mb-4" placeholder="Purpose" required id="remarks" name="remarks" rows="3" maxlength="500"><?php
+                                                <label class="form-label"><?php echo lang('reason_for_visit'); ?><span class="text-red">*</span></label>
+                                                <textarea class="form-control mb-4" placeholder="<?php echo lang('purpose_of_visit').' / '.lang('chief_complaint');?>" required id="remarks" name="remarks" rows="3" maxlength="500"><?php
                                                 if (!empty($appointment->remarks)) {
                                                     echo $appointment->remarks;
                                                 }
@@ -621,7 +619,7 @@
                         success: function (response) {
                             // console.log(response.services);
                             $.each(response.services, function (key, value) {
-                                $('#sub_service').append($('<option>').text(value.description).val(value.id)).end();
+                                $('#sub_service').append($('<option>').text(value.category).val(value.id)).end();
                             });
 
                         }
@@ -665,7 +663,7 @@
                             success: function (response) {
                                 // console.log(response.services);
                                 $.each(response.services, function (key, value) {
-                                    $('#sub_service').append($('<option>').text(value.description).val(value.id)).end();
+                                    $('#sub_service').append($('<option>').text(value.category).val(value.id)).end();
                                 });
 
                             }
