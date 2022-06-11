@@ -582,6 +582,37 @@ class Patient_model extends CI_model {
         return $due_balance = $bill_balance - $deposit_balance;
     }
 
+    function getDueBalanceByPatientIdByDoctorIdByProviderId($patient, $doctor, $provider) {
+        $query = $this->db->get_where('invoice', array('patient' => $patient, 'hospital_id' => $this->session->userdata('hospital_id')))->result();
+        $invoice_id = [];
+        foreach($query as $que) {
+            $invoice_id[] = $que->id;
+        }
+        $deposits = [];
+        foreach($invoice_id as $invoice) {
+            $this->db->where('payment_id', $invoice);
+            $deposits[] = $this->db->get('patient_deposit')->row();
+        }
+        $balance = array();
+        $deposit_balance = array();
+        foreach ($query as $gross) {
+            $balance[] = $gross->gross_total;
+        }
+        $balance = array_sum($balance);
+
+
+        foreach ($deposits as $deposit) {
+            $deposit_balance[] = $deposit->deposited_amount;
+        }
+        $deposit_balance = array_sum($deposit_balance);
+
+
+
+        $bill_balance = $balance;
+
+        return $due_balance = $bill_balance - $deposit_balance;
+    }
+
     function getPatientInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
