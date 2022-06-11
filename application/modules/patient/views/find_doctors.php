@@ -83,7 +83,7 @@
                                             ?>
                                             </p></small>
                                             <a href="appointment/bookConsultation?doctor_id=<?php echo $doctor->id ?>" class="btn btn-primary btn-pill btn-sm d-xl-inline">Book</a>
-                                            <a class="btn btn-white btn-pill btn-sm " data-target="#modaldemo3" data-toggle="modal" href="">Info</a>
+                                            <a class="btn btn-white btn-pill btn-sm doctorInfo" data-id="<?php echo $doctor->id ?>" data-toggle="modal" href="">Info</a>
                                         </div>
                                     </div>
                                 </div>
@@ -113,10 +113,10 @@
                                                     <a href=""><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 6h-4.05l-1.83-2H9.88L8.05 6H4v12h16V6zm-8 11c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" opacity=".3"/><path d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM4 6h4.05l1.83-2h4.24l1.83 2H20v12H4V6zm8 1c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg></a>
                                                 </div>
                                                 <div class="media-body">
-                                                    <h4>Dr. Michael Rygel</h4>
-                                                    <p>Internal Medicine | Endourology</p>
-                                                    <nav class="nav">
-                                                        <a href="#" class="btn btn-primary btn-pill btn-sm d-xl-inline">Book</a>
+                                                    <h4>Dr. <span class="doctor_name"></span></h4>
+                                                    <p class="specialty"></p>
+                                                    <nav class="nav bookBtn">
+                                                        
                                                     </nav>
                                                 </div>
                                             </div>
@@ -131,7 +131,10 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="media pt-0 pb-4 mt-0">
+                                                <div id="branches">
+                                                    
+                                                </div>
+                                                <!-- <div class="media pt-0 pb-4 mt-0">
                                                     <div class="media-body">
                                                         <div class="d-flex">
                                                             <div class="media-icon bg-light text-primary mr-3 mt-1">
@@ -154,7 +157,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -249,6 +252,49 @@
 
         <!-- Custom js-->
         <script src="<?php echo base_url('public/assets/js/custom.js'); ?>"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".doctorInfo").click(function () {
+                    var iid = $(this).attr('data-id');
+                    $('.doctor_name').html("").end()
+                    $('.specialty').html("").end()
+                    $('#branches').html("").end()
+                    $.ajax({
+                        url: 'doctor/getDoctorById?id='+iid,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function(response) {
+                            $('.doctor_name').append(response.doctor.name).end()
+                            // $('.specialty').append(response.specialties.display_name).end()
+                            $.each(response.specialties, function(key, value) {
+                                $('.specialty').append(value.display_name_ph+", ").end();
+                            });
+
+                            $.each(response.branches, function(key, value) {
+                                $('#branches').append('<div class="media pt-0 pb-4 mt-0">\n\
+                                    <div class="media-body">\n\
+                                        <div class="d-flex">\n\
+                                            <div class="media-icon bg-light text-primary mr-3 mt-1">\n\
+                                                <i class="fa fa-hospital-o"></i>\n\
+                                            </div>\n\
+                                            <div>\n\
+                                                <label>'+ value.display_name +'</label> <span class="font-weight-semibold fs-14"><i class="fa fa-phone"></i> '+response.doctor.phone+'</span><span class="font-weight-semibold fs-14"><i class="fa fa-home"></i> '+value.street_address+'</span>\n\
+                                            </div>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                                ');
+                            });
+                            $('.bookBtn').append('<a href="appointment/bookConsultation?doctor_id='+iid+'" class="btn btn-primary btn-pill btn-sm d-xl-inline">Book</a>')
+                            console.log(response.branches);
+                            $('#modaldemo3').modal('show');
+                        }
+                    })
+                })
+            });
+        </script>
 
         <script type="text/javascript">
             $(document).ready(function () {
