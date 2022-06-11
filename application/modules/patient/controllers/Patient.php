@@ -693,7 +693,7 @@ class Patient extends MX_Controller {
             $birthDate = explode("/", $birthDate);
             $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
             $data['age'] = $age . ' ' . lang('years_old');
-            $data['birthdate'] = $data['patient']->birthdate;
+            $data['birthdate'] = date('F j, Y', strtotime($data['patient']->birthdate));
         } else if (!empty($data['patient']->age)) {
             $data['age'] = $data['patient']->age . ' ' . lang('years_old');
             $data['birthdate'] = lang('not_provided');
