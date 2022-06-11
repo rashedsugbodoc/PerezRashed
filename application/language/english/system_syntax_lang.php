@@ -1087,6 +1087,7 @@ $lang['fahrenheit'] = '°F';
 $lang['percentage_symbol'] = '%';
 $lang['valid_id'] = 'Valid Id';
 $lang['prescription'] = 'Prescription';
+$lang['prescriptions'] = 'Prescriptions';
 $lang['medical_certificate'] = 'Medical Certificate';
 $lang['vaccination_record'] = 'Vaccination Record';
 $lang['wound_injury_image'] = 'Wound Injury Image';
