@@ -1574,7 +1574,7 @@ class Patient extends MX_Controller {
         }
         $data['encounter_details'] = $this->encounter_model->getEncounterById($data['encounter_id']);
         if (empty($data['encounter_id'])) {
-            $data['encounter_details'] = $this->encounter_model->getEncounter();
+            $data['encounter_details'] = $this->encounter_model->getEncounterByPatientId($id);
         }
 
         if ($this->ion_auth->in_group(array('Patient'))) {
@@ -3144,7 +3144,7 @@ class Patient extends MX_Controller {
 
             $provider = $patient->hospital_id;
 
-            $due = $this->settings_model->getSettings()->currency .' '. $this->patient_model->getDueBalanceByPatientIdByProviderId($patient->id, $provider);
+            $due = $this->settings_model->getSettings()->currency .' '. $this->patient_model->getDueBalanceByPatientIdByDoctorIdByProviderId($patient->id, $doctor, $provider);
 
             if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
                 $info[] = array(
