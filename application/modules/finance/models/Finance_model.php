@@ -126,7 +126,7 @@ class Finance_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->where('patient', $id);
-        $this->db->where('doctor', $id);
+        $this->db->where('doctor', $doctor_id);
         $query = $this->db->get('invoice');
         return $query->result();
     }

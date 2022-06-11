@@ -91,7 +91,7 @@ class Doctor_model extends CI_model {
     }
 
     function getDoctorById($id) {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
         $query = $this->db->get('doctor');
         return $query->row();

@@ -818,6 +818,7 @@ class Doctor extends MX_Controller {
         $doctor_specialty = $data['doctor']->specialties;
         $data['specialties'] = $this->getSpecialtyListArray($doctor_specialty);
         $is_virtual = $this->finance_model->getServiceCategoryGroupById($service_category)->is_virtual;
+        $data['branches'] = $this->branch_model->getBranchByHospitalId($data['doctor']->hospital_id);
 
         if (!empty($is_virtual)) {
             $data['consultation_fee'] = $data['doctor']->virtual_consultation_fee;

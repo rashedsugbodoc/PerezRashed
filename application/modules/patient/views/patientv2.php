@@ -1099,7 +1099,7 @@
                 success: function (response) {
                     // Populate the form fields with the data returned from server
 
-                    $('.patientIdClass').append(response.patient.id).end()
+                    $('.patientIdClass').append(response.patient.patient_id).end()
                     $('.nameClass').append(response.patient.name).end()
                     $('.emailClass').append(response.patient.email).end()
                     $('.addressClass').append(response.patient.address).end()

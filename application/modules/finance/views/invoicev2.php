@@ -268,7 +268,7 @@
                                                                     <span class="invoice-opacity">
                                                                         <?php
                                                                         if (!empty($patient)) {
-                                                                            echo $patient->id . ' <br>';
+                                                                            echo $patient->patient_id . ' <br>';
                                                                         }
                                                                         ?>                                                                    
                                                                     </span>
