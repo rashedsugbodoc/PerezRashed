@@ -3178,35 +3178,47 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
                     {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
-                    },
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                            },
+                        ],
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -3229,35 +3241,47 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
                     {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('appointments'); ?>'
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('appointments'); ?>'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('appointments'); ?>'
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('appointments'); ?>'
-                    },
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('appointments'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('appointments'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('appointments'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('appointments'); ?>'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('appointments'); ?>'
+                            },
+                        ],
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -3281,35 +3305,47 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
                     {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('case_history'); ?>'
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('case_history'); ?>'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('case_history'); ?>'
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('case_history'); ?>'
-                    },
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('case_history'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('case_history'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('case_history'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('case_history'); ?>'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('case_history'); ?>'
+                            },
+                        ],
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -3332,35 +3368,47 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
                     {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('prescriptions'); ?>'
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('prescriptions'); ?>'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('prescriptions'); ?>',
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('prescriptions'); ?>'
-                    },
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('prescriptions'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('prescriptions'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('prescriptions'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('prescriptions'); ?>'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('prescriptions'); ?>'
+                            },
+                        ],
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -3383,35 +3431,47 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
                     {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('lab_reports'); ?>'
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('lab_reports'); ?>'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('lab_reports'); ?>'
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('lab_reports'); ?>'
-                    },
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('lab_requests'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('lab_requests'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('lab_requests'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('lab_requests'); ?>'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('lab_requests'); ?>'
+                            },
+                        ],
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -3434,35 +3494,47 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
                     {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
-                    },
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('encounters'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('encounters'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('encounters'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('encounters'); ?>'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('encounters'); ?>'
+                            },
+                        ],
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
@@ -3485,35 +3557,47 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
                     {
-                        extend: 'excelHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
-                    },
-                    {
-                        extend: 'csvHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
-                    },
-                    {
-                        extend: 'pdfHtml5',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        },
-                        title: '<?php echo $patient->name; ?> <?php echo lang('bed_list'); ?>'
-                    },
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('forms'); ?>'
+                            },
+                        ],
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
