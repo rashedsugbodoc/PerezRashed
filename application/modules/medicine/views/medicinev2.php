@@ -563,30 +563,47 @@
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
                     {
-                        extend: 'collection',
-                        text: 'Export Options',
+                    extend: 'collection',
+                    text: 'Export',        
                         buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                                },
+                                title: '<?php echo lang('medicine_list'); ?>'
+                            },
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                                }
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                                },
+                                title: '<?php echo lang('medicine_list'); ?>'
                             },
                             {
                                 extend: 'csvHtml5',
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                                }
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                                },
+                                title: '<?php echo lang('medicine_list'); ?>'
                             },
                             {
                                 extend: 'pdfHtml5',
                                 exportOptions: {
-                                    columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
+                                title: '<?php echo lang('medicine_list'); ?>',
                                 orientation: 'landscape',
                                 pageSize: 'LEGAL'
-                            }
-                        ]
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                                },
+                                title: '<?php echo lang('medicine_list'); ?>'
+                            },
+                        ],
                     }
                 ],
                 aLengthMenu: [
