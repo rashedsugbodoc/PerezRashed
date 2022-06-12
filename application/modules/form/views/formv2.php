@@ -492,20 +492,51 @@
                     loadingIndicator: true
                 },
 
-                dom: "<'row'<'col-sm-4 col-md-12'f><'col-sm-12 col-md-2'l><'col-sm-12 col-md-10 text-right'B>>" +
+                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2],
-                        }
-                    },
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                        ],
+                    }
                 ],
 
                 aLengthMenu: [
