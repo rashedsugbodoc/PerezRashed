@@ -641,7 +641,7 @@ class Patient extends MX_Controller {
             redirect('home/permission');
         }
         $id = $this->patient_model->getPatientByPatientNumber($patient_id)->id;
-        $data['patient'] = $this->patient_model->getPatientById($id);
+        $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['groups'] = $this->patient_model->getBloodGroup();
         $data['countries'] = $this->location_model->getCountry();
@@ -1600,7 +1600,7 @@ class Patient extends MX_Controller {
         
         $data['settings'] = $this->settings_model->getSettings();
         $data['groups'] = $this->donor_model->getBloodBank();
-        $data['patient'] = $this->patient_model->getPatientById($id);
+        $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
         if (empty($data['encounter_id'])) {
             $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
         } else {
