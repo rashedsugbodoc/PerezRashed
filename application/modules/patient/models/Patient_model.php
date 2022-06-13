@@ -235,6 +235,14 @@ class Patient_model extends CI_model {
         return $query->row();
     }
 
+    function getPatientByIdByVisitedProviderId($id) {
+        $provider = $this->session->userdata('hospital_id');
+        $this->db->where("FIND_IN_SET($provider,visited_provider_id) > 0");
+        $this->db->where('id', $id);
+        $query = $this->db->get('patient');
+        return $query->row();
+    }
+
     function getPatientByPatientNumber($id) {
         $this->db->where('patient_id', $id);
         $query = $this->db->get('patient');
