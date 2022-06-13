@@ -440,7 +440,8 @@
                     placeholder: '<?php echo lang('select_patient'); ?>',
                     allowClear: true,
                     ajax: {
-                        url: 'patient/getPatientinfoWithAddNewOption',
+                        // url: 'patient/getPatientinfoWithAddNewOption',
+                        url: 'patient/getPatientInfoByVisitedProviderId',
                         type: "post",
                         dataType: 'json',
                         delay: 250,
