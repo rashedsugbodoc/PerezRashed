@@ -856,6 +856,7 @@ $lang['hospital_statistics'] = 'Hospital Statistics';
 $lang['hospital'] = 'Hospital';
 $lang['facility'] = 'Facility';
 $lang['online'] = 'Online';
+$lang['facetoface'] = 'Face to Face';
 $lang['uploader'] = 'Uploader';
 $lang['summary'] = 'Summary';
 $lang['edit_uploaded_image'] = 'Edit Uploaded Image';
