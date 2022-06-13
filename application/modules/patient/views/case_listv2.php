@@ -645,7 +645,8 @@
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'patient/getPatientinfo',
+                    // url: 'patient/getPatientinfo',
+                    url: 'patient/getPatientInfoByVisitedProviderId',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -667,7 +668,8 @@
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'patient/getPatientinfo',
+                    // url: 'patient/getPatientinfo',
+                    url: 'patient/getPatientInfoByVisitedProviderId',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
