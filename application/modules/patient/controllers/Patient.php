@@ -5409,6 +5409,16 @@ class Patient extends MX_Controller {
         echo json_encode($response);
     }
 
+    public function getPatientInfoByVisitedProviderId() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->patient_model->getPatientInfoByVisitedProviderId($searchTerm);
+
+        echo json_encode($response);
+    }
+
     public function getPatientinfoWithAddNewOption() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');

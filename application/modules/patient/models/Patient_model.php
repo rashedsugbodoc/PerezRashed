@@ -635,6 +635,29 @@ class Patient_model extends CI_model {
         return $data;
     }
 
+    function getPatientInfoByVisitedProviderId($searchTerm) {
+        $provider = $this->session->userdata('hospital_id');
+        if (!empty($searchTerm)) {
+            $this->db->select('*');
+            $this->db->where("FIND_IN_SET($provider,visited_provider_id) > 0");
+            $this->db->where("name like '%" . $searchTerm . "%' OR id like '%" . $searchTerm . "%'");
+            $fetched_records = $this->db->get('patient');
+            $users = $fetched_records->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where("FIND_IN_SET($provider,visited_provider_id) > 0");
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('patient');
+            $users = $fetched_records->result_array();
+        }
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
+        }
+        return $data;
+    }
+
     function getPatientinfoWithAddNewOption($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
