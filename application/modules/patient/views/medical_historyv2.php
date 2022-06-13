@@ -647,14 +647,22 @@
                                                                                     }
                                                                                 ?></td>
                                                                                 <td><?php
-                                                                                    $facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
+                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
                                                                                     if (!empty($appointment->hospital_id)) {
                                                                                         $appointment_facility = $facility->name;
                                                                                     } else {
                                                                                         $appointment_facility = '';
                                                                                     }
                                                                                     echo $appointment_facility; ?><br><?php
-                                                                                    echo '(' . lang('online') . ')';
+                                                                                    echo '(' . lang('online') . ')';*/
+                                                                                    $facility = $this->branch_model->getBranchById($appointment->location_id);
+                                                                                    $hospital = $this->hospital_model->getHospitalById($appointment->hospital_id);
+                                                                                    if (!empty($appointment->location_id)) {
+                                                                                        $appointment_facility = $facility->display_name.'<br>'.'(' . lang('facetoface') . ')';
+                                                                                    } else {
+                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+                                                                                    }
+                                                                                    echo $appointment_facility;
                                                                                 ?></td>
                                                                                 <td><?php echo $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name; ?></td>
                                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
@@ -720,7 +728,7 @@
                                                                                 <td><?php
                                                                                     $facility = $this->hospital_model->getHospitalById($medical_history->hospital_id);
                                                                                     if (!empty($medical_history->hospital_id)) {
-                                                                                        $case_facility = $facility->name;
+                                                                                        $case_facility = $facility->name.' ( Online )';
                                                                                     } else {
                                                                                         $case_facility = '';
                                                                                     }
@@ -824,7 +832,7 @@
                                                                                 <td><?php
                                                                                     $facility = $this->hospital_model->getHospitalById($prescription->hospital_id);
                                                                                     if (!empty($prescription->hospital_id)) {
-                                                                                        $prescription_facility = $facility->name;
+                                                                                        $prescription_facility = $facility->name.' ( Online )';
                                                                                     } else {
                                                                                         $prescription_facility = '';
                                                                                     }
@@ -1182,9 +1190,9 @@
                                                                                 <td><?php echo $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name; ?></td>
                                                                                 <td><?php
                                                                                     if (!empty($encounter->location_id)) {
-                                                                                        echo $this->branch_model->getBranchById($encounter->location_id)->display_name;
+                                                                                        echo $this->branch_model->getBranchById($encounter->location_id)->display_name.'<br>'.'( '.lang('facetoface').' )';
                                                                                     } else {
-                                                                                        echo "N/A";
+                                                                                        echo $this->hospital_model->getHospitalById($encounter->hospital_id)->name.'<br>'.'( '.lang('online').' )';
                                                                                     }
                                                                                 ?></td>
                                                                                 <td><?php
