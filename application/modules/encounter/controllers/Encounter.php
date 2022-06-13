@@ -617,6 +617,47 @@ class Encounter extends MX_Controller {
 
     }
 
+    function startEncounter() {
+        $encounter_id = $this->input->post('encounter_id');
+        $encounter_number = $this->encounter_model->getEncounterById($encounter_id)->encounter_number;
+        $encounter_patient = $this->encounter_model->getEncounterById($encounter_id)->patient_id;
+        $patient_number = $this->patient_model->getPatientById($encounter_patient)->patient_id;
+        $user = $this->session->userdata('user_id');
+        $date = date("Y-m-d H:i:s", now('UTC'));
+        $redirect = $this->input->post('redirect');
+
+        $data_encounter = array(
+            'patient_id' => $encounter_patient,
+            'started_at' => $date,
+            'waiting_started' => $date,
+            'encounter_status' => 3,
+        );
+
+        $this->encounter_model->updateEncounter($encounter_id, $data_encounter);
+
+        redirect($redirect.'?id='.$patient_number.'&encounter_id='.$encounter_id);
+    }
+
+    function endEncounter() {
+        $encounter_id = $this->input->post('encounter_id');
+        $encounter_number = $this->encounter_model->getEncounterById($encounter_id)->encounter_number;
+        $encounter_patient = $this->encounter_model->getEncounterById($encounter_id)->patient_id;
+        $patient_number = $this->patient_model->getPatientById($encounter_patient)->patient_id;
+        $user = $this->session->userdata('user_id');
+        $date = date("Y-m-d H:i:s", now('UTC'));
+        $redirect = $this->input->post('redirect');
+
+        $data_encounter = array(
+            'patient_id' => $encounter_patient,
+            'ended_at' => $date,
+            'encounter_status' => 4,
+        );
+
+        $this->encounter_model->updateEncounter($encounter_id, $data_encounter);
+
+        redirect($redirect.'?id='.$patient_number.'&encounter_id='.$encounter_id);
+    }
+
     function endEncounterById() {
         $encounter_id = $this->input->get('encounter_id');
         $appointment_id = $this->input->get('appointment_id');
