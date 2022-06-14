@@ -268,7 +268,7 @@ class Encounter_model extends CI_model {
         }
         // Initialize Array with fetched data
         $data = array();
-        $data[] = array("id" => 'add_new', "text" => lang('add_new'));
+        $data[] = array("id" => 'add_new', "text" => lang('specify_name').' ('.' if not listed '.')');
         foreach ($users as $user) {
             $data[] = array("id" => $user['id'], "text" => $user['name']);
         }
@@ -573,7 +573,7 @@ class Encounter_model extends CI_model {
 
         // Initialize Array with fetched data
         $data = array();
-        $data[] = array("id" => 'add_new', "text" => lang('add_new'));
+        $data[] = array("id" => 'add_new', "text" => lang('specify_name').' ('.' if not listed '.')');
         foreach ($users as $user) {
             $data[] = array("id" => $user['id'], "text" => $user['name']);
         }

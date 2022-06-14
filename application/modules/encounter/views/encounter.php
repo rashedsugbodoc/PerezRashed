@@ -292,7 +292,7 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('referral_provider') ?></label>
                                                                 <select class="select2-show-search form-control ref_provider_select2" name="provider" id="pos_ref_provider2"> 
-                                                                    <option value="add_new"><?php echo lang('add_new'); ?></option>
+                                                                    <option value="add_new"><?php echo lang('specify_name').' ( '.'if not listed'.' )'; ?></option>
                                                                     <?php foreach ($providers as $provider) { ?>
                                                                         <option value="<?php echo $provider->id ?>"> <?php echo $provider->name ?> </option>
                                                                     <?php } ?>
@@ -315,7 +315,7 @@
                                                              <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('refd_by_doctor') ?></label>
                                                                 <select class="select2-show-search form-control ref_doctor_select2" name="ref_doctor" id="pos_ref_doctor2">
-                                                                    <option value="add_new"><?php echo lang('add_new'); ?></option>
+                                                                    <option value="add_new"><?php echo lang('specify_name').' ( '.'if not listed'.' )'; ?></option>
                                                                     <?php foreach ($doctors as $doctor) { ?>
                                                                         <option value="<?php echo $doctor->id ?>"> <?php echo $doctor->name ?> </option>
                                                                     <?php } ?>
