@@ -143,18 +143,47 @@
                                             <div class="card-body text-white" id="encounterCard">
                                                 <div id="encounterBanner">
                                                     <?php if (empty($all_encounter)) { ?>
-                                                        <span class="font-weight-bold"><?php echo lang('encounter')?></span><?php echo ' '.$encounter_details->encounter_number; ?><span class="font-weight-bold"><?php echo ' '.lang('for').' '.lang('patient').': ' ?></span><?php echo $patient->name ?><br>
-                                                        <span class="font-weight-bold"><?php echo lang('encounter_type').': '; ?></span><span><?php echo $this->encounter_model->getEncounterTypeById($encounter_details->encounter_type_id)->display_name; ?></span>
-                                                        <span class="font-weight-bold"><?php echo lang('location').': ' ?></span><span><?php echo $encounter_details->location_id?$this->branch_model->getBranchById($encounter_details->location_id)->display_name:$this->hospital_id->getHospitalById($encounter_details->hospital_id)->display_name.'( '.lang('online').' )'; ?></span><br>
-                                                        <span class="font-weight-bold"><?php echo lang('reason_for_visit').': '; ?></span><span><?php echo $encounter_details->reason; ?></span><br>
-                                                        <span class="font-weight-bold"><?php echo lang('waiting').lang('started').': '; ?></span><?php echo date('F j, Y h:i A', strtotime($encounter_details->waiting_started.' UTC')) ?>
-                                                        <span class="font-weight-bold"><?php echo lang('ready_to_serve_at').': '; ?></span><?php echo $encounter_details->ready_to_serve_at?$encounter_details->ready_to_serve_at:'not ended'; ?><br>
-                                                        <span class="font-weight-bold"><?php echo lang('started').': '; ?></span><?php echo $encounter_details->started_at?date('F j, Y h:i A', strtotime($encounter_details->started_at.' UTC')).'</span>':'<button class="btn btn-secondary btn-sm text-white startEncounter" data-id="'.$encounter_details->id.'">Start Encounter</button>'; ?>
-                                                        <?php if (!empty($encounter_details->started_at && empty($encounter_details->ended_at))) { ?>
-                                                            <span class="font-weight-bold"><?php echo lang('ended').': '; ?></span><button class="btn btn-secondary btn-sm endEncounter" data-id="<?php echo $encounter_details->id ?>">End Encounter</button>
-                                                        <?php } else { ?>
-                                                            <span class="font-weight-bold"><?php echo lang('ended').': '; ?></span><?php echo $encounter_details->ended_at?date('F j, Y h:i A', strtotime($encounter_details->ended_at.' UTC')):'Not Yet Ended'; ?>
-                                                        <?php } ?>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <span class="font-weight-bold"><?php echo lang('encounter')?></span><?php echo ' '.$encounter_details->encounter_number; ?>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <span class="font-weight-bold"><?php echo lang('patient').': ' ?></span><?php echo $patient->name ?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <span class="font-weight-bold"><?php echo lang('encounter_type').': '; ?></span><span><?php echo $this->encounter_model->getEncounterTypeById($encounter_details->encounter_type_id)->display_name; ?></span>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <span class="font-weight-bold"><?php echo lang('location').': ' ?></span><span><?php echo $encounter_details->location_id?$this->branch_model->getBranchById($encounter_details->location_id)->display_name:$this->hospital_id->getHospitalById($encounter_details->hospital_id)->display_name.'( '.lang('online').' )'; ?></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <span class="font-weight-bold"><?php echo lang('reason_for_visit').': '; ?></span><span><?php echo $encounter_details->reason; ?></span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <span class="font-weight-bold"><?php echo lang('waiting').' '.lang('started').': '; ?></span><?php echo date('F j, Y h:i A', strtotime($encounter_details->waiting_started.' UTC')) ?>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <span class="font-weight-bold"><?php echo lang('ready_to_serve_at').': '; ?></span><?php echo $encounter_details->ready_to_serve_at?$encounter_details->ready_to_serve_at:''; ?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <span class="font-weight-bold"><?php echo lang('started').': '; ?></span><?php echo $encounter_details->started_at?date('F j, Y h:i A', strtotime($encounter_details->started_at.' UTC')).'</span>':'<button class="btn btn-secondary btn-sm text-white startEncounter" data-id="'.$encounter_details->id.'">Start Encounter</button>'; ?>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <?php if (!empty($encounter_details->started_at && empty($encounter_details->ended_at))) { ?>
+                                                                    <span class="font-weight-bold"><?php echo lang('ended').': '; ?></span><button class="btn btn-secondary btn-sm endEncounter" data-id="<?php echo $encounter_details->id ?>">End Encounter</button>
+                                                                <?php } else { ?>
+                                                                    <span class="font-weight-bold"><?php echo lang('ended').': '; ?></span><?php echo $encounter_details->ended_at?date('F j, Y h:i A', strtotime($encounter_details->ended_at.' UTC')):'Not Yet Ended'; ?>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
                                                     <?php } else { ?>
                                                         <span class="font-weight-bold"><?php echo $all_encounter.' '.lang('encounter'); ?></span>
                                                     <?php } ?>
