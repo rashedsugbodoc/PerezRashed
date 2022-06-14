@@ -705,28 +705,50 @@
     </script> 
 
     <script type="text/javascript">
+        $("#encounter").change(function () {
+            var encounter = $("#encounter").val();
+            $("#patientchoose").find('option').remove();
+
+            $.ajax({
+                url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var patient = response.patient;
+                    $('#patientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
+                    // $.each(patient, function (key, value) {
+                    //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
+                    //     console.log(value.name);
+                    // });
+                }
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
         $(document).ready(function () {
             $("#patientchoose").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
-                ajax: {
-                    // url: 'patient/getPatientinfo',
-                    url: 'patient/getPatientInfoByVisitedProviderId',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
+                // ajax: {
+                //     // url: 'patient/getPatientinfo',
+                //     url: 'patient/getPatientInfoByVisitedProviderId',
+                //     type: "post",
+                //     dataType: 'json',
+                //     delay: 250,
+                //     data: function (params) {
+                //         return {
+                //             searchTerm: params.term // search term
+                //         };
+                //     },
+                //     processResults: function (response) {
+                //         return {
+                //             results: response
+                //         };
+                //     },
+                //     cache: true
+                // }
 
             });
 

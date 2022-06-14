@@ -5870,6 +5870,16 @@ class Patient extends MX_Controller {
         echo json_encode($data);
     }
 
+    public function getPatientByEncounterIdByJason() {
+        $encounter_id = $this->input->get('id');
+
+        $encounter = $this->encounter_model->getEncounterById($encounter_id);
+
+        $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($encounter->patient_id);
+
+        echo json_encode($data);
+    }
+
 }
 
 /* End of file patient.php */
