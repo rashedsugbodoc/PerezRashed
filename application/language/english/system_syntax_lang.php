@@ -427,6 +427,7 @@ $lang['payment_history'] = 'Payment History';
 $lang['total_payment'] = 'Total Payment';
 $lang['total_payments'] = 'Total Payments';
 $lang['add_new'] = 'Add New';
+$lang['specify_name'] = 'Specify Name';
 $lang['add_new_doctor'] = 'Add New Doctor';
 $lang['add_general_payment'] = 'Add General Payment';
 $lang['choose_payment_type'] = 'Choose Payment Type';
