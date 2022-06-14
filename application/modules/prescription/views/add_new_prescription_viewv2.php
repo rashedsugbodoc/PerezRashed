@@ -82,10 +82,7 @@
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                <select class="select2-show-search form-control" name="patient" required id="patientchoose">
-                                                    <?php if (!empty($prescription->patient)) { ?>
-                                                        <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patients->id; ?>)</option>  
-                                                    <?php } ?>
+                                                <select class="select2-show-search form-control" name="patient" required id="<?php if (empty($prescription)) { echo 'patientchoose'; } ?>">
                                                     <?php
                                                     if (!empty($setval)) {
                                                         $patientdetails = $this->db->get_where('patient', array('id' => set_value('patient')))->row();
@@ -161,12 +158,27 @@
                                                                 $prescription_medicine_extended = explode('***', $value);
                                                                 $medicine = $this->medicine_model->getMedicineById($prescription_medicine_extended[0]);
                                                                 ?>
-                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name; ?>"  <?php echo 'data-form="' . $prescription_medicine_extended[1] . '"' . 'data-qty="' . $prescription_medicine_extended[2] . '"data-instruction="' . $prescription_medicine_extended[3] . '"data-uses="' . $prescription_medicine_extended[4] . '"data-generic="' . $medicine->generic . '"'; ?> selected="selected">
+                                                                <option value="<?php echo $medicine->id . '*' . $medicine->name . '*' . $medicine->uses . '*' . $medicine->form . '*' . $medicine->generic; ?>"  <?php echo 'data-form="' . $prescription_medicine_extended[1] . '"' . 'data-qty="' . $prescription_medicine_extended[2] . '"data-instruction="' . $prescription_medicine_extended[3] . '"data-uses="' . $prescription_medicine_extended[4] . '"data-generic="' . $medicine->generic . '"'; ?> selected="selected">
                                                                     <?php echo $medicine->generic . ' ( ' . $medicine->name . ' ) ' . $medicine->form; ?>
                                                                 </option>                
                                                                 <?php
                                                             }
                                                         }
+                                                        /*foreach ($medicines as $medicine) {
+                                                            $prescription_medicine = explode('###', $prescription->medicine);
+                                                            foreach ($prescription_medicine as $key => $value) {
+                                                                $prescription_medicine_extended = explode('***', $value);
+                                                                if ($medicine->id === $prescription_medicine_extended[0]) {
+                                                                    ?>
+                                                                    <option value="<?php echo $medicine->id . '*' . $medicine->name; ?>"  <?php echo 'data-form="' . $prescription_medicine_extended[1] . '"' . 'data-qty="' . $prescription_medicine_extended[2] . '"data-instruction="' . $prescription_medicine_extended[3] . '"data-uses="' . $prescription_medicine_extended[4] . '"data-generic="' . $medicine->generic . '"'; ?> selected="selected">
+                                                                        <?php echo $medicine->generic . ' ( ' . $medicine->name . ' ) ' . $medicine->form; ?>
+                                                                    </option>                
+                                                                    <?php
+                                                                } else {
+                                                                    ?><option value="<?php echo $medicine->id . '*' . $medicine->name ?>"><?php echo $medicine->generic . ' ( ' . $medicine->name . ' ) ' . $medicine->form; ?></option><?php
+                                                                }
+                                                            }
+                                                        }*/
                                                         ?>
                                                     </select>
                                                 <?php } ?>
@@ -750,6 +762,11 @@
                 //     cache: true
                 // }
 
+            });
+
+            $("#patientchoose1").select2({
+                placeholder: '<?php echo lang('select_patient'); ?>',
+                allowClear: true,
             });
 
             $("#doctorchoose").select2({
