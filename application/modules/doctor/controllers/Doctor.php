@@ -632,7 +632,14 @@ class Doctor extends MX_Controller {
         $id = $this->input->get('id');
         $data['doctor'] = $this->doctor_model->getDoctorById($id);
         $doctor_specialty = $data['doctor']->specialties;
-        $data['specialties'] = $this->getSpecialtyListArray($doctor_specialty);
+        $doctor_specialties = $this->getSpecialtyListArray($doctor_specialty);
+        $specialties = [];
+        $settings = $this->settings_model->getSettings();
+        foreach ($doctor_specialties as $d_specialty) {
+            $specialties[] = $d_specialty->display_name_ph;
+        }
+        $data['currency'] = $settings->currency;
+        $data['specialties'] = implode(',', $specialties);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $country_id = $data['doctor']->country_id;
         $state_id = $data['doctor']->state_id;

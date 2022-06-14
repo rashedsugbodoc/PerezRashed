@@ -532,7 +532,7 @@
                                                         <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <label class="form-label font-weight-bold"><?php echo lang('department'); ?>: </label>
-                                                                <label class="form-label departmentClass"></label>
+                                                                <label class="form-label specializationClass"></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -557,6 +557,30 @@
                                                             <div class="form-group">
                                                                 <label class="form-label font-weight-bold"><?php echo lang('ptr'); ?>: </label>
                                                                 <label class="form-label taxReceiptNumberClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('s2'); ?>: </label>
+                                                                <label class="form-label s2Class"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('virtual_consultation_fee'); ?>: </label>
+                                                                <label class="form-label virtualfeeClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('in_person_consultation_fee'); ?>: </label>
+                                                                <label class="form-label physicalfeeClass"></label>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1078,12 +1102,15 @@
                 $('.cityClass').html("").end()
                 $('.barangayClass').html("").end()
                 $('.phoneClass').html("").end()
-                $('.departmentClass').html("").end()
+                $('.specializationClass').html("").end()
                 $('.profileClass').html("").end()
                 $('.licenseClass').html("").end()
                 $('.professionalDisplayNameClass').html("").end()
-                $('.taxNumberClass').html("").end()
                 $('.taxReceiptNumberClass').html("").end()
+                $('.taxNumberClass').html("").end()
+                $('.s2Class').html("").end()
+                $('.virtualfeeClass').html("").end()
+                $('.physicalfeeClass').html("").end()
                 $.ajax({
                     url: 'doctor/editDoctorByJason?id=' + iid,
                     method: 'GET',
@@ -1096,12 +1123,15 @@
                         $('.emailClass').append(response.doctor.email).end()
                         $('.addressClass').append(response.doctor.address).end()
                         $('.phoneClass').append(response.doctor.phone).end()
-                        $('.departmentClass').append(response.doctor.department).end()
+                        $('.specializationClass').append(response.specialties).end()
                         $('.profileClass').append(response.doctor.profile).end()
                         $('.licenseClass').append(response.doctor.license).end()
                         $('.professionalDisplayNameClass').append(response.doctor.professional_display_name).end()
-                        $('.taxNumberClass').append(response.doctor.tax_number).end()
                         $('.taxReceiptNumberClass').append(response.doctor.tax_receipt_number).end()
+                        $('.taxNumberClass').append(response.doctor.tax_number).end()
+                        $('.s2Class').append(response.doctor.secondary_license_number).end()
+                        $('.virtualfeeClass').append(response.currency+' '+response.doctor.virtual_consultation_fee).end()
+                        $('.physicalfeeClass').append(response.currency+' '+response.doctor.physical_consultation_fee).end()
 
                         if (response.doctor.country_id !== null){
                             $('.countryClass').append(response.country.name).end()
