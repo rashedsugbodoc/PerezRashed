@@ -1560,7 +1560,9 @@ class Patient extends MX_Controller {
     function medicalHistory() {
         $data = array();
         $patient_number = $this->input->get('id');
-        $id = $this->patient_model->getPatientByPatientNumber($patient_number)->id;
+        $patient = $this->patient_model->getPatientByPatientNumber($patient_number);
+        $id = $patient->id;
+        $data['active_status'] = $this->db->get_where('users', array('id' => $patient->ion_user_id))->row()->active;
         if (empty($id)) {
             $id = $this->input->post('id');
         }

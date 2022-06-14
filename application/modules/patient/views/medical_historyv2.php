@@ -301,7 +301,9 @@
                                         </div>
                                         <div class="col-lg-3 col-md-12 col-sm-12">
                                             <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                <center><a href="patient/editPatient?id=<?php echo $patient->id; ?>" class="btn btn-primary btn-xs btn_width" target="_blank"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a></center>
+                                                <?php if ($active_status != 1) { ?>
+                                                    <center><a href="patient/editPatient?id=<?php echo $patient->patient_id; ?>" class="btn btn-primary btn-xs btn_width" target="_blank"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a></center>
+                                                <?php } ?>
                                             <?php } ?>
                                         </div>
                                     </div>
