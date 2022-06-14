@@ -639,7 +639,7 @@ class Doctor extends MX_Controller {
             $specialties[] = $d_specialty->display_name_ph;
         }
         $data['currency'] = $settings->currency;
-        $data['specialties'] = implode(',', $specialties);
+        $data['specialties'] = implode(', ', $specialties);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $country_id = $data['doctor']->country_id;
         $state_id = $data['doctor']->state_id;

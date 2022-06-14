@@ -531,7 +531,7 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="form-group">
-                                                                <label class="form-label font-weight-bold"><?php echo lang('department'); ?>: </label>
+                                                                <label class="form-label font-weight-bold"><?php echo lang('specialization'); ?>: </label>
                                                                 <label class="form-label specializationClass"></label>
                                                             </div>
                                                         </div>
