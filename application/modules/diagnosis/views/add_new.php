@@ -166,7 +166,7 @@
                                                 <div class="col-md-6 col-sm-12 col-lg-3 diagnosis_block">
                                                     <div class="form-group">
                                                         <label class="form-label">or Type Manually</label>
-                                                        <button class="btn btn-primary" id="add_manual" type="button">Add Diagnosis Test</button>
+                                                        <button class="btn btn-primary" id="add_manual" type="button"><?php echo lang('add').' '.lang('diagnosis'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>
