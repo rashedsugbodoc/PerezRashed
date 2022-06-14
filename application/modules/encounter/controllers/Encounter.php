@@ -562,6 +562,7 @@ class Encounter extends MX_Controller {
         $appointment_details = $this->appointment_model->getAppointmentById($appointment_id);
         $appointment_doctor = $appointment_details->doctor;
         $appointment_patient = $appointment_details->patient;
+        $patient = $this->patient_model->getPatientById($appointment_patient = $appointment_details->patient);
         $appointment_remarks = $appointment_details->remarks;
         $root = $this->input->get('root');
         $method = $this->input->get('method');
@@ -589,12 +590,13 @@ class Encounter extends MX_Controller {
             'encounter_status' => 1,
             'created_user_id' => $user,
             'reason' => $appointment_remarks,
+            'location_id' => $appointment_details->location_id,
         );
 
         $this->encounter_model->insertEncounter($data_encounter);
         $inserted_id = $this->db->insert_id();
         if (!empty($root) && !empty($method)) {
-            $redirect = $root . '/' . $method . '?id=' . $appointment_patient . '&encounter_id=' . $inserted_id;
+            $redirect = $root . '/' . $method . '?id=' . $patient->patient_id . '&encounter_id=' . $inserted_id;
         }
         $data_appointment_encounter = array(
             'encounter_id' => $inserted_id
