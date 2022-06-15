@@ -1278,8 +1278,9 @@ class Appointment extends MX_Controller {
         $root = $this->input->get('root');
         $method = $this->input->get('method');
         $patient = $this->input->get('patient_id');
+        $data['encounter'] = $this->input->get('encounter_id');
         if (!empty($root) && !empty($method)) {
-            $data['redirect'] = $root.'/'.$method.'?id='.$patient;
+            $data['redirect'] = $root.'/'.$method.'?id='.$patient.'&encounter_id='.$data['encounter'];
         }
 
 
