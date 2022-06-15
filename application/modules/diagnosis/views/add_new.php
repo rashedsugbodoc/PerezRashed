@@ -357,8 +357,9 @@
     <script type="text/javascript">
         $(document).ready(function () {
             var date = "<?php echo date('Y-m-d H:i A', strtotime($diagnosis[0]->diagnosis_date.' UTC')); ?>";
-            console.log(date);
-            if (date === undefined) {
+            var diag = "<?php echo $diagnosis ?>";
+            console.log(diag);
+            if (diag === "") {
                 var timenow = "<?php echo date('Y-m-d H:i'); ?>";
                 var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             } else {
