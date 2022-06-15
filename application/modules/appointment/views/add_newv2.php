@@ -213,13 +213,23 @@
                                                         }
                                                     }
                                                     ?> > <?php echo lang('consulted'); ?> </option>
-                                                    <option value="cancelled" <?php
+                                                    <option value="Cancelled" <?php
                                                     if (!empty($appointment->status)) {
                                                         if ($appointment->status == 'Cancelled') {
                                                             echo 'selected';
                                                         }
                                                     }
                                                     ?> > <?php echo lang('cancelled'); ?> </option>
+                                                    <?php
+                                                    if (!empty($appointment->status)) {
+                                                        if ($appointment->status == 'Requested') {
+                                                    ?>
+
+                                                            <option value="Cancelled" selected><?php echo lang('requested'); ?></option>
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?> 
                                                 </select>
                                             </div>
                                         </div>
