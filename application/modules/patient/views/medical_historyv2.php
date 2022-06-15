@@ -918,7 +918,7 @@
                                                         </div>
                                                         <div class="card-options">
                                                             <?php if(!empty($encounter_id)) { ?>
-                                                                <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                                <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
@@ -967,7 +967,7 @@
                                                                                 <td><?php echo $this->doctor_model->getDoctorById($labrequest->doctor_id)->name ?></td>
                                                                                 <td>
                                                                                     <?php if(!empty($encounter_id)) { ?>
-                                                                                        <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory'; ?>"><i class="fe fe-edit"></i></a>
+                                                                                        <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id; ?>"><i class="fe fe-edit"></i></a>
                                                                                         <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->lab_request_number ?>"><i class="fe fe-eye"></i></a>
                                                                                     <?php } ?>
                                                                                 </td>

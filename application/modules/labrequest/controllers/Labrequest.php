@@ -29,7 +29,8 @@ class Labrequest extends MX_Controller {
     function addLabRequestView() {
         $data = array();
 
-        $data['patient_id'] = $this->input->get('patient_id');
+        $patient = $this->input->get('patient_id');
+        $data['patient_id'] = $this->patient_model->getPatientByPatientNumber($patient)->id;
         $data['encounter_id'] = $this->input->get('encounter_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
@@ -61,6 +62,7 @@ class Labrequest extends MX_Controller {
         if (empty($patient)) {
             $patient = $this->input->post('patient');
         }
+        $patient_number = $this->patient_model->getPatientById($patient)->patient_id;
         $patient_name = $this->patient_model->getPatientById($patient)->name;
         $doctor = $this->encounter_model->getEncounterById($encounter_id)->doctor;
         if (empty($doctor)) {
@@ -89,7 +91,7 @@ class Labrequest extends MX_Controller {
         $request_list = $this->labrequest_model->getLabrequestByLabrequestNumber($id);
 
         if (!empty($medical_redirect)) {
-            $redirect = $medical_redirect . '?id=' . $patient . '&encounter_id=' . $encounter_id;
+            $redirect = $medical_redirect . '?id=' . $patient_number . '&encounter_id=' . $encounter_id;
         }
 
         if (!empty($id)) {
