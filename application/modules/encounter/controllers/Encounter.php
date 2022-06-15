@@ -587,7 +587,7 @@ class Encounter extends MX_Controller {
             'created_at' => $date,
             'started_at' => $date,
             'waiting_started' => $date,
-            'encounter_status' => 1,
+            'encounter_status' => 3,
             'created_user_id' => $user,
             'reason' => $appointment_remarks,
             'location_id' => $appointment_details->location_id,

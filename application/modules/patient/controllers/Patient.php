@@ -1896,7 +1896,7 @@ class Patient extends MX_Controller {
                                                         <li><i class="fa fa-download bg-cyan"></i>
                                                         <div class="timelineleft-item">
                                                             <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($labrequest->created_at.' UTC')), 3) . '</span>
-                                                            <h3 class="timelineleft-header"><span>' . lang('lab').' '.lang('test') . '</span></h3>
+                                                            <h3 class="timelineleft-header"><span>' . lang('lab').' '.lang('request') . '</span></h3>
                                                             <div class="timelineleft-body">
                                                                 '. $alltest .'
                                                                 <a class="btn btn-info btn-xs btn_width" href="labrequest/labrequestView?id=' . $labrequest->lab_request_number . '" target="_blank"><i class="fa fa-eye"></i>' .' '. lang('view') .  ' </a>
