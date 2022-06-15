@@ -156,7 +156,7 @@
                                                                 <span class="font-weight-bold"><?php echo lang('encounter_type').': '; ?></span><span><?php echo $this->encounter_model->getEncounterTypeById($encounter_details->encounter_type_id)->display_name; ?></span>
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <span class="font-weight-bold"><?php echo lang('location').': ' ?></span><span><?php echo $encounter_details->location_id?$this->branch_model->getBranchById($encounter_details->location_id)->display_name:$this->hospital_id->getHospitalById($encounter_details->hospital_id)->display_name.'( '.lang('online').' )'; ?></span>
+                                                                <span class="font-weight-bold"><?php echo lang('location').': ' ?></span><span><?php echo $encounter_details->location_id?$this->branch_model->getBranchById($encounter_details->location_id)->display_name:$this->hospital_model->getHospitalById($encounter_details->hospital_id)->name.'( '.lang('online').' )'; ?></span>
                                                             </div>
                                                         </div>
                                                         <div class="row">
