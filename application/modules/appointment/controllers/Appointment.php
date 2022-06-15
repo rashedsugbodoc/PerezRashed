@@ -146,10 +146,11 @@ class Appointment extends MX_Controller {
         }
         $redirect = $this->input->get('redirect');
         $patient = $this->input->get('patient_id');
+        $data['encounter'] = $this->input->get('encounter_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
         if (!empty($root) && !empty($method)) {
-            $redirect = $root.'/'.$method.'?id='.$patient;
+            $redirect = $root.'/'.$method.'?id='.$patient.'&encounter_id='.$data['encounter'];
         }
         $data['redirect'] = $redirect;
         $data['patients'] = $this->patient_model->getPatient();
@@ -175,6 +176,10 @@ class Appointment extends MX_Controller {
         $appointment_registration = gmdate('Y-m-d H:i:s');
         $staff = $this->input->post('staff');
         $encounter_id = $this->input->post('encounter_id');
+
+        if (empty($encounter_id)) {
+            $encounter_id = null;
+        }
 
         $virtual = $this->appointment_model->getServiceCategoryById($service_category_group)->is_virtual;
 
@@ -381,7 +386,7 @@ class Appointment extends MX_Controller {
                 'appointment_registration_time' => $appointment_registration,
                 'appointment_date' => $appointment_date,
                 'service_type' => $service_type,
-                // 'encounter_id' => $encounter_id,
+                'encounter_id' => $encounter_id,
             );
             $username = $this->input->post('name');
             if (empty($id)) {     // Adding New department

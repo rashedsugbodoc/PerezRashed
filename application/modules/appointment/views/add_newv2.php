@@ -242,6 +242,7 @@
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
+                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter; ?>">
                                         </div>
                                     </div>
                                     <div class="row">
