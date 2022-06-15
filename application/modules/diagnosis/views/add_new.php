@@ -34,7 +34,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <input type="hidden" name="redirect" value="<?php
-                                                    if (!empty($encounter_id)) {
+                                                    if (empty($redirect)) {
                                                         echo "encounter";
                                                     } elseif (!empty($redirect)) {
                                                         echo $redirect;
@@ -569,8 +569,8 @@
                                             </div>\n\
                                             <div class="col-lg-4 col-md-6 col-sm-12">\n\
                                                 <div class="form-group">\n\
-                                                    <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
-                                                    <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary"'+diag_primary+'"</span><input type="radio" name="type" '+checked+' value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
+                                                    <input type="hidden" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" '+checked+' value="' + count + '" class="custom-switch-input"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
                                                 </div>\n\
                                             </div>\n\
                                         </div>\n\
@@ -715,7 +715,7 @@
                                                 </div>\n\
                                                 <div class="col-lg-4 col-md-6 col-sm-12">\n\
                                                     <div class="form-group">\n\
-                                                        <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                        <input type="hidden" name="dataholder[]" class="form-control" value="' + count + '">\n\
                                                         <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" '+active+' value="' + count + '" class="custom-switch-input type"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
                                                     </div>\n\
                                                 </div>\n\
@@ -769,7 +769,7 @@
                                         </div>\n\
                                         <div class="col-lg-4 col-md-6 col-sm-12">\n\
                                             <div class="form-group">\n\
-                                                <input type="text" name="dataholder[]" class="form-control" value="' + count + '">\n\
+                                                <input type="hidden" name="dataholder[]" class="form-control" value="' + count + '">\n\
                                                 <div class="input-group"><label class="align-self-center mb-0 custom-switch"><span class="custom-switch-description mr-2">Secondary</span><input type="radio" name="type" '+active+' value="' + count + '" class="custom-switch-input type"><span class="custom-switch-indicator custom-switch-indicator-xl"></span></label><label class="align-self-center mb-0 ml-2"><span class="text-muted">Primary</span></label></div>\n\
                                             </div>\n\
                                         </div>\n\

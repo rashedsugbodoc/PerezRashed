@@ -27,6 +27,11 @@ class Diagnosis extends MX_Controller {
         $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
         $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         $data['settings'] = $this->settings_model->getSettings();
+        $data['root'] = $this->input->get('root');
+        $data['method'] = $this->input->get('method');
+        if (!empty($data['root']) && !empty($data['method'])) {
+            $data['redirect'] = $data['root'].'/'.$data['method'].'?id='.$data['patient']->patient_id.'&encounter_id='.$data['encounter']->id;
+        }
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
@@ -226,7 +231,9 @@ class Diagnosis extends MX_Controller {
         $data['diagnosis_list'] = $this->diagnosis_model->getDiagnosis();
         $data['root'] = $this->input->get('root');
         $data['method'] = $this->input->get('method');
-        $data['redirect'] = $data['root'].'/'.$data['method'].'?id='.$data['patient']->id.'&encounter_id='.$data['encounter']->id;
+        if (!empty($data['root']) && !empty($data['method'])) {
+            $data['redirect'] = $data['root'].'/'.$data['method'].'?id='.$data['patient']->patient_id.'&encounter_id='.$data['encounter']->id;
+        }
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
