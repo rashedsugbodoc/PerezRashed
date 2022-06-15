@@ -990,7 +990,7 @@
                                                         </div>
                                                         <div class="card-options">
                                                             <?php if(!empty($encounter_id)) { ?>
-                                                                <a href="form/addFormView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                                <a href="form/addFormView?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
@@ -1021,7 +1021,7 @@
                                                                                 <td><?php echo date('Y-m-d', strtotime($form->form_date.' UTC')); ?></td>
                                                                                 <td>
                                                                                     <?php if(!empty($encounter_id)) { ?>
-                                                                                        <a href="form?id=<?php echo $form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
+                                                                                        <a href="form?id=<?php echo $form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
                                                                                     <?php } ?>
                                                                                 </td>
                                                                             </tr>

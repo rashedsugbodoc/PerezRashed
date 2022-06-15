@@ -62,10 +62,11 @@ class Form extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->form_model->getFormCategory();
         $data['encounter_id'] = $this->input->get('encounter_id');
+        $data['patient_id'] = $this->input->get('patient_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
         if (!empty($root) && !empty($method)) {
-            $data['redirect'] = $root.'/'.$method;
+            $data['redirect'] = $root.'/'.$method.'?id='.$data['patient_id'].'&encounter_id='.$data['encounter_id'];
         }
 
 
@@ -147,7 +148,8 @@ class Form extends MX_Controller {
 
 
         $id = $this->input->get('id');
-        $data['patient_id'] = $this->input->get('patient_id');
+        $patient_id = $this->input->get('patient_id');
+        $data['patient_id'] = $this->patient_model->getPatientByPatientNumber($patient_id)->id;
         $data['encounter_id'] = $this->input->get('encounter_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
@@ -193,6 +195,7 @@ class Form extends MX_Controller {
         }
 
         $patient = $this->input->post('patient');
+        $patient_details = $this->patient_model->getPatientById($patient);
         $category = $this->input->post('category');
 
         $redirect = $this->input->post('redirect');
@@ -252,7 +255,7 @@ class Form extends MX_Controller {
         $user = $this->ion_auth->get_user_id();
 
         if (!empty($medical_redirect)) {
-            $redirect = $medical_redirect . '?id=' . $patient . '&encounter_id=' . $encounter;
+            $redirect = $medical_redirect . '?id=' . $patient_details->patient_id . '&encounter_id=' . $encounter;
         }
 
         $this->load->library('form_validation');
