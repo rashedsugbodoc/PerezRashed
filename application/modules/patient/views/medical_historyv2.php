@@ -589,7 +589,7 @@
                                                                     <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                                                     </a> -->
-                                                                    <a class="btn btn-primary pull-right" href="appointment/addNewView?root=patient&method=medicalHistory&patient_id=<?php echo $patient->id ?>"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
+                                                                    <a class="btn btn-primary pull-right" href="appointment/addNewView?root=patient&method=medicalHistory&patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id; ?>"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
                                                                 </div>
                                                             <?php } ?>
                                                             <?php if ($this->ion_auth->in_group('Patient')) { ?>
@@ -620,8 +620,8 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach ($appointments_location as $app_location) { ?>
-                                                                            <tr>
+                                                                        <?php /*foreach ($appointments_location as $app_location) {*/ ?>
+                                                                            <!-- <tr>
                                                                                 <td><?php echo date('Y-m-d', strtotime($app_location->appointment_date.' UTC')); ?></td>
                                                                                 <td><?php echo $app_location->time_slot; ?></td>
                                                                                 <td>
@@ -660,8 +660,8 @@
                                                                                         
                                                                                     </td>
                                                                                 <?php } ?>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                            </tr> -->
+                                                                        <?php /*}*/ ?>
                                                                         <?php foreach ($appointments as $appointment) { ?>
                                                                             <tr class="">
 
@@ -1347,7 +1347,7 @@
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
-                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->patient_id ?>&encounter_id=<?php echo $encounter_id ?>">
                                                         </div>
                                                     </div>
                                                 <?php } ?>
@@ -1882,7 +1882,7 @@
                                             <?php if (!empty($encounter_id)) { ?>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                        <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->patient_id ?>&encounter_id=<?php echo $encounter_id ?>">
                                                     </div>
                                                 </div>
                                             <?php } ?>
