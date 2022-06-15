@@ -1557,7 +1557,7 @@
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
-                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->patient_id ?>&encounter_id=<?php echo $encounter_id ?>">
                                                         </div>
                                                     </div>
                                                 <?php } ?>
