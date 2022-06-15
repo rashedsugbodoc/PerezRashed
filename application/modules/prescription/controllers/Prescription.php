@@ -121,6 +121,7 @@ class Prescription extends MX_Controller {
         }
 
         $patient = $this->input->post('patient');
+        $patient_details = $this->patient_model->getPatientById($patient);
         $doctor = $this->input->post('doctor');
         $medicine = $this->input->post('meds');
         $category = $this->input->post('category');
@@ -157,7 +158,7 @@ class Prescription extends MX_Controller {
         }
 
         if (!empty($medical_redirect)) {
-            $redirect = $medical_redirect . '?id=' . $patient . '&encounter_id=' . $encounter_id;
+            $redirect = $medical_redirect . '?id=' . $patient_details->patient_id . '&encounter_id=' . $encounter_id;
         }
 
         do {
