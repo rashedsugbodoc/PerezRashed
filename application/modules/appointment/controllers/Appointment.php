@@ -1463,6 +1463,12 @@ class Appointment extends MX_Controller {
         foreach ($data['appointments'] as $appointment) {
             $i = $i + 1;
             $appointment_encounter = $appointment->encounter_id;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
                 $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
             }
@@ -1523,12 +1529,12 @@ class Appointment extends MX_Controller {
 
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
             );
         }
@@ -1602,7 +1608,12 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //  $i = $i + 1;
-
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin'))) {
@@ -1624,12 +1635,12 @@ class Appointment extends MX_Controller {
 
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2
             );
             $i = $i + 1;
@@ -1704,7 +1715,12 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //  $i = $i + 1;
-
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin'))) {
@@ -1726,12 +1742,12 @@ class Appointment extends MX_Controller {
 
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2
             );
             $i = $i + 1;
@@ -1807,6 +1823,12 @@ class Appointment extends MX_Controller {
         foreach ($data['appointments'] as $appointment) {
             //    $i = $i + 1;
             $appointment_encounter = $appointment->encounter_id;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin'))) {
@@ -1890,12 +1912,12 @@ class Appointment extends MX_Controller {
             }
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
             );
             $i = $i + 1;
@@ -1970,7 +1992,12 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //  $i = $i + 1;
-
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin'))) {
@@ -2001,12 +2028,12 @@ class Appointment extends MX_Controller {
             }
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2
             );
             $i = $i + 1;
@@ -2081,7 +2108,12 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             // $i = $i + 1;
-
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin'))) {
@@ -2103,12 +2135,12 @@ class Appointment extends MX_Controller {
 
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2
             );
             $i = $i + 1;
@@ -2339,7 +2371,13 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //$i = $i + 1;
-
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
+            $patientdetails = $this->patient_model->getPatientById($appointment->patient);
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'&root=appointment&method=upcoming" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin'))) {
@@ -2347,7 +2385,6 @@ class Appointment extends MX_Controller {
             }
 
             if ($appointment->date > strtotime(date('Y-m-d'))) {
-                $patientdetails = $this->patient_model->getPatientById($appointment->patient);
                 if (!empty($patientdetails)) {
                     $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
                 } else {
@@ -2369,12 +2406,12 @@ class Appointment extends MX_Controller {
                     $options7 = '';
                 }
                 $info[] = array(
-                    $appointment->id,
+                    date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                    $patientdetails->patient_id,
                     $patientname,
                     $doctorname,
-                    date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
-                    $appointment->remarks,
                     $appointment->status,
+                    '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                     $option1 . ' ' . $option2 . ' ' . $options7
                 );
                 $i = $i + 1;
@@ -2388,12 +2425,13 @@ class Appointment extends MX_Controller {
                 } else {
                     $options7 = '';
                 }
-                $info1[] = array($appointment->id,
+                $info1[] = array(
+                    date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                    $patientdetails->patient_id,
                     $appointment->patientname,
                     $appointment->doctorname,
-                    date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                    $appointment->remarks,
                     $appointment->status,
+                    '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                     $option1 . ' ' . $option2 . ' ' . $options7
                 );
             }

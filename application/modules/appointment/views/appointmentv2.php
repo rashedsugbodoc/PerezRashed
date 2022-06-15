@@ -38,12 +38,12 @@
                                                         <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100">
                                                             <thead>
                                                                 <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('date'); ?></th>
+                                                                    <th> <?php echo lang('patient_id'); ?></th>
+                                                                    <th><?php echo lang('patient').' '.lang('name'); ?></th>
                                                                     <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('complaint'); ?> </th>
-                                                                    <th> <?php echo lang('status'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('status'); ?></th>
+                                                                    <th> <?php echo lang('details'); ?> </th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
@@ -69,12 +69,12 @@
                                                         <table class="table table-bordered text-nowrap key-buttons w-100" id="editable-sample2">
                                                             <thead>
                                                                 <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('date'); ?></th>
+                                                                    <th> <?php echo lang('patient_id'); ?></th>
+                                                                    <th><?php echo lang('patient').' '.lang('name'); ?></th>
                                                                     <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('complaint'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('status'); ?></th>
+                                                                    <th> <?php echo lang('details'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
@@ -101,12 +101,12 @@
                                                         <table id="editable-sample3" class="table table-bordered text-nowrap key-buttons w-100">
                                                             <thead>
                                                                 <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('complaint'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('date'); ?></th>
+                                                                    <th><?php echo lang('patient_id'); ?></th>
+                                                                    <th><?php echo lang('patient').' '.lang('name'); ?></th>
+                                                                    <th><?php echo lang('doctor'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('status'); ?></th>
+                                                                    <th><?php echo lang('details'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
@@ -133,12 +133,12 @@
                                                         <table id="editable-sample4" class="table table-bordered text-nowrap key-buttons w-100">
                                                             <thead>
                                                                 <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('complaint'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('date'); ?></th>
+                                                                    <th><?php echo lang('patient_id'); ?></th>
+                                                                    <th><?php echo lang('patient').' '.lang('name'); ?></th>
+                                                                    <th><?php echo lang('doctor'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('status'); ?></th>
+                                                                    <th><?php echo lang('details'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
@@ -166,12 +166,12 @@
                                                         <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100">
                                                             <thead>
                                                                 <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('complaint'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('date'); ?></th>
+                                                                    <th><?php echo lang('patient_id'); ?></th>
+                                                                    <th><?php echo lang('patient').' '.lang('name'); ?></th>
+                                                                    <th><?php echo lang('doctor'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('status'); ?></th>
+                                                                    <th><?php echo lang('details'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
@@ -198,12 +198,12 @@
                                                         <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100">
                                                             <thead>
                                                                 <tr>
-                                                                    <th> <?php echo lang('id'); ?></th>
-                                                                    <th> <?php echo lang('patient'); ?></th>
-                                                                    <th> <?php echo lang('doctor'); ?></th>
-                                                                    <th> <?php echo lang('date-time'); ?></th>
-                                                                    <th> <?php echo lang('complaint'); ?></th>
-                                                                    <th> <?php echo lang('status'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('date'); ?></th>
+                                                                    <th><?php echo lang('patient_id'); ?></th>
+                                                                    <th><?php echo lang('patient').' '.lang('name'); ?></th>
+                                                                    <th><?php echo lang('doctor'); ?></th>
+                                                                    <th><?php echo lang('appointment').' '.lang('status'); ?></th>
+                                                                    <th><?php echo lang('details'); ?></th>
                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
