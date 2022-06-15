@@ -563,7 +563,7 @@
 
                 $("#state").find('option').remove();
                 
-
+                console.log('zxzxzxzx');
                 if (doctor_country == null) {
                     $("#state").attr("disabled", false);
                 } else {
@@ -576,7 +576,7 @@
                     $('#doctorForm').find('[name="country_id"]').val(response.doctor.country_id).change()
                 }
 
-                $.each(response.specialties, function(key, value) {
+                $.each(response.doctor_specialties, function(key, value) {
                     $('#specialtychoose').append($('<option selected>').text(value.display_name_ph).val(value.id)).end();
                 });
 
