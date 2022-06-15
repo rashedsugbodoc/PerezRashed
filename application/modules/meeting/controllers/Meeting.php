@@ -78,6 +78,17 @@ class Meeting extends MX_Controller {
 
         $this->createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor, $encounter_status);
 
+        $data['appointment_details'] = $this->appointment_model->getAppointmentById($appointment_id);
+        $data['patient_details'] = $this->patient_model->getPatientById($data['appointment_details']->patient);
+        $data['doctor_details'] = $this->doctor_model->getDoctorById($data['appointment_details']->doctor);
+        $birthdate = $data['patient_details']->birthdate;
+        $patient_id = $data['patient_details']->id;
+        $doctor_id = $data['doctor_details']->id;   
+
+        $patient = $data['appointment_details']->patient;
+        $doctor = $data['appointment_details']->doctor;
+        $remarks = $data['appointment_details']->remarks;
+
         if(!empty($birthdate)){
             $data['age'] = computeAge($birthdate);
         } else {

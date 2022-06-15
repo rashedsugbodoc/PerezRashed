@@ -166,7 +166,7 @@
                                                 </div>
                                                 <div class="row mb-1 mt-1">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <a href="prescription/addPrescriptionView?patient_id=<?php echo $patient_details->id ?>&encounter_id=<?php echo $appointment_details->encounter_id ?>" class="btn btn-secondary btn-md btn-block" target="_blank"><?php echo lang('prescribe_medication'); ?></a>
+                                                        <a href="prescription/addPrescriptionView?id=<?php echo $patient_details->patient_id ?>&encounter_id=<?php echo $appointment_details->encounter_id ?>" class="btn btn-secondary btn-md btn-block" target="_blank"><?php echo lang('prescribe_medication'); ?></a>
                                                     </div>
                                                 </div>
                                                 <div class="row mb-1 mt-1">
