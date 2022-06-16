@@ -156,6 +156,17 @@ class Encounter_model extends CI_model {
         return $query->result();
     }
 
+    function getEncounterBySearchByDoctorId($search, $doctor_id) {
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->select('*')
+                ->from('encounter')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('doctor', $doctor_id)
+                ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->result();
+    }
+
     function getEncounterBySearchCount($search) {
         $query = $this->db->select('id')
                 ->from('encounter')
@@ -176,8 +187,29 @@ class Encounter_model extends CI_model {
         return $query->result();
     }
 
+    function getEncounterByLimitBySearchByDoctorId($limit, $start, $search, $doctor_id) {
+        $this->db->order_by('id', 'desc');
+        $this->db->limit($limit, $start);
+        $query = $this->db->select('*')
+                ->from('encounter')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('doctor', $doctor_id)
+                ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->result();
+    }
+
     function getEncounterByLimit($limit, $start) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('encounter');
+        return $query->result();
+    }
+
+    function getEncounterByLimitByDoctorId($limit, $start, $doctor_id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('doctor', $doctor_id);
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->get('encounter');

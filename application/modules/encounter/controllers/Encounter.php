@@ -232,19 +232,38 @@ class Encounter extends MX_Controller {
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
 
-        if ($limit == -1) {
-            if (!empty($search)) {
-                $data['encounters'] = $this->encounter_model->getEncounterBysearch($search);
+        if ($this->ion_auth->in_group('Doctor')) {
+            $user = $this->session->userdata('user_id');
+            $doctor_id = $this->doctor_model->getDoctorByIonUserId($user)->id;
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['encounters'] = $this->encounter_model->getEncounterBySearchByDoctorId($search, $doctor_id);
+                } else {
+                    $data['encounters'] = $this->encounter_model->getEncounterByDoctorId($doctor_id);
+                }
             } else {
-                $data['encounters'] = $this->encounter_model->getEncounter();
+                if (!empty($search)) {
+                    $data['encounters'] = $this->encounter_model->getEncounterByLimitBySearchByDoctorId($limit, $start, $search, $doctor_id);
+                } else {
+                    $data['encounters'] = $this->encounter_model->getEncounterByLimitByDoctorId($limit, $start, $doctor_id);
+                }
             }
-        } else {
-            if (!empty($search)) {
-                $data['encounters'] = $this->encounter_model->getEncounterByLimitBySearch($limit, $start, $search);
+        } elseif ($this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['encounters'] = $this->encounter_model->getEncounterBysearch($search);
+                } else {
+                    $data['encounters'] = $this->encounter_model->getEncounter();
+                }
             } else {
-                $data['encounters'] = $this->encounter_model->getEncounterByLimit($limit, $start);
+                if (!empty($search)) {
+                    $data['encounters'] = $this->encounter_model->getEncounterByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['encounters'] = $this->encounter_model->getEncounterByLimit($limit, $start);
+                }
             }
         }
+        
         $i = 0;
         foreach ($data['encounters'] as $encounter) {
             $patient = $this->patient_model->getPatientById($encounter->patient_id);
