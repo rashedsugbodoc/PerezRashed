@@ -392,14 +392,18 @@
                                                 <li><a href="#tab-6" data-toggle="tab" class="active"><?php echo lang('diagnosis'); ?></a></li>
                                                 <li><a href="#tab-7" data-toggle="tab"><?php echo lang('vital_signs'); ?></a></li>
                                                 <li><a href="#tab-8" data-toggle="tab" class=""><?php echo lang('appointments'); ?></a></li>
-                                                <li><a href="#tab-9" data-toggle="tab" class=""><?php echo lang('case_notes'); ?></a></li>
+                                                <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                                    <li><a href="#tab-9" data-toggle="tab" class=""><?php echo lang('case_notes'); ?></a></li>
+                                                <?php } ?>
                                                 <li><a href="#tab-10" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
                                                 <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('lab').' '.lang('request'); ?></a></li>
                                                 <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
                                                 <!-- <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li> -->
                                                 <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
                                                 <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('encounters'); ?></a></li>
-                                                <li><a href="#tab-16" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
+                                                <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                                    <li><a href="#tab-16" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
+                                                <?php } ?>
                                             </ul>
                                         </div>
                                     </div>
@@ -497,8 +501,12 @@
                                                     <div class="card-header">
                                                         <h3 class="card-title"><?php echo lang('vital_signs') ?></h3>
                                                         <div class="card-options">
-                                                            <?php if(!empty($encounter_id)) { ?>
+                                                            <?php if ($this->ion_auth->in_group('Patient')) { ?>
                                                                 <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
+                                                            <?php } else { ?>
+                                                                <?php if(!empty($encounter_id)) { ?>
+                                                                    <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
+                                                                <?php } ?>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
@@ -725,6 +733,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php if (!$this->ion_auth->in_group('Patient')) { ?>
                                         <div class="tab-pane" id="tab-9">
                                             <div class="mb-0">
                                                 <div class="card">
@@ -801,6 +810,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php } ?>
                                         <div class="tab-pane" id="tab-10">
                                             <div class="mb-0">
                                                 <div class="card">
@@ -1253,6 +1263,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php if (!$this->ion_auth->in_group('Patient')) { ?>
                                         <div class="tab-pane" id="tab-16">
                                             <ul class="timelineleft pb-5">
                                                 <?php
@@ -1265,6 +1276,7 @@
                                                 ?>
                                             </ul>
                                         </div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
