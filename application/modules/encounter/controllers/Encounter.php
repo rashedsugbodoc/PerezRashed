@@ -576,6 +576,10 @@ class Encounter extends MX_Controller {
     }
 
     function startEncounterFromAppointment() {
+        $status = $this->input->get('status');
+        if (empty($status)) {
+            $status = 3;
+        }
         $appointment_id = $this->input->get('appointment_id');
         $user = $this->session->userdata('user_id');
         $appointment_details = $this->appointment_model->getAppointmentById($appointment_id);
@@ -606,7 +610,7 @@ class Encounter extends MX_Controller {
             'created_at' => $date,
             'started_at' => $date,
             'waiting_started' => $date,
-            'encounter_status' => 3,
+            'encounter_status' => $status,
             'created_user_id' => $user,
             'reason' => $appointment_remarks,
             'location_id' => $appointment_details->location_id,

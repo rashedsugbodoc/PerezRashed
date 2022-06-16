@@ -94,7 +94,7 @@
                                                                                                     if (empty($encounter->ended_at)) {
                                                                                                         ?><a title=" <?php echo lang('start_video_call'); ?>" href="meeting/instantLive?id=<?php echo $todays_appointment->id; ?>" class="btn btn-lime" aria-haspopup="true" aria-expanded="false"><i class="fa fa-headphones mr-2"></i><?php echo lang('start_video_call'); ?></a>
                                                                                         </div>
-                                                                                        <div class="btn-group mb-0 endEncounterDiv">
+                                                                                        <div class="btn-group mb-0 endEncounterDiv" id="endEncounterDiv">
                                                                                                         <a class="btn btn-danger btn-md btn-block endEncounter" data-appointment="<?php echo $todays_appointment->id; ?>" data-encounter="<?php echo $todays_appointment->encounter_id; ?>" data-patient="<?php echo $this->patient_model->getPatientById($todays_appointment->patient)->name ?>"><?php echo lang('end'); ?> <?php echo lang('encounter'); ?></a><?php
                                                                                                     } else {
                                                                                                         ?><a class="btn btn-light btn-md btn-block"><?php echo lang('encounter'); ?> has <?php echo lang('ended'); ?></a><?php
@@ -109,7 +109,11 @@
                                                                                                         ?><a class="btn btn-light btn-md btn-block"><?php echo lang('encounter'); ?> has <?php echo lang('ended'); ?></a><?php
                                                                                                     }
                                                                                                 } else { // No Encounter
-                                                                                                    ?><a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory" class="btn btn-primary"><?php echo lang('start').' '.lang('encounter'); ?></a><?php
+                                                                                                    ?>
+                                                                                                    <!-- <a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory" class="btn btn-primary"><?php echo lang('start').' '.lang('encounter'); ?></a> -->
+                                                                                                    <button data-toggle="modal" data-id="<?php echo $todays_appointment->id ?>" class="btn btn-primary" id="setStatusBtn"><?php echo lang('start').' '.lang('encounter'); ?></button>
+                                                                                                    <?php
+                                                                                                    /*?><div id="statusDiv"><button class="btn btn-primary setStatusBtn" data-toggle="modal"><?php echo lang('start').' '.lang('encounter'); ?></button></div><?php*/
                                                                                                 }
                                                                                             }
                                                                                         ?>
@@ -446,6 +450,26 @@
                             $doctor_id = $this->db->get_where('doctor', array('ion_user_id' => $current_user))->row()->id;
                         }
                         ?>
+
+                        <div id="setStatus" class="modal">
+                            <div class="modal-dialog modal-md" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header pd-x-20">
+                                        <h6 class="modal-title">Confirmation</h6>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form id="sStatusForm" action="" method="post">
+                                    <div class="modal-body pd-20">
+                                        <input type="hidden" name="appointment_id">
+                                        <div id="statusBtnGroup"></div>
+                                    </div><!-- modal-body -->
+                                    </form>
+                                </div>
+                            </div><!-- modal-dialog -->
+                        </div>
+
                         <!-- Add Schedule Modal-->
                         <div class="modal" id="addScheduleModal">
                             <div class="modal-dialog" role="document">
@@ -1040,6 +1064,19 @@
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#editable-sample").on("click", "#setStatusBtn", function () {
+                $('#sStatusForm').trigger("reset");
+                var iid = $(this).data('id');
+                $("#sStatusForm").find('[name="appointment_id"]').val(iid).end()
+                $("#statusBtnGroup").append('<div class="row"><div="col-md-12"><a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory&status=1" class="btn btn-primary mb-1"><?php echo lang('waiting').' '.lang('started'); ?></a><i class="fe fe-arrow-right ml-1 mr-1"></i><a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory&status=2" class="btn btn-primary mb-1"><?php echo lang('ready_to_serve'); ?></a><i class="fe fe-arrow-right ml-1 mr-1"></i><a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory" class="btn btn-primary mb-1"><?php echo lang('start').' '.lang('encounter'); ?></a><i class="fe fe-arrow-right ml-1 mr-1"></i><a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory&status=4" class="btn btn-primary mb-1"><?php echo lang('ended'); ?></a></div></div><div class="row"><div class="col-md-12"><a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory&status=5" class="btn btn-primary mb-1 mr-1"><?php echo lang('cancelled'); ?></a><a href="encounter/startEncounterFromAppointment?appointment_id=<?php echo $todays_appointment->id ?>&root=patient&method=medicalHistory&status=6" class="btn btn-primary mb-1 mr-1"><?php echo lang('rescheduled'); ?></a></div></div>');
+                $('#setStatus').modal('show');
+                
+            });
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
