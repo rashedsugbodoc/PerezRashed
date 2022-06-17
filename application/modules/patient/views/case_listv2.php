@@ -19,7 +19,11 @@
                                         <div class="panel-heading" role="tab" id="headingOne31">
                                             <h4 class="panel-title">
                                                 <a class="collapsed" id="accordHeader" role="button" data-toggle="collapse" data-parent="#accordion3" href="#collapseOne31" aria-expanded="true" aria-controls="collapseOne31">
-                                                    <?php echo lang('add'); ?> <?php echo lang('case'); ?>
+                                                    <?php if (empty($case_lists->id)) { ?>
+                                                        <?php echo lang('add'); ?> <?php echo lang('case'); ?>
+                                                    <?php } else { ?>
+                                                        <?php echo lang('edit'); ?> <?php echo lang('case'); ?>
+                                                    <?php } ?>
                                                 </a>
                                             </h4>
                                         </div>
@@ -96,11 +100,12 @@
                                                             </div>
                                                         </div>
                                                     </div> -->
+                                                    <input type="hidden" name="id" value='<?php echo $case_lists->id ?>'>
                                                     <input type="hidden" name="redirect" value='patient/caseList'>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                <button type="submit" name="submit" id="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
+                                                                <button type="submit" name="submit" id="submit" class="btn btn-primary pull-right"><?php echo $case_lists->id?'Update':lang('submit'); ?></button>
                                                             </div>
                                                         </div>
                                                     </div>

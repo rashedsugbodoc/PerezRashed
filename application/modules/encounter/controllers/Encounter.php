@@ -592,6 +592,20 @@ class Encounter extends MX_Controller {
 
         $date = date("Y-m-d H:i:s", now('UTC'));
 
+        if ($status === "1") {
+            $status_time = array('waiting_started' => $date);
+        } elseif ($status === "2") {
+            $status_time = array('ready_to_serve_at' => $date);
+        } elseif ($status === "3") {
+            $status_time = array('started_at' => $date);
+        } elseif ($status === "4") {
+            $status_time = array('ended_at' => $date);
+        } elseif ($status === "5") {
+            $status_time = array('cancelled_at' => $date);
+        } elseif ($status === "6") {
+            $status_time = array('rescheduled_at' => $date);
+        }
+
         $appointment_service_is_virtual = $this->appointment_model->getServiceCategoryById($appointment_details->service_category_group_id);
 
         if (!empty($appointment_service_is_virtual->is_consultation) && !empty($appointment_service_is_virtual->is_virtual)) {
@@ -608,13 +622,15 @@ class Encounter extends MX_Controller {
             'patient_id' => $appointment_patient,
             'rendering_staff_id' => $appointment_doctor,
             'created_at' => $date,
-            'started_at' => $date,
-            'waiting_started' => $date,
+            // 'started_at' => $date,
+            // 'waiting_started' => $date,
             'encounter_status' => $status,
             'created_user_id' => $user,
             'reason' => $appointment_remarks,
             'location_id' => $appointment_details->location_id,
         );
+
+        $data_encounter = array_merge($status_time, $data_encounter);
 
         $this->encounter_model->insertEncounter($data_encounter);
         $inserted_id = $this->db->insert_id();
