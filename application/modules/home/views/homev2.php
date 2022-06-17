@@ -168,7 +168,7 @@
                                                             <div class="card-body">
                                                                 <div class="d-flex no-block align-items-center">
                                                                     <div>
-                                                                        <h6 class="text-white"><?php echo lang('case_history'); ?></h6>
+                                                                        <h6 class="text-white"><?php echo lang('case_note'); ?></h6>
                                                                         <h2 class="text-white m-0 font-weight-bold">
                                                                             <?php
                                                                             $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
