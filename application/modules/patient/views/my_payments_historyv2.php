@@ -789,7 +789,9 @@
             return valid;
         }
     //set your publishable key
+    <?php if (!empty($gateway)) { ?>
         Stripe.setPublishableKey("<?php echo $gateway->publish; ?>");
+    <?php } ?>
 
     //callback to handle the response from stripe
         function stripeResponseHandler(status, response) {

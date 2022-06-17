@@ -888,13 +888,17 @@ class Patient extends MX_Controller {
         if (!empty($date_from) && !empty($date_to)) {
             $data['payments'] = $this->finance_model->getPaymentByPatientIdByDate($patient, $date_from, $date_to);
             $data['deposits'] = $this->finance_model->getDepositByPatientIdByDate($patient, $date_from, $date_to);
-            $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
+            if (!empty($data['settings']->payment_gateway)) {
+                $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);    
+            }
         } else {
             $data['payments'] = $this->finance_model->getPaymentByPatientId($patient);
             $data['pharmacy_payments'] = $this->pharmacy_model->getPaymentByPatientId($patient);
             $data['ot_payments'] = $this->finance_model->getOtPaymentByPatientId($patient);
             $data['deposits'] = $this->finance_model->getDepositByPatientId($patient);
-            $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
+            if (!empty($data['settings']->payment_gateway)) {
+                $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);    
+            }
         }
 
 
