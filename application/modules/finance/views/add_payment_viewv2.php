@@ -728,7 +728,6 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
-                        $("#encounter").find('option').remove();
                         var encounter = response.encounter;
                         var encounter_type = response.encounter_type;
                         $.each(encounter, function (key, value) {
