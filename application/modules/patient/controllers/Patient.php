@@ -5609,6 +5609,22 @@ class Patient extends MX_Controller {
                             $this->session->set_flashdata('success', lang('record_updated'));
                         }
                     }
+                } elseif ($doctor_check === FALSE && $visited_provider_check === TRUE) {
+                    $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
+                    if ($patient_privacy === TRUE) {
+                        $add_i_provider = $patient_details->isolated_provider_id;
+                        $add_v_provider = $patient_details->visited_provider_id;
+                        $data = array(
+                            "doctor" => $add_patient_doctor,
+                            "isolated_provider_id" => $add_i_provider,
+                            "visited_provider_id" => $add_v_provider,
+                        );
+                        if ($patient_details->doctor !== $add_patient_doctor ) {
+                            $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
+                        } else {
+                            $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                        }
+                    }
                 } else {
                     $this->session->set_flashdata('error', "Something went wrong");
                 }
@@ -5691,6 +5707,22 @@ class Patient extends MX_Controller {
                             $this->session->set_flashdata('success', lang('record_updated'));
                         }
                     }
+                } elseif ($doctor_check === FALSE && $visited_provider_check === TRUE) {
+                    $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
+                    if ($patient_privacy === TRUE) {
+                        $add_a_provider = $patient_details->authorized_provider_id;
+                        $add_v_provider = $patient_details->visited_provider_id;
+                        $data = array(
+                            "doctor" => $add_patient_doctor,
+                            "authorized_provider_id" => $add_a_provider,
+                            "visited_provider_id" => $add_v_provider,
+                        );
+                        if ($patient_details->doctor !== $add_patient_doctor ) {
+                            $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
+                        } else {
+                            $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
+                        }
+                    }
                 } else {
                     $this->session->set_flashdata('error', "Something went wrong");
                 }
@@ -5711,7 +5743,7 @@ class Patient extends MX_Controller {
                             $add_v_provider = $patient_details->visited_provider_id;
                             $data = array(
                                 "doctor" => $add_patient_doctor,
-                                "authorized_provider_id" => $add_a_provider,
+                                "unrestricted_provider_id" => $add_u_provider,
                                 "visited_provider_id" => $add_v_provider,
                             );
                             if ($patient_details->doctor !== $add_patient_doctor ) {
@@ -5771,6 +5803,22 @@ class Patient extends MX_Controller {
                                 "visited_provider_id" => $add_v_provider,
                             );
                             $this->session->set_flashdata('success', lang('record_updated'));
+                        }
+                    }
+                } elseif ($doctor_check === FALSE && $visited_provider_check === TRUE) {
+                    $add_patient_doctor = $patient_details->doctor.','.$doctor_id;
+                    if ($patient_privacy === TRUE) {
+                        $add_u_provider = $patient_details->unrestricted_provider_id;
+                        $add_v_provider = $patient_details->visited_provider_id;
+                        $data = array(
+                            "doctor" => $add_patient_doctor,
+                            "unrestricted_provider_id" => $add_u_provider,
+                            "visited_provider_id" => $add_v_provider,
+                        );
+                        if ($patient_details->doctor !== $add_patient_doctor ) {
+                            $this->session->set_flashdata('success', 'Added Doctor for Patient '.$patient_details->name);
+                        } else {
+                            $this->session->set_flashdata('error', 'Patient Already Exists in this facility');
                         }
                     }
                 } else {
