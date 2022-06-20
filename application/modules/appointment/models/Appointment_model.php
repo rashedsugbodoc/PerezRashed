@@ -935,6 +935,8 @@ class Appointment_model extends CI_model {
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')
                     ->from('service_category_group')
+                    ->where("FIND_IN_SET($settings, applicable_entity_type)")
+                    ->where("is_consultation", 1)
                     ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
                     ->get();
             $users = $query->result_array();
