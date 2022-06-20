@@ -260,6 +260,7 @@
                     $('.doctor_name').html("").end()
                     $('.specialty').html("").end()
                     $('#branches').html("").end()
+                    $('.bookBtn').html("").end()
                     $.ajax({
                         url: 'doctor/getDoctorById?id='+iid,
                         method: 'GET',
