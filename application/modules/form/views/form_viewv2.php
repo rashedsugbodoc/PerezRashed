@@ -311,7 +311,7 @@
                                                                 <td class="w-63 p-0 form-opacity">
                                                                     <?php
                                                                         if (!empty($patient->id)) {
-                                                                            echo $patient->id;
+                                                                            echo $patient->patient_id;
                                                                         }
                                                                     ?>
                                                                 </td>

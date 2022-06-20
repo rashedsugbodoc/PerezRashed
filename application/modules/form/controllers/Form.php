@@ -934,7 +934,7 @@ class Form extends MX_Controller {
                     $patient_details = ' ';
                 }
                 $info[] = array(
-                    $form->id,
+                    $form->form_number,
                     $patient_details,
                     $date,
                     $options2,
