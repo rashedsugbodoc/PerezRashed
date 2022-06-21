@@ -4906,12 +4906,14 @@ class Patient extends MX_Controller {
             $profile_image = '';
         }
 
+        $user = $this->session->userdata('user_id');
+        $user_image = $this->session->userdata('profile_img_url');
         $data['view'] = '
                         <div class="row">
                             <div class="col-md-5 col-lg-3 col-sm-12 pr-1">
                                 <div class="box-widget widget-user">
                                     <div class="widget-user-image">
-                                        <center><img alt="User Avatar" class="rounded-circle p-1" src="' . $patient->img_url . '" style="width: 150px; height: 150px;" width="auto" height="auto"></center>
+                                        <center><img alt="User Avatar" class="rounded-circle p-1" src="' . base_url($user_image) . '" style="width: 150px; height: 150px;" width="auto" height="auto"></center>
                                     </div>
                                 </div>
                             </div>
