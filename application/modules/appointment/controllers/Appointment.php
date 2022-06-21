@@ -1263,9 +1263,9 @@ class Appointment extends MX_Controller {
         $data['mmrdoctor'] = $this->doctor_model->getDoctorById($id);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('appointment_by_doctor', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('appointment_by_doctorv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function editAppointment() {
@@ -1323,9 +1323,9 @@ class Appointment extends MX_Controller {
             $data['to'] = $this->input->post('date_to');
         }
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('consultation_history', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('consultation_historyv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function myAppointments() {
