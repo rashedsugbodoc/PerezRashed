@@ -335,7 +335,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: -1,
+                iDisplayLength: 10,
                 "order": [[0, "desc"]],
                 "language": {
                     "lengthMenu": "_MENU_",
