@@ -167,6 +167,26 @@
                             </div>
                         </div>
 
+                        <div class="modal fade" tabindex="-1" role="dialog" id="cmodal">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header pd-x-20">
+                                        <h6 class="modal-title">  <?php echo lang('patient'); ?>  <?php echo lang('info'); ?></h6>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div id='medical_history'>
+                                            <div class="col-md-12">
+                                                
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -412,10 +432,10 @@
                             method: 'GET',
                             data: '',
                             dataType: 'json',
-                        }).success(function (response) {
-                            // Populate the form fields with the data returned from server
-                            $('#medical_history').html("");
-                            $('#medical_history').append(response.view);
+                            success: function (response) {
+                                $('#medical_history').html("");
+                                $('#medical_history').append(response.view);
+                            }
                         });
                         //alert(event.id);
 
