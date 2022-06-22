@@ -656,10 +656,10 @@ class Prescription extends MX_Controller {
             //$i = $i + 1;
             $settings = $this->settings_model->getSettings();
 
-            $option1 = '<a title="' . lang('view') . ' " class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->id . '"><i class="fa fa-eye"></i> ' . lang('view') . ' </a>';
+            $option1 = '<a title="' . lang('view') . ' " class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->prescription_number . '"><i class="fa fa-eye"></i> ' . lang('view') . ' </a>';
 
             if ($this->ion_auth->in_group(array('Doctor'))) {
-                $option3 = '<a class="btn btn-info btn-xs" href="prescription/editPrescription?id=' . $prescription->id . '" data-id="' . $prescription->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . ' </a>';    
+                $option3 = '<a class="btn btn-info btn-xs" href="prescription/editPrescription?id=' . $prescription->prescription_number . '" data-id="' . $prescription->prescription_number . '"><i class="fa fa-edit"></i> ' . lang('edit') . ' </a>';    
             }
 
             if ($this->ion_auth->in_group(array('admin'))) {
@@ -667,7 +667,7 @@ class Prescription extends MX_Controller {
             }
             
             
-            $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=' . $prescription->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
+            $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=' . $prescription->prescription_number . '&print=Yes' . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
 
             if (!empty($prescription->medicine)) {
                 $medicine = explode('###', $prescription->medicine);
@@ -701,8 +701,8 @@ class Prescription extends MX_Controller {
             }
 
             $info[] = array(
-                $prescription->id,
-                date('d-m-Y', strtotime($prescription->date)),
+                $prescription->prescription_number,
+                date('Y-m-d', strtotime($prescription->prescription_date.' UTC')),
                 $doctorname,
                 $patientname,
                 $medicinelist,
