@@ -27,9 +27,9 @@ class Company extends MX_Controller {
         $data['companies'] = $this->company_model->getCompany();
         $data['types'] = $this->company_model->getCompanyType();
         $data['classifications'] = $this->company_model->getCompanyClassification();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('company', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('companyv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewView() {
