@@ -722,8 +722,8 @@ class Finance_model extends CI_model {
     }
 
     function getPaymentCategoryByServiceGroup() {
-        $valid_group_display = 'clinic_consultation_service,doctor_teleconsult_service';
-        $this->db->where("FIND_IN_SET(name, '".$valid_group_display."')");
+        // $valid_group_display = 'clinic_consultation_service,doctor_teleconsult_service';
+        // $this->db->where("FIND_IN_SET(name, '".$valid_group_display."')");
         $group_details = $this->db->get('service_category_group')->result();
         $group_id = [];
         foreach ($group_details as $group_detail) {
