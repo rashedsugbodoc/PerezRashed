@@ -382,6 +382,9 @@
                 window.print();
               });
         </script>
+
+    </body>
+</html> 
         
 
 <!--OLD Starts Here-->
