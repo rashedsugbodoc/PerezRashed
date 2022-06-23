@@ -39,9 +39,9 @@ class Company extends MX_Controller {
 
         $data = array();
         $data['departments'] = $this->department_model->getDepartment();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
@@ -74,9 +74,9 @@ class Company extends MX_Controller {
         $this->form_validation->set_rules('display_name', 'Display Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Email Field
         if ($email !== $emailById) {
-            $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|valid_email|is_unique[company.email]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|valid_email|required|is_unique[company.email]|max_length[100]|xss_clean');
         } else {
-            $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|valid_email|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('email', 'Email', 'trim|min_length[2]|valid_email|required|max_length[100]|xss_clean');
         }
         // Validating Email Field
         $this->form_validation->set_message('is_unique',lang('this_email_address_is_already_registered'));
@@ -85,13 +85,13 @@ class Company extends MX_Controller {
         // Validating Phone Field           
         $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         // Validating Type Field   
-        $this->form_validation->set_rules('type_id', 'Company Type', 'trim|min_length[1]|max_length[500]|xss_clean');
+        $this->form_validation->set_rules('type_id', 'Company Type', 'trim|required|min_length[1]|max_length[500]|xss_clean');
         // Validating Classification Field   
-        $this->form_validation->set_rules('classification_id', 'Company Classification', 'trim|min_length[1]|max_length[500]|xss_clean');
+        $this->form_validation->set_rules('classification_id', 'Company Classification', 'trim|required|min_length[1]|max_length[500]|xss_clean');
         // Validating Phone Field           
         $this->form_validation->set_rules('profile', 'Profile', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('description', 'Description', 'trim|min_length[1]|max_length[50]|xss_clean');
-        $this->form_validation->set_rules('registration_number', 'Registration Number', 'trim|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('registration_number', 'Registration Number', 'trim|required|min_length[1]|max_length[50]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
@@ -101,18 +101,18 @@ class Company extends MX_Controller {
                 $data['types'] = $this->company_model->getCompanyType();
                 $data['classifications'] = $this->company_model->getCompanyClassification();
                 $data['company'] = $this->company_model->getCompanyById($id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['types'] = $this->company_model->getCompanyType();
                 $data['classifications'] = $this->company_model->getCompanyClassification();
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -244,9 +244,9 @@ class Company extends MX_Controller {
         $data['classifications'] = $this->company_model->getCompanyClassification();
         $id = $this->input->get('id');
         $data['company'] = $this->company_model->getCompanyById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function details() {
@@ -333,7 +333,7 @@ class Company extends MX_Controller {
 
         foreach ($data['companies'] as $company) {
             if ($this->ion_auth->in_group(array('admin'))) {
-                $options1 = '<a type="button" class="btn btn-info btn-xs btn_width editbutton" title="' . lang('edit') . '" data-toggle="modal" data-id="' . $company->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = '<a href="company/editCompany?id='. $company->id .'" class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '" data-id="' . $company->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
                 
             }
             $options2 = '<a class="btn btn-info btn-xs" title="' . lang('account_reports') . '"  href="finance/allAccountActivityReport?account=' . $company->id . '"> <i class="fa fa-calendar"> </i> ' . lang('account_reports') . '</a>';
