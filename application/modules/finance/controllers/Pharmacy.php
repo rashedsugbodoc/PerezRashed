@@ -49,9 +49,9 @@ class Pharmacy extends MX_Controller {
         
         
         
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('finance/pharmacy/home', $data);
-        $this->load->view('home/footer');
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('finance/pharmacy/homev2', $data);
+        // $this->load->view('home/footer');
     }
 
     public function index() {
