@@ -97,6 +97,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <!-- Time picker css -->
         <link href="<?php echo base_url('public/assets/plugins/time-picker/jquery.timepicker.css'); ?>" rel="stylesheet" />
 
+        <!-- Morris Charts css -->
+        <link href="<?php echo base_url('public/assets/plugins/morris/morris.css') ?>" rel="stylesheet" />
+
         <!-- Date Picker css -->
         <link href="<?php echo base_url('public/assets/plugins/date-picker/date-picker.css'); ?>" rel="stylesheet" />
 
@@ -287,6 +290,13 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><g opacity="1"><path d="M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g><g fill="currentColor" ><path d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g></svg>
                             <span class="side-menu__label"><?php echo lang('dashboard'); ?></span></a>
                         </li>
+                        <?php if ($this->ion_auth->in_group(array('CompanyUser'))) { ?>
+                            <li>
+                                <a class="side-menu__item" href="company/home">
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><g opacity="1"><path d="M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g><g fill="currentColor" ><path d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g></svg>
+                                <span class="side-menu__label"><?php echo lang('public').' '.lang('health').' '.lang('dashboard') ?></span></a>
+                            </li>
+                        <?php } ?>
                         <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                             <li class="slide">
                                 <a class="side-menu__item" href="patient/addNewView">

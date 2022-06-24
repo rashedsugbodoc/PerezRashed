@@ -15,6 +15,7 @@ class Company extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('prescription/prescription_model');
         $this->load->model('schedule/schedule_model');
+        $this->load->model('location/location_model');
         $this->load->module('patient');
         $this->load->module('sms');
         if (!$this->ion_auth->in_group(array('admin','CompanyUser','Accountant','Doctor'))) {
@@ -32,6 +33,11 @@ class Company extends MX_Controller {
         // $this->load->view('home/footer'); // just the header file
     }
 
+    public function home() {
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('public_agency_dashboard', $data);
+    }
+
     public function addNewView() {
         if (!$this->ion_auth->in_group(array('admin'))) {
             redirect('home/permission');
@@ -39,6 +45,9 @@ class Company extends MX_Controller {
 
         $data = array();
         $data['departments'] = $this->department_model->getDepartment();
+        $data['countries'] = $this->location_model->getCountry();
+        $data['types'] = $this->company_model->getCompanyType();
+        $data['classifications'] = $this->company_model->getCompanyClassification();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the header file
@@ -63,6 +72,10 @@ class Company extends MX_Controller {
         $profile = $this->input->post('profile');
         $display_name = $this->input->post('display_name');
         $registration_number = $this->input->post('registration_number');
+        $country = $this->input->post('country_id');
+        $state = $this->input->post('state_id');
+        $city = $this->input->post('city_id');
+        $barangay = $this->input->post('barangay_id');
 
         $emailById = $this->company_model->getCompanyById($id)->email;
 
@@ -82,6 +95,12 @@ class Company extends MX_Controller {
         $this->form_validation->set_message('is_unique',lang('this_email_address_is_already_registered'));
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[1]|max_length[500]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('country_id', 'Country', 'trim|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('state_id', 'State', 'trim|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('city_id', 'City', 'trim|max_length[100]|xss_clean');
         // Validating Phone Field           
         $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         // Validating Type Field   
