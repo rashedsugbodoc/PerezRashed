@@ -76,6 +76,7 @@ class Company extends MX_Controller {
         $state = $this->input->post('state_id');
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
+        $postal = $this->input->post('postal');
 
         $emailById = $this->company_model->getCompanyById($id)->email;
 
@@ -120,6 +121,7 @@ class Company extends MX_Controller {
                 $data['types'] = $this->company_model->getCompanyType();
                 $data['classifications'] = $this->company_model->getCompanyClassification();
                 $data['company'] = $this->company_model->getCompanyById($id);
+                $data['countries'] = $this->location_model->getCountry();
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_newv2', $data);
                 // $this->load->view('home/footer'); // just the footer file
@@ -129,6 +131,7 @@ class Company extends MX_Controller {
                 $data['setval'] = 'setval';
                 $data['types'] = $this->company_model->getCompanyType();
                 $data['classifications'] = $this->company_model->getCompanyClassification();
+                $data['countries'] = $this->location_model->getCountry();
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_newv2', $data);
                 // $this->load->view('home/footer'); // just the header file
@@ -173,7 +176,12 @@ class Company extends MX_Controller {
                     'display_name' => $display_name,
                     'type_id' => $type_id,
                     'classification_id' => $classification_id,
-                    'registration_number' => $registration_number
+                    'registration_number' => $registration_number,
+                    'country_id' => $country,
+                    'state_id' => $state,
+                    'city_id' => $city,
+                    'barangay_id' => $barangay,
+                    'postal' => $postal
                 );
             } else {
                 //$error = array('error' => $this->upload->display_errors());
@@ -187,7 +195,12 @@ class Company extends MX_Controller {
                     'display_name' => $display_name,
                     'type_id' => $type_id,
                     'classification_id' => $classification_id,
-                    'registration_number' => $registration_number
+                    'registration_number' => $registration_number,
+                    'country_id' => $country,
+                    'state_id' => $state,
+                    'city_id' => $city,
+                    'barangay_id' => $barangay,
+                    'postal' => $postal
                 );
             }
             $username = $this->input->post('name');
@@ -263,6 +276,7 @@ class Company extends MX_Controller {
         $data['classifications'] = $this->company_model->getCompanyClassification();
         $id = $this->input->get('id');
         $data['company'] = $this->company_model->getCompanyById($id);
+        $data['countries'] = $this->location_model->getCountry();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the footer file
@@ -305,6 +319,15 @@ class Company extends MX_Controller {
         $data['classifications'] = $this->company_model->getCompanyClassification();
         $data['typename'] = $this->company_model->getCompanyTypeById($data['company']->type_id)->name;
         $data['classificationname'] = $this->company_model->getCompanyClassificationById($data['company']->classification_id)->name;
+        $country_id = $data['company']->country_id;
+        $state_id = $data['company']->state_id;
+        $city_id = $data['company']->city_id;
+        $barangay_id = $data['company']->barangay_id;
+
+        $data['country']= $this->location_model->getCountryById($country_id);
+        $data['state']= $this->location_model->getStateById($state_id);
+        $data['city']= $this->location_model->getCityById($city_id);
+        $data['barangay']= $this->location_model->getBarangayById($barangay_id);
 
         echo json_encode($data);
     }
@@ -425,6 +448,33 @@ class Company extends MX_Controller {
         $response = $this->company_model->getCompanyWithoutAddNewOption($searchTerm);
 
         echo json_encode($response);
+    }
+
+    function getStateByCountryIdByJason() {
+        $data = array();
+        $country_id = $this->input->get('country');
+
+        $data['state'] = $this->location_model->getStateByCountryId($country_id);
+        
+        echo json_encode($data);        
+    }
+
+    public function getCityByStateIdByJason() {
+        $data = array();
+        $state_id = $this->input->get('state');
+
+        $data['city'] = $this->location_model->getCityByStateId($state_id);
+
+        echo json_encode($data);        
+    }
+
+    public function getBarangayByCityIdByJason() {
+        $data = array();
+        $city_id = $this->input->get('city');
+
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
+
+        echo json_encode($data);        
     }
 
 }

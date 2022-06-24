@@ -58,6 +58,19 @@
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('phone'); ?> <span class="text-red">*</span></label>
+                                                    <input type="text" class="form-control" name="phone" id="phone" value='<?php
+                                                    if (!empty($setval)) {
+                                                        echo set_value('phone');
+                                                    }
+                                                    if (!empty($company->phone)) {
+                                                        echo $company->phone;
+                                                    }
+                                                    ?>' placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
                                                     <label class="form-label"><?php echo lang('address'); ?> <span class="text-red">*</span></label>
                                                     <input type="text" class="form-control" name="address" id="address" value='<?php
                                                     if (!empty($setval)) {
@@ -71,15 +84,56 @@
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('phone'); ?> <span class="text-red">*</span></label>
-                                                    <input type="text" class="form-control" name="phone" id="phone" value='<?php
+                                                    <label class="form-label"><?php echo lang('country'); ?></label>
+                                                    <select class="form-control select2" name="country_id" id="country" required>
+                                                        <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
+                                                        <?php foreach ($countries as $country) { ?>
+                                                            <option value="<?php echo $country->id ?>" <?php
+                                                            if (!empty($company->country_id)) {
+                                                                if ($country->id == $company->country_id) {
+                                                                    echo 'selected';
+                                                                }
+                                                            }
+                                                            ?>><?php echo $country->name ?></option>
+                                                        <?php } ?>
+                                                    </select>   
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('state_province'); ?></label>
+                                                    <select class="form-control select2" name="state_id" id="state" value='' required disabled>
+                                                        <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
+                                                    </select>    
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('city_municipality'); ?></label>
+                                                    <select class="form-control select2" name="city_id" id="city" value='' required disabled>
+                                                        <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6" id="barangayDiv">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('barangay'); ?></label>
+                                                    <select class="form-control select2" name="barangay_id" id="barangay" value='' disabled>
+                                                        <option value="0" disabled selected><?php echo lang('barangay_placeholder'); ?></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('postal'); ?></label>
+                                                    <input type="text" name="postal" class="form-control" value="<?php
                                                     if (!empty($setval)) {
-                                                        echo set_value('phone');
+                                                        echo set_value('postal');
                                                     }
-                                                    if (!empty($company->phone)) {
-                                                        echo $company->phone;
+                                                    if (!empty($company->postal)) {
+                                                        echo $company->postal;
                                                     }
-                                                    ?>' placeholder="" required>
+                                                    ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-sm-6">
@@ -112,7 +166,7 @@
                                                                     echo 'selected';
                                                                 }
                                                             }
-                                                            ?>> <?php echo $type->name; ?> </option>
+                                                            ?>> <?php echo $type->display_name; ?> </option>
                                                         <?php } ?> 
                                                     </select>
                                                 </div>
@@ -134,7 +188,7 @@
                                                                     echo 'selected';
                                                                 }
                                                             }
-                                                            ?> > <?php echo $classification->name; ?> </option>
+                                                            ?> > <?php echo $classification->display_name; ?> </option>
                                                         <?php } ?> 
                                                     </select>
                                                 </div>
@@ -152,7 +206,7 @@
                                                     ?>' placeholder="">
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="id" value='<?php
+                                            <input type="hidden" name="id" id="company_id" value='<?php
                                             if (!empty($company->id)) {
                                                 echo $company->id;
                                             }
@@ -311,6 +365,14 @@
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
 
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
+            $("#country").select2({
+                allowClear: true,
+            })
+        });
+    </script> -->
+
     <script type="text/javascript">
         $(document).ready(function () {
             $("#submit").click(function () {
@@ -345,6 +407,349 @@
                 allowClear: true,
             });
         })
+    </script>
+
+    <!-- <script type="text/javascript">
+        $("#country").change(function () {
+            var country = $("#country").val();
+            var barangay = document.getElementById("barangayDiv");
+            /*var patient_id = $("#patient_id").val();
+            var patient_country = "<?php echo $patient->country_id; ?>";*/
+
+            $("#state").find('option').remove();
+            $("#city").find('option').remove();
+            $("#barangay").find('option').remove();
+
+            $('#state').attr("disabled", false);
+            $('#state').append($('<option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
+
+            if (country == "174") {
+                barangay.style.display='block';
+            } else {
+                barangay.style.display='none';
+            }
+
+            $.ajax({
+                url: 'patient/getStateByCountryIdByJason?country=' + country,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var state = response.state;
+                    /*var patient_state = response.patient.state_id;
+                    var patient_country = response.patient.country_id;*/
+
+                    // if (doctor_country == null) {
+                    //     $("#state").attr("disabled", false);
+                    // } else {
+                    //     $("#state").attr("disabled", true);
+                    // }
+
+                    
+                    $('#city').attr("disabled", true);
+                    $('#city').append($('<option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                    $('#barangay').attr("disabled", true);
+                    $('#barangay').append($('<option value="0" disabled selected><?php echo lang("barangay_placeholder"); ?></option>')).end();
+
+                    $.each(state, function (key, value) {
+                        $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                    });
+
+                    /*if (patient_state == null) {
+                        $("#state").val("0");
+                    } else {
+                        $("#state").val(patient_state);
+                    }
+
+                    if (patient_country == country){
+                        $("#state").val(patient_state);
+                        // $("#city").val(doctor_city);
+                        // $("#barangay").val(doctor_barangay);
+                    } else {
+                        $("#state").val("0");
+                        $("#city").val("0");
+                        $("#barangay").val("0");
+                    }*/
+
+                }
+            });
+        });
+
+        $("#state").change(function () {
+            var state = $("#state").val();
+            /*var patient_id = $("#patient_id").val();*/
+
+            $.ajax({
+                url: 'patient/getCityByStateIdByJason?state=' + state,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var city = response.city;
+                    /*var patient_city = response.patient.city_id;
+                    var patient_state = response.patient.state_id;*/
+
+                    $("#city").find('option').remove();
+                    $("#barangay").find('option').remove();
+
+                    $('#city').attr("disabled", false);
+                    $('#city').append($('<option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                    $('#barangay').attr("disabled", true);
+                    $('#barangay').append($('<option value="0" disabled selected><?php echo lang("barangay_placeholder"); ?></option>')).end();
+
+                    $.each(city, function (key, value) {
+                        $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                    });
+
+                    /*if (patient_city == null) {
+                        $("#city").val("0");
+                    } else {
+                        $("#city").val(patient_city);
+                    }
+
+                    if (patient_state == state){
+                        $("#city").val(patient_city);
+                        // $("#barangay").val(doctor_barangay);
+                    } else {
+                        $("#city").val("0");
+                        $("#barangay").val("0");
+                    }*/
+
+                }
+            });
+        });
+
+        $("#city").change(function () {
+            var city = $("#city").val();
+            /*var patient_id = $("#patient_id").val();*/
+
+            $.ajax({
+                url: 'patient/getBarangayByCityIdByJason?city=' + city,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var barangay = response.barangay;
+                    var patient_barangay = response.patient.barangay_id;
+                    var patient_city = response.patient.city_id;
+
+                    $("#barangay").find('option').remove();
+
+                    $('#barangay').attr("disabled", false);
+                    $('#barangay').append($('<option value="0" disabled selected><?php echo lang("barangay_placeholder"); ?></option>')).end();
+
+                    $.each(barangay, function (key, value) {
+                        $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                    });
+
+                    /*if (patient_barangay == null) {
+                        $("#barangay").val("0");
+                    } else {
+                        $("#barangay").val(patient_barangay);
+                    }
+
+                    if (patient_city == city){
+                        $("#barangay").val(patient_barangay);
+                        // $("#barangay").val(doctor_barangay);
+                    } else {
+                        $("#barangay").val("0");
+                    }*/
+                    console.log(response.barangay);
+                }
+            });
+        });
+    </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var country = $("#country").val();
+            var iid = $("#company_id").val();
+
+            $.ajax({
+                url: 'company/editCompanyByJason?id=' + iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var company_country = response.company.country_id;
+                    var company_state = response.company.state_id;
+                    var company_city = response.company.city_id;
+                    var company_barangay = response.company.barangay_id;
+
+                    console.log(company_country);
+
+                    if (company_country == null) {
+                        $("#state").attr("disabled", true);
+                    } else {
+                        $("#state").attr("disabled", false);
+                    }
+
+                    $.ajax({
+                        url: 'company/getStateByCountryIdByJason?country=' + company_country,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+                            var state = response.state;
+                            console.log(state);
+
+                            $.each(state, function (key, value) {
+                                if (value.id == company_state) {
+                                    $('#state').append($('<option selected>').text(value.name).val(value.id)).end();
+                                } else {
+                                    $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                                }
+                            });
+
+                            if (company_state == null) {
+                                $("#city").attr("disabled", true);
+                            } else {
+                                $("#city").attr("disabled", false);
+                            }
+
+                            $.ajax({
+                                url: 'company/getCityByStateIdByJason?state=' + company_state,
+                                method: 'GET',
+                                data: '',
+                                dataType: 'json',
+                                success: function (response) {
+                                    var city = response.city;
+
+                                    $.each(city, function (key, value) {
+                                        if (value.id == company_city) {
+                                            $('#city').append($('<option selected>').text(value.name).val(value.id)).end();
+                                        } else {
+                                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                                        }
+                                    });
+
+                                    if (company_city == null) {
+                                        $("#barangay").attr("disabled", true);
+                                    } else {
+                                        $("#barangay").attr("disabled", false);
+                                    }
+
+                                    $.ajax({
+                                        url: 'company/getBarangayByCityIdByJason?city=' + company_city,
+                                        method: 'GET',
+                                        data: '',
+                                        dataType: 'json',
+                                        success: function (response) {
+                                            var barangay = response.barangay;
+
+                                            $.each(barangay, function (key, value) {
+                                                if (value.id == company_barangay) {
+                                                    $('#barangay').append($('<option selected>').text(value.name).val(value.id)).end();
+                                                } else {
+                                                    $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            })
+                        }
+                    });
+
+
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#country").change(function () {
+                var country = $("#country").val();
+                var barangay = document.getElementById("barangayDiv");
+
+                $("#state").find('option').remove();
+                $("#city").find('option').remove();
+                $("#barangay").find('option').remove();
+
+                $("#state").attr("disabled", false);
+
+                if (country == "174") {
+                    barangay.style.display='block';
+                } else {
+                    barangay.style.display='none';
+                }
+
+                $.ajax({
+                    url: 'patient/getStateByCountryIdByJason?country=' + country,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var state = response.state;
+
+                        $('#state').append($('<option disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
+                        $("#city").attr("disabled", true).append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                        $("#barangay").attr("disabled", true).append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+
+                        $.each(state, function (key, value) {
+                            $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+
+            });
+
+            $("#state").change(function () {
+                var stateval = $("#state").val();
+                $("#city").find('option').remove();
+
+                $("#city").attr("disabled", false);
+
+                $.ajax({
+                    url: 'patient/getCityByStateIdByJason?state=' + stateval,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var city = response.city;
+
+                        $('#city').append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                        $.each(city, function (key, value) {
+                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+
+            });
+
+            $("#city").change(function () {
+                var cityval = $("#city").val();
+                $("#barangay").find('option').remove();
+
+                $("#barangay").attr("disabled", false);
+
+                $.ajax({
+                    url: 'patient/getBarangayByCityIdByJason?city=' + cityval,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var barangay = response.barangay;
+
+                        $('#barangay').append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+                        $.each(barangay, function (key, value) {
+                            $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+            });
+
+
+        });
+
     </script>
 
     <script>
