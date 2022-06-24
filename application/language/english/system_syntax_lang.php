@@ -1146,3 +1146,4 @@ $lang['after_meal'] = 'After Meal';
 $lang['before_meal'] = 'Before Meal';
 $lang['bed_time'] = 'Bed Time';
 $lang['upon_first_waking_up'] = 'upon first waking up';
+$lang['health'] = 'Health';
