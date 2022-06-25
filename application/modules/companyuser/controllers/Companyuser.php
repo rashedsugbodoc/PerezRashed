@@ -10,6 +10,7 @@ class Companyuser extends MX_Controller {
 
         $this->load->model('companyuser/companyuser_model');
         $this->load->model('company/company_model');
+        $this->load->model('location/location_model');
  
         if (!$this->ion_auth->in_group('admin')) {
             redirect('home/permission');
@@ -25,8 +26,11 @@ class Companyuser extends MX_Controller {
     }
 
     public function addNewView() {
+        $data['companies'] = $this->company_model->getCompany();
+        $data['countries'] = $this->location_model->getCountry();
+        // $data['companyusers'] = $this->companyuser_model->getCompanyUser();
         $this->load->view('home/dashboardv2'); // just the header file
-        $this->load->view('add_newv2');
+        $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the header file
     }
 
@@ -39,6 +43,11 @@ class Companyuser extends MX_Controller {
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
         $company_id = $this->input->post('company_id');
+        $country = $this->input->post('country_id');
+        $state = $this->input->post('state_id');
+        $city = $this->input->post('city_id');
+        $barangay = $this->input->post('barangay_id');
+        $postal = $this->input->post('postal');
 
         $emailById = $this->companyuser_model->getCompanyUserById($id)->email;
 
@@ -60,6 +69,12 @@ class Companyuser extends MX_Controller {
         $this->form_validation->set_message('is_unique',lang('this_email_address_is_already_registered'));
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[1]|max_length[500]|xss_clean');
+         // Validating Address Field   
+        $this->form_validation->set_rules('country_id', 'Country', 'trim|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('state_id', 'State', 'trim|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('city_id', 'City', 'trim|max_length[100]|xss_clean');
         // Validating Phone Field           
         $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('company_id', 'Company', 'trim|required|min_length[1]|max_length[50]|xss_clean');
@@ -119,7 +134,12 @@ class Companyuser extends MX_Controller {
                     'email' => $email,
                     'address' => $address,
                     'phone' => $phone,
-                    'company_id' => $company_id
+                    'company_id' => $company_id,
+                    'country_id' => $country,
+                    'state_id' => $state,
+                    'city_id' => $city,
+                    'barangay_id' => $barangay,
+                    'postal' => $postal
                 );
             } else {
                 //$error = array('error' => $this->upload->display_errors());
@@ -129,7 +149,12 @@ class Companyuser extends MX_Controller {
                     'email' => $email,
                     'address' => $address,
                     'phone' => $phone,
-                    'company_id' => $company_id
+                    'company_id' => $company_id,
+                    'country_id' => $country,
+                    'state_id' => $state,
+                    'city_id' => $city,
+                    'barangay_id' => $barangay,
+                    'postal' => $postal
                 );
             }
 
@@ -208,16 +233,27 @@ class Companyuser extends MX_Controller {
     function editCompanyUser() {
         $data = array();
         $id = $this->input->get('id');
+        $data['companies'] = $this->company_model->getCompany();
+        $data['countries'] = $this->location_model->getCountry();
         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function editCompanyUserByJason() {
         $id = $this->input->get('id');
         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
         $data['company'] = $this->company_model->getCompanyById($data['companyuser']->company_id);
+        $country_id = $data['companyuser']->country_id;
+        $state_id = $data['companyuser']->state_id;
+        $city_id = $data['companyuser']->city_id;
+        $barangay_id = $data['companyuser']->barangay_id;
+
+        $data['country']= $this->location_model->getCountryById($country_id);
+        $data['state']= $this->location_model->getStateById($state_id);
+        $data['city']= $this->location_model->getCityById($city_id);
+        $data['barangay']= $this->location_model->getBarangayById($barangay_id);
         echo json_encode($data);
     }
 
@@ -236,6 +272,43 @@ class Companyuser extends MX_Controller {
         $this->companyuser_model->delete($id);
         $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('companyuser');
+    }
+
+    public function getCompanyInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->company_model->getCompanyInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    function getStateByCountryIdByJason() {
+        $data = array();
+        $country_id = $this->input->get('country');
+
+        $data['state'] = $this->location_model->getStateByCountryId($country_id);
+        
+        echo json_encode($data);        
+    }
+
+    public function getCityByStateIdByJason() {
+        $data = array();
+        $state_id = $this->input->get('state');
+
+        $data['city'] = $this->location_model->getCityByStateId($state_id);
+
+        echo json_encode($data);        
+    }
+
+    public function getBarangayByCityIdByJason() {
+        $data = array();
+        $city_id = $this->input->get('city');
+
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
+
+        echo json_encode($data);        
     }
 
 }

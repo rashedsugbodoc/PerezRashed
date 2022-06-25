@@ -32,7 +32,7 @@
                                             ?>
                                             
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('name'); ?></label>
                                                         <input type="text" name="name" class="form-control" value="<?php
@@ -45,9 +45,7 @@
                                                         ?>">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('email'); ?></label>
                                                         <input type="text" name="email" class="form-control" value="<?php
@@ -62,10 +60,25 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('password'); ?></label>
                                                         <input type="password" name="password" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
+                                                        <form>
+                                                            <input id="phone" class="form-control" name="phone" id="phone" value="<?php
+                                                            if (!empty($setval)) {
+                                                                echo set_value('phone');
+                                                            }
+                                                            if (!empty($companyuser->phone)) {
+                                                                echo $companyuser->phone;
+                                                            }
+                                                            ?>" type="tel" maxlength="20" required>
+                                                         </form>
                                                     </div>
                                                 </div>
                                             </div>
@@ -83,21 +96,57 @@
                                                         ?>">
                                                     </div>
                                                 </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('country'); ?></label>
+                                                        <select class="form-control select2" name="country_id" id="country" required>
+                                                            <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
+                                                            <?php foreach ($countries as $country) { ?>
+                                                                <option value="<?php echo $country->id ?>" <?php
+                                                                if (!empty($companyuser->country_id)) {
+                                                                    if ($country->id == $companyuser->country_id) {
+                                                                        echo 'selected';
+                                                                    }
+                                                                }
+                                                                ?>><?php echo $country->name ?></option>
+                                                            <?php } ?>
+                                                        </select>   
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('state_province'); ?></label>
+                                                        <select class="form-control select2" name="state_id" id="state" value='' required disabled>
+                                                            <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
+                                                        </select>    
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('city_municipality'); ?></label>
+                                                        <select class="form-control select2" name="city_id" id="city" value='' required disabled>
+                                                            <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6" id="barangayDiv">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('barangay'); ?></label>
+                                                        <select class="form-control select2" name="barangay_id" id="barangay" value='' disabled>
+                                                            <option value="0" disabled selected><?php echo lang('barangay_placeholder'); ?></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
-                                                        <form>
-                                                            <input id="phone" name="phone" class="form-control" type="tel" maxlength="20" value="<?php
-                                                            if (!empty($setval)) {
-                                                                echo set_value('phone');
+                                                        <label class="form-label"><?php echo lang('postal'); ?></label>
+                                                        <input type="text" name="postal" class="form-control" value="<?php
+                                                            if (!empty($companyuser->postal)) {
+                                                                echo $companyuser->postal;
                                                             }
-                                                            if (!empty($companyuser->phone)) {
-                                                                echo $companyuser->phone;
-                                                            }
-                                                            ?>">
-                                                        </form>
+                                                        ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -105,9 +154,16 @@
                                                 <div class="col-sm-12 col-md-12">
                                                     <div class="form-group">
                                                         <label for="exampleInputEmail1"> <?php echo lang('company'); ?></label>
-                                                        <select class="form-control m-bot15  add_payer" id="company_select" name="company_id" value=''>
-                                                            <?php if (!empty($companyuser)) { ?>
+                                                        <select class="form-control select2" name="company_id" value=''>
+                                                            <!-- <?php if (!empty($companyuser)) { ?>
                                                                 <option value="<?php echo $company->id; ?>" selected="selected"><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
+                                                            <?php } ?> -->
+                                                            <?php foreach ($companies as $company) { ?>
+                                                                <option value="<?php echo $company->id ?>" <?php
+                                                                if (!empty($companyuser->id)) {
+                                                                    echo "selected";
+                                                                }
+                                                                ?>><?php echo $company->display_name ?></option>
                                                             <?php } ?>
                                                         </select>        
                                                     </div>
@@ -116,10 +172,10 @@
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
                                                     <label class="form-label"><?php echo lang('image'); ?><span class="text-red">*</span></label>
-                                                    <input type="file" name="img_url" id="img" class="dropify"/>
+                                                    <input type="file" name="img_url" id="img" class="dropify" data-default-file="<?php if(!empty($companyuser->img_url)) echo $companyuser->img_url; ?>"/>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="id" value='<?php
+                                            <input type="hidden" name="id" id="companyuser_id" value='<?php
                                             if (!empty($companyuser->id)) {
                                                 echo $companyuser->id;
                                             }
@@ -266,31 +322,231 @@
 
     <!-- INTERNAL JS INDEX END -->
 
-    <script>
-        $(document).ready(function () {
-            $("#company_select").select2({
-                placeholder: '<?php echo lang('select_payer'); ?>',
-                allowClear: true,
-                ajax: {
-                    url: 'company/getCompanyInfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
+    <script type="text/javascript">
+        // $(document).ready(function () {
+        //     $("#company_select").select2({
+        //         placeholder: '<?php echo lang('select_payer'); ?>',
+        //         allowClear: true,
+        //         ajax: {
+        //             url: 'companyuser/getCompanyInfo',
+        //             type: "post",
+        //             dataType: 'json',
+        //             delay: 250,
+        //             data: function (params) {
+        //                 return {
+        //                     searchTerm: params.term // search term
+        //                 };
+        //             },
+        //             processResults: function (response) {
+        //                 return {
+        //                     results: response
+        //                 };
+        //             },
+        //             cache: true
+        //         }
 
+        //     });
+        // });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var country = $("#country").val();
+            var iid = $("#companyuser_id").val();
+
+            $.ajax({
+                url: 'companyuser/editCompanyUserByJason?id=' + iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var company_country = response.companyuser.country_id;
+                    var company_state = response.companyuser.state_id;
+                    var company_city = response.companyuser.city_id;
+                    var company_barangay = response.companyuser.barangay_id;
+
+                    console.log(company_country);
+
+                    if (company_country == null) {
+                        $("#state").attr("disabled", true);
+                    } else {
+                        $("#state").attr("disabled", false);
+                    }
+
+                    $.ajax({
+                        url: 'companyuser/getStateByCountryIdByJason?country=' + company_country,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+                            var state = response.state;
+                            console.log(state);
+
+                            $.each(state, function (key, value) {
+                                if (value.id == company_state) {
+                                    $('#state').append($('<option selected>').text(value.name).val(value.id)).end();
+                                } else {
+                                    $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                                }
+                            });
+
+                            if (company_state == null) {
+                                $("#city").attr("disabled", true);
+                            } else {
+                                $("#city").attr("disabled", false);
+                            }
+
+                            $.ajax({
+                                url: 'companyuser/getCityByStateIdByJason?state=' + company_state,
+                                method: 'GET',
+                                data: '',
+                                dataType: 'json',
+                                success: function (response) {
+                                    var city = response.city;
+
+                                    $.each(city, function (key, value) {
+                                        if (value.id == company_city) {
+                                            $('#city').append($('<option selected>').text(value.name).val(value.id)).end();
+                                        } else {
+                                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                                        }
+                                    });
+
+                                    if (company_city == null) {
+                                        $("#barangay").attr("disabled", true);
+                                    } else {
+                                        $("#barangay").attr("disabled", false);
+                                    }
+
+                                    $.ajax({
+                                        url: 'company/getBarangayByCityIdByJason?city=' + company_city,
+                                        method: 'GET',
+                                        data: '',
+                                        dataType: 'json',
+                                        success: function (response) {
+                                            var barangay = response.barangay;
+
+                                            $.each(barangay, function (key, value) {
+                                                if (value.id == company_barangay) {
+                                                    $('#barangay').append($('<option selected>').text(value.name).val(value.id)).end();
+                                                } else {
+                                                    $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            })
+                        }
+                    });
+
+
+                }
             });
         });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".select2").select2({
+                allowClear: true,
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#country").change(function () {
+                var country = $("#country").val();
+                var barangay = document.getElementById("barangayDiv");
+
+                $("#state").find('option').remove();
+                $("#city").find('option').remove();
+                $("#barangay").find('option').remove();
+
+                $("#state").attr("disabled", false);
+
+                if (country == "174") {
+                    barangay.style.display='block';
+                } else {
+                    barangay.style.display='none';
+                }
+
+                $.ajax({
+                    url: 'companyuser/getStateByCountryIdByJason?country=' + country,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var state = response.state;
+
+                        $('#state').append($('<option disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
+                        $("#city").attr("disabled", true).append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                        $("#barangay").attr("disabled", true).append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+
+                        $.each(state, function (key, value) {
+                            $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+
+            });
+
+            $("#state").change(function () {
+                var stateval = $("#state").val();
+                $("#city").find('option').remove();
+
+                $("#city").attr("disabled", false);
+
+                $.ajax({
+                    url: 'companyuser/getCityByStateIdByJason?state=' + stateval,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var city = response.city;
+
+                        $('#city').append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                        $.each(city, function (key, value) {
+                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+
+            });
+
+            $("#city").change(function () {
+                var cityval = $("#city").val();
+                $("#barangay").find('option').remove();
+
+                $("#barangay").attr("disabled", false);
+
+                $.ajax({
+                    url: 'companyuser/getBarangayByCityIdByJason?city=' + cityval,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var barangay = response.barangay;
+
+                        $('#barangay').append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+                        $.each(barangay, function (key, value) {
+                            $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+            });
+
+
+        });
+
     </script>
 
     <script>
