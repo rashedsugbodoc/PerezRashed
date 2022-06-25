@@ -12,7 +12,7 @@
                                         <div class="card-header">
                                             <div class="card-title"><?php echo lang('nurse'); ?></div>
                                             <div class="card-options">
-                                                <a data-toggle="modal" href="#myModal">
+                                                <a href="nurse/addNewView">
                                                     <div class="btn-group pull-right">
                                                         <button id="" class="btn btn-primary btn-xs">
                                                             <i class="fa fa-plus"></i> <?php echo lang('add_nurse'); ?>
@@ -57,7 +57,8 @@
                                                                     <td class="center"><?php echo $nurse->address; ?></td>
                                                                     <td><?php echo $nurse->phone; ?></td>
                                                                     <td class="no-print">
-                                                                        <button type="button" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $nurse->id; ?>"><i class="fa fa-edit"> </i></button>   
+                                                                        <!-- <button type="button" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $nurse->id; ?>"><i class="fa fa-edit"> </i></button>   --> 
+                                                                        <a href="nurse/editNurse?id=<?php echo $nurse->id ?>" class="btn btn-info"><i class="fa fa-edit"> </i></a>
                                                                         <a class="btn btn-danger btn-xs delete_button" title="<?php echo lang('delete'); ?>" href="nurse/delete?id=<?php echo $nurse->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                                     </td>
                                                                 </tr>
