@@ -7,6 +7,7 @@ class Pharmacist extends MX_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->model('location/location_model');
         $this->load->model('pharmacist_model');
         if (!$this->ion_auth->in_group('admin')) {
             redirect('home/permission');
@@ -22,8 +23,9 @@ class Pharmacist extends MX_Controller {
     }
 
     public function addNewView() {
+        $data['countries'] = $this->location_model->getCountry();
         $this->load->view('home/dashboardv2'); // just the header file
-        $this->load->view('add_newv2');
+        $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the header file
     }
 
@@ -35,6 +37,11 @@ class Pharmacist extends MX_Controller {
         $email = $this->input->post('email');
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
+        $country = $this->input->post('country_id');
+        $state = $this->input->post('state_id');
+        $city = $this->input->post('city_id');
+        $barangay = $this->input->post('barangay_id');
+        $postal = $this->input->post('postal');
 
         $emailById = $this->pharmacist_model->getPharmacistById($id)->email;
 
@@ -111,7 +118,12 @@ class Pharmacist extends MX_Controller {
                     'name' => $name,
                     'email' => $email,
                     'address' => $address,
-                    'phone' => $phone
+                    'phone' => $phone,
+                    'country_id' => $country,
+                    'state_id' => $state,
+                    'city_id' => $city,
+                    'barangay_id' => $barangay,
+                    'postal' => $postal
                 );
             } else {
                 //$error = array('error' => $this->upload->display_errors());
@@ -120,7 +132,12 @@ class Pharmacist extends MX_Controller {
                     'name' => $name,
                     'email' => $email,
                     'address' => $address,
-                    'phone' => $phone
+                    'phone' => $phone,
+                    'country_id' => $country,
+                    'state_id' => $state,
+                    'city_id' => $city,
+                    'barangay_id' => $barangay,
+                    'postal' => $postal
                 );
             }
             $username = $this->input->post('name');
@@ -197,15 +214,25 @@ class Pharmacist extends MX_Controller {
     function editPharmacist() {
         $data = array();
         $id = $this->input->get('id');
+        $data['countries'] = $this->location_model->getCountry();
         $data['pharmacist'] = $this->pharmacist_model->getPharmacistById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function editPharmacistByJason() {
         $id = $this->input->get('id');
         $data['pharmacist'] = $this->pharmacist_model->getPharmacistById($id);
+        $country_id = $data['pharmacist']->country_id;
+        $state_id = $data['pharmacist']->state_id;
+        $city_id = $data['pharmacist']->city_id;
+        $barangay_id = $data['pharmacist']->barangay_id;
+
+        $data['country']= $this->location_model->getCountryById($country_id);
+        $data['state']= $this->location_model->getStateById($state_id);
+        $data['city']= $this->location_model->getCityById($city_id);
+        $data['barangay']= $this->location_model->getBarangayById($barangay_id);
         echo json_encode($data);
     }
 
@@ -224,6 +251,33 @@ class Pharmacist extends MX_Controller {
         $this->pharmacist_model->delete($id);
         $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('pharmacist');
+    }
+
+    function getStateByCountryIdByJason() {
+        $data = array();
+        $country_id = $this->input->get('country');
+
+        $data['state'] = $this->location_model->getStateByCountryId($country_id);
+        
+        echo json_encode($data);        
+    }
+
+    public function getCityByStateIdByJason() {
+        $data = array();
+        $state_id = $this->input->get('state');
+
+        $data['city'] = $this->location_model->getCityByStateId($state_id);
+
+        echo json_encode($data);        
+    }
+
+    public function getBarangayByCityIdByJason() {
+        $data = array();
+        $city_id = $this->input->get('city');
+
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
+
+        echo json_encode($data);        
     }
 
 }

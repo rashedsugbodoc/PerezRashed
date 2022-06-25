@@ -12,7 +12,7 @@
                                         <div class="card-header">
                                             <div class="card-title"><?php echo lang('pharmacist'); ?></div>
                                             <div class="card-options">
-                                                <a data-toggle="modal" href="#myModal">
+                                                <a href="pharmacist/addNewView">
                                                     <div class="btn-group pull-right">
                                                         <button id="" class="btn btn-primary btn-xs">
                                                             <i class="fa fa-plus"></i> <?php echo lang('add_pharmacist'); ?>
@@ -57,7 +57,8 @@
                                                                     <td class="center"><?php echo $pharmacist->address; ?></td>
                                                                     <td><?php echo $pharmacist->phone; ?></td>
                                                                     <td class="no-print">
-                                                                        <button type="button" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $pharmacist->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                                                        <!-- <button type="button" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $pharmacist->id; ?>"><i class="fa fa-edit"></i> </button>   -->
+                                                                        <a href="pharmacist/editPharmacist?id=<?php echo $pharmacist->id; ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>
                                                                         <a class="btn btn-danger btn-xs" href="pharmacist/delete?id=<?php echo $pharmacist->id; ?>" title="<?php echo lang('delete'); ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                                     </td>
                                                                 </tr>
