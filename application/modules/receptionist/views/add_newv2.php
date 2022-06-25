@@ -32,7 +32,7 @@
                                             ?>
                                             
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('name'); ?></label>
                                                         <input type="text" name="name" class="form-control" value="<?php
@@ -45,9 +45,7 @@
                                                         ?>">
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('email'); ?></label>
                                                         <input type="text" name="email" class="form-control" value="<?php
@@ -62,10 +60,25 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('password'); ?></label>
                                                         <input type="password" name="password" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
+                                                        <form>
+                                                            <input id="phone" name="phone" class="form-control" type="tel" maxlength="20" value="<?php
+                                                            if (!empty($setval)) {
+                                                                echo set_value('phone');
+                                                            }
+                                                            if (!empty($receptionist->phone)) {
+                                                                echo $receptionist->phone;
+                                                            }
+                                                            ?>">
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,29 +98,67 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('country'); ?></label>
+                                                        <select class="form-control select2" name="country_id" id="country" required>
+                                                            <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
+                                                            <?php foreach ($countries as $country) { ?>
+                                                                <option value="<?php echo $country->id ?>" <?php
+                                                                if (!empty($receptionist->country_id)) {
+                                                                    if ($country->id == $receptionist->country_id) {
+                                                                        echo 'selected';
+                                                                    }
+                                                                }
+                                                                ?>><?php echo $country->name ?></option>
+                                                            <?php } ?>
+                                                        </select>   
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('state_province'); ?></label>
+                                                        <select class="form-control select2" name="state_id" id="state" value='' required disabled>
+                                                            <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
+                                                        </select>    
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('city_municipality'); ?></label>
+                                                        <select class="form-control select2" name="city_id" id="city" value='' required disabled>
+                                                            <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6" id="barangayDiv">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('barangay'); ?></label>
+                                                        <select class="form-control select2" name="barangay_id" id="barangay" value='' disabled>
+                                                            <option value="0" disabled selected><?php echo lang('barangay_placeholder'); ?></option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
-                                                        <form>
-                                                            <input id="phone" name="phone" class="form-control" type="tel" maxlength="20" value="<?php
-                                                            if (!empty($setval)) {
-                                                                echo set_value('phone');
+                                                        <label class="form-label"><?php echo lang('postal'); ?></label>
+                                                        <input type="text" name="postal" class="form-control" value="<?php
+                                                            if (!empty($receptionist->postal)) {
+                                                                echo $receptionist->postal;
                                                             }
-                                                            if (!empty($receptionist->phone)) {
-                                                                echo $receptionist->phone;
-                                                            }
-                                                            ?>">
-                                                        </form>
+                                                        ?>">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
                                                     <label class="form-label"><?php echo lang('image'); ?><span class="text-red">*</span></label>
-                                                    <input type="file" name="img_url" id="img" class="dropify"/>
+                                                    <input type="file" name="img_url" id="img" class="dropify" data-default-file="<?php if(!empty($receptionist->img_url)) echo $receptionist->img_url; ?>"/>
                                                 </div>
                                             </div>
-                                            <input type="hidden" name="id" value='<?php
+                                            <input type="hidden" name="id" id="receptionist_id" value='<?php
                                             if (!empty($receptionist->id)) {
                                                 echo $receptionist->id;
                                             }
@@ -253,6 +304,206 @@
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".select2").select2({
+                allowClear: true,
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var country = $("#country").val();
+            var iid = $("#receptionist_id").val();
+
+            $.ajax({
+                url: 'receptionist/editReceptionistByJason?id=' + iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var receptionist_country = response.receptionist.country_id;
+                    var receptionist_state = response.receptionist.state_id;
+                    var receptionist_city = response.receptionist.city_id;
+                    var receptionist_barangay = response.receptionist.barangay_id;
+
+                    console.log(receptionist_country);
+
+                    if (receptionist_country == null) {
+                        $("#state").attr("disabled", true);
+                    } else {
+                        $("#state").attr("disabled", false);
+                    }
+
+                    $.ajax({
+                        url: 'receptionist/getStateByCountryIdByJason?country=' + receptionist_country,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+                            var state = response.state;
+                            console.log(state);
+
+                            $.each(state, function (key, value) {
+                                if (value.id == receptionist_state) {
+                                    $('#state').append($('<option selected>').text(value.name).val(value.id)).end();
+                                } else {
+                                    $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                                }
+                            });
+
+                            if (receptionist_state == null) {
+                                $("#city").attr("disabled", true);
+                            } else {
+                                $("#city").attr("disabled", false);
+                            }
+
+                            $.ajax({
+                                url: 'receptionist/getCityByStateIdByJason?state=' + receptionist_state,
+                                method: 'GET',
+                                data: '',
+                                dataType: 'json',
+                                success: function (response) {
+                                    var city = response.city;
+
+                                    $.each(city, function (key, value) {
+                                        if (value.id == receptionist_city) {
+                                            $('#city').append($('<option selected>').text(value.name).val(value.id)).end();
+                                        } else {
+                                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                                        }
+                                    });
+
+                                    if (receptionist_city == null) {
+                                        $("#barangay").attr("disabled", true);
+                                    } else {
+                                        $("#barangay").attr("disabled", false);
+                                    }
+
+                                    $.ajax({
+                                        url: 'receptionist/getBarangayByCityIdByJason?city=' + receptionist_city,
+                                        method: 'GET',
+                                        data: '',
+                                        dataType: 'json',
+                                        success: function (response) {
+                                            var barangay = response.barangay;
+
+                                            $.each(barangay, function (key, value) {
+                                                if (value.id == receptionist_barangay) {
+                                                    $('#barangay').append($('<option selected>').text(value.name).val(value.id)).end();
+                                                } else {
+                                                    $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            })
+                        }
+                    });
+
+
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#country").change(function () {
+                var country = $("#country").val();
+                var barangay = document.getElementById("barangayDiv");
+
+                $("#state").find('option').remove();
+                $("#city").find('option').remove();
+                $("#barangay").find('option').remove();
+
+                $("#state").attr("disabled", false);
+
+                if (country == "174") {
+                    barangay.style.display='block';
+                } else {
+                    barangay.style.display='none';
+                }
+
+                $.ajax({
+                    url: 'receptionist/getStateByCountryIdByJason?country=' + country,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var state = response.state;
+
+                        $('#state').append($('<option disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
+                        $("#city").attr("disabled", true).append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                        $("#barangay").attr("disabled", true).append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+
+                        $.each(state, function (key, value) {
+                            $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+
+            });
+
+            $("#state").change(function () {
+                var stateval = $("#state").val();
+                $("#city").find('option').remove();
+
+                $("#city").attr("disabled", false);
+
+                $.ajax({
+                    url: 'receptionist/getCityByStateIdByJason?state=' + stateval,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var city = response.city;
+
+                        $('#city').append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+                        $.each(city, function (key, value) {
+                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+
+            });
+
+            $("#city").change(function () {
+                var cityval = $("#city").val();
+                $("#barangay").find('option').remove();
+
+                $("#barangay").attr("disabled", false);
+
+                $.ajax({
+                    url: 'receptionist/getBarangayByCityIdByJason?city=' + cityval,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var barangay = response.barangay;
+
+                        $('#barangay').append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
+                        $.each(barangay, function (key, value) {
+                            $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+
+                    }
+                });
+            });
+
+
+        });
+
+    </script>
 
     <script>
         $(document).ready(function () {
