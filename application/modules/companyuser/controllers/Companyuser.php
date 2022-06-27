@@ -48,6 +48,10 @@ class Companyuser extends MX_Controller {
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
+        $scope_level = $this->input->post('scope_level');
+        $scope_array = $this->input->post('scope');
+
+        $scope = implode(",", $scope_array);
 
         $emailById = $this->companyuser_model->getCompanyUserById($id)->email;
 
@@ -75,6 +79,8 @@ class Companyuser extends MX_Controller {
         $this->form_validation->set_rules('state_id', 'State', 'trim|max_length[100]|xss_clean');
         // Validating Address Field   
         $this->form_validation->set_rules('city_id', 'City', 'trim|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('scope_level', 'Scope Level', 'trim|required|max_length[100]|xss_clean');
         // Validating Phone Field           
         $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('company_id', 'Company', 'trim|required|min_length[1]|max_length[50]|xss_clean');
@@ -139,7 +145,9 @@ class Companyuser extends MX_Controller {
                     'state_id' => $state,
                     'city_id' => $city,
                     'barangay_id' => $barangay,
-                    'postal' => $postal
+                    'postal' => $postal,
+                    'scope_level' => $scope_level,
+                    'scope_id' => $scope,
                 );
             } else {
                 //$error = array('error' => $this->upload->display_errors());
@@ -154,7 +162,9 @@ class Companyuser extends MX_Controller {
                     'state_id' => $state,
                     'city_id' => $city,
                     'barangay_id' => $barangay,
-                    'postal' => $postal
+                    'postal' => $postal,
+                    'scope_level' => $scope_level,
+                    'scope_id' => $scope,
                 );
             }
 
@@ -236,6 +246,42 @@ class Companyuser extends MX_Controller {
         $data['companies'] = $this->company_model->getCompany();
         $data['countries'] = $this->location_model->getCountry();
         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+        // $data['scopes'] = explode(',', $data['companyuser']->scope_id);
+
+        if ($data['companyuser']->scope_level === "country") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getCountryById($scope);
+                $scopes[] = $scope_data;
+            }
+        }
+        if ($data['companyuser']->scope_level === "state") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getStateById($scope);
+                $scopes[] = $scope_data;
+            }
+        }
+        if ($data['companyuser']->scope_level === "city") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getCityById($scope);
+                $scopes[] = $scope_data;
+            }
+        }
+        if ($data['companyuser']->scope_level === "state") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getBarangayById($scope);
+                $scopes[] = $scope_data;
+            }
+        }
+        $data['scopes'] = $scopes;
+
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the footer file
@@ -309,6 +355,49 @@ class Companyuser extends MX_Controller {
         $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
 
         echo json_encode($data);        
+    }
+
+    public function getCountryInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->location_model->getCountryInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getStateInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+        $country = $this->input->get('country');
+
+// Get users
+        $response = $this->location_model->getStateInfo($searchTerm, $country);
+
+        echo json_encode($response);
+    }
+
+    public function getCityInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+        $country = $this->input->get('country');
+
+// Get users
+        $response = $this->location_model->getCityInfo($searchTerm, $country);
+
+        echo json_encode($response);
+    }
+
+    public function getBarangayInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+        $country = $this->input->get('country');
+
+// Get users
+        $response = $this->location_model->getBarangayInfo($searchTerm, $country);
+
+        echo json_encode($response);
     }
 
 }

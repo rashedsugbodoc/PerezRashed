@@ -125,4 +125,98 @@ class Location_model extends CI_model {
         $this->db->update('barangays', $data);
     }
 
+    function getCountryInfo($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('countries')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $countries = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('countries');
+            $countries = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($countries as $country) {
+            $data[] = array("id" => $country['id'], "text" => $country['name'] );
+        }
+        return $data;
+    }
+
+    function getStateInfo($searchTerm, $country) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('states')
+                    ->where("country_id", $country)
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $states = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where("country_id", $country);
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('states');
+            $states = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($states as $state) {
+            $data[] = array("id" => $state['id'], "text" => $state['name'] );
+        }
+        return $data;
+    }
+
+    function getCityInfo($searchTerm, $country) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('cities')
+                    ->where("country_id", $country)
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $cities = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where("country_id", $country);
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('cities');
+            $cities = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($cities as $city) {
+            $data[] = array("id" => $city['id'], "text" => $city['name'] );
+        }
+        return $data;
+    }
+
+    function getBarangayInfo($searchTerm, $country) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('barangays')
+                    ->where("country_id", $country)
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $barangays = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where("country_id", $country);
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('barangays');
+            $barangays = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($barangays as $barangay) {
+            $data[] = array("id" => $barangay['id'], "text" => $barangay['name'] );
+        }
+        return $data;
+    }
+
 }

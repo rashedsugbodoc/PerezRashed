@@ -18,7 +18,7 @@
                                             ?>
                                         </div>
                                     </div>
-                                    <form role="form" action="companyuser/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form role="form" id="companyuserForm" action="companyuser/addNew" class="clearfix" method="post" enctype="multipart/form-data">
                                         <div class="card-body">
                                             <?php echo validation_errors(); ?>
                                             <?php
@@ -99,8 +99,8 @@
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('country'); ?></label>
-                                                        <select class="form-control select2" name="country_id" id="country" required>
-                                                            <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
+                                                        <select class="form-control select2" name="country_id" id="country" required data-placeholder="<?php echo lang('country_placeholder'); ?>">
+                                                            <option label="<?php echo lang('country_placeholder'); ?>"></option>
                                                             <?php foreach ($countries as $country) { ?>
                                                                 <option value="<?php echo $country->id ?>" <?php
                                                                 if (!empty($companyuser->country_id)) {
@@ -116,24 +116,24 @@
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('state_province'); ?></label>
-                                                        <select class="form-control select2" name="state_id" id="state" value='' required disabled>
-                                                            <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
+                                                        <select class="form-control select2" name="state_id" id="state" value='' required disabled data-placeholder="<?php echo lang('state_province_placeholder'); ?>">
+                                                            <option label="<?php echo lang('state_province_placeholder'); ?>"></option>
                                                         </select>    
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('city_municipality'); ?></label>
-                                                        <select class="form-control select2" name="city_id" id="city" value='' required disabled>
-                                                            <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
+                                                        <select class="form-control select2" name="city_id" id="city" value='' required disabled data-placeholder="<?php echo lang('city_municipality_placeholder'); ?>">
+                                                            <option label="<?php echo lang('city_municipality_placeholder'); ?>"></option>
                                                         </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-6" id="barangayDiv">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('barangay'); ?></label>
-                                                        <select class="form-control select2" name="barangay_id" id="barangay" value='' disabled>
-                                                            <option value="0" disabled selected><?php echo lang('barangay_placeholder'); ?></option>
+                                                        <select class="form-control select2" name="barangay_id" id="barangay" value='' disabled data-placeholder="<?php echo lang('barangay_placeholder'); ?>">
+                                                            <option label="<?php echo lang('barangay_placeholder'); ?>"></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -166,6 +166,30 @@
                                                                 ?>><?php echo $company->display_name ?></option>
                                                             <?php } ?>
                                                         </select>        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Scope Level</label>
+                                                        <select class="form-control" name="scope_level" id="selectScopeLevel" data-placeholder="Choose one">
+                                                            <option label="Choose one"></option>
+                                                            <option value="country">Country</option>
+                                                            <option value="state">State</option>
+                                                            <option value="city">City</option>
+                                                            <option value="barangay">Barangay</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12 col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Scope</label>
+                                                        <select class="form-control select2" name="scope[]" id="selectScope" multiple>
+                                                            <?php foreach($scopes as $scope) { ?>
+                                                                <option value="<?php echo $scope->id ?>" selected><?php echo $scope->name ?></option>
+                                                            <?php } ?>
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -350,6 +374,114 @@
     </script>
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            $("#selectScopeLevel").change(function() {
+                var scope_level = $("#selectScopeLevel").val();
+                var country = $("#country").val();
+
+                if (scope_level == "country") {
+                    $("#selectScope").select2({
+                        placeholder: 'Search Country',
+                        multiple: true,
+                        allowClear: true,
+                        ajax: {
+                            url: 'companyuser/getCountryInfo',
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
+                } if (scope_level == "state") {
+                    $("#selectScope").select2({
+                        placeholder: 'Search State',
+                        multiple: true,
+                        allowClear: true,
+                        ajax: {
+                            url: 'companyuser/getStateInfo?country=' + country,
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
+                } if (scope_level == "city") {
+                    $("#selectScope").select2({
+                        placeholder: 'Search City',
+                        multiple: true,
+                        allowClear: true,
+                        ajax: {
+                            url: 'companyuser/getCityInfo?country=' + country,
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
+                } if (scope_level == "barangay") {
+                    $("#selectScope").select2({
+                        placeholder: 'Search City',
+                        multiple: true,
+                        allowClear: true,
+                        ajax: {
+                            url: 'companyuser/getBarangayInfo?country=' + country,
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
+                }
+
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
         $(document).ready(function() {
             var country = $("#country").val();
             var iid = $("#companyuser_id").val();
@@ -364,6 +496,8 @@
                     var company_state = response.companyuser.state_id;
                     var company_city = response.companyuser.city_id;
                     var company_barangay = response.companyuser.barangay_id;
+
+                    $("#companyuserForm").find('[name="scope_level"]').val(response.companyuser.scope_level).change();
 
                     console.log(company_country);
 
@@ -449,6 +583,10 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $(".select2").select2({
+                allowClear: true,
+            });
+
+            $("#selectScopeLevel").select2({
                 allowClear: true,
             });
         })
