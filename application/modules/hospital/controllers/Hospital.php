@@ -351,7 +351,7 @@ class Hospital extends MX_Controller {
 
                     $this->hospital_model->createAutoSmsTemplate($hospital_user_id);
                     $this->hospital_model->createAutoEmailTemplate($hospital_user_id);
-                    $this->hospital_model->createPersonalAccount($hospital_user_id);
+                    //$this->hospital_model->createPersonalAccount($hospital_user_id);
 
 
                     $this->session->set_flashdata('feedback', lang('new_hospital_created'));
