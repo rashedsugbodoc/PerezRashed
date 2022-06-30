@@ -23,6 +23,12 @@ class Company_model extends CI_model {
         return $query->result();
     }
 
+    function getCompanyByCompanyUserId($company_id) {
+        $this->db->where('id', $company_id);
+        $query = $this->db->get('company');
+        return $query->result();
+    }
+
     function getCompanyCount() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('company');
@@ -44,6 +50,16 @@ class Company_model extends CI_model {
         return $query->result();
     }
 
+    function getCompanyByCompanyuserIdBySearch($search, $company_id) {
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->select('*')
+                ->from('company')
+                ->where('id', $company_id)
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->result();
+    }
+
     function getCompanyBySearchCount($search) {
         $query = $this->db->select('id')
                 ->from('company')
@@ -60,10 +76,29 @@ class Company_model extends CI_model {
         return $query->result();
     }
 
+    function getCompanyByCompanyUserIdByLimit($limit, $start, $company_id) {
+        $this->db->where('id', $company_id);
+        $this->db->order_by('id', 'desc');
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('company');
+        return $query->result();
+    }
+
     function getCompanyByLimitBySearch($limit, $start, $search) {
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
                 ->from('company')
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+
+        return $query->result();
+    }
+
+    function getCompanyByCompanyUserIdByLimitBySearch($limit, $start, $search, $company_id) {
+        $this->db->limit($limit, $start);
+        $query = $this->db->select('*')
+                ->from('company')
+                ->where('id', $company_id)
                 ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
 

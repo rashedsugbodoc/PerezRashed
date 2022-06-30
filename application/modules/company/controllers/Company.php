@@ -16,6 +16,7 @@ class Company extends MX_Controller {
         $this->load->model('prescription/prescription_model');
         $this->load->model('schedule/schedule_model');
         $this->load->model('location/location_model');
+        $this->load->model('companyuser/companyuser_model');
         $this->load->module('patient');
         $this->load->module('sms');
         if (!$this->ion_auth->in_group(array('admin','CompanyUser','Accountant','Doctor'))) {
@@ -357,18 +358,20 @@ class Company extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $user = $this->ion_auth->get_user_id();
+        $company_id = $this->companyuser_model->getCompanyUserByIonUserId($user)->company_id;
 
         if ($limit == -1) {
             if (!empty($search)) {
-                $data['companies'] = $this->company_model->getCompanyBySearch($search);
+                $data['companies'] = $this->company_model->getCompanyByCompanyuserIdBySearch($search, $company_id);
             } else {
-                $data['companies'] = $this->company_model->getCompany();
+                $data['companies'] = $this->company_model->getCompanyByCompanyUserId($company_id);
             }
         } else {
             if (!empty($search)) {
-                $data['companies'] = $this->company_model->getCompanyByLimitBySearch($limit, $start, $search);
+                $data['companies'] = $this->company_model->getCompanyByCompanyUserIdByLimitBySearch($limit, $start, $search, $company_id);
             } else {
-                $data['companies'] = $this->company_model->getCompanyByLimit($limit, $start);
+                $data['companies'] = $this->company_model->getCompanyByCompanyUserIdByLimit($limit, $start, $company_id);
             }
         }
         //  $data['companies'] = $this->company_model->getCompany();
