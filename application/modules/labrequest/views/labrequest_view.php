@@ -11,12 +11,12 @@
                                             display: none;
                                         }
                                         .ziconDisplay {
-                                            position: absolute !important;
-                                            top: 380px !important;
+                                            /*position: absolute !important;
+                                            top: 380px !important;*/
                                         }
                                     }
 
-                                    @media (max-width: 275px) {
+                                    /*@media (max-width: 275px) {
                                      .pull-right {
                                         float: left;
                                       }
@@ -32,7 +32,7 @@
                                      .pull-center {
                                         float: center;
                                       }
-                                    }
+                                    }*/
 
                                     #content{
                                         color: black;
@@ -80,18 +80,19 @@
                                     }
 
                                     .ziconDisplay {
-                                        position: absolute;
-                                        top: 280px;
+                                        /*position: absolute;
+                                        top: 280px;*/
                                     }
 
                                     @page {
                                       margin: 5mm 5mm 15mm 10mm;
+                                      height: 1000px;
                                       /*width: 210mm;
                                       height: 297mm;*/
                                       /*margin: 20mm*/
                                     }
 
-                                    @media print {
+                                    @media print and (orientation:portrait){
                                         .page-headerz, .page-header-space {
                                             height: 376px;
                                           /*height: 393px;*/
@@ -110,7 +111,7 @@
                                         .page-footerz {
                                           position: fixed;
                                           bottom: 0;
-                                          width: 100%;
+                                          width: 980px;
                                           /*border-top: 1px solid black; /* for demo */*/
                                           background: yellow; /* for demo */
                                         }
@@ -118,9 +119,34 @@
                                         .page-headerz {
                                           position: fixed;
                                           top: 0mm;
-                                          width: 100%;
+                                          width: 980px;
+                                          margin-left: 15px;
                                           /*border-bottom: 1px solid black; /* for demo */*/
                                           background: yellow; /* for demo */
+                                        }
+
+                                        @supports (-webkit-touch-callout: none) {
+                                            /*page[size="A5"] {
+                                                width: 700px;
+                                            }*/
+
+                                            .page-footerz {
+                                                  position: static;
+                                                  /*position: -webkit-sticky;*/
+                                                  bottom: 0mm;
+                                                  width: 700px;
+                                                  /*border-top: 1px solid black; /* for demo */*/
+                                                  background: yellow; /* for demo */
+                                            }
+
+                                            .page-headerz {
+                                                  position: fixed;
+                                                  top: 0mm;
+                                                  width: 700px;
+                                                  margin-left: 15px;
+                                                  /*border-bottom: 1px solid black; /* for demo */*/
+                                                  background: yellow; /* for demo */
+                                            }
                                         }
 
                                         /*.pagez {
@@ -168,6 +194,19 @@
                                         html, body {
                                             font-size: 16pt;
                                         }
+
+                                        .card-body {
+                                            width: 1000px;
+                                            /*height: 670px;*/
+                                            /*padding: 50px;
+                                            background: white;
+                                            position: relative;
+                                            left: 50%;
+                                            top: 20%;
+                                            transform: translate(-50%, -50%);
+                                            transform-origin: center center;*/
+                                        }
+
                                     }
 
 
@@ -203,7 +242,17 @@
                                     <?php } ?>
                                     <div class="flex-grow-2">
                                         <button type="button" class="btn btn-info" id="create_pdf"><i class="fe fe-download"></i><span class="button-text"> <?php echo lang('download'); ?></span></button>
-                                        <button type="button" id="print" class="btn btn-info"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
+                                        <?php if(strstr($_SERVER['HTTP_USER_AGENT'],'Mobile') || strstr($_SERVER['HTTP_USER_AGENT'],'Windows')) { ?>
+                                            <?php if (isMobile() === 1) { ?>
+                                                <?php if (strstr($_SERVER['HTTP_USER_AGENT'],'Android')) { ?>
+                                                    <button type="button" id="printDesktop" class="btn btn-info"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
+                                                <?php }?>
+                                            <?php } else { ?>
+                                                <button type="button" id="printDesktop" class="btn btn-info"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
+                                            <?php } ?>
+                                        <?php } elseif(strstr($_SERVER['HTTP_USER_AGENT'],'Android')) { ?>
+                                            <button type="button" id="print" class="btn btn-info"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
+                                        <?php } ?>
                                         <!-- <button type="button" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></button> -->
                                         <!--a href="prescription/editPrescription?id=<?php echo $prescription->id;?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> Edit</span></a-->
                                     </div>
@@ -389,7 +438,9 @@
                                         </div>
                                         <div class="row">
                                             <h1 class="fs-100 zicon" hidden>&#8478;</h1>
-                                            <h1 class="fs-100 ziconDisplay template-opacity">&#8478;</h1>
+                                            <div class="d-flex flex-row align-items-stretch h-0">
+                                                <h1 class="fs-100 ziconDisplay template-opacity">&#8478;</h1>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -583,13 +634,207 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
-                $("#print").click(function () {
-                    $(".zicon").attr("hidden", false);
-                    $(".ziconDisplay").attr("hidden", true);
+                $("#printDesktop").click(function () {
+                    // $(".zicon").attr("hidden", false);
+                    // $(".ziconDisplay").attr("hidden", true);
                     window.print();
-                    $(".zicon").attr("hidden", true);
-                    $(".ziconDisplay").attr("hidden", false);
+                    // $(".zicon").attr("hidden", true);
+                    // $(".ziconDisplay").attr("hidden", false);
                 })
+            })
+        </script>
+
+        <script type="text/javascript">
+            $("#print").click(function () {
+                $(".zicon").attr("hidden", false);
+                $(".ziconDisplay").attr("hidden", true);
+                // window.print();
+                var mywindow = window.open('PRINT');
+                mywindow.document.write('<link href="<?php echo base_url(
+                    'public/assets/plugins/bootstrap/css/bootstrap.css'); ?>" rel="stylesheet" />\n\
+                    <link rel="shortcut icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>">\n\
+                    <link rel="icon" type="image/png" href="<?php echo base_url('public/assets/images/brand/android-chrome-192x192.png'); ?>" sizes="192x192">\n\
+                    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url('public/assets/images/brand/apple-touch-icon.png'); ?>">\n\
+                    <link href="<?php echo base_url('public/assets/css/style.css'); ?>" rel="stylesheet" />\n\
+                    <link href="<?php echo base_url('public/assets/css/dark.css'); ?>" rel="stylesheet" />\n\
+                    <link href="<?php echo base_url('public/assets/css/skins.css'); ?>" rel="stylesheet" />\n\
+                    <link href="<?php echo base_url('public/assets/css/animated.css'); ?>" rel="stylesheet" />\n\
+                    <link id="theme" href="<?php echo base_url('public/assets/css/sidemenu.css'); ?>" rel="stylesheet">\n\
+                    <link href="<?php echo base_url('public/assets/plugins/p-scrollbar/p-scrollbar.css'); ?>" rel="stylesheet" />\n\
+                    <link href="<?php echo base_url('public/assets/plugins/web-fonts/icons.css'); ?>" rel="stylesheet" />\n\
+                    <link href="<?php echo base_url('public/assets/plugins/web-fonts/font-awesome/font-awesome.min.css'); ?>" rel="stylesheet">\n\
+                    <link href="<?php echo base_url('public/assets/plugins/web-fonts/plugin.css'); ?>" rel="stylesheet" />\n\
+                    <link href="<?php echo base_url('public/assets/plugins/jvectormap/jqvmap.css') ?>" rel="stylesheet" />\n\
+                    ');
+                mywindow.document.write('<style>\n\
+                                    @media screen and (max-width: 1000px) {\n\
+                                        .button-text {\n\
+                                            display: none;\n\
+                                        }\n\
+                                        .ziconDisplay {\n\
+                                            position: absolute !important;\n\
+                                            top: 380px !important;\n\
+                                        }\n\
+                                    }\n\
+                                    #content{\n\
+                                        color: black;\n\
+                                    }\n\
+                                    .td{\n\
+                                        color: black;\n\
+                                    }\n\
+                                    * {box-sizing: border-box;}\n\
+                                    .container {\n\
+                                      position: relative;\n\
+                                      width: 50%;\n\
+                                      max-width: 300px;\n\
+                                    }\n\
+                                    .image {\n\
+                                      display: block;\n\
+                                      width: 100%;\n\
+                                      height: auto;\n\
+                                    }\n\
+                                    .overlay {\n\
+                                      position: absolute; \n\
+                                      bottom: 0; \n\
+                                      background: rgb(0, 0, 0);\n\
+                                      background: rgba(0, 0, 0, 0.5);\n\
+                                      color: #f1f1f1; \n\
+                                      width: 100%;\n\
+                                      transition: .5s ease;\n\
+                                      opacity:0;\n\
+                                      color: white;\n\
+                                      font-size: 20px;\n\
+                                      padding: 20px;\n\
+                                      text-align: center;\n\
+                                    }\n\
+                                    .container:hover .overlay {\n\
+                                      opacity: 1;\n\
+                                    }\n\
+                                    #content{\n\
+                                        color: black;\n\
+                                    }\n\
+                                    .ziconDisplay {\n\
+                                        position: absolute;\n\
+                                        top: 280px;\n\
+                                    }\n\
+                                    @page {\n\
+                                      margin: 5mm 5mm 15mm 10mm;\n\
+                                      height: 1000px;\n\
+                                    }\n\
+                                    @media print and (orientation:portrait){\n\
+                                        .page-headerz, .page-header-space {\n\
+                                            height: 376px;\n\
+                                        }\n\
+                                        .page-footerz, .page-footer-space {\n\
+                                          height: 275px;\n\
+                                        }\n\
+                                        .page-footerz {\n\
+                                          position: static;\n\
+                                          bottom: 42px;\n\
+                                          width: 950px;\n\
+                                        }\n\
+                                        .page-headerz {\n\
+                                          position: fixed;\n\
+                                          top: 0mm;\n\
+                                          width: 950px;\n\
+                                          margin-left: 15px;\n\
+                                        }\n\
+                                        @supports (-webkit-touch-callout: none) {\n\
+                                            .page-footerz {\n\
+                                                  position: static;\n\
+                                                  bottom: 0mm;\n\
+                                            }\n\
+                                            .page-headerz {\n\
+                                                  position: fixed;\n\
+                                                  top: 0mm;\n\
+                                                  margin-left: 15px;\n\
+                                            }\n\
+                                        }\n\
+                                        td {\n\
+                                            margin: 0 !important;\n\
+                                            padding: 0 !important;\n\
+                                            border: 0 !important;\n\
+                                        }\n\
+                                        .region {\n\
+                                          break-inside: avoid;\n\
+                                        }\n\
+                                        .company-logo {\n\
+                                            max-height: 300px !important;\n\
+                                            max-width: 300px !important;\n\
+                                            width: 300px !important;\n\
+                                            height: auto !important;\n\
+                                        }\n\
+                                        .logo-print {\n\
+                                            margin-bottom: 0;\n\
+                                            padding-bottom: 0;\n\
+                                            border-bottom: 0;\n\
+                                        }\n\
+                                        .zicon {\n\
+                                            position: absolute;\n\
+                                            top: 370px;\n\
+                                        }\n\
+                                        thead {display: table-header-group;} \n\
+                                        tfoot {display: table-footer-group;}\n\
+                                        button {display: none;}\n\
+                                        body {margin: 0;}\n\
+                                        html, body {\n\
+                                            font-size: 16pt;\n\
+                                        }\n\
+                                        .card-body {\n\
+                                            width: 1000px;\n\
+                                        }\n\
+                                    }\n\
+                                </style>')
+                mywindow.document.write($('.card').html());
+
+                mywindow.document.close();
+                mywindow.focus();
+
+                mywindow.print();
+                mywindow.close();
+                // var printContents = document.getElementById('content').innerHTML;
+                // var originalContents = document.body.innerHTML;
+
+                // document.body.innerHTML = printContents;
+
+                // window.print();
+
+                // document.body.innerHTML = originalContents;
+                $(".zicon").attr("hidden", true);
+                $(".ziconDisplay").attr("hidden", false);
+
+                // var $el = $(".card-body1");
+                // var elHeight = $el.outerHeight();
+                // var elWidth = $el.outerWidth();
+
+                // var $wrapper = $("#content1");
+
+                // $wrapper.resizable({
+                //   resize: doResize
+                // });
+
+                // function doResize(event, ui) {
+                  
+                //   var scale, origin;
+                    
+                //   scale = Math.min(
+                //     ui.size.width / elWidth,    
+                //     ui.size.height / elHeight
+                //   );
+                  
+                //   $el.css({
+                //     transform: "translate(-50%, -50%) " + "scale(" + scale + ")"
+                //   });
+                  
+                // }
+
+                // var starterData = { 
+                //   size: {
+                //     width: $wrapper.width(),
+                //     height: $wrapper.height()
+                //   }
+                // }
+                // doResize(null, starterData);
             })
         </script>
 
@@ -608,11 +853,11 @@
                 console.log(items_height);
                 console.log(table_size_left);
                 var opt = {
-                    margin: [0, 0.2, 0, 0.2],
+                    margin: [10, 10, 0.5, 5],
                     filename: '<?php echo $patient->name; ?> LabRequest.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 2, scrollY: 0 },
-                    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+                    jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
                     pdfCallback: pdfCallback
                 };
 
