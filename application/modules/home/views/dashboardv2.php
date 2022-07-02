@@ -23,10 +23,16 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
           }
       }
       ?>>
+      <?php
+      function isMobile() {
+            return preg_match("/(avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+        }
+      ?>
+
     <head>
         <base href="<?php echo base_url(); ?>">
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="Rygel">
         <meta name="keywords" content="Hospital Information System, Clinic, Management, Software, Finance">
