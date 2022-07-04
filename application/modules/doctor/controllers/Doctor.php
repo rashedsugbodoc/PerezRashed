@@ -93,6 +93,7 @@ class Doctor extends MX_Controller {
         // }
 
         $id = $this->input->post('id');
+        $user = $this->ion_auth->get_user_id();
         
         if (empty($id)) {
             $limit = $this->doctor_model->getLimit();
@@ -138,6 +139,10 @@ class Doctor extends MX_Controller {
         $encoded_image = explode(",", $signature)[1];
         $decoded_image = base64_decode($encoded_image);
         file_put_contents("signature.txt", $decoded_image);
+
+        $data_signature = array(
+            'signature' => $signature,
+        );
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -495,6 +500,7 @@ class Doctor extends MX_Controller {
                             $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                             $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->doctor_model->updateDoctor($id, $data);
+                            $this->doctor_model->updateUserSignatureByUserId($user, $data_signature);
                             $this->session->set_flashdata('success', lang('record_updated'));
                             if (empty($redirect)) {
                                 redirect('doctor');
@@ -532,6 +538,7 @@ class Doctor extends MX_Controller {
                                 $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                                 $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                                 $this->doctor_model->updateDoctor($id, $data);
+                                $this->doctor_model->updateUserSignatureByUserId($user, $data_signature);
                                 $this->session->set_flashdata('success', lang('record_updated'));
                                 if (empty($redirect)) {
                                     redirect('doctor');
@@ -560,6 +567,7 @@ class Doctor extends MX_Controller {
                         $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                         $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->doctor_model->updateDoctor($id, $data);
+                        $this->doctor_model->updateUserSignatureByUserId($user, $data_signature);
                         $this->session->set_flashdata('success', lang('record_updated'));
                         if (empty($redirect)) {
                             redirect('doctor');
@@ -597,6 +605,7 @@ class Doctor extends MX_Controller {
                             $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                             $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->doctor_model->updateDoctor($id, $data);
+                            $this->doctor_model->updateUserSignatureByUserId($user, $data_signature);
                             $this->session->set_flashdata('success', lang('record_updated'));
                             if (empty($redirect)) {
                                 redirect('doctor');
