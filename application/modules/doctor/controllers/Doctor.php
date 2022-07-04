@@ -88,9 +88,9 @@ class Doctor extends MX_Controller {
     }
 
     public function addNew() {
-        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
-            redirect('home/permission');
-        }
+        // if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
+        //     redirect('home/permission');
+        // }
 
         $id = $this->input->post('id');
         
@@ -102,6 +102,7 @@ class Doctor extends MX_Controller {
             }
         }
 
+        $redirect = $this->input->post('redirect');
         $fname = $this->input->post('f_name');
         $lname = $this->input->post('l_name');
         $mname = $this->input->post('m_name');
@@ -186,15 +187,19 @@ class Doctor extends MX_Controller {
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 $this->session->set_flashdata('error', lang('validation_error'));
-                $data = array();
-                $data['specialties'] = $this->specialty_model->getSpecialty();
-                $data['departments'] = $this->department_model->getDepartment();
-                $data['doctor'] = $this->doctor_model->getDoctorById($id);
-                $data['doctors'] = $this->doctor_model->getDoctor();
-                $data['countries'] = $this->location_model->getCountry();
-                $this->load->view('home/dashboardv2'); // just the header file
-                $this->load->view('add_newv2', $data);
-                // $this->load->view('home/footer'); // just the footer file
+                if (empty($redirect)) {
+                    $data = array();
+                    $data['specialties'] = $this->specialty_model->getSpecialty();
+                    $data['departments'] = $this->department_model->getDepartment();
+                    $data['doctor'] = $this->doctor_model->getDoctorById($id);
+                    $data['doctors'] = $this->doctor_model->getDoctor();
+                    $data['countries'] = $this->location_model->getCountry();
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
+                } else {
+                    redirect($redirect);
+                }
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
@@ -356,7 +361,11 @@ class Doctor extends MX_Controller {
                         );
 
                         $this->doctor_model->insertUserSignatureByUserId($signature);
-                        redirect('doctor');
+                        if (empty($redirect)) {
+                            redirect('doctor');
+                        } else {
+                            redirect($redirect);
+                        }
                     } else {
                         //additional validation for uploading file in add modal
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
@@ -443,7 +452,11 @@ class Doctor extends MX_Controller {
 
                             $this->doctor_model->insertUserSignatureByUserId($signature);
 
-                            redirect('doctor');
+                            if (empty($redirect)) {
+                                redirect('doctor');
+                            } else {
+                                redirect($redirect);
+                            }
                         }
 
                         
@@ -589,6 +602,24 @@ class Doctor extends MX_Controller {
         $data['doctor'] = $this->doctor_model->getDoctorById($id);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['countries'] = $this->location_model->getCountry();
+        // $data['states'] = $this->location_model->getState();
+        // $data['cities'] = $this->location_model->getCity();
+        // $data['barangays'] = $this->location_model->getBarangay();
+        $data['specialties'] = $this->specialty_model->getSpecialty();
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);        
+        //$this->load->view('home/footer'); // just the footer file
+    }
+
+    function editProfile() {
+        $data = array();
+        $data['departments'] = $this->department_model->getDepartment();
+        $user = $this->ion_auth->get_user_id();
+        $id = $this->doctor_model->getDoctorByIonUserId($user)->id;
+        $data['doctor'] = $this->doctor_model->getDoctorById($id);
+        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['countries'] = $this->location_model->getCountry();
+        $data['redirect'] = 'doctor/editProfile';
         // $data['states'] = $this->location_model->getState();
         // $data['cities'] = $this->location_model->getCity();
         // $data['barangays'] = $this->location_model->getBarangay();
