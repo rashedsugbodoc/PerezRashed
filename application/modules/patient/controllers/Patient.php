@@ -125,7 +125,7 @@ class Patient extends MX_Controller {
     }
 
     public function addNew() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient'))) {
             redirect('home/permission');
         }
 
@@ -243,17 +243,21 @@ class Patient extends MX_Controller {
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 $this->session->set_flashdata('error', lang('validation_error'));
-                $data = array();
+                if (empty($redirect)) {
+                    $data = array();
 
-                // $id = $this->input->get('id');
-                $data['patient'] = $this->patient_model->getPatientById($id);
-                $data['doctors'] = $this->doctor_model->getDoctor();
-                $data['groups'] = $this->patient_model->getBloodGroup();
-                $data['countries'] = $this->location_model->getCountry();
-                $data['civil_status'] = $this->patient_model->getCivilStatus();
-                $this->load->view('home/dashboardv2'); // just the header file
-                $this->load->view('add_newv2', $data);
-                // $this->load->view('home/footer'); // just the footer file
+                    // $id = $this->input->get('id');
+                    $data['patient'] = $this->patient_model->getPatientById($id);
+                    $data['doctors'] = $this->doctor_model->getDoctor();
+                    $data['groups'] = $this->patient_model->getBloodGroup();
+                    $data['countries'] = $this->location_model->getCountry();
+                    $data['civil_status'] = $this->patient_model->getCivilStatus();
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
+                } else {
+                    redirect($redirect);
+                }
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
@@ -409,7 +413,11 @@ class Patient extends MX_Controller {
 
 
                         $this->session->set_flashdata('success', lang('record_added'));
-                        redirect('patient');
+                        if (empty($redirect)) {
+                            redirect('patient');
+                        } else {
+                            redirect($redirect);
+                        }
 
                     } else {
                         //additional validation for uploading file in add modal
@@ -492,7 +500,11 @@ class Patient extends MX_Controller {
 
 
                             $this->session->set_flashdata('success', lang('record_added'));
-                            redirect('patient');
+                            if (empty($redirect)) {
+                                redirect('patient');
+                            } else {
+                                redirect($redirect);
+                            }
                         }
                     }
                     
@@ -503,15 +515,19 @@ class Patient extends MX_Controller {
                 if ($email !== $emailById) {
                     if ($this->ion_auth->email_check($email)) {
                         $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
-                        $data = array();
-                        $data['patient'] = $this->patient_model->getPatientById($id);
-                        $data['doctors'] = $this->doctor_model->getDoctor();
-                        $data['groups'] = $this->patient_model->getBloodGroup();
-                        $data['countries'] = $this->location_model->getCountry();
-                        $data['civil_status'] = $this->patient_model->getCivilStatus();
-                        $this->load->view('home/dashboardv2'); // just the header file
-                        $this->load->view('add_newv2', $data);
-                        // $this->load->view('home/footer'); // just the footer file
+                        if (empty($redirect)) {
+                            $data = array();
+                            $data['patient'] = $this->patient_model->getPatientById($id);
+                            $data['doctors'] = $this->doctor_model->getDoctor();
+                            $data['groups'] = $this->patient_model->getBloodGroup();
+                            $data['countries'] = $this->location_model->getCountry();
+                            $data['civil_status'] = $this->patient_model->getCivilStatus();
+                            $this->load->view('home/dashboardv2'); // just the header file
+                            $this->load->view('add_newv2', $data);
+                            // $this->load->view('home/footer'); // just the footer file
+                        } else {
+                            redirect($redirect);
+                        }
                     } else {
                         if ($this->upload->do_upload('img_url')) {
                             $upload_data = $this->upload->data();
@@ -527,23 +543,31 @@ class Patient extends MX_Controller {
                             $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->patient_model->updatePatient($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
-                            redirect('patient');
+                            if (empty($redirect)) {
+                                redirect('patient');
+                            } else {
+                                redirect($redirect);
+                            }
                         } else {
                             //additional validation for uploading file in update modal if email not exist
                             if ($_FILES['img_url']['size'] > $config['max_size']) {
                                 $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
                                 $this->session->set_flashdata('fileError', $fileError);
                                 $this->session->set_flashdata('error', lang('validation_error'));
-                                $data = array();
-                                $data['setval'] = 'setval';
-                                $data['patient'] = $this->patient_model->getPatientById($id);
-                                $data['doctors'] = $this->doctor_model->getDoctor();
-                                $data['groups'] = $this->patient_model->getBloodGroup();
-                                $data['countries'] = $this->location_model->getCountry();
-                                $data['civil_status'] = $this->patient_model->getCivilStatus();
-                                $this->load->view('home/dashboardv2'); // just the header file
-                                $this->load->view('add_newv2', $data);
-                                // $this->load->view('home/footer'); // just the footer file
+                                if (empty($redirect)) {
+                                    $data = array();
+                                    $data['setval'] = 'setval';
+                                    $data['patient'] = $this->patient_model->getPatientById($id);
+                                    $data['doctors'] = $this->doctor_model->getDoctor();
+                                    $data['groups'] = $this->patient_model->getBloodGroup();
+                                    $data['countries'] = $this->location_model->getCountry();
+                                    $data['civil_status'] = $this->patient_model->getCivilStatus();
+                                    $this->load->view('home/dashboardv2'); // just the header file
+                                    $this->load->view('add_newv2', $data);
+                                    // $this->load->view('home/footer'); // just the footer file
+                                } else {
+                                    redirect($redirect);
+                                }
                             } else {
                                 $upload_data = $this->upload->data();
                                 $image_url = "uploads/profile/" . $upload_data['file_name'];
@@ -560,7 +584,11 @@ class Patient extends MX_Controller {
                                 $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
                                 $this->patient_model->updatePatient($id, $data);
                                 $this->session->set_flashdata('success', lang('record_updated'));
-                                redirect('patient');
+                                if (empty($redirect)) {
+                                    redirect('patient');
+                                } else {
+                                    redirect($redirect);
+                                }
                             }
                         }
 
@@ -582,7 +610,11 @@ class Patient extends MX_Controller {
                         $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->patient_model->updatePatient($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('patient');
+                        if (empty($redirect)) {
+                            redirect('patient');
+                        } else {
+                            redirect($redirect);
+                        }
                     } else {
                         //additional validation for uploading file in update modal if email exist
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
@@ -591,14 +623,18 @@ class Patient extends MX_Controller {
                             $this->session->set_flashdata('error', lang('validation_error'));
                             $data = array();
                             $data['setval'] = 'setval';
-                            $data['patient'] = $this->patient_model->getPatientById($id);
-                            $data['doctors'] = $this->doctor_model->getDoctor();
-                            $data['groups'] = $this->patient_model->getBloodGroup();
-                            $data['countries'] = $this->location_model->getCountry();
-                            $data['civil_status'] = $this->patient_model->getCivilStatus();
-                            $this->load->view('home/dashboardv2'); // just the header file
-                            $this->load->view('add_newv2', $data);
-                            // $this->load->view('home/footer'); // just the footer file
+                            if (empty($redirect)) {
+                                $data['patient'] = $this->patient_model->getPatientById($id);
+                                $data['doctors'] = $this->doctor_model->getDoctor();
+                                $data['groups'] = $this->patient_model->getBloodGroup();
+                                $data['countries'] = $this->location_model->getCountry();
+                                $data['civil_status'] = $this->patient_model->getCivilStatus();
+                                $this->load->view('home/dashboardv2'); // just the header file
+                                $this->load->view('add_newv2', $data);
+                                // $this->load->view('home/footer'); // just the footer file
+                            } else {
+                                redirect($redirect);
+                            }
                         } else {
                             $upload_data = $this->upload->data();
                             $image_url = "uploads/profile/" . $upload_data['file_name'];
@@ -615,7 +651,11 @@ class Patient extends MX_Controller {
                             $this->patient_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->patient_model->updatePatient($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
-                            redirect('patient');
+                            if (empty($redirect)) {
+                                redirect('patient');
+                            } else {
+                                redirect($redirect);
+                            }
                         }
                     }
                 }
@@ -649,6 +689,21 @@ class Patient extends MX_Controller {
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the footer file
+    }
+
+    function editProfile() {
+        $data = array();
+        $user = $this->ion_auth->get_user_id();
+        $id = $this->patient_model->getPatientByIonUserId($user)->id;
+        $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
+        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['groups'] = $this->patient_model->getBloodGroup();
+        $data['countries'] = $this->location_model->getCountry();
+        $data['civil_status'] = $this->patient_model->getCivilStatus();
+        $data['redirect'] = 'patient/editProfile';
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);        
+        //$this->load->view('home/footer'); // just the footer file
     }
 
     function editPatientByJason() {
