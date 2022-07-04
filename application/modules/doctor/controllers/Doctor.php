@@ -496,7 +496,11 @@ class Doctor extends MX_Controller {
                             $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->doctor_model->updateDoctor($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
-                            redirect('doctor');
+                            if (empty($redirect)) {
+                                redirect('doctor');
+                            } else {
+                                redirect($redirect);
+                            }
                         } else {
                             //additional validation for uploading file in update modal if email not exist
                             if ($_FILES['img_url']['size'] > $config['max_size']) {
@@ -529,7 +533,11 @@ class Doctor extends MX_Controller {
                                 $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                                 $this->doctor_model->updateDoctor($id, $data);
                                 $this->session->set_flashdata('success', lang('record_updated'));
-                                redirect('doctor');
+                                if (empty($redirect)) {
+                                    redirect('doctor');
+                                } else {
+                                    redirect($redirect);
+                                }
                             }
                             
                         }
@@ -553,7 +561,11 @@ class Doctor extends MX_Controller {
                         $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->doctor_model->updateDoctor($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('doctor');
+                        if (empty($redirect)) {
+                            redirect('doctor');
+                        } else {
+                            redirect($redirect);
+                        }
                     } else {
                         //additional validation for uploading file in update modal if email exist
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
@@ -586,7 +598,11 @@ class Doctor extends MX_Controller {
                             $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->doctor_model->updateDoctor($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
-                            redirect('doctor');
+                            if (empty($redirect)) {
+                                redirect('doctor');
+                            } else {
+                                redirect($redirect);
+                            }
                         }
                     }
                 }
