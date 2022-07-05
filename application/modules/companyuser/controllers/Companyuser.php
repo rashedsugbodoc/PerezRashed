@@ -12,7 +12,7 @@ class Companyuser extends MX_Controller {
         $this->load->model('company/company_model');
         $this->load->model('location/location_model');
  
-        if (!$this->ion_auth->in_group('admin')) {
+        if (!$this->ion_auth->in_group(array('admin','CompanyUser'))) {
             redirect('home/permission');
         }
     }
@@ -243,6 +243,7 @@ class Companyuser extends MX_Controller {
     function editCompanyUser() {
         $data = array();
         $id = $this->input->get('id');
+        $data['id'] = $this->input->get('id');
         $data['companies'] = $this->company_model->getCompany();
         $data['countries'] = $this->location_model->getCountry();
         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
@@ -258,25 +259,81 @@ class Companyuser extends MX_Controller {
         }
         if ($data['companyuser']->scope_level === "state") {
             $scope_array = explode(',', $data['companyuser']->scope_id);
+            $data['scopeState'] = $this->location_model->getStateInfoWithCountryName(null, $data['companyuser']->country_id);
             $scopes = [];
             foreach ($scope_array as $scope) {
-                $scope_data = $this->location_model->getStateById($scope);
+                $scope_data = $this->location_model->getStateByIdWithCountryName($scope, $data['companyuser']->country_id);
                 $scopes[] = $scope_data;
             }
         }
         if ($data['companyuser']->scope_level === "city") {
             $scope_array = explode(',', $data['companyuser']->scope_id);
+            $data['scopeState'] = $this->location_model->getCityInfoWithStateName(null, $data['companyuser']->country_id);
             $scopes = [];
             foreach ($scope_array as $scope) {
-                $scope_data = $this->location_model->getCityById($scope);
+                $scope_data = $this->location_model->getCityByIdWithStateName($scope, $data['companyuser']->country_id);
+                $scopes[] = $scope_data;
+            }
+        }
+        if ($data['companyuser']->scope_level === "barangay") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $data['scopeState'] = $this->location_model->getBarangayInfoWithCityName(null, $data['companyuser']->country_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getBarangayByIdWithCityName($scope, $data['companyuser']->country_id);
+                $scopes[] = $scope_data;
+            }
+        }
+        $data['scopes'] = $scopes;
+
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
+    }
+
+    function editProfile() {
+        $data = array();
+        $user = $this->ion_auth->get_user_id();
+        $id = $this->companyuser_model->getCompanyUserByIonUserId($user)->id;
+        $data['id'] = $id;
+        $data['companies'] = $this->company_model->getCompany();
+        $data['countries'] = $this->location_model->getCountry();
+        $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+        $data['card_header'] = lang('edit').' '.lang('profile');
+        // $data['scopes'] = explode(',', $data['companyuser']->scope_id);
+
+        if ($data['companyuser']->scope_level === "country") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getCountryById($scope);
                 $scopes[] = $scope_data;
             }
         }
         if ($data['companyuser']->scope_level === "state") {
             $scope_array = explode(',', $data['companyuser']->scope_id);
+            $data['scopeState'] = $this->location_model->getStateInfoWithCountryName(null, $data['companyuser']->country_id);
             $scopes = [];
             foreach ($scope_array as $scope) {
-                $scope_data = $this->location_model->getBarangayById($scope);
+                $scope_data = $this->location_model->getStateByIdWithCountryName($scope, $data['companyuser']->country_id);
+                $scopes[] = $scope_data;
+            }
+        }
+        if ($data['companyuser']->scope_level === "city") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $data['scopeState'] = $this->location_model->getCityInfoWithStateName(null, $data['companyuser']->country_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getCityByIdWithStateName($scope, $data['companyuser']->country_id);
+                $scopes[] = $scope_data;
+            }
+        }
+        if ($data['companyuser']->scope_level === "barangay") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $data['scopeState'] = $this->location_model->getBarangayInfoWithCityName(null, $data['companyuser']->country_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getBarangayByIdWithCityName($scope, $data['companyuser']->country_id);
                 $scopes[] = $scope_data;
             }
         }
@@ -291,6 +348,43 @@ class Companyuser extends MX_Controller {
         $id = $this->input->get('id');
         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
         $data['company'] = $this->company_model->getCompanyById($data['companyuser']->company_id);
+
+        if ($data['companyuser']->scope_level === "country") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getCountryById($scope);
+                $scopes[] = $scope_data;
+            }
+        }
+        if ($data['companyuser']->scope_level === "state") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $data['scopeState'] = $this->location_model->getStateByIdWithCountryName(null, $data['companyuser']->country_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getStateByIdWithCountryName($scope, $data['companyuser']->country_id);
+                $scopes[] = $scope_data;
+            }
+        }
+        if ($data['companyuser']->scope_level === "city") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $data['scopeState'] = $this->location_model->getCityByIdWithStateName(null, $data['companyuser']->country_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getCityByIdWithStateName($scope, $data['companyuser']->country_id);
+                $scopes[] = $scope_data;
+            }
+        }
+        if ($data['companyuser']->scope_level === "barangay") {
+            $scope_array = explode(',', $data['companyuser']->scope_id);
+            $data['scopeState'] = $this->location_model->getBarangayByIdWithCityName(null, $data['companyuser']->country_id);
+            $scopes = [];
+            foreach ($scope_array as $scope) {
+                $scope_data = $this->location_model->getBarangayByIdWithCityName($scope, $data['companyuser']->country_id);
+                $scopes[] = $scope_data;
+            }
+        }
+        $data['scopes'] = $scopes;
         $country_id = $data['companyuser']->country_id;
         $state_id = $data['companyuser']->state_id;
         $city_id = $data['companyuser']->city_id;
@@ -373,7 +467,7 @@ class Companyuser extends MX_Controller {
         $country = $this->input->get('country');
 
 // Get users
-        $response = $this->location_model->getStateInfo($searchTerm, $country);
+        $response = $this->location_model->getStateInfoWithCountryName($searchTerm, $country);
 
         echo json_encode($response);
     }
@@ -384,7 +478,7 @@ class Companyuser extends MX_Controller {
         $country = $this->input->get('country');
 
 // Get users
-        $response = $this->location_model->getCityInfo($searchTerm, $country);
+        $response = $this->location_model->getCityInfoWithStateName($searchTerm, $country);
 
         echo json_encode($response);
     }
@@ -395,7 +489,7 @@ class Companyuser extends MX_Controller {
         $country = $this->input->get('country');
 
 // Get users
-        $response = $this->location_model->getBarangayInfo($searchTerm, $country);
+        $response = $this->location_model->getBarangayInfoWithCityName($searchTerm, $country);
 
         echo json_encode($response);
     }

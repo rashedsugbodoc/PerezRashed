@@ -11,10 +11,15 @@
                                     <div class="card-header">
                                         <div class="card-title">
                                             <?php
-                                            if (!empty($companyuser->id))
-                                                echo '<i class="fa fa-edit"></i> ' . lang('edit_company_user');
-                                            else
-                                                echo '<i class="fa fa-plus"></i> ' . lang('add_company_user');
+                                            if (!empty($card_header)) {
+                                                echo '<i class="fa fa-edit"></i> ' . $card_header;
+                                            } else {
+                                                if (!empty($companyuser->id)) {
+                                                    echo '<i class="fa fa-edit"></i> ' . lang('edit_company_user');
+                                                } else {
+                                                    echo '<i class="fa fa-plus"></i> ' . lang('add_company_user');
+                                                }
+                                            }
                                             ?>
                                         </div>
                                     </div>
@@ -34,28 +39,28 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('name'); ?></label>
-                                                        <input type="text" name="name" class="form-control" value="<?php
+                                                        <label><?php echo lang('name'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" name="name" id="name" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('name');
                                                         }
                                                         if (!empty($companyuser->name)) {
                                                             echo $companyuser->name;
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('email'); ?></label>
-                                                        <input type="text" name="email" class="form-control" value="<?php
+                                                        <label><?php echo lang('email'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" name="email" id="email" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('email');
                                                         }
                                                         if (!empty($companyuser->email)) {
                                                             echo $companyuser->email;
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -85,20 +90,20 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('address'); ?></label>
-                                                        <input type="text" name="address" class="form-control" value="<?php
+                                                        <label><?php echo lang('address'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" name="address" id="address" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('address');
                                                         }
                                                         if (!empty($companyuser->address)) {
                                                             echo $companyuser->address;
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('country'); ?></label>
+                                                        <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2" name="country_id" id="country" required data-placeholder="<?php echo lang('country_placeholder'); ?>">
                                                             <option label="<?php echo lang('country_placeholder'); ?>"></option>
                                                             <?php foreach ($countries as $country) { ?>
@@ -115,7 +120,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('state_province'); ?></label>
+                                                        <label class="form-label"><?php echo lang('state_province'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2" name="state_id" id="state" value='' required disabled data-placeholder="<?php echo lang('state_province_placeholder'); ?>">
                                                             <option label="<?php echo lang('state_province_placeholder'); ?>"></option>
                                                         </select>    
@@ -123,7 +128,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('city_municipality'); ?></label>
+                                                        <label class="form-label"><?php echo lang('city_municipality'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2" name="city_id" id="city" value='' required disabled data-placeholder="<?php echo lang('city_municipality_placeholder'); ?>">
                                                             <option label="<?php echo lang('city_municipality_placeholder'); ?>"></option>
                                                         </select>
@@ -153,11 +158,9 @@
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
                                                     <div class="form-group">
-                                                        <label for="exampleInputEmail1"> <?php echo lang('company'); ?></label>
-                                                        <select class="form-control select2" name="company_id" value=''>
-                                                            <!-- <?php if (!empty($companyuser)) { ?>
-                                                                <option value="<?php echo $company->id; ?>" selected="selected"><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
-                                                            <?php } ?> -->
+                                                        <label for="exampleInputEmail1"> <?php echo lang('company'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2" name="company_id" id="company" value='' required data-placeholder="<?php echo lang('select').' '.lang('company'); ?>">
+                                                            <option label="<?php echo lang('select').' '.lang('company'); ?>"></option>
                                                             <?php foreach ($companies as $company) { ?>
                                                                 <option value="<?php echo $company->id ?>" <?php
                                                                 if (!empty($companyuser->id)) {
@@ -172,11 +175,11 @@
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label">Scope Level</label>
-                                                        <select class="form-control" name="scope_level" id="selectScopeLevel" data-placeholder="Choose one">
+                                                        <label class="form-label">Scope Level <span class="text-red">*</span></label>
+                                                        <select class="form-control" name="scope_level" id="selectScopeLevel" data-placeholder="Choose one" required>
                                                             <option label="Choose one"></option>
                                                             <option value="country">Country</option>
-                                                            <option value="state">State</option>
+                                                            <option value="state">State / Province</option>
                                                             <option value="city">City</option>
                                                             <option value="barangay">Barangay</option>
                                                         </select>
@@ -185,17 +188,17 @@
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label">Scope</label>
-                                                        <select class="form-control select2" name="scope[]" id="selectScope" multiple>
-                                                            <?php foreach($scopes as $scope) { ?>
-                                                                <option value="<?php echo $scope->id ?>" selected><?php echo $scope->name ?></option>
-                                                            <?php } ?>
+                                                        <select class="form-control select2" name="scope[]" id="<?php echo $id?'editScope':'selectScope' ?>" multiple>
+                                                            <!-- <?php foreach($scopes as $scope) { ?>
+                                                                <option value="<?php echo $scope->id ?>" selected><?php echo $scope->statename.' ('.$scope->countryname.')'; ?></option>
+                                                            <?php } ?> -->
                                                         </select>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
-                                                    <label class="form-label"><?php echo lang('image'); ?><span class="text-red">*</span></label>
+                                                    <label class="form-label"><?php echo lang('image'); ?></label>
                                                     <input type="file" name="img_url" id="img" class="dropify" data-default-file="<?php if(!empty($companyuser->img_url)) echo $companyuser->img_url; ?>"/>
                                                 </div>
                                             </div>
@@ -204,9 +207,10 @@
                                                 echo $companyuser->id;
                                             }
                                             ?>'>
+                                            <input type="hidden" name="holder" id="holder" value="1">
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
-                                                    <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                    <button class="btn btn-primary pull-right" name="submit" id="submit" type="submit"><?php echo lang('submit'); ?></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -342,9 +346,42 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#submit").click(function () {
+                var name = $('#name').parsley();
+                var email = $('#email').parsley();
+                var phone = $('#phone').parsley();
+                var address = $('#address').parsley();
+                var country = $('#country').parsley();
+                var state = $('#state').parsley();
+                var city = $('#city').parsley();
+                var company = $('#company').parsley();
+                var scope_level = $('#selectScopeLevel').parsley();
+
+                if (name.isValid() && email.isValid() && phone.isValid() && address.isValid() && country.isValid() && state.isValid() && city.isValid() && company.isValid() && scope_level.isValid()) {
+                    return true;
+                } else {
+                    name.validate();
+                    email.validate();
+                    phone.validate();
+                    address.validate();
+                    country.validate();
+                    state.validate();
+                    city.validate();
+                    company.validate();
+                    scope_level.validate();
+                }
+            })
+        })
+    </script>
 
     <script type="text/javascript">
         // $(document).ready(function () {
@@ -374,12 +411,19 @@
     </script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
+        // $(document).ready(function () {
             $("#selectScopeLevel").change(function() {
                 var scope_level = $("#selectScopeLevel").val();
                 var country = $("#country").val();
+                var holder = parseInt($("#holder").val());
+
+                if (holder > 1) {
+                    $("#selectScope").find('option').remove();
+                    $("#editScope").find('option').remove();
+                }
 
                 if (scope_level == "country") {
+                    $("#holder").val(holder+1);
                     $("#selectScope").select2({
                         placeholder: 'Search Country',
                         multiple: true,
@@ -403,7 +447,31 @@
                         }
 
                     });
+                    $("#editScope").select2({
+                        placeholder: 'Search Country',
+                        multiple: true,
+                        allowClear: true,
+                        ajax: {
+                            url: 'companyuser/getCountryInfo',
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
                 } if (scope_level == "state") {
+                    $("#holder").val(holder+1);
                     $("#selectScope").select2({
                         placeholder: 'Search State',
                         multiple: true,
@@ -427,7 +495,31 @@
                         }
 
                     });
+                    $("#editScope").select2({
+                        placeholder: 'Search State',
+                        multiple: true,
+                        allowClear: true,
+                        ajax: {
+                            url: 'companyuser/getStateInfo?country=' + country,
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
                 } if (scope_level == "city") {
+                    $("#holder").val(holder+1);
                     $("#selectScope").select2({
                         placeholder: 'Search City',
                         multiple: true,
@@ -451,8 +543,55 @@
                         }
 
                     });
+                    $("#editScope").select2({
+                        placeholder: 'Search City',
+                        multiple: true,
+                        allowClear: true,
+                        ajax: {
+                            url: 'companyuser/getCityInfo?country=' + country,
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
                 } if (scope_level == "barangay") {
+                    $("#holder").val(holder+1);
                     $("#selectScope").select2({
+                        placeholder: 'Search City',
+                        multiple: true,
+                        allowClear: true,
+                        ajax: {
+                            url: 'companyuser/getBarangayInfo?country=' + country,
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
+                    $("#editScope").select2({
                         placeholder: 'Search City',
                         multiple: true,
                         allowClear: true,
@@ -478,7 +617,7 @@
                 }
 
             });
-        });
+        // });
     </script>
 
     <script type="text/javascript">
@@ -498,6 +637,32 @@
                     var company_barangay = response.companyuser.barangay_id;
 
                     $("#companyuserForm").find('[name="scope_level"]').val(response.companyuser.scope_level).change();
+                    console.log("State: "+company_state);
+
+                    $.each(response.scopes, function (key, value) {
+                        $('#editScope').append($('<option selected>').text(value.primary_location_name+' ('+value.secondary_location_name+')').val(value.primary_location_id)).change();
+                    })
+
+                    // $.each(response.scopes, function (key, value) {
+                    //     $('#editScope').append($('<option selected>').text(value.statename).val(value.id)).change();
+                    //     console.log(value.statename);
+                    // });
+                    // console.log(response.state);
+                    $.each(response.scopeState, function (key, value) {
+                        $('#editScope').append($('<option>').text(value.text).val(value.id)).end();
+                        // var scope_state = value.id;
+                        // console.log(scope_state);
+                        // $.each(response.scopes, function (key, value) {
+                        //     // console.log(scope_state);
+                        //     if (scope_state == value.stateid) {
+                        //         // $("#companyuserForm").find('[name="scope"]').val(value.stateid).change();
+                        //         $('#editScope').append($('<option selected>').text(value.statename+' ('+value.countryname+')').val(value.stateid)).change();
+                        //         // $('#editScope').attr('selected', true).val(value.stateid).end();
+                        //         // $("#companyuserForm").find('[name="scope"]').val(value.stateid).change();
+                        //     }
+                        // })
+                        
+                    });
 
                     console.log(company_country);
 
@@ -553,7 +718,7 @@
                                     }
 
                                     $.ajax({
-                                        url: 'company/getBarangayByCityIdByJason?city=' + company_city,
+                                        url: 'companyuser/getBarangayByCityIdByJason?city=' + company_city,
                                         method: 'GET',
                                         data: '',
                                         dataType: 'json',
