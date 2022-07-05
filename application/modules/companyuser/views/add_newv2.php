@@ -207,6 +207,9 @@
                                                 echo $companyuser->id;
                                             }
                                             ?>'>
+                                            <?php if(!empty($redirect)) { ?>
+                                                <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
+                                            <?php } ?>
                                             <input type="hidden" name="holder" id="holder" value="1">
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">

@@ -51,6 +51,8 @@ class Companyuser extends MX_Controller {
         $scope_level = $this->input->post('scope_level');
         $scope_array = $this->input->post('scope');
 
+        $redirect = $this->input->post('redirect');
+
         $scope = implode(",", $scope_array);
 
         $emailById = $this->companyuser_model->getCompanyUserById($id)->email;
@@ -90,19 +92,31 @@ class Companyuser extends MX_Controller {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 // $id = $this->input->get('id');
-                $data['companyusers'] = $this->companyuser_model->getCompanyUser();
-                $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
-                $this->load->view('home/dashboardv2'); // just the header file
-                $this->load->view('add_newv2', $data);
-                // $this->load->view('home/footer'); // just the footer file
+                if (!$this->ion_auth->in_group(('CompanyUser'))) {
+                    $data['companies'] = $this->company_model->getCompany();
+                    $data['countries'] = $this->location_model->getCountry();
+                    $data['companyusers'] = $this->companyuser_model->getCompanyUser();
+                    $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
+                } else {
+                    redirect($redirect);
+                }
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
-                $data['companyusers'] = $this->companyuser_model->getCompanyUser();
-                $data['setval'] = 'setval';
-                $this->load->view('home/dashboardv2'); // just the header file
-                $this->load->view('add_newv2', $data);
-                // $this->load->view('home/footer'); // just the header file
+                if (!$this->ion_auth->in_group(('CompanyUser'))) {
+                    $data['companies'] = $this->company_model->getCompany();
+                    $data['countries'] = $this->location_model->getCountry();
+                    $data['companyusers'] = $this->companyuser_model->getCompanyUser();
+                    $data['setval'] = 'setval';
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the header file
+                } else {
+                    redirect($redirect);
+                }
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -122,7 +136,7 @@ class Companyuser extends MX_Controller {
                 'upload_path' => "./uploads/",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "20480000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "1768",
                 'max_width' => "2024"
             );
@@ -191,11 +205,15 @@ class Companyuser extends MX_Controller {
                     $this->companyuser_model->updateCompanyUser($companyuser_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
                     $this->session->set_flashdata('success', lang('record_added'));
-                    redirect('companyuser');
+                    if (empty($redirect)) {
+                        redirect('companyuser');
+                    } else {
+                        redirect($redirect);
+                    }
                 }
             } else { // Updating Company User
                 $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
-                $this->session->set_flashdata('fileError', $fileError);
+                // $this->session->set_flashdata('fileError', $fileError);
                 if ($email !== $emailById) {
                     if ($this->ion_auth->email_check($email)) {
                         $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
@@ -215,7 +233,11 @@ class Companyuser extends MX_Controller {
                         $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->companyuser_model->updateCompanyUser($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('companyuser');
+                        if (empty($redirect)) {
+                            redirect('companyuser');
+                        } else {
+                            redirect($redirect);
+                        }
                     }
                 } else {
                     $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
@@ -227,7 +249,11 @@ class Companyuser extends MX_Controller {
                     $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
                     $this->companyuser_model->updateCompanyUser($id, $data);
                     $this->session->set_flashdata('success', lang('record_updated'));
-                    redirect('companyuser');
+                    if (empty($redirect)) {
+                        redirect('companyuser');
+                    } else {
+                        redirect($redirect);
+                    }
                 }
             }
             // Loading View
@@ -300,6 +326,7 @@ class Companyuser extends MX_Controller {
         $data['countries'] = $this->location_model->getCountry();
         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
         $data['card_header'] = lang('edit').' '.lang('profile');
+        $data['redirect'] = 'companyuser/editProfile';
         // $data['scopes'] = explode(',', $data['companyuser']->scope_id);
 
         if ($data['companyuser']->scope_level === "country") {
