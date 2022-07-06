@@ -11,6 +11,7 @@ class Companyuser extends MX_Controller {
         $this->load->model('companyuser/companyuser_model');
         $this->load->model('company/company_model');
         $this->load->model('location/location_model');
+        $this->load->helper('string');
  
         if (!$this->ion_auth->in_group(array('admin','CompanyUser'))) {
             redirect('home/permission');
@@ -37,8 +38,11 @@ class Companyuser extends MX_Controller {
     public function addNew() {
 
         $id = $this->input->post('id');
-        $name = $this->input->post('name');
-        $password = $this->input->post('password');
+        $fname = $this->input->post('fname');
+        $mname = $this->input->post('mname');
+        $lname = $this->input->post('lname');
+        $suffix = $this->input->post('suffix');
+        $password = random_string('alnum', 8);
         $email = $this->input->post('email');
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
@@ -57,19 +61,27 @@ class Companyuser extends MX_Controller {
 
         $emailById = $this->companyuser_model->getCompanyUserById($id)->email;
 
+        if ($suffix === '0') {
+            $suffix = null;
+        }
+
+        $name = $fname.' '.$mname.' '.$lname.' '.$suffix;
+
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         // Validating Name Field
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('fname', 'First Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Name Field
+        $this->form_validation->set_rules('lname', 'Last Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Password Field
+
         if (empty($id)) {
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-        }
-        if ($email !== $emailById) {
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[companyuser.email]|max_length[100]|xss_clean');
-        } else {
-            $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|max_length[100]|xss_clean');
+            if ($email !== $emailById) {
+                $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[companyuser.email]|max_length[100]|xss_clean');
+            } else {
+                $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|max_length[100]|xss_clean');
+            }
         }
 
         $this->form_validation->set_message('is_unique',lang('this_email_address_is_already_registered'));
@@ -136,7 +148,7 @@ class Companyuser extends MX_Controller {
                 'upload_path' => "./uploads/",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_size' => "2048", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "1768",
                 'max_width' => "2024"
             );
@@ -148,45 +160,95 @@ class Companyuser extends MX_Controller {
                 $path = $this->upload->data();
                 $img_url = "uploads/" . $path['file_name'];
                 $data = array();
-                $data = array(
-                    'img_url' => $img_url,
-                    'name' => $name,
-                    'email' => $email,
-                    'address' => $address,
-                    'phone' => $phone,
-                    'company_id' => $company_id,
-                    'country_id' => $country,
-                    'state_id' => $state,
-                    'city_id' => $city,
-                    'barangay_id' => $barangay,
-                    'postal' => $postal,
-                    'scope_level' => $scope_level,
-                    'scope_id' => $scope,
-                );
+                if (!empty($id)) {
+                    $data = array(
+                        'img_url' => $img_url,
+                        'name' => $name,
+                        'firstname' => $fname,
+                        'middlename' => $mname,
+                        'lastname' => $lname,
+                        'suffix' => $suffix,
+                        'address' => $address,
+                        'phone' => $phone,
+                        'company_id' => $company_id,
+                        'country_id' => $country,
+                        'state_id' => $state,
+                        'city_id' => $city,
+                        'barangay_id' => $barangay,
+                        'postal' => $postal,
+                        'scope_level' => $scope_level,
+                        'scope_id' => $scope,
+                    );
+                } else {
+                    $data = array(
+                        'img_url' => $img_url,
+                        'name' => $name,
+                        'firstname' => $fname,
+                        'middlename' => $mname,
+                        'lastname' => $lname,
+                        'suffix' => $suffix,
+                        'email' => $email,
+                        'address' => $address,
+                        'phone' => $phone,
+                        'company_id' => $company_id,
+                        'country_id' => $country,
+                        'state_id' => $state,
+                        'city_id' => $city,
+                        'barangay_id' => $barangay,
+                        'postal' => $postal,
+                        'scope_level' => $scope_level,
+                        'scope_id' => $scope,
+                    );
+                }
             } else {
                 //$error = array('error' => $this->upload->display_errors());
                 $data = array();
-                $data = array(
-                    'name' => $name,
-                    'email' => $email,
-                    'address' => $address,
-                    'phone' => $phone,
-                    'company_id' => $company_id,
-                    'country_id' => $country,
-                    'state_id' => $state,
-                    'city_id' => $city,
-                    'barangay_id' => $barangay,
-                    'postal' => $postal,
-                    'scope_level' => $scope_level,
-                    'scope_id' => $scope,
-                );
+                if (!empty($id)) {
+                    $data = array(
+                        'name' => $name,
+                        'firstname' => $fname,
+                        'middlename' => $mname,
+                        'lastname' => $lname,
+                        'suffix' => $suffix,
+                        'address' => $address,
+                        'phone' => $phone,
+                        'company_id' => $company_id,
+                        'country_id' => $country,
+                        'state_id' => $state,
+                        'city_id' => $city,
+                        'barangay_id' => $barangay,
+                        'postal' => $postal,
+                        'scope_level' => $scope_level,
+                        'scope_id' => $scope,
+                    );
+                } else {
+                    $data = array(
+                        'name' => $name,
+                        'firstname' => $fname,
+                        'middlename' => $mname,
+                        'lastname' => $lname,
+                        'suffix' => $suffix,
+                        'email' => $email,
+                        'address' => $address,
+                        'phone' => $phone,
+                        'company_id' => $company_id,
+                        'country_id' => $country,
+                        'state_id' => $state,
+                        'city_id' => $city,
+                        'barangay_id' => $barangay,
+                        'postal' => $postal,
+                        'scope_level' => $scope_level,
+                        'scope_id' => $scope,
+                    );
+                }
+                
             }
 
-            $username = $this->input->post('name');
+            $username = $name;
 
             if (empty($id)) {     // Adding New Company User
-                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
-                $this->session->set_flashdata('fileError', $fileError);
+                // $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                // $this->session->set_flashdata('fileError', $fileError);
                 if ($this->ion_auth->email_check($email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                     $data = array();
@@ -196,23 +258,105 @@ class Companyuser extends MX_Controller {
                     $this->load->view('add_newv2', $data);
                     // $this->load->view('home/footer'); // just the footer file
                 } else {
-                    $dfg = 12;
-                    $this->ion_auth->register($username, $password, $email, $dfg);
-                    $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
-                    $this->companyuser_model->insertCompanyUser($data);
-                    $companyuser_user_id = $this->db->get_where('companyuser', array('email' => $email))->row()->id;
-                    $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->companyuser_model->updateCompanyUser($companyuser_user_id, $id_info);
-                    $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                    $this->session->set_flashdata('success', lang('record_added'));
-                    if (empty($redirect)) {
-                        redirect('companyuser');
+                    if ($this->upload->do_upload('img_url')) {
+                        $dfg = 12;
+                        $this->ion_auth->register($username, $password, $email, $dfg);
+                        $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
+                        $this->companyuser_model->insertCompanyUser($data);
+                        $companyuser_user_id = $this->db->get_where('companyuser', array('email' => $email))->row()->id;
+                        $id_info = array('ion_user_id' => $ion_user_id);
+                        $this->companyuser_model->updateCompanyUser($companyuser_user_id, $id_info);
+                        $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+                        $set['settings'] = $this->settings_model->getSettings();
+                        $data1 = array(
+                            'firstname' => $fname,
+                            'lastname' => $lname,
+                            'name' => $name,
+                            'email' => $email,
+                            'password' => $password,
+                            'company' => $set['settings']->system_vendor,
+                            'hospital_name' => $set['settings']->title,
+                            'hospital_contact' => $set['settings']->phone
+                        );
+
+                        $autoemail = $this->email_model->getAutoEmailByType('companyuser');
+                        if ($autoemail->status == 'Active') {
+                            $emailSettings = $this->email_model->getEmailSettings();
+                            $message1 = $autoemail->message;
+                            $messageprint1 = $this->parser->parse_string($message1, $data1);
+                            $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                            $this->email->to($email);
+                            $this->email->subject(lang('welcome_to').$set['settings']->title);
+                            $this->email->message($messageprint1);
+                            $this->email->send();
+                        }
+                        $this->session->set_flashdata('success', lang('record_added'));
+                        if (empty($redirect)) {
+                            redirect('companyuser');
+                        } else {
+                            redirect($redirect);
+                        }
                     } else {
-                        redirect($redirect);
+                        if ($_FILES['img_url']['size'] > $config['max_size']) {
+                            $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                            $this->session->set_flashdata('fileError', $fileError);
+                            $this->session->set_flashdata('error', lang('validation_error'));
+                            $data = array();
+                            // $id = $this->input->get('id');
+                            if (!$this->ion_auth->in_group(('CompanyUser'))) {
+                                $data['companies'] = $this->company_model->getCompany();
+                                $data['countries'] = $this->location_model->getCountry();
+                                $data['companyusers'] = $this->companyuser_model->getCompanyUser();
+                                $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+                                $this->load->view('home/dashboardv2'); // just the header file
+                                $this->load->view('add_newv2', $data);
+                                // $this->load->view('home/footer'); // just the footer file
+                            } else {
+                                redirect($redirect);
+                            }
+                        } else {
+                            $dfg = 12;
+                            $this->ion_auth->register($username, $password, $email, $dfg);
+                            $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
+                            $this->companyuser_model->insertCompanyUser($data);
+                            $companyuser_user_id = $this->db->get_where('companyuser', array('email' => $email))->row()->id;
+                            $id_info = array('ion_user_id' => $ion_user_id);
+                            $this->companyuser_model->updateCompanyUser($companyuser_user_id, $id_info);
+                            $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+                            $set['settings'] = $this->settings_model->getSettings();
+                            $data1 = array(
+                                'firstname' => $fname,
+                                'lastname' => $lname,
+                                'name' => $name,
+                                'email' => $email,
+                                'password' => $password,
+                                'company' => $set['settings']->system_vendor,
+                                'hospital_name' => $set['settings']->title,
+                                'hospital_contact' => $set['settings']->phone
+                            );
+
+                            $autoemail = $this->email_model->getAutoEmailByType('companyuser');
+                            if ($autoemail->status == 'Active') {
+                                $emailSettings = $this->email_model->getEmailSettings();
+                                $message1 = $autoemail->message;
+                                $messageprint1 = $this->parser->parse_string($message1, $data1);
+                                $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                                $this->email->to($email);
+                                $this->email->subject(lang('welcome_to').$set['settings']->title);
+                                $this->email->message($messageprint1);
+                                $this->email->send();
+                            }
+                            $this->session->set_flashdata('success', lang('record_added'));
+                            if (empty($redirect)) {
+                                redirect('companyuser');
+                            } else {
+                                redirect($redirect);
+                            }
+                        }
                     }
                 }
             } else { // Updating Company User
-                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                // $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
                 // $this->session->set_flashdata('fileError', $fileError);
                 if ($email !== $emailById) {
                     if ($this->ion_auth->email_check($email)) {
@@ -224,13 +368,66 @@ class Companyuser extends MX_Controller {
                         $this->load->view('add_newv2', $data);
                         // $this->load->view('home/footer'); // just the footer file
                     } else {
-                        $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
-                        if (empty($password)) {
-                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        if ($this->upload->do_upload('img_url')) {
+                            // $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
+                            // if (empty($password)) {
+                            //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                            // } else {
+                            //     $password = $this->ion_auth_model->hash_password($password);
+                            // }
+                            // $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
+                            $this->companyuser_model->updateCompanyUser($id, $data);
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                            if (empty($redirect)) {
+                                redirect('companyuser');
+                            } else {
+                                redirect($redirect);
+                            }
                         } else {
-                            $password = $this->ion_auth_model->hash_password($password);
+                            if ($_FILES['img_url']['size'] > $config['max_size']) {
+                                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                                $this->session->set_flashdata('fileError', $fileError);
+                                $this->session->set_flashdata('error', lang('validation_error'));
+                                $data = array();
+                                // $id = $this->input->get('id');
+                                if (!$this->ion_auth->in_group(('CompanyUser'))) {
+                                    $data['companies'] = $this->company_model->getCompany();
+                                    $data['countries'] = $this->location_model->getCountry();
+                                    $data['companyusers'] = $this->companyuser_model->getCompanyUser();
+                                    $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+                                    $this->load->view('home/dashboardv2'); // just the header file
+                                    $this->load->view('add_newv2', $data);
+                                    // $this->load->view('home/footer'); // just the footer file
+                                } else {
+                                    redirect($redirect);
+                                }
+                            } else {
+                                // $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
+                                // if (empty($password)) {
+                                //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                                // } else {
+                                //     $password = $this->ion_auth_model->hash_password($password);
+                                // }
+                                // $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
+                                $this->companyuser_model->updateCompanyUser($id, $data);
+                                $this->session->set_flashdata('success', lang('record_updated'));
+                                if (empty($redirect)) {
+                                    redirect('companyuser');
+                                } else {
+                                    redirect($redirect);
+                                }
+                            }
                         }
-                        $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
+                    }
+                } else {
+                    if ($this->upload->do_upload('img_url')) {
+                        // $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
+                        // if (empty($password)) {
+                        //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        // } else {
+                        //     $password = $this->ion_auth_model->hash_password($password);
+                        // }
+                        // $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->companyuser_model->updateCompanyUser($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
                         if (empty($redirect)) {
@@ -238,21 +435,40 @@ class Companyuser extends MX_Controller {
                         } else {
                             redirect($redirect);
                         }
-                    }
-                } else {
-                    $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
-                    if (empty($password)) {
-                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                     } else {
-                        $password = $this->ion_auth_model->hash_password($password);
-                    }
-                    $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
-                    $this->companyuser_model->updateCompanyUser($id, $data);
-                    $this->session->set_flashdata('success', lang('record_updated'));
-                    if (empty($redirect)) {
-                        redirect('companyuser');
-                    } else {
-                        redirect($redirect);
+                        if ($_FILES['img_url']['size'] > $config['max_size']) {
+                            $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                            $this->session->set_flashdata('fileError', $fileError);
+                            $this->session->set_flashdata('error', lang('validation_error'));
+                            $data = array();
+                            // $id = $this->input->get('id');
+                            if (!$this->ion_auth->in_group(('CompanyUser'))) {
+                                $data['companies'] = $this->company_model->getCompany();
+                                $data['countries'] = $this->location_model->getCountry();
+                                $data['companyusers'] = $this->companyuser_model->getCompanyUser();
+                                $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+                                $this->load->view('home/dashboardv2'); // just the header file
+                                $this->load->view('add_newv2', $data);
+                                // $this->load->view('home/footer'); // just the footer file
+                            } else {
+                                redirect($redirect);
+                            }
+                        } else {
+                            // $ion_user_id = $this->db->get_where('companyuser', array('id' => $id))->row()->ion_user_id;
+                            // if (empty($password)) {
+                            //     $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                            // } else {
+                            //     $password = $this->ion_auth_model->hash_password($password);
+                            // }
+                            // $this->companyuser_model->updateIonUser($username, $email, $password, $ion_user_id);
+                            $this->companyuser_model->updateCompanyUser($id, $data);
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                            if (empty($redirect)) {
+                                redirect('companyuser');
+                            } else {
+                                redirect($redirect);
+                            }
+                        }
                     }
                 }
             }

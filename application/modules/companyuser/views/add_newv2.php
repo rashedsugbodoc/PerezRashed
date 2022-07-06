@@ -39,15 +39,61 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('name'); ?> <span class="text-red">*</span></label>
-                                                        <input type="text" name="name" id="name" class="form-control" value="<?php
+                                                        <label><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" name="fname" id="fname" class="form-control" value="<?php
                                                         if (!empty($setval)) {
-                                                            echo set_value('name');
+                                                            echo set_value('fname');
                                                         }
-                                                        if (!empty($companyuser->name)) {
-                                                            echo $companyuser->name;
+                                                        if (!empty($companyuser->firstname)) {
+                                                            echo $companyuser->firstname;
                                                         }
                                                         ?>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label><?php echo lang('middle_name'); ?></label>
+                                                        <input type="text" name="mname" id="mname" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('mname');
+                                                        }
+                                                        if (!empty($companyuser->middlename)) {
+                                                            echo $companyuser->middlename;
+                                                        }
+                                                        ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" name="lname" id="lname" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('lname');
+                                                        }
+                                                        if (!empty($companyuser->lastname)) {
+                                                            echo $companyuser->lastname;
+                                                        }
+                                                        ?>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('suffix'); ?></label>
+                                                        <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                            <option value="0" ><?php echo lang('none'); ?></option>
+                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($companyuser->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
+                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($companyuser->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
+                                                            <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($companyuser->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
+                                                            <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($companyuser->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
+                                                            <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($companyuser->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
+                                                            <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($companyuser->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
+                                                            <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($companyuser->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
+                                                            <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($companyuser->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
+                                                            <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($companyuser->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
+                                                            <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($companyuser->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
+                                                            <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($companyuser->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
+                                                            <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($companyuser->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
@@ -60,17 +106,16 @@
                                                         if (!empty($companyuser->email)) {
                                                             echo $companyuser->email;
                                                         }
-                                                        ?>" required>
+                                                        ?>"
+                                                        <?php
+                                                        if (!empty($id)) {
+                                                            echo "disabled";
+                                                        }
+                                                        ?> required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label><?php echo lang('password'); ?></label>
-                                                        <input type="password" name="password" class="form-control">
-                                                    </div>
-                                                </div>
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
@@ -83,7 +128,7 @@
                                                                 echo $companyuser->phone;
                                                             }
                                                             ?>" type="tel" maxlength="20" required>
-                                                         </form>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
