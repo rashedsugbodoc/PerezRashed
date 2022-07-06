@@ -211,7 +211,15 @@ class Email_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('type', $type);
         $query = $this->db->get('autoemailtemplate');
-        return $query->row();
+        if ($query->num_rows() > 0) {
+            return $query->row();    
+        } else {
+            $this->db->where('hospital_id', NULL);
+            $this->db->where('type', $type);
+            $query = $this->db->get('autoemailtemplate');
+            return $query->row();  
+        }
+        
     }
 
 }
