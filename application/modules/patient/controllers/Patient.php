@@ -3097,7 +3097,7 @@ class Patient extends MX_Controller {
                     $patient->phone,
                     $doctorNames,
                     $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
-                    $active_status?$options1:'' . ' ' . $options6 . ' ' . $options4 . ' ' . $options5,
+                    $options1 . ' ' . $options6 . ' ' . $options4 . ' ' . $options5,
                         //  $options2
                 );
             }
