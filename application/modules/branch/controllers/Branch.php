@@ -155,6 +155,15 @@ class Branch extends MX_Controller {
         echo json_encode($data);
     }
 
+    public function getBarangayByCityIdByJason() {
+        $city = $this->input->get('city');
+        $id = $this->input->get('id');
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city);
+        $data['branch'] = $this->branch_model->getBranchById($id);
+
+        echo json_encode($data);
+    }
+
 
 }
 

@@ -377,63 +377,102 @@
                     }
 
                     $.ajax({
-                        url: 'branch/getStateByIdByJason?id=' + branch_state,
+                        url: 'branch/getStateByCountryIdByJason?country=' + branch_country,
                         method: 'GET',
                         data: '',
                         dataType: 'json',
                         success: function (response) {
+                            var state = response.state;
 
+                            // var branch_state_result = response.state.id;
+                            // console.log("State: "+branch_state_result);
 
-                            var branch_state_result = response.state.id;
-                            console.log(branch_state_result);
+                            // if (branch_state_result == null) {
+                            //     $("#city").attr("disabled", false);
+                            // } else {
+                            //     $("#city").attr("disabled", true);
+                            // }
 
-                            if (branch_state_result == null) {
-                                $("#city").attr("disabled", false);
-                            } else {
+                            // if (branch_state_result == null) {
+                            //     $('#branchForm').find('[name="state_id"]').val("0").change()
+                            // } else {
+                            //     $('#branchForm').find('[name="state_id"]').val(branch_state_result).change()
+                            // }
+
+                            $.each(state, function (key, value) {
+                                if (value.id == branch_state) {
+                                    $('#state').append($('<option selected>').text(value.name).val(value.id)).end();
+                                } else {
+                                    $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                                }
+                            });
+
+                            if (branch_state == null) {
                                 $("#city").attr("disabled", true);
-                            }
-
-                            if (branch_state_result == null) {
-                                $('#branchForm').find('[name="state_id"]').val("0").change()
                             } else {
-                                $('#branchForm').find('[name="state_id"]').val(branch_state_result).change()
+                                $("#city").attr("disabled", false);
                             }
 
                             $.ajax({
-                                url: 'branch/getCityByIdByJason?id=' + branch_city,
+                                url: 'branch/getCityByStateIdByJason?state=' + branch_state,
                                 method: 'GET',
                                 data: '',
                                 dataType: 'json',
                                 success: function (response) {
-                                    var branch_city_result = response.city.id;
-                                    console.log(branch_city_result);
+                                    // var branch_city_result = response.city.id;
+                                    // console.log(branch_city_result);
 
-                                    if (branch_city_result == null) {
-                                        $("#barangay").attr("disabled", false);
-                                    } else {
+                                    // if (branch_city_result == null) {
+                                    //     $("#barangay").attr("disabled", false);
+                                    // } else {
+                                    //     $("#barangay").attr("disabled", true);
+                                    // }
+
+                                    // if (branch_city_result == null) {
+                                    //     $('#branchForm').find('[name="city_id"]').val("0").change()
+                                    // } else {
+                                    //     $('#branchForm').find('[name="city_id"]').val(branch_city_result).change()
+                                    // }
+
+                                    var city = response.city;
+
+                                    $.each(city, function (key, value) {
+                                        if (value.id == branch_city) {
+                                            $('#city').append($('<option selected>').text(value.name).val(value.id)).end();
+                                        } else {
+                                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                                        }
+                                    });
+
+                                    if (branch_city == null) {
                                         $("#barangay").attr("disabled", true);
-                                    }
-
-                                    if (branch_city_result == null) {
-                                        $('#branchForm').find('[name="city_id"]').val("0").change()
                                     } else {
-                                        $('#branchForm').find('[name="city_id"]').val(branch_city_result).change()
+                                        $("#barangay").attr("disabled", false);
                                     }
 
                                     $.ajax({
-                                        url: 'branch/getBarangayByIdByJason?id=' + branch_barangay,
+                                        url: 'branch/getBarangayByCityIdByJason?city=' + branch_city,
                                         method: 'GET',
                                         data: '',
                                         dataType: 'json',
                                         success: function (response) {
-                                            var branch_barangay_result = response.barangay.id;
-                                            console.log(branch_barangay_result);
+                                            // var branch_barangay_result = response.barangay.id;
+                                            // console.log(branch_barangay_result);
 
-                                            if (branch_barangay_result == null) {
-                                                $('#branchForm').find('[name="barangay_id"]').val("0").change()
-                                            } else {
-                                                $('#branchForm').find('[name="barangay_id"]').val(branch_barangay_result).change()
-                                            }
+                                            // if (branch_barangay_result == null) {
+                                            //     $('#branchForm').find('[name="barangay_id"]').val("0").change()
+                                            // } else {
+                                            //     $('#branchForm').find('[name="barangay_id"]').val(branch_barangay_result).change()
+                                            // }
+                                            var barangay = response.barangay;
+
+                                            $.each(barangay, function (key, value) {
+                                                if (value.id == branch_barangay) {
+                                                    $('#barangay').append($('<option selected>').text(value.name).val(value.id)).end();
+                                                } else {
+                                                    $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                                                }
+                                            });
                                         }
                                     });
                                 }
