@@ -173,8 +173,8 @@
                                                                         echo 'selected';
                                                                     }
                                                                 }
-                                                                elseif (!empty($doctors->country_id)) {
-                                                                    if ($country->id == $doctors->country_id) {
+                                                                elseif (!empty($doctor->country_id)) {
+                                                                    if ($country->id == $doctor->country_id) {
                                                                         echo 'selected';
                                                                     }
                                                                 }
@@ -557,39 +557,24 @@
             data: '',
             dataType: 'json',
             success: function (response) {
-                // $('#doctorForm').find('[name="country_id"]').val(response.doctor.country_id).change()
                 var doctor_country = response.doctor.country_id;
                 var doctor_id = $("#doctor_id").val();
                 var barangay = document.getElementById("barangayDiv");
+                console.log('Edit Doctor Country');
 
                 $("#state").find('option').remove();
+                $("#city").find('option').remove();
+                $("#barangay").find('option').remove();
                 
-                console.log('zxzxzxzx');
                 if (doctor_country == null) {
                     $("#state").attr("disabled", false);
                 } else {
                     $("#state").attr("disabled", true);
                 }
 
-                if (doctor_country == null) {
-                    $('#doctorForm').find('[name="country_id"]').val("0").change()
-                } else {
-                    $('#doctorForm').find('[name="country_id"]').val(response.doctor.country_id).change()
-                }
-
                 $.each(response.doctor_specialties, function(key, value) {
                     $('#specialtychoose').append($('<option selected>').text(value.display_name_ph).val(value.id)).end();
                 });
-
-                // if (doctor_country == country){
-                //     $("#state").val(doctor_state);
-                //     // $("#city").val(doctor_city);
-                //     // $("#barangay").val(doctor_barangay);
-                // } else {
-                //     $("#state").val("0");
-                //     $("#city").val("0");
-                //     $("#barangay").val("0");
-                // }
 
                 if (doctor_country == "174") {
                     barangay.style.display='block';
@@ -607,9 +592,7 @@
                         var doctor_state = response.doctor.state_id;
                         var doctor_country = response.doctor.country_id;
 
-                        $("#state").find('option').remove();
-                        $("#city").find('option').remove();
-                        $("#barangay").find('option').remove();
+                        console.log('Edit Doctor - Load State of Country');
 
                         $('#state').append($('<option value="0" disabled><?php echo lang("state_province_placeholder"); ?></option>')).end();
 
@@ -643,6 +626,8 @@
                                 var doctor_city = response.doctor.city_id;
                                 var doctor_state = response.doctor.state_id;
 
+                                console.log('Edit Doctor - Load City of State');
+
                                 $('#city').append($('<option value="0" disabled><?php echo lang("city_municipality_placeholder"); ?></option>')).end();
 
                                 $.each(city, function (key, value) {
@@ -675,6 +660,8 @@
                                         var doctor_barangay = response.doctor.barangay_id;
                                         var doctor_city = response.doctor.city_id;
 
+                                        console.log('Edit Doctor - Load Barangay of City');
+
                                         $('#barangay').append($('<option value="0" disabled><?php echo lang("barangay_placeholder"); ?></option>')).end();
 
                                         $.each(barangay, function (key, value) {
@@ -694,7 +681,6 @@
                                             $('#barangay').val(doctor_barangay);
                                             $('#barangay').attr("disabled", false);
                                         }
-
                                     }
                                 })
                             }
@@ -708,159 +694,11 @@
     </script>
 
     <script type="text/javascript">
-        $("#country").change(function () {
-            var country = $("#country").val();
-            var doctor_id = $("#doctor_id").val();
-            var doctor_country = "<?php echo $doctors->country_id; ?>";
-
-            $("#state").find('option').remove();
-            $("#city").find('option').remove();
-            $("#barangay").find('option').remove();
-
-            $('#state').attr("disabled", false);
-            $('#state').append($('<option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
-
-            $.ajax({
-                url: 'doctor/getStateByCountryIdByJason?country=' + country + '&doctor=' + doctor_id,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var state = response.state;
-                    var doctor_state = response.doctor.state_id;
-                    var doctor_country = response.doctor.country_id;
-
-                    // if (doctor_country == null) {
-                    //     $("#state").attr("disabled", false);
-                    // } else {
-                    //     $("#state").attr("disabled", true);
-                    // }
-
-                    
-                    $('#city').attr("disabled", true);
-                    $('#city').append($('<option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
-                    $('#barangay').attr("disabled", true);
-                    $('#barangay').append($('<option value="0" disabled selected><?php echo lang("barangay_placeholder"); ?></option>')).end();
-
-                    $.each(state, function (key, value) {
-                        $('#state').append($('<option>').text(value.name).val(value.id)).end();
-                    });
-
-                    if (doctor_state == null) {
-                        $("#state").val("0");
-                    } else {
-                        $("#state").val(doctor_state);
-                    }
-
-                    if (doctor_country == country){
-                        $("#state").val(doctor_state);
-                        // $("#city").val(doctor_city);
-                        // $("#barangay").val(doctor_barangay);
-                    } else {
-                        $("#state").val("0");
-                        $("#city").val("0");
-                        $("#barangay").val("0");
-                    }
-
-                }
-            });
-        });
-
-        $("#state").change(function () {
-            var state = $("#state").val();
-            var doctor_id = $("#doctor_id").val();
-
-            $.ajax({
-                url: 'doctor/getCityByStateIdByJason?state=' + state + '&doctor=' + doctor_id,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var city = response.city;
-                    var doctor_city = response.doctor.city_id;
-                    var doctor_state = response.doctor.state_id;
-
-                    $("#city").find('option').remove();
-                    $("#barangay").find('option').remove();
-
-                    $('#city').attr("disabled", false);
-                    $('#city').append($('<option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
-                    $('#barangay').attr("disabled", true);
-                    $('#barangay').append($('<option value="0" disabled selected><?php echo lang("barangay_placeholder"); ?></option>')).end();
-
-                    $.each(city, function (key, value) {
-                        $('#city').append($('<option>').text(value.name).val(value.id)).end();
-                    });
-
-                    if (doctor_city == null) {
-                        $("#city").val("0");
-                    } else {
-                        $("#city").val(doctor_city);
-                    }
-
-                    if (doctor_state == state){
-                        $("#city").val(doctor_city);
-                        // $("#barangay").val(doctor_barangay);
-                    } else {
-                        $("#city").val("0");
-                        $("#barangay").val("0");
-                    }
-
-                }
-            });
-        });
-
-        $("#city").change(function () {
-            var city = $("#city").val();
-            var doctor_id = $("#doctor_id").val();
-
-            $.ajax({
-                url: 'doctor/getBarangayByCityIdByJason?city=' + city + '&doctor=' +doctor_id,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var barangay = response.barangay;
-                    var doctor_barangay = response.doctor.barangay_id;
-                    var doctor_city = response.doctor.city_id;
-
-                    $("#barangay").find('option').remove();
-
-                    $('#barangay').attr("disabled", false);
-                    $('#barangay').append($('<option value="0" disabled selected><?php echo lang("barangay_placeholder"); ?></option>')).end();
-
-                    $.each(barangay, function (key, value) {
-                        $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
-                    });
-
-                    if (doctor_barangay == null) {
-                        $("#barangay").val("0");
-                    } else {
-                        $("#barangay").val(doctor_barangay);
-                    }
-
-                    if (doctor_city == city){
-                        $("#barangay").val(doctor_barangay);
-                        // $("#barangay").val(doctor_barangay);
-                    } else {
-                        $("#barangay").val("0");
-                    }
-                    console.log(response.barangay);
-                }
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
 
         $(document).ready(function () {
             $("#country").change(function () {
                 var country = $("#country").val();
                 var barangay = document.getElementById("barangayDiv");
-
-                $("#state").find('option').remove();
-                $("#city").find('option').remove();
-                $("#barangay").find('option').remove();
 
                 $("#state").attr("disabled", false);
 
@@ -876,7 +714,14 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
+
+                        $("#state").find('option').remove();
+                        $("#city").find('option').remove();
+                        $("#barangay").find('option').remove();
+
                         var state = response.state;
+
+                        console.log("With Ready - Change Country Load States");
 
                         $('#state').append($('<option disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
                         $("#city").attr("disabled", true).append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
@@ -904,7 +749,13 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
+
+                        $("#city").find('option').remove();
+                        $("#barangay").find('option').remove();
+
                         var city = response.city;
+
+                        console.log("With Ready - Change State Load Cities");
 
                         $('#city').append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
                         $.each(city, function (key, value) {
@@ -929,7 +780,11 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
+                        $("#barangay").find('option').remove();
+
                         var barangay = response.barangay;
+
+                        console.log("With Ready - Change City Load Barangays");
 
                         $('#barangay').append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
                         $.each(barangay, function (key, value) {
