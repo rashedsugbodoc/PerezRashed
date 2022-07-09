@@ -208,17 +208,21 @@ class Company_model extends CI_model {
         return $data;
     }
 
-    function getCompanyWithoutAddNewOption($searchTerm) {
+    function getCompanyWithoutAddNewOption($searchTerm, $provider_country) {
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')
                     ->from('company')
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    // ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    // ->or_where('hospital_id', null)
+                    ->where('is_invoice_visible', 1)
                     ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
                     ->get();
             $companies = $query->result_array();
         } else {
             $this->db->select('*');
             $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->or_where('hospital_id', null);
+            $this->db->where('is_invoice_visible', null);
             $this->db->limit(10);
             $fetched_records = $this->db->get('company');
             $companies = $fetched_records->result_array();

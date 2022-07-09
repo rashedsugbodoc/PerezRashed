@@ -446,9 +446,11 @@ class Company extends MX_Controller {
     public function getCompanyWithoutAddNewOption() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');
+        $hospital_id = $this->session->userdata('hospital_id');
+        $provider_country = $this->settings_model->getSettingsByHospitalId($hospital_id)->country_id;
 
 // Get users
-        $response = $this->company_model->getCompanyWithoutAddNewOption($searchTerm);
+        $response = $this->company_model->getCompanyWithoutAddNewOption($searchTerm, $provider_country);
 
         echo json_encode($response);
     }
