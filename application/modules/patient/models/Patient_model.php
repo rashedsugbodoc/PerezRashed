@@ -643,6 +643,38 @@ class Patient_model extends CI_model {
         return $data;
     }
 
+    function getIdType($provider_country) {
+        $this->db->where('applicable_country_id', $provider_country);
+        $this->db->or_where('applicable_country_id', null);
+        $query = $this->db->get('id_type');
+        return $query->result();
+    }
+
+    function getIdTypeInfo($searchTerm, $provider_country) {
+
+        if (!empty($searchTerm)) {
+            $this->db->select('*');
+            $this->db->where('applicable_country_id', $provider_country);
+            $this->db->or_where('applicable_country_id', null);
+            $this->db->where("display_name_ph like '%" . $searchTerm . "%' OR id like '%" . $searchTerm . "%'");
+            $fetched_records = $this->db->get('id_type');
+            $users = $fetched_records->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where('applicable_country_id', $provider_country);
+            $this->db->or_where('applicable_country_id', null);
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('id_type');
+            $users = $fetched_records->result_array();
+        }
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['display_name_ph']);
+        }
+        return $data;
+    }
+
     function getPatientInfoByVisitedProviderId($searchTerm) {
         $provider = $this->session->userdata('hospital_id');
         if (!empty($searchTerm)) {

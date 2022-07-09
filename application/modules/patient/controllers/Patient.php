@@ -706,6 +706,138 @@ class Patient extends MX_Controller {
         //$this->load->view('home/footer'); // just the footer file
     }
 
+    function addIdentification() {
+        $id = $this->input->post('id');
+        $profile_id = $this->input->post('family_profile_id');
+        $philhealth = $this->input->post('philhealth');
+        $nhts = $this->input->post('nhts');
+        $national_id = $this->input->post('national_id');
+        $driver_license_id = $this->input->post('driver_license_id');
+        $passport_id = $this->input->post('passport_id');
+        $social_security_id = $this->input->post('social_security_id');
+        $umid = $this->input->post('umid');
+        $other_id_name = $this->input->post('other_id_name');
+        $other_id_number = $this->input->post('other_id_number');
+        $id_type = $this->input->post('id_type');
+        $image_front = $this->input->post('image_front');
+        $image_back = $this->input->post('image_back');
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+        // Validating Name Field
+        $this->form_validation->set_rules('family_profile_id', 'Family Profile', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('philhealth', 'PhilHealth', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('nhts', 'NHTS', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('national_id', 'National ID', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('driver_license_id', 'Driver License', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('passport_id', 'Passport', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('social_security_id', 'Social Security', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('umid', 'UMID', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('other_id_name', 'Other ID Name', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('other_id_number', 'Other ID Number', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('id_type', 'ID Type', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('image_front', 'Image Front', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('image_back', 'Image Back', 'trim|min_length[1]|max_length[100]|xss_clean');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('error', lang('validation_error'));
+            $data = array();
+            $user = $this->ion_auth->get_user_id();
+            $id = $this->patient_model->getPatientByIonUserId($user)->id;
+            $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
+            $data['redirect'] = 'patient/editIdentification';
+            $data['fpi'] = random_string('alnum', 8);
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('identification', $data);        
+        } else {
+            $file_name = $_FILES['img_url']['name'];
+            $file_name_pieces = explode('_', $file_name);
+            $new_file_name = '';
+            $count = 1;
+            foreach ($file_name_pieces as $piece) {
+                if ($count !== 1) {
+                    $piece = ucfirst($piece);
+                }
+
+                $new_file_name .= $piece;
+                $count++;
+            }
+            $config = array(
+                'file_name' => $new_file_name,
+                'encrypt_name' => TRUE,
+                'upload_path' => "./uploads/profile/",
+                'allowed_types' => "jpg|png|jpeg",
+                'overwrite' => False,
+                'max_size' => "2000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_height' => "1768",
+                'max_width' => "2024"
+            );
+
+            $this->load->library('Upload', $config);
+            $this->upload->initialize($config);
+
+            $username = $name;
+
+            $path = $this->upload->data();
+            
+            if (!empty($path['file_name'])) {
+                $img_url = "uploads/profile/" . $path['file_name'];
+            } else {
+                $img_url = $this->patient_model->getPatientById($id)->img_url;
+            }
+
+            $data = array(
+                'family_profile_id' => $profile_id,
+                'national_healthcare_id' => $philhealth,
+                'nhts_id' => $nhts,
+                'national_id' => $national_id,
+                'drivers_license_id' => $driver_license_id,
+                'passport_id' => $passport_id,
+                'social_security_id' => $social_security_id,
+                'umid_id' => umid,
+                'id1_proof_type' => $id_type,
+                'id1_proof_front_url' => $image_front,
+                'id1_proof_back_url' => $image_back,
+            );
+            $this->session->set_flashdata('success', lang('record_added'));
+            $this->patient_model->updatePatient($id, $data);
+
+            redirect('patient/editIdentification');
+        }
+    }
+
+    function editIdentification() {
+        $data = array();
+        $user = $this->ion_auth->get_user_id();
+        $id = $this->patient_model->getPatientByIonUserId($user)->id;
+        $hospital_id = $this->session->userdata('hospital_id');
+        $provider_country = $this->settings_model->getSettingsByHospitalId($hospital_id)->country_id;
+        $data['id_types'] = $this->patient_model->getIdType($provider_country);
+        $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
+        $data['redirect'] = 'patient/editIdentification';
+        $data['fpi'] = random_string('alnum', 8);
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('identification', $data);        
+    }
+
+    function getIdTypeInfo() {
+        $searchTerm = $this->input->post('searchTerm');
+        $hospital_id = $this->session->userdata('hospital_id');
+        $provider_country = $this->settings_model->getSettingsByHospitalId($hospital_id)->country_id;
+
+        $response = $this->patient_model->getIdTypeInfo($searchTerm, $provider_country);
+
+        echo json_encode($response);
+    }
+
+    function editIdentificationByJason() {
+        $id = $this->input->get('id');
+        $data['patient'] = $this->patient_model->getPatientById($id);
+
+        echo json_encode($data);
+    }
+
     function editPatientByJason() {
         $id = $this->input->get('id');
         $data['patient'] = $this->patient_model->getPatientById($id);
