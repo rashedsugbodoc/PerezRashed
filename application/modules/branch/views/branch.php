@@ -40,7 +40,7 @@
                                                             </td>
                                                             <td><?php echo $branch->phone; ?></td>
                                                             <td><?php echo $branch->status; ?></td>
-                                                            <td><a href="branch/addNewView?id=<?php echo $branch->id; ?>" class="btn btn-info"><i class="fe fe-edit"></i> <?php echo lang('edit'); ?></a></td>
+                                                            <td><a href="branch/editBranch?id=<?php echo $branch->id; ?>" class="btn btn-info"><i class="fe fe-edit"></i> <?php echo lang('edit'); ?></a></td>
                                                         </tr>
                                                     <?php } ?>
                                                 </tbody>

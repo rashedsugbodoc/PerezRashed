@@ -22,10 +22,6 @@ class Branch extends MX_Controller {
     }
 
     public function addNewView() {
-        $data['id'] = $this->input->get('id');
-        if (!empty($data['id'])) {
-            $data['branch'] = $this->branch_model->getBranchById($data['id']);
-        }
         $data['countries'] = $this->location_model->getCountry();
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
@@ -108,6 +104,16 @@ class Branch extends MX_Controller {
         redirect('branch');
         }
     }    
+
+    public function editBranch() {
+        $data['id'] = $this->input->get('id');
+        if (!empty($data['id'])) {
+            $data['branch'] = $this->branch_model->getBranchById($data['id']);
+        }
+        $data['countries'] = $this->location_model->getCountry();
+        $this->load->view('home/dashboardv2');
+        $this->load->view('add_new', $data);
+    }
 
     public function editBranchByJason() {
         $id = $this->input->get('id');
