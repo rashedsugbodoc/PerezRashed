@@ -709,7 +709,7 @@
                 }
 
                 $.ajax({
-                    url: 'settings/getStateByCountryIdByJason?country=' + country,
+                    url: 'doctor/getStateByCountryIdByJason?country=' + country,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -744,7 +744,7 @@
                 $("#city").attr("disabled", false);
 
                 $.ajax({
-                    url: 'settings/getCityByStateIdByJason?state=' + stateval,
+                    url: 'doctor/getCityByStateIdByJason?state=' + stateval,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -775,7 +775,7 @@
                 $("#barangay").attr("disabled", false);
 
                 $.ajax({
-                    url: 'settings/getBarangayByCityIdByJason?city=' + cityval,
+                    url: 'doctor/getBarangayByCityIdByJason?city=' + cityval,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
