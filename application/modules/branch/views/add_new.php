@@ -247,6 +247,7 @@
                     var branch_state = response.branch.state_id;
                     var branch_city = response.branch.city_id;
                     var branch_barangay = response.branch.barangay_id;
+                    var barangay = document.getElementById("barangayDiv");
 
                     console.log('Edit Branch Country');
                     console.log(branch_country);
