@@ -9,6 +9,7 @@ class Pharmacist extends MX_Controller {
         parent::__construct();
         $this->load->model('location/location_model');
         $this->load->model('pharmacist_model');
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group('admin')) {
             redirect('home/permission');
         }
@@ -36,7 +37,7 @@ class Pharmacist extends MX_Controller {
         $mname = $this->input->post('mname');
         $lname = $this->input->post('lname');
         $suffix = $this->input->post('suffix');
-        $password = $this->input->post('password');
+        $password = random_string('alnum', 8);
         $email = $this->input->post('email');
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
@@ -175,6 +176,29 @@ class Pharmacist extends MX_Controller {
                     $id_info = array('ion_user_id' => $ion_user_id);
                     $this->pharmacist_model->updatePharmacist($pharmacist_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+                    $set['settings'] = $this->settings_model->getSettings();
+                    $data1 = array(
+                        'firstname' => $fname,
+                        'lastname' => $lname,
+                        'name' => $name,
+                        'email' => $email,
+                        'password' => $password,
+                        'company' => $set['settings']->system_vendor,
+                        'hospital_name' => $set['settings']->title,
+                        'hospital_contact' => $set['settings']->phone
+                    );
+
+                    $autoemail = $this->email_model->getAutoEmailByType('pharmacist');
+                    if ($autoemail->status == 'Active') {
+                        $emailSettings = $this->email_model->getEmailSettings();
+                        $message1 = $autoemail->message;
+                        $messageprint1 = $this->parser->parse_string($message1, $data1);
+                        $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                        $this->email->to($email);
+                        $this->email->subject(lang('welcome_to').$set['settings']->title);
+                        $this->email->message($messageprint1);
+                        $this->email->send();
+                    }
                     $this->session->set_flashdata('success', lang('record_added'));
                     redirect('pharmacist');
                 }
