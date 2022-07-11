@@ -43,9 +43,10 @@
                                                         <input type="text" name="fname" id="fname" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('fname');
-                                                        }
-                                                        if (!empty($companyuser->firstname)) {
+                                                        } elseif (!empty($companyuser->firstname)) {
                                                             echo $companyuser->firstname;
+                                                        } else {
+                                                            echo '';
                                                         }
                                                         ?>" required>
                                                     </div>
@@ -56,9 +57,10 @@
                                                         <input type="text" name="mname" id="mname" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('mname');
-                                                        }
-                                                        if (!empty($companyuser->middlename)) {
+                                                        } elseif (!empty($companyuser->middlename)) {
                                                             echo $companyuser->middlename;
+                                                        } else {
+                                                            echo '';
                                                         }
                                                         ?>">
                                                     </div>
@@ -69,9 +71,10 @@
                                                         <input type="text" name="lname" id="lname" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('lname');
-                                                        }
-                                                        if (!empty($companyuser->lastname)) {
+                                                        } elseif (!empty($companyuser->lastname)) {
                                                             echo $companyuser->lastname;
+                                                        } else {
+                                                            echo '';
                                                         }
                                                         ?>" required>
                                                     </div>
@@ -102,9 +105,10 @@
                                                         <input type="text" name="email" id="email" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('email');
-                                                        }
-                                                        if (!empty($companyuser->email)) {
+                                                        } elseif (!empty($companyuser->email)) {
                                                             echo $companyuser->email;
+                                                        } else {
+                                                            echo '';
                                                         }
                                                         ?>"
                                                         <?php
@@ -123,9 +127,10 @@
                                                             <input id="phone" class="form-control" name="phone" id="phone" value="<?php
                                                             if (!empty($setval)) {
                                                                 echo set_value('phone');
-                                                            }
-                                                            if (!empty($companyuser->phone)) {
+                                                            } elseif (!empty($companyuser->phone)) {
                                                                 echo $companyuser->phone;
+                                                            } else {
+                                                                echo '';
                                                             }
                                                             ?>" type="tel" maxlength="20" required>
                                                         </form>
@@ -139,9 +144,10 @@
                                                         <input type="text" name="address" id="address" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('address');
-                                                        }
-                                                        if (!empty($companyuser->address)) {
+                                                        } elseif (!empty($companyuser->address)) {
                                                             echo $companyuser->address;
+                                                        } else {
+                                                            echo '';
                                                         }
                                                         ?>" required>
                                                     </div>
@@ -371,9 +377,7 @@
         <script src="<?php echo base_url('public/assets/plugins/sumoselect/jquery.sumoselect.js'); ?>"></script>
 
         <!--intlTelInput js-->
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/intlTelInput.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/country-select.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/utils.js'); ?>"></script>
+        <script src="<?php echo base_url('common/assets/intl-tel-input/build/js/intlTelInput.js');?>"></script>
 
         <!--jquery transfer js-->
         <script src="<?php echo base_url('public/assets/plugins/jQuerytransfer/jquery.transfer.js'); ?>"></script>
@@ -389,47 +393,17 @@
         <!-- popover js -->
         <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
         <!-- Notifications js -->
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
-
-        <!-- parlsey js -->
-        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var name = $('#name').parsley();
-                var email = $('#email').parsley();
-                var phone = $('#phone').parsley();
-                var address = $('#address').parsley();
-                var country = $('#country').parsley();
-                var state = $('#state').parsley();
-                var city = $('#city').parsley();
-                var company = $('#company').parsley();
-                var scope_level = $('#selectScopeLevel').parsley();
-
-                if (name.isValid() && email.isValid() && phone.isValid() && address.isValid() && country.isValid() && state.isValid() && city.isValid() && company.isValid() && scope_level.isValid()) {
-                    return true;
-                } else {
-                    name.validate();
-                    email.validate();
-                    phone.validate();
-                    address.validate();
-                    country.validate();
-                    state.validate();
-                    city.validate();
-                    company.validate();
-                    scope_level.validate();
-                }
-            })
-        })
-    </script>
 
     <script type="text/javascript">
         // $(document).ready(function () {
@@ -960,6 +934,61 @@
             var warning = "<?php unset($_SESSION['warning']); ?>";
             var notice = "<?php unset($_SESSION['notice']); ?>";
 
+        });
+    </script>
+
+    <script>
+        $('#companyuserForm').parsley();
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var input = document.querySelector("#mobile");
+            var errorMsg = document.querySelector("#error-msg");
+            var validMsg = document.querySelector("#valid-msg");
+            var form = document.getElementById("companyuserForm");
+
+            // here, the index maps to the error code returned from getValidationError - see readme
+            var errorMap = ["Invalid mobile number", "Invalid country code", "Too short", "Too long", "Invalid mobile number", "Invalid length"];
+
+            // initialise plugin
+            var iti = window.intlTelInput(input, {
+                hiddenInput: "full_number",
+                preferredCountries: ['ph', 'sg', 'us'],
+                utilsScript: "<?php echo base_url('common/assets/intl-tel-input/build/js/utils.js?1638200991544');?>"
+            });
+
+            var reset = function() {
+              input.classList.remove("parsley-error");
+              input.classList.remove("is-valid");
+              errorMsg.innerHTML = "";
+              errorMsg.classList.add("hide");
+              validMsg.classList.add("hide");
+            };
+
+            var execute = function() {
+              reset();
+              document.getElementById("phone").value = iti.getNumber();
+              if (input.value.trim()) {
+                if (iti.isValidNumber()) {
+                  validMsg.classList.remove("hide");
+                  input.classList.add("is-valid");
+                } else {
+                  input.classList.add("parsley-error");
+                  input.classList.remove("is-valid");
+                  var errorCode = iti.getValidationError();
+                  errorMsg.innerHTML = errorMap[errorCode];
+                  errorMsg.classList.remove("hide");
+                }
+              }
+            };
+            // on blur: validate
+            input.addEventListener('blur', execute);
+            form.addEventListener('submit', execute);
+
+            // on keyup / change flag: reset
+            input.addEventListener('change', reset);
+            input.addEventListener('keyup', reset);
         });
     </script>
 
