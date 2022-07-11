@@ -18,7 +18,7 @@
                                             ?>
                                         </div>
                                     </div>
-                                    <form role="form" action="accountant/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form id="accountantForm" role="form" action="accountant/addNew" class="clearfix" method="post" enctype="multipart/form-data">
                                         <div class="card-body">
                                             <?php echo validation_errors(); ?>
                                             <?php
@@ -32,7 +32,7 @@
                                             ?>
                                             
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-12">
+                                                <!-- <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('name'); ?></label>
                                                         <input type="text" name="name" class="form-control" value="<?php
@@ -44,6 +44,68 @@
                                                         }
                                                         ?>">
                                                     </div>
+                                                </div> -->
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label><?php echo lang('first_name'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" name="fname" id="fname" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('fname');
+                                                        } elseif (!empty($accountant->firstname)) {
+                                                            echo $accountant->firstname;
+                                                        } else {
+                                                            echo '';
+                                                        }
+                                                        ?>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label><?php echo lang('middle_name'); ?></label>
+                                                        <input type="text" name="mname" id="mname" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('mname');
+                                                        } elseif (!empty($accountant->middlename)) {
+                                                            echo $accountant->middlename;
+                                                        } else {
+                                                            echo '';
+                                                        }
+                                                        ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label><?php echo lang('last_name'); ?> <span class="text-red">*</span></label>
+                                                        <input type="text" name="lname" id="lname" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('lname');
+                                                        } elseif (!empty($accountant->lastname)) {
+                                                            echo $accountant->lastname;
+                                                        } else {
+                                                            echo '';
+                                                        }
+                                                        ?>" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('suffix'); ?></label>
+                                                        <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
+                                                            <option value="0" ><?php echo lang('none'); ?></option>
+                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($accountant->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
+                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($accountant->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
+                                                            <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($accountant->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
+                                                            <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($accountant->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
+                                                            <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($accountant->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
+                                                            <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($accountant->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
+                                                            <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($accountant->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
+                                                            <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($accountant->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
+                                                            <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($accountant->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
+                                                            <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($accountant->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
+                                                            <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($accountant->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
+                                                            <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($accountant->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
+                                                        </select>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
@@ -51,34 +113,38 @@
                                                         <input type="text" name="email" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('email');
-                                                        }
-                                                        if (!empty($accountant->email)) {
+                                                        } elseif (!empty($accountant->email)) {
                                                             echo $accountant->email;
+                                                        } else {
+                                                            echo '';
                                                         }
                                                         ?>">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 col-sm-12">
+                                                <!-- <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('password'); ?></label>
                                                         <input type="password" name="password" class="form-control">
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
-                                                        <form>
-                                                            <input id="phone" name="phone" class="form-control" type="tel" maxlength="20" value="<?php
-                                                            if (!empty($setval)) {
-                                                                echo set_value('phone');
-                                                            }
-                                                            if (!empty($accountant->phone)) {
-                                                                echo $accountant->phone;
-                                                            }
+                                                        <input id="mobile" name="mobile" class="form-control" type="tel" required value= 
+                                                            "<?php
+                                                                if (!empty($setval)) {
+                                                                    echo set_value('phone');
+                                                                } elseif (!empty($accountant->phone)) {
+                                                                    echo $accountant->phone;
+                                                                } else {
+                                                                    echo '';
+                                                                }
                                                             ?>">
-                                                        </form>
+                                                        <input type="hidden" name="phone" id="phone">
+                                                        <span id="error-msg" class="hide"></span>
+                                                        <span id="valid-msg" class="hide"> Valid</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -89,9 +155,10 @@
                                                         <input type="text" name="address" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('address');
-                                                        }
-                                                        if (!empty($accountant->address)) {
+                                                        } elseif (!empty($accountant->address)) {
                                                             echo $accountant->address;
+                                                        } else {
+                                                            echo '';
                                                         }
                                                         ?>">
                                                     </div>
@@ -278,9 +345,7 @@
         <script src="<?php echo base_url('public/assets/plugins/sumoselect/jquery.sumoselect.js'); ?>"></script>
 
         <!--intlTelInput js-->
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/intlTelInput.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/country-select.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/utils.js'); ?>"></script>
+        <script src="<?php echo base_url('common/assets/intl-tel-input/build/js/intlTelInput.js');?>"></script>
 
         <!--jquery transfer js-->
         <script src="<?php echo base_url('public/assets/plugins/jQuerytransfer/jquery.transfer.js'); ?>"></script>
@@ -295,6 +360,9 @@
 
         <!-- popover js -->
         <script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
 
         <!-- Notifications js -->
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
@@ -562,6 +630,61 @@
             var warning = "<?php unset($_SESSION['warning']); ?>";
             var notice = "<?php unset($_SESSION['notice']); ?>";
 
+        });
+    </script>
+
+    <script>
+        $('#accountantForm').parsley();
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var input = document.querySelector("#mobile");
+            var errorMsg = document.querySelector("#error-msg");
+            var validMsg = document.querySelector("#valid-msg");
+            var form = document.getElementById("accountantForm");
+
+            // here, the index maps to the error code returned from getValidationError - see readme
+            var errorMap = ["Invalid mobile number", "Invalid country code", "Too short", "Too long", "Invalid mobile number", "Invalid length"];
+
+            // initialise plugin
+            var iti = window.intlTelInput(input, {
+                hiddenInput: "full_number",
+                preferredCountries: ['ph', 'sg', 'us'],
+                utilsScript: "<?php echo base_url('common/assets/intl-tel-input/build/js/utils.js?1638200991544');?>"
+            });
+
+            var reset = function() {
+              input.classList.remove("parsley-error");
+              input.classList.remove("is-valid");
+              errorMsg.innerHTML = "";
+              errorMsg.classList.add("hide");
+              validMsg.classList.add("hide");
+            };
+
+            var execute = function() {
+              reset();
+              document.getElementById("phone").value = iti.getNumber();
+              if (input.value.trim()) {
+                if (iti.isValidNumber()) {
+                  validMsg.classList.remove("hide");
+                  input.classList.add("is-valid");
+                } else {
+                  input.classList.add("parsley-error");
+                  input.classList.remove("is-valid");
+                  var errorCode = iti.getValidationError();
+                  errorMsg.innerHTML = errorMap[errorCode];
+                  errorMsg.classList.remove("hide");
+                }
+              }
+            };
+            // on blur: validate
+            input.addEventListener('blur', execute);
+            form.addEventListener('submit', execute);
+
+            // on keyup / change flag: reset
+            input.addEventListener('change', reset);
+            input.addEventListener('keyup', reset);
         });
     </script>
 
