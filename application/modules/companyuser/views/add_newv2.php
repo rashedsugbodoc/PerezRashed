@@ -684,8 +684,12 @@
                     var company_city = response.companyuser.city_id;
                     var company_barangay = response.companyuser.barangay_id;
 
+                    $("#state").find('option').remove();
+                    $("#city").find('option').remove();
+                    $("#barangay").find('option').remove();
+
                     $("#companyuserForm").find('[name="scope_level"]').val(response.companyuser.scope_level).change();
-                    console.log("State: "+company_state);
+                    console.log('Edit CompanyUser Country');
 
                     $.each(response.scopes, function (key, value) {
                         $('#editScope').append($('<option selected>').text(value.primary_location_name+' ('+value.secondary_location_name+')').val(value.primary_location_id)).change();
@@ -727,15 +731,18 @@
                         dataType: 'json',
                         success: function (response) {
                             var state = response.state;
-                            console.log(state);
+                            
+                            console.log('Edit CompanyUser - Load State of Country');
 
                             $.each(state, function (key, value) {
-                                if (value.id == company_state) {
-                                    $('#state').append($('<option selected>').text(value.name).val(value.id)).end();
-                                } else {
-                                    $('#state').append($('<option>').text(value.name).val(value.id)).end();
-                                }
+                                $('#state').append($('<option>').text(value.name).val(value.id)).end();
                             });
+
+                            if (company_state == null) {
+                                $('#state').val("0");
+                            } else {
+                                $('#state').val(company_state);
+                            }
 
                             if (company_state == null) {
                                 $("#city").attr("disabled", true);
@@ -751,13 +758,17 @@
                                 success: function (response) {
                                     var city = response.city;
 
+                                    console.log('Edit CompanyUser - Load Cities of State');
+
                                     $.each(city, function (key, value) {
-                                        if (value.id == company_city) {
-                                            $('#city').append($('<option selected>').text(value.name).val(value.id)).end();
-                                        } else {
-                                            $('#city').append($('<option>').text(value.name).val(value.id)).end();
-                                        }
+                                        $('#city').append($('<option>').text(value.name).val(value.id)).end();
                                     });
+
+                                    if (company_city == null) {
+                                        $('#city').val("0");
+                                    } else {
+                                        $('#city').val(company_city);
+                                    }
 
                                     if (company_city == null) {
                                         $("#barangay").attr("disabled", true);
@@ -773,13 +784,17 @@
                                         success: function (response) {
                                             var barangay = response.barangay;
 
+                                            console.log('Edit CompanyUser - Load Barangays of City');
+
                                             $.each(barangay, function (key, value) {
-                                                if (value.id == company_barangay) {
-                                                    $('#barangay').append($('<option selected>').text(value.name).val(value.id)).end();
-                                                } else {
-                                                    $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
-                                                }
+                                                $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
                                             });
+
+                                            if (company_barangay == null) {
+                                                $('#barangay').val("0");
+                                            } else {
+                                                $('#barangay').val(company_barangay);
+                                            }
                                         }
                                     });
                                 }
@@ -812,10 +827,6 @@
                 var country = $("#country").val();
                 var barangay = document.getElementById("barangayDiv");
 
-                $("#state").find('option').remove();
-                $("#city").find('option').remove();
-                $("#barangay").find('option').remove();
-
                 $("#state").attr("disabled", false);
 
                 if (country == "174") {
@@ -830,7 +841,13 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
+                        $("#state").find('option').remove();
+                        $("#city").find('option').remove();
+                        $("#barangay").find('option').remove();
+
                         var state = response.state;
+
+                        console.log("With Ready - Change Country Load States");
 
                         $('#state').append($('<option disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
                         $("#city").attr("disabled", true).append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
@@ -858,7 +875,13 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
+
+                        $("#city").find('option').remove();
+                        $("#barangay").find('option').remove();
+
                         var city = response.city;
+
+                        console.log("With Ready - Change State Load Cities");
 
                         $('#city').append($('<option disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
                         $.each(city, function (key, value) {
@@ -883,7 +906,11 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
+                        $("#barangay").find('option').remove();
+
                         var barangay = response.barangay;
+
+                        console.log("With Ready - Change City Load Barangays");
 
                         $('#barangay').append($('<option disabled selected><?php echo lang('barangay_placeholder'); ?></option>')).end();
                         $.each(barangay, function (key, value) {
