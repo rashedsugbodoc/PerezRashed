@@ -30,7 +30,10 @@ class Nurse extends MX_Controller {
 
     public function addNew() {
         $id = $this->input->post('id');
-        $name = $this->input->post('name');
+        $fname = $this->input->post('fname');
+        $mname = $this->input->post('mname');
+        $lname = $this->input->post('lname');
+        $suffix = $this->input->post('suffix');
         $password = $this->input->post('password');
         $email = $this->input->post('email');
         $address = $this->input->post('address');
@@ -43,15 +46,18 @@ class Nurse extends MX_Controller {
 
         $emailById = $this->nurse_model->getNurseById($id)->email;
 
+        if ($suffix === '0') {
+            $suffix = null;
+        }
+
+        $name = $fname.' '.$mname.' '.$lname.' '.$suffix;
+
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[5]|max_length[100]|xss_clean');
-        // Validating Password Field
-        if (empty($id)) {
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
-        }
-        // Validating Email Field
+        $this->form_validation->set_rules('fname', 'First Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Name Field
+        $this->form_validation->set_rules('lname', 'Last Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         if ($email !== $emailById) {
             $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[nurse.email]|max_length[100]|xss_clean');
@@ -122,6 +128,10 @@ class Nurse extends MX_Controller {
                 $data = array();
                 $data = array(
                     'img_url' => $img_url,
+                    'firstname' => $fname,
+                    'lastname' => $lname,
+                    'middlename' => $mname,
+                    'suffix' => $suffix,
                     'name' => $name,
                     'email' => $email,
                     'address' => $address,
@@ -136,6 +146,10 @@ class Nurse extends MX_Controller {
                 //$error = array('error' => $this->upload->display_errors());
                 $data = array();
                 $data = array(
+                    'firstname' => $fname,
+                    'lastname' => $lname,
+                    'middlename' => $mname,
+                    'suffix' => $suffix,
                     'name' => $name,
                     'email' => $email,
                     'address' => $address,
@@ -147,7 +161,7 @@ class Nurse extends MX_Controller {
                     'postal' => $postal
                 );
             }
-            $username = $this->input->post('name');
+            $username = $name;
             if (empty($id)) {     // Adding New Nurse
                 $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
                 $this->session->set_flashdata('fileError', $fileError);
