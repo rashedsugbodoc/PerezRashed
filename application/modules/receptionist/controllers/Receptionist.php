@@ -9,6 +9,7 @@ class Receptionist extends MX_Controller {
         parent::__construct();
         $this->load->model('location/location_model');
         $this->load->model('receptionist_model');
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group('admin')) {
             redirect('home/permission');
         }
@@ -37,7 +38,7 @@ class Receptionist extends MX_Controller {
         $mname = $this->input->post('mname');
         $lname = $this->input->post('lname');
         $suffix = $this->input->post('suffix');
-        $password = $this->input->post('password');
+        $password = random_string('alnum', 8);
         $email = $this->input->post('email');
         $address = $this->input->post('address');
         $phone = $this->input->post('phone');
@@ -63,9 +64,6 @@ class Receptionist extends MX_Controller {
         // Validating Name Field
         $this->form_validation->set_rules('lname', 'Last Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Password Field
-        if (empty($id)) {
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
-        }
        if ($email !== $emailById) {
             $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[receptionist.email]|max_length[100]|xss_clean');
         } else {
@@ -190,6 +188,29 @@ class Receptionist extends MX_Controller {
                     $id_info = array('ion_user_id' => $ion_user_id);
                     $this->receptionist_model->updateReceptionist($receptionist_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+                    $set['settings'] = $this->settings_model->getSettings();
+                    $data1 = array(
+                        'firstname' => $fname,
+                        'lastname' => $lname,
+                        'name' => $name,
+                        'email' => $email,
+                        'password' => $password,
+                        'company' => $set['settings']->system_vendor,
+                        'hospital_name' => $set['settings']->title,
+                        'hospital_contact' => $set['settings']->phone
+                    );
+
+                    $autoemail = $this->email_model->getAutoEmailByType('receptionist');
+                    if ($autoemail->status == 'Active') {
+                        $emailSettings = $this->email_model->getEmailSettings();
+                        $message1 = $autoemail->message;
+                        $messageprint1 = $this->parser->parse_string($message1, $data1);
+                        $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                        $this->email->to($email);
+                        $this->email->subject(lang('welcome_to').$set['settings']->title);
+                        $this->email->message($messageprint1);
+                        $this->email->send();
+                    }
                     $this->session->set_flashdata('success', lang('record_added'));
                     redirect('receptionist');
                 }
