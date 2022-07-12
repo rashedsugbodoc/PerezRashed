@@ -12,7 +12,7 @@
                                         <div class="card-header">
                                             <div class="card-title"><?php echo lang('laboratorist'); ?></div>
                                             <div class="card-options">
-                                                <a data-toggle="modal" href="#myModal">
+                                                <a href="laboratorist/addNewView">
                                                     <div class="btn-group pull-right">
                                                         <button id="" class="btn btn-primary btn-xs">
                                                             <i class="fa fa-plus"></i> <?php echo lang('add_laboratorist'); ?>
@@ -57,7 +57,8 @@
                                                                     <td class="center"><?php echo $laboratorist->address; ?></td>
                                                                     <td><?php echo $laboratorist->phone; ?></td>
                                                                     <td class="no-print">
-                                                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $laboratorist->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                                                        <!-- <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $laboratorist->id; ?>"><i class="fa fa-edit"></i> </button>    -->
+                                                                        <a href="laboratorist/editLaboratorist?id=<?php echo $laboratorist->id ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>
                                                                         <a class="btn btn-danger btn-xs" href="laboratorist/delete?id=<?php echo $laboratorist->id; ?>" title="<?php echo lang('delete'); ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                                     </td>
                                                                 </tr>
