@@ -114,7 +114,7 @@ class Accountant extends MX_Controller {
                 'upload_path' => "./uploads/",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "20480000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_size' => "2048", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "1768",
                 'max_width' => "2024"
             );
