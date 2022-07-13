@@ -445,7 +445,7 @@
                                     </div>
 
                                     <div class="row">
-                                        <div class="col-md-1 col-sm-1 page-headerz">
+                                        <div class="col-md-1 col-sm-1">
                                             
                                         </div>
                                         <div class="col-md-11 col-sm-11">
@@ -455,9 +455,6 @@
                                                     <td>
                                                       <!--place holder for the fixed-position header-->
                                                       <div class="page-header-space"></div>
-                                                      <?php if (!empty($doctor->phone)) { ?>
-                                                        <div class="page-header-space-phone"></div>
-                                                      <?php } ?>
                                                     </td>
                                                   </tr>
                                                 </thead>
@@ -474,23 +471,19 @@
                                                                 ?>
                                                                     <?php foreach($lab_request_number as $labrequest_number) { ?>
                                                                         <div class="region">
-                                                                            <div class="row">
-                                                                                <div class="col-md-1 col-sm-1 col-lg-1">
-                                                                                    
-                                                                                </div>
-                                                                                <div class="col-md-1 col-sm-1 col-lg-1 pr-0 prescription-opacity">
+                                                                            <div class="d-flex">
+                                                                                <div class="pr-3">
                                                                                     <h4><?php echo $i += 1; ?>.</h4>
                                                                                 </div>
-                                                                                <div class="col-md-10 col-sm-10 col-lg-10 pl-0 prescription-opacity">
-                                                                                    <h4><p class="mb-2"><strong>
-                                                                                    <?php
+                                                                                <div class="flex-grow-1 pr-2">
+                                                                                    <h4>
+                                                                                    <p class="mb-2"><strong><?php
                                                                                         if (!empty($labrequest_number->long_common_name)) {
                                                                                             echo $labrequest_number->long_common_name;
                                                                                         } else {
                                                                                             echo $labrequest_number->lab_request_text;
                                                                                         }
-                                                                                    ?>
-                                                                                    </strong></p>
+                                                                                    ?></strong></p>
                                                                                     <p class="mb-2"><?php echo $labrequest_number->instructions; ?></p>
                                                                                     <?php if (!empty($labrequest_number->loinc_num)) { ?>
                                                                                         <p class="mb-2"><span><?php echo lang('loinc_code'); ?>: </span><?php echo $labrequest_number->loinc_num; ?></p></h4>
@@ -856,6 +849,7 @@
                     margin: [10, 10, 0.5, 5],
                     filename: '<?php echo $patient->name; ?> LabRequest.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
+                    pagebreak: {avoid: '.region'},
                     html2canvas: { scale: 2, scrollY: 0 },
                     jsPDF: { unit: 'pt', format: 'a4', orientation: 'portrait' },
                     pdfCallback: pdfCallback
