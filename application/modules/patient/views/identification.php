@@ -27,7 +27,7 @@
                                                             } else {
                                                                 echo $fpi;
                                                             }
-                                                        ?>" disabled>
+                                                        ?>" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">

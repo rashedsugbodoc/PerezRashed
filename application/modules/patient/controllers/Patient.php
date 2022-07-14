@@ -809,8 +809,12 @@ class Patient extends MX_Controller {
 
     function editIdentification() {
         $data = array();
-        $user = $this->ion_auth->get_user_id();
-        $id = $this->patient_model->getPatientByIonUserId($user)->id;
+        $patient_number = $this->input->get('id');
+        $id = $this->patient_model->getPatientByPatientNumber($patient_number)->id;
+        if (empty($id)) {
+            $user = $this->ion_auth->get_user_id();
+            $id = $this->patient_model->getPatientByIonUserId($user)->id;
+        }
         $hospital_id = $this->session->userdata('hospital_id');
         $provider_country = $this->settings_model->getSettingsByHospitalId($hospital_id)->country_id;
         $data['id_types'] = $this->patient_model->getIdType($provider_country);
@@ -818,7 +822,121 @@ class Patient extends MX_Controller {
         $data['redirect'] = 'patient/editIdentification';
         $data['fpi'] = random_string('alnum', 8);
         $this->load->view('home/dashboardv2'); // just the header file
-        $this->load->view('identification', $data);        
+        $this->load->view('identification', $data);
+    }
+
+    function editPopulation() {
+        $data = array();
+        $patient_number = $this->input->get('id');
+        $id = $this->patient_model->getPatientByPatientNumber($patient_number)->id;
+        $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
+        $data['safe_water_supply'] = $this->patient_model->getSafeWaterSupply();
+        $data['unmet_need'] = $this->patient_model->getUnmetNeed();
+        $this->load->view('home/dashboardv2');
+        $this->load->view('population_profile', $data);
+    }
+
+    function addPopulationProfile() {
+        $family_profile = $this->input->post('family_profile');
+        $id = $this->patient_model->getPatientByFamilyProfileId($family_profile)->id;
+        $family_head_radio = $this->input->post('family_head_radio');
+        if ($family_head_radio === "0") {
+            $family_head_radio = null;
+        }
+        $family_head_relation = $this->input->post('family_head_relation');
+        $familyhead_id = $this->input->post('familyhead_id');
+        $education_attainment = $this->input->post('educational_attainment');
+        $monthly_family_income = $this->input->post('monthly_family_income');
+        $safe_water_supply = $this->input->post('safe_water_supply');
+        $sanitary_toilet = $this->input->post('sanitary_toilet');
+        $sexually_active = $this->input->post('sexually_active');
+        if ($sexually_active === "0") {
+            $sexually_active = null;
+        }
+        $unmet_need = $this->input->post('unmet_need');
+        $deceased = $this->input->post('deceased');
+        if ($deceased === "0") {
+            $deceased = null;
+        }
+        $date_of_death = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date_of_death')));
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+        $this->form_validation->set_rules('family_profile', 'Family Profile', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('family_head_radio', 'Family Head', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('educational_attainment', 'Educational Attainment', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('monthly_family_income', 'Monthly Family Income', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('safe_water_supply', 'Safe Water Supply', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('sanitary_toilet', 'Sanitary Toilet', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('sexually_active', 'Sexually Active', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('unmet_need', 'Unmet Need', 'trim|min_length[1]|max_length[100]|xss_clean');
+
+        $data = array(
+            'family_profile_id' => $family_profile,
+            'is_family_head' => $family_head_radio,
+            'relation_to_family_head' => $family_head_relation,
+            'family_head_patient_id' => $familyhead_id,
+            'educational_attainment_id' => $education_attainment,
+            'monthly_family_income_id' => $monthly_family_income,
+            'safe_water_supply_level_id' => $safe_water_supply,
+            'sanitary_toilet_id' => $sanitary_toilet,
+            'is_sexually_active' => $sexually_active,
+            'unmet_need_id' => $unmet_need,
+            'is_deceased' => $deceased,
+            'deceased_date' => $date_of_death,
+        );
+        $this->session->set_flashdata('success', lang('record_added'));
+        $this->patient_model->updatePatient($id, $data);
+
+        redirect('patient');
+
+    }
+
+    function searchFamilyHead() {
+        $data = array();
+        $profile_id = $this->input->get('id');
+        $fname = $this->input->get('f_name');
+        $mname = $this->input->get('m_name');
+        $lname = $this->input->get('l_name');
+
+        $data['family_head'] = $this->patient_model->getFamilyHeadByProfileIdByFirstNameByMiddleNameByLastName($profile_id, $fname, $mname, $lname);
+
+        echo json_encode($data);
+    }
+
+    public function getEducationalAttainmentInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->patient_model->getEducationalAttainmentInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getRelationInfo() {
+        $searchTerm = $this->input->post('searchTerm');
+
+        $response = $this->patient_model->getRelationInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getSanitaryToiletInfo() {
+        $searchTerm = $this->input->post('searchTerm');
+
+        $response = $this->patient_model->getSanitaryToiletInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getMonthlyFamilyIncomeInfo() {
+        $searchTerm = $this->input->post('searchTerm');
+
+        $response = $this->patient_model->getMonthlyFamilyIncomeInfo($searchTerm);
+
+        echo json_encode($response);
     }
 
     function getIdTypeInfo() {
@@ -3219,6 +3337,14 @@ class Patient extends MX_Controller {
                 $options7 = '';
             }
 
+            if ($this->ion_auth->in_group(array('Doctor','CompanyUser','admin'))) {
+                $options8 = '<a class="btn btn-info" href="patient/editIdentification?id='.$patient->patient_id.'">' . lang('edit') . ' ' . lang('identification') . '</a>';
+                $options9 = '<a class="btn btn-info" href="patient/editPopulation?id='.$patient->patient_id.'">'. lang('edit') . ' ' . lang('population') . ' ' . lang('census') .'</a>';
+            } else {
+                $options8 = '';
+                $options9 = '';
+            }
+
             $doctorNames = $this->getDoctorList($patient->doctor);
 
 
@@ -3229,7 +3355,7 @@ class Patient extends MX_Controller {
                     $patient->phone,
                     $doctorNames,
                     $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
-                    $options1 . ' ' . $options6 . ' ' . $options4 . ' ' . $options5,
+                    $options1 . ' ' . $options6 . ' ' . $options4 . ' ' . $options5 . ' ' . $options8 . ' ' . $options9,
                         //  $options2
                 );
             }
@@ -3252,8 +3378,18 @@ class Patient extends MX_Controller {
                     $patient->name,
                     $patient->phone,
                     $doctorNames,
-                    $options1  . ' ' . $options6 . ' ' . $options3,
+                    $options1  . ' ' . $options6 . ' ' . $options3 . ' ' . $options8 . ' ' . $options9,
                         //  $options2
+                );
+            }
+
+            if ($this->ion_auth->in_group(array('CompanyUser'))) {
+                $info[] = array(
+                    $patient->patient_id,
+                    $patient->name,
+                    $patient->phone,
+                    $doctorNames,
+                    $options8 . ' ' . $options9,
                 );
             }
         }

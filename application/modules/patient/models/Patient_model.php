@@ -886,4 +886,117 @@ class Patient_model extends CI_model {
         $query = $this->db->get('privacy_level');
         return $query->row();
     }
+
+    function getEducationalAttainmentInfo($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('educational_attainment')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $educational_attainment = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('educational_attainment');
+            $educational_attainment = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($educational_attainment as $educational) {
+            $data[] = array("id" => $educational['id'], "text" => $educational['display_name'] );
+        }
+        return $data;
+    }
+
+    function getFamilyHeadByProfileIdByFirstNameByMiddleNameByLastName($profile, $fname, $mname, $lname) {
+        $this->db->where('family_profile_id', $profile);
+        $this->db->where('firstname', $fname);
+        $this->db->where('middlename', $mname);
+        $this->db->where('lastname', $lname);
+        $query = $this->db->get('patient');
+        return $query->row();
+    }
+
+    function getRelationInfo($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('pophealth_relation_to_family_head')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $relations = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('pophealth_relation_to_family_head');
+            $relations = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($relations as $relation) {
+            $data[] = array("id" => $relation['id'], "text" => $relation['display_name'] );
+        }
+        return $data;
+    }
+
+    function getSanitaryToiletInfo($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('pophealth_sanitary_toilet')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $sanitary_toilets = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('pophealth_sanitary_toilet');
+            $sanitary_toilets = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($sanitary_toilets as $sanitary_toilet) {
+            $data[] = array("id" => $sanitary_toilet['id'], "text" => $sanitary_toilet['display_name'] );
+        }
+        return $data;
+    }
+
+    function getMonthlyFamilyIncomeInfo() {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('pophealth_monthly_family_income')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $monthly_family_income = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('pophealth_monthly_family_income');
+            $monthly_family_income = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($monthly_family_income as $mfi) {
+            $data[] = array("id" => $mfi['id'], "text" => $mfi['display_name'] );
+        }
+        return $data;
+    }
+
+    function getSafeWaterSupply() {
+        $query = $this->db->get('pophealth_safe_water_supply_level');
+        return $query->result();
+    }
+
+    function getUnmetNeed() {
+        $query = $this->db->get('pophealth_unmet_need');
+        return $query->result();
+    }
+
+    function getPatientByFamilyProfileId($id){
+        $this->db->where('family_profile_id', $id);
+        $query = $this->db->get('patient');
+        return $query->row();
+    }
 }
