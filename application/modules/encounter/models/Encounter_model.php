@@ -222,21 +222,39 @@ class Encounter_model extends CI_model {
         return $query->num_rows();
     }
 
-    function getEncounterInfo($searchTerm) {
+    function getEncounterInfo($searchTerm, $doctor) {
         $settings = $this->settings_model->getSettings();
-        if (!empty($searchTerm)) {
-            $query = $this->db->select('*')
-                    ->from('encounter')
-                    ->where("(id LIKE '%" . $searchTerm . "%' OR encounter_number LIKE '%" . $searchTerm . "%')", NULL, FALSE)
-                    ->get();
-            $users = $query->result_array();
+        if (!empty($doctor)) {
+            if (!empty($searchTerm)) {
+                $query = $this->db->select('*')
+                        ->from('encounter')
+                        ->where('doctor', $doctor)
+                        ->where("(id LIKE '%" . $searchTerm . "%' OR encounter_number LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                        ->get();
+                $users = $query->result_array();
+            } else {
+                $this->db->select('*');
+                $this->db->where('doctor', $doctor);
+                $this->db->limit(100);
+                $fetched_records = $this->db->get('encounter');
+                $users = $fetched_records->result_array();
+            }
         } else {
-            $this->db->select('*');
-            $this->db->limit(100);
-            $fetched_records = $this->db->get('encounter');
-            $users = $fetched_records->result_array();
+            if (!empty($searchTerm)) {
+                $query = $this->db->select('*')
+                        ->from('encounter')
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $searchTerm . "%' OR encounter_number LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                        ->get();
+                $users = $query->result_array();
+            } else {
+                $this->db->select('*');
+                $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+                $this->db->limit(100);
+                $fetched_records = $this->db->get('encounter');
+                $users = $fetched_records->result_array();
+            }
         }
-
         // Initialize Array with fetched data
         $data = array();
         foreach ($users as $user) {

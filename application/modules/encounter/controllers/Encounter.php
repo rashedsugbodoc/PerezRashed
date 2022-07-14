@@ -477,9 +477,14 @@ class Encounter extends MX_Controller {
     function getEncounterInfo() {
         // Search term
         $searchTerm = $this->input->post('searchTerm');
+        $user = $this->session->userdata('user_id');
+
+        if ($this->ion_auth->in_group('Doctor')) {
+            $doctor = $this->doctor_model->getDoctorByIonUserId($user)->id;
+        }
 
 // Get users
-        $response = $this->encounter_model->getEncounterInfo($searchTerm);
+        $response = $this->encounter_model->getEncounterInfo($searchTerm, $doctor);
 
         echo json_encode($response);
     }
