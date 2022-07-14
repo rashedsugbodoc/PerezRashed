@@ -538,7 +538,7 @@
                 placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'doctor/getDoctorWithAddNewOption',
+                    url: 'doctor/getDoctorinfo',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
