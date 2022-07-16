@@ -909,6 +909,13 @@ class Patient_model extends CI_model {
         return $data;
     }
 
+    function getEducationalAttainmentById($id) {
+        $this->db->select('*');
+        $this->db->where('id', $id);
+        $query = $this->db->get('educational_attainment');
+        return $query->row();
+    }
+
     function getFamilyHeadByProfileIdByFirstNameByMiddleNameByLastName($profile, $fname, $mname, $lname) {
         $this->db->where('family_profile_id', $profile);
         $this->db->where('firstname', $fname);
@@ -940,6 +947,13 @@ class Patient_model extends CI_model {
         return $data;
     }
 
+    function getPatientRelationToHeadById($id) {
+        $this->db->select('*');
+        $this->db->where('id', $id);
+        $query = $this->db->get('pophealth_relation_to_family_head');
+        return $query->row();
+    }
+
     function getSanitaryToiletInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')
@@ -960,6 +974,13 @@ class Patient_model extends CI_model {
             $data[] = array("id" => $sanitary_toilet['id'], "text" => $sanitary_toilet['display_name'] );
         }
         return $data;
+    }
+
+    function getSanitaryToiletById($id) {
+        $this->db->select('*');
+        $this->db->where('id', $id);
+        $query = $this->db->get('pophealth_sanitary_toilet');
+        return $query->row();
     }
 
     function getMonthlyFamilyIncomeInfo() {
@@ -984,14 +1005,35 @@ class Patient_model extends CI_model {
         return $data;
     }
 
+    function getMonthlyFamilyIncomeById($id) {
+        $this->db->select('*');
+        $this->db->where('id', $id);
+        $query = $this->db->get('pophealth_monthly_family_income');
+        return $query->row();
+    }
+
     function getSafeWaterSupply() {
         $query = $this->db->get('pophealth_safe_water_supply_level');
         return $query->result();
     }
 
+    function getSafeWaterSupplyById($id) {
+        $this->db->select('*');
+        $this->db->where('id', $id);
+        $query = $this->db->get('pophealth_safe_water_supply_level');
+        return $query->row();
+    }
+
     function getUnmetNeed() {
         $query = $this->db->get('pophealth_unmet_need');
         return $query->result();
+    }
+
+    function getUnmetNeedById($id) {
+        $this->db->select('*');
+        $this->db->where('id', $id);
+        $query = $this->db->get('pophealth_unmet_need');
+        return $query->row();
     }
 
     function getPatientByFamilyProfileId($id){

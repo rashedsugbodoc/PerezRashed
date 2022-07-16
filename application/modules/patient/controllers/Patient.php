@@ -840,9 +840,9 @@ class Patient extends MX_Controller {
         $family_profile = $this->input->post('family_profile');
         $id = $this->patient_model->getPatientByFamilyProfileId($family_profile)->id;
         $family_head_radio = $this->input->post('family_head_radio');
-        if ($family_head_radio === "0") {
-            $family_head_radio = null;
-        }
+        // if ($family_head_radio === "0") {
+        //     $family_head_radio = null;
+        // }
         $family_head_relation = $this->input->post('family_head_relation');
         $familyhead_id = $this->input->post('familyhead_id');
         $education_attainment = $this->input->post('educational_attainment');
@@ -850,14 +850,14 @@ class Patient extends MX_Controller {
         $safe_water_supply = $this->input->post('safe_water_supply');
         $sanitary_toilet = $this->input->post('sanitary_toilet');
         $sexually_active = $this->input->post('sexually_active');
-        if ($sexually_active === "0") {
-            $sexually_active = null;
-        }
+        // if ($sexually_active === "0") {
+        //     $sexually_active = null;
+        // }
         $unmet_need = $this->input->post('unmet_need');
         $deceased = $this->input->post('deceased');
-        if ($deceased === "0") {
-            $deceased = null;
-        }
+        // if ($deceased === "0") {
+        //     $deceased = null;
+        // }
         $date_of_death = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date_of_death')));
 
         $this->load->library('form_validation');
@@ -1010,6 +1010,13 @@ class Patient extends MX_Controller {
         }
 
 
+
+        echo json_encode($data);
+    }
+
+    function getPatientPopulationByJason() {
+        $profile = $this->input->get('profile');
+        $data['patient_profile'] = $this->patient_model->getPatientByFamilyProfileId($profile);
 
         echo json_encode($data);
     }

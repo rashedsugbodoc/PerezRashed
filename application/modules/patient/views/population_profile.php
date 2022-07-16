@@ -41,13 +41,24 @@
                                                         <div class="row">
                                                             <div class="col-md-3 col-sm-12">
                                                                 <label class="custom-control custom-radio">
-                                                                    <input type="radio" class="custom-control-input" name="family_head_radio" value="1">
+                                                                    <input type="radio" class="custom-control-input" name="family_head_radio" value="1" <?php
+                                                                    if ($patient->is_family_head == 1){
+                                                                        echo "checked";
+                                                                    }
+                                                                    ?>>
                                                                     <span class="custom-control-label">Yes</span>
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-3 col-sm-12">
                                                                 <label class="custom-control custom-radio">
-                                                                    <input type="radio" class="custom-control-input" name="family_head_radio" value="0">
+                                                                    <input type="radio" class="custom-control-input" name="family_head_radio" value="0" <?php
+                                                                    $is_family_head = $patient->is_family_head;
+                                                                    if ($patient->is_family_head == null){
+                                                                        echo "";
+                                                                    } elseif ($patient->is_family_head == 0) {
+                                                                        echo "checked";
+                                                                    }
+                                                                    ?>>
                                                                     <span class="custom-control-label">No</span>
                                                                 </label>
                                                             </div>
@@ -63,14 +74,26 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row" id="input_family_head" hidden>
+                                            <div class="row" id="input_family_head" <?php
+                                                if (empty($patient->family_head_patient_id)) {
+                                                    echo "hidden";
+                                                }
+                                            ?>>
                                                 <div class="col-md-6 col-sm-10">
                                                     <div class="form-group">
                                                         <label class="form-label">Family Head</label>
                                                         <div class="row">
                                                             <div class="col-md-9 col-sm-10">
-                                                                <input type="text" name="familyhead" id="familyhead" class="form-control">
-                                                                <input type="hidden" name="familyhead_id" id="familyhead_id">
+                                                                <input type="text" name="familyhead" id="familyhead" class="form-control" value="<?php
+                                                                if (!empty($patient->family_head_patient_id)) {
+                                                                    echo $this->patient_model->getPatientById($patient->family_head_patient_id)->name;
+                                                                }
+                                                                ?>" readonly>
+                                                                <input type="hidden" name="familyhead_id" id="familyhead_id" value="<?php
+                                                                if (!empty($patient->family_head_patient_id)) {
+                                                                    echo $patient->family_head_patient_id;
+                                                                }
+                                                                ?>">
                                                             </div>
                                                             <div class="col-md-3 col-sm-2">
                                                                 <a class="btn btn-primary" data-toggle="modal" data-target="#myModal1">Change</a>
@@ -82,6 +105,9 @@
                                                     <div class="form-group">
                                                         <label class="form-label">Relation to Family Head</label>
                                                         <select class="select2-show-search form-control" id="relation" name="family_head_relation">
+                                                            <?php if(!empty($patient->relation_to_family_head_id)) { ?>
+                                                                <option value="<?php echo $patient->relation_to_family_head_id; ?>" selected><?php echo $this->patient_model->getPatientRelationToHeadById($patient->relation_to_family_head_id)->display_name ?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -91,6 +117,9 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('monthly').' '.lang('family').' '.lang('income') ?></label>
                                                         <select class="select2-show-search form-control" id="monthly_family_income" name="monthly_family_income">
+                                                            <?php if(!empty($patient->monthly_family_income_id)) { ?>
+                                                                <option value="<?php echo $patient->monthly_family_income_id; ?>" selected><?php echo $this->patient_model->getMonthlyFamilyIncomeById($patient->monthly_family_income_id)->display_name; ?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -100,6 +129,9 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('educational').' '.lang('attainment') ?></label>
                                                         <select class="form-control" id="educational_attainment" name="educational_attainment">
+                                                            <?php if(!empty($patient->educational_attainment_id)) { ?>
+                                                                <option value="<?php echo $patient->educational_attainment_id; ?>" selected><?php echo $this->patient_model->getEducationalAttainmentById($patient->educational_attainment_id)->display_name; ?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -108,14 +140,42 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('safe').' '.lang('water').' '.lang('supply'); ?></label>
-                                                        <div class="row" id="search_safe_water_supply">
+                                                        <div class="row" id="search_safe_water_supply" <?php
+                                                            if (!empty($patient->safe_water_supply_level_id)) {
+                                                                echo "hidden";
+                                                            }
+                                                        ?>>
                                                             <div class="col-md-12 col-sm-12">
                                                                 <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal2"><?php echo lang('select'); ?></a>
                                                             </div>
                                                         </div>
-                                                        <div class="row" id="input_safe_water_supply" hidden>
+                                                        <div class="row" id="input_safe_water_supply" <?php
+                                                            if (empty($patient->safe_water_supply_level_id)) {
+                                                                echo "hidden";
+                                                            }
+                                                        ?>>
                                                             <div class="col-md-9 col-sm-10">
-                                                                <input type="text" name="safe_water_supply" id="safe_water_supply" class="form-control">
+                                                                <div class="input-group">
+                                                                    <input type="text" name="safe_water_supply_text" id="safe_water_supply_text" class="form-control" value="<?php
+                                                                        if (!empty($patient->safe_water_supply_level_id)) {
+                                                                            echo $this->patient_model->getSafeWaterSupplyById($patient->safe_water_supply_level_id)->display_name;
+                                                                        }
+                                                                    ?>">
+                                                                    <input type="hidden" name="safe_water_supply" id="safe_water_supply" class="form-control" value="<?php
+                                                                        if (!empty($patient->safe_water_supply_level_id)) {
+                                                                            echo $patient->safe_water_supply_level_id;
+                                                                        }
+                                                                    ?>">
+                                                                    <button class="btn btn-light" id="safe_water_description" data-container="body" data-content="<?php
+                                                                    if (!empty($patient->safe_water_supply_level_id)) {
+                                                                        echo $this->patient_model->getSafeWaterSupplyById($patient->safe_water_supply_level_id)->description;
+                                                                    }
+                                                                    ?>" data-placement="top" data-popover-color="primary" title="<?php
+                                                                    if (!empty($patient->safe_water_supply_level_id)) {
+                                                                        echo $this->patient_model->getSafeWaterSupplyById($patient->safe_water_supply_level_id)->display_name;
+                                                                    }
+                                                                    ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
+                                                                </div>
                                                             </div>
                                                             <div class="col-md-3 col-sm-2">
                                                                 <a class="btn btn-primary" data-toggle="modal" data-target="#myModal2">Change</a>
@@ -127,6 +187,9 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('sanitary').' '.lang('toilet'); ?></label>
                                                         <select class="form-control" id="sanitary_toilet" name="sanitary_toilet">
+                                                            <?php if(!empty($patient->sanitary_toilet_id)) { ?>
+                                                                <option value="<?php echo $patient->sanitary_toilet_id; ?>" selected><?php echo $this->patient_model->getSanitaryToiletById($patient->sanitary_toilet_id)->display_name; ?></option>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -138,13 +201,23 @@
                                                         <div class="row">
                                                             <div class="col-md-6 col-sm-12">
                                                                 <label class="custom-control custom-radio">
-                                                                    <input type="radio" class="custom-control-input" name="sexually_active" value="1">
+                                                                    <input type="radio" class="custom-control-input" name="sexually_active" value="1" <?php
+                                                                    if ($patient->is_sexually_active == 1){
+                                                                        echo "checked";
+                                                                    }
+                                                                    ?>>
                                                                     <span class="custom-control-label">Yes</span>
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-6 col-sm-12">
                                                                 <label class="custom-control custom-radio">
-                                                                    <input type="radio" class="custom-control-input" name="sexually_active" value="0">
+                                                                    <input type="radio" class="custom-control-input" name="sexually_active" value="0" <?php
+                                                                    if ($patient->is_sexually_active == null){
+                                                                        echo "";
+                                                                    } elseif ($patient->is_sexually_active == 0) {
+                                                                        echo "checked";
+                                                                    }
+                                                                    ?>>
                                                                     <span class="custom-control-label">No</span>
                                                                 </label>
                                                             </div>
@@ -154,14 +227,42 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
-                                                        <div class="row" id="search_unmet_need">
+                                                        <div class="row" id="search_unmet_need" <?php
+                                                            if (!empty($patient->unmet_need_id)) {
+                                                                echo "hidden";
+                                                            }
+                                                        ?>>
                                                             <div class="col-md-12 col-sm-12">
                                                                 <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal3"><?php echo lang('select'); ?></a>
                                                             </div>
                                                         </div>
-                                                        <div class="row" id="input_unmet_need" hidden>
+                                                        <div class="row" id="input_unmet_need" <?php
+                                                            if (empty($patient->unmet_need_id)) {
+                                                                echo "hidden";
+                                                            }
+                                                        ?>>
                                                             <div class="col-md-9 col-sm-10">
-                                                                <input type="text" name="unmet_need" id="unmet_need" class="form-control">
+                                                                <div class="input-group">
+                                                                    <input type="text" name="unmet_need_text" id="unmet_need_text" class="form-control" value="<?php
+                                                                        if (!empty($patient->unmet_need_id)) {
+                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                        }
+                                                                    ?>">
+                                                                    <input type="hidden" name="unmet_need" id="unmet_need" class="form-control" value="<?php
+                                                                        if (!empty($patient->unmet_need_id)) {
+                                                                            echo $patient->unmet_need_id;
+                                                                        }
+                                                                    ?>">
+                                                                    <button class="btn btn-light" id="unmet_need_description" data-container="body" data-content="<?php
+                                                                        if (!empty($patient->unmet_need_id)) {
+                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->description;
+                                                                        }
+                                                                    ?>" data-placement="top" data-popover-color="primary" title="<?php
+                                                                        if (!empty($patient->unmet_need_id)) {
+                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                        }
+                                                                    ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
+                                                                </div>
                                                             </div>
                                                             <div class="col-md-3 col-sm-2">
                                                                 <a class="btn btn-primary" data-toggle="modal" data-target="#myModal3">Change</a>
@@ -210,23 +311,41 @@
                                                         <div class="row">
                                                             <div class="col-md-6 col-sm-12">
                                                                 <label class="custom-control custom-radio">
-                                                                    <input type="radio" class="custom-control-input" name="deceased" value="1">
+                                                                    <input type="radio" class="custom-control-input" name="deceased" value="1" <?php
+                                                                    if ($patient->is_deceased == 1){
+                                                                        echo "checked";
+                                                                    }
+                                                                    ?>>
                                                                     <span class="custom-control-label">Yes</span>
                                                                 </label>
                                                             </div>
                                                             <div class="col-md-6 col-sm-12">
                                                                 <label class="custom-control custom-radio">
-                                                                    <input type="radio" class="custom-control-input" name="deceased" value="0">
+                                                                    <input type="radio" class="custom-control-input" name="deceased" value="0" <?php
+                                                                    if ($patient->is_deceased == null){
+                                                                        echo "";
+                                                                    } elseif ($patient->is_deceased == 0) {
+                                                                        echo "checked";
+                                                                    }
+                                                                    ?>>
                                                                     <span class="custom-control-label">No</span>
                                                                 </label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12" id="date_of_death" hidden>
+                                                <div class="col-md-6 col-sm-12" id="date_of_death" <?php
+                                                if (empty($patient->deceased_date)) {
+                                                    echo "hidden";
+                                                }
+                                                ?>>
                                                     <div class="form-group">
                                                         <label class="form-label">Date of Death</label>
-                                                        <input type="text" name="date_of_death" class="form-control flatpickr">
+                                                        <input type="text" name="date_of_death" class="form-control flatpickr" value="<?php
+                                                        if (!empty($patient->deceased_date)) {
+                                                            echo date('Y-m-d H:i A', strtotime($patient->deceased_date.' UTC'));
+                                                        }
+                                                        ?>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -310,7 +429,7 @@
                                     <form role="form" name="myform2" action="" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <?php foreach($safe_water_supply as $sws) { ?>
-                                                <div class="row mb-5 safe_water_item" data-id="<?php echo $sws->id; ?>">
+                                                <div class="row mb-5 safe_water_item" data-id="<?php echo $sws->id; ?>" data-name="<?php echo $sws->display_name; ?>" data-description="<?php echo $sws->description; ?>">
                                                     <div class="col-md-12 col-sm-12">
                                                         <a class="btn btn-success w-100">
                                                             <div class="row text-left">
@@ -342,7 +461,7 @@
                                     <form role="form" name="myform3" action="" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <?php foreach($unmet_need as $un) { ?>
-                                                <div class="row mb-5 unmet_need_item" data-id="<?php echo $un->id; ?>">
+                                                <div class="row mb-5 unmet_need_item" data-id="<?php echo $un->id; ?>" data-name="<?php echo $un->display_name; ?>" data-description="<?php echo $un->description; ?>">
                                                     <div class="col-md-12 col-sm-12">
                                                         <a class="btn btn-success w-100">
                                                             <div class="row text-left">
@@ -500,6 +619,23 @@
 
     <!-- INTERNAL JS INDEX END -->
 
+    <!-- <script type="text/javascript">
+        $(document).ready(function (){
+            var family_profile_id = $("#populationForm").find('[name=family_profile]').val();
+            $.ajax({
+                url: 'patient/getPatientPopulationByJason?profile='+family_profile_id,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var patient_profile = response.patient_profile;
+
+                    $("#monthly_family_income").val(patient_profile.monthly_family_income).change();
+                }
+            });
+        })
+    </script> -->
+
     <script type="text/javascript">
         flatpickr(".flatpickr", {
             altInput: true,
@@ -587,21 +723,33 @@
     <script type="text/javascript">
         $(".safe_water_item").click(function () {
             var safe_water_id = $(this).data("id");
+            var safe_water_name = $(this).data("name");
+            var safe_water_description = $(this).data("description");
             $("#search_safe_water_supply").attr("hidden", true);
             $("#input_safe_water_supply").attr("hidden", false);
             $("#safe_water_supply").attr("readonly", true);
             $("#safe_water_supply").val(safe_water_id);
+            $("#safe_water_supply_text").attr("readonly", true);
+            $("#safe_water_supply_text").val(safe_water_name);
+            $("#safe_water_description").attr("data-content", safe_water_description);
+            $("#safe_water_description").attr("data-original-title", safe_water_name);
             $('#myModal2').modal('hide');
         })
     </script>
 
     <script type="text/javascript">
         $(".unmet_need_item").click(function () {
-            var safe_water_id = $(this).data("id");
+            var unmet_need_id = $(this).data("id");
+            var unmet_need_name = $(this).data("name");
+            var unmet_need_description = $(this).data('description');
             $("#search_unmet_need").attr("hidden", true);
             $("#input_unmet_need").attr("hidden", false);
             $("#unmet_need").attr("readonly", true);
-            $("#unmet_need").val(safe_water_id);
+            $("#unmet_need").val(unmet_need_id);
+            $("#unmet_need_text").attr("readonly", true);
+            $("#unmet_need_description").attr("data-content", unmet_need_description);
+            $("#unmet_need_description").attr("data-original-title", unmet_need_name);
+            $("#unmet_need_text").val(unmet_need_name);
             $('#myModal3').modal('hide');
         })
     </script>
