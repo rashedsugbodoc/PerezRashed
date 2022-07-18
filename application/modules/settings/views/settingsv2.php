@@ -414,12 +414,8 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('invoice_logo'); ?></label>
-                                                        <input type="file" class="form-control" name="img_url" id="exampleInputEmail1" value='<?php
-                                                        if (!empty($settings->invoice_logo)) {
-                                                            echo $settings->invoice_logo;
-                                                        }
-                                                        ?>' placeholder="">
                                                         <span class="help-block"><?php echo lang('recommended_size'); ?> : 200x100</span>
+                                                        <input type="file" class="dropify" name="img_url" id="exampleInputEmail1" data-default-file="<?php if(!empty($settings->logo)) echo $settings->logo; ?>" placeholder="">
                                                     </div>
                                                 </div>
                                             </div>
