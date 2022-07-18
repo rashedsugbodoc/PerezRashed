@@ -58,15 +58,19 @@
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('phone'); ?> <span class="text-red">*</span></label>
-                                                    <input type="text" class="form-control" name="phone" id="phone" value='<?php
+                                                    <label class="form-label"><?php echo lang('mobile_number'); ?> <span class="text-red">*</span></label>
+                                                    <input type="text" class="form-control" name="mobile" id="mobile" value='<?php
                                                     if (!empty($setval)) {
                                                         echo set_value('phone');
-                                                    }
-                                                    if (!empty($company->phone)) {
+                                                    } elseif (!empty($company->phone)) {
                                                         echo $company->phone;
+                                                    } else {
+                                                        echo '';
                                                     }
                                                     ?>' placeholder="" required>
+                                                    <input type="hidden" name="phone" id="phone">
+                                                    <span id="error-msg" class="hide"></span>
+                                                    <span id="valid-msg" class="hide"> Valid</span>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 col-sm-12">
@@ -336,9 +340,7 @@
         <script src="<?php echo base_url('public/assets/plugins/sumoselect/jquery.sumoselect.js'); ?>"></script>
 
         <!--intlTelInput js-->
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/intlTelInput.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/country-select.js'); ?>"></script>
-        <script src="<?php echo base_url('public/assets/plugins/intl-tel-input-master/utils.js'); ?>"></script>
+        <script src="<?php echo base_url('common/assets/intl-tel-input/build/js/intlTelInput.js');?>"></script>
 
         <!--jquery transfer js-->
         <script src="<?php echo base_url('public/assets/plugins/jQuerytransfer/jquery.transfer.js'); ?>"></script>
@@ -677,7 +679,7 @@
                 }
 
                 $.ajax({
-                    url: 'patient/getStateByCountryIdByJason?country=' + country,
+                    url: 'company/getStateByCountryIdByJason?country=' + country,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -705,7 +707,7 @@
                 $("#city").attr("disabled", false);
 
                 $.ajax({
-                    url: 'patient/getCityByStateIdByJason?state=' + stateval,
+                    url: 'company/getCityByStateIdByJason?state=' + stateval,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -730,7 +732,7 @@
                 $("#barangay").attr("disabled", false);
 
                 $.ajax({
-                    url: 'patient/getBarangayByCityIdByJason?city=' + cityval,
+                    url: 'company/getBarangayByCityIdByJason?city=' + cityval,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -750,6 +752,58 @@
 
         });
 
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var input = document.querySelector("#mobile");
+            var errorMsg = document.querySelector("#error-msg");
+            var validMsg = document.querySelector("#valid-msg");
+            var form = document.getElementById("patientForm");
+
+            // here, the index maps to the error code returned from getValidationError - see readme
+            var errorMap = ["Invalid mobile number", "Invalid country code", "Too short", "Too long", "Invalid mobile number", "Invalid length"];
+
+            // initialise plugin
+            var iti = window.intlTelInput(input, {
+                hiddenInput: "full_number",
+                preferredCountries: ['ph', 'sg', 'us'],
+                utilsScript: "<?php echo base_url('common/assets/intl-tel-input/build/js/utils.js?1638200991544');?>"
+            });
+
+            var reset = function() {
+              input.classList.remove("parsley-error");
+              input.classList.remove("is-valid");
+              errorMsg.innerHTML = "";
+              errorMsg.classList.add("hide");
+              validMsg.classList.add("hide");
+            };
+
+            var execute = function() {
+              reset();
+              document.getElementById("phone").value = iti.getNumber();
+              if (input.value.trim()) {
+                if (iti.isValidNumber()) {
+                  validMsg.classList.remove("hide");
+                  input.classList.add("is-valid");
+                } else {
+                  input.classList.add("parsley-error");
+                  input.classList.remove("is-valid");
+                  var errorCode = iti.getValidationError();
+                  errorMsg.innerHTML = errorMap[errorCode];
+                  errorMsg.classList.remove("hide");
+                }
+              }
+            };
+
+            // on blur: validate
+            input.addEventListener('blur', execute);
+            form.addEventListener('submit', execute);
+            // on keyup / change flag: reset
+            input.addEventListener('change', reset);
+            input.addEventListener('keyup', reset);
+        });
+        
     </script>
 
     <script>
