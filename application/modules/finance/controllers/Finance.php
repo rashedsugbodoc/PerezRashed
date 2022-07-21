@@ -163,11 +163,11 @@ class Finance extends MX_Controller {
                 } else {
                     $doctor_fee = $this->doctor_model->getDoctorByIonUserId($doctor_selected[$key])->physical_consultation_fee;
                 }
-                // $category_price = $current_item->c_price;
+                $category_price = $current_item->c_price;
                 $category_id = $current_item->category_id;
                 $qty = $quantity[$key];
-                $cat_and_price[] = $value . '-' . $doctor_selected[$key] . '*' . $doctor_fee . '*' . $category_id . '*' . $qty;
-                $amount_by_category[] = $doctor_fee * $qty;
+                $cat_and_price[] = $value . '-' . $doctor_selected[$key] . '*' . $category_price . '*' . $category_id . '*' . $qty;
+                $amount_by_category[] = $category_price * $qty;
             }
             $category_name = implode(',', $cat_and_price);
         }
@@ -725,6 +725,7 @@ class Finance extends MX_Controller {
             $data['encounters'] = $this->encounter_model->getEncounter();
             $data['patients'] = $this->patient_model->getPatient();
             $data['doctors'] = $this->doctor_model->getDoctor();
+            $data['companies'] = $this->company_model->getCompany();
             $data['company'] = $this->company_model->getCompanyById($data['payment']->company_id);
             $this->load->view('home/dashboardv2'); // just the header file
             $this->load->view('add_payment_viewv2', $data);
@@ -1058,6 +1059,9 @@ class Finance extends MX_Controller {
         $c_price = $this->input->post('c_price');
         $d_commission = $this->input->post('d_commission');
         $s_commission = $this->input->post('s_commission');
+        $staff = $this->input->post('staffs');
+
+        $group = $this->ion_auth->get_users_groups($staff)->row()->name;
 
         if (empty($c_price)) {
             $c_price = 0;
@@ -1105,11 +1109,38 @@ class Finance extends MX_Controller {
                 'd_commission' => $d_commission,
                 'staff_commission' => $s_commission,
                 'service_category_group_id' => $service_type,
+                'applicable_staff_id' => $staff,
             );
+
+            if ($group == "Doctor") {
+                $doctor_details = $this->doctor_model->getDoctorByIonUserId($staff);
+                if ($service_type == 9) {
+                    $doctor_data = array(
+                        'physical_consultation_fee' => $c_price
+                    );
+                } elseif ($service_type == 10) {
+                    $doctor_data = array(
+                        'virtual_consultation_fee' => $c_price
+                    );
+                }
+            }
+
             if (empty($id)) {
+                if ($group == "Doctor") {
+                    if ($service_type == 9) {
+                        $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    } elseif ($service_type == 10) {
+                        $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    }
+                }
+
                 $this->finance_model->insertPaymentCategory($data);
                 $this->session->set_flashdata('success', lang('record_added'));
             } else {
+                if ($group == "Doctor") {
+                    $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                }
+
                 $this->finance_model->updatePaymentCategory($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
@@ -1584,11 +1615,11 @@ class Finance extends MX_Controller {
         $patient_privacy_level_id = $this->patient_model->getPrivacyLevelById($patient_details->privacy_level_id);
         $user = $this->ion_auth->get_user_id();
 
-        if ($this->ion_auth->in_group(array('admin'))) {
-            if ($provider_logged !== $patient_details->hospital_id) {
-                redirect('home/permission');
-            }
-        }
+        // if ($this->ion_auth->in_group(array('admin'))) {
+        //     if ($provider_logged !== $patient_details->hospital_id) {
+        //         redirect('home/permission');
+        //     }
+        // }
 
         if ($this->ion_auth->in_group(array('Doctor'))) {
             $doctor_id = $this->doctor_model->getDoctorByIonUserId($user)->id;
@@ -2841,6 +2872,16 @@ class Finance extends MX_Controller {
 
 // Get users
         $response = $this->finance_model->getServiceCategoryGroupByEntityType($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getStaffInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->finance_model->getStaffInfo($searchTerm);
 
         echo json_encode($response);
     }

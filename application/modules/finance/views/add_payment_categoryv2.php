@@ -124,6 +124,25 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Applies only to staff</label>
+                                                        <select id="staffs" name="staffs" class="form-control">
+                                                            <option value="<?php echo $service->applicable_staff_id ?>" <?php
+                                                                if (!empty($service->applicable_staff_id)) {
+                                                                    echo 'selected';
+                                                                }
+                                                            ?>>
+                                                                <?php echo $this->doctor_model->getDoctorByIonUserId($service->applicable_staff_id)->name.' ('.$this->ion_auth->get_users_groups($service->applicable_staff_id)->row()->name.')'; ?>
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!-- <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <?php echo $this->ion_auth->get_users_groups($service->applicable_staff_id)->row()->name; ?>
+                                                    </div>
+                                                </div> -->
                                                 <input type="hidden" name="id" value='<?php
                                                 if (!empty($service->id)) {
                                                     echo $service->id;
@@ -213,6 +232,29 @@
                 allowClear: true,
                 ajax: {
                     url: 'finance/getServiceCategoryGroupByEntityType',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+
+            $("#staffs").select2({
+                placeholder: '<?php echo lang('select_service_type'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'finance/getStaffInfo',
                     type: "post",
                     dataType: 'json',
                     delay: 250,

@@ -909,6 +909,86 @@ class Finance_model extends CI_model {
         return $data;
     }
 
+    function getStaffInfo($searchTerm) {
+        // $settings = $this->settings_model->getSettings()->entity_type_id;
+        // if (!empty($searchTerm)) {
+        //     $query = $this->db->select('a.id as user_id, a.username as user_username')
+        //             ->from('users a')
+        //             ->join('users_groups')
+        //             ->where("(a.id LIKE '%" . $searchTerm . "%' OR a.username LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+        //             ->get();
+        //     $users = $query->result_array();
+        // } else {
+        //     $this->db->select('a.id as user_id, a.username as user_username');
+        //     $this->db->from('users a');
+        //     $this->db->limit(10);
+        //     $fetched_records = $this->db->get();
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+        // // if ($this->ion_auth->in_group(array('Doctor'))) {
+        // //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        // //     $this->db->select('*');
+        // //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // //     $this->db->where('ion_user_id', $doctor_ion_id);
+        // //     $fetched_records = $this->db->get('doctor');
+        // //     $users = $fetched_records->result_array();
+        // // }
+
+
+        // // Initialize Array with fetched data
+        // $data = array();
+        // foreach ($users as $user) {
+        //     $data[] = array("id" => $user['user_id'], "text" => $user['user_username']);
+        // }
+        // return $data;
+
+        $valid_users = '4,6';
+        // $user_groups = $this->getUsersByValidUsers($valid_users);
+
+        if (!empty($searchTerm)) {
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->where("(a.user_id LIKE '%" . $searchTerm . "%' OR b.username LIKE '%" . $searchTerm . "%')", NULL, FALSE);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        } else {
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->limit(10);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        }
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_ion_id = $this->ion_auth->get_user_id();
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->where('ion_user_id', $doctor_ion_id);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['user_id'], "text" => $user['username'].' ('.$user['name'].')');
+        }
+        return $data;
+    }
+
     function getServiceCategoryGroupById($id) {
         $this->db->where('id', $id);
         $query = $this->db->get('service_category_group');
@@ -1299,6 +1379,20 @@ class Finance_model extends CI_model {
         $this->db->where('invoice_number', $invoice_number);
         $query = $this->db->get('invoice');
         return $query->row();
+    }
+
+    function checkPhysicalChargesListByApplicableStaffId($id) {
+        $this->db->where('service_category_group_id', 9);
+        $this->db->where('applicable_staff_id', $id);
+        $query = $this->db->get('charge');
+        return $query->num_rows();
+    }
+
+    function checkVirtualChargesListByApplicableStaffId($id) {
+        $this->db->where('service_category_group_id', 10);
+        $this->db->where('applicable_staff_id', $id);
+        $query = $this->db->get('charge');
+        return $query->num_rows();
     }
 
 }

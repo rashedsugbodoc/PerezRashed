@@ -240,9 +240,14 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('payer_account'); ?></label>
                                                         <select class="select2-show-search form-control add_payer" id="company" name="company_id" value=''>
-                                                            <?php if (!empty($payment)) { ?>
-                                                                <option value="<?php echo $company->id; ?>" selected="selected"><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
-                                                            <?php }?>
+                                                            <!-- <?php if (!empty($payment->company_id)) { ?>
+                                                                <option value="<?php echo $company->id; ?>" selected><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
+                                                            <?php }?> -->
+                                                            <?php foreach ($companies as $comp) { ?>
+                                                                <?php if ($comp->id == $payment->company_id) { ?>
+                                                                    <option value="<?php echo $comp->id; ?>" selected><?php echo format_number_with_digits($comp->id, COMPANY_ID_LENGTH). ' - '. $comp->display_name; ?></option>  
+                                                                <?php } ?>
+                                                            <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -273,24 +278,58 @@
                                                     <div class="form-group"> 
                                                         <label for="exampleInputEmail1"> <?php echo lang('select'); ?></label>
                                                         <select name="category_name[]" class="multi-selection" multiple="" id="my_multi_select3">
-                                                            <?php foreach ($categories as $category) { ?>
-                                                                <?php foreach ($doctors as $doctor) { ?>
+                                                            <?php /*foreach ($categories as $category) {*/ ?>
+                                                                <?php /*foreach ($doctors as $doctor) {*/ ?>
                                                                     <?php
-                                                                    $service_category_group = $this->finance_model->getServiceCategoryGroupById($category->service_category_group_id);
+                                                                    /*$service_category_group = $this->finance_model->getServiceCategoryGroupById($category->service_category_group_id);
                                                                     if (!empty($service_category_group->is_virtual)) {
                                                                         $fee = $doctor->virtual_consultation_fee;
                                                                     } else {
                                                                         $fee = $doctor->physical_consultation_fee;
-                                                                    }
+                                                                    }*/
                                                                     ?>
-                                                                    <option class="ooppttiioonn" data-doctor="<?php echo $doctor->name; ?>" data-id="<?php echo $fee; ?>" data-idd="<?php echo $category->id.'-'.$doctor->ion_user_id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->category.'-'.$doctor->ion_user_id; ?>" 
+                                                                    <!-- <option class="ooppttiioonn" data-doctor="<?php echo $doctor->name; ?>" data-id="<?php echo $fee; ?>" data-idd="<?php echo $category->id.'-'.$doctor->ion_user_id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->category.'-'.$doctor->ion_user_id; ?>" 
+                                                                            <?php
+                                                                            /*if (!empty($payment->category_name)) {
+                                                                                $category_name = $payment->category_name;
+                                                                                $category_name1 = explode(',', $category_name);
+                                                                                foreach ($category_name1 as $category_name2) {
+                                                                                    $category_name3 = explode('*', $category_name2);
+                                                                                    if ($category_name3[0] == $category->id.'-'.$doctor->ion_user_id) {
+                                                                                        echo 'data-qtity=' . $category_name3[3];
+                                                                                    }
+                                                                                }
+                                                                            }*/
+                                                                            ?>
+                                                                            <?php
+                                                                            /*if (!empty($payment->category_name)) {
+                                                                                $category_name = $payment->category_name;
+                                                                                $category_name1 = explode(',', $category_name);
+                                                                                foreach ($category_name1 as $category_name2) {
+                                                                                    $category_name3 = explode('*', $category_name2);
+                                                                                    $category_id = explode('-', $category_name3[0]);
+                                                                                    if ($category_name3[0] == $category->id.'-'.$doctor->ion_user_id) {
+                                                                                        echo 'selected';
+                                                                                    }
+                                                                                }
+                                                                            }*/
+                                                                            // if ($payment->category_name == $)
+                                                                            ?>><?php /*echo $category->category . ' ( ' . lang('dr') . '. ' .  $doctor->name . ' )';*/ ?></option> -->
+                                                                        <?php /*}*/ ?>
+                                                                <?php /*}*/ ?>
+
+                                                                <!-- data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->applicable_staff_id?$category->category.' ('.$this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name.')':$category->category; ?>" -->
+
+                                                                <?php foreach ($categories as $category) { ?>
+                                                                    <?php $group = $this->ion_auth->get_users_groups($category->applicable_staff_id)->row()->name; ?>
+                                                                    <option class="ooppttiioonn" data-doctor="<?php echo $this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name; ?>" data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->category.'-'.$category->applicable_staff_id; ?>"
                                                                             <?php
                                                                             if (!empty($payment->category_name)) {
                                                                                 $category_name = $payment->category_name;
                                                                                 $category_name1 = explode(',', $category_name);
                                                                                 foreach ($category_name1 as $category_name2) {
                                                                                     $category_name3 = explode('*', $category_name2);
-                                                                                    if ($category_name3[0] == $category->id.'-'.$doctor->ion_user_id) {
+                                                                                    if ($category_name3[0] == $category->id.'-'.$category->applicable_staff_id) {
                                                                                         echo 'data-qtity=' . $category_name3[3];
                                                                                     }
                                                                                 }
@@ -302,16 +341,13 @@
                                                                                 $category_name1 = explode(',', $category_name);
                                                                                 foreach ($category_name1 as $category_name2) {
                                                                                     $category_name3 = explode('*', $category_name2);
-                                                                                    $category_id = explode('-', $category_name3[0]);
-                                                                                    if ($category_name3[0] == $category->id.'-'.$doctor->ion_user_id) {
+                                                                                    if ($category_name3[0] == $category->id.'-'.$category->applicable_staff_id) {
                                                                                         echo 'selected';
                                                                                     }
                                                                                 }
                                                                             }
-                                                                            // if ($payment->category_name == $)
-                                                                            ?>><?php echo $category->category . ' ( ' . lang('dr') . '. ' .  $doctor->name . ' )'; ?></option>
+                                                                            ?>><?php echo $category->applicable_staff_id?$category->category.' ('.$group.' '.$this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name.')':$category->category; ?></option>
                                                                         <?php } ?>
-                                                                <?php } ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -529,19 +565,6 @@
                                                                 <?php
                                                                 if (!empty($payment)) {
                                                                 ?>
-                                                                    <tr class="">
-                                                                        <td>1</td>
-                                                                        <td><?php //echo date('d/m/Y - h:i A', $payment->date);?> </td>
-                                                                        <td><?php //echo $this->ion_auth->user($payment->user)->row()->username; ?></td>
-                                                                        <td><?php //echo $payment->deposit_type;?></td>
-                                                                        <td>
-                                                                            <input type="text" class="form-control amount_received" name="amount_received" id="amount_received" value='<?php //if (!empty($payment->amount_received)) { echo $payment->amount_received; } ?>' <?php
-                                                                            /*if ($payment->deposit_type == 'Card') {
-                                                                                echo 'readonly';
-                                                                            }*/
-                                                                            ?>>
-                                                                        </td>
-                                                                    </tr>
                                                                     <?php
                                                                     $deposits = $this->finance_model->getDepositByPaymentId($payment->id);
                                                                     $i = 0;
@@ -1348,8 +1371,15 @@
                     data: '',
                     dataType: 'json',
                     success: function (response) {
+                        var doctor = response.encounter.rendering_staff_id
                         $('#editPaymentForm').find('[name="patient"]').val(response.encounter.patient_id).change();
-                        $('#editPaymentForm').find('[name="doctor"]').val(response.encounter.rendering_staff_id).change();
+                        // $('#editPaymentForm').find('[name="doctor"]').val(response.encounter.rendering_staff_id).change();
+
+                        if (doctor == null) {
+                            $("#add_doctor").val("0");
+                        } else {
+                            $("#add_doctor").val(doctor);
+                        }
                     }
                 });
                 

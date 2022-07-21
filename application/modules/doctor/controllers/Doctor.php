@@ -322,6 +322,38 @@ class Doctor extends MX_Controller {
                         if (!isset($name1[1])) {
                             $name1[1] = null;
                         }
+
+                        $data_virtual_charge = array(
+                            'category' => 'Online Doctor Consultation',
+                            'description' => 'Online Doctor Consultation',
+                            'c_price' => $virtual_consultation_fee,
+                            'd_commission' => 100,
+                            'category_id' => 3,
+                            'service_category_group_id' => 10,
+                            'applicable_staff_id' => $ion_user_id,
+                        );
+
+                        $data_in_person_charge = array(
+                            'category' => 'Doctor Face-to-Face Consultation',
+                            'description' => 'Doctor Face-to-Face Consultation',
+                            'c_price' => $in_person_consultation_fee,
+                            'd_commission' => 100,
+                            'category_id' => 3,
+                            'service_category_group_id' => 9,
+                            'applicable_staff_id' => $ion_user_id,
+                        );
+
+                        $check_virtual_charges = $this->finance_model->checkVirtualChargesListByApplicableStaffId($ion_user_id);
+                        $check_physical_charges = $this->finance_model->checkPhysicalChargesListByApplicableStaffId($ion_user_id);
+
+                        if ($check_virtual_charges === 0) {
+                            $this->finance_model->insertPaymentCategory($data_virtual_charge);
+                        }
+
+                        if ($check_physical_charges === 0) {
+                            $this->finance_model->insertPaymentCategory($data_in_person_charge);
+                        }
+
                         $data1 = array(
                             'firstname' => $name1[0],
                             'lastname' => $name1[1],
@@ -412,6 +444,38 @@ class Doctor extends MX_Controller {
                             if (!isset($name1[1])) {
                                 $name1[1] = null;
                             }
+
+                            $data_virtual_charge = array(
+                                'category' => 'Online Doctor Consultation',
+                                'description' => 'Online Doctor Consultation',
+                                'c_price' => $virtual_consultation_fee,
+                                'd_commission' => 100,
+                                'category_id' => 3,
+                                'service_category_group_id' => 10,
+                                'applicable_staff_id' => $ion_user_id,
+                            );
+
+                            $data_in_person_charge = array(
+                                'category' => 'Doctor Face-to-Face Consultation',
+                                'description' => 'Doctor Face-to-Face Consultation',
+                                'c_price' => $in_person_consultation_fee,
+                                'd_commission' => 100,
+                                'category_id' => 3,
+                                'service_category_group_id' => 9,
+                                'applicable_staff_id' => $ion_user_id,
+                            );
+
+                            $check_virtual_charges = $this->finance_model->checkVirtualChargesListByApplicableStaffId($ion_user_id);
+                            $check_physical_charges = $this->finance_model->checkPhysicalChargesListByApplicableStaffId($ion_user_id);
+
+                            if ($check_virtual_charges === 0) {
+                                $this->finance_model->insertPaymentCategory($data_virtual_charge);
+                            }
+
+                            if ($check_physical_charges === 0) {
+                                $this->finance_model->insertPaymentCategory($data_in_person_charge);
+                            }
+
                             $data1 = array(
                                 'firstname' => $name1[0],
                                 'lastname' => $name1[1],
@@ -497,6 +561,38 @@ class Doctor extends MX_Controller {
                             // } else {
                             //     $password = $this->ion_auth_model->hash_password($password);
                             // }
+
+                            $data_virtual_charge = array(
+                                'category' => 'Online Doctor Consultation',
+                                'description' => 'Online Doctor Consultation',
+                                'c_price' => $virtual_consultation_fee,
+                                'd_commission' => 100,
+                                'category_id' => 3,
+                                'service_category_group_id' => 10,
+                                'applicable_staff_id' => $ion_user_id,
+                            );
+
+                            $data_in_person_charge = array(
+                                'category' => 'Doctor Face-to-Face Consultation',
+                                'description' => 'Doctor Face-to-Face Consultation',
+                                'c_price' => $in_person_consultation_fee,
+                                'd_commission' => 100,
+                                'category_id' => 3,
+                                'service_category_group_id' => 9,
+                                'applicable_staff_id' => $ion_user_id,
+                            );
+
+                            $check_virtual_charges = $this->finance_model->checkVirtualChargesListByApplicableStaffId($ion_user_id);
+                            $check_physical_charges = $this->finance_model->checkPhysicalChargesListByApplicableStaffId($ion_user_id);
+
+                            if ($check_virtual_charges === 0) {
+                                $this->finance_model->insertPaymentCategory($data_virtual_charge);
+                            }
+
+                            if ($check_physical_charges === 0) {
+                                $this->finance_model->insertPaymentCategory($data_in_person_charge);
+                            }
+
                             $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                             $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->doctor_model->updateDoctor($id, $data);
@@ -535,6 +631,38 @@ class Doctor extends MX_Controller {
                                 // } else {
                                 //     $password = $this->ion_auth_model->hash_password($password);
                                 // }
+
+                                $data_virtual_charge = array(
+                                    'category' => 'Online Doctor Consultation',
+                                    'description' => 'Online Doctor Consultation',
+                                    'c_price' => $virtual_consultation_fee,
+                                    'd_commission' => 100,
+                                    'category_id' => 3,
+                                    'service_category_group_id' => 10,
+                                    'applicable_staff_id' => $ion_user_id,
+                                );
+
+                                $data_in_person_charge = array(
+                                    'category' => 'Doctor Face-to-Face Consultation',
+                                    'description' => 'Doctor Face-to-Face Consultation',
+                                    'c_price' => $in_person_consultation_fee,
+                                    'd_commission' => 100,
+                                    'category_id' => 3,
+                                    'service_category_group_id' => 9,
+                                    'applicable_staff_id' => $ion_user_id,
+                                );
+
+                                $check_virtual_charges = $this->finance_model->checkVirtualChargesListByApplicableStaffId($ion_user_id);
+                                $check_physical_charges = $this->finance_model->checkPhysicalChargesListByApplicableStaffId($ion_user_id);
+
+                                if ($check_virtual_charges === 0) {
+                                    $this->finance_model->insertPaymentCategory($data_virtual_charge);
+                                }
+
+                                if ($check_physical_charges === 0) {
+                                    $this->finance_model->insertPaymentCategory($data_in_person_charge);
+                                }
+
                                 $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                                 $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                                 $this->doctor_model->updateDoctor($id, $data);
@@ -564,6 +692,38 @@ class Doctor extends MX_Controller {
                         // } else {
                         //     $password = $this->ion_auth_model->hash_password($password);
                         // }
+
+                        $data_virtual_charge = array(
+                            'category' => 'Online Doctor Consultation',
+                            'description' => 'Online Doctor Consultation',
+                            'c_price' => $virtual_consultation_fee,
+                            'd_commission' => 100,
+                            'category_id' => 3,
+                            'service_category_group_id' => 10,
+                            'applicable_staff_id' => $ion_user_id,
+                        );
+
+                        $data_in_person_charge = array(
+                            'category' => 'Doctor Face-to-Face Consultation',
+                            'description' => 'Doctor Face-to-Face Consultation',
+                            'c_price' => $in_person_consultation_fee,
+                            'd_commission' => 100,
+                            'category_id' => 3,
+                            'service_category_group_id' => 9,
+                            'applicable_staff_id' => $ion_user_id,
+                        );
+
+                        $check_virtual_charges = $this->finance_model->checkVirtualChargesListByApplicableStaffId($ion_user_id);
+                        $check_physical_charges = $this->finance_model->checkPhysicalChargesListByApplicableStaffId($ion_user_id);
+
+                        if ($check_virtual_charges === 0) {
+                            $this->finance_model->insertPaymentCategory($data_virtual_charge);
+                        }
+
+                        if ($check_physical_charges === 0) {
+                            $this->finance_model->insertPaymentCategory($data_in_person_charge);
+                        }
+
                         $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                         $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->doctor_model->updateDoctor($id, $data);
@@ -602,6 +762,38 @@ class Doctor extends MX_Controller {
                             // } else {
                             //     $password = $this->ion_auth_model->hash_password($password);
                             // }
+
+                            $data_virtual_charge = array(
+                                'category' => 'Online Doctor Consultation',
+                                'description' => 'Online Doctor Consultation',
+                                'c_price' => $virtual_consultation_fee,
+                                'd_commission' => 100,
+                                'category_id' => 3,
+                                'service_category_group_id' => 10,
+                                'applicable_staff_id' => $ion_user_id,
+                            );
+
+                            $data_in_person_charge = array(
+                                'category' => 'Doctor Face-to-Face Consultation',
+                                'description' => 'Doctor Face-to-Face Consultation',
+                                'c_price' => $in_person_consultation_fee,
+                                'd_commission' => 100,
+                                'category_id' => 3,
+                                'service_category_group_id' => 9,
+                                'applicable_staff_id' => $ion_user_id,
+                            );
+
+                            $check_virtual_charges = $this->finance_model->checkVirtualChargesListByApplicableStaffId($ion_user_id);
+                            $check_physical_charges = $this->finance_model->checkPhysicalChargesListByApplicableStaffId($ion_user_id);
+
+                            if ($check_virtual_charges === 0) {
+                                $this->finance_model->insertPaymentCategory($data_virtual_charge);
+                            }
+
+                            if ($check_physical_charges === 0) {
+                                $this->finance_model->insertPaymentCategory($data_in_person_charge);
+                            }
+
                             $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
                             $this->doctor_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->doctor_model->updateDoctor($id, $data);
