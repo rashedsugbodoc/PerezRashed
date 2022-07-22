@@ -324,7 +324,7 @@
                                                                     <?php $group = $this->ion_auth->get_users_groups($category->applicable_staff_id)->row()->name; ?>
                                                                     <?php
                                                                         if ($group === "Doctor") {
-                                                                            $group_short = "Dr";
+                                                                            $group_short = "Dr.";
                                                                         } else {
                                                                             $group_short = "";
                                                                         }
@@ -795,7 +795,7 @@
                 if (doctor == "") {
                     var doctor_detail = '';
                 } else {
-                    var doctor_detail = '( ' + dr + '. ' + doctor + ' )';
+                    var doctor_detail = '( ' + dr + ' ' + doctor + ' )';
                 }
                 
                 // var dr = "<?php echo lang('dr') ?>";
@@ -942,7 +942,7 @@
                     if (doctor == "") {
                         var doctor_detail = '';
                     } else {
-                        var doctor_detail = '( ' + dr + '. ' + doctor + ' )';
+                        var doctor_detail = '( ' + dr + ' ' + doctor + ' )';
                     }
                     // var dr = "<?php echo lang('dr') ?>";
                     if ($('#idinput-' + idd).length)
