@@ -945,6 +945,11 @@ class Finance_model extends CI_model {
         // return $data;
 
         $valid_users = '4,6';
+        $user = $this->ion_auth->get_user_id();
+        $user_hospital_ion = $this->db->select('hospital_ion_id')
+                                    ->where('id', $user)
+                                    ->get('users')
+                                    ->row();
         // $user_groups = $this->getUsersByValidUsers($valid_users);
 
         if (!empty($searchTerm)) {
@@ -953,6 +958,7 @@ class Finance_model extends CI_model {
             $this->db->join('users b', 'b.id=a.user_id', 'left');
             $this->db->join('groups c', 'c.id=a.group_id', 'left');
             $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->where('hospital_ion_id', $user_hospital_ion->hospital_ion_id);
             $this->db->where("(a.user_id LIKE '%" . $searchTerm . "%' OR b.username LIKE '%" . $searchTerm . "%')", NULL, FALSE);
             $fetched_records = $this->db->get();
             $users = $fetched_records->result_array();
@@ -962,6 +968,7 @@ class Finance_model extends CI_model {
             $this->db->join('users b', 'b.id=a.user_id', 'left');
             $this->db->join('groups c', 'c.id=a.group_id', 'left');
             $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->where('hospital_ion_id', $user_hospital_ion->hospital_ion_id);
             $this->db->limit(10);
             $fetched_records = $this->db->get();
             $users = $fetched_records->result_array();
