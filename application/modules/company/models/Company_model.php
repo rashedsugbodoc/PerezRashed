@@ -107,6 +107,7 @@ class Company_model extends CI_model {
 
     function getCompanyById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->or_where('hospital_id', null);
         $this->db->where('id', $id);
         $query = $this->db->get('company');
         return $query->row();
