@@ -523,11 +523,14 @@
                                                                     $category_name3 = explode('*', $category_name2);
                                                                     $new_category_name = explode('-', $category_name3[0]);
                                                                     $doctor_service = $this->doctor_model->getDoctorByIonUserId($new_category_name[1])->name;
+                                                                    if (!empty($doctor_service)) {
+                                                                        $doctor_details = ' ( '.lang('dr').'. '.$doctor_service.' )';
+                                                                    }
                                                                     if ($category_name3[3] > 0) {
                                                                         ?>                                                          
                                                                         <tr class="invoice-opacity region">
                                                                             <td class="pt-0 pb-0 pl-0"><?php echo $i; ?> </td>
-                                                                            <td class="pt-0 pb-0"><?php echo $this->finance_model->getPaymentcategoryById($new_category_name[0])->category.' ( '.lang('dr').'. '.$doctor_service.' )'; ?></td>
+                                                                            <td class="pt-0 pb-0"><?php echo $this->finance_model->getPaymentcategoryById($new_category_name[0])->category.$doctor_details; ?></td>
                                                                             <td class="pt-0 pb-0 text-right"><?php echo $settings->currency; ?> <?php echo number_format($category_name3[1],2); ?></td>
                                                                             <td></td>
                                                                             <td class="pt-0 pb-0"><?php echo $category_name3[3]; ?></td>
