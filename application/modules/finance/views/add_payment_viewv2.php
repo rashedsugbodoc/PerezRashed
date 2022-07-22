@@ -322,7 +322,14 @@
 
                                                                 <?php foreach ($categories as $category) { ?>
                                                                     <?php $group = $this->ion_auth->get_users_groups($category->applicable_staff_id)->row()->name; ?>
-                                                                    <option class="ooppttiioonn" data-doctor="<?php echo $this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name; ?>" data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->category.'-'.$category->applicable_staff_id; ?>"
+                                                                    <?php
+                                                                        if ($group === "Doctor") {
+                                                                            $group_short = "Dr";
+                                                                        } else {
+                                                                            $group_short = "";
+                                                                        }
+                                                                    ?>
+                                                                    <option class="ooppttiioonn" data-doctor="<?php echo $this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name; ?>" data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>" data-cat_name="<?php echo $category->category; ?>" data-dr="<?php echo $group_short; ?>" value="<?php echo $category->category.'-'.$category->applicable_staff_id; ?>"
                                                                             <?php
                                                                             if (!empty($payment->category_name)) {
                                                                                 $category_name = $payment->category_name;
@@ -346,7 +353,7 @@
                                                                                     }
                                                                                 }
                                                                             }
-                                                                            ?>><?php echo $category->applicable_staff_id?$category->category.' ('.$group.' '.$this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name.')':$category->category; ?></option>
+                                                                            ?>><?php echo $category->applicable_staff_id?$category->category.' ('.$group_short.' '.$this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name.')':$category->category; ?></option>
                                                                         <?php } ?>
                                                         </select>
                                                     </div>
@@ -784,7 +791,14 @@
                 //  tot = tot + curr_val;
                 var cat_name = $(this).data('cat_name');
                 var doctor = $(this).data('doctor');
-                var dr = "<?php echo lang('dr') ?>";
+                var dr = $(this).data('dr');
+                if (doctor == "") {
+                    var doctor_detail = '';
+                } else {
+                    var doctor_detail = '( ' + dr + '. ' + doctor + ' )';
+                }
+                
+                // var dr = "<?php echo lang('dr') ?>";
                 if ($('#idinput-' + idd).length)
                 {
 
@@ -793,7 +807,7 @@
                     {
 
                     } else {
-                        $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + ' ( ' + dr + '. ' + doctor + ') - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
+                        $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + doctor_detail + ' - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
                     }
 
 
@@ -924,7 +938,13 @@
                     //  tot = tot + curr_val;
                     var cat_name = $(this).data('cat_name');
                     var doctor = $(this).data('doctor');
-                    var dr = "<?php echo lang('dr') ?>";
+                    var dr = $(this).data('dr');
+                    if (doctor == "") {
+                        var doctor_detail = '';
+                    } else {
+                        var doctor_detail = '( ' + dr + '. ' + doctor + ' )';
+                    }
+                    // var dr = "<?php echo lang('dr') ?>";
                     if ($('#idinput-' + idd).length)
                     {
 
@@ -933,7 +953,7 @@
                         {
 
                         } else {
-                            $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + dr + doctor + ' - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
+                            $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + doctor_detail + ' - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
                         }
 
 
