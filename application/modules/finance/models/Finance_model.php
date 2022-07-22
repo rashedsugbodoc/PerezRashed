@@ -967,18 +967,18 @@ class Finance_model extends CI_model {
             $users = $fetched_records->result_array();
         }
 
-        if ($this->ion_auth->in_group(array('Doctor'))) {
-            $doctor_ion_id = $this->ion_auth->get_user_id();
-            $this->db->select('a.user_id, a.group_id, b.username, c.name');
-            $this->db->from('users_groups a');
-            $this->db->join('users b', 'b.id=a.user_id', 'left');
-            $this->db->join('groups c', 'c.id=a.group_id', 'left');
-            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
-            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-            $this->db->where('ion_user_id', $doctor_ion_id);
-            $fetched_records = $this->db->get();
-            $users = $fetched_records->result_array();
-        }
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('a.user_id, a.group_id, b.username, c.name');
+        //     $this->db->from('users_groups a');
+        //     $this->db->join('users b', 'b.id=a.user_id', 'left');
+        //     $this->db->join('groups c', 'c.id=a.group_id', 'left');
+        //     $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get();
+        //     $users = $fetched_records->result_array();
+        // }
 
 
         // Initialize Array with fetched data
