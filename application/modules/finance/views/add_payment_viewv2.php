@@ -752,6 +752,7 @@
             $("#pos_select").change(function () {
                 var patient_id = $("#pos_select").val();
                 var doctor_id = $("#add_doctor").val();
+                $('#encounter').find('option').remove();
                 $.ajax({
                     url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
                     method: 'GET',
