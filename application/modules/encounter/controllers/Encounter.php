@@ -323,9 +323,11 @@ class Encounter extends MX_Controller {
                 }
                 if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
                     if (empty($form_encounter->encounter_id)) {
-                        $option10 = '<button type="button" class="formbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('form') .'</button>';
+                        // $option10 = '<button type="button" class="formbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('form') .'</button>';
+                        $option10 = '<a href="form?encounter_id='.$encounter->id.'&redirect=encounter" class="dropdown-item bg-info text-light" target="_blank"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('form') .'</a>';
                     } else {
-                        $option10 = '<button type="button" class="formbutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('form') .'</button>';
+                        // $option10 = '<button type="button" class="formbutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-check"> </i>  '. lang('add') . ' ' . lang('form') .'</button>';
+                        $option10 = '<a href="form?encounter_id='.$encounter->id.'&redirect=encounter" class="dropdown-item bg-success text-light" target="_blank"><i class="fa fa-file-text"> </i>  '. lang('add') . ' ' . lang('form') .'</a>';
                     }
                 }
                 if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
