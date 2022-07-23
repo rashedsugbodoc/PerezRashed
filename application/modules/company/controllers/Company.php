@@ -19,7 +19,7 @@ class Company extends MX_Controller {
         $this->load->model('companyuser/companyuser_model');
         $this->load->module('patient');
         $this->load->module('sms');
-        if (!$this->ion_auth->in_group(array('admin','CompanyUser','Accountant','Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin','CompanyUser','Accountant','Doctor','superadmin'))) {
             redirect('home/permission');
         }
     }
