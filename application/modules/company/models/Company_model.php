@@ -215,15 +215,26 @@ class Company_model extends CI_model {
                     ->from('company')
                     // ->where('hospital_id', $this->session->userdata('hospital_id'))
                     // ->or_where('hospital_id', null)
-                    ->where('is_invoice_visible', 1)
-                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    //->where('is_invoice_visible', 1)
+                    ->group_start()
+                        ->where('is_invoice_visible', 1)
+                        ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, TRUE)
+                    ->group_end()
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
                     ->get();
             $companies = $query->result_array();
         } else {
             $this->db->select('*');
+            $this->db->group_start();
             $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
             $this->db->or_where('hospital_id', null);
-            $this->db->where('is_invoice_visible', null);
+            $this->db->group_end();
+
+            $this->db->where('is_invoice_visible', 1);
+
             $this->db->limit(10);
             $fetched_records = $this->db->get('company');
             $companies = $fetched_records->result_array();
