@@ -29,11 +29,36 @@
                                         </div>
                                         <div id="collapseOne31" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne31">
                                             <div class="panel-body border-0 bg-white">
-                                                <form role="form" action="form/addForm" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();" id="casebody">
+                                                <form role="form" id="formForm" action="form/addForm" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();" id="casebody">
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <?php echo validation_errors(); ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
+                                                                <select class="form-control select2-show-search" name="encounter_id" required id="encounter" style="width:100%;" <?php if(!empty($encounter_id)) { echo "disabled"; } elseif(!empty($form_single->encounter_id)) { echo "disabled"; } ?>>
+                                                                    <?php if (!empty($encounter_id)) { ?>
+                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($form_single->encounter_id)) { ?>
+                                                                        <option value="<?php echo $form_single->encounter_id; ?>" selected><?php echo $this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_number . ' - ' . $this->encounter_model->getEncounterTypeById($this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_type_id)->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                    <input type="hidden" name="encounter_id" value="<?php
+                                                                    if (!empty($encounter_id)) {
+                                                                        echo $encounter_id;
+                                                                    }
+                                                                    ?>">
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -50,13 +75,13 @@
                                                                 ?>">
                                                             </div>
                                                         </div>
-                                                        <?php if (!empty($encounter_id)) { ?>
+                                                        <!-- <?php if (!empty($encounter_id)) { ?>
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
                                                                 </div>
                                                             </div>
-                                                        <?php } ?>
+                                                        <?php } ?> -->
                                                         <div class="row">
                                                             <div class="col-md-12 col-sm-12">
                                                                 <input type="hidden" name="medical_history_redirect" value="<?php
@@ -80,21 +105,39 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" style="width:100%;" required>
+                                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" style="width:100%;" required <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($form_single->patient)) { ?>
                                                                         <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
                                                                     <?php } ?>
+                                                                    <?php if (!empty($encounter_id)) { ?>
+                                                                        <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($request_number)) { ?>
+                                                                        <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($patient_id)) { ?>
+                                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
+                                                                    <?php } ?>
                                                                 </select>
+                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                    <input type="hidden" name="patient" value="<?php echo $patient->id ?>">
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?><span class="text-red"> *</span></label>
-                                                                <select class="select2-show-search form-control" name="category" id="category" data-placeholder="Choose one" style="width:100%;" required>
-                                                                    <?php foreach ($categories as $category) { ?>
-                                                                        <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                                                                <label class="form-label"><?php echo lang('rendering_doctor'); ?> <span class="text-red">*</span></label>
+                                                                <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one" style="width:100%;" required <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                    <?php if (!empty($form_single->doctor)) { ?>
+                                                                        <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $doctor->id; ?>" selected><?php echo $doctor->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
+                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                    <input type="hidden" name="doctor" value="<?php echo $doctor->id ?>">
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -159,10 +202,10 @@
                                                     <div class="row">
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('rendering_doctor'); ?> <span class="text-red">*</span></label>
-                                                                <select class="form-control select2-show-search add_doctor" id="add_doctor" name="doctor" data-placeholder="Choose one" style="width:100%;" required>
-                                                                    <?php if (!empty($form_single->doctor)) { ?>
-                                                                        <option value="<?php echo $doctors->id; ?>" selected="selected"><?php echo $doctors->name; ?> - <?php echo $doctors->id; ?></option>  
+                                                                <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?><span class="text-red"> *</span></label>
+                                                                <select class="select2-show-search form-control" name="category" id="category" data-placeholder="Choose one" style="width:100%;" required>
+                                                                    <?php foreach ($categories as $category) { ?>
+                                                                        <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
@@ -426,6 +469,28 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
+        $("#encounter").change(function() {
+            var encounter = $("#encounter").val();
+            $("#pos_select").find('option').remove();
+
+            $.ajax({
+                url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var patient = response.patient;
+                    $('#pos_select').append($('<option>').text(patient.name).val(patient.id)).end();
+                    // $.each(patient, function (key, value) {
+                    //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
+                    //     console.log(value.name);
+                    // });
+                }
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
         $(document).ready(function () {
             var form_id = "<?php echo $form_single->id ?>";
             var form_date = "<?php echo date("F j, Y H:i A", strtotime($form_single->form_date.' UTC')); ?>";
@@ -620,14 +685,14 @@
             });
         });
     </script>
-    <script>
+
+    <script type="text/javascript">
         $(document).ready(function () {
-            $("#pos_select").select2({
-                placeholder: '<?php echo lang('select_patient'); ?>',
+            $("#encounter").select2({
+                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
                 allowClear: true,
                 ajax: {
-                    // url: 'patient/getPatientinfo',
-                    url: 'patient/getPatientInfoByVisitedProviderId',
+                    url: 'encounter/getEncounterInfo',
                     type: "post",
                     dataType: 'json',
                     delay: 250,
@@ -643,6 +708,34 @@
                     },
                     cache: true
                 }
+
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#pos_select").select2({
+                placeholder: '<?php echo lang('select_patient'); ?>',
+                allowClear: true,
+                // ajax: {
+                //     // url: 'patient/getPatientinfo',
+                //     url: 'patient/getPatientInfoByVisitedProviderId',
+                //     type: "post",
+                //     dataType: 'json',
+                //     delay: 250,
+                //     data: function (params) {
+                //         return {
+                //             searchTerm: params.term // search term
+                //         };
+                //     },
+                //     processResults: function (response) {
+                //         return {
+                //             results: response
+                //         };
+                //     },
+                //     cache: true
+                // }
 
             });
            
@@ -734,6 +827,8 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var form_id = $("#form_id").val();
+            var encounter_id = $("#formForm").find('[name="encounter_id"]').val();
+            console.log(encounter_id);
             var z = document.getElementById("accordHeader");
             var x = document.getElementById("collapseOne31");
             if (form_id !== "") {
@@ -747,6 +842,12 @@
                     // var koopId = baseUrl.substring(baseUrl.lastIndexOf('=') + 1);
                     // alert(koopId)
                 /*END*/
+            }
+            if (encounter_id !== "") {
+                z.className = "collapsed text-dark border-bottom";
+                z.style.backgroundColor = "#fff";
+                x.className = "panel-collapse collapse show";
+                $("#accordHeader").attr("aria-expanded", true);
             }
         });
     </script>

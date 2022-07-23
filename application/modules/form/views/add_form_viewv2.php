@@ -52,13 +52,13 @@
                                                     <?php echo validation_errors(); ?>
                                                 </div>
                                             </div>
-                                            <?php if (!empty($encounter_id)) { ?>
+                                            <!-- <?php if (!empty($encounter_id)) { ?>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
                                                     </div>
                                                 </div>
-                                            <?php } ?>
+                                            <?php } ?> -->
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <input type="hidden" name="medical_history_redirect" value="<?php
@@ -66,6 +66,31 @@
                                                         echo $redirect;
                                                     }
                                                     ?>">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
+                                                        <select class="form-control select2-show-search" name="encounter_id" required id="encounter" style="width:100%;" <?php if(!empty($encounter_id)) { echo "disabled"; } elseif(!empty($form_single->encounter_id)) { echo "disabled"; } ?>>
+                                                            <?php if (!empty($encounter_id)) { ?>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                            <?php } ?>
+                                                            <?php if (!empty($encounter->id)) { ?>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                            <?php } ?>
+                                                            <?php if (!empty($form_single->encounter_id)) { ?>
+                                                                <option value="<?php echo $form_single->encounter_id; ?>" selected><?php echo $this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_number . ' - ' . $this->encounter_model->getEncounterTypeById($this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_type_id)->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <?php if (!empty($encounter_id)) { ?>
+                                                            <input type="hidden" name="encounter_id" value="<?php
+                                                            if (!empty($encounter_id)) {
+                                                                echo $encounter_id;
+                                                            }
+                                                            ?>">
+                                                        <?php } ?>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -95,24 +120,42 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" required>
+                                                        <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" required <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                             <?php if (!empty($form->patient)) { ?>
                                                                 <option value="<?php echo $form->name; ?>" selected="selected"><?php echo $form->patient_name; ?> - <?php echo $form->patient; ?></option>  
+                                                            <?php } ?>
+                                                            <?php if (!empty($encounter_id)) { ?>
+                                                                <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                            <?php } ?>
+                                                            <?php if (!empty($request_number)) { ?>
+                                                                <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
                                                             <?php } ?>
                                                             <?php if (!empty($patient_id)) { ?>
                                                                 <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
                                                             <?php } ?>
                                                         </select>
+                                                        <?php if (!empty($encounter_id)) { ?>
+                                                            <input type="hidden" name="patient" value="<?php echo $patient->id ?>">
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?><span class="text-red"> *</span></label>
-                                                        <select class="select2-show-search form-control" name="category" id="category" data-placeholder="Choose one" required>
-                                                            <?php foreach ($categories as $category) { ?>
-                                                                <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                                                        <label class="form-label"><?php echo lang('refd_by_doctor'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search add_doctor" required id="add_doctor" name="doctor" data-placeholder="Choose one" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                            <?php if (!empty($form->patient)) { ?>
+                                                                <option value="<?php echo $form->name; ?>" selected="selected"><?php echo $form->doctor_name; ?> - <?php echo $form->doctor; ?></option>  
+                                                            <?php } ?>
+                                                            <?php if (!empty($encounter->id)) { ?>
+                                                                <option value="<?php echo $doctor->id; ?>" selected><?php echo $doctor->name ?></option>
+                                                            <?php } ?>
+                                                            <?php if (!empty($doctordetails)) { ?>
+                                                                <option value="<?php echo $doctordetails->id; ?>" selected="selected"><?php echo $doctordetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctordetails->id; ?>)</option>  
                                                             <?php } ?>
                                                         </select>
+                                                        <?php if (!empty($encounter_id)) { ?>
+                                                            <input type="hidden" name="doctor" value="<?php echo $doctor->id ?>">
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -197,13 +240,10 @@
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('refd_by_doctor'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search add_doctor" required id="add_doctor" name="doctor" data-placeholder="Choose one">
-                                                            <?php if (!empty($form->patient)) { ?>
-                                                                <option value="<?php echo $form->name; ?>" selected="selected"><?php echo $form->doctor_name; ?> - <?php echo $form->doctor; ?></option>  
-                                                            <?php } ?>
-                                                            <?php if (!empty($doctordetails)) { ?>
-                                                                <option value="<?php echo $doctordetails->id; ?>" selected="selected"><?php echo $doctordetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $doctordetails->id; ?>)</option>  
+                                                        <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?><span class="text-red"> *</span></label>
+                                                        <select class="select2-show-search form-control" name="category" id="category" data-placeholder="Choose one" required>
+                                                            <?php foreach ($categories as $category) { ?>
+                                                                <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
                                                             <?php } ?>
                                                         </select>
                                                     </div>

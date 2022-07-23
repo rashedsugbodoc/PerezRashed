@@ -14,6 +14,7 @@ class Form extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('accountant/accountant_model');
         $this->load->model('receptionist/receptionist_model');
+        $this->load->model('encounter/encounter_model');
         $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Doctor', 'Patient'))) {
             redirect('home/permission');
@@ -65,8 +66,16 @@ class Form extends MX_Controller {
         $data['patient_id'] = $this->input->get('patient_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
+        $data['redirect'] = $this->input->get('redirect');
         if (!empty($root) && !empty($method)) {
             $data['redirect'] = $root.'/'.$method.'?id='.$data['patient_id'].'&encounter_id='.$data['encounter_id'];
+        }
+
+        if (!empty($data['encounter_id'])) {
+            $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
+            $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+            $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
+            $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         }
 
 
@@ -85,12 +94,20 @@ class Form extends MX_Controller {
         }
 
         $form_number = $this->input->get('id');
+        $data['encounter_id'] = $this->input->get('encounter');
         $id = $this->form_model->getFormByFormNumber($form_number)->id;
         if (!empty($id)) {
             $form_details = $this->form_model->getFormById($id);
             if ($form_details->hospital_id !== $this->session->userdata('hospital_id')) {
                 redirect('home/permission');
             }
+        }
+
+        if (!empty($data['encounter_id'])) {
+            $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
+            $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+            $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
+            $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         }
 
         $data['templates'] = $this->form_model->getTemplate();
@@ -154,7 +171,7 @@ class Form extends MX_Controller {
         $root = $this->input->get('root');
         $method = $this->input->get('method');
         if (!empty($root) && !empty($method)) {
-            $data['redirect'] = $root.'/'.$method;
+            $data['redirect'] = $root.'/'.$method.'?id='.$patient_id.'&encounter_id='.$data['encounter_id'];
         }
 
         if (!empty($id)) {
@@ -167,6 +184,13 @@ class Form extends MX_Controller {
         if ($this->ion_auth->in_group('Doctor')) {
             $doctor_id = $this->db->get_where('doctor', array('ion_user_id' => $current_user))->row()->id;
             $data['doctordetails'] = $this->db->get_where('doctor', array('id' => $doctor_id))->row();
+        }
+
+        if (!empty($data['encounter_id'])) {
+            $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
+            $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+            $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
+            $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         }
 
         $data['templates'] = $this->form_model->getTemplate();
@@ -255,7 +279,8 @@ class Form extends MX_Controller {
         $user = $this->ion_auth->get_user_id();
 
         if (!empty($medical_redirect)) {
-            $redirect = $medical_redirect . '?id=' . $patient_details->patient_id . '&encounter_id=' . $encounter;
+            // $redirect = $medical_redirect . '?id=' . $patient_details->patient_id . '&encounter_id=' . $encounter;
+            $redirect = $medical_redirect;
         }
 
         $this->load->library('form_validation');
@@ -267,6 +292,7 @@ class Form extends MX_Controller {
 // Validating Name Field
         $this->form_validation->set_rules('form_name', 'Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         $this->form_validation->set_rules('report', 'Report', 'trim|required|min_length[1]|max_length[60000]|xss_clean');
+        $this->form_validation->set_rules('encounter_id', 'Encounter', 'trim|required|min_length[1]|max_length[60000]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', lang('validation_error'));
             if (!empty($id)) {
@@ -399,10 +425,14 @@ class Form extends MX_Controller {
                     'encounter_id' => $encounter,
                     'form_number' => $form_number,
                 );
-
-
                 $this->form_model->insertForm($data);
                 $inserted_id = $this->db->insert_id();
+
+                $data_encounter = array(
+                    'form_id' => $inserted_id
+                );
+
+                $this->encounter_model->updateEncounter($encounter, $data_encounter);
 
                 $this->session->set_flashdata('success', lang('record_added'));
                 if (!empty($redirect)) {
