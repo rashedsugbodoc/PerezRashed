@@ -116,7 +116,7 @@ class Nurse extends MX_Controller {
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
                 'max_size' => "2000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-                'max_height' => "1768",
+                'max_height' => "2024",
                 'max_width' => "2024"
             );
 
