@@ -264,7 +264,7 @@ class Finance extends MX_Controller {
 // Validating Price Field
         $this->form_validation->set_rules('company_id', 'Company', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
-        $this->form_validation->set_rules('category_name[]', 'Service Item', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('category_name[]', 'Charge', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', lang('validation_error'));
