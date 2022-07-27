@@ -1041,4 +1041,17 @@ class Patient_model extends CI_model {
         $query = $this->db->get('patient');
         return $query->row();
     }
+
+    function insertPatientHealthDeclaration($data) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('medical_history', $data2);
+    }
+
+    function getPatientHealthDeclarationByPatientId($id) {
+        $this->db->where('patient_id', $id);
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('medical_history');
+        return $query->row();
+    }
 }
