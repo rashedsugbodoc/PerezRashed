@@ -53,7 +53,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
-                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?>>
+                                                                <select class="select2-show-search form-control pos_select" id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?> required>
                                                                     <?php if (!empty($payment)) { ?>
                                                                         <?php foreach($patients as $patient) { ?>
                                                                             <?php if ($patient->id === $payment->patient) { ?>
@@ -158,7 +158,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('rendering_doctor'); ?></label>
-                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter->doctor)) { echo "disabled"; } ?>>
+                                                                <select class="select2-show-search form-control add_doctor" id="add_doctor" name="doctor" placeholder="Search Doctor" <?php if(!empty($encounter->doctor)) { echo "disabled"; } ?> required>
                                                                     <?php if (!empty($payment)) { ?>
                                                                         <?php foreach($doctors as $doctor) { ?>
                                                                             <?php if ($doctor->id === $payment->doctor) { ?>
@@ -216,7 +216,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" data-placeholder="Select Patient to Produce Encounter Records" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                        <select class="form-control select2-show-search" name="encounter_id" id="encounter" data-placeholder="Select Patient to Produce Encounter Records" <?php if(!empty($encounter_id)) { echo "disabled"; } ?> required>
                                                             <option label="Choose one"></option>
                                                             <?php if (!empty($encounter->id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encounter_type->display_name . ' - ' . $encounter->created_at; ?></option>
@@ -239,7 +239,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('payer_account'); ?></label>
-                                                        <select class="select2-show-search form-control add_payer" id="company" name="company_id" value=''>
+                                                        <select class="select2-show-search form-control add_payer" id="company" name="company_id" value='' required>
                                                             <!-- <?php if (!empty($payment->company_id)) { ?>
                                                                 <option value="<?php echo $company->id; ?>" selected><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
                                                             <?php }?> -->
@@ -254,7 +254,7 @@
                                                 <div class="col-md-6 col-sm-12" hidden>
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('rendering'). ' ' . lang('staff')?></label>
-                                                        <select class="select2-show-search form-control rendering_user" id="rendering_user" name="rendering_user">
+                                                        <select class="select2-show-search form-control rendering_user" id="rendering_user" name="rendering_user" required>
                                                             <option value="add_new"><?php echo lang('add_new') ?></option>
                                                             <?php foreach ($staffs as $staff) { ?>
                                                                 <?php if (!empty($payment)) { ?>
@@ -277,7 +277,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group"> 
                                                         <label for="exampleInputEmail1"> <?php echo lang('select'); ?></label>
-                                                        <select name="category_name[]" class="multi-selection" multiple="" id="my_multi_select3">
+                                                        <select name="category_name[]" class="multi-selection" multiple="" id="my_multi_select3" required>
                                                             <?php /*foreach ($categories as $category) {*/ ?>
                                                                 <?php /*foreach ($doctors as $doctor) {*/ ?>
                                                                     <?php
@@ -744,7 +744,14 @@
         <script type="text/javascript" src="common/assets/jquery-multi-select/js/jquery.multi-select.js"></script>
         <script type="text/javascript" src="common/assets/jquery-multi-select/js/jquery.quicksearch.js"></script>
         <script src="common/js/advanced-form-components.js"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script>
+        $('#editPaymentForm').parsley();
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
