@@ -31,6 +31,7 @@ class Patient extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('branch/branch_model');
         $this->load->model('encounter/encounter_model');
+        $this->load->model('hospital/hospital_model');
         $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser'))) {
             redirect('home/permission');
@@ -836,6 +837,145 @@ class Patient extends MX_Controller {
         $this->load->view('population_profile', $data);
     }
 
+    function editHealthDeclaration() {
+        $patient_number = $this->input->get('id');
+        $id = $this->patient_model->getPatientByPatientNumber($patient_number)->id;
+        $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
+        $data['medical_history'] = $this->patient_model->getPatientHealthDeclarationByPatientId($data['patient']->id);
+        $data['past_hospitalizations'] = json_decode($data['medical_history']->past_hospitalizations);
+        $this->load->view('home/dashboardv2');
+        $this->load->view('health_declaration', $data);
+    }
+
+    function addHealthDeclaration() {
+        $id = $this->input->post('id');
+        $user = $this->ion_auth->get_user_id();
+        $medical_history_number = 'H'.random_string('alnum', 6);
+        $year = $this->input->post('year');
+        $diagnosis = $this->input->post('diagnosis');
+        $hospital = $this->input->post('hospital');
+        $count = $this->input->post('count');
+
+        $report = array();
+
+        if (!empty($year)) {
+            foreach($year as $key => $value) {
+                $report[$key] = array(
+                    'count' => $count[$key],
+                    'year' => $year[$key],
+                    'diagnosis' => $diagnosis[$key],
+                    'hospital' => $hospital[$key],
+                );
+            }
+
+            // foreach ($report as $key1 => $value1) {
+            //     $final[] = $key1 . '***' . implode('***', $value1);
+            // }
+
+            // $past_hospitalization = implode('###', $final);
+        }
+
+        $past_hospitalization = json_encode($report);
+
+        $date = gmdate('Y-m-d H:i:s');
+        $cancer = $this->input->post('cancer');
+        $hypertension = $this->input->post('hypertension');
+        $diabetes = $this->input->post('diabetes');
+        $heart_disease = $this->input->post('heart_disease');
+        $stroke = $this->input->post('stroke');
+        $kidney = $this->input->post('kidney');
+        $liver = $this->input->post('liver');
+        $hepatitis = $this->input->post('hepatitis');
+        $high_blood_pressure = $this->input->post('high_blood_pressure');
+        $hiv = $this->input->post('hiv');
+        $tuberculosis = $this->input->post('tuberculosis');
+        $asthma = $this->input->post('asthma');
+        $autoimmune = $this->input->post('autoimmune');
+        $epilepsy = $this->input->post('epilepsy');
+        $fibromyalgia = $this->input->post('fibromyalgia');
+        $files = $this->input->post('files');
+
+        $specify_cancer = $this->input->post('specify_cancer');
+        $specify_hypertension = $this->input->post('specify_hypertension');
+        $specify_diabetes = $this->input->post('specify_diabetes');
+        $specify_heart_disease = $this->input->post('specify_heart_disease');
+        $specify_stroke = $this->input->post('specify_stroke');
+        $specify_kidney = $this->input->post('specify_kidney');
+        $specify_liver = $this->input->post('specify_liver');
+        $specify_hepatitis = $this->input->post('specify_hepatitis');
+        $specify_high_blood_pressure = $this->input->post('specify_high_blood_pressure');
+        $specify_hiv = $this->input->post('specify_hiv');
+        $specify_tuberculosis = $this->input->post('specify_tuberculosis');
+        $specify_asthma = $this->input->post('specify_asthma');
+        $specify_autoimmune = $this->input->post('specify_autoimmune');
+        $specify_epilepsy = $this->input->post('specify_epilepsy');
+        $specify_fibromyalgia = $this->input->post('specify_fibromyalgia');
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+        $this->form_validation->set_rules('cancer', 'Cancer', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('hypertension', 'Hypertension', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('diabetes', 'Diabetes', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('heart_disease', 'Heart Disease', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('stroke', 'Stroke', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('kidney', 'Kidney', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('liver', 'Liver', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('hepatitis', 'Hepatitis', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('high_blood_pressure', 'High Blood Pressure', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('hiv', 'HIV', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('tuberculosis', 'Tuberculosis', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('asthma', 'Asthma', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('autoimmune', 'Autoimmune', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('epilepsy', 'Epilepsy', 'trim|min_length[1]|xss_clean');
+        $this->form_validation->set_rules('fibromyalgia', 'Fibromyalgia', 'trim|min_length[1]|xss_clean');
+
+        $data = array(
+            'patient_id' => $id,
+            'created_user_id' => $user,
+            'medical_history_number' => $medical_history_number,
+            'created_at' => $date,
+            'is_diagnosed_cancer' => $cancer,
+            'is_diagnosed_hypertension' => $hypertension,
+            'is_diagnosed_diabetes' => $diabetes,
+            'is_diagnosed_heart_disease' => $heart_disease,
+            'is_diagnosed_stroke' => $stroke,
+            'is_diagnosed_kidney_bladder_disease' => $kidney,
+            'is_diagnosed_liver_gallbladder_disease' => $liver,
+            'is_diagnosed_hepatitis' => $hepatitis,
+            'is_diagnosed_high_blood_pressure' => $high_blood_pressure,
+            'is_diagnosed_aids_hiv' => $hiv,
+            'is_diagnosed_tuberculosis' => $tuberculosis,
+            'is_diagnosed_asthma' => $asthma,
+            'is_diagnosed_autoimmune_disease' => $autoimmune,
+            'is_diagnosed_epilepsy' => $epilepsy,
+            'is_diagnosed_fibromyalgia' => $fibromyalgia,
+            'cancer_details' => $specify_cancer,
+            'hypertension_details' => $specify_hypertension,
+            'diabetes_details' => $specify_diabetes,
+            'heart_disease_details' => $specify_heart_disease,
+            'stroke_details' => $specify_stroke,
+            'kidney_bladder_disease_details' => $specify_kidney,
+            'liver_gallbladder_disease_details' => $specify_liver,
+            'hepatitis_details' => $specify_hepatitis,
+            'high_blood_pressure_details' => $specify_high_blood_pressure,
+            'aids_hiv_details' => $specify_hiv,
+            'tuberculosis_details' => $specify_tuberculosis,
+            'asthma_details' => $specify_asthma,
+            'autoimmune_disease_details' => $specify_autoimmune,
+            'epilepsy_details' => $specify_epilepsy,
+            'fibromyalgia_details' => $specify_fibromyalgia,
+            'past_hospitalizations' => $past_hospitalization,
+        );
+
+        $this->patient_model->insertPatientHealthDeclaration($data);
+
+        $this->session->set_flashdata('success', lang('record_added'));
+
+        redirect('patient');
+
+    }
+
     function addPopulationProfile() {
         $family_profile = $this->input->post('family_profile');
         $id = $this->patient_model->getPatientByFamilyProfileId($family_profile)->id;
@@ -1546,6 +1686,10 @@ class Patient extends MX_Controller {
             $doctor_id = (int)$encounter_row->rendering_staff_id;
         }
 
+        if ($doctor_id == 0) {
+            $doctor_id = null;
+        }
+
 
         //Reading Weight Unit Start
 
@@ -1892,7 +2036,14 @@ class Patient extends MX_Controller {
         }
         $data['encounter_details'] = $this->encounter_model->getEncounterById($data['encounter_id']);
         if (empty($data['encounter_id'])) {
-            $data['encounter_details'] = $this->encounter_model->getEncounterByPatientId($id);
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                $doctor_ion_id = $this->session->userdata('user_id');
+                $doctor_id = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->id;
+                $data['encounter_details'] = $this->encounter_model->getEncounterByPatientIdByDoctorId($id, $doctor_id);
+            } else {
+                $data['encounter_details'] = $this->encounter_model->getEncounterByPatientId($id);
+            }
+
         }
 
         if ($this->ion_auth->in_group(array('Patient'))) {
@@ -1900,7 +2051,7 @@ class Patient extends MX_Controller {
             $id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
         }
 
-        if ($this->ion_auth->in_group(array('Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser'))) {
+        if ($this->ion_auth->in_group(array('Laboratorist', 'Accountant', 'CompanyUser'))) {
             redirect('home/permission');
         }
 
@@ -3325,7 +3476,7 @@ class Patient extends MX_Controller {
 
             $options2 = '<a class="btn btn-info" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
-            if (!$this->ion_auth->in_group(array('Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser'))) {
+            if (!$this->ion_auth->in_group(array('Laboratorist', 'Accountant', 'CompanyUser'))) {
                 $options3 = '<a class="btn btn-secondary" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->patient_id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
             }
 
@@ -3347,9 +3498,11 @@ class Patient extends MX_Controller {
             if ($this->ion_auth->in_group(array('Doctor','CompanyUser','admin'))) {
                 $options8 = '<a class="btn btn-info" href="patient/editIdentification?id='.$patient->patient_id.'">' . lang('edit') . ' ' . lang('identification') . '</a>';
                 $options9 = '<a class="btn btn-info" href="patient/editPopulation?id='.$patient->patient_id.'">'. lang('edit') . ' ' . lang('population') . ' ' . lang('census') .'</a>';
+                $options10 = '<a class="btn btn-info" href="patient/editHealthDeclaration?id='.$patient->patient_id.'">'. lang('edit') . ' ' . lang('health') . ' ' . lang('declaration') .'</a>';
             } else {
                 $options8 = '';
                 $options9 = '';
+                $options10 = '';
             }
 
             $doctorNames = $this->getDoctorList($patient->doctor);
@@ -3362,7 +3515,7 @@ class Patient extends MX_Controller {
                     $patient->phone,
                     $doctorNames,
                     $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
-                    $options1 . ' ' . $options6 . ' ' . $options4 . ' ' . $options5 . ' ' . $options8 . ' ' . $options9,
+                    $options1 . ' ' . $options6 . ' ' . $options4 . ' ' . $options5 . ' ' . $options8 . ' ' . $options9 . ' ' . $options10,
                         //  $options2
                 );
             }
@@ -3374,7 +3527,7 @@ class Patient extends MX_Controller {
                     $patient->phone,
                     $doctorNames,
                     $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
-                    $options1 . ' ' . $options6 . ' ' . $options4,
+                    $options1 . ' ' . $options3 . ' ' . $options6 . ' ' . $options4,
                         //  $options2
                 );
             }
@@ -6264,6 +6417,20 @@ class Patient extends MX_Controller {
         $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($encounter->patient_id);
 
         echo json_encode($data);
+    }
+
+    public function getHealthDeclarationPastHistoryInputValues() {
+        $diagnosis = $this->input->post('diagnosis');
+    }
+
+    public function getHospitalInfoWithAddNewOption() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->hospital_model->getHospitalInfoWithAddNewOption($searchTerm);
+
+        echo json_encode($response);
     }
 
 }
