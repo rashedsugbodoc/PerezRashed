@@ -161,7 +161,7 @@
                         ?>
                         <div class="page-header d-print-none">
                             <div class="page-leftheader">
-                                <h4 class="page-title"><?php echo lang('form');?> <?php echo lang('details');?></h4>
+                                <h4 class="page-title"><?php echo lang('invoice');?> <?php echo lang('details');?></h4>
                             </div>
                         </div>
                         <!--End Page header-->
@@ -194,7 +194,7 @@
                                             <button type="button" id="print" class="btn btn-info"><i class="fe fe-printer"></i><span class="button-text"><?php echo lang('print'); ?></span></button>
                                         <?php } ?>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
-                                            <a href="finance/editPayment?id=<?php echo $payment->id; ?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> <?php echo lang('edit'); ?> <?php echo lang('invoice'); ?></span></a>
+                                            <a href="finance/editPayment?finance_id=<?php echo $payment->invoice_number; ?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> <?php echo lang('edit'); ?> <?php echo lang('invoice'); ?></span></a>
                                         <?php } ?>
                                     </div>
                                     <div class="flex-grow-1 mr-3">
