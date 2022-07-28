@@ -208,6 +208,7 @@ class Finance extends MX_Controller {
             $rendering_user = null;
         }
         $date = time();
+        $today_date_time = gmdate('Y-m-d H:i:s');
         $date_string = date('d-m-y', $date);
         $discount = $this->input->post('discount');
         if (empty($discount)) {
@@ -416,6 +417,7 @@ class Finance extends MX_Controller {
                     'category_name' => $category_name,
                     'patient' => $patient,
                     'date' => $date,
+                    'created_at' => $today_date_time,
                     'amount' => $sub_total,
                     'doctor' => $doctor,
                     'rendering_staff_id' => $rendering_user,
@@ -663,6 +665,7 @@ class Finance extends MX_Controller {
                     'patient_address' => $patient_details->address,
                     'doctor_name' => $doctor_details->name,
                     'remarks' => $remarks,
+                    'last_modified' => $today_date_time,
                     'completion_status' => $completion_status,
                     'company_id' => $company_id,
                     'payment_status' => $payment_status
