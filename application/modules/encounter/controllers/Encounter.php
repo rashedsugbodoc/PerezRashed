@@ -359,6 +359,20 @@ class Encounter extends MX_Controller {
                                     <a class="delete_button dropdown-item bg-danger text-light" href="encounter/delete?id=' . $encounter->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>  ' . lang('delete') . '</a>
                                 </div>
                             </div>';
+            } elseif($this->ion_auth->in_group(array('Receptionist'))) {
+                if (empty($encounter->start_vital_id)) {
+                    $option3 = '<button type="button" class="vitalbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '" data-patient="' . $encounter->patient_id . '"><i class="fa fa-camera"> </i>'. '  ' . lang('capture_vitals') .'</button>';
+                } else {
+                    $option3 = '<button type="button" class="vitalbutton dropdown-item bg-success text-light" data-toggle="modal" data-id="' . $encounter->id . '" data-patient="' . $encounter->patient_id . '"><i class="fa fa-check"></i>'. '  ' . lang('vitals_captured') .'</button>';
+                }
+                $option6 = '<div class="dropdown">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                                    <i class="fa fa-caret-down mr-2"></i>'. lang('actions') .'
+                                </button>
+                                <div class="dropdown-menu" style="overflow: auto; height: 200px; scrollbar-width: auto;">
+                                    '.$option3.'
+                                </div>
+                            </div>';
             }
             $info[] = array(
                 date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')),

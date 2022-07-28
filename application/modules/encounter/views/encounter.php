@@ -368,7 +368,7 @@
 
                     <!-- Add Vitals Modal Start -->
                         <div class="modal fade" id="AddVital" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                            <div class="modal-dialog" role="document">
+                            <div class="modal-dialog modal-lg" role="document">
                                 <div class="modal-content modal-content-demo">
                                     <div class="modal-header">
                                         <h6 class="modal-title"><?php echo lang('add_vitals'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
@@ -446,6 +446,47 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('heart_rate'); ?></label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" name="heartrate">
+                                                            <label class="p-2 text-muted align-self-center"><?php echo lang('bpm'); ?></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('blood_sugar'); ?></label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" name="blood_sugar">
+                                                            <div class="input-group-append br-tl-0 br-bl-0">
+                                                                <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="blood_sugar_unit">
+                                                                    <option value="mg_dl"><?php echo lang('mg_dl'); ?></option>
+                                                                    <option value="mmol"><?php echo lang('mmol'); ?></option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label><?php echo lang('blood_sugar_measured') . ' ' . lang('during');?></label>
+                                                        <div class="input-group">
+                                                            <select class="form-control select2-show-search" name="blood_sugar_timing" data-placeholder="Choose one">
+                                                                <option label="Choose one"></option>
+                                                                <option value="fasting"><?php echo lang('fasting'); ?> (<?php echo lang('upon_first_waking_up'); ?>)</option>
+                                                                <option value="before_meal"><?php echo lang('before_meal'); ?></option>
+                                                                <option value="after_meal"><?php echo lang('after_meal'); ?></option>
+                                                                <option value="bed_time"><?php echo lang('bed_time'); ?></option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
                                                         <label class="form-label"><?php echo lang('temperature'); ?></label>
                                                         <div class="input-group">
                                                             <input type="text" class="form-control" name="temperature">
@@ -458,8 +499,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label><?php echo lang('temperature_site') ?></label>
@@ -472,15 +511,6 @@
                                                                 <option class="forehead"><?php echo lang('forehead'); ?></option>
                                                                 <option class="mouth"><?php echo lang('mouth'); ?></option>
                                                             </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('heart_rate'); ?></label>
-                                                        <div class="input-group">
-                                                            <input type="text" class="form-control" name="heartrate">
-                                                            <label class="p-2 text-muted align-self-center"><?php echo lang('bpm'); ?></label>
                                                         </div>
                                                     </div>
                                                 </div>

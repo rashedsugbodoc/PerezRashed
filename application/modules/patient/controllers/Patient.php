@@ -1683,7 +1683,7 @@ class Patient extends MX_Controller {
         }
 
         if (empty($doctor_id)) {
-            $doctor_id = (int)$encounter_row->rendering_staff_id;
+            $doctor_id = (int)$encounter_row->doctor;
         }
 
         if ($doctor_id == 0) {
@@ -2051,7 +2051,7 @@ class Patient extends MX_Controller {
             $id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
         }
 
-        if ($this->ion_auth->in_group(array('Laboratorist', 'Accountant', 'CompanyUser'))) {
+        if ($this->ion_auth->in_group(array('Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser'))) {
             redirect('home/permission');
         }
 
@@ -3476,7 +3476,7 @@ class Patient extends MX_Controller {
 
             $options2 = '<a class="btn btn-info" title="' . lang('info') . '" style="color: #fff;" href="patient/patientDetails?id=' . $patient->id . '"><i class="fa fa-info"></i> ' . lang('info') . '</a>';
 
-            if (!$this->ion_auth->in_group(array('Laboratorist', 'Accountant', 'CompanyUser'))) {
+            if (!$this->ion_auth->in_group(array('Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser'))) {
                 $options3 = '<a class="btn btn-secondary" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->patient_id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
             }
 
@@ -3527,7 +3527,7 @@ class Patient extends MX_Controller {
                     $patient->phone,
                     $doctorNames,
                     $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
-                    $options1 . ' ' . $options3 . ' ' . $options6 . ' ' . $options4,
+                    $options1 . ' ' . $options6 . ' ' . $options4,
                         //  $options2
                 );
             }
