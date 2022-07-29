@@ -25,6 +25,7 @@ function required() {
         }
     }
     $CI->load->model('settings/settings_model');
+    $CI->load->model('company/company_model');
     $CI->load->model('ion_auth_model');
     $CI->load->model('hospital/hospital_model');
 
@@ -44,6 +45,7 @@ function required() {
                     $newdata = array(
                         'hospital_id' => $CI->hospital_id,
                         'profile_img_url' => $profile_img_url,
+                        'name' => $user->name
                     );
                     $CI->session->set_userdata($newdata);
                 }
@@ -69,6 +71,7 @@ function required() {
                     $newdata = array(
                         'hospital_id' => $CI->hospital_id,
                         'profile_img_url' => $profile_img_url,
+                        'name' => $user->name
                     );
                     $CI->session->set_userdata($newdata);
                 }
