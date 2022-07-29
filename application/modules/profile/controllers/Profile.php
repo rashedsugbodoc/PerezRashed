@@ -9,6 +9,7 @@ class Profile extends MX_Controller {
         parent::__construct();
         $this->load->model('profile_model');
         $this->load->model('hospital/hospital_model');
+        $this->load->model('location/location_model');
         $this->load->library('form_validation');
         $this->form_validation->CI =& $this;
 
@@ -16,8 +17,15 @@ class Profile extends MX_Controller {
 
     public function index() {
         $data = array();
-        $id = $this->ion_auth->get_user_id();
-        $data['profile'] = $this->profile_model->getProfileById($id);
+        $ion_user_id = $this->ion_auth->get_user_id();
+        $group_id = $this->profile_model->getUsersGroups($ion_user_id)->row()->group_id;
+        $group_name = $this->profile_model->getGroups($group_id)->row()->name;
+        $group_name = strtolower($group_name);
+        $data['profile'] = $this->db->get_where($group_name, array('ion_user_id' => $ion_user_id))->row();
+        $data['group_name'] = $group_name;
+        $data['barangay_name'] = $this->location_model->getBarangayById($data['profile']->barangay_id)->name;
+        $data['city_name'] = $this->location_model->getCityById($data['profile']->city_id)->name;
+        $data['state_name'] = $this->location_model->getStateById($data['profile']->state_id)->name;                                        
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('profilev2', $data);
         // $this->load->view('home/footer'); // just the footer file

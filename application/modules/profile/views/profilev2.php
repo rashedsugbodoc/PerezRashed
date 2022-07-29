@@ -5,62 +5,68 @@
                 <!--div class="app-content main-content"-->
                     <!--div class="side-app"-->
                         <!--Page header-->
-
+                        <div class="page-header">
+                            <div class="page-leftheader">
+                                <h4 class="page-title">My Profile</h4>
+                            </div>
+                        </div>
+                        <!--End Page header-->
                         <div class="row">
-                            <div class="col-md-8 col-sm-12">
-                                <div class="card mt-5">
-                                    <div class="card-header">
-                                        <div class="card-title"><?php echo lang('manage_profile'); ?></div>
-                                    </div>
-                                    <form role="form" action="profile/addNew" class="clearfix" method="post" enctype="multipart/form-data">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('name'); ?></label>
-                                                        <input type="text" class="form-control" name="name" placeholder="Name" value="<?php
-                                                        if (!empty($profile->username)) {
-                                                            echo $profile->username;
-                                                        }
-                                                        ?>">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('change_password'); ?></label>
-                                                        <input type="password" class="form-control" name="password" placeholder="*********" maxlength="255">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Email</label>
-                                                        <input type="email" class="form-control" name="email" placeholder="Email" value="<?php
-                                                        if (!empty($profile->email)) {
-                                                            echo $profile->email;
-                                                        }
-                                                        ?>" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <input type="hidden" name="id" value='<?php
-                                            if (!empty($profile->id)) {
-                                                echo $profile->id;
-                                            }
-                                            ?>'>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <div class="col-lg-8 col-md-12 col-sm-12">
+
+                                <div class="card box-widget widget-user">
+                                    <div class="widget-user-image mx-auto mt-5 text-center"><img alt="User Avatar" class="rounded-circle" src="<?php echo $profile->img_url; ?>" style="max-height: 200px;"></div>
+                                    <div class="card-body text-center">
+                                        <div class="pro-user">
+                                            <h4 class="pro-user-username text-dark mb-1 font-weight-bold"><?php echo $profile->name;?></h4>
+                                            <h6 class="pro-user-desc text-muted"><?php echo ucfirst($group_name);?></h6>
+                                            <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                            <a href="<?php echo base_url('doctor/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
+                                            <?php } ?>
+                                            <?php if ($this->ion_auth->in_group(array('Patient'))) { ?>
+                                            <a href="<?php echo base_url('patient/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
+                                            <?php } ?>                                            
                                         </div>
-                                    </form>
+                                    </div>
+
                                 </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                    <h4 class="card-title">Personal Details</h4>
+                                        
+                                        <div class="table-responsive">
+                                            <table class="table mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="py-2 px-0">
+                                                            <span class="font-weight-semibold w-50">Name </span>
+                                                        </td>
+                                                        <td class="py-2 px-0"><?php echo $profile->name;?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="py-2 px-0">
+                                                            <span class="font-weight-semibold w-50">Address </span>
+                                                        </td>
+
+                                                        <td class="py-2 px-0"><?php echo $profile->address.', '; if(!empty($barangay_name)) { echo $barangay_name.', ';} echo $city_name.', '.$state_name; ?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="py-2 px-0">
+                                                            <span class="font-weight-semibold w-50">Email </span>
+                                                        </td>
+                                                        <td class="py-2 px-0"><?php echo $profile->email;?></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="py-2 px-0">
+                                                            <span class="font-weight-semibold w-50">Phone </span>
+                                                        </td>
+                                                        <td class="py-2 px-0"><?php echo $profile->phone;?></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>                                
                             </div>
                         </div>
 
