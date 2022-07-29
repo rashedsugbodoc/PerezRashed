@@ -31,6 +31,14 @@ class Profile_model extends CI_model {
         $this->db->update('users', $uptade_ion_user);
     }
 
+    function updateIonUserPassword($password, $ion_user_id) {
+        $uptade_ion_user = array(
+            'password' => $password
+        );
+        $this->db->where('id', $ion_user_id);
+        $this->db->update('users', $uptade_ion_user);
+    }
+
     function getUsersGroups($id) {
         $this->db->where('user_id', $id);
         $query = $this->db->get('users_groups');
