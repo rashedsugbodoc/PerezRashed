@@ -1007,7 +1007,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <?php if ($this->ion_auth->in_group('Patient')) { ?>
                                         <li><a href="patient/editIdentification" class="slide-item"><?php echo lang('edit').' '.lang('identification'); ?></a></li>
                                     <?php } ?>
-                                    <li><a href="profile" class="slide-item"><?php echo lang('change_password'); ?></a></li>
+                                    <li><a href="profile/changePassword" class="slide-item"><?php echo lang('change_password'); ?></a></li>
                                     <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                         <li><a href="doctor/editProfile" class="slide-item"><?php echo lang('edit').' '.lang('profile'); ?></a></li>
                                     <?php } elseif ($this->ion_auth->in_group('Patient')) { ?>
@@ -1427,7 +1427,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                 <div class="text-center">
                                                     <a href="#" class="dropdown-item text-center user pb-0 font-weight-bold">
                                                         <?php
-                                                        $username = $this->ion_auth->user()->row()->username;
+                                                        $username = $this->session->userdata('name');
                                                         if (!empty($username)) {
                                                             echo $username;
                                                         }
