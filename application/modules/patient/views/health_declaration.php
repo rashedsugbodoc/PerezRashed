@@ -32,17 +32,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="cancer" value="1">
+                                                        <input type="radio" class="custom-control-input" name="cancer" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_cancer == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="cancer" value="0">
+                                                        <input type="radio" class="custom-control-input" name="cancer" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_cancer == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_cancer == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-cancer" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-cancer" <?php
+                                                        if ($medical_history->is_diagnosed_cancer == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_cancer == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_cancer == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -51,7 +69,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_cancer" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_cancer" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->cancer_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->cancer_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -63,17 +87,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="hypertension" value="1">
+                                                        <input type="radio" class="custom-control-input" name="hypertension" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_hypertension == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="hypertension" value="0">
+                                                        <input type="radio" class="custom-control-input" name="hypertension" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_hypertension == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_hypertension == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-hypertension" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-hypertension" <?php
+                                                        if ($medical_history->is_diagnosed_hypertension == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_hypertension == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_hypertension == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -82,7 +124,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_hypertension" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_hypertension" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->hypertension_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->hypertension_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -94,17 +142,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="diabetes" value="1">
+                                                        <input type="radio" class="custom-control-input" name="diabetes" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_diabetes == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="diabetes" value="0">
+                                                        <input type="radio" class="custom-control-input" name="diabetes" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_diabetes == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_diabetes == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-diabetes" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-diabetes" <?php
+                                                        if ($medical_history->is_diagnosed_diabetes == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_diabetes == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_diabetes == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -113,7 +179,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_diabetes" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_diabetes" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->diabetes_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->diabetes_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -125,17 +197,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="heart_disease" value="1">
+                                                        <input type="radio" class="custom-control-input" name="heart_disease" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_heart_disease == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="heart_disease" value="0">
+                                                        <input type="radio" class="custom-control-input" name="heart_disease" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_heart_disease == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_heart_disease == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-heart-disease" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-heart-disease" <?php
+                                                        if ($medical_history->is_diagnosed_heart_disease == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_heart_disease == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_heart_disease == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -144,7 +234,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_heart_disease" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_heart_disease" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->heart_disease_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->heart_disease_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -156,17 +252,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="stroke" value="1">
+                                                        <input type="radio" class="custom-control-input" name="stroke" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_stroke == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="stroke" value="0">
+                                                        <input type="radio" class="custom-control-input" name="stroke" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_stroke == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_stroke == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-stroke" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-stroke" <?php
+                                                        if ($medical_history->is_diagnosed_stroke == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_stroke == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_stroke == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -175,7 +289,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_stroke" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_stroke" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->stroke_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->stroke_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -187,17 +307,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="kidney" value="1">
+                                                        <input type="radio" class="custom-control-input" name="kidney" value="1" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_kidney_bladder_disease == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="kidney" value="0">
+                                                        <input type="radio" class="custom-control-input" name="kidney" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_kidney_bladder_disease == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_kidney_bladder_disease == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-kidney" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-kidney" <?php
+                                                        if ($medical_history->is_diagnosed_kidney_bladder_disease == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_kidney_bladder_disease == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_kidney_bladder_disease == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -206,7 +344,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_kidney" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_kidney" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->kidney_bladder_disease_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->kidney_bladder_disease_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -218,17 +362,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="liver" value="1">
+                                                        <input type="radio" class="custom-control-input" name="liver" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_liver_gallbladder_disease == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="liver" value="0">
+                                                        <input type="radio" class="custom-control-input" name="liver" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_liver_gallbladder_disease == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_liver_gallbladder_disease == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-liver" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-liver" <?php
+                                                        if ($medical_history->is_diagnosed_liver_gallbladder_disease == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_liver_gallbladder_disease == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_liver_gallbladder_disease == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -237,7 +399,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_liver" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_liver" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->liver_gallbladder_disease_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->liver_gallbladder_disease_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -249,17 +417,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="hepatitis" value="1">
+                                                        <input type="radio" class="custom-control-input" name="hepatitis" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_hepatitis == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="hepatitis" value="0">
+                                                        <input type="radio" class="custom-control-input" name="hepatitis" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_hepatitis == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_hepatitis == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-hepatitis" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-hepatitis" <?php
+                                                        if ($medical_history->is_diagnosed_hepatitis == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_hepatitis == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_hepatitis == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -268,7 +454,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_hepatitis" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_hepatitis" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->hepatitis_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->hepatitis_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -280,17 +472,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="high_blood_pressure" value="1">
+                                                        <input type="radio" class="custom-control-input" name="high_blood_pressure" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_high_blood_pressure == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="high_blood_pressure" value="0">
+                                                        <input type="radio" class="custom-control-input" name="high_blood_pressure" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_high_blood_pressure == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_high_blood_pressure == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-high-blood-pressure" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-high-blood-pressure" <?php
+                                                        if ($medical_history->is_diagnosed_high_blood_pressure == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_high_blood_pressure == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_high_blood_pressure == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -299,7 +509,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_high_blood_pressure" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_high_blood_pressure" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->high_blood_pressure_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->high_blood_pressure_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -311,17 +527,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="hiv" value="1">
+                                                        <input type="radio" class="custom-control-input" name="hiv" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_aids_hiv == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="hiv" value="0">
+                                                        <input type="radio" class="custom-control-input" name="hiv" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_aids_hiv == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_aids_hiv == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-hiv" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-hiv" <?php
+                                                        if ($medical_history->is_diagnosed_aids_hiv == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_aids_hiv == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_aids_hiv == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -330,7 +564,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_hiv" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_hiv" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->aids_hiv_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->aids_hiv_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -342,17 +582,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="tuberculosis" value="1">
+                                                        <input type="radio" class="custom-control-input" name="tuberculosis" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_tuberculosis == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="tuberculosis" value="0">
+                                                        <input type="radio" class="custom-control-input" name="tuberculosis" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_tuberculosis == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_tuberculosis == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-tuberculosis" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-tuberculosis" <?php
+                                                        if ($medical_history->is_diagnosed_tuberculosis == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_tuberculosis == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_tuberculosis == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -361,7 +619,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_tuberculosis" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_tuberculosis" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->tuberculosis_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->tuberculosis_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -373,17 +637,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="asthma" value="1">
+                                                        <input type="radio" class="custom-control-input" name="asthma" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_asthma == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="asthma" value="0">
+                                                        <input type="radio" class="custom-control-input" name="asthma" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_asthma == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_asthma == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-asthma" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-asthma" <?php
+                                                        if ($medical_history->is_diagnosed_asthma == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_asthma == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_asthma == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -392,7 +674,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_asthma" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_asthma" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->asthma_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->asthma_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -404,17 +692,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="autoimmune" value="1">
+                                                        <input type="radio" class="custom-control-input" name="autoimmune" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_autoimmune_disease == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="autoimmune" value="0">
+                                                        <input type="radio" class="custom-control-input" name="autoimmune" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_autoimmune_disease == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_autoimmune_disease == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-autoimmune" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-autoimmune" <?php
+                                                        if ($medical_history->is_diagnosed_autoimmune_disease == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_autoimmune_disease == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_autoimmune_disease == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -423,7 +729,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_autoimmune" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_autoimmune" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->autoimmune_disease_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->autoimmune_disease_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -435,17 +747,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="epilepsy" value="1">
+                                                        <input type="radio" class="custom-control-input" name="epilepsy" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_epilepsy == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="epilepsy" value="0">
+                                                        <input type="radio" class="custom-control-input" name="epilepsy" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_epilepsy == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_epilepsy == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-epilepsy" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-epilepsy" <?php
+                                                        if ($medical_history->is_diagnosed_epilepsy == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_epilepsy == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_epilepsy == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -454,7 +784,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_epilepsy" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_epilepsy" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->epilepsy_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->epilepsy_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -466,17 +802,35 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="fibromyalgia" value="1">
+                                                        <input type="radio" class="custom-control-input" name="fibromyalgia" value="1" <?php
+                                                        if ($medical_history->is_diagnosed_fibromyalgia == 1){
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">Yes</span>
                                                     </label>
                                                 </div>
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
-                                                        <input type="radio" class="custom-control-input" name="fibromyalgia" value="0">
+                                                        <input type="radio" class="custom-control-input" name="fibromyalgia" value="0" <?php
+                                                        if ($medical_history->is_diagnosed_fibromyalgia == null){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_fibromyalgia == 0) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>>
                                                         <span class="custom-control-label">No</span>
                                                     </label>
                                                 </div>
-                                                <div class="col-md-5 col-sm-12" id="div-fibromyalgia" hidden>
+                                                <div class="col-md-5 col-sm-12" id="div-fibromyalgia" <?php
+                                                        if ($medical_history->is_diagnosed_fibromyalgia == 1){
+                                                            echo "";
+                                                        } elseif ($medical_history->is_diagnosed_fibromyalgia == "0"){
+                                                            echo "hidden";
+                                                        } elseif ($medical_history->is_diagnosed_fibromyalgia == null) {
+                                                            echo "hidden";
+                                                        }
+                                                        ?>>
                                                     <div class="row">
                                                         <div class="col-md-3 col-sm-12">
                                                             <div class="form-group">
@@ -485,7 +839,13 @@
                                                         </div>
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                <input type="text" name="specify_fibromyalgia" class="form-control" minlength="1" maxlength="50">
+                                                                <input type="text" name="specify_fibromyalgia" class="form-control" minlength="1" maxlength="50" value="<?php
+                                                                    if ($medical_history->fibromyalgia_details == "") {
+                                                                        echo "";
+                                                                    } else {
+                                                                        echo $medical_history->fibromyalgia_details;
+                                                                    }
+                                                                ?>">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -520,29 +880,45 @@
                                                                     <table class="table nowrap text-nowrap border mt-5">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th><?php echo lang('year'); ?></th>
-                                                                                <th><?php echo lang('reason').'/'.lang('diagnosis'); ?></th>
-                                                                                <th><?php echo lang('hospital'); ?></th>
+                                                                                <th class="w-2"></th>
+                                                                                <th class="w-8"><?php echo lang('year'); ?></th>
+                                                                                <th class="w-60"><?php echo lang('reason').'/'.lang('diagnosis'); ?></th>
+                                                                                <th class="w-15"><?php echo lang('hospital'); ?></th>
+                                                                                <th class="w-15"></th>
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody id="past_hospitalization">
                                                                             <?php if(!empty($medical_history->past_hospitalizations)) { ?>
                                                                                 <?php foreach($past_hospitalizations as $past_hospitalization) { ?>
-                                                                                    <tr>
-                                                                                        <td class="w-10">
-                                                                                            <input type="hidden" value="<?php echo $past_hospitalization->count; ?>" name="count[]">
+                                                                                    <tr id="past_medication_list<?php echo $past_hospitalization->count; ?>">
+                                                                                        <td>
+                                                                                            <button class="btn btn-danger" type="button" id="removePastMedication<?php echo $past_hospitalization->count; ?>" onclick="removePastMedication(<?php echo $past_hospitalization->count; ?>);"><i class="fe fe-trash"></i></button>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="hidden" value="<?php echo $past_hospitalization->count; ?>" name="count[]" id="countHidden<?php echo $past_hospitalization->count; ?>">
                                                                                             <select class="select2-show-search year" name="year[]" id="year<?php echo $past_hospitalization->count; ?>" data-placeholder="Choose one">
                                                                                                 <option label="Choose one"></option>
-                                                                                                <option value="<?php echo $past_hospitalization->year; ?>" selected><?php echo $past_hospitalization->year;; ?></option>
                                                                                             </select>
                                                                                         </td>
-                                                                                        <td class="w-80">
+                                                                                        <td>
                                                                                             <input type="text" name="diagnosis[]" class="form-control diagnosis" value="<?php echo $past_hospitalization->diagnosis; ?>">
                                                                                         </td>
-                                                                                        <td class="w-10">
-                                                                                            <select class="select2-show-search hospital" name="hospital[]" data-placeholder="Choose one">
+                                                                                        <td <?php if ($past_hospitalization->hospital === "add_new") { echo ''; } else { echo 'hidden'; } ?> id="specific_hospital<?php echo $past_hospitalization->count; ?>">
+                                                                                            <input type="text" name="specific_hospital[]" class="form-control hospital_specific" id="hospital_specific_input<?php echo $past_hospitalization->count; ?>" value="<?php echo $past_hospitalization->specific_hospital; ?>">
+                                                                                        </td>
+                                                                                        <td class="hospital<?php echo $past_hospitalization->count; ?>Div">
+                                                                                            <select class="select2-show-search form-control hospital" data-hospital="hospital<?php echo $past_hospitalization->count; ?>" name="hospital[]" data-placeholder="Choose one" onchange="changeHospital(<?php echo $past_hospitalization->count; ?>)" id="hospital<?php echo $past_hospitalization->count; ?>">
                                                                                                 <option label="Choose one"></option>
-                                                                                                <option value="<?php echo $past_hospitalization->hospital; ?>" selected><?php echo $this->hospital_model->getHospitalById($past_hospitalization->hospital)->name.' (ID: '.$past_hospitalization->hospital.')'; ?></option>
+                                                                                                <option value="add_new" <?php if ($past_hospitalization->hospital === "add_new") { echo 'selected'; } ?>><?php echo lang('specify_name').' ('.' if not listed '.')' ?></option>
+                                                                                                <?php foreach($hospitals as $hospital) { ?>
+                                                                                                    <?php if ($hospital->id == $past_hospitalization->hospital) { ?>
+                                                                                                        <option value="<?php echo $past_hospitalization->hospital; ?>" selected><?php echo $this->hospital_model->getHospitalById($past_hospitalization->hospital)->name.' (ID: '.$past_hospitalization->hospital.')'; ?></option>
+                                                                                                    <?php } else { ?>
+                                                                                                        <option value="<?php echo $hospital->id ?>">
+                                                                                                            <?php echo $hospital->name.' (ID: '.$hospital->id.')'; ?>
+                                                                                                        </option>
+                                                                                                    <?php } ?>
+                                                                                                <?php } ?>
                                                                                             </select>
                                                                                         </td>
                                                                                     </tr>
@@ -564,7 +940,7 @@
                                                                         </tbody>
                                                                         <tfoot>
                                                                             <tr>
-                                                                                <td><button type="button" class="btn btn-primary w-100" id="newRecord"><?php echo lang('add_new').' '.lang('record'); ?></button></td>
+                                                                                <td><button type="button" class="btn btn-primary w-100" id="newRecord_past_hospitalization"><?php echo lang('add_new').' '.lang('record'); ?></button></td>
                                                                                 <td></td>
                                                                                 <td></td>
                                                                             </tr>
@@ -573,14 +949,59 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="row">
-                                                            <!-- <div class="col-md-12 col-sm-12">
+                                                        <!-- <div class="row">
+                                                            <div class="col-md-12 col-sm-12">
                                                                 <button type="button" class="btn btn-primary w-100" id="newRecord"><?php echo lang('add_new').' '.lang('record'); ?></button>
                                                                 <input type="text" name="past_hospitalization" id="past_hospitalization_input" class="form-control">
                                                                 <button type="button" class="btn btn-success w-100" id="getHTML">Get HTML</button>
-                                                            </div> -->
+                                                            </div>
                                                             <div class="col-md-12 col-sm-12" id="past_hospitalization_div">
                                                                 
+                                                            </div>
+                                                        </div> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Current Medication</label>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <div class="table-responsive">
+                                                                    <table class="table nowrap text-nowrap border mt-5">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="w-2"></th>
+                                                                                <th class="w-8 text-center">#</th>
+                                                                                <th class="w-90"><?php echo lang('medicine').' '.lang('name'); ?></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="current_medication">
+                                                                            <?php if(!empty($medical_history->current_medications)) { ?>
+                                                                                <?php $medicine_count = 0; ?>
+                                                                                <?php foreach($current_medications as $current_medication) { ?>
+                                                                                    <tr id="medicine_list<?php echo $medicine_count; ?>">
+                                                                                        <td class="w-2"><button type="button" class="btn btn-danger" id="removeMedication<?php echo $medicine_count; ?>" onclick="removeMedicine(<?php echo $medicine_count; ?>);"><i class="fe fe-trash"></i></button></td>
+                                                                                        <td class="w-8 text-center">
+                                                                                            <label class="h5" id="medicine_count<?php echo $medicine_count ?>"><?php echo $medicine_count; ?></lable>
+                                                                                        </td>
+                                                                                        <td class="w-90">
+                                                                                            <input type="text" class="form-control medicine" name="medicine_name[]" value="<?php echo $current_medication->medicine; ?>">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <?php $medicine_count++; ?>
+                                                                                <?php } ?>
+                                                                            <?php } ?>
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <td><button type="button" class="btn btn-primary" id="newRecord_current_medication"><?php echo lang('add_new').' '.lang('record'); ?></button></td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -589,16 +1010,47 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label">Current Medication</label>
-                                                        <textarea class="ckeditor form-control" id="editor" name="current" value="" rows="10" required></textarea>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
                                                         <label class="form-label">Allergies</label>
-                                                        <textarea class="ckeditor form-control" id="editor" name="allergies" value="" rows="10" required></textarea>
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <div class="table-responsive">
+                                                                    <table class="table nowrap text-nowrap border mt-5">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="w-2"></th>
+                                                                                <th class="w-8 text-center">#</th>
+                                                                                <th class="w-90"><?php echo lang('substance').' '.lang('name'); ?></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="allergies">
+                                                                            <?php if(!empty($medical_history->allergies)) { ?>
+                                                                                <?php $allergy_count = 0; ?>
+                                                                                <?php foreach($allergies as $allergy) { ?>
+                                                                                    <tr id="allergy_list<?php echo $allergy_count; ?>">
+                                                                                        <td class="w-2">
+                                                                                            <button class="btn btn-danger" type="button" id="removeAllergy<?php echo $allergy_count; ?>" onclick="removeAllergy(<?php echo $allergy_count; ?>);"><i class="fe fe-trash"></i></button>
+                                                                                        </td>
+                                                                                        <td class="w-8 text-center">
+                                                                                            <label class="h5" id="allergy_count<?php echo $allergy_count ?>"><?php echo $allergy_count; ?></lable>
+                                                                                        </td>
+                                                                                        <td class="w-90">
+                                                                                            <input type="text" class="form-control allergy" name="allergy_name[]" value="<?php echo $allergy->allergy; ?>">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <?php $allergy_count++; ?>
+                                                                                <?php } ?>
+                                                                            <?php } ?>
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <td><button type="button" class="btn btn-primary" id="newRecord_allergies"><?php echo lang('add_new').' '.lang('record'); ?></button></td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -776,22 +1228,186 @@
     </script> -->
 
     <script type="text/javascript">
+        $(document).ready(function() {
+            // var medicine = $("#formDeclaration").find("[name=medicine_name]").val();
+            // var medicine = $(".medicine").val();
+
+            // console.log(medicine);
+            var titles = $('tr[id^=medicine_list]').map(function(idx, elem) {
+                return $(elem).html();
+            }).get();
+
+              console.log(titles);
+              event.preventDefault();
+        });
+    </script>
+
+    <script type="text/javascript">
+        function changeHospital(hospital_id) {
+            if ($("#hospital"+hospital_id).val() === "add_new") {
+                $('#specific_hospital'+hospital_id).attr("hidden", false);
+                // $('#specific_hospital'+hospital_id).addClass("w-8");
+                // $('.hospital'+hospital_id+'Div').removeClass('w-10');
+                // $('.hospital'+hospital_id+'Div').addClass('w-2');
+                // $('.hospital'+hospital_id+'Div').attr("hidden", true);
+            } else {
+                $('#specific_hospital'+hospital_id).attr("hidden", true);
+                $("#hospital_specific_input"+hospital_id).val('');
+            }
+            console.log($("#hospital"+hospital_id).val());
+        }
+
+        function removeMedicine(medicine_count) {
+            $("#medicine_list"+medicine_count).remove();
+
+            var titles = $('tr[id^=medicine_list]').map(function(idx, elem) {
+                return $(elem).attr("id", "medicine_list"+idx);
+            }).get();
+
+            var med_label = $('label[id^=medicine_count]').map(function(idx, elem) {
+                // return $('label[class^=medicine_count]').addClass('medicine_count'+idx);
+                return [$(elem).attr("id", "medicine_count"+idx), $(elem).text(idx)];
+            }).get();
+
+            var med_button = $('button[id^=removeMedication]').map(function(idx, elem) {
+                // return $('label[class^=medicine_count]').addClass('medicine_count'+idx);
+                return [$(elem).attr("id", "removeMedication"+idx), $(elem).attr("onclick", "removeMedicine("+idx+");")];
+            }).get();
+
+            // titles.addClass('zzzzz');
+            console.log(titles);
+            console.log(med_label);
+            console.log(med_button);
+            event.preventDefault();
+        }
+
+        function removeAllergy(allergy_count) {
+            $("#allergy_list"+allergy_count).remove();
+
+            var titles = $('tr[id^=allergy_list]').map(function(idx, elem) {
+                return $(elem).attr("id", "allergy_list"+idx);
+            }).get();
+
+            var allergy_label = $('label[id^=allergy_count]').map(function(idx, elem) {
+                // return $('label[class^=medicine_count]').addClass('medicine_count'+idx);
+                return [$(elem).attr("id", "allergy_count"+idx), $(elem).text(idx)];
+            }).get();
+
+            var allergy_button = $('button[id^=removeAllergy]').map(function(idx, elem) {
+                // return $('label[class^=medicine_count]').addClass('medicine_count'+idx);
+                return [$(elem).attr("id", "removeAllergy"+idx), $(elem).attr("onclick", "removeAllergy("+idx+");")];
+            }).get();
+
+            console.log(titles);
+            console.log(allergy_label);
+            console.log(allergy_button);
+            event.preventDefault();
+        }
+
+        function removePastMedication(past_med_count) {
+            $("#past_medication_list"+past_med_count).remove();
+
+            var titles = $('tr[id^=past_medication_list]').map(function(idx, elem) {
+                return $(elem).attr("id", "past_medication_list"+idx);
+            }).get();
+
+            var hospital_button = $('button[id^=removePastMedication]').map(function(idx, elem) {
+                // return $('label[class^=medicine_count]').addClass('medicine_count'+idx);
+                return [$(elem).attr("id", "removePastMedication"+idx), $(elem).attr("onclick", "removePastMedication("+idx+");")];
+            }).get();
+
+            var hospital_count = $('input[id^=countHidden]').map(function(idx, elem) {
+                return [$(elem).attr("id", "countHidden"+idx), $(elem).val(idx)];
+            }).get();
+
+            var hospital_year = $('select[id^=year]').map(function(idx, elem) {
+                return [$(elem).attr("id", "year"+idx), $(elem).val(idx)];
+            }).get();
+
+            console.log(titles);
+            console.log(hospital_button);
+            console.log(hospital_count);
+            console.log(hospital_year);
+            event.preventDefault();
+        }
+
+        // function onClick(event) {
+        //   var titles = $('input[name^=medicine_name]').map(function(idx, elem) {
+        //     return $(elem).val();
+        //   }).get();
+
+        //   console.log(titles);
+        //   event.preventDefault();
+        // }
+    </script>
+
+    <script type="text/javascript">
         $(document).ready(function (){
-            $("#formDeclaration").on("click", "#newRecord", function () {
+            $("#formDeclaration").on("click", "#newRecord_allergies", function () {
+                var allergies_count = $(".allergy").length;
+                $("#allergies").append('\n\
+                    <tr id="allergy_list'+allergies_count+'">\n\
+                        <td class="w-2">\n\
+                            <button class="btn btn-danger" type="button" id="removeAllergy'+allergies_count+'" onclick="removeAllergy('+allergies_count+');"><i class="fe fe-trash"></i></button>\n\
+                        </td>\n\
+                        <td class="w-8 text-center">\n\
+                            <label class="h5" id="allergy_count'+allergies_count+'">'+allergies_count+'</lable>\n\
+                        </td>\n\
+                        <td class="w-90">\n\
+                            <input type="text" class="form-control allergy" name="allergy_name[]">\n\
+                        </td>\n\
+                    </tr>\n\
+                ');
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function (){
+            $("#formDeclaration").on("click", "#newRecord_current_medication", function () {
+                var medicine_count = $(".medicine").length;
+                $("#current_medication").append('\n\
+                    <tr id="medicine_list'+medicine_count+'">\n\
+                        <td class="w-2">\n\
+                            <button class="btn btn-danger" type="button" id="removeMedication'+medicine_count+'" onclick="removeMedicine('+medicine_count+');"><i class="fe fe-trash"></i></button>\n\
+                        </td>\n\
+                        <td class="w-8 text-center">\n\
+                            <label class="h5" id="medicine_count'+medicine_count+'">'+medicine_count+'</lable>\n\
+                        </td>\n\
+                        <td class="w-90">\n\
+                            <input type="text" class="form-control medicine" name="medicine_name[]">\n\
+                        </td>\n\
+                    </tr>\n\
+                ');
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function (){
+            $("#formDeclaration").on("click", "#newRecord_past_hospitalization", function () {
                 var countYear = $(".year").length;
+                var countHospital = $(".hospital").length;
+                var countHospitalSpecific = $(".hospital_specific").length;
                 $("#past_hospitalization").append('\n\
-                    <tr>\n\
-                        <td class="w-10">\n\
-                            <input type="hidden" value="'+countYear+'" name="count[]">\n\
+                    <tr id="past_medication_list'+countYear+'">\n\
+                        <td>\n\
+                            <button class="btn btn-danger" type="button" id="removePastMedication'+countYear+'" onclick="removePastMedication('+countYear+');"><i class="fe fe-trash"></i></button>\n\
+                        </td>\n\
+                        <td>\n\
+                            <input type="hidden" value="'+countYear+'" name="count[]" id="countHidden'+countYear+'">\n\
                             <select class="select2-show-search year" id="year'+countYear+'" name="year[]" data-placeholder="Choose one">\n\
                                 <option label="Choose one"></option>\n\
                             </select>\n\
                         </td>\n\
-                        <td class="w-80">\n\
+                        <td>\n\
                             <input type="text" name="diagnosis[]" class="form-control diagnosis">\n\
                         </td>\n\
-                        <td class="w-10">\n\
-                            <select class="select2-show-search hospital" name="hospital[]" data-placeholder="Choose one">\n\
+                        <td hidden id="specific_hospital'+countYear+'">\n\
+                            <input type="text" name="specific_hospital[]" class="form-control hospital_specific" id="hospital_specific_input'+countYear+'">\n\
+                        </td>\n\
+                        <td class="hospital'+countYear+'Div">\n\
+                            <select class="select2-show-search hospital form-control"onchange="changeHospital('+countYear+')" name="hospital[]" id="hospital'+countYear+'" data-placeholder="Choose one">\n\
                                 <option label="Choose one"></option>\n\
                             </select>\n\
                         </td>\n\
@@ -811,20 +1427,6 @@
                     
                 }
                 document.getElementById("year"+countYear).value = currentYear;
-
-                // var minOffset = 18,
-                //     maxOffset = 100;
-
-                // var selectyear = $('.year');
-                // var thisYear = new Date().getFullYear();
-                // var select = $('<select>');
-
-                // for (var i = minOffset; i <= maxOffset; i++) {
-                //   var year = thisYear - i;
-                //   $('<option>', { value: year, text: year }).appendTo(select);
-                // }
-
-                // select.appendTo(selectyear);
 
                 $(document).ready(function () {
                     $(".hospital").select2({
@@ -853,57 +1455,46 @@
 
                 $(".select2-show-search").select2();
 
-                var pas_hospitalization_result = $("#past_hospitalization").html();
-
-                $("#past_hospitalization_div").text(pas_hospitalization_result);
-
-                // $("#past_hospitalization").html().remove();
             });
-
-            // $("#formDeclaration").on("click", "#getHTML", function(e) {
-            //     var diagnosis = $("input[name='diagnosis[]']").map(function(){return $(this).val();}).get();
-
-            //     console.log(diagnosis);
-            //     $.ajax({
-            //         url: 'patient/getHealthDeclarationPastHistoryInputValues',
-            //         type: 'POST',
-            //         data: $(this).serialize(),
-            //         dataType: 'text',
-            //         processData: false,
-            //         success: function ( data, textStatus, jQxhr ) {
-
-            //         }
-            //     });
-            //     // alert($(".diagnosis").val());
-            //     // $("#formDeclaration").find('[name=diagnosis]').val('zzzzz');
-
-            //     // var pas_hospitalization_result = $("#past_hospitalization").html();
-
-            //     // $("#past_hospitalization_div").text(pas_hospitalization_result);
-            // });
         });
     </script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(".select2-show-search").select2();
-            var countYear = $(".year").length;
-            var count = 0;
-            var currentYear = new Date().getFullYear()
-            alert(currentYear);
-            max = currentYear
-            var option = "";
-            for (var year = currentYear-100 ; year <= max; year++) {
-              
-                var option = document.createElement("option");
-                option.text = year;
-                option.value = year;
-                
-                document.getElementById("year"+countYear).appendChild(option)
-                
-            }
-            document.getElementById("year"+countYear).value = currentYear;
-        })
+        $(document).ready(function() {
+            var patient = $("#formDeclaration").find('[name=id]').val();
+            $.ajax({
+                url: 'patient/editHealthDeclarationByJason?patient='+patient,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    // console.log(response.patient_medical_history);
+                    var count = response.patient_medical_history;
+                    $(".select2-show-search").select2();
+                    $.each(count, function(key, value) {
+                        var countYear = $(".year").length;
+                        var count = 0;
+                        var currentYear = new Date().getFullYear()
+                        // alert(value.year);
+                        max = currentYear
+                        var option = "";
+                        for (var year = currentYear-100 ; year <= max; year++) {
+                          
+                            var option = document.createElement("option");
+                            option.text = year;
+                            option.value = year;
+                            
+                            document.getElementById("year"+value.count).appendChild(option)
+                            
+                        }
+                        document.getElementById("year"+value.count).value = currentYear;
+
+                        $("#year"+value.count).val(value.year);
+
+                    });
+                }
+            });
+        });
     </script>
 
     <script type="text/javascript">

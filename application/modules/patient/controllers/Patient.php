@@ -843,8 +843,19 @@ class Patient extends MX_Controller {
         $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
         $data['medical_history'] = $this->patient_model->getPatientHealthDeclarationByPatientId($data['patient']->id);
         $data['past_hospitalizations'] = json_decode($data['medical_history']->past_hospitalizations);
+        $data['current_medications'] = json_decode($data['medical_history']->current_medications);
+        $data['allergies'] = json_decode($data['medical_history']->allergies);
+        $data['hospitals'] = $this->hospital_model->getHospital();
         $this->load->view('home/dashboardv2');
         $this->load->view('health_declaration', $data);
+    }
+
+    function editHealthDeclarationByJason() {
+        $id = $this->input->get('patient');
+
+        $data['patient_medical_history'] = json_decode($this->patient_model->getPatientHealthDeclarationByPatientId($id)->past_hospitalizations);
+
+        echo json_encode($data);
     }
 
     function addHealthDeclaration() {
@@ -855,6 +866,9 @@ class Patient extends MX_Controller {
         $diagnosis = $this->input->post('diagnosis');
         $hospital = $this->input->post('hospital');
         $count = $this->input->post('count');
+        $specific_hospital = $this->input->post('specific_hospital');
+        $medicine_name = $this->input->post('medicine_name');
+        $allergy_name = $this->input->post('allergy_name');
 
         $report = array();
 
@@ -865,17 +879,34 @@ class Patient extends MX_Controller {
                     'year' => $year[$key],
                     'diagnosis' => $diagnosis[$key],
                     'hospital' => $hospital[$key],
+                    'specific_hospital' => $specific_hospital[$key],
                 );
             }
+        }
 
-            // foreach ($report as $key1 => $value1) {
-            //     $final[] = $key1 . '***' . implode('***', $value1);
-            // }
+        $medicine = array();
 
-            // $past_hospitalization = implode('###', $final);
+        if (!empty($medicine_name)) {
+            foreach($medicine_name as $key => $value) {
+                $medicine[$key] = array(
+                    'medicine' => $medicine_name[$key],
+                );
+            }
+        }
+
+        $allergy = array();
+
+        if (!empty($allergy_name)) {
+            foreach($allergy_name as $key => $value) {
+                $allergy[$key] = array(
+                    'allergy' => $allergy_name[$key],
+                );
+            }
         }
 
         $past_hospitalization = json_encode($report);
+        $current_medication = json_encode($medicine);
+        $allergy_list = json_encode($allergy);
 
         $date = gmdate('Y-m-d H:i:s');
         $cancer = $this->input->post('cancer');
@@ -966,6 +997,8 @@ class Patient extends MX_Controller {
             'epilepsy_details' => $specify_epilepsy,
             'fibromyalgia_details' => $specify_fibromyalgia,
             'past_hospitalizations' => $past_hospitalization,
+            'current_medications' => $current_medication,
+            'allergies' => $allergy_list,
         );
 
         $this->patient_model->insertPatientHealthDeclaration($data);
