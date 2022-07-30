@@ -27,13 +27,13 @@ function getDoctorInfo() {
     }
 
     function convertkgTolbs($weightKg) {
-        $weightLbs = $weightKg * 2.205;
+        $weightLbs = $weightKg * 2.20462;
 
         return $weightLbs;
     }
 
     function convertlbsTokg($weightLbs) {
-        $weightKg = $weightLbs / 2.205;
+        $weightKg = $weightLbs / 2.20462;
 
         return $weightKg;
     }    
