@@ -979,7 +979,7 @@
                                                                         </thead>
                                                                         <tbody id="current_medication">
                                                                             <?php if(!empty($medical_history->current_medications)) { ?>
-                                                                                <?php $medicine_count = 0; ?>
+                                                                                <?php $medicine_count = 1; ?>
                                                                                 <?php foreach($current_medications as $current_medication) { ?>
                                                                                     <tr id="medicine_list<?php echo $medicine_count; ?>">
                                                                                         <td class="w-2"><button type="button" class="btn btn-danger" id="removeMedication<?php echo $medicine_count; ?>" onclick="removeMedicine(<?php echo $medicine_count; ?>);"><i class="fe fe-trash"></i></button></td>
@@ -1024,7 +1024,7 @@
                                                                         </thead>
                                                                         <tbody id="allergies">
                                                                             <?php if(!empty($medical_history->allergies)) { ?>
-                                                                                <?php $allergy_count = 0; ?>
+                                                                                <?php $allergy_count = 1; ?>
                                                                                 <?php foreach($allergies as $allergy) { ?>
                                                                                     <tr id="allergy_list<?php echo $allergy_count; ?>">
                                                                                         <td class="w-2">
@@ -1266,7 +1266,7 @@
 
             var med_label = $('label[id^=medicine_count]').map(function(idx, elem) {
                 // return $('label[class^=medicine_count]').addClass('medicine_count'+idx);
-                return [$(elem).attr("id", "medicine_count"+idx), $(elem).text(idx)];
+                return [$(elem).attr("id", "medicine_count"+idx), $(elem).text(idx+1)];
             }).get();
 
             var med_button = $('button[id^=removeMedication]').map(function(idx, elem) {
@@ -1290,7 +1290,7 @@
 
             var allergy_label = $('label[id^=allergy_count]').map(function(idx, elem) {
                 // return $('label[class^=medicine_count]').addClass('medicine_count'+idx);
-                return [$(elem).attr("id", "allergy_count"+idx), $(elem).text(idx)];
+                return [$(elem).attr("id", "allergy_count"+idx), $(elem).text(idx+1)];
             }).get();
 
             var allergy_button = $('button[id^=removeAllergy]').map(function(idx, elem) {
@@ -1351,7 +1351,7 @@
                             <button class="btn btn-danger" type="button" id="removeAllergy'+allergies_count+'" onclick="removeAllergy('+allergies_count+');"><i class="fe fe-trash"></i></button>\n\
                         </td>\n\
                         <td class="w-8 text-center">\n\
-                            <label class="h5" id="allergy_count'+allergies_count+'">'+allergies_count+'</lable>\n\
+                            <label class="h5" id="allergy_count'+allergies_count+'">'+parseInt(allergies_count+1)+'</lable>\n\
                         </td>\n\
                         <td class="w-90">\n\
                             <input type="text" class="form-control allergy" name="allergy_name[]">\n\
@@ -1372,7 +1372,7 @@
                             <button class="btn btn-danger" type="button" id="removeMedication'+medicine_count+'" onclick="removeMedicine('+medicine_count+');"><i class="fe fe-trash"></i></button>\n\
                         </td>\n\
                         <td class="w-8 text-center">\n\
-                            <label class="h5" id="medicine_count'+medicine_count+'">'+medicine_count+'</lable>\n\
+                            <label class="h5" id="medicine_count'+medicine_count+'">'+parseInt(medicine_count+1)+'</lable>\n\
                         </td>\n\
                         <td class="w-90">\n\
                             <input type="text" class="form-control medicine" name="medicine_name[]">\n\
