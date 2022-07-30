@@ -1021,14 +1021,16 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             flatpickr(".flatpickr", {
-                maxDate: "today",
+                maxDate: maxdate,
                 altInput: true,
                 altFormat: "F j, Y h:i K",
                 dateFormat: "Y-m-d h:i K",
                 disableMobile: "true",
                 enableTime: true,
-                defaultDate: "today",
+                defaultDate: timenow,
             });
         });
     </script>
