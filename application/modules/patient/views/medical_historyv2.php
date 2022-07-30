@@ -522,6 +522,7 @@
                                                                             <th class="text-center normal-caps"><?php echo lang('weight').'<br>'.'(kg)'; ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('bmi'); ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('bp').'<br>'.'(mmHg)'; ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('blood_sugar').'<br>'.'(mg/dL)'; ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('temperature').'<br>'.'(&#176;C)'; ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('spo2').'<br>'.'(%)'; ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('respiration_rate').'<br>'.'('.lang('bpm').')'; ?></th>
@@ -542,6 +543,7 @@
                                                                                 <td><?php echo $vital->weight_kg; ?></td>
                                                                                 <td><?php echo $vital->bmi; ?></td>
                                                                                 <td><?php echo $vital->systolic . ' / ' . $vital->diastolic; ?></td>
+                                                                                <td><?php echo $vital->blood_sugar_mg; ?></td>
                                                                                 <td><?php echo $vital->temperature_celsius; ?></td>
                                                                                 <td><?php echo $vital->spo2; ?></td>
                                                                                 <td><?php echo $vital->respiration_rate; ?></td>

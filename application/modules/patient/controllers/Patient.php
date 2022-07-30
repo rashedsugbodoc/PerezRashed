@@ -1649,22 +1649,40 @@ class Patient extends MX_Controller {
         if(empty($diastolic)) {
             $diastolic = null;
         }
+
+        //Temperature
         $temperature = $this->input->post('temperature');
+        $temperatureUnit = $this->input->post('temperature_unit');
+        $temperature_site = $this->input->post('temp_site');
         if(empty($temperature)) {
             $temperature = null;
+        } else {
+            //Comvert C to F Start
+            if ($temperatureUnit == 'celsius') {
+                $celsiusTemp = $temperature;
+                $fahrenheitTemp = convertcelsiusTofahrenheit($celsiusTemp);
+            } else if ($temperatureUnit == 'fahrenheit') {
+                $fahrenheitTemp = $temperature;
+                $celsiusTemp = convertfahrenheitTocelsius($fahrenheitTemp);
+            }
+            //Comvert C to F End
         }
-        $temperatureUnit = $this->input->post('temperature_unit');
-        if(empty($temperatureUnit)) {
+
+        if(empty($temperatureUnit) || empty($temperature)) {
             $temperatureUnit = null;
+            $temperature_site = null;
         }
+
         $heartrate = $this->input->post('heartrate');
         if(empty($heartrate)) {
             $heartrate = null;
         }
+
         $spo2 = $this->input->post('spo2');
         if(empty($spo2)) {
             $spo2 = null;
         }
+
         $respiration_rate = $this->input->post('respiration_rate');
         if(empty($respiration_rate)) {
             $respiration_rate = null;
@@ -1672,39 +1690,81 @@ class Patient extends MX_Controller {
         $current_user = (int)$this->ion_auth->get_user_id();
         // $date = date("Y-m-d H:i:s", now('UTC'));
         $date = gmdate('Y-m-d H:i:s');
-        $weightUnit = $this->input->post('weight_unit');
-        if(empty($weightUnit)) {
-            $weightUnit = null;
-        }
-        $heightUnit = $this->input->post('height_unit');
-        if(empty($heightUnit)) {
-            $heightUnit = null;
-        }
-        $temperature_site = $this->input->post('temp_site');
-        if(empty($temperature_site)) {
-            $temperature_site = null;
-        }
+
+        //Weight
         $weight = $this->input->post('weight');
+        $weightUnit = $this->input->post('weight_unit');
         if(empty($weight)) {
             $weight = null;
+        } else {
+            //Reading Weight Unit Start and convert
+            if ($weightUnit == 'kg') {
+                $weightKg = $weight;
+                $weightLbs = convertkgTolbs($weightKg);
+            } else if ($weightUnit == 'lbs') {
+                $weightLbs = $weight;
+                $weightKg = convertlbsTokg($weightLbs);
+            }
+            //Reading Weight Unit End
         }
+        
+        if(empty($weightUnit) || empty($weight)) {
+            $weightUnit = null;
+        }
+
+        //Height
         $height = $this->input->post('height');
+        $heightUnit = $this->input->post('height_unit');
         if(empty($height)) {
             $height = null;
+        } else {
+            //Reading Height Unit Start
+            if ($heightUnit == 'cm') {
+                $heightCm = $height;
+                $heightIn = convertcmToin($heightCm);
+            } else if ($heightUnit == 'inches') {
+                $heightIn = $height;
+                $heightCm = convertinTocm($heightIn);
+            }
+            //Reading Height Unit End
         }
+        
+        if(empty($heightUnit) || empty($height)) {
+            $heightUnit = null;
+        }
+
+        if(!empty($height) && !empty($weight)) {
+            $bmi = computeBmi($heightCm, $weightKg);
+        } else {
+            $bmi = null;
+        }
+
         $note = $this->input->post('note');
         if(empty($note)) {
             $note = null;
         }
+
+        // Blood Sugar
         $blood_sugar = $this->input->post('blood_sugar');
+        $blood_sugar_unit = $this->input->post('blood_sugar_unit');
+        $blood_sugar_timing = $this->input->post('blood_sugar_timing');
         if(empty($blood_sugar)) {
             $blood_sugar = null;
+        } else {
+            if ($blood_sugar_unit == 'mg_dl') {
+                $mg = $blood_sugar;
+                $mmol = convertMgtoMmol($mg);
+            } else if ($blood_sugar_unit == 'mmol') {
+                $mmol = $blood_sugar;
+                $mg = convertMmoltoMg($mmol);
+            }
         }
-        $blood_sugar_unit = $this->input->post('blood_sugar_unit');
-        if(empty($blood_sugar_unit)) {
+        
+        if(empty($blood_sugar_unit) || empty($blood_sugar)) {
             $blood_sugar_unit = null;
+            $blood_sugar_timing = null;
         }
-        $blood_sugar_timing = $this->input->post('blood_sugar_timing');
+        
 
         $date_time_combined = strtotime($date_time_measured);
         $datetime_measured = gmdate('Y-m-d H:i:s', $date_time_combined);
@@ -1723,87 +1783,38 @@ class Patient extends MX_Controller {
             $doctor_id = null;
         }
 
-
-        //Reading Weight Unit Start
-
-            if ($weightUnit == 'kg') {
-                $weightKg = $weight;
-                $weightLbs = convertkgTolbs($weightKg);
-            } else if ($weightUnit == 'lbs') {
-                $weightLbs = $weight;
-                $weightKg = convertlbsTokg($weightLbs);
-            }
-
-        //Reading Weight Unit End
-
-        //Reading Height Unit Start
-
-            if ($heightUnit == 'cm') {
-                $heightCm = $height;
-                $heightIn = convertcmToin($heightCm);
-            } else if ($heightUnit == 'inches') {
-                $heightIn = $height;
-                $heightCm = convertinTocm($heightIn);
-            }
-
-        //Reading Height Unit End
-
-        //Computing BMI start
-            $bmi = computeBmi($heightCm, $weightKg);
-        //Computing BMI end
-
-        //Comvert C to F Start
-
-            if ($temperatureUnit == 'celsius') {
-                $celsiusTemp = $temperature;
-                $fahrenheitTemp = convertcelsiusTofahrenheit($celsiusTemp);
-            } else if ($temperatureUnit == 'fahrenheit') {
-                $fahrenheitTemp = $temperature;
-                $celsiusTemp = convertfahrenheitTocelsius($fahrenheitTemp);
-            }
-
-            if ($blood_sugar_unit == 'mg_dl') {
-                $mg = $blood_sugar;
-                $mmol = convertMgtoMmol($mg);
-            } else if ($blood_sugar_unit == 'mmol') {
-                $mmol = $blood_sugar;
-                $mg = convertMmoltoMg($mmol);
-            }
-
-        //Comvert C to F End
-
         //form validation start
-            $this->load->library('form_validation');
-            $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
-            // Validating Date Measured Field
-            $this->form_validation->set_rules('datetime', 'Date Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
-            // Validating Time Measured Field   
-            // $this->form_validation->set_rules('time', 'Time Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
-            // Validating Weight Field   
-            $this->form_validation->set_rules('weight', 'Weight', 'trim|numeric|max_length[500]|xss_clean');
-            // Validating height Field           
-            $this->form_validation->set_rules('height', 'Height', 'trim|numeric|max_length[50]|xss_clean');
-            // Validating systolic Field
-            $this->form_validation->set_rules('systolic', 'Systolic', 'trim|max_length[100]|xss_clean');
-            // Validating diastolic Field   
-            $this->form_validation->set_rules('diastolic', 'Diastolic', 'trim|max_length[500]|xss_clean');
-            // Validating temperature Field           
-            $this->form_validation->set_rules('temperature', 'Temperature', 'trim|max_length[15]|xss_clean');
-            // Validating heartrate Field           
-            $this->form_validation->set_rules('heartrate', 'Heartrate', 'trim|max_length[15]|xss_clean');
-            // Validating spo2 Field           
-            $this->form_validation->set_rules('spo2', 'Spo2', 'trim|max_length[15]|xss_clean');
-            // Validating Respiration Field           
-            $this->form_validation->set_rules('respiration_rate', 'Respiration', 'trim|max_length[15]|xss_clean');
-            // Validating Blood Sugar Field           
-            $this->form_validation->set_rules('blood_sugar', 'Blood Sugar', 'trim|max_length[50]|xss_clean');
-            // Validating Respiration Field           
-            $this->form_validation->set_rules('blood_sugar_timing', 'Blood Sugar Timing', 'trim|max_length[50]|xss_clean');
-            // Validating Note Field           
-            $this->form_validation->set_rules('note', 'Note', 'trim|max_length[1000]|xss_clean');
-            // Validating Note Field           
-            $this->form_validation->set_rules('pain_level', 'Pain Level', 'trim|numeric|max_length[10]|xss_clean');
+        // Validating Date Measured Field
+        $this->form_validation->set_rules('datetime', 'Date Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Time Measured Field   
+        // $this->form_validation->set_rules('time', 'Time Measured', 'trim|min_length[2]|max_length[100]|xss_clean');
+        // Validating Weight Field   
+        $this->form_validation->set_rules('weight', 'Weight', 'trim|numeric|max_length[500]|xss_clean');
+        // Validating height Field           
+        $this->form_validation->set_rules('height', 'Height', 'trim|numeric|max_length[50]|xss_clean');
+        // Validating systolic Field
+        $this->form_validation->set_rules('systolic', 'Systolic', 'trim|max_length[100]|xss_clean');
+        // Validating diastolic Field   
+        $this->form_validation->set_rules('diastolic', 'Diastolic', 'trim|max_length[500]|xss_clean');
+        // Validating temperature Field           
+        $this->form_validation->set_rules('temperature', 'Temperature', 'trim|max_length[15]|xss_clean');
+        // Validating heartrate Field           
+        $this->form_validation->set_rules('heartrate', 'Heartrate', 'trim|max_length[15]|xss_clean');
+        // Validating spo2 Field           
+        $this->form_validation->set_rules('spo2', 'Spo2', 'trim|max_length[15]|xss_clean');
+        // Validating Respiration Field           
+        $this->form_validation->set_rules('respiration_rate', 'Respiration', 'trim|max_length[15]|xss_clean');
+        // Validating Blood Sugar Field           
+        $this->form_validation->set_rules('blood_sugar', 'Blood Sugar', 'trim|max_length[50]|xss_clean');
+        // Validating Respiration Field           
+        $this->form_validation->set_rules('blood_sugar_timing', 'Blood Sugar Timing', 'trim|max_length[50]|xss_clean');
+        // Validating Note Field           
+        $this->form_validation->set_rules('note', 'Note', 'trim|max_length[1000]|xss_clean');
+        // Validating Note Field           
+        $this->form_validation->set_rules('pain_level', 'Pain Level', 'trim|numeric|max_length[10]|xss_clean');
         //form validation end
 
 
