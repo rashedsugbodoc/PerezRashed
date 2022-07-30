@@ -1139,7 +1139,7 @@
                                                                         <div class="todo-widget-header d-flex pb-2 p-4">
                                                                             <div class="">
                                                                                 <?php if(!empty($encounter_id)) { ?>
-                                                                                    <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->id; ?>" target="_blank"><i class="fe fe-edit"></i></a>
+                                                                                    <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->patient_document_number; ?>" target="_blank"><i class="fe fe-edit"></i></a>
                                                                                     <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
                                                                                     <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
