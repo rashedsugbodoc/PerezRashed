@@ -842,6 +842,7 @@ class Patient extends MX_Controller {
         $id = $this->patient_model->getPatientByPatientNumber($patient_number)->id;
         $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
         $data['medical_history'] = $this->patient_model->getPatientHealthDeclarationByPatientId($data['patient']->id);
+        $data['past_surgeries'] = json_decode($data['medical_history']->past_surgeries);
         $data['past_hospitalizations'] = json_decode($data['medical_history']->past_hospitalizations);
         $data['current_medications'] = json_decode($data['medical_history']->current_medications);
         $data['allergies'] = json_decode($data['medical_history']->allergies);
@@ -854,6 +855,7 @@ class Patient extends MX_Controller {
         $id = $this->input->get('patient');
 
         $data['patient_medical_history'] = json_decode($this->patient_model->getPatientHealthDeclarationByPatientId($id)->past_hospitalizations);
+        $data['patient_past_surgeries'] = json_decode($this->patient_model->getPatientHealthDeclarationByPatientId($id)->past_surgeries);
 
         echo json_encode($data);
     }
@@ -869,6 +871,25 @@ class Patient extends MX_Controller {
         $specific_hospital = $this->input->post('specific_hospital');
         $medicine_name = $this->input->post('medicine_name');
         $allergy_name = $this->input->post('allergy_name');
+        $countSurgery = $this->input->post('countSurgery');
+        $surgery_year = $this->input->post('surgery_year');
+        $surgery_diagnosis = $this->input->post('surgery_diagnosis');
+        $surgery_specific_hospital = $this->input->post('surgery_specific_hospital');
+        $surgery_hospital = $this->input->post('surgery_hospital');
+
+        $surgery = array();
+
+        if (!empty($surgery_year)) {
+            foreach($surgery_year as $key => $value) {
+                $surgery[$key] = array(
+                    'count' => $countSurgery[$key],
+                    'year' => $surgery_year[$key],
+                    'diagnosis' => $surgery_diagnosis[$key],
+                    'hospital' => $surgery_hospital[$key],
+                    'specific_hospital' => $surgery_specific_hospital[$key],
+                );
+            }
+        }
 
         $report = array();
 
@@ -904,6 +925,7 @@ class Patient extends MX_Controller {
             }
         }
 
+        $past_surgery = json_encode($surgery);
         $past_hospitalization = json_encode($report);
         $current_medication = json_encode($medicine);
         $allergy_list = json_encode($allergy);
@@ -999,6 +1021,7 @@ class Patient extends MX_Controller {
             'past_hospitalizations' => $past_hospitalization,
             'current_medications' => $current_medication,
             'allergies' => $allergy_list,
+            'past_surgeries' => $past_surgery,
         );
 
         $this->patient_model->insertPatientHealthDeclaration($data);

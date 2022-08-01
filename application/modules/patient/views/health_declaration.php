@@ -861,19 +861,6 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label">Past Hospitalization (Year, Reason, Hospital)</label>
-                                                        <!-- <textarea class="ckeditor form-control" id="editor" name="past" value="" rows="10" required></textarea> -->
-                                                        <!-- <div class="row">
-                                                            <div class="col-md-2 col-sm-2">
-                                                                <?php echo lang('year'); ?>
-                                                            </div>
-                                                            <div class="col-md-8 col-sm-8">
-                                                                <?php echo lang('reason').'/'.lang('diagnosis'); ?>
-                                                            </div>
-                                                            <div class="col-md-2 col-sm-2">
-                                                                <?php echo lang('hospital'); ?>
-                                                            </div>
-                                                        </div> -->
-                                                        <!-- <div id="past_hospitalization"></div> -->
                                                         <div class="row">
                                                             <div class="col-md-12 col-sm-12">
                                                                 <div class="table-responsive">
@@ -949,16 +936,75 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <!-- <div class="row">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('past_surgery'); ?></label>
+                                                        <div class="row">
                                                             <div class="col-md-12 col-sm-12">
-                                                                <button type="button" class="btn btn-primary w-100" id="newRecord"><?php echo lang('add_new').' '.lang('record'); ?></button>
-                                                                <input type="text" name="past_hospitalization" id="past_hospitalization_input" class="form-control">
-                                                                <button type="button" class="btn btn-success w-100" id="getHTML">Get HTML</button>
+                                                                <div class="table-responsive">
+                                                                    <table class="table nowrap text-nowrap border mt-5">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="w-2"></th>
+                                                                                <th class="w-8 text-center"><?php echo lang('year'); ?></th>
+                                                                                <th class="w-60"><?php echo lang('reason').'/'.lang('diagnosis'); ?></th>
+                                                                                <th class="w-15"><?php echo lang('hospital'); ?></th>
+                                                                                <th class="w-15"></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="past_surgery">
+                                                                            <?php if(!empty($medical_history->past_surgeries)) { ?>
+                                                                                <?php foreach($past_surgeries as $past_surgery) { ?>
+                                                                                    <tr id="past_surgery_list<?php echo $past_surgery->count; ?>">
+                                                                                        <td>
+                                                                                            <button class="btn btn-danger" type="button" id="removePastSurgery<?php echo $past_surgery->count; ?>" onclick="removePastSurgery(<?php echo $past_surgery->count; ?>);"><i class="fe fe-trash"></i></button>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="hidden" value="<?php echo $past_surgery->count; ?>" name="countSurgery[]" id="countSurgeryHidden<?php echo $past_surgery->count; ?>">
+                                                                                            <select class="select2-show-search surgery_year" name="surgery_year[]" id="surgery_year<?php echo $past_surgery->count; ?>" data-placeholder="Choose one">
+                                                                                                <option label="Choose one"></option>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="text" name="surgery_diagnosis[]" class="form-control surgery_diagnosis" value="<?php echo $past_surgery->diagnosis; ?>">
+                                                                                        </td>
+                                                                                        <td <?php if ($past_surgery->hospital === "add_new") { echo ''; } else { echo 'hidden'; } ?> id="surgery_specific_hospital<?php echo $past_surgery->count; ?>">
+                                                                                            <input type="text" name="surgery_specific_hospital[]" class="form-control hospital_specific" id="hospital_specific_input<?php echo $past_surgery->count; ?>" value="<?php echo $past_surgery->specific_hospital; ?>">
+                                                                                        </td>
+                                                                                        <td class="surgery_hospital<?php echo $past_surgery->count; ?>Div">
+                                                                                            <select class="select2-show-search form-control surgery_hospital" data-hospital="surgery_hospital<?php echo $past_surgery->count; ?>" name="hospital[]" data-placeholder="Choose one" onchange="changeSurgeryHospital(<?php echo $past_surgery->count; ?>)" id="surgery_hospital<?php echo $past_surgery->count; ?>">
+                                                                                                <option label="Choose one"></option>
+                                                                                                <option value="add_new" <?php if ($past_surgery->hospital === "add_new") { echo 'selected'; } ?>><?php echo lang('specify_name').' ('.' if not listed '.')' ?></option>
+                                                                                                <?php foreach($hospitals as $hospital) { ?>
+                                                                                                    <?php if ($hospital->id == $past_surgery->hospital) { ?>
+                                                                                                        <option value="<?php echo $past_surgery->hospital; ?>" selected><?php echo $this->hospital_model->getHospitalById($past_surgery->hospital)->name.' (ID: '.$past_surgery->hospital.')'; ?></option>
+                                                                                                    <?php } else { ?>
+                                                                                                        <option value="<?php echo $hospital->id ?>">
+                                                                                                            <?php echo $hospital->name.' (ID: '.$hospital->id.')'; ?>
+                                                                                                        </option>
+                                                                                                    <?php } ?>
+                                                                                                <?php } ?>
+                                                                                            </select>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                <?php } ?>
+                                                                            <?php } ?>
+                                                                        </tbody>
+                                                                        <tfoot>
+                                                                            <tr>
+                                                                                <td><button type="button" class="btn btn-primary w-100" id="newRecord_past_surgery"><?php echo lang('add_new').' '.lang('record'); ?></button></td>
+                                                                                <td></td>
+                                                                                <td></td>
+                                                                            </tr>
+                                                                        </tfoot>
+                                                                    </table>
+                                                                </div>
                                                             </div>
-                                                            <div class="col-md-12 col-sm-12" id="past_hospitalization_div">
-                                                                
-                                                            </div>
-                                                        </div> -->
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1257,6 +1303,20 @@
             console.log($("#hospital"+hospital_id).val());
         }
 
+        function changeSurgeryHospital(hospital_id) {
+            if ($("#surgery_hospital"+hospital_id).val() === "add_new") {
+                $('#surgery_specific_hospital'+hospital_id).attr("hidden", false);
+                // $('#specific_hospital'+hospital_id).addClass("w-8");
+                // $('.hospital'+hospital_id+'Div').removeClass('w-10');
+                // $('.hospital'+hospital_id+'Div').addClass('w-2');
+                // $('.hospital'+hospital_id+'Div').attr("hidden", true);
+            } else {
+                $('#surgery_specific_hospital'+hospital_id).attr("hidden", true);
+                $("#surgery_hospital_specific_input"+hospital_id).val('');
+            }
+            console.log($("#hospital"+hospital_id).val());
+        }
+
         function removeMedicine(medicine_count) {
             $("#medicine_list"+medicine_count).remove();
 
@@ -1301,6 +1361,33 @@
             console.log(titles);
             console.log(allergy_label);
             console.log(allergy_button);
+            event.preventDefault();
+        }
+
+        function removePastSurgery(past_sur_count) {
+            $("#past_surgery_list"+past_sur_count).remove();
+
+            var titles = $('tr[id^=past_surgery_list]').map(function(idx, elem) {
+                return $(elem).attr("id", "past_surgery_list"+idx);
+            }).get();
+
+            var hospital_button = $('button[id^=removePastSurgery]').map(function(idx, elem) {
+                // return $('label[class^=medicine_count]').addClass('medicine_count'+idx);
+                return [$(elem).attr("id", "removePastSurgery"+idx), $(elem).attr("onclick", "removePastSurgery("+idx+");")];
+            }).get();
+
+            var hospital_count = $('input[id^=countSurgeryHidden]').map(function(idx, elem) {
+                return [$(elem).attr("id", "countSurgeryHidden"+idx), $(elem).val(idx)];
+            }).get();
+
+            var hospital_year = $('select[id^=surgery_year]').map(function(idx, elem) {
+                return [$(elem).attr("id", "surgery_year"+idx), $(elem).val(idx)];
+            }).get();
+
+            console.log(titles);
+            console.log(hospital_button);
+            console.log(hospital_count);
+            console.log(hospital_year);
             event.preventDefault();
         }
 
@@ -1385,6 +1472,75 @@
 
     <script type="text/javascript">
         $(document).ready(function (){
+            $("#formDeclaration").on("click", "#newRecord_past_surgery", function() {
+                var countSurgeryYear = $(".surgery_year").length;
+                $("#past_surgery").append('\n\
+                    <tr id="past_surgery_list'+countSurgeryYear+'">\n\
+                        <td>\n\
+                            <button class="btn btn-danger" type="button" id="removePastSurgery'+countSurgeryYear+'" onclick="removePastSurgery('+countSurgeryYear+');"><i class="fe fe-trash"></i></button>\n\
+                        </td>\n\
+                        <td>\n\
+                            <input type="hidden" value="'+countSurgeryYear+'" name="countSurgery[]" id="countSurgeryHidden'+countSurgeryYear+'">\n\
+                            <select class="select2-show-search surgery_year" id="surgery_year'+countSurgeryYear+'" name="surgery_year[]" data-placeholder="Choose one">\n\
+                                <option label="Choose one"></option>\n\
+                            </select>\n\
+                        </td>\n\
+                        <td>\n\
+                            <input type="text" name="surgery_diagnosis[]" class="form-control surgery_diagnosis">\n\
+                        </td>\n\
+                        <td hidden id="surgery_specific_hospital'+countSurgeryYear+'">\n\
+                            <input type="text" name="surgery_specific_hospital[]" class="form-control surgery_hospital_specific" id="surgery_hospital_specific_input'+countSurgeryYear+'">\n\
+                        </td>\n\
+                        <td>\n\
+                            <select class="select2-show-search surgery_hospital form-control"onchange="changeSurgeryHospital('+countSurgeryYear+')" name="surgery_hospital[]" id="surgery_hospital'+countSurgeryYear+'" data-placeholder="Choose one">\n\
+                                <option label="Choose one"></option>\n\
+                            </select>\n\
+                        </td>\n\
+                    </tr>\n\
+                    ');
+
+                var currentYear = new Date().getFullYear()
+                max = currentYear
+                var option = "";
+                for (var year = currentYear-100 ; year <= max; year++) {
+                  
+                    var option = document.createElement("option");
+                    option.text = year;
+                    option.value = year;
+                    
+                    document.getElementById("surgery_year"+countSurgeryYear).appendChild(option)
+                    
+                }
+                document.getElementById("surgery_year"+countSurgeryYear).value = currentYear;
+
+                $(document).ready(function () {
+                    $(".surgery_hospital").select2({
+                        placeholder: '<?php echo lang('hospitals'); ?>',
+                        allowClear: false,
+                        ajax: {
+                            url: 'patient/getHospitalInfoWithAddNewOption',
+                            type: "post",
+                            dataType: 'json',
+                            delay: 250,
+                            data: function (params) {
+                                return {
+                                    searchTerm: params.term // search term
+                                };
+                            },
+                            processResults: function (response) {
+                                return {
+                                    results: response
+                                };
+                            },
+                            cache: true
+                        }
+
+                    });
+                });
+
+                $(".select2-show-search").select2();
+            })
+
             $("#formDeclaration").on("click", "#newRecord_past_hospitalization", function () {
                 var countYear = $(".year").length;
                 var countHospital = $(".hospital").length;
@@ -1470,6 +1626,7 @@
                 success: function (response) {
                     // console.log(response.patient_medical_history);
                     var count = response.patient_medical_history;
+                    var surgery_count = response.patient_past_surgeries;
                     $(".select2-show-search").select2();
                     $.each(count, function(key, value) {
                         var countYear = $(".year").length;
@@ -1484,12 +1641,34 @@
                             option.text = year;
                             option.value = year;
                             
-                            document.getElementById("year"+value.count).appendChild(option)
+                            document.getElementById("year"+value.count).appendChild(option);
                             
                         }
                         document.getElementById("year"+value.count).value = currentYear;
 
                         $("#year"+value.count).val(value.year);
+
+                    });
+
+                    $.each(surgery_count, function(key, value) {
+                        var countYear = $(".surgery_year").length;
+                        var surgery_count = 0;
+                        var currentYear = new Date().getFullYear()
+                        // alert(value.year);
+                        max = currentYear
+                        var option = "";
+                        for (var year = currentYear-100 ; year <= max; year++) {
+                          
+                            var option = document.createElement("option");
+                            option.text = year;
+                            option.value = year;
+                            
+                            document.getElementById("surgery_year"+value.count).appendChild(option);
+                            
+                        }
+                        document.getElementById("surgery_year"+value.count).appendChild(option);
+
+                        $("#surgery_year"+value.count).val(value.year);
 
                     });
                 }
