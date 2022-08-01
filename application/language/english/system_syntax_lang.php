@@ -1179,3 +1179,4 @@ $lang['unmet'] = 'Unmet';
 $lang['nutrition'] = 'Nutrition';
 $lang['declaration'] = 'Declaration';
 $lang['record'] = 'Record';
+$lang['past_surgery'] = 'Past Surgery';
