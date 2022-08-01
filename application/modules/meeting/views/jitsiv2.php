@@ -141,6 +141,9 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                            <div class="form-group col-md-12">
+                                                                                <input type="hidden" name="encounter_id" value="<?php echo $appointment_details->encounter_id ?>">
+                                                                            </div>
                                                                             <div class="form-group col-md-12" hidden>
                                                                                 <textarea id="description" name="description" value="" readonly="" class="form-control" rows="4"></textarea>
                                                                             </div>
