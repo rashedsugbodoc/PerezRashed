@@ -151,6 +151,7 @@ class Meeting extends MX_Controller {
                 'encounter_status' => $encounter_status,
                 'created_user_id' => $user,
                 'reason' => $remarks,
+                'doctor' => $doctor,
             );
 
             $this->encounter_model->insertEncounter($data_encounter);
