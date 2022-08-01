@@ -3445,7 +3445,11 @@ class Patient extends MX_Controller {
 
     function deletePatientMaterial() {
         $document_number = $this->input->get('id');
-        $id = $this->patient_model->getPatientMaterialByDocumentNumber($document_number)->id;
+        $document_details = $this->patient_model->getPatientMaterialByDocumentNumber($document_number);
+        $id = $document_details->id;
+        $patient = $this->patient_model->getPatientById($document_details->patient);
+        $encounter_details = $this->encounter_model->getEncounterById($document_details->encounter_id);
+        $encounter = $this->input->get('encounter_id');
         $redirect = $this->input->get('redirect');
         $patient_material = $this->patient_model->getPatientMaterialById($id);
         $path = $patient_material->url;
@@ -3457,7 +3461,7 @@ class Patient extends MX_Controller {
         if ($redirect == 'documents') {
             redirect('patient/documents');
         } else {
-            redirect("patient/MedicalHistory?id=" . $patient_material->patient);
+            redirect("patient/MedicalHistory?id=" . $patient->patient_id . '&encounter_id=' . $encounter_details->encounter_number);
         }
     }
 
