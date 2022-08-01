@@ -170,9 +170,10 @@
                                         <div class="form-group">
                                             <label class="form-label"><?php echo lang('date'); ?><span class="text-red">*</span></label>
                                             <input class="form-control flatpickr" id="date" placeholder="MM/DD/YYYY" required name="date" type="text" value="<?php
-                                            if (!empty($appointment->date)) {
-                                                echo $appointment->appointment_date;
-                                            }
+                                            // if (!empty($appointment->date)) {
+                                            //     // echo $appointment->appointment_date;
+                                            //     echo $date;
+                                            // }
                                             ?>" readonly>
                                         </div>
                                         </div>
@@ -411,6 +412,8 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var appointment = $("#appointment_id").val();
+                var appointment_date = "<?php echo date("F j, Y H:i", strtotime($appointment->appointment_date.' UTC')); ?>";
+                console.log(appointment_date);
                 if (appointment === "") {
                     flatpickr(".flatpickr", {
                         altInput: true,
@@ -422,7 +425,9 @@
                     flatpickr(".flatpickr", {
                         altInput: true,
                         altFormat: "F j, Y",
+                        dateFormat: "F j, Y",
                         disableMobile: true,
+                        defaultDate: appointment_date,
                     });
                 }
                 
