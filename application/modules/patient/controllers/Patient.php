@@ -1299,8 +1299,11 @@ class Patient extends MX_Controller {
         }
         $case_note_number = $this->input->get('id');
         $id = $this->patient_model->getMedicalHistoryByCaseNoteNumber($case_note_number)->id;
+        $case_note_details = $this->patient_model->getMedicalHistoryById($id);
 
         if (!empty($id)) {
+            $data['encounter'] = $this->encounter_model->getEncounterById($case_note_details->encounter_id);
+            $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
             $data['case_lists'] = $this->patient_model->getMedicalHistoryById($id);
         }
         $data['settings'] = $this->settings_model->getSettings();
@@ -3221,6 +3224,10 @@ class Patient extends MX_Controller {
         $date = gmdate('Y-m-d H:i:s');
         $id = $this->input->post('id');
 
+        if ($encounter == "0") {
+            $encounter = null;
+        }
+
         do {
             $raw_document_number = 'M'.random_string('alnum', 6);
             $validate_number = $this->patient_model->validateDocumentNumber($raw_document_number);
@@ -3306,7 +3313,7 @@ class Patient extends MX_Controller {
                 'upload_path' => "./uploads/document",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "2048", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_size' => "5000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "10000",
                 'max_width' => "10000"
             );
@@ -3334,6 +3341,7 @@ class Patient extends MX_Controller {
                         'rendering_doctor_id' => $rendering_doctor_id,
                         'rendering_staff_id' => $rendering_user_id,
                         'patient_document_number' => $document_number,
+                        'filesize' => $path['file_size'],
                     );
 
                     $this->patient_model->insertPatientMaterial($data);
@@ -6476,6 +6484,7 @@ class Patient extends MX_Controller {
         $data['documents'] = $this->patient_model->getPatientMaterialById($id);
         $data['patients'] = $this->patient_model->getPatient();
         $data['categories'] = $this->patient_model->getDocumentCategories();
+        $data['encounters'] = $this->encounter_model->getPatientByEncounter();
 
         echo json_encode($data);
     }
