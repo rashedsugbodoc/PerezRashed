@@ -726,7 +726,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
-                                                        <span class="text-muted">(<?php echo lang('maximum_upload_filesize').': 10MB';?>)</span>
+                                                        <span class="text-muted">(<?php echo lang('maximum_upload_filesize').': 5MB';?>)</span>
                                                         <input type="file" name="img_url" id="document" class="dropify"/>
                                                     </div>
                                                 </div>

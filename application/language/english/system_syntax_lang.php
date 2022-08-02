@@ -1012,6 +1012,7 @@ $lang['maximum_allowed_filesize'] = 'Maximum allowed upload file size';
 $lang['upload_either_types'] = 'Upload either gif, jpg, png, jpeg, pdf.';
 $lang['upload_less_than'] = 'Upload less than';
 $lang['upload_less_than_10MB_image_or_pdf'] = 'Upload less than 10MB Image or PDF';
+$lang['upload_less_than_xMB_image_or_pdf'] = 'Upload less than 5MB Image or PDF';
 $lang['max_size_of'] = 'Max size of';
 $lang['of'] = 'of';
 $lang['undefined_patient_id'] = 'Undefined Patient ID';
