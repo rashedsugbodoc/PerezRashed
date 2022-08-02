@@ -20,11 +20,11 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" action="finance/addPaymentCategory" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="paymentCategoryForm" action="finance/addPaymentCategory" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('charge'); ?> <?php echo lang('name'); ?></label>
+                                                        <label class="form-label"><?php echo lang('charge'); ?> <?php echo lang('name'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('name');
@@ -32,12 +32,12 @@
                                                         if (!empty($service->category)) {
                                                             echo $service->category;
                                                         }
-                                                        ?>' placeholder="">    
+                                                        ?>' placeholder="" required>    
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('description'); ?></label>
+                                                        <label class="form-label"><?php echo lang('description'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="description" id="exampleInputEmail1" value='<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('description');
@@ -45,12 +45,12 @@
                                                         if (!empty($service->description)) {
                                                             echo $service->description;
                                                         }
-                                                        ?>' placeholder="">
+                                                        ?>' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('price'); ?> (<?php echo $settings->currency; ?>)</label>
+                                                        <label class="form-label"><?php echo lang('price'); ?> (<?php echo $settings->currency; ?>) <span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="c_price" id="exampleInputEmail1" value='<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('c_price');
@@ -58,12 +58,12 @@
                                                         if (!empty($service->c_price)) {
                                                             echo $service->c_price;
                                                         }
-                                                        ?>' placeholder="">
+                                                        ?>' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('rendering'); ?> <?php echo lang('doctors_share'); ?> (%)</label>
+                                                        <label class="form-label"><?php echo lang('rendering'); ?> <?php echo lang('doctors_share'); ?> (%) <span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="d_commission" id="exampleInputEmail1" value='<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('d_commission');
@@ -71,7 +71,7 @@
                                                         if (!empty($service->d_commission)) {
                                                             echo $service->d_commission;
                                                         }
-                                                        ?>' placeholder="">
+                                                        ?>' placeholder="" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -89,8 +89,8 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('category'); ?></label>
-                                                        <select class="form-control select2-show-search" name="category_id">
+                                                        <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="category_id" required>
                                                             <option value=""><?php echo lang('select_category');?></option>
                                                             <?php foreach ($categories as $category) { ?>
                                                                 <option value="<?php echo $category->id; ?>" <?php
@@ -111,8 +111,8 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('charge').' '.lang('type'); ?></label>
-                                                        <select class="form-control select2-show-search" id="service_select" name="service_type">
+                                                        <label class="form-label"><?php echo lang('charge').' '.lang('type'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" id="service_select" name="service_type" required>
                                                             <option value=""><?php echo lang('select_service_type');?></option>
                                                             <option value="<?php echo $service->service_category_group_id; ?>"
                                                                 <?php
@@ -217,6 +217,9 @@
         <script src="<?php echo base_url('public/assets/plugins/select2/select2.full.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/select2.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
         <!-- Notifications js -->
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
@@ -224,6 +227,10 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script>
+        $('#paymentCategoryForm').parsley();
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
