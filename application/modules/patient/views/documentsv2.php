@@ -56,6 +56,46 @@
                                     <form role="form" action="patient/addPatientMaterial" data-parsley-validate class="clearfix" method="post" enctype="multipart/form-data">
                                     <div class="modal-body">
                                         <div class="row">
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Associate with Encounter?</label>
+                                                    <div class="row">
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <label class="custom-control custom-radio">
+                                                                <input type="radio" class="custom-control-input" name="encounter_check" value="1">
+                                                                <span class="custom-control-label">Yes</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <label class="custom-control custom-radio">
+                                                                <input type="radio" class="custom-control-input" name="encounter_check" value="0">
+                                                                <span class="custom-control-label">No</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12" hidden id="encounter_div">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                    <select class="form-control select2-show-search" name="encounter_id" id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?> data-placeholder="Choose One">
+                                                        <option value="0" label="choose one">Choose One</option>
+                                                        <?php if (!empty($encounter_id)) { ?>
+                                                            <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                        <?php } ?>
+                                                        <?php if (!empty($encounter->id)) { ?>
+                                                            <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                    <?php if (!empty($encounter_id)) { ?>
+                                                        <input type="hidden" name="encounter_id" value="<?php
+                                                        if (!empty($encounter_id)) {
+                                                            echo $encounter_id;
+                                                        }
+                                                        ?>">
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
                                             <div class="col-md-12 col-sm-12">
                                                 <div class="form-group">
                                                     <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
@@ -109,6 +149,14 @@
                                     <form role="form" id="editDocumentForm" action="patient/addPatientMaterial" data-parsley-validate class="clearfix" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                        <select class="form-control select2-show-search" name="encounter_id" id="editencounter" data-placeholder="Choose One">
+                                                        <option value="0" label="choose one">Choose One</option>
+                                                    </select>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
@@ -273,12 +321,96 @@
         <!-- Notifications js -->
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
         <!-- parlsey js -->
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $("#encounter").change(function() {
+            var encounter = $("#encounter").val();
+            $("#patientchoose").find('option').remove();
+
+            $.ajax({
+                url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var patient = response.patient;
+                    $('#patientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
+                    // $.each(patient, function (key, value) {
+                    //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
+                    //     console.log(value.name);
+                    // });
+                }
+            })
+        });
+
+        $("#editencounter").change(function() {
+            var encounter = $("#editencounter").val();
+            $("#editpatientchoose").find('option').remove();
+
+            $.ajax({
+                url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var patient = response.patient;
+                    $('#editpatientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
+                    // $.each(patient, function (key, value) {
+                    //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
+                    //     console.log(value.name);
+                    // });
+                }
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=radio][name=encounter_check]').change(function() {
+                var encounter = this.value;
+                if (encounter == 1) {
+                    $("#encounter_div").attr("hidden", false);
+                } else {
+                    $("#encounter").val(0).change();
+                    $("#encounter_div").attr("hidden", false);
+                }
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#encounter").select2({
+                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(".table").on("click", ".editbutton", function () {
@@ -292,6 +424,7 @@
                 success: function (response) {
                     var patients = response.patients;
                     var categories = response.categories;
+                    var encounters = response.encounters;
                     $('#editDocumentForm').find('[name="id"]').val(response.documents.id).end()
                     $.each(patients, function (key, value) {
                         $('#editpatientchoose').append($('<option>').text(value.name).val(value.id)).end();
@@ -299,10 +432,16 @@
                     $.each(categories, function (key, value) {
                         $('#editcategory').append($('<option>').text(value.display_name).val(value.id)).end();
                     });
+                    $.each(encounters, function (key, value) {
+                        $('#editencounter').append($('<option>').text(value.text).val(value.id)).end();
+                    });
                     $('#editDocumentForm').find('[name="patient"]').val(response.documents.patient).change()
                     $('#editDocumentForm').find('[name="category"]').val(response.documents.category_id).change()
                     $('#editDocumentForm').find('[name="title"]').val(response.documents.title).end()
                     $('#editDocumentForm').find('[name="description"]').val(response.documents.description).end()
+                    $('#editDocumentForm').find('[name="encounter_id"]').val(response.documents.encounter_id).change()
+
+                    console.log(response.documents.encounter_id);
 
                     $('#myModal2').modal('show');
                 }
@@ -430,9 +569,47 @@
             $("#editpatientchoose").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
+                ajax: {
+                    // url: 'patient/getPatientinfo',
+                    url: 'patient/getPatientInfoByVisitedProviderId',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
             });
         
-
+            $("#editencounter").select2({
+                placeholder: '<?php echo lang('select').' '.lang('encounter'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+            });
 
         });
     </script>
