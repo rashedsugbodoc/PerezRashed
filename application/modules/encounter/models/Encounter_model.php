@@ -230,6 +230,29 @@ class Encounter_model extends CI_model {
         return $query->num_rows();
     }
 
+    function getPatientByEncounter() {
+        if (!empty($doctor)) {
+            $this->db->select('*');
+            $this->db->where('doctor', $doctor);
+            $this->db->limit(100);
+            $fetched_records = $this->db->get('encounter');
+            $users = $fetched_records->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->limit(100);
+            $fetched_records = $this->db->get('encounter');
+            $users = $fetched_records->result_array();
+        }
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $encounter_type_name = $this->getEncounterTypeById($user['encounter_type_id']);
+            $data[] = array("id" => $user['id'], "text" =>  lang('encounter') . " No." . ' : ' . $user['encounter_number'] . ' - ' . $encounter_type_name->display_name . ' - ' . date("M j, Y g:i a", strtotime($user['created_at'].' UTC')));
+        }
+        return $data;
+    }
+
     function getEncounterInfo($searchTerm, $doctor) {
         $settings = $this->settings_model->getSettings();
         if (!empty($doctor)) {
