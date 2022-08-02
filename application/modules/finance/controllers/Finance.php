@@ -1064,6 +1064,14 @@ class Finance extends MX_Controller {
         $s_commission = $this->input->post('s_commission');
         $staff = $this->input->post('staffs');
 
+        if ($staff == "") {
+            $staff = null;
+        }
+
+        if ($staff == 0) {
+            $staff = null;
+        }
+
         $group = $this->ion_auth->get_users_groups($staff)->row()->name;
 
         if (empty($c_price)) {
