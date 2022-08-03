@@ -47,10 +47,10 @@
                                                                         <div class="avatar avatar-lg brround d-block cover-image" data-image-src="
                                                                         <?php 
                                                                             if ($this->ion_auth->in_group('Doctor')) {
-                                                                                if(!empty($patient_details->img_url)) {
+                                                                                if(!empty($patient_details->img_url) && file_exists($patient_details->img_url)) {
                                                                                     echo $patient_details->img_url; 
                                                                                 } else {
-                                                                                    echo base_url('public/assets/images/users/7.jpg');
+                                                                                    echo base_url('public/assets/images/users/placeholder.jpg');
                                                                                 }
                                                                             }
                                                                             if ($this->ion_auth->in_group('Patient')) {
@@ -81,8 +81,8 @@
                                                                             <small class="text-muted">
                                                                                 <?php
                                                                                     if ($this->ion_auth->in_group('Doctor')) {
-                                                                                        if(!empty($age)){
-                                                                                            echo $patient_details->sex . ', ' . $age . ' ' . lang('years_old');  
+                                                                                        if(!empty($patient_details->birthdate)){
+                                                                                            echo ucfirst($patient_details->sex) . ', ' . time_elapsed_string($patient_details->birthdate,1 ,"short_age") . ' ' . lang('old');  
                                                                                         } else {
                                                                                             echo  lang('age') . ' ' . lang('not_specified');
                                                                                         }
