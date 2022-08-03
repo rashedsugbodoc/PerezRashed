@@ -1161,8 +1161,8 @@
                                                                                 </div>
                                                                             <?php } else { ?>
                                                                                 <div class="panel-body text-center">
-                                                                                    <a class="example-image-link" href="<?php echo $patient_material->url; ?>" data-lightbox="example-1" target="_blank">
-                                                                                        <img class="example-image" src="<?php echo $patient_material->url; ?><?php if(!empty($patient_material->last_modified)) echo '?m='. $patient_material->last_modified;?>" alt="image-1" max-width="120" max-height="120"/>
+                                                                                    <a class="example-image-link" href="<?php echo $patient_material->thumbnail_url?$patient_material->thumbnail_url:$patient_material->url; ?>" data-lightbox="example-1" target="_blank">
+                                                                                        <img class="example-image" src="<?php echo $patient_material->thumbnail_url?$patient_material->thumbnail_url:$patient_material->url; ?><?php if(!empty($patient_material->last_modified)) echo '?m='. $patient_material->last_modified;?>" alt="image-1" max-width="120" max-height="120"/>
                                                                                     </a>
                                                                                 </div>
                                                                             <?php } ?>

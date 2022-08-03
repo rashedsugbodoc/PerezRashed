@@ -3325,6 +3325,23 @@ class Patient extends MX_Controller {
                 if ($this->upload->do_upload('img_url')) {
                     $path = $this->upload->data();
                     $img_url = "uploads/document/" . $path['file_name'];
+                    $thumbnail_url = "uploads/thumb/" . $path['raw_name'] . "_thumb" . $path['file_ext'];
+
+                    $thumb = array(
+                        'image_library' => "gd2",
+                        'source_image' => $img_url,
+                        'new_image' => "./uploads/thumb",
+                        'create_thumb' => TRUE,
+                        'maintain_ratio' => TRUE,
+                        'width' => "200",
+                        'height' => "200",
+                    );
+
+                    $this->load->library('image_lib', $thumb);
+                    $this->upload->initialize($thumb);
+
+                    $this->image_lib->resize();
+
                     $data = array();
                     $data = array(
                         'created_at' => $date,
@@ -3342,7 +3359,12 @@ class Patient extends MX_Controller {
                         'rendering_staff_id' => $rendering_user_id,
                         'patient_document_number' => $document_number,
                         'filesize' => $path['file_size'],
+                        'thumbnail_url' => $thumbnail_url,
                     );
+
+                    // if ($this->image_lib->resize()) {
+                    //     $thumbnail = $thumb; 
+                    // }
 
                     $this->patient_model->insertPatientMaterial($data);
                     $this->session->set_flashdata('success', lang('record_added'));
@@ -3861,6 +3883,8 @@ class Patient extends MX_Controller {
             }
             if ($document->created_user_id === $current_user) {
                 $option3 = '<a class="btn btn-info" href="patient/editUpload?id='. $document->patient_document_number .'" target="_blank"><i class="fa fa-paint-brush"></i></a>';
+            } else {
+                $option3 = '';
             }
 
             if (!empty($document->patient)) {
@@ -3876,13 +3900,18 @@ class Patient extends MX_Controller {
 
             $created_at = date('Y-m-d', strtotime($document->created_at.' UTC'));
 
+            $image = $document->thumbnail_url;
+            if (empty($image)) {
+                $image = $document->url;
+            }
+
             if (pathinfo($document->url, PATHINFO_EXTENSION) === 'pdf'){
                 $info[] = array(
                     $created_at,
                     $patient_details,
                     $document->title,
                     $document->description,
-                    '<a class="example-image-link" href="' . $document->url . '" data-title="' . $document->title . '" target="_blank"">' . '<img class="example-image" src="uploads/PDF_DefaultImage.png" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
+                    '<a class="example-image-link" href="' . $image . '" data-title="' . $document->title . '" target="_blank"">' . '<img class="example-image" src="uploads/PDF_DefaultImage.png" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
                     $options1 . ' ' . $options2 . ' ' . $option3 . ' ' . $options4
                         // $options4
                 );
@@ -3892,7 +3921,7 @@ class Patient extends MX_Controller {
                     $patient_details,
                     $document->title,
                     $document->description,
-                    '<a class="example-image-link" href="' . $document->url . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '?m='. $document->last_modified .'" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
+                    '<a class="example-image-link" href="' . $image . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $image . '?m='. $document->last_modified .'" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
                     $options1 . ' ' . $options2 . ' ' . $option3 . ' ' . $options4
                         // $options4
                 );
