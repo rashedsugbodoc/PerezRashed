@@ -3406,6 +3406,7 @@ class Patient extends MX_Controller {
                     'description' => $description,
                     'rendering_doctor_id' => $rendering_doctor_id,
                     'rendering_staff_id' => $rendering_user_id,
+                    'encounter_id' => $encounter,
                 );
 
                 $this->patient_model->updatePatientMaterial($id, $data);
@@ -6524,6 +6525,16 @@ class Patient extends MX_Controller {
         $encounter = $this->encounter_model->getEncounterById($encounter_id);
 
         $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($encounter->patient_id);
+
+        echo json_encode($data);
+    }
+
+    public function getEncounterByPatientIdJason() {
+        $patient_id = $this->input->get('id');
+
+        $patient = $this->patient_model->getPatientById($patient_id);
+
+        $data['encounter'] = $this->encounter_model->getEncounterByPatientId($patient->id);
 
         echo json_encode($data);
     }

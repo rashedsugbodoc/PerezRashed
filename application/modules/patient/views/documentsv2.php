@@ -56,6 +56,13 @@
                                     <form role="form" action="patient/addPatientMaterial" data-parsley-validate class="clearfix" method="post" enctype="multipart/form-data">
                                     <div class="modal-body">
                                         <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
+                                                    <select class="form-control select2-show-search" id="patientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>" required>
+                                                    </select>
+                                                </div>
+                                            </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
                                                     <label class="form-label">Associate with Encounter?</label>
@@ -94,13 +101,6 @@
                                                         }
                                                         ?>">
                                                     <?php } ?>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 col-sm-12">
-                                                <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                    <select class="form-control select2-show-search" id="patientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>" required>
-                                                    </select>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 col-sm-12">
@@ -151,17 +151,36 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" id="editpatientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>" required>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label">Associate with Encounter?</label>
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <label class="custom-control custom-radio">
+                                                                    <input type="radio" class="custom-control-input" id="yes" name="edit_encounter_check" value="1">
+                                                                    <span class="custom-control-label">Yes</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <label class="custom-control custom-radio">
+                                                                    <input type="radio" class="custom-control-input" id="no" name="edit_encounter_check" value="0">
+                                                                    <span class="custom-control-label">No</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12" id="edit_encounter_div">
+                                                    <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
                                                         <select class="form-control select2-show-search" name="encounter_id" id="editencounter" data-placeholder="Choose One">
                                                         <option value="0" label="choose one">Choose One</option>
                                                     </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" id="editpatientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>" required>
-                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -330,45 +349,75 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
-        $("#encounter").change(function() {
-            var encounter = $("#encounter").val();
-            $("#patientchoose").find('option').remove();
+        // $("#encounter").change(function() {
+        //     var encounter = $("#encounter").val();
+        //     $("#patientchoose").find('option').remove();
+
+        //     $.ajax({
+        //         url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+        //         method: 'GET',
+        //         data: '',
+        //         dataType: 'json',
+        //         success: function (response) {
+        //             var patient = response.patient;
+        //             $('#patientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
+        //         }
+        //     })
+        // });
+
+        $("#patientchoose").change(function() {
+            var patient = $("#patientchoose").val();
+            $("#encounter").find('option').remove();
 
             $.ajax({
-                url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+                url: 'patient/getEncounterByPatientIdJason?id='+patient,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
                 success: function (response) {
-                    var patient = response.patient;
-                    $('#patientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
-                    // $.each(patient, function (key, value) {
-                    //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
-                    //     console.log(value.name);
-                    // });
+                    var encounter = response.encounter;
+                    // $("#encounter").append($('<option>').text(encounter.encounter_number).val(encounter.id)).end();
+                    $.each(encounter, function (key, value) {
+                        $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                    });
                 }
             })
         });
 
-        $("#editencounter").change(function() {
-            var encounter = $("#editencounter").val();
-            $("#editpatientchoose").find('option').remove();
+        // $("#editencounter").change(function() {
+        //     var encounter = $("#editencounter").val();
+        //     $("#editpatientchoose").find('option').remove();
+
+        //     $.ajax({
+        //         url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+        //         method: 'GET',
+        //         data: '',
+        //         dataType: 'json',
+        //         success: function (response) {
+        //             var patient = response.patient;
+        //             $('#editpatientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
+        //         }
+        //     })
+        // });
+
+        $("#editpatientchoose").change(function() {
+            var patient = $("#editpatientchoose").val();
+            $("#editencounter").find('option').remove();
 
             $.ajax({
-                url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+                url: 'patient/getEncounterByPatientIdJason?id='+patient,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
                 success: function (response) {
-                    var patient = response.patient;
-                    $('#editpatientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
-                    // $.each(patient, function (key, value) {
-                    //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
-                    //     console.log(value.name);
-                    // });
+                    var encounter = response.encounter;
+                    // $("#encounter").append($('<option>').text(encounter.encounter_number).val(encounter.id)).end();
+                    $.each(encounter, function (key, value) {
+                        $('#editencounter').append($('<option>').text(value.text).val(value.id)).end();
+                    });
                 }
             })
-        });
+        })
     </script>
 
     <script type="text/javascript">
@@ -379,7 +428,21 @@
                     $("#encounter_div").attr("hidden", false);
                 } else {
                     $("#encounter").val(0).change();
-                    $("#encounter_div").attr("hidden", false);
+                    $("#encounter_div").attr("hidden", true);
+                }
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=radio][name=edit_encounter_check]').change(function() {
+                var encounter = this.value;
+                if (encounter == 1) {
+                    $("#edit_encounter_div").attr("hidden", false);
+                } else {
+                    $("#editencounter").val(0).change();
+                    $("#edit_encounter_div").attr("hidden", true);
                 }
             });
         })
@@ -390,23 +453,23 @@
             $("#encounter").select2({
                 placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
                 allowClear: true,
-                ajax: {
-                    url: 'encounter/getEncounterInfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
+                // ajax: {
+                //     url: 'encounter/getEncounterInfo',
+                //     type: "post",
+                //     dataType: 'json',
+                //     delay: 250,
+                //     data: function (params) {
+                //         return {
+                //             searchTerm: params.term // search term
+                //         };
+                //     },
+                //     processResults: function (response) {
+                //         return {
+                //             results: response
+                //         };
+                //     },
+                //     cache: true
+                // }
 
             });
         });
@@ -440,6 +503,15 @@
                     $('#editDocumentForm').find('[name="title"]').val(response.documents.title).end()
                     $('#editDocumentForm').find('[name="description"]').val(response.documents.description).end()
                     $('#editDocumentForm').find('[name="encounter_id"]').val(response.documents.encounter_id).change()
+
+                    // $('#editDocumentForm').find('[name="edit_encounter_check"]').val("1").attr('checked', true);
+
+                    if (response.documents.encounter_id) {
+                        $("#yes").attr("checked", true);
+                    } else {
+                        $("#no").attr("checked", true);
+                        $("#editDocumentForm").find('[id=edit_encounter_div]').attr("hidden", true);
+                    }
 
                     console.log(response.documents.encounter_id);
 
@@ -592,23 +664,23 @@
             $("#editencounter").select2({
                 placeholder: '<?php echo lang('select').' '.lang('encounter'); ?>',
                 allowClear: true,
-                ajax: {
-                    url: 'encounter/getEncounterInfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
+                // ajax: {
+                //     url: 'encounter/getEncounterInfo',
+                //     type: "post",
+                //     dataType: 'json',
+                //     delay: 250,
+                //     data: function (params) {
+                //         return {
+                //             searchTerm: params.term // search term
+                //         };
+                //     },
+                //     processResults: function (response) {
+                //         return {
+                //             results: response
+                //         };
+                //     },
+                //     cache: true
+                // }
             });
 
         });

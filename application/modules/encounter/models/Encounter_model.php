@@ -44,10 +44,39 @@ class Encounter_model extends CI_model {
     }
 
     function getEncounterByPatientId($id) {
+        // if (!empty($doctor)) {
+        //     $this->db->select('*');
+        //     $this->db->where('doctor', $doctor);
+        //     $this->db->limit(100);
+        //     $fetched_records = $this->db->get('encounter');
+        //     $users = $fetched_records->result_array();
+        // } else {
+        //     $this->db->select('*');
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->limit(100);
+        //     $fetched_records = $this->db->get('encounter');
+        //     $users = $fetched_records->result_array();
+        // }
+        // // Initialize Array with fetched data
+        // $data = array();
+        // foreach ($users as $user) {
+        //     $encounter_type_name = $this->getEncounterTypeById($user['encounter_type_id']);
+        //     $data[] = array("id" => $user['id'], "text" =>  lang('encounter') . " No." . ' : ' . $user['encounter_number'] . ' - ' . $encounter_type_name->display_name . ' - ' . date("M j, Y g:i a", strtotime($user['created_at'].' UTC')));
+        // }
+        // return $data;
+
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('patient_id', $id);
-        $query = $this->db->get('encounter');
-        return $query->result();
+        $fetched_records = $this->db->get('encounter');
+        $users = $fetched_records->result_array();
+
+        $data = array();
+        foreach ($users as $user) {
+            $encounter_type_name = $this->getEncounterTypeById($user['encounter_type_id']);
+            $data[] = array("id" => $user['id'], "text" =>  lang('encounter') . " No." . ' : ' . $user['encounter_number'] . ' - ' . $encounter_type_name->display_name . ' - ' . date("M j, Y g:i a", strtotime($user['created_at'].' UTC')));
+        }
+
+        return $data;
     }
 
     function getEncounterByPatientIdByDoctorId($patient, $doctor) {
