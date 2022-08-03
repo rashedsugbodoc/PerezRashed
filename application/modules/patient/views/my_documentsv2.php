@@ -17,7 +17,7 @@
                                     <div class="col-lg-8 col-md-8 col-sm-5 mb-4">
                                         <!-- <a  data-target="#AddDocument" data-toggle="modal" href="" class="btn btn-primary"><i class="fe fe-plus"></i> Upload New Document</a> -->
                                         <a class="btn btn-primary" data-toggle="modal" href="#myModal1">
-                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                            <i class="fa fa-plus"> </i> <?php echo lang('upload').' '.lang('files'); ?> 
                                         </a>
                                     </div>
                                     <div class="col-lg-4 col-md-4 col-sm-7 mb-4">
@@ -108,7 +108,7 @@
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content modal-content-demo">
                                         <div class="modal-header">
-                                            <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('files'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                            <h6 class="modal-title"><?php echo lang('upload'); ?> <?php echo lang('files'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                         </div>
                                         <form role="form" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="modal-body">
@@ -148,7 +148,7 @@
                                                 <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                        <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('upload'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>

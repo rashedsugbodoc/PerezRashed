@@ -876,6 +876,7 @@ $lang['hospital'] = 'Hospital';
 $lang['facility'] = 'Facility';
 $lang['online'] = 'Online';
 $lang['facetoface'] = 'Face to Face';
+$lang['upload'] = 'Upload';
 $lang['uploader'] = 'Uploader';
 $lang['uploaded'] = 'Uploaded';
 $lang['summary'] = 'Summary';
