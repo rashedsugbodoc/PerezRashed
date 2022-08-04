@@ -613,17 +613,17 @@ class Encounter extends MX_Controller {
 
         $date = date("Y-m-d H:i:s", now('UTC'));
 
-        if ($status === "1") {
+        if ($status === "1" || $status === 1) {
             $status_time = array('waiting_started' => $date);
-        } elseif ($status === "2") {
+        } elseif ($status === "2" || $status === 2) {
             $status_time = array('ready_to_serve_at' => $date);
-        } elseif ($status === "3") {
+        } elseif ($status === "3" || $status === 3) {
             $status_time = array('started_at' => $date);
-        } elseif ($status === "4") {
+        } elseif ($status === "4" || $status === 4) {
             $status_time = array('ended_at' => $date);
-        } elseif ($status === "5") {
+        } elseif ($status === "5" || $status === 5) {
             $status_time = array('cancelled_at' => $date);
-        } elseif ($status === "6") {
+        } elseif ($status === "6" || $status === 6) {
             $status_time = array('rescheduled_at' => $date);
         }
 
@@ -642,8 +642,9 @@ class Encounter extends MX_Controller {
             'appointment_id' => $appointment_id,
             'patient_id' => $appointment_patient,
             'rendering_staff_id' => $appointment_doctor,
+            'doctor' => $appointment_doctor,
             'created_at' => $date,
-            // 'started_at' => $date,
+            'started_at' => $date,
             // 'waiting_started' => $date,
             'encounter_status' => $status,
             'created_user_id' => $user,
