@@ -48,19 +48,6 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12 col-sm-12">
-                                            <div class="form-group">
-                                                <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                <select class="form-control select2-show-search" name="encounter_id" id="encounter" required <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
-                                                    <?php if (!empty($encounter_id)) { ?>
-                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                                <?php if (!empty($encounter_id)) { ?>
-                                                    <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
-                                                <?php } ?>
-                                            </div>
-                                        </div>
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
@@ -141,6 +128,19 @@
                                             </div>
                                         </div>
                                         <?php } ?>
+                                        <div class="col-md-12 col-sm-12">
+                                            <div class="form-group">
+                                                <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                <select class="form-control select2-show-search" name="encounter_id" id="encounter" required <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
+                                                    <?php if (!empty($encounter_id)) { ?>
+                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                <?php } ?>
+                                            </div>
+                                        </div>
                                         <div class="col-md-12 medicine_block">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('select_medicine'); ?> <span class="text-red">*</span></label>
@@ -717,22 +717,40 @@
     </script> 
 
     <script type="text/javascript">
-        $("#encounter").change(function () {
-            var encounter = $("#encounter").val();
-            $("#patientchoose").find('option').remove();
+        // $("#encounter").change(function () {
+        //     var encounter = $("#encounter").val();
+        //     $("#patientchoose").find('option').remove();
+
+        //     $.ajax({
+        //         url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+        //         method: 'GET',
+        //         data: '',
+        //         dataType: 'json',
+        //         success: function (response) {
+        //             var patient = response.patient;
+        //             $('#patientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
+        //             // $.each(patient, function (key, value) {
+        //             //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
+        //             //     console.log(value.name);
+        //             // });
+        //         }
+        //     })
+        // });
+
+        $("#patientchoose").change(function() {
+            var patient = $("#patientchoose").val();
+            $("#encounter").find('option').remove();
 
             $.ajax({
-                url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+                url: 'prescription/getEncounterByPatientIdJason?id='+patient,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
                 success: function (response) {
-                    var patient = response.patient;
-                    $('#patientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
-                    // $.each(patient, function (key, value) {
-                    //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
-                    //     console.log(value.name);
-                    // });
+                    var encounter = response.encounter;
+                    $.each(encounter, function (key, value) {
+                        $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                    });
                 }
             })
         });
@@ -743,24 +761,24 @@
             $("#patientchoose").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
-                // ajax: {
-                //     // url: 'patient/getPatientinfo',
-                //     url: 'patient/getPatientInfoByVisitedProviderId',
-                //     type: "post",
-                //     dataType: 'json',
-                //     delay: 250,
-                //     data: function (params) {
-                //         return {
-                //             searchTerm: params.term // search term
-                //         };
-                //     },
-                //     processResults: function (response) {
-                //         return {
-                //             results: response
-                //         };
-                //     },
-                //     cache: true
-                // }
+                ajax: {
+                    // url: 'patient/getPatientinfo',
+                    url: 'patient/getPatientInfoByVisitedProviderId',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
 
             });
 
@@ -862,23 +880,23 @@
             $("#encounter").select2({
                 placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
                 allowClear: true,
-                ajax: {
-                    url: 'encounter/getEncounterInfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
+                // ajax: {
+                //     url: 'encounter/getEncounterInfo',
+                //     type: "post",
+                //     dataType: 'json',
+                //     delay: 250,
+                //     data: function (params) {
+                //         return {
+                //             searchTerm: params.term // search term
+                //         };
+                //     },
+                //     processResults: function (response) {
+                //         return {
+                //             results: response
+                //         };
+                //     },
+                //     cache: true
+                // }
 
             });
         });
