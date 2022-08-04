@@ -44,6 +44,13 @@ class Encounter_model extends CI_model {
     }
 
     function getEncounterByPatientId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('patient_id', $id);
+        $query = $this->db->get('encounter');
+        return $query->result();
+    }
+
+    function getEncounterByPatientIdForDropdown($id) {
         // if (!empty($doctor)) {
         //     $this->db->select('*');
         //     $this->db->where('doctor', $doctor);
