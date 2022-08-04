@@ -10,7 +10,7 @@
 
 
                         <div class="row mt-5">
-                            <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                            <?php if ($this->ion_auth->in_group(array('Doctor', 'admin'))) { ?>
                             <div class="col-md-12 col-sm-12 col-lg-12" id="addCase">
                                 <div class="panel-group panel-group-primary mb-5"  role="tablist" aria-multiselectable="true" id="accordion3">
                                     <div class="panel panel-default active">
@@ -34,31 +34,6 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <?php echo validation_errors(); ?>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12 col-sm-12">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
-                                                                <select class="form-control select2-show-search" name="encounter_id" required id="encounter" style="width:100%;" <?php if(!empty($encounter_id)) { echo "disabled"; } elseif(!empty($form_single->encounter_id)) { echo "disabled"; } ?>>
-                                                                    <?php if (!empty($encounter_id)) { ?>
-                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
-                                                                    <?php } ?>
-                                                                    <?php if (!empty($encounter->id)) { ?>
-                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
-                                                                    <?php } ?>
-                                                                    <?php if (!empty($form_single->encounter_id)) { ?>
-                                                                        <option value="<?php echo $form_single->encounter_id; ?>" selected><?php echo $this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_number . ' - ' . $this->encounter_model->getEncounterTypeById($this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_type_id)->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
-                                                                    <?php } ?>
-                                                                </select>
-                                                                <?php if (!empty($encounter_id)) { ?>
-                                                                    <input type="hidden" name="encounter_id" value="<?php
-                                                                    if (!empty($encounter_id)) {
-                                                                        echo $encounter_id;
-                                                                    }
-                                                                    ?>">
-                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -137,6 +112,31 @@
                                                                 </select>
                                                                 <?php if (!empty($encounter_id)) { ?>
                                                                     <input type="hidden" name="doctor" value="<?php echo $doctor->id ?>">
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
+                                                                <select class="form-control select2-show-search" name="encounter_id" required id="encounter" style="width:100%;" <?php if(!empty($encounter_id)) { echo "disabled"; } elseif(!empty($form_single->encounter_id)) { echo "disabled"; } ?>>
+                                                                    <?php if (!empty($encounter_id)) { ?>
+                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($form_single->encounter_id)) { ?>
+                                                                        <option value="<?php echo $form_single->encounter_id; ?>" selected><?php echo $this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_number . ' - ' . $this->encounter_model->getEncounterTypeById($this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_type_id)->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                    <input type="hidden" name="encounter_id" value="<?php
+                                                                    if (!empty($encounter_id)) {
+                                                                        echo $encounter_id;
+                                                                    }
+                                                                    ?>">
                                                                 <?php } ?>
                                                             </div>
                                                         </div>
@@ -469,22 +469,36 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
-        $("#encounter").change(function() {
-            var encounter = $("#encounter").val();
-            $("#pos_select").find('option').remove();
+        // $("#encounter").change(function() {
+        //     var encounter = $("#encounter").val();
+        //     $("#pos_select").find('option').remove();
+
+        //     $.ajax({
+        //         url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+        //         method: 'GET',
+        //         data: '',
+        //         dataType: 'json',
+        //         success: function (response) {
+        //             var patient = response.patient;
+        //             $('#pos_select').append($('<option>').text(patient.name).val(patient.id)).end();
+        //         }
+        //     })
+        // });
+
+        $("#pos_select").change(function() {
+            var patient = $("#pos_select").val();
+            $("#encounter").find('option').remove();
 
             $.ajax({
-                url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+                url: 'form/getEncounterByPatientIdJason?id='+patient,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
                 success: function (response) {
-                    var patient = response.patient;
-                    $('#pos_select').append($('<option>').text(patient.name).val(patient.id)).end();
-                    // $.each(patient, function (key, value) {
-                    //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
-                    //     console.log(value.name);
-                    // });
+                    var encounter = response.encounter;
+                    $.each(encounter, function (key, value) {
+                        $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                    });
                 }
             })
         });
@@ -691,36 +705,8 @@
             $("#encounter").select2({
                 placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
                 allowClear: true,
-                ajax: {
-                    url: 'encounter/getEncounterInfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
-
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $("#pos_select").select2({
-                placeholder: '<?php echo lang('select_patient'); ?>',
-                allowClear: true,
                 // ajax: {
-                //     // url: 'patient/getPatientinfo',
-                //     url: 'patient/getPatientInfoByVisitedProviderId',
+                //     url: 'encounter/getEncounterInfo',
                 //     type: "post",
                 //     dataType: 'json',
                 //     delay: 250,
@@ -736,6 +722,34 @@
                 //     },
                 //     cache: true
                 // }
+
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $("#pos_select").select2({
+                placeholder: '<?php echo lang('select_patient'); ?>',
+                allowClear: true,
+                ajax: {
+                    // url: 'patient/getPatientinfo',
+                    url: 'patient/getPatientInfoByVisitedProviderId',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
 
             });
            

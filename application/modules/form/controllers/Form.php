@@ -996,6 +996,16 @@ class Form extends MX_Controller {
         echo json_encode($output);
     }
 
+    public function getEncounterByPatientIdJason() {
+        $patient_id = $this->input->get('id');
+
+        $patient = $this->patient_model->getPatientById($patient_id);
+
+        $data['encounter'] = $this->encounter_model->getEncounterByPatientIdForDropdown($patient->id);
+
+        echo json_encode($data);
+    }
+
 }
 
 /* End of file form.php */
