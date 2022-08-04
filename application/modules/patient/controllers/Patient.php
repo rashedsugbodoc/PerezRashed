@@ -6534,7 +6534,7 @@ class Patient extends MX_Controller {
 
         $patient = $this->patient_model->getPatientById($patient_id);
 
-        $data['encounter'] = $this->encounter_model->getEncounterByPatientId($patient->id);
+        $data['encounter'] = $this->encounter_model->getEncounterByPatientIdForDropdown($patient->id);
 
         echo json_encode($data);
     }
