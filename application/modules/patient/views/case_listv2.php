@@ -31,28 +31,6 @@
                                             <div class="panel-body border-0 bg-white">
                                                 <form role="form" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();" id="casebody">
                                                     <div class="row">
-                                                        <div class="col-md-12 col-sm-12">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
-                                                                <select class="form-control select2-show-search" name="encounter_id" required id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
-                                                                    <?php if (!empty($encounter_id)) { ?>
-                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
-                                                                    <?php } ?>
-                                                                    <?php if (!empty($encounter->id)) { ?>
-                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
-                                                                    <?php } ?>
-                                                                </select>
-                                                                <?php if (!empty($encounter_id)) { ?>
-                                                                    <input type="hidden" name="encounter_id" value="<?php
-                                                                    if (!empty($encounter_id)) {
-                                                                        echo $encounter_id;
-                                                                    }
-                                                                    ?>">
-                                                                <?php } ?>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
@@ -71,6 +49,26 @@
                                                                         <option value="<?php echo $case_lists->patient_id ?>"><?php echo $this->patient_model->getPatientById($case_lists->patient_id)->name ?></option>
                                                                     <?php } ?>
                                                                 </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
+                                                                <select class="form-control select2-show-search" name="encounter_id" required id="encounter" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
+                                                                    <?php if (!empty($encounter_id)) { ?>
+                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                    <?php } ?>
+                                                                    <?php if (!empty($encounter->id)) { ?>
+                                                                        <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                    <?php } ?>
+                                                                </select>
+                                                                <?php if (!empty($encounter_id)) { ?>
+                                                                    <input type="hidden" name="encounter_id" value="<?php
+                                                                    if (!empty($encounter_id)) {
+                                                                        echo $encounter_id;
+                                                                    }
+                                                                    ?>">
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -122,7 +120,7 @@
                                                             </div>
                                                         </div>
                                                     </div> -->
-                                                    <input type="hidden" name="id" value='<?php echo $case_lists->id ?>'>
+                                                    <input type="hidden" id="case_id" name="id" value='<?php echo $case_lists->id ?>'>
                                                     <input type="hidden" name="redirect" value='patient/caseList'>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
@@ -410,22 +408,36 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
-        $("#encounter").change(function() {
-            var encounter = $("#encounter").val();
-            $("#patientchoose").find('option').remove();
+        // $("#encounter").change(function() {
+        //     var encounter = $("#encounter").val();
+        //     $("#patientchoose").find('option').remove();
+
+        //     $.ajax({
+        //         url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+        //         method: 'GET',
+        //         data: '',
+        //         dataType: 'json',
+        //         success: function (response) {
+        //             var patient = response.patient;
+        //             $('#patientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
+        //         }
+        //     })
+        // });
+
+        $("#patientchoose").change(function() {
+            var patient = $("#patientchoose").val();
+            $("#encounter").find('option').remove();
 
             $.ajax({
-                url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
+                url: 'patient/getEncounterByPatientIdJason?id='+patient,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
                 success: function (response) {
-                    var patient = response.patient;
-                    $('#patientchoose').append($('<option>').text(patient.name).val(patient.id)).end();
-                    // $.each(patient, function (key, value) {
-                    //     $('#patientchoose').append($('<option>').text(value.name).val(value.id)).end();
-                    //     console.log(value.name);
-                    // });
+                    var encounter = response.encounter;
+                    $.each(encounter, function (key, value) {
+                        $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                    });
                 }
             })
         });
@@ -436,23 +448,23 @@
             $("#encounter").select2({
                 placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
                 allowClear: true,
-                ajax: {
-                    url: 'encounter/getEncounterInfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
+                // ajax: {
+                //     url: 'encounter/getEncounterInfo',
+                //     type: "post",
+                //     dataType: 'json',
+                //     delay: 250,
+                //     data: function (params) {
+                //         return {
+                //             searchTerm: params.term // search term
+                //         };
+                //     },
+                //     processResults: function (response) {
+                //         return {
+                //             results: response
+                //         };
+                //     },
+                //     cache: true
+                // }
 
             });
         });
@@ -600,7 +612,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var form_id = $("#form_id").val();
+            var form_id = $("#case_id").val();
             var z = document.getElementById("accordHeader");
             var x = document.getElementById("collapseOne31");
             if (form_id !== "") {
@@ -720,24 +732,24 @@
             $("#patientchoose").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
-                // ajax: {
-                //     // url: 'patient/getPatientinfo',
-                //     url: 'patient/getPatientInfoByVisitedProviderId',
-                //     type: "post",
-                //     dataType: 'json',
-                //     delay: 250,
-                //     data: function (params) {
-                //         return {
-                //             searchTerm: params.term // search term
-                //         };
-                //     },
-                //     processResults: function (response) {
-                //         return {
-                //             results: response
-                //         };
-                //     },
-                //     cache: true
-                // }
+                ajax: {
+                    // url: 'patient/getPatientinfo',
+                    url: 'patient/getPatientInfoByVisitedProviderId',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
 
             });
             $("#patientchoose1").select2({
