@@ -72,7 +72,11 @@
                                                                 <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one" style="width:100%;">
                                                                     <option value="">Select .....</option>
                                                                     <?php foreach ($templates as $template) { ?>
-                                                                        <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
+                                                                        <?php if ($template->id == $form_single->form_template_id) { ?>
+                                                                            <option value="<?php echo $template->id; ?>" selected><?php echo $template->name; ?> </option>
+                                                                        <?php } else { ?>
+                                                                            <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
+                                                                        <?php } ?>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
@@ -205,7 +209,11 @@
                                                                 <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?><span class="text-red"> *</span></label>
                                                                 <select class="select2-show-search form-control" name="category" id="category" data-placeholder="Choose one" style="width:100%;" required>
                                                                     <?php foreach ($categories as $category) { ?>
-                                                                        <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                                                                        <?php if ($category->id == $form_single->category_id) { ?>
+                                                                            <option value="<?php echo $category->id; ?>" selected><?php echo $category->name; ?></option>
+                                                                        <?php } else { ?>
+                                                                            <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
+                                                                        <?php } ?>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>

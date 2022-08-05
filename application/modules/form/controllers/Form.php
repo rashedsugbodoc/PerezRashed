@@ -40,14 +40,14 @@ class Form extends MX_Controller {
         }
 
         $form_number = $this->input->get('id');
+        $data['encounter_id'] = $this->input->get('encounter_id');
         $id = $this->form_model->getFormByFormNumber($form_number)->id;
-
-
         if (!empty($id)) {
             $form_details = $this->form_model->getFormById($id);
             if ($form_details->hospital_id !== $this->session->userdata('hospital_id')) {
                 redirect('home/permission');
             }
+            $data['encounter_id'] = $form_details->encounter_id;
         }
 
         $data['settings'] = $this->settings_model->getSettings();
@@ -62,7 +62,6 @@ class Form extends MX_Controller {
         $data['templates'] = $this->form_model->getTemplate();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->form_model->getFormCategory();
-        $data['encounter_id'] = $this->input->get('encounter_id');
         $data['patient_id'] = $this->input->get('patient_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
@@ -101,6 +100,7 @@ class Form extends MX_Controller {
             if ($form_details->hospital_id !== $this->session->userdata('hospital_id')) {
                 redirect('home/permission');
             }
+            $data['encounter_id'] = $form_details->encounter_id;
         }
 
         if (!empty($data['encounter_id'])) {
@@ -224,6 +224,7 @@ class Form extends MX_Controller {
 
         $redirect = $this->input->post('redirect');
         $medical_redirect = $this->input->post('medical_history_redirect');
+        $template = $this->input->post('template');
 
         do {
             $raw_form_number = 'F'.random_string('alnum', 6);
@@ -424,6 +425,7 @@ class Form extends MX_Controller {
                     // 'rendering_staff_id' => $rendering_user,
                     'encounter_id' => $encounter,
                     'form_number' => $form_number,
+                    'form_template_id' => $template,
                 );
                 $this->form_model->insertForm($data);
                 $inserted_id = $this->db->insert_id();
@@ -453,6 +455,7 @@ class Form extends MX_Controller {
                     'patient_phone' => $patient_details->phone,
                     'patient_address' => $patient_details->address,
                     'doctor_name' => $doctor_details->name,
+                    'form_template_id' => $template,
                 );
                 $this->form_model->updateForm($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
