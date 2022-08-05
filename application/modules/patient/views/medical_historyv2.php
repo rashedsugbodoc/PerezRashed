@@ -445,8 +445,8 @@
                                                                     <tbody>
                                                                         <?php foreach ($diagnosis as $diag) { ?>
                                                                             <tr class="text-center">
-                                                                                <td><?php echo date('Y-m-d H:i A', strtotime($diag->diagnosis_date.' UTC')); ?></td>
-                                                                                <td><?php echo date('Y-m-d H:i A', strtotime($diag->onset_date.' UTC')); ?></td>
+                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($diag->diagnosis_date.' UTC')); ?></td>
+                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($diag->onset_date.' UTC')); ?></td>
                                                                                 <td><?php
                                                                                     $diagnosis_long = $this->diagnosis_model->getDiagnosisById($diag->diagnosis_id)->long_description;
                                                                                     if (!empty($diagnosis_long)) {
@@ -1238,7 +1238,7 @@
                                                                     <tbody>
                                                                         <?php foreach ($encounters as $encounter) { ?>
                                                                             <tr class="">
-                                                                                <td><?php echo date('Y-m-d', strtotime($encounter->created_at.' UTC')); ?></td>            
+                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')); ?></td>            
                                                                                 <td><?php echo $encounter->encounter_number; ?></td>
                                                                                 <td><?php echo $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name; ?></td>
                                                                                 <td><?php

@@ -132,7 +132,7 @@
                                                                         <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                                     <?php } ?>
                                                                     <?php if (!empty($form_single->encounter_id)) { ?>
-                                                                        <option value="<?php echo $form_single->encounter_id; ?>" selected><?php echo $this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_number . ' - ' . $this->encounter_model->getEncounterTypeById($this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_type_id)->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                                        <option value="<?php echo $form_single->encounter_id; ?>" selected><?php echo $this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_number . ' - ' . $this->encounter_model->getEncounterTypeById($this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_type_id)->display_name . ' - ' . date('M j, Y g:i a', strtotime($this->encounter_model->getEncounterById($form_encounter)->created_at.' UTC')); ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter_id)) { ?>
@@ -531,8 +531,8 @@
             } else {
                 flatpickr(".flatpickr", {
                     altInput: true,
-                    altFormat: "F j, Y H:i K",
-                    dateFormat: "F j, Y H:i K",
+                    altFormat: "F j, Y h:i K",
+                    dateFormat: "F j, Y h:i K",
                     disableMobile: true,
                     enableTime: true,
                     defaultDate: form_date,
