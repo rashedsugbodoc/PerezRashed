@@ -45,7 +45,7 @@
                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
                                                 <select class="select2-show-search form-control pos_select" name="patient" id="pos_select">
                                                     <?php if (!empty($patient_id)) { ?>
-                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientByPatientNumber($patient_id)->name; ?></option>
+                                                        <option value="<?php echo $patient_details->id ?>" selected="selected"><?php echo $patient_details->name; ?></option>
                                                     <?php } ?>
                                                 </select>
                                             </div>

@@ -47,7 +47,7 @@ class Encounter extends MX_Controller {
         if (!empty($root) && !empty($method)) {
             $data['redirect'] = $root . '/' . $method . '?id=' . $data['patient_id'] . '&encounter_id=';
         }
-
+        $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient_id']);
         $current_user = $this->ion_auth->get_user_id();
         if ($this->ion_auth->in_group('Doctor')) {
             $doctor_id = $this->db->get_where('doctor', array('ion_user_id' => $current_user))->row()->id;
