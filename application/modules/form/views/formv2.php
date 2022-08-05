@@ -95,7 +95,7 @@
                                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
                                                                     <?php } ?>
                                                                     <?php if (!empty($patient_id)) { ?>
-                                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
+                                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientByPatientNumber($patient_id)->name; ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter_id)) { ?>
@@ -124,7 +124,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
-                                                                <select class="form-control select2-show-search" name="encounter_id" required id="encounter" style="width:100%;" <?php if(!empty($encounter_id)) { echo "disabled"; } elseif(!empty($form_single->encounter_id)) { echo "disabled"; } ?>>
+                                                                <select class="form-control select2-show-search" name="encounter_id" required id="encounter" style="width:100%;" <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($encounter_id)) { ?>
                                                                         <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                                     <?php } ?>
@@ -516,15 +516,17 @@
         $(document).ready(function () {
             var form_id = "<?php echo $form_single->id ?>";
             var form_date = "<?php echo date("F j, Y H:i A", strtotime($form_single->form_date.' UTC')); ?>";
+            var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86399); ?>";
             console.log(form_date);
             if (form_id === "") {
                 flatpickr(".flatpickr", {
                     altInput: true,
-                    altFormat: "F j, Y H:i K",
-                    maxDate: "today",
+                    altFormat: "F j, Y h:i K",
+                    maxDate: maxdate,
                     disableMobile: true,
                     enableTime: true,
-                    defaultDate: "today",
+                    defaultDate: timenow,
                 });
             } else {
                 flatpickr(".flatpickr", {
@@ -851,6 +853,7 @@
             var form_id = $("#form_id").val();
             var encounter_id = $("#formForm").find('[name="encounter_id"]').val();
             console.log(encounter_id);
+            var add_new = "<?php echo $form_add_new; ?>";
             var z = document.getElementById("accordHeader");
             var x = document.getElementById("collapseOne31");
             if (form_id !== "") {
@@ -865,7 +868,13 @@
                     // alert(koopId)
                 /*END*/
             }
-            if (encounter_id !== "") {
+            // if (add_new === "true") {
+            //     z.className = "collapsed text-dark border-bottom";
+            //     z.style.backgroundColor = "#fff";
+            //     x.className = "panel-collapse collapse show";
+            //     $("#accordHeader").attr("aria-expanded", true);
+            // }
+            if (encounter_id !== null || add_new === "true") {
                 z.className = "collapsed text-dark border-bottom";
                 z.style.backgroundColor = "#fff";
                 x.className = "panel-collapse collapse show";

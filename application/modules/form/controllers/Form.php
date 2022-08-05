@@ -40,6 +40,7 @@ class Form extends MX_Controller {
         }
 
         $form_number = $this->input->get('id');
+        $data['form_add_new'] = $this->input->get('addnew');
         $data['encounter_id'] = $this->input->get('encounter_id');
         $id = $this->form_model->getFormByFormNumber($form_number)->id;
         if (!empty($id)) {
@@ -47,7 +48,7 @@ class Form extends MX_Controller {
             if ($form_details->hospital_id !== $this->session->userdata('hospital_id')) {
                 redirect('home/permission');
             }
-            $data['encounter_id'] = $form_details->encounter_id;
+            $data['form_encounter'] = $form_details->encounter_id;
         }
 
         $data['settings'] = $this->settings_model->getSettings();

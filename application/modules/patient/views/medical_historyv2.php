@@ -1002,7 +1002,7 @@
                                                         </div>
                                                         <div class="card-options">
                                                             <?php if(!empty($encounter_id)) { ?>
-                                                                <a href="form/addFormView?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                                <a href="form?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
