@@ -599,7 +599,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('forms_reports'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
                                         <li><a href="form" class="slide-item"><?php echo lang('forms_reports'); ?></a></li>
-                                        <li><a href="form/addFormView" class="slide-item"><?php echo lang('add_form_report'); ?></a></li>
+                                        <li><a href="form?addnew=true" class="slide-item"><?php echo lang('add_form_report'); ?></a></li>
                                         <li><a href="form/template" class="slide-item"><?php echo lang('report_templates'); ?></a></li>
                                     </ul>
                                 </li>
