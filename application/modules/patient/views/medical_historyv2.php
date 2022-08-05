@@ -774,7 +774,7 @@
                                                                         <?php foreach ($medical_histories as $medical_history) { ?>
                                                                             <tr class="">
 
-                                                                                <td><?php echo date('Y-m-d', strtotime($medical_history->case_date.' UTC')); ?></td>
+                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($medical_history->case_date.' UTC')); ?></td>
                                                                                 <td><?php echo $medical_history->title; ?></td>
                                                                                 <td><?php echo $medical_history->description; ?></td>
                                                                                 <td><?php
@@ -940,6 +940,7 @@
                                                                 <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100 editable-sample5">
                                                                     <thead>
                                                                         <tr>
+                                                                            <th class="border-bottom-0"><?php echo lang('date'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('lab').' '.lang('request').' '.lang('number'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('lab').' '.lang('test'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
@@ -950,6 +951,7 @@
                                                                     <tbody>
                                                                         <?php foreach($labrequests as $labrequest) { ?>
                                                                             <tr>
+                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($labrequest->created_at.' UTC')); ?></td>
                                                                                 <td><?php echo $labrequest->lab_request_number ?></td>
                                                                                 <td>
                                                                                     <?php
@@ -1012,16 +1014,17 @@
                                                                 <table id="editable-sample7" class="table table-bordered text-nowrap key-buttons w-100 editable-sample7">
                                                                     <thead>
                                                                         <tr>
+                                                                            <th><?php echo lang('date') ?></th>
                                                                             <th><?php echo lang('form').' '.lang('number') ?></th>
                                                                             <th><?php echo lang('name') ?></th>
                                                                             <th><?php echo lang('patient') ?></th>
-                                                                            <th><?php echo lang('date') ?></th>
                                                                             <th><?php echo lang('actions') ?></th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
                                                                         <?php foreach($forms as $form) { ?>
                                                                             <tr>
+                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($form->form_date.' UTC')); ?></td>
                                                                                 <td><?php echo $form->form_number; ?></td>
                                                                                 <td><?php echo $form->name; ?></td>
                                                                                 <td>
@@ -1030,7 +1033,6 @@
                                                                                     echo $patient_details;
                                                                                     ?>
                                                                                 </td>
-                                                                                <td><?php echo date('Y-m-d', strtotime($form->form_date.' UTC')); ?></td>
                                                                                 <td>
                                                                                     <?php if(!empty($encounter_id)) { ?>
                                                                                         <a href="form?id=<?php echo $form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
@@ -1060,8 +1062,8 @@
                                                                 <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100 editable-sample5">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th><?php echo lang('id'); ?></th>
                                                                             <th><?php echo lang('date'); ?></th>
+                                                                            <th><?php echo lang('id'); ?></th>
                                                                             <th><?php echo lang('doctor'); ?></th>
                                                                             <th><?php echo lang('facility'); ?></th>
                                                                             <th class="no-print"><?php echo lang('options'); ?></th>
@@ -1070,8 +1072,8 @@
                                                                     <tbody>
                                                                         <?php foreach ($labs as $lab) { ?>
                                                                             <tr class="">
+                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($lab->lab_date.' UTC')); ?></td>
                                                                                 <td><?php echo $lab->id; ?></td>
-                                                                                <td><?php echo date('Y-m-d', strtotime($lab->lab_date.' UTC')); ?></td>
                                                                                 <td>
                                                                                     <?php
                                                                                     $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
