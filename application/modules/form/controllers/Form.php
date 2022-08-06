@@ -509,7 +509,7 @@ class Form extends MX_Controller {
     }
 
     public function template() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
 
@@ -525,7 +525,7 @@ class Form extends MX_Controller {
     }
 
     public function addTemplateView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
             redirect('home/permission');
         }
 
