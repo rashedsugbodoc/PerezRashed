@@ -331,6 +331,52 @@ class Encounter_model extends CI_model {
         return $data;
     }
 
+    function getEncounterInfoByPatient($searchTerm, $doctor, $patient) {
+        $settings = $this->settings_model->getSettings();
+        if (!empty($doctor)) {
+            if (!empty($searchTerm)) {
+                $query = $this->db->select('*')
+                        ->from('encounter')
+                        ->where('doctor', $doctor)
+                        ->where('patient_id', $patient)
+                        ->where("(id LIKE '%" . $searchTerm . "%' OR encounter_number LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                        ->get();
+                $users = $query->result_array();
+            } else {
+                $this->db->select('*');
+                $this->db->where('doctor', $doctor);
+                $this->db->where('patient_id', $patient);
+                $this->db->limit(100);
+                $fetched_records = $this->db->get('encounter');
+                $users = $fetched_records->result_array();
+            }
+        } else {
+            if (!empty($searchTerm)) {
+                $query = $this->db->select('*')
+                        ->from('encounter')
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where('patient_id', $patient)
+                        ->where("(id LIKE '%" . $searchTerm . "%' OR encounter_number LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                        ->get();
+                $users = $query->result_array();
+            } else {
+                $this->db->select('*');
+                $this->db->where('patient_id', $patient);
+                $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+                $this->db->limit(100);
+                $fetched_records = $this->db->get('encounter');
+                $users = $fetched_records->result_array();
+            }
+        }
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $encounter_type_name = $this->getEncounterTypeById($user['encounter_type_id']);
+            $data[] = array("id" => $user['id'], "text" =>  lang('encounter') . " No." . ' : ' . $user['encounter_number'] . ' - ' . $encounter_type_name->display_name . ' - ' . date("M j, Y g:i a", strtotime($user['created_at'].' UTC')));
+        }
+        return $data;
+    }
+
     function getEncounterTypeInfo($searchTerm) {
         $settings = $this->settings_model->getSettings();
         if (!empty($searchTerm)) {

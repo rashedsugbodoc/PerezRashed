@@ -505,6 +505,22 @@ class Encounter extends MX_Controller {
         echo json_encode($response);
     }
 
+    function getEncounterInfoByPatientId() {
+        // Search term
+        $searchTerm = $this->input->post('searchTerm');
+        $user = $this->session->userdata('user_id');
+        $patient = $this->input->get('patient');
+
+        if ($this->ion_auth->in_group('Doctor')) {
+            $doctor = $this->doctor_model->getDoctorByIonUserId($user)->id;
+        }
+
+// Get users
+        $response = $this->encounter_model->getEncounterInfoByPatient($searchTerm, $doctor, $patient);
+
+        echo json_encode($response);
+    }
+
     public function getUserByApplicableUserGroupWithAddNewOption() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');

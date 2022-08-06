@@ -421,9 +421,7 @@
                                                     <div class="card-header">
                                                         <h3 class="card-title"><?php echo lang('diagnosis') ?></h3>
                                                         <div class="card-options">
-                                                            <?php if(!empty($encounter_id)) { ?>
-                                                                <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
-                                                            <?php } ?>
+                                                            <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -504,9 +502,7 @@
                                                             <?php if ($this->ion_auth->in_group('Patient')) { ?>
                                                                 <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
                                                             <?php } else { ?>
-                                                                <?php if(!empty($encounter_id)) { ?>
-                                                                    <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
-                                                                <?php } ?>
+                                                                <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
@@ -555,15 +551,11 @@
                                                                                 }
                                                                                 ?></td>
                                                                                 <td><?php echo $vital->note; ?></td>
-                                                                                <?php if(!empty($encounter_id)) { ?>
-                                                                                    <?php if ($vital->recorded_user_id == $current_user) { ?>
-                                                                                        <td>
-                                                                                            <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
-                                                                                            <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
-                                                                                        </td>
-                                                                                    <?php } else { ?>
-                                                                                        <td></td>
-                                                                                    <?php } ?>
+                                                                                <?php if ($vital->recorded_user_id == $current_user) { ?>
+                                                                                    <td>
+                                                                                        <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
+                                                                                        <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                                    </td>
                                                                                 <?php } else { ?>
                                                                                     <td></td>
                                                                                 <?php } ?>
@@ -746,11 +738,9 @@
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <?php if(!empty($encounter_id)) { ?>
-                                                                        <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
-                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                        </a>
-                                                                    <?php } ?>
+                                                                    <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
+                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                    </a>
                                                                 </div>
                                                             <?php } ?>
                                                         </div>
@@ -787,19 +777,15 @@
                                                                                     echo $case_facility;
                                                                                 ?></td>
                                                                                 <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                                                    <?php if(!empty($encounter_id)) { ?>
-                                                                                        <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                            <td class="no-print">
-                                                                                                <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>
-                                                                                            </td>
-                                                                                        <?php } ?>
-                                                                                        <?php if ($this->ion_auth->in_group('admin')) { ?>   
-                                                                                            <td class="no-print">
-                                                                                                <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                                                            </td>
-                                                                                        <?php } ?>
-                                                                                    <?php } else { ?>
-                                                                                        <td></td>
+                                                                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                                        <td class="no-print">
+                                                                                            <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>
+                                                                                        </td>
+                                                                                    <?php } ?>
+                                                                                    <?php if ($this->ion_auth->in_group('admin')) { ?>   
+                                                                                        <td class="no-print">
+                                                                                            <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                                        </td>
                                                                                     <?php } ?>
                                                                                 <?php } ?>
                                                                             </tr>
@@ -823,11 +809,9 @@
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <?php if(!empty($encounter_id)) { ?>
-                                                                        <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory' ?>">
-                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                        </a>
-                                                                    <?php } ?>
+                                                                    <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory' ?>">
+                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                    </a>
                                                                 </div>
                                                             <?php } ?>
                                                         </div>
@@ -892,24 +876,22 @@
                                                                                     echo $prescription_facility;
                                                                                 ?></td>
                                                                                 <td class="no-print">
-                                                                                    <?php if(!empty($encounter_id)) { ?>
-                                                                                        <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->prescription_number; ?>"><i class="fa fa-eye"></i></a> 
-                                                                                        <?php
-                                                                                        if ($this->ion_auth->in_group('Doctor')) {
-                                                                                            $current_user = $this->ion_auth->get_user_id();
-                                                                                            $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
-                                                                                            if ($prescription->doctor == $doctor_table_id) {
-                                                                                                ?>
-                                                                                                <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                                    <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->prescription_number.'&root=patient&method=medicalHistory'; ?>"><i class="fa fa-edit"></i></a>   
-                                                                                                    <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
-                                                                                                <?php } ?>
-                                                                                                <?php
-                                                                                            }
+                                                                                    <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->prescription_number; ?>"><i class="fa fa-eye"></i></a> 
+                                                                                    <?php
+                                                                                    if ($this->ion_auth->in_group('Doctor')) {
+                                                                                        $current_user = $this->ion_auth->get_user_id();
+                                                                                        $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
+                                                                                        if ($prescription->doctor == $doctor_table_id) {
+                                                                                            ?>
+                                                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                                                <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->prescription_number.'&root=patient&method=medicalHistory'; ?>"><i class="fa fa-edit"></i></a>   
+                                                                                                <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
+                                                                                            <?php } ?>
+                                                                                            <?php
                                                                                         }
-                                                                                        ?>
-                                                                                        <a class="btn btn-info btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i></a>
-                                                                                    <?php } ?>
+                                                                                    }
+                                                                                    ?>
+                                                                                    <a class="btn btn-info btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i></a>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php } ?>
@@ -929,9 +911,7 @@
                                                             <?php echo lang('lab').' '.lang('request')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <?php if(!empty($encounter_id)) { ?>
-                                                                <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
-                                                            <?php } ?>
+                                                            <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -980,10 +960,8 @@
                                                                                 <td><?php echo $this->patient_model->getPatientById($labrequest->patient_id)->name ?></td>
                                                                                 <td><?php echo $this->doctor_model->getDoctorById($labrequest->doctor_id)->name ?></td>
                                                                                 <td>
-                                                                                    <?php if(!empty($encounter_id)) { ?>
-                                                                                        <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id; ?>"><i class="fe fe-edit"></i></a>
-                                                                                        <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->lab_request_number ?>"><i class="fe fe-eye"></i></a>
-                                                                                    <?php } ?>
+                                                                                    <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id; ?>"><i class="fe fe-edit"></i></a>
+                                                                                    <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->lab_request_number ?>"><i class="fe fe-eye"></i></a>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php } ?>
@@ -1003,9 +981,7 @@
                                                             <?php echo lang('forms')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <?php if(!empty($encounter_id)) { ?>
-                                                                <a href="form?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
-                                                            <?php } ?>
+                                                            <a href="form?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -1034,9 +1010,7 @@
                                                                                     ?>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <?php if(!empty($encounter_id)) { ?>
-                                                                                        <a href="form?id=<?php echo $form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
-                                                                                    <?php } ?>
+                                                                                    <a href="form?id=<?php echo $form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php } ?>
@@ -1114,11 +1088,9 @@
                                                         <div class="row">
                                                             <div class="col-lg-8 col-md-8 col-sm-5 mb-4">
                                                                 <!-- <a  data-target="#AddDocument" data-toggle="modal" href="" class="btn btn-primary"><i class="fe fe-plus"></i> Upload New Document</a> -->
-                                                                <?php if(!empty($encounter_id)) { ?>
-                                                                    <a class="btn btn-primary" data-toggle="modal" href="#myModal1">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                    </a>
-                                                                <?php } ?>
+                                                                <a class="btn btn-primary" data-toggle="modal" href="#myModal1">
+                                                                    <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                </a>
                                                             </div>
                                                             <div class="col-lg-4 col-md-4 col-sm-7 mb-4">
                                                                 <div class="form-group">
@@ -1142,13 +1114,11 @@
                                                                     <div class="card-body p-0">
                                                                         <div class="todo-widget-header d-flex pb-2 p-4">
                                                                             <div class="">
-                                                                                <?php if(!empty($encounter_id)) { ?>
-                                                                                    <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->patient_document_number; ?>" target="_blank"><i class="fe fe-edit"></i></a>
-                                                                                    <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
-                                                                                    <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
-                                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
-                                                                                        <a class="btn btn-danger ml-5" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
-                                                                                    <?php } ?>
+                                                                                <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->patient_document_number; ?>" target="_blank"><i class="fe fe-edit"></i></a>
+                                                                                <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
+                                                                                <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
+                                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
+                                                                                    <a class="btn btn-danger ml-5" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
                                                                                 <?php } ?>
                                                                             </div>
                                                                         </div>
@@ -1215,11 +1185,9 @@
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <?php if(!empty($encounter_id)) { ?>
-                                                                        <a class="btn btn-primary btn_width btn-xs" href="encounter/addNewView?patient_id=<?php echo $patient->patient_id.'&root=patient&method=medicalHistory' ?>">
-                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                        </a>
-                                                                    <?php } ?>
+                                                                    <a class="btn btn-primary btn_width btn-xs" href="encounter/addNewView?patient_id=<?php echo $patient->patient_id.'&root=patient&method=medicalHistory' ?>">
+                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                    </a>
                                                                 </div>
                                                             <?php } ?>
                                                         </div>
@@ -1356,6 +1324,17 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } else { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('encounter'); ?><span class="text-danger">*</span></label>
+                                                                <select class="select2-show-search" name="encounter_id" id="encounter_vital">
+                                                                    
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 <?php } ?>
@@ -1567,6 +1546,17 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } else { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('encounter'); ?><span class="text-danger">*</span></label>
+                                                                <select class="select2-show-search" name="encounter_id" id="edit_encounter_vital">
+                                                                    
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 <?php } ?>
@@ -1784,6 +1774,38 @@
                                                             <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
                                                         </div>
                                                     </div>
+                                                <?php } else { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label">Associate with Encounter?</label>
+                                                                <div class="row">
+                                                                    <div class="col-md-6 col-sm-12">
+                                                                        <label class="custom-control custom-radio">
+                                                                            <input type="radio" class="custom-control-input" name="encounter_check" value="1">
+                                                                            <span class="custom-control-label">Yes</span>
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="col-md-6 col-sm-12">
+                                                                        <label class="custom-control custom-radio">
+                                                                            <input type="radio" class="custom-control-input" name="encounter_check" value="0">
+                                                                            <span class="custom-control-label">No</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" hidden id="encounter_document_div">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('encounter'); ?><span class="text-danger">*</span></label>
+                                                                <select class="select2-show-search" name="encounter_id" id="encounter_document">
+                                                                    
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 <?php } ?>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
@@ -1856,6 +1878,17 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } else { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('encounter'); ?><span class="text-danger">*</span></label>
+                                                                <select class="select2-show-search" name="encounter_id" id="encounter_case">
+                                                                    
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 <?php } ?>
@@ -1933,6 +1966,17 @@
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } else { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('encounter'); ?><span class="text-danger">*</span></label>
+                                                                <select class="select2-show-search" name="encounter_id" id="edit_encounter_case">
+                                                                    
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 <?php } ?>
@@ -2463,6 +2507,132 @@
     </script> -->
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            var patient = "<?php echo $patient->id ?>";
+            $("#encounter_vital").select2({
+                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterInfoByPatientId?patient='+patient,
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
+            var patient = "<?php echo $patient->id ?>";
+            $("#edit_encounter_vital").select2({
+                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterInfoByPatientId?patient='+patient,
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var patient = "<?php echo $patient->id ?>";
+            $("#encounter_case").select2({
+                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterInfoByPatientId?patient='+patient,
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var patient = "<?php echo $patient->id ?>";
+            $("#encounter_document").select2({
+                placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterInfoByPatientId?patient='+patient,
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=radio][name=encounter_check]').change(function() {
+                var encounter = this.value;
+                if (encounter == 1) {
+                    $("#encounter_document_div").attr("hidden", false);
+                } else {
+                    $("#encounter_document").val(0).change();
+                    $("#encounter_document_div").attr("hidden", true);
+                }
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
         $("#encounterBanner").on("click", ".startEncounter", function() {
             var iid = $(this).attr('data-id');
             $("#sEncounterForm").find('[name="encounter_id"]').val(iid).end()
@@ -2639,10 +2809,11 @@
                 // e.preventDefault(e);
                 // Get the record's ID via attribute  
                 var iid = $(this).attr('data-id');
+                var patient = "<?php echo $patient->id; ?>";
                 // document.getElementById('quillEditor2').children[0].innerHTML = '';
                 $('#myModal2').modal('show');
                 $.ajax({
-                    url: 'patient/editMedicalHistoryByJason?id=' + iid,
+                    url: 'patient/editMedicalHistoryByJason?id=' + iid + '&patient=' + patient,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -2661,6 +2832,12 @@
                             defaultDate: date,
                             enableTime: true,
                         });
+
+                        $.each(response.encounter, function(key, value) {
+                            $("#edit_encounter_case").append($('<option>').text("Encounter No. : "+value.encounter_number+" - "+value.display_name+" - "+value.created_at).val(value.id)).end();
+                        });
+
+                        $('#medical_historyEditForm').find('[name="encounter_id"]').val(response.medical_history.encounter_id).change();
                         $('#medical_historyEditForm').find('[name="title"]').val(response.medical_history.title).end()
                         document.getElementById('quillEditor2').children[0].innerHTML = response.medical_history.description;
 
@@ -2706,13 +2883,12 @@
                 
                 // Get the record's ID via attribute  
                 var iid = $(this).attr('data-id');
-
-
+                var patient = "<?php echo $patient->id; ?>";
                 document.getElementById("editVitalForm").reset();
                 $('#editVitalForm').trigger("reset");
-                $('#editVitalModal').modal('show');
+
                 $.ajax({
-                    url: 'patient/editVitalByJason?id=' + iid,
+                    url: 'patient/editVitalByJason?id=' + iid + '&patient=' + patient,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -2730,6 +2906,10 @@
                             defaultDate: response.datetime,
                         });
 
+                        $.each(response.encounter, function(key, value) {
+                            $("#edit_encounter_vital").append($('<option>').text("Encounter No. : "+value.encounter_number+" - "+value.display_name+" - "+value.created_at).val(value.id)).end();
+                        });
+
                         // $('#editVitalForm').find('[name="time"]').val(response.time).end()
                         $('#editVitalForm').find('[name="weight"]').val(vital.weight_kg).end()
                         $('#editVitalForm').find('[name="height"]').val(vital.height_cm).end()
@@ -2739,19 +2919,25 @@
                         $('#editVitalForm').find('[name="diastolic"]').val(vital.diastolic).end()
                         $('#editVitalForm').find('[name="heartrate"]').val(vital.heart_rate).end()
                         $('#editVitalForm').find('[name="blood_sugar"]').val(vital.blood_sugar_mg).end()
+                        $('#editVitalForm').find('[name="encounter_id"]').val(vital.encounter_id).change();
                         $('#editVitalForm').find('[name="blood_sugar_timing"]').val(vital.blood_sugar_timing).change()
                         $('#editVitalForm').find('[name="temperature"]').val(vital.temperature_celsius).end()
                         $('#editVitalForm').find('[name="temp_site"]').val(vital.temperature_site).change()
                         $('#editVitalForm').find('[name="spo2"]').val(vital.spo2).end()
                         $('#editVitalForm').find('[name="respiration_rate"]').val(vital.respiration_rate).end()
                         $('#editVitalForm').find('[name="note"]').val(vital.note).end()
+                        // $('#edit_encounter_vital').val(vital.encounter_id);
                         $('.myrangeslider2').ionRangeSlider({
                             min: 0,
                             max: 10,
                             from: vital.pain,
                         });
+
+                        console.log($('#editVitalForm').find('[name="encounter_id"]').val(vital.encounter_id).change());
                     }
                 });
+
+                $('#editVitalModal').modal('show');
             });
         });
     </script>

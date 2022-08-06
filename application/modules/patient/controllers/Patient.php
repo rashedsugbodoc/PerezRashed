@@ -1920,8 +1920,24 @@ class Patient extends MX_Controller {
 
     function editVitalByJason() {
         $id = $this->input->get('id');
+        $patient_id = $this->input->get('patient');
         $data['vital'] = $this->patient_model->getVitalById($id);
         $data['datetime'] = date('F j, Y h:i A' ,strtotime($data['vital']->measured_at.' UTC'));
+        $data['encounter'] = $this->encounter_model->getEncounterWithTypeNameByPatientId($patient_id);
+
+        $encounter_dictionary = [];
+        foreach ($data['encounter'] as $encounter) {
+            $encounter_created = date('M j, Y g:i A', strtotime($encounter->created_at.' UTC'));
+            $encounter_dictionary[] = array(
+                'id' => $encounter->id,
+                'encounter_type_id' => $encounter->encounter_type_id,
+                'encounter_number' => $encounter->encounter_number,
+                'created_at' => $encounter_created,
+                'display_name' => $encounter->display_name,
+            );
+        }
+
+        $data['encounter'] = $encounter_dictionary;
         // $data['time'] = date('' ,strtotime($data['vital']->measured_at.' UTC'));
         echo json_encode($data);
     }
@@ -2131,65 +2147,75 @@ class Patient extends MX_Controller {
         // }
 
         $data['current_user'] = (int)$this->ion_auth->get_user_id();
-        if (empty($data['encounter_id'])) {
-            $data['vitals'] = $this->patient_model->getPatientVitalById($id);
-        } else {
-            $data['vitals'] = $this->patient_model->getPatientVitalByIdByEncounterId($id, $data['encounter_id']);
-        }
+
+        // if (empty($data['encounter_id'])) {
+        //     $data['vitals'] = $this->patient_model->getPatientVitalById($id);
+        // } else {
+        //     $data['vitals'] = $this->patient_model->getPatientVitalByIdByEncounterId($id, $data['encounter_id']);
+        // }
         
         $data['settings'] = $this->settings_model->getSettings();
         $data['groups'] = $this->donor_model->getBloodBank();
         $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
-        if (empty($data['encounter_id'])) {
-            $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
-        } else {
-            $data['appointments'] = $this->appointment_model->getAppointmentByPatientByEncounterId($data['patient']->id, $data['encounter_id']);
-        }
+        // if (empty($data['encounter_id'])) {
+        //     $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
+        // } else {
+        //     $data['appointments'] = $this->appointment_model->getAppointmentByPatientByEncounterId($data['patient']->id, $data['encounter_id']);
+        // }
         
         $data['appointments_location'] = $this->appointment_model->getAppointmentByPatientForLocation($data['patient']->id);
         
-        if (empty($data['encounter_id'])) {
-            $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientId($data['patient']->id);
-        } else {
-            $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientIdByEncounterId($data['patient']->id, $data['encounter_id']);
-        }
+        // if (empty($data['encounter_id'])) {
+        //     $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientId($data['patient']->id);
+        // } else {
+        //     $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientIdByEncounterId($data['patient']->id, $data['encounter_id']);
+        // }
         // $data['service_category_group'] = $this->appointment_model->getServiceCategoryById($data['appointments_location']->service_category_group_id);
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
-        if (empty($data['encounter_id'])) {
-            $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
-        } else {
-            $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientIdByEncounterId($id, $data['encounter_id']);
-        }
-        if (empty($data['encounter_id'])) {
-            $data['forms'] = $this->form_model->getFormByPatientId($id);
-        } else {
-            $data['forms'] = $this->form_model->getFormByPatientIdByEncounterId($id, $data['encounter_id']);
-        }
+        // if (empty($data['encounter_id'])) {
+        //     $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
+        // } else {
+        //     $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientIdByEncounterId($id, $data['encounter_id']);
+        // }
+        // if (empty($data['encounter_id'])) {
+        //     $data['forms'] = $this->form_model->getFormByPatientId($id);
+        // } else {
+        //     $data['forms'] = $this->form_model->getFormByPatientIdByEncounterId($id, $data['encounter_id']);
+        // }
         $data['labs'] = $this->lab_model->getLabByPatientId($id);
         $data['beds'] = $this->bed_model->getBedAllotmentsByPatientId($id);
-        if (empty($data['encounter_id'])) {
-            $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
-        } else {
-            $data['encounters'] = $this->encounter_model->getEncounterByPatientIdByEncounterId($id, $data['encounter_id']);
-        }
-        if (empty($data['encounter_id'])) {
-            $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
-        } else {
-            $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientIdByEncounterId($id, $data['encounter_id']);
-        }
-        if (empty($data['encounter_id'])) {
-            $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
-        } else {
-            $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientIdByEncounterId($id, $data['encounter_id']);
-        }
+        // if (empty($data['encounter_id'])) {
+        //     $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
+        // } else {
+        //     $data['encounters'] = $this->encounter_model->getEncounterByPatientIdByEncounterId($id, $data['encounter_id']);
+        // }
+        // if (empty($data['encounter_id'])) {
+        //     $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
+        // } else {
+        //     $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientIdByEncounterId($id, $data['encounter_id']);
+        // }
+        // if (empty($data['encounter_id'])) {
+        //     $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
+        // } else {
+        //     $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientIdByEncounterId($id, $data['encounter_id']);
+        // }
 
-        if (empty($data['encounter_id'])) {
+        /*if (empty($data['encounter_id'])) {
             $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($id);
         } else {
             $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatientByEncounterId($id, $data['encounter_id']);
-        }
-        
+        }*/
+
+        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($id);
+        $data['vitals'] = $this->patient_model->getPatientVitalById($id);
+        $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
+        $data['medical_histories'] = $this->patient_model->getMedicalHistoryByPatientId($id);
+        $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
+        $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientId($data['patient']->id);
+        $data['forms'] = $this->form_model->getFormByPatientId($id);
+        $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
+        $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
 
         foreach ($data['appointments'] as $appointment) {
             $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
@@ -3166,9 +3192,25 @@ class Patient extends MX_Controller {
 
     function editMedicalHistoryByJason() {
         $id = $this->input->get('id');
+        $patient_id = $this->input->get('patient');
         $data['medical_history'] = $this->patient_model->getMedicalHistoryById($id);
         $data['datetime'] = date('F j, Y h:i A' ,strtotime($data['medical_history']->case_date.' UTC'));
         $data['patient'] = $this->patient_model->getPatientById($data['medical_history']->patient_id);
+        $data['encounter'] = $this->encounter_model->getEncounterWithTypeNameByPatientId($patient_id);
+
+        $case_dictionary = [];
+        foreach ($data['encounter'] as $encounter) {
+            $encounter_created = date('M j, Y g:i A', strtotime($encounter->created_at.' UTC'));
+            $case_dictionary[] = array(
+                'id' => $encounter->id,
+                'encounter_type_id' => $encounter->encounter_type_id,
+                'encounter_number' => $encounter->encounter_number,
+                'created_at' => $encounter_created,
+                'display_name' => $encounter->display_name,
+            );
+        }
+
+        $data['encounter'] = $case_dictionary;
         echo json_encode($data);
     }
 
