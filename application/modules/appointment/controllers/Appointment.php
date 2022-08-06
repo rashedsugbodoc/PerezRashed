@@ -141,7 +141,7 @@ class Appointment extends MX_Controller {
 
     public function addNewView() {
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Nurse'))) {
             redirect('home/permission');
         }
         $redirect = $this->input->get('redirect');
@@ -162,7 +162,7 @@ class Appointment extends MX_Controller {
     }
 
     public function addNew() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Nurse'))) {
             redirect('home/permission');
         }
 
