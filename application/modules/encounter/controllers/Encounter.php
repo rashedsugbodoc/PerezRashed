@@ -345,7 +345,7 @@ class Encounter extends MX_Controller {
                                     <i class="fa fa-caret-down mr-2"></i>'. lang('actions') .'
                                 </button>
                                 <div class="dropdown-menu" style="overflow: auto; height: 200px; scrollbar-width: auto;">
-                                    <a class="view_button dropdown-item bg-info text-light" href="patient/medicalHistory?id=' . $patient->patient_id . '&encounter_id=' . $encounter->id . '" target="_blank"><i class="fa fa-eye"></i>  '. lang('view') . ' ' . lang('encounter') .'</a>
+                                    <a class="view_button dropdown-item bg-info text-light" href="patient/medicalHistory?encounter_id=' . $encounter->id . '" target="_blank"><i class="fa fa-eye"></i>  '. lang('view') . ' ' . lang('encounter') .'</a>
                                     <button type="button" class="editbutton dropdown-item bg-info text-light" data-toggle="modal" data-id="' . $encounter->id . '"><i class="fa fa-edit"> </i>  '. lang('edit') . ' ' . lang('encounter') .'</button>
                                     '.$option12.'
                                     '.$option3.'

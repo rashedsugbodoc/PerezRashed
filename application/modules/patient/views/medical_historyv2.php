@@ -2697,7 +2697,7 @@
             $("#encounterSelect").click(function () {
                 var encounter_id = $("#encounter_selection").val();
                 var patient_id = $("#patient_id").val();
-                window.location.href = 'patient/medicalHistory?id='+patient_id+'&encounter_id='+encounter_id;
+                window.location.href = 'patient/medicalHistory?encounter_id='+encounter_id;
             })
         });
     </script>

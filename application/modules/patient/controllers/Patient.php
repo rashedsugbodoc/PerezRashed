@@ -2106,12 +2106,6 @@ class Patient extends MX_Controller {
     function medicalHistory() {
         $data = array();
         $patient_number = $this->input->get('id');
-        $patient = $this->patient_model->getPatientByPatientNumber($patient_number);
-        $id = $patient->id;
-        $data['active_status'] = $this->db->get_where('users', array('id' => $patient->ion_user_id))->row()->active;
-        if (empty($id)) {
-            $id = $this->input->post('id');
-        }
         $data['encounter_id'] = $this->input->get('encounter_id');
         if (empty($data['encounter_id'])) {
             $data['encounter_id'] = $this->input->post('encounter_id');
@@ -2121,6 +2115,16 @@ class Patient extends MX_Controller {
             $data['all_encounter'] = $this->input->get('encounter_id');
         }
         $data['encounter_details'] = $this->encounter_model->getEncounterById($data['encounter_id']);
+
+        if (empty($patient_number)) {
+            $patient_number = $this->patient_model->getPatientById($data['encounter_details']->patient_id)->patient_id;
+        }
+        $patient = $this->patient_model->getPatientByPatientNumber($patient_number);
+        $id = $patient->id;
+        $data['active_status'] = $this->db->get_where('users', array('id' => $patient->ion_user_id))->row()->active;
+        if (empty($id)) {
+            $id = $this->input->post('id');
+        }
         if (empty($data['encounter_id'])) {
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 $doctor_ion_id = $this->session->userdata('user_id');
