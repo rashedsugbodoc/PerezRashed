@@ -1010,7 +1010,7 @@
                                                                                     ?>
                                                                                 </td>
                                                                                 <td>
-                                                                                    <a href="form?id=<?php echo $form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
+                                                                                    <a href="form?id=<?php echo $encounter_id?$form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory':$form->form_number.'&encounter_id='.$form->encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
                                                                                 </td>
                                                                             </tr>
                                                                         <?php } ?>
