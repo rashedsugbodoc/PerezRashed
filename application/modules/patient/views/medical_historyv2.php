@@ -809,7 +809,7 @@
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                                                 <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?patient_id=<?php echo $patient->id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory' ?>">
+                                                                    <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?<?php echo 'encounter_id='.$encounter_id.'&root=patient&method=medicalHistory' ?>">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                                                     </a>
                                                                 </div>
@@ -911,7 +911,7 @@
                                                             <?php echo lang('lab').' '.lang('request')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="labrequest/addLabRequestView?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <a href="labrequest/addLabRequestView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -981,7 +981,7 @@
                                                             <?php echo lang('forms')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="form?patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <a href="form?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
