@@ -91,7 +91,7 @@ class Labrequest extends MX_Controller {
         $request_list = $this->labrequest_model->getLabrequestByLabrequestNumber($id);
 
         if (!empty($medical_redirect)) {
-            $redirect = $medical_redirect . '?id=' . $patient_number . '&encounter_id=' . $encounter_id;
+            $redirect = $medical_redirect . '?encounter_id=' . $encounter_id;
         }
 
         if (!empty($id)) {
