@@ -50,30 +50,6 @@
                                                 </div>
                                             <?php } ?>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                        <select class="form-control select2-show-search" required name="encounter_id" id="encounter" <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
-                                                            <?php if (!empty($encounter->id)) { ?>
-                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
-                                                            <?php } ?>
-                                                            <?php if (!empty($id)) { ?>
-                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
-                                                            <?php } ?>
-                                                        </select>
-                                                        <?php if (!empty($encounter->id)) { ?>
-                                                            <input type="hidden" name="encounter_id" value="<?php
-                                                            if (!empty($encounter_id)) {
-                                                                echo $encounter_id;
-                                                            } elseif (!empty($encounter->id)) {
-                                                                echo $encounter->id;
-                                                            }
-                                                            ?>">
-                                                        <?php } ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('diagnosis') . '  ' . lang('date') ?></label>
@@ -138,6 +114,30 @@
                                                                 <?php } ?>
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                        <select class="form-control select2-show-search" required name="encounter_id" id="encounter" <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
+                                                            <?php if (!empty($encounter->id)) { ?>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                            <?php } ?>
+                                                            <?php if (!empty($id)) { ?>
+                                                                <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                        <?php if (!empty($encounter->id)) { ?>
+                                                            <input type="hidden" name="encounter_id" value="<?php
+                                                            if (!empty($encounter_id)) {
+                                                                echo $encounter_id;
+                                                            } elseif (!empty($encounter->id)) {
+                                                                echo $encounter->id;
+                                                            }
+                                                            ?>">
+                                                        <?php } ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -394,27 +394,47 @@
     </script>
 
     <script type="text/javascript">
+        $("#pos_select").change(function() {
+            var patient = $("#pos_select").val();
+            $("#encounter").find('option').remove();
+
+            $.ajax({
+                url: 'diagnosis/getEncounterByPatientIdJason?id='+patient,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var encounter = response.encounter;
+                    $.each(encounter, function (key, value) {
+                        $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                    });
+                }
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
         $(document).ready(function () {
             $("#encounter").select2({
                 placeholder: '<?php echo lang('select') . ' ' . lang('encounter'); ?>',
                 allowClear: true,
-                ajax: {
-                    url: 'encounter/getEncounterInfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
+                // ajax: {
+                //     url: 'encounter/getEncounterInfo',
+                //     type: "post",
+                //     dataType: 'json',
+                //     delay: 250,
+                //     data: function (params) {
+                //         return {
+                //             searchTerm: params.term // search term
+                //         };
+                //     },
+                //     processResults: function (response) {
+                //         return {
+                //             results: response
+                //         };
+                //     },
+                //     cache: true
+                // }
 
             });
         });

@@ -30,7 +30,7 @@ class Diagnosis extends MX_Controller {
         $data['root'] = $this->input->get('root');
         $data['method'] = $this->input->get('method');
         if (!empty($data['root']) && !empty($data['method'])) {
-            $data['redirect'] = $data['root'].'/'.$data['method'].'?id='.$data['patient']->patient_id.'&encounter_id='.$data['encounter']->id;
+            $data['redirect'] = $data['root'].'/'.$data['method'].'?encounter_id='.$data['encounter']->id;
         }
 
         $this->load->view('home/dashboardv2');
@@ -237,6 +237,16 @@ class Diagnosis extends MX_Controller {
 
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
+    }
+
+    public function getEncounterByPatientIdJason() {
+        $patient_id = $this->input->get('id');
+
+        $patient = $this->patient_model->getPatientById($patient_id);
+
+        $data['encounter'] = $this->encounter_model->getEncounterByPatientIdForDropdown($patient->id);
+
+        echo json_encode($data);
     }
 
 }
