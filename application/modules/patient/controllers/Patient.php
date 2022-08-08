@@ -33,7 +33,7 @@ class Patient extends MX_Controller {
         $this->load->model('encounter/encounter_model');
         $this->load->model('hospital/hospital_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser'))) {
+        if (!$this->ion_auth->in_group(array('superadmin', 'admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser'))) {
             redirect('home/permission');
         }
     }
@@ -2107,6 +2107,9 @@ class Patient extends MX_Controller {
         $data = array();
         $patient_number = $this->input->get('id');
         $data['encounter_id'] = $this->input->get('encounter_id');
+        if (!empty($data['encounter_id']) && !empty($patient_number)) {
+            redirect('home/permission');
+        }
         if (empty($data['encounter_id'])) {
             $data['encounter_id'] = $this->input->post('encounter_id');
         }
@@ -3538,7 +3541,7 @@ class Patient extends MX_Controller {
         if ($redirect == 'documents') {
             redirect('patient/documents');
         } else {
-            redirect("patient/MedicalHistory?id=" . $patient->patient_id . '&encounter_id=' . $encounter_details->encounter_number);
+            redirect("patient/MedicalHistory?encounter_id=" . $encounter_details->id);
         }
     }
 
