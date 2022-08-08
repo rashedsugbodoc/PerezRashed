@@ -158,7 +158,7 @@ class Prescription extends MX_Controller {
         }
 
         if (!empty($medical_redirect)) {
-            $redirect = $medical_redirect . '?id=' . $patient_details->patient_id . '&encounter_id=' . $encounter_id;
+            $redirect = $medical_redirect . '?encounter_id=' . $encounter_id;
         }
 
         do {
