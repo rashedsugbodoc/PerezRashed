@@ -70,7 +70,7 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('template'); ?> <span class="text-red">*</span></label>
                                                                 <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one" style="width:100%;">
-                                                                    <option value="">Select .....</option>
+                                                                    <option label="Select ....."></option>
                                                                     <?php foreach ($templates as $template) { ?>
                                                                         <?php if ($template->id == $form_single->form_template_id) { ?>
                                                                             <option value="<?php echo $template->id; ?>" selected><?php echo $template->name; ?> </option>
