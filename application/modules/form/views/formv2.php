@@ -85,9 +85,9 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
                                                                 <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" style="width:100%;" required <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
-                                                                    <?php if (!empty($form_single->patient)) { ?>
+                                                                    <!-- <?php if (!empty($form_single->patient)) { ?>
                                                                         <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
-                                                                    <?php } ?>
+                                                                    <?php } ?> -->
                                                                     <?php if (!empty($encounter_id)) { ?>
                                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
                                                                     <?php } ?>
@@ -131,9 +131,9 @@
                                                                     <?php if (!empty($encounter->id)) { ?>
                                                                         <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                                     <?php } ?>
-                                                                    <?php if (!empty($form_single->encounter_id)) { ?>
-                                                                        <option value="<?php echo $form_single->encounter_id; ?>" selected><?php echo $this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_number . ' - ' . $this->encounter_model->getEncounterTypeById($this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_type_id)->display_name . ' - ' . date('M j, Y g:i a', strtotime($this->encounter_model->getEncounterById($form_encounter)->created_at.' UTC')); ?></option>
-                                                                    <?php } ?>
+                                                                    <!-- <?php if (!empty($form_single->encounter_id)) { ?>
+                                                                        <option value="<?php echo $form_single->encounter_id; ?>" selected>Encounter No. : <?php echo $this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_number . ' - ' . $this->encounter_model->getEncounterTypeById($this->encounter_model->getEncounterById($form_single->encounter_id)->encounter_type_id)->display_name . ' - ' . date('M j, Y g:i a', strtotime($this->encounter_model->getEncounterById($form_encounter)->created_at.' UTC')); ?></option>
+                                                                    <?php } ?> -->
                                                                 </select>
                                                                 <?php if (!empty($encounter_id)) { ?>
                                                                     <input type="hidden" name="encounter_id" value="<?php
@@ -509,6 +509,43 @@
                     });
                 }
             })
+        });
+    </script>
+
+    <script type="text/javascript">
+        var form_id = $("#form_id").val();
+        $.ajax({
+            url: 'form/editFormByJason?id='+form_id,
+            method: 'GET',
+            data: '',
+            dataType: 'json',
+            success: function (response) {
+                var form_patient = response.form.patient;
+                var form_encounter = response.form.encounter_id;
+                $.each(response.patients, function (key, value) {
+                    $("#pos_select").append($('<option>').text(value.name).val(value.id)).end();
+                });
+
+                $("#pos_select").val(form_patient);
+
+                var patient = $("#pos_select").val();
+                $("#encounter").find('option').remove();
+
+                $.ajax({
+                    url: 'form/getEncounterByPatientIdJason?id='+patient,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter = response.encounter;
+                        $.each(encounter, function (key, value) {
+                            $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                        });
+
+                        $("#encounter").val(form_encounter);
+                    }
+                })
+            }
         });
     </script>
 

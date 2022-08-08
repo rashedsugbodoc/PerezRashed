@@ -68,7 +68,7 @@ class Form extends MX_Controller {
         $method = $this->input->get('method');
         $data['redirect'] = $this->input->get('redirect');
         if (!empty($root) && !empty($method)) {
-            $data['redirect'] = $root.'/'.$method.'?id='.$data['patient_id'].'&encounter_id='.$data['encounter_id'];
+            $data['redirect'] = $root.'/'.$method.'?encounter_id='.$data['encounter_id'];
         }
 
         if (!empty($data['encounter_id'])) {
@@ -489,6 +489,16 @@ class Form extends MX_Controller {
             $this->load->view('add_form_viewv2', $data);
             // $this->load->view('home/footer'); // just the header file
         }
+    }
+
+    function editFormByJason() {
+        $id = $this->input->get('id');
+
+        $data['patients'] = $this->patient_model->getPatientByVisitedProviderId();
+
+        $data['form'] = $this->form_model->getFormById($id);
+
+        echo json_encode($data);
     }
 
     function delete() {
