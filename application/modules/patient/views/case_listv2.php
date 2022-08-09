@@ -490,7 +490,7 @@
         })
     </script>
 
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
         $(".table").on("click", ".editbutton", function () {
             // Get the record's ID via attribute  
             var iid = $(this).attr('data-id');
@@ -507,19 +507,100 @@
                     // var da = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
 
                     var date = response.date;
+                    var case_patient = response.medical_history.patient_id;
+                    var case_encounter = response.medical_history.encounter_id;
+
+                    $.each(response.patients, function (key, value) {
+                        $("#patientchoose").append($('<option>').text(value.name).val(value.id)).end();
+                    });
+
+                    $("#patientchoose").val(case_patient);
 
                     $('#medical_historyEditForm').find('[name="id"]').val(response.medical_history.id).end()
                     $('#medical_historyEditForm').find('[name="date"]').val(date).end()
                     //   $('#medical_historyEditForm').find('[name="patient"]').val(response.medical_history.patient_id).end()
                     $('#medical_historyEditForm').find('[name="title"]').val(response.medical_history.title).end()
                     var option = new Option(response.patient.name + '-' + response.patient.id, response.patient.id, true, true);
-                    $('#medical_historyEditForm').find('[name="patient_id"]').append(option).trigger('change');
+                    // $('#medical_historyEditForm').find('[name="patient_id"]').append(option).trigger('change');
                     //   $('.js-example-basic-single.patient').val(response.medical_history.patient_id).trigger('change');
                     document.getElementById('quillEditor2').children[0].innerHTML = response.medical_history.description;
 
-                    $('#myModal2').modal('show');
+                    var patient = $("#patientchoose").val();
+                    $("#encounter").find('option').remove();
+
+                    $.ajax({
+                        url: 'patient/getEncounterByPatientIdJason?id='+patient,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+                            var encounter = response.encounter;
+                            $.each(encounter, function (key, value) {
+                                $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                            });
+
+                            $("#encounter").val(case_encounter);
+                        }
+                    })
+
+                    // $('#myModal2').modal('show');
                 }
             });
+        });
+    </script> -->
+
+    <script type="text/javascript">
+        var id = $("#case_id").val();
+        $.ajax({
+            url: 'patient/editMedicalHistoryByJason?id=' + id,
+            method: 'GET',
+            data: '',
+            dataType: 'json',
+            success: function (response) {
+                // Populate the form fields with the data returned from server
+                // var de = response.medical_history.date * 1000;
+                // var d = new Date(de);
+                // var da = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+
+                var date = response.date;
+                var case_patient = response.medical_history.patient_id;
+                var case_encounter = response.medical_history.encounter_id;
+
+                $.each(response.patients, function (key, value) {
+                    $("#patientchoose").append($('<option>').text(value.name).val(value.id)).end();
+                });
+
+                $("#patientchoose").val(case_patient);
+
+                $('#medical_historyEditForm').find('[name="id"]').val(response.medical_history.id).end()
+                $('#medical_historyEditForm').find('[name="date"]').val(date).end()
+                //   $('#medical_historyEditForm').find('[name="patient"]').val(response.medical_history.patient_id).end()
+                $('#medical_historyEditForm').find('[name="title"]').val(response.medical_history.title).end()
+                var option = new Option(response.patient.name + '-' + response.patient.id, response.patient.id, true, true);
+                // $('#medical_historyEditForm').find('[name="patient_id"]').append(option).trigger('change');
+                //   $('.js-example-basic-single.patient').val(response.medical_history.patient_id).trigger('change');
+                document.getElementById('quillEditor2').children[0].innerHTML = response.medical_history.description;
+
+                var patient = $("#patientchoose").val();
+                $("#encounter").find('option').remove();
+
+                $.ajax({
+                    url: 'patient/getEncounterByPatientIdJason?id='+patient,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter = response.encounter;
+                        $.each(encounter, function (key, value) {
+                            $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                        });
+
+                        $("#encounter").val(case_encounter);
+                    }
+                })
+
+                // $('#myModal2').modal('show');
+            }
         });
     </script>
 

@@ -3204,6 +3204,7 @@ class Patient extends MX_Controller {
         $data['datetime'] = date('F j, Y h:i A' ,strtotime($data['medical_history']->case_date.' UTC'));
         $data['patient'] = $this->patient_model->getPatientById($data['medical_history']->patient_id);
         $data['encounter'] = $this->encounter_model->getEncounterWithTypeNameByPatientId($patient_id);
+        $data['patients'] = $this->patient_model->getPatientByVisitedProviderId();
 
         $case_dictionary = [];
         foreach ($data['encounter'] as $encounter) {
