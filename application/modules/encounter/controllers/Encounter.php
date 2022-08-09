@@ -734,7 +734,7 @@ class Encounter extends MX_Controller {
 
         $this->encounter_model->updateEncounter($encounter_id, $data_encounter);
 
-        redirect($redirect.'?id='.$patient_number.'&encounter_id='.$encounter_id);
+        redirect($redirect.'?encounter_id='.$encounter_id);
     }
 
     function endEncounterById() {
