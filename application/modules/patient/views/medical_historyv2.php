@@ -884,7 +884,7 @@
                                                                                         if ($prescription->doctor == $doctor_table_id) {
                                                                                             ?>
                                                                                             <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                                <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->prescription_number.'&root=patient&method=medicalHistory'; ?>"><i class="fa fa-edit"></i></a>   
+                                                                                                <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->prescription_number.'&root=patient&method=medicalHistory&encounter_id='.$prescription->encounter_id; ?>"><i class="fa fa-edit"></i></a>   
                                                                                                 <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
                                                                                             <?php } ?>
                                                                                             <?php
