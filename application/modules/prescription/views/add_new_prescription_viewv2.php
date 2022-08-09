@@ -69,17 +69,26 @@
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                <select class="select2-show-search form-control" name="patient" required id="<?php if (empty($prescription)) { echo 'patientchoose'; } ?>">
+                                                <select class="select2-show-search form-control" name="patient" required id="patientchoose" <?php if (!empty($encounter_id)) { echo 'disabled'; } ?>>
                                                     <?php
                                                     if (!empty($setval)) {
                                                         $patientdetails = $this->db->get_where('patient', array('id' => set_value('patient')))->row();
                                                         ?>
                                                         <option value="<?php echo $patientdetails->id; ?>" selected="selected"><?php echo $patientdetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patientdetails->id; ?>)</option>
                                                     <?php } ?>
+                                                    <?php if (!empty($encounter_id)) { ?>
+                                                        <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                    <?php } ?>
+                                                    <?php if (!empty($prescription_number)) { ?>
+                                                        <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
+                                                    <?php } ?>
                                                     <?php if (!empty($patient_id)) { ?>
                                                         <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
                                                     <?php } ?>
                                                 </select>
+                                                <?php if (!empty($encounter_id)) { ?>
+                                                    <input type="hidden" name="patient" value="<?php echo $patient->id ?>">
+                                                <?php } ?>
                                             </div>
                                         </div>
                                         <?php if (!$this->ion_auth->in_group('Doctor')) { ?>
@@ -131,7 +140,7 @@
                                         <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('encounter'); ?></label>
-                                                <select class="form-control select2-show-search" name="encounter_id" id="encounter" required <?php if(!empty($encounter->id)) { echo "disabled"; } ?>>
+                                                <select class="form-control select2-show-search" name="encounter_id" id="encounter" required <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                     <?php if (!empty($encounter_id)) { ?>
                                                         <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                     <?php } ?>
@@ -192,7 +201,7 @@
                                             </div>
                                         </div>
                                         <input type="hidden" name="admin" value='admin'>
-                                        <input type="hidden" name="id" value='<?php
+                                        <input type="hidden" name="id" id="prescription_id" value='<?php
                                         if (!empty($prescription->id)) {
                                             echo $prescription->id;
                                         }
@@ -352,6 +361,43 @@
         <!-- parlsey js -->
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        var prescription_number = $("#prescription_id").val();
+        $.ajax({
+            url: 'prescription/editPrescriptionByJason?id='+prescription_number,
+            method: 'GET',
+            data: '',
+            dataType: 'json',
+            success: function (response) {
+                var prescription_patient = response.prescription.patient;
+                var prescription_encounter = response.prescription.encounter_id;
+                $.each(response.patients, function (key, value) {
+                    $("#patientchoose").append($('<option>').text(value.name).val(value.id)).end();
+                });
+
+                $("#patientchoose").val(prescription_patient);
+
+                var patient = $("#patientchoose").val();
+                $("#encounter").find('option').remove();
+
+                $.ajax({
+                    url: 'prescription/getEncounterByPatientIdJason?id='+patient,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter = response.encounter;
+                        $.each(encounter, function (key, value) {
+                            $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                        });
+
+                        $("#encounter").val(prescription_encounter);
+                    }
+                })
+            }
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {

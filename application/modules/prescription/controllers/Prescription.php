@@ -378,15 +378,16 @@ class Prescription extends MX_Controller {
         }
 
         $data = array();
-        $prescription_number = $this->input->get('id');
-        $id = $this->prescription_model->getPrescriptionByPrescriptionNumber($prescription_number)->id;
+        $data['prescription_number'] = $this->input->get('id');
+        $id = $this->prescription_model->getPrescriptionByPrescriptionNumber($data['prescription_number'])->id;
         // $data['patients'] = $this->patient_model->getPatient();
         // $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['encounter_id'] = $this->input->get('encounter_id');
         $data['medicines'] = $this->medicine_model->getMedicine();
         $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
         $data['prescription_date'] = $data['prescription']->prescription_date;
         $data['settings'] = $this->settings_model->getSettings();
-        $data['patients'] = $this->patient_model->getPatientById($data['prescription']->patient);
+        $data['patient'] = $this->patient_model->getPatientById($data['prescription']->patient);
         $data['doctors'] = $this->doctor_model->getDoctorById($data['prescription']->doctor);
         $root = $this->input->get('root');
         $method = $this->input->get('method');
@@ -394,8 +395,7 @@ class Prescription extends MX_Controller {
             $data['redirect'] = $root.'/'.$method;
         }
         if (!empty($data['prescription']->encounter_id)) {
-            $data['encounter_id'] = $data['prescription']->encounter_id;
-            $data['patient_id'] = $this->encounter_model->getEncounterById($data['encounter_id'])->patient_id;
+            /*$data['patient_id'] = $this->encounter_model->getEncounterById($data['encounter_id'])->patient_id;*/
             $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
             $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
         }
@@ -416,7 +416,11 @@ class Prescription extends MX_Controller {
 
     function editPrescriptionByJason() {
         $id = $this->input->get('id');
+
+        $data['patients'] = $this->patient_model->getPatientByVisitedProviderId();
+
         $data['prescription'] = $this->prescription_model->getPrescriptionById($id);
+        
         echo json_encode($data);
     }
 
