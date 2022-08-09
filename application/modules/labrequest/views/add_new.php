@@ -153,9 +153,9 @@
                                                             <?php if (!empty($encounter_id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
                                                             <?php } ?>
-                                                            <?php if (!empty($encounter->id)) { ?>
+                                                            <!-- <?php if (!empty($encounter->id)) { ?>
                                                                 <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
-                                                            <?php } ?>
+                                                            <?php } ?> -->
                                                         </select>
                                                         <?php if (!empty($encounter_id)) { ?>
                                                             <input type="hidden" name="encounter_id" value="<?php
@@ -372,6 +372,43 @@
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        var request_number = "<?php echo $request_number; ?>";
+        $.ajax({
+            url: 'labrequest/editLabrequestByJason?id='+request_number,
+            method: 'GET',
+            data: '',
+            dataType: 'json',
+            success: function (response) {
+                var request_patient = response.labrequests.patient_id;
+                var request_encounter = response.labrequests.encounter_id;
+                $.each(response.patients, function (key, value) {
+                    $("#pos_select").append($('<option>').text(value.name).val(value.id)).end();
+                });
+
+                $("#pos_select").val(request_patient);
+
+                var patient = $("#pos_select").val();
+                $("#encounter").find('option').remove();
+
+                $.ajax({
+                    url: 'labrequest/getEncounterByPatientIdJason?id='+patient,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter = response.encounter;
+                        $.each(encounter, function (key, value) {
+                            $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                        });
+
+                        $("#encounter").val(request_encounter);
+                    }
+                })
+            }
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {

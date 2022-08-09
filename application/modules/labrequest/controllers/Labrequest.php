@@ -284,6 +284,16 @@ class Labrequest extends MX_Controller {
         $this->load->view('add_new', $data);
     }
 
+    function editLabrequestByJason() {
+        $id = $this->input->get('id');
+
+        $data['patients'] = $this->patient_model->getPatientByVisitedProviderId();
+
+        $data['labrequests'] = $this->labrequest_model->getLabrequestByLabrequestNumber($id)[0];
+
+        echo json_encode($data);
+    }
+
     function deleteLabrequestByRequestNumber() {
         $request_number = $this->input->get('request_number');
 
