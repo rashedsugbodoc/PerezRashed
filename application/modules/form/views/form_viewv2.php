@@ -429,7 +429,7 @@
                                                             <div class="region">
                                                             <br/>
                                                                 <div class="row">
-                                                                    <div class="col-md-12 col-sm-12 text-center template-opacity">
+                                                                    <div class="col-md-12 col-sm-12 text-center form-opacity">
                                                                         <label class="h3">
                                                                             <?php
                                                                                 if (!empty($form->name)) {
