@@ -151,6 +151,7 @@ class Patient extends MX_Controller {
         $lname = $this->input->post('l_name');
         $mname = $this->input->post('m_name');
         $suffix = $this->input->post('suffix');
+        $fpi = random_string('alnum', 8);
 
         if ($suffix == '0') {
             $suffix = null;
@@ -332,7 +333,9 @@ class Patient extends MX_Controller {
                 'bloodgroup' => $bloodgroup,
                 'add_date' => $add_date,
                 'registration_time' => $registration_time,
-                'privacy_level_id' => 3
+                'privacy_level_id' => 3,
+                'family_profile_id' => $fpi,
+                'is_family_head' => 1,
             );
 
             if (empty($id)) {     // Adding New Patient
@@ -1096,7 +1099,25 @@ class Patient extends MX_Controller {
         $mname = $this->input->get('m_name');
         $lname = $this->input->get('l_name');
 
-        $data['family_head'] = $this->patient_model->getFamilyHeadByProfileIdByFirstNameByMiddleNameByLastName($profile_id, $fname, $mname, $lname);
+        $patient_details = $this->patient_model->getPatientByFamilyProfileId($profile_id);
+
+        if ($patient_details->is_family_head === 1 || $patient_details->is_family_head === "1") {
+            $family_number_count = $this->patient_model->getPatientCountByFamilyProfileId($profile_id);
+        } else {
+            $data['family_head'] = $this->patient_model->getFamilyHeadByProfileIdByFirstNameByMiddleNameByLastName($profile_id, $fname, $mname, $lname);
+        }
+
+        echo json_encode($data);
+    }
+
+    public function checkFamilyHead() {
+        $data = array();
+        $profile_id = $this->input->get('id');
+
+        $data['patient_details'] = $this->patient_model->getPatientByFamilyProfileId($profile_id);
+        $data['patient_list'] = $this->patient_model->getPatientListByFamilyProfileId($profile_id);
+
+        $data['family_number_count'] = $this->patient_model->getPatientCountByFamilyProfileId($profile_id);
 
         echo json_encode($data);
     }

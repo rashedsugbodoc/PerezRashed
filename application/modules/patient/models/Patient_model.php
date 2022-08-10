@@ -1042,6 +1042,20 @@ class Patient_model extends CI_model {
         return $query->row();
     }
 
+    function getPatientListByFamilyProfileId($id){
+        $this->db->where('family_profile_id', $id);
+        $query = $this->db->get('patient');
+        return $query->result();
+    }
+
+    function getPatientCountByFamilyProfileId($id) {
+        $this->db->where('family_profile_id', $id);
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('patient');
+        return $query->num_rows();
+    }
+
     function insertPatientHealthDeclaration($data) {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);

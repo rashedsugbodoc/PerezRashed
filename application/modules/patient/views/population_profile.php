@@ -5,6 +5,10 @@
                 <!--div class="app-content main-content"-->
                     <!--div class="side-app"-->
                         <!--Page header-->
+
+                        <!-- <style>
+                            ul li {list-style-type: disc;}
+                        </style> -->
                         
                         <div class="page-header">
                             <div class="page-leftheader">
@@ -34,7 +38,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <div class="row" id="is_head_banner">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label">Is Head of Family?</label>
@@ -70,7 +74,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label">Specify Head of Family</label>
-                                                        <a class="btn btn-primary" data-toggle="modal" data-target="#myModal1"><?php echo lang('select').'/'.lang('search'); ?></a>
+                                                        <a class="btn btn-primary" data-toggle="modal" id="search_family_head_button"><?php echo lang('select').'/'.lang('search'); ?></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -484,6 +488,39 @@
                             </div>
                         </div>
 
+                        <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title">These are family members associated with you as head: </h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form role="form" name="myform4" action="" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label">These are family members associated with you as head: </label>
+                                                        <div class="container">
+                                                            <ul class="list-group" id="family_member_list">
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <label>They will have to remove you as head first.</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary pull-right" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -635,6 +672,49 @@
             });
         })
     </script> -->
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
+            var family_profile = $("#populationForm").find('[name=family_profile]').val();
+            $.ajax({
+                url: 'patient/checkFamilyHead?id='+ family_profile,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    if (response.patient_details.is_family_head == 1) {
+                        alert(response.family_number_count+' - '+response.patient_details.is_family_head);
+                        $("#is_head_banner").attr("hidden", true);
+                    }
+                }
+            })
+        });
+    </script> -->
+
+    <script type="text/javascript">
+        $('#search_family_head_button').click(function() {
+            var family_profile = $("#populationForm").find('[name=family_profile]').val();
+            $.ajax({
+                url: 'patient/checkFamilyHead?id='+ family_profile,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var family_member_count = response.family_number_count;
+                    if (family_member_count <= 1) {
+                        $('#myModal1').modal('show');
+                    } else {
+                        $.each(response.patient_list, function(key, value) {
+                            $("#family_member_list").append('\n\
+                                <li class="listunorder">'+value.name+' ( Patient ID: ' + value.patient_id + ' ) ' +'</li>\n\
+                            ');
+                        });
+                        $('#myModal4').modal('show');
+                    }
+                }
+            })
+        });
+    </script>
 
     <script type="text/javascript">
         flatpickr(".flatpickr", {
