@@ -499,7 +499,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <tr>
                                                                 <td colspan="8" class="text-center pt-0 pb-0 mt-0">
-                                                                    <label class="h3 mb-1 mt-0"><?php echo lang('invoice') ?></label>
+                                                                    <label class="h3 mb-1 mt-0 template-opacity"><?php echo lang('invoice') ?></label>
                                                                 </td>
                                                             </tr>
                                                             <tr>
@@ -966,11 +966,11 @@
             });
 
             $(document).ready(function () {
-                $('#form-opacity-change').change(function () {
+                $('#invoice-opacity-change').change(function () {
                     if (!this.checked) 
-                       $('.form-opacity').animate({opacity:0});
+                       $('.invoice-opacity').animate({opacity:0});
                     else 
-                        $('.form-opacity').animate({opacity:1});
+                        $('.invoice-opacity').animate({opacity:1});
                 });
             });
         </script>
