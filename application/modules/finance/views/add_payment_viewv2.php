@@ -1389,7 +1389,7 @@
 
     </script>
 
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
         $(document).ready(function () {
             $("#encounter").change(function () {
                 var encounter_id = $("#encounter").val();
@@ -1413,7 +1413,7 @@
                 
             });
         });
-    </script>
+    </script> -->
 
     <script type="text/javascript">
         $(document).ready(function () {
