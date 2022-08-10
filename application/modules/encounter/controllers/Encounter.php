@@ -607,6 +607,20 @@ class Encounter extends MX_Controller {
             $data['encounter'] = $this->encounter_model->getEncounterWithTypeNameByDoctorId($doctor_id);
         }
 
+        $encounter_dictionary = [];
+        foreach ($data['encounter'] as $encounter) {
+            $encounter_created = date('M j, Y g:i A', strtotime($encounter->created_at.' UTC'));
+            $encounter_dictionary[] = array(
+                'id' => $encounter->id,
+                'encounter_type_id' => $encounter->encounter_type_id,
+                'encounter_number' => $encounter->encounter_number,
+                'created_at' => $encounter_created,
+                'display_name' => $encounter->display_name,
+            );
+        }
+
+        $data['encounter'] = $encounter_dictionary;
+
         // $data['encounter'] = array_merge($data['encounter'], $data['encounter_type']);
 
         echo json_encode($data);
