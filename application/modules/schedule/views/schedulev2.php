@@ -131,7 +131,7 @@
                                     <div class="modal-header">
                                         <h6 class="modal-title">  <?php echo lang('add'); ?> <?php echo lang('schedule'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form role="form" action="schedule/addSchedule" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form role="form" id="addOnlineScheduleForm" action="schedule/addSchedule" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('addOnlineScheduleForm');">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
@@ -268,7 +268,7 @@
                                         <div class="modal-header">
                                             <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('schedule'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                         </div>
-                                        <form role="form" action="schedule/addSchedule" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="addPhysicalScheduleForm" action="schedule/addSchedule" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('addPhysicalScheduleForm');">
                                             <div class="modal-body">
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
@@ -531,9 +531,20 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+        <script type="text/javascript">
+            $('#addOnlineScheduleForm').parsley();
+        </script>
+
+        <script type="text/javascript">
+            $('#addPhysicalScheduleForm').parsley();
+        </script>
 
         <script>
             $(document).ready(function () {
