@@ -24,7 +24,9 @@ class Company_model extends CI_model {
     }
 
     function getCompanyByCompanyUserId($company_id) {
-        $this->db->where('id', $company_id);
+        if ($this->ion_auth->in_group(array('CompanyUser'))) {
+            $this->db->where('id', $company_id);
+        }
         $query = $this->db->get('company');
         return $query->result();
     }
@@ -52,11 +54,18 @@ class Company_model extends CI_model {
 
     function getCompanyByCompanyuserIdBySearch($search, $company_id) {
         $this->db->order_by('id', 'desc');
-        $query = $this->db->select('*')
-                ->from('company')
-                ->where('id', $company_id)
-                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if ($this->ion_auth->in_group(array('CompanyUser'))) {
+            $query = $this->db->select('*')
+                    ->from('company')
+                    ->where('id', $company_id)
+                    ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('company')
+                    ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
         return $query->result();
     }
 
@@ -77,7 +86,9 @@ class Company_model extends CI_model {
     }
 
     function getCompanyByCompanyUserIdByLimit($limit, $start, $company_id) {
-        $this->db->where('id', $company_id);
+        if ($this->ion_auth->in_group(array('CompanyUser'))) {
+            $this->db->where('id', $company_id);
+        }
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->get('company');
@@ -96,11 +107,18 @@ class Company_model extends CI_model {
 
     function getCompanyByCompanyUserIdByLimitBySearch($limit, $start, $search, $company_id) {
         $this->db->limit($limit, $start);
-        $query = $this->db->select('*')
-                ->from('company')
-                ->where('id', $company_id)
-                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if ($this->ion_auth->in_group(array('CompanyUser'))) {
+            $query = $this->db->select('*')
+                    ->from('company')
+                    ->where('id', $company_id)
+                    ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('company')
+                    ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
 
         return $query->result();
     }
