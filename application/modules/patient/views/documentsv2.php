@@ -53,7 +53,7 @@
                                     <div class="modal-header">
                                         <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('document'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form role="form" action="patient/addPatientMaterial" data-parsley-validate class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form role="form" id="addDocumentForm" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('addDocumentForm');">
                                     <div class="modal-body">
                                         <div class="row">
                                             <div class="col-md-12 col-sm-12">
@@ -146,7 +146,7 @@
                                     <div class="modal-header">
                                         <h6 class="modal-title"><?php echo lang('edit'); ?> <?php echo lang('document'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form role="form" id="editDocumentForm" action="patient/addPatientMaterial" data-parsley-validate class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form role="form" id="editDocumentForm" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('editDocumentForm');">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
@@ -347,6 +347,14 @@
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $('#addDocumentForm').parsley();
+    </script>
+
+    <script type="text/javascript">
+        $('#editDocumentForm').parsley();
+    </script>
 
     <script type="text/javascript">
         // $("#encounter").change(function() {
