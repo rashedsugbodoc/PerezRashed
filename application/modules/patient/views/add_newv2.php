@@ -155,7 +155,7 @@
                                             ?>
                                         </div>
                                     </div>
-                                    <form role="form" id="patientForm" action="patient/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form role="form" id="patientForm" action="patient/addNew" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('patientForm');">
                                         <div class="card-body">
                                             <?php echo validation_errors(); ?>
                                             <?php
@@ -502,7 +502,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-12 col-md-12">
-                                                            <button type="submit" name="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
+                                                            <button type="submit" name="submit" id="submit" class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
                                                         </div>
                                                     </div>
                                                 </div>
