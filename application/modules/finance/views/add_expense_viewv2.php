@@ -20,7 +20,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" id="expenseForm" action="finance/addExpense" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading();">
+                                        <form role="form" id="expenseForm" action="finance/addExpense" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('expenseForm');">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">

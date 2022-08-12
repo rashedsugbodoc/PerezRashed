@@ -33,7 +33,7 @@
 
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
-                                <form role="form" id="editPaymentForm" action="finance/addPayment" method="post" enctype="multipart/form-data" onsubmit="btnLoading();">
+                                <form role="form" id="editPaymentForm" action="finance/addPayment" method="post" enctype="multipart/form-data" onsubmit="btnLoading('editPaymentForm');">
                                     <div class="card">
                                         <div class="card-header">
                                             <div class="card-title">
