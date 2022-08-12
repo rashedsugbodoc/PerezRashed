@@ -11,7 +11,7 @@
                                 <div class="card-title"><?php echo lang('add_encounter'); ?></div>
                             </div>
                             <div class="card-body">
-                                <form method="POST" action="encounter/addnew">
+                                <form method="POST" id="addEncounterForm" action="encounter/addnew" onsubmit="btnLoading('addEncounterForm');">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <input type="hidden" name="redirect" value="<?php
@@ -240,9 +240,16 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script>
+        $('#addEncounterForm').parsley();
+    </script>
 
     <script>
         $(document).ready(function () {
