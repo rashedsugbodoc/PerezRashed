@@ -373,8 +373,8 @@
 	
 })(jQuery);
 
-function btnLoading() {
-		var parsley_validation = $('#editPaymentForm').parsley().validate();
+function btnLoading(form) {
+		var parsley_validation = $('#'+form).parsley().validate();
 		if (parsley_validation === true) {
 				$("#submit").addClass('btn-loading');
 		}
