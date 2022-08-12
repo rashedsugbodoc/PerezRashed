@@ -20,7 +20,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" action="finance/addExpense" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="expenseForm" action="finance/addExpense" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading();">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -77,7 +77,7 @@
                                                 ?>'>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                                        <button class="btn btn-primary pull-right" value="" id="submit" type="submit" name="submit"><?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>

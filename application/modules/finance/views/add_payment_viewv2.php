@@ -33,7 +33,7 @@
 
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
-                                <form role="form" id="editPaymentForm" action="finance/addPayment" method="post" enctype="multipart/form-data">
+                                <form role="form" id="editPaymentForm" action="finance/addPayment" method="post" enctype="multipart/form-data" onsubmit="btnLoading();">
                                     <div class="card">
                                         <div class="card-header">
                                             <div class="card-title">
@@ -531,7 +531,7 @@
                                                             
                                                         </div>
                                                         <div class="form-group cashsubmit col-md-12">
-                                                            <button type="submit" name="submit2" id="submit1" class="btn btn-primary row pull-right"> <?php echo lang('submit'); ?>
+                                                            <button type="submit" name="submit2" id="submit" class="btn btn-primary row pull-right"> <?php echo lang('submit'); ?>
                                                             </button>
                                                         </div>
                                                         <div class="form-group cardsubmit col-md-12" hidden>
