@@ -14,7 +14,7 @@
                                             <?php echo lang('add_account') ?>
                                         </div>
                                     </div>
-                                    <form role="form" action="company/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form role="form" id="addCompanyForm" action="company/addNew" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('addCompanyForm');">
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
@@ -376,31 +376,7 @@
     </script> -->
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var name = $('#name').parsley();
-                var display_name = $('#display_name').parsley();
-                var email = $('#email').parsley();
-                var address = $('#address').parsley();
-                var phone = $('#phone').parsley();
-                var register = $('#register').parsley();
-                var type = $('#type').parsley();
-                var classification = $('#classification').parsley();
-
-                if (name.isValid() && display_name.isValid() && email.isValid() && address.isValid() && phone.isValid() && register.isValid() && type.isValid() && classification.isValid()) {
-                    return true;
-                } else {
-                    name.validate();
-                    display_name.validate();
-                    email.validate();
-                    address.validate();
-                    phone.validate();
-                    register.validate();
-                    type.validate();
-                    classification.validate();
-                }
-            })
-        })
+        $("#addCompanyForm").parsley();
     </script>
 
     <script type="text/javascript">
