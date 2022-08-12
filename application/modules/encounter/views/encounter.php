@@ -373,7 +373,7 @@
                                     <div class="modal-header">
                                         <h6 class="modal-title"><?php echo lang('add_vitals'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form role="form" id="addVitalForm" action="patient/addVitals" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form role="form" id="addVitalForm" action="patient/addVitals" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('addVitalForm');">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
@@ -674,7 +674,7 @@
                                     <div class="modal-header">
                                         <h6 class="modal-title"><?php echo lang('add'). ' ' . lang('document'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form role="form" id="addDocumentForm" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form role="form" id="addDocumentForm" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('addDocumentForm');">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
@@ -696,7 +696,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="category" id="category" data-placeholder="Choose one">
+                                                        <select class="form-control select2-show-search" name="category" id="category" data-placeholder="Choose one" required>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -705,7 +705,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('rendering_doctor'); ?> <span class="text-red">*</span></label>
-                                                        <select class="form-control select2-show-search" name="rendering_doctor" id="rendering_doctor_document" data-placeholder="Choose one">
+                                                        <select class="form-control select2-show-search" name="rendering_doctor" id="rendering_doctor_document" data-placeholder="Choose one" required>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -727,7 +727,7 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
                                                         <span class="text-muted">(<?php echo lang('maximum_upload_filesize').': 5MB';?>)</span>
-                                                        <input type="file" name="img_url" id="document" class="dropify"/>
+                                                        <input type="file" name="img_url" id="document" class="dropify" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -1003,6 +1003,9 @@
 
         <!-- flatpickr js -->
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
@@ -1018,6 +1021,10 @@
         });
 
     </script> -->
+
+    <script type="text/javascript">
+        $('#addDocumentForm').parsley();
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
