@@ -19,7 +19,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" id="labrequestForm" action="labrequest/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="labrequestForm" action="labrequest/addNew" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('labrequestForm');">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <?php echo validation_errors(); ?>
@@ -374,6 +374,10 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
+        $('#labrequestForm').parsley();
+    </script>
+
+    <script type="text/javascript">
         var request_number = "<?php echo $request_number; ?>";
         $.ajax({
             url: 'labrequest/editLabrequestByJason?id='+request_number,
@@ -408,26 +412,6 @@
                 })
             }
         });
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var date = $('#date1').parsley();
-                var patient = $('#pos_select').parsley();
-                var doctor = $('#add_doctor').parsley();
-                var encounter = $('#encounter').parsley();
-
-                if (date.isValid() && patient.isValid() && doctor.isValid() && encounter.isValid()) {
-                    return true;
-                } else {
-                    date.validate();
-                    patient.validate();
-                    doctor.validate();
-                    encounter.validate();
-                }
-            })
-        })
     </script>
 
     <script type="text/javascript">
