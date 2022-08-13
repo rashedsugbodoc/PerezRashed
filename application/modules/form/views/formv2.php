@@ -29,7 +29,7 @@
                                         </div>
                                         <div id="collapseOne31" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne31">
                                             <div class="panel-body border-0 bg-white">
-                                                <form role="form" id="formForm" action="form/addForm" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();" id="casebody">
+                                                <form role="form" id="formForm" action="form/addForm" method="post" enctype="multipart/form-data" onsubmit="btnLoading('formForm');">
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
@@ -477,6 +477,10 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
+        $('#formForm').parsley();
+    </script>
+
+    <script type="text/javascript">
         // $("#encounter").change(function() {
         //     var encounter = $("#encounter").val();
         //     $("#pos_select").find('option').remove();
@@ -858,12 +862,12 @@
                     x.className = "col-md-12 col-sm-12 col-lg-12";
                     document.getElementById("caselist").className = "col-md-12 col-sm-12 col-lg-12";
                     document.getElementById("screensize").className = "fa fa-compress text-dark"
-                    $("#casebody").attr("hidden", false);
+                    $("#formForm").attr("hidden", false);
                 } else {
                     x.className = "col-md-12 col-sm-12 col-lg-12";
                     document.getElementById("caselist").className = "col-md-12 col-sm-12 col-lg-12";
                     document.getElementById("screensize").className = "fa fa-expand text-dark"
-                    $("#casebody").attr("hidden", true);
+                    $("#formForm").attr("hidden", true);
                 }
             })
         });

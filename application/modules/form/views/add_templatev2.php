@@ -19,7 +19,7 @@
                                             ?>
                                         </div>
                                     </div>
-                                    <form role="form" id="editFormForm" class="clearfix" action="form/addTemplate" method="post" enctype="multipart/form-data">
+                                    <form role="form" id="formTemplateForm" class="clearfix" action="form/addTemplate" method="post" enctype="multipart/form-data" onsubmit="btnLoading('formTemplateForm');">
                                         <?php echo validation_errors(); ?>
                                         <div class="card-body">
                                             <div class="row">
@@ -146,9 +146,16 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
         <script type="text/javascript" src="common/assets/ckeditor/ckeditor.js"></script>
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $('#formTemplateForm').parsley();
+    </script>
 
     <script>
         CKEDITOR.replace("description",

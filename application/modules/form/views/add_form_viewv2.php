@@ -45,7 +45,7 @@
                                             ?>
                                         </div>
                                     </div>
-                                    <form role="form" id="editFormForm" class="clearfix" action="form/addForm" method="post" enctype="multipart/form-data" onsubmit="javascript: return myFunction();">
+                                    <form role="form" id="editFormForm" class="clearfix" action="form/addForm" method="post" enctype="multipart/form-data" onsubmit="btnLoading('editFormForm');">
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -634,27 +634,7 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var date = $('#date').parsley();
-                var patient = $('#pos_select').parsley();
-                var name = $('#name').parsley();
-                var editor = $('#editor').parsley();
-                var category = $('#category').parsley();
-                var doctor = $('#add_doctor').parsley();
-
-                if (date.isValid() && patient.isValid() && name.isValid() && editor.isValid() && category.isValid() && doctor.isValid()) {
-                    return true;
-                } else {
-                    date.validate();
-                    patient.validate();
-                    name.validate();
-                    editor.validate();
-                    category.validate();
-                    doctor.validate();
-                }
-            })
-        })
+        $('#editFormForm').parsley();
     </script>
 
     <script type="text/javascript">
