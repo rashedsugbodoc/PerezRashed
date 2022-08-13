@@ -22,7 +22,7 @@
                                     </div>
                                     <div class="card-body">
                                         <?php echo validation_errors(); ?>
-                                        <form role="form" action="medicine/addNewMedicine" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="medicineForm" action="medicine/addNewMedicine" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('medicineForm');">
                                             <!-- <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -412,39 +412,7 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var generic = $('#generic').parsley();
-                var category = $('#category').parsley();
-                var brand = $('#brand').parsley();
-                var form = $('#form').parsley();
-                var uses = $('#uses').parsley();
-                var side_effects = $('#side_effects').parsley();
-                var p_price = $('#p_price').parsley();
-                var s_price = $('#s_price').parsley();
-                var quantity = $('#quantity').parsley();
-                var company = $('#company').parsley();
-                var store_box = $('#store_box').parsley();
-                var date = $('#date').parsley();
-
-                if (generic.isValid() && category.isValid() && brand.isValid() && form.isValid() && uses.isValid() && side_effects.isValid() && p_price.isValid() && s_price.isValid() && quantity.isValid() && company.isValid() && store_box.isValid() && date.isValid()) {
-                    return true;
-                } else {
-                    generic.validate();
-                    category.validate();
-                    brand.validate();
-                    form.validate();
-                    uses.validate();
-                    side_effects.validate();
-                    p_price.validate();
-                    s_price.validate();
-                    quantity.validate();
-                    company.validate();
-                    store_box.validate();
-                    date.validate();
-                }
-            })
-        })
+        $('#medicineForm').parsley();
     </script>
 
     <script type="text/javascript">

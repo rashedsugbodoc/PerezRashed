@@ -22,11 +22,11 @@
                                     </div>
                                     <div class="card-body">
                                         <?php echo validation_errors(); ?>
-                                        <form role="form" action="medicine/addNewCategory" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="medicineCategoryForm" action="medicine/addNewCategory" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('medicineCategoryForm');">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('category'); ?></label>
+                                                        <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="category" id="category" value='<?php
                                                         if (!empty($medicine->category)) {
                                                             echo $medicine->category;
@@ -36,7 +36,7 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('description'); ?></label>
+                                                        <label class="form-label"><?php echo lang('description'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="description" id="description" value='<?php
                                                         if (!empty($medicine->description)) {
                                                             echo $medicine->description;
@@ -156,20 +156,7 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var category = $('#category').parsley();
-                var description = $('#description').parsley();
-                
-
-                if (description.isValid() && category.isValid()) {
-                    return true;
-                } else {
-                    description.validate();
-                    category.validate();
-                }
-            })
-        })
+        $('#medicineCategoryForm').parsley();
     </script>
 
     <script>
