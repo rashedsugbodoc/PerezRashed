@@ -27,7 +27,7 @@
                             </div>
                             <div class="card-body">
                                 <?php echo validation_errors(); ?>
-                                <form role="form" action="prescription/addNewPrescription" class="clearfix" method="post" enctype="multipart/form-data">
+                                <form role="form" id="prescriptionForm" action="prescription/addNewPrescription" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('prescriptionForm');">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
                                             <input type="hidden" name="redirect" value="<?php
@@ -363,6 +363,10 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
+        $('#prescriptionForm').parsley();
+    </script>
+
+    <script type="text/javascript">
         var prescription_number = $("#prescription_id").val();
         $.ajax({
             url: 'prescription/editPrescriptionByJason?id='+prescription_number,
@@ -397,26 +401,6 @@
                 })
             }
         });
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var date = $('#date1').parsley();
-                var patient = $('#patientchoose').parsley();
-                var doctor = $('#doctorchoose1').parsley();
-                var encounter = $('#encounter').parsley();
-
-                if (date.isValid() && patient.isValid() && doctor.isValid() && encounter.isValid()) {
-                    return true;
-                } else {
-                    date.validate();
-                    patient.validate();
-                    doctor.validate();
-                    encounter.validate();
-                }
-            })
-        })
     </script>
 
     <script type="text/javascript">
