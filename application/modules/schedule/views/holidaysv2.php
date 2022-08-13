@@ -58,13 +58,13 @@
                                     <div class="modal-header">
                                         <h6 class="modal-title"><?php echo lang('add'); ?> <?php echo lang('holiday'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form role="form" action="schedule/addHoliday" class='clearfix' method="post" enctype="multipart/form-data">
+                                    <form role="form" id="addHolidayForm" action="schedule/addHoliday" class='clearfix' method="post" enctype="multipart/form-data" onsubmit="btnLoading('addHolidayForm');">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control flatpickr" name="date" placeholder="MM/DD/YYYY" type="text" readonly>
+                                                        <input class="form-control flatpickr" name="date" placeholder="MM/DD/YYYY" type="text" readonly required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -90,13 +90,13 @@
                                     <div class="modal-header">
                                         <h6 class="modal-title"><?php echo lang('edit'); ?>  <?php echo lang('holiday'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                                     </div>
-                                    <form role="form" id="editHolidayForm" action="schedule/addHoliday" class='clearfix' method="post" enctype="multipart/form-data">
+                                    <form role="form" id="editHolidayForm" action="schedule/addHoliday" class='clearfix' method="post" enctype="multipart/form-data" onsubmit="btnLoading('editHolidayForm');">
                                         <div class="modal-body">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control editflatpickr" name="date" placeholder="MM/DD/YYYY" value="20-08-2021" type="text" readonly>
+                                                        <input class="form-control editflatpickr" name="date" placeholder="MM/DD/YYYY" value="20-08-2021" type="text" readonly required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -245,9 +245,20 @@
 
         <!-- flatpickr js -->
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $('#addHolidayForm').parsley();
+    </script>
+
+    <script type="text/javascript">
+        $('#editHolidayForm').parsley();
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
