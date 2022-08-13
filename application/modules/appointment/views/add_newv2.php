@@ -17,7 +17,7 @@
                                     ?>
                                 </div>
                             </div>
-                            <form role="form" action="appointment/addNew" class="clearfix row" method="post" enctype="multipart/form-data">
+                            <form role="form" id="appointmentForm" action="appointment/addNew" class="clearfix row" method="post" enctype="multipart/form-data" onsubmit="btnLoading('appointmentForm');">
                                 <div class="card-body">
                                     <div class="adv-table editable-table ">
                                         <?php echo validation_errors(); ?>
@@ -382,31 +382,7 @@
         <!-- INTERNAL JS INDEX END -->
 
         <script type="text/javascript">
-            $(document).ready(function () {
-                $("#submit").click(function () {
-                    var patient = $('#pos_select').parsley();
-                    var doctor = $('#adoctors').parsley();
-                    var service_type = $('#service_select').parsley();
-                    var service = $('#sub_service').parsley();
-                    var date = $('#date').parsley();
-                    var slot = $('#aslots').parsley();
-                    var status = $('#status').parsley();
-                    var remarks = $('#remarks').parsley();
-
-                    if (patient.isValid() && doctor.isValid() && service_type.isValid() && service.isValid() && date.isValid() && slot.isValid() && status.isValid() && remarks.isValid()) {
-                        return true;
-                    } else {
-                        patient.validate();
-                        doctor.validate();
-                        service_type.validate();
-                        service.validate();
-                        date.validate();
-                        slot.validate();
-                        status.validate();
-                        remarks.validate();
-                    }
-                })
-            })
+            $('#appointmentForm').parsley();
         </script>
 
         <script type="text/javascript">
