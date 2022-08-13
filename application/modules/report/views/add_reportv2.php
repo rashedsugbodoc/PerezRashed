@@ -21,7 +21,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" action="report/addReport" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="reportForm" action="report/addReport" method="post" enctype="multipart/form-data" onsubmit="btnLoading('reportForm');">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <?php echo validation_errors(); ?>
@@ -29,7 +29,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('select_type'); ?></label>
-                                                        <select class="form-control select2-show-search" name="type">
+                                                        <select class="form-control select2-show-search" name="type" required>
                                                             <option value="birth" <?php
                                                             if (!empty($setval)) {
                                                                 if (set_value('type') == 'birth') {
@@ -87,7 +87,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('patient'); ?></label>
-                                                        <select class="form-control select2-show-search" name="patient" data-placeholder="<?php echo lang('select_patient') ?>">
+                                                        <select class="form-control select2-show-search" name="patient" data-placeholder="<?php echo lang('select_patient') ?>" required>
                                                             <option></option>
                                                             <?php foreach ($patients as $patient) { ?>
                                                                 <option value="<?php echo $patient->id; ?>" <?php
@@ -104,7 +104,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('doctor'); ?></label>
-                                                        <select class="form-control select2-show-search" name="doctor">
+                                                        <select class="form-control select2-show-search" name="doctor" required>
                                                             <?php foreach ($doctors as $doctor) { ?>
                                                                 <option value="<?php echo $doctor->id; ?>" <?php
                                                                 if (!empty($setval)) {
@@ -277,6 +277,10 @@
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $('#reportForm').parsley();
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
