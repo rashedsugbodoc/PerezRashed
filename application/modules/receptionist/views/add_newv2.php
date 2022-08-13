@@ -18,7 +18,7 @@
                                             ?>
                                         </div>
                                     </div>
-                                    <form id="receptionistForm" role="form" action="receptionist/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                    <form id="receptionistForm" role="form" action="receptionist/addNew" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('receptionistForm');">
                                         <div class="card-body">
                                             <?php echo validation_errors(); ?>
                                             <?php
