@@ -21,7 +21,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <form role="form" id="branchForm" action="branch/addNew" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" id="branchForm" action="branch/addNew" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('branchForm');">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -112,7 +112,7 @@
                                                 <input type="text" hidden name="id" id="id" value="<?php echo $id ?>">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <button class="btn btn-primary pull-right"><?php echo lang('submit'); ?></button>
+                                                        <button class="btn btn-primary pull-right" name="submit"><?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -230,7 +230,14 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script>
+        $('#branchForm').parsley();
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
