@@ -909,11 +909,45 @@ class Patient_model extends CI_model {
         return $data;
     }
 
+    function getReligionInfo($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('profile_religion')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $religions = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('profile_religion');
+            $religions = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($religions as $religion) {
+            $data[] = array("id" => $religion['id'], "text" => $religion['display_name'] );
+        }
+        return $data;
+    }
+
+    function getReligion() {
+        $this->db->select('*');
+        $query = $this->db->get('profile_religion');
+        return $query->result();
+    }
+
     function getEducationalAttainmentById($id) {
         $this->db->select('*');
         $this->db->where('id', $id);
         $query = $this->db->get('educational_attainment');
         return $query->row();
+    }
+
+    function getEducationalAttainment() {
+        $this->db->select('*');
+        $query = $this->db->get('educational_attainment');
+        return $query->result();
     }
 
     function getFamilyHeadByProfileIdByFirstNameByMiddleNameByLastName($profile, $fname, $mname, $lname) {
@@ -954,6 +988,12 @@ class Patient_model extends CI_model {
         return $query->row();
     }
 
+    function getPatientRelationToHead() {
+        $this->db->select('*');
+        $query = $this->db->get('pophealth_relation_to_family_head');
+        return $query->result();
+    }
+
     function getSanitaryToiletInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')
@@ -981,6 +1021,12 @@ class Patient_model extends CI_model {
         $this->db->where('id', $id);
         $query = $this->db->get('pophealth_sanitary_toilet');
         return $query->row();
+    }
+
+    function getSanitaryToilet() {
+        $this->db->select('*');
+        $query = $this->db->get('pophealth_sanitary_toilet');
+        return $query->result();
     }
 
     function getMonthlyFamilyIncomeInfo() {
@@ -1060,6 +1106,23 @@ class Patient_model extends CI_model {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
         $this->db->insert('medical_history', $data2);
+    }
+
+    function updatePatientHealthDeclaration($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->insert('medical_history', $data);
+    }
+
+    function getMedicationHistoryById($patient_id) {
+        $this->db->select('*');
+        $this->db->where('patient_id', $patient_id);
+        $query = $this->db->get('medical_history');
+        return $query->result();
+    }
+
+    function updatePatientHealthDeclarationById($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('medical_history', $data);
     }
 
     function getPatientHealthDeclarationByPatientId($id) {

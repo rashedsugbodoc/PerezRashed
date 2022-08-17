@@ -866,7 +866,10 @@ class Patient extends MX_Controller {
     function addHealthDeclaration() {
         $id = $this->input->post('id');
         $user = $this->ion_auth->get_user_id();
-        $medical_history_number = 'H'.random_string('alnum', 6);
+        $medical_history_number = $this->input->post('medical_history_number');
+        if (empty($medical_history_number)) {
+            $medical_history_number = 'H'.random_string('alnum', 6);
+        }
         $year = $this->input->post('year');
         $diagnosis = $this->input->post('diagnosis');
         $hospital = $this->input->post('hospital');
@@ -1039,11 +1042,11 @@ class Patient extends MX_Controller {
         $family_profile = $this->input->post('family_profile');
         $id = $this->patient_model->getPatientByFamilyProfileId($family_profile)->id;
         $family_head_radio = $this->input->post('family_head_radio');
-        // if ($family_head_radio === "0") {
-        //     $family_head_radio = null;
-        // }
         $family_head_relation = $this->input->post('family_head_relation');
         $familyhead_id = $this->input->post('familyhead_id');
+        if ($family_head_radio === "0") {
+            $family_profile = $this->patient_model->getPatientById($familyhead_id)->family_profile_id;
+        }
         $education_attainment = $this->input->post('educational_attainment');
         $monthly_family_income = $this->input->post('monthly_family_income');
         $safe_water_supply = $this->input->post('safe_water_supply');
@@ -1054,10 +1057,12 @@ class Patient extends MX_Controller {
         // }
         $unmet_need = $this->input->post('unmet_need');
         $deceased = $this->input->post('deceased');
+        if ($deceased === "1") {
+            $date_of_death = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date_of_death')));
+        }
         // if ($deceased === "0") {
         //     $deceased = null;
         // }
-        $date_of_death = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date_of_death')));
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -1073,16 +1078,16 @@ class Patient extends MX_Controller {
 
         $data = array(
             'family_profile_id' => $family_profile,
-            'is_family_head' => $family_head_radio,
-            'relation_to_family_head' => $family_head_relation,
-            'family_head_patient_id' => $familyhead_id,
-            'educational_attainment_id' => $education_attainment,
-            'monthly_family_income_id' => $monthly_family_income,
-            'safe_water_supply_level_id' => $safe_water_supply,
-            'sanitary_toilet_id' => $sanitary_toilet,
-            'is_sexually_active' => $sexually_active,
-            'unmet_need_id' => $unmet_need,
-            'is_deceased' => $deceased,
+            'is_family_head' => (int)$family_head_radio,
+            'relation_to_family_head_id' => (int)$family_head_relation,
+            'family_head_patient_id' => (int)$familyhead_id,
+            'educational_attainment_id' => (int)$education_attainment,
+            'monthly_family_income_id' => (int)$monthly_family_income,
+            'safe_water_supply_level_id' => (int)$safe_water_supply,
+            'sanitary_toilet_id' => (int)$sanitary_toilet,
+            'is_sexually_active' => (int)$sexually_active,
+            'unmet_need_id' => (int)$unmet_need,
+            'is_deceased' => (int)$deceased,
             'deceased_date' => $date_of_death,
         );
         $this->session->set_flashdata('success', lang('record_added'));
@@ -1103,9 +1108,10 @@ class Patient extends MX_Controller {
 
         if ($patient_details->is_family_head === 1 || $patient_details->is_family_head === "1") {
             $family_number_count = $this->patient_model->getPatientCountByFamilyProfileId($profile_id);
-        } else {
             $data['family_head'] = $this->patient_model->getFamilyHeadByProfileIdByFirstNameByMiddleNameByLastName($profile_id, $fname, $mname, $lname);
         }
+
+        // $data['family_head'] = $this->patient_model->getFamilyHeadByProfileIdByFirstNameByMiddleNameByLastName($profile_id, $fname, $mname, $lname);
 
         echo json_encode($data);
     }
@@ -1128,6 +1134,16 @@ class Patient extends MX_Controller {
 
 // Get users
         $response = $this->patient_model->getEducationalAttainmentInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getReligionInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->patient_model->getReligionInfo($searchTerm);
 
         echo json_encode($response);
     }
