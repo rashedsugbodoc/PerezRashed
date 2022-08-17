@@ -23,6 +23,11 @@
                                         <form id="formDeclaration" action="patient/addHealthDeclaration" method="post">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
+                                                    <input type="hidden" name="medical_history_number" value="<?php echo $medical_history->medical_history_number; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
                                                     <label class="form-label"><h5>Do you have or have you ever had?</h5></label>
                                                 </div>
                                             </div>
