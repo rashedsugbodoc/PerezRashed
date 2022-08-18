@@ -10,6 +10,7 @@ class Customform extends MX_Controller {
 
         $this->load->model('customform_model');
         $this->load->model('patient/patient_model');
+        $this->load->model('doctor/doctor_model');
         $this->load->model('location/location_model');
         $this->load->helper('string');
         // if (!$this->ion_auth->in_group('admin')) {
@@ -20,6 +21,7 @@ class Customform extends MX_Controller {
     public function index() {
         // $data['fpi'] = random_string('alnum', 8);
         $data['civil_status'] = $this->patient_model->getCivilStatus();
+        $data['customform_types'] = $this->customform_model->getCustomFormType();
         $this->load->view('home/dashboardv2');
         $this->load->view('customform', $data);
     }
@@ -31,6 +33,16 @@ class Customform extends MX_Controller {
         $data['unmet_need'] = $this->patient_model->getUnmetNeed();
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
+    }
+
+    public function addNewTsekap() {
+        $data['fpi'] = random_string('alnum', 8);
+        $data['civil_status'] = $this->patient_model->getCivilStatus();
+        $data['safe_water_supply'] = $this->patient_model->getSafeWaterSupply();
+        $data['unmet_need'] = $this->patient_model->getUnmetNeed();
+        $form_type = $this->input->get('type');
+        $this->load->view('home/dashboardv2');
+        $this->load->view($form_type, $data);
     }
 
     public function addNew() {
@@ -196,6 +208,24 @@ class Customform extends MX_Controller {
         redirect('customform');
     }
 
+    public function editTsekap() {
+        $data['id'] = $this->input->get('id');
+        $customform_details = $this->customform_model->getCustomFormByCustomFormNumber($data['id']);
+        $customformtype_details = $this->customform_model->getCustomFormTypeById($customform_details->type_id);
+        $this->load->view('home/dashboardv2');
+        $this->load->view($customformtype_details->name, $data);
+    }
+
+    public function editTsekapByJason() {
+        $id = $this->input->get('id');
+        $customform_details = $this->customform_model->getCustomFormByCustomFormNumber($id);
+        $customformtype_details = $this->customform_model->getCustomFormTypeById($customform_details->type_id);
+        $data['patient'] = $customform_details->patient;
+        $data['patients'] = $this->patient_model->getPatient();
+
+        echo json_encode($data);
+    }
+
     public function getDiseasesInfo() {
         $searchTerm = $this->input->post('searchTerm');
 
@@ -233,6 +263,81 @@ class Customform extends MX_Controller {
         $data['medical_history'] = end($this->patient_model->getMedicationHistoryById($patient_id));
 
         echo json_encode($data);
+    }
+
+    function getCustomForm() {
+        $requestData = $_REQUEST;
+        $start = $requestData['start'];
+        $limit = $requestData['length'];
+        $search = $this->input->post('search')['value'];
+        $type = $this->input->get('type');
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor = $this->doctor_model->getDoctorByIonUserId($this->session->userdata('user_id'))->id;
+        }
+
+        if ($limit == -1) {
+            if (!empty($search)) {
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $data['customforms'] = $this->customform_model->getCustomFormBySearchByDoctorIdByType($search, $doctor, $type);
+                } else {
+                    $data['customforms'] = $this->customform_model->getCustomFormBySearchByType($search, $type);
+                }
+            } else {
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $data['customforms'] = $this->customform_model->getCustomFormByDoctorIdByType($doctor, $type);
+                } else {
+                    $data['customforms'] = $this->customform_model->getCustomFormByType($type);
+                }
+            }
+        } else {
+            if (!empty($search)) {
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $data['customforms'] = $this->customform_model->getCustomFormByLimitBySearchByDoctorIdByType($limit, $start, $search, $doctor, $type);
+                } else {
+                    $data['customforms'] = $this->customform_model->getCustomFormByLimitBySearchByType($limit, $start, $search, $type);
+                }
+            } else {
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    $data['customforms'] = $this->customform_model->getCustomFormByLimitByDoctorIdByType($limit, $start, $doctor, $type);
+                } else {
+                    $data['customforms'] = $this->customform_model->getCustomFormByLimitByType($limit, $start, $type);
+                }
+                
+            }
+        }
+        //  $data['patients'] = $this->patient_model->getPatient();
+
+        foreach ($data['customforms'] as $customform) {
+
+            $options1 = '<a class="btn btn-info" href="customform/edit'.$this->customform_model->getCustomFormTypeById($customform->type_id)->method_name.'?id='.$customform->custom_form_number.'"><i class="fe fe-edit"></i></a>';
+
+            $info[] = array(
+                $customform->custom_form_date,
+                $customform->custom_form_number,
+                $this->patient_model->getPatientById($customform->patient)->name,
+                $options1,
+                    //  $options2
+            );
+            
+        }
+
+        if (!empty($data['customforms'])) {
+            $output = array(
+                "draw" => intval($requestData['draw']),
+                "recordsTotal" => $this->customform_model->getCustomByTypeCount($type),
+                "recordsFiltered" => $this->customform_model->getCustomFormBySearchByTypeCount($search, $type),
+                "data" => $info
+            );
+        } else {
+            $output = array(
+                // "draw" => 1,
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => []
+            );
+        }
+
+        echo json_encode($output);
     }
 
 }
