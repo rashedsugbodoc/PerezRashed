@@ -15,8 +15,14 @@ class Settings_model extends CI_model {
     }
 
     function getSettings() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('settings');
+        if ($this->ion_auth->in_group(array('superadmin'))) {
+            $this->db->where('hospital_id', 'superadmin');
+            $query = $this->db->get('superadmin_settings');
+        } else {
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $query = $this->db->get('settings');
+        }
+
         return $query->row();
     }
 
