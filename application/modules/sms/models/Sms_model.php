@@ -24,7 +24,13 @@ class Sms_model extends CI_model {
     }
 
     function getSmsSettings() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $hospital_id = $this->session->userdata('hospital_id');
+        if ($hospital_id == 'superadmin') {
+            $this->db->where('hospital_id', null);
+        } else {
+            $this->db->where('hospital_id', $hospital_id);           
+        }
+        $this->db->where('hospital_id', $hospital_id);
         $query = $this->db->get('sms_settings');
         return $query->result();
     }
