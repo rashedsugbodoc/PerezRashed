@@ -228,52 +228,56 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
-                                                        <div class="row" id="search_unmet_need" <?php
-                                                            if (!empty($patient->unmet_need_id)) {
-                                                                echo "hidden";
-                                                            }
-                                                        ?>>
-                                                            <div class="col-md-12 col-sm-12">
-                                                                <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal3"><?php echo lang('select'); ?></a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row" id="input_unmet_need" <?php
-                                                            if (empty($patient->unmet_need_id)) {
-                                                                echo "hidden";
-                                                            }
-                                                        ?>>
-                                                            <div class="col-md-9 col-sm-10">
-                                                                <div class="input-group">
-                                                                    <input type="text" name="unmet_need_text" id="unmet_need_text" class="form-control" value="<?php
-                                                                        if (!empty($patient->unmet_need_id)) {
-                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
-                                                                        }
-                                                                    ?>">
-                                                                    <input type="hidden" name="unmet_need" id="unmet_need" class="form-control" value="<?php
-                                                                        if (!empty($patient->unmet_need_id)) {
-                                                                            echo $patient->unmet_need_id;
-                                                                        }
-                                                                    ?>">
-                                                                    <button class="btn btn-light" id="unmet_need_description" data-container="body" data-content="<?php
-                                                                        if (!empty($patient->unmet_need_id)) {
-                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->description;
-                                                                        }
-                                                                    ?>" data-placement="top" data-popover-color="primary" title="<?php
-                                                                        if (!empty($patient->unmet_need_id)) {
-                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
-                                                                        }
-                                                                    ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
+                                                <?php if ($patient->sex === "female") { ?>
+                                                    <?php if ($patient_age_year >= 10 && $patient_age_year <= 49) { ?>
+                                                        <div class="col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
+                                                                <div class="row" id="search_unmet_need" <?php
+                                                                    if (!empty($patient->unmet_need_id)) {
+                                                                        echo "hidden";
+                                                                    }
+                                                                ?>>
+                                                                    <div class="col-md-12 col-sm-12">
+                                                                        <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal3"><?php echo lang('select'); ?></a>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" id="input_unmet_need" <?php
+                                                                    if (empty($patient->unmet_need_id)) {
+                                                                        echo "hidden";
+                                                                    }
+                                                                ?>>
+                                                                    <div class="col-md-9 col-sm-10">
+                                                                        <div class="input-group">
+                                                                            <input type="text" name="unmet_need_text" id="unmet_need_text" class="form-control" value="<?php
+                                                                                if (!empty($patient->unmet_need_id)) {
+                                                                                    echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                                }
+                                                                            ?>">
+                                                                            <input type="hidden" name="unmet_need" id="unmet_need" class="form-control" value="<?php
+                                                                                if (!empty($patient->unmet_need_id)) {
+                                                                                    echo $patient->unmet_need_id;
+                                                                                }
+                                                                            ?>">
+                                                                            <button class="btn btn-light" id="unmet_need_description" data-container="body" data-content="<?php
+                                                                                if (!empty($patient->unmet_need_id)) {
+                                                                                    echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->description;
+                                                                                }
+                                                                            ?>" data-placement="top" data-popover-color="primary" title="<?php
+                                                                                if (!empty($patient->unmet_need_id)) {
+                                                                                    echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                                }
+                                                                            ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3 col-sm-2">
+                                                                        <a class="btn btn-primary" data-toggle="modal" data-target="#myModal3">Change</a>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-md-3 col-sm-2">
-                                                                <a class="btn btn-primary" data-toggle="modal" data-target="#myModal3">Change</a>
-                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
+                                                    <?php } ?>
+                                                <?php } ?>
                                             </div>
                                             <!-- <div class="row">
                                                 <div class="col-md-12">

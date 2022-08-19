@@ -836,6 +836,8 @@ class Patient extends MX_Controller {
         $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
         $data['safe_water_supply'] = $this->patient_model->getSafeWaterSupply();
         $data['unmet_need'] = $this->patient_model->getUnmetNeed();
+        $patient_age = getPersonAge(date('d-m-Y H:i:s', strtotime($data['patient']->birthdate.' UTC')));
+        $data['patient_age_year'] = $patient_age->y;
         $this->load->view('home/dashboardv2');
         $this->load->view('population_profile', $data);
     }
@@ -2371,7 +2373,8 @@ class Patient extends MX_Controller {
             $prescription_specialty = [];
             $prescription_doctor_specialty_explode = explode(',', $doctor_details->specialties);
             $hospital_details = $this->hospital_model->getHospitalById($prescription->hospital_id);
-            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            $encounter = $this->encounter_model->getEncounterById($prescription->encounter_id);
+            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
             if (empty($branch_name)) {
                 $branch_name = "Online";
             }
@@ -2493,7 +2496,8 @@ class Patient extends MX_Controller {
             $labrequest_spec = implode(' ', $labrequest_specialty);
 
             $hospital_details = $this->hospital_model->getHospitalById($labrequest->hospital_id);
-            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            $encounter = $this->encounter_model->getEncounterById($labrequest->encounter_id);
+            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
             if (empty($branch_name)) {
                 $branch_name = "Online";
             }
@@ -2546,7 +2550,8 @@ class Patient extends MX_Controller {
             $lab_specialty = [];
             $lab_doctor_specialty_explode = explode(',', $doctor_details->specialties);
             $hospital_details = $this->hospital_model->getHospitalById($prescription->hospital_id);
-            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            $encounter = $this->encounter_model->getEncounterById($lab->encounter_id);
+            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
             if (empty($branch_name)) {
                 $branch_name = "Online";
             }
@@ -2616,7 +2621,8 @@ class Patient extends MX_Controller {
             $case_doctor = $this->doctor_model->getDoctorById($medical_history->doctor_id);
             $doctor_specialty_explode = explode(',', $case_doctor->specialties);
             $hospital_details = $this->hospital_model->getHospitalById($medical_history->hospital_id);
-            $branch_name = $this->branch_model->getBranchById($medical_history->location_id)->display_name;
+            $encounter = $this->encounter_model->getEncounterById($medical_history->encounter_id);
+            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
             if (empty($branch_name)) {
                 $branch_name = "Online";
             }
@@ -2827,7 +2833,8 @@ class Patient extends MX_Controller {
             $diagnosis_spec = implode(' ', $diagnosis_specialty);
 
             $hospital_details = $this->hospital_model->getHospitalById($diag->hospital_id);
-            $branch_name = $this->branch_model->getBranchById($prescription->location_id)->display_name;
+            $encounter = $this->encounter_model->getEncounterById($diag->encounter_id);
+            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
             if (empty($branch_name)) {
                 $branch_name = "Online";
             }
@@ -2880,7 +2887,8 @@ class Patient extends MX_Controller {
             $form_category = $this->form_model->getFormCategoryById($form->category_id)->name;
             $form_doctor_specialty_explode = explode(',', $form_doctor->specialties);
             $hospital_details = $this->hospital_model->getHospitalById($form->hospital_id);
-            $branch_name = $this->branch_model->getBranchById($form->location_id)->display_name;
+            $encounter = $this->encounter_model->getEncounterById($form->encounter_id);
+            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
             if (empty($branch_name)) {
                 $branch_name = "Online";
             }
