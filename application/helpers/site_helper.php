@@ -159,4 +159,12 @@ function getDoctorInfo() {
         }
     }
 
+    function getPersonAge($datetime, $level = 7) {
+        $now = new DateTime;
+        $ago = new DateTime($datetime);
+        $diff = $now->diff($ago);
+
+        return $diff;
+    }
+
 ?>
