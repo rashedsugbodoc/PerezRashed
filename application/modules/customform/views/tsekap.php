@@ -453,52 +453,56 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 col-sm-6">
-                                            <div class="form-group">
-                                                <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
-                                                <div class="row" id="search_unmet_need" <?php
-                                                    if (!empty($patient->unmet_need_id)) {
-                                                        echo "hidden";
-                                                    }
-                                                ?>>
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal3"><?php echo lang('select'); ?></a>
-                                                    </div>
-                                                </div>
-                                                <div class="row" id="input_unmet_need" <?php
-                                                    if (empty($patient->unmet_need_id)) {
-                                                        echo "hidden";
-                                                    }
-                                                ?>>
-                                                    <div class="col-md-9 col-sm-10">
-                                                        <div class="input-group">
-                                                            <input type="text" name="unmet_need_text" id="unmet_need_text" class="form-control" value="<?php
-                                                                if (!empty($patient->unmet_need_id)) {
-                                                                    echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
-                                                                }
-                                                            ?>">
-                                                            <input type="hidden" name="unmet_need" id="unmet_need" class="form-control" value="<?php
-                                                                if (!empty($patient->unmet_need_id)) {
-                                                                    echo $patient->unmet_need_id;
-                                                                }
-                                                            ?>">
-                                                            <button class="btn btn-light" id="unmet_need_description" data-container="body" data-content="<?php
-                                                                if (!empty($patient->unmet_need_id)) {
-                                                                    echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->description;
-                                                                }
-                                                            ?>" data-placement="top" data-popover-color="primary" title="<?php
-                                                                if (!empty($patient->unmet_need_id)) {
-                                                                    echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
-                                                                }
-                                                            ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
+                                        <?php if ($patient->sex === "female") { ?>
+                                            <?php if ($patient_age_year >= 10 && $patient_age_year <= 49) { ?>
+                                                <div class="col-md-6 col-sm-6">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
+                                                        <div class="row" id="search_unmet_need" <?php
+                                                            if (!empty($patient->unmet_need_id)) {
+                                                                echo "hidden";
+                                                            }
+                                                        ?>>
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal3"><?php echo lang('select'); ?></a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" id="input_unmet_need" <?php
+                                                            if (empty($patient->unmet_need_id)) {
+                                                                echo "hidden";
+                                                            }
+                                                        ?>>
+                                                            <div class="col-md-9 col-sm-10">
+                                                                <div class="input-group">
+                                                                    <input type="text" name="unmet_need_text" id="unmet_need_text" class="form-control" value="<?php
+                                                                        if (!empty($patient->unmet_need_id)) {
+                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                        }
+                                                                    ?>">
+                                                                    <input type="hidden" name="unmet_need" id="unmet_need" class="form-control" value="<?php
+                                                                        if (!empty($patient->unmet_need_id)) {
+                                                                            echo $patient->unmet_need_id;
+                                                                        }
+                                                                    ?>">
+                                                                    <button class="btn btn-light" id="unmet_need_description" data-container="body" data-content="<?php
+                                                                        if (!empty($patient->unmet_need_id)) {
+                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->description;
+                                                                        }
+                                                                    ?>" data-placement="top" data-popover-color="primary" title="<?php
+                                                                        if (!empty($patient->unmet_need_id)) {
+                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                        }
+                                                                    ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-sm-2">
+                                                                <a class="btn btn-primary" data-toggle="modal" data-target="#myModal3">Change</a>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3 col-sm-2">
-                                                        <a class="btn btn-primary" data-toggle="modal" data-target="#myModal3">Change</a>
-                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            <?php } ?>
+                                        <?php } ?>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
@@ -1106,46 +1110,96 @@
                     // $("#customformForm").find('[name=mental_health]').find('option').remove();
                     // $("#tuberculosis").find('option').remove();
 
-                    $.each(response.diseases, function(key, value) {
-                        if (value.id == patient_medication_history.tsekap_medication_availment_cancer_status) {
-                            $("#customformForm").find('[name=cancer]').append($('<option selected>').text(value.display_name).val(value.id)).end();
-                        } else {
-                            $("#customformForm").find('[name=cancer]').append($('<option>').text(value.display_name).val(value.id)).end();
-                        }
-                        if (value.id == patient_medication_history.tsekap_medication_availment_hypertension_status) {
-                            $("#customformForm").find('[name=hypertension]').append($('<option selected>').text(value.display_name).val(value.id)).end();
-                        } else {
-                            $("#customformForm").find('[name=hypertension]').append($('<option>').text(value.display_name).val(value.id)).end();
-                        }
-                        if (value.id == patient_medication_history.tsekap_medication_availment_diabetes_status) {
-                            $("#customformForm").find('[name=diabetes]').append($('<option selected>').text(value.display_name).val(value.id)).end();
-                        } else {
-                            $("#customformForm").find('[name=diabetes]').append($('<option>').text(value.display_name).val(value.id)).end();
-                        }
-                        if (value.id == patient_medication_history.tsekap_medication_availment_mentalhealth_status) {
-                            $("#customformForm").find('[name=mental_health]').append($('<option selected>').text(value.display_name).val(value.id)).end();
-                        } else {
-                            $("#customformForm").find('[name=mental_health]').append($('<option>').text(value.display_name).val(value.id)).end();
-                        }
-                        if (value.id == patient_medication_history.tsekap_medication_availment_tuberculosis_status) {
-                            $("#customformForm").find('[name=tuberculosis]').append($('<option selected>').text(value.display_name).val(value.id)).end();
-                        } else {
-                            $("#customformForm").find('[name=tuberculosis]').append($('<option>').text(value.display_name).val(value.id)).end();
-                        }
-                        if (value.id == patient_medication_history.tsekap_medication_availment_cardiovasculardisease_status) {
-                            $("#customformForm").find('[name=cardiovascular]').append($('<option selected>').text(value.display_name).val(value.id)).end();
-                        } else {
-                            $("#customformForm").find('[name=cardiovascular]').append($('<option>').text(value.display_name).val(value.id)).end();
-                        }
-                    });
+                    if (response.medical_history != false) {
+                        $.each(response.diseases, function(key, value) {
+                            if (value.id == patient_medication_history.tsekap_medication_availment_cancer_status) {
+                                $("#customformForm").find('[name=cancer]').append($('<option selected>').text(value.display_name).val(value.id)).end();
+                            } else {
+                                $("#customformForm").find('[name=cancer]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            }
+                            if (value.id == patient_medication_history.tsekap_medication_availment_hypertension_status) {
+                                $("#customformForm").find('[name=hypertension]').append($('<option selected>').text(value.display_name).val(value.id)).end();
+                            } else {
+                                $("#customformForm").find('[name=hypertension]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            }
+                            if (value.id == patient_medication_history.tsekap_medication_availment_diabetes_status) {
+                                $("#customformForm").find('[name=diabetes]').append($('<option selected>').text(value.display_name).val(value.id)).end();
+                            } else {
+                                $("#customformForm").find('[name=diabetes]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            }
+                            if (value.id == patient_medication_history.tsekap_medication_availment_mentalhealth_status) {
+                                $("#customformForm").find('[name=mental_health]').append($('<option selected>').text(value.display_name).val(value.id)).end();
+                            } else {
+                                $("#customformForm").find('[name=mental_health]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            }
+                            if (value.id == patient_medication_history.tsekap_medication_availment_tuberculosis_status) {
+                                $("#customformForm").find('[name=tuberculosis]').append($('<option selected>').text(value.display_name).val(value.id)).end();
+                            } else {
+                                $("#customformForm").find('[name=tuberculosis]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            }
+                            if (value.id == patient_medication_history.tsekap_medication_availment_cardiovasculardisease_status) {
+                                $("#customformForm").find('[name=cardiovascular]').append($('<option selected>').text(value.display_name).val(value.id)).end();
+                            } else {
+                                $("#customformForm").find('[name=cardiovascular]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            }
+                        });
+                    } else {
+                        $(".illness").select2({
+                            placeholder: 'Select Status',
+                            allowClear: true,
+                            ajax: {
+                                url: 'customform/getDiseasesInfo',
+                                type: "post",
+                                dataType: 'json',
+                                delay: 250,
+                                data: function (params) {
+                                    return {
+                                        searchTerm: params.term // search term
+                                    };
+                                },
+                                processResults: function (response) {
+                                    return {
+                                        results: response
+                                    };
+                                },
+                                cache: true
+                            }
+                        });
+                    }
 
-                    $.each(response.covid_status, function(key, value) {
-                        if (value.id == patient_medication_history.covid_status_id) {
-                            $("#customformForm").find('[name=covid]').append($('<option selected>').text(value.display_name).val(value.id)).end();
-                        } else {
-                            $("#customformForm").find('[name=covid]').append($('<option>').text(value.display_name).val(value.id)).end();
-                        }
-                    });
+
+                    if (response.medical_history != false) {
+                        $.each(response.covid_status, function(key, value) {
+                            if (value.id == patient_medication_history.covid_status_id) {
+                                $("#customformForm").find('[name=covid]').append($('<option selected>').text(value.display_name).val(value.id)).end();
+                            } else {
+                                $("#customformForm").find('[name=covid]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            }
+                        });
+                    } else {
+                        $(".covid").select2({
+                            placeholder: 'Select Status',
+                            allowClear: true,
+                            ajax: {
+                                url: 'customform/getCovidInfo',
+                                type: "post",
+                                dataType: 'json',
+                                delay: 250,
+                                data: function (params) {
+                                    return {
+                                        searchTerm: params.term // search term
+                                    };
+                                },
+                                processResults: function (response) {
+                                    return {
+                                        results: response
+                                    };
+                                },
+                                cache: true
+                            }
+
+                        });
+                    }
 
                     // alert(patient_medication_history.tsekap_medication_availment_mentalhealth_status);
                 }
@@ -1370,23 +1424,23 @@
             $(".covid").select2({
                 placeholder: 'Select Status',
                 allowClear: true,
-                ajax: {
-                    url: 'customform/getCovidInfo',
-                    type: "post",
-                    dataType: 'json',
-                    delay: 250,
-                    data: function (params) {
-                        return {
-                            searchTerm: params.term // search term
-                        };
-                    },
-                    processResults: function (response) {
-                        return {
-                            results: response
-                        };
-                    },
-                    cache: true
-                }
+                // ajax: {
+                //     url: 'customform/getCovidInfo',
+                //     type: "post",
+                //     dataType: 'json',
+                //     delay: 250,
+                //     data: function (params) {
+                //         return {
+                //             searchTerm: params.term // search term
+                //         };
+                //     },
+                //     processResults: function (response) {
+                //         return {
+                //             results: response
+                //         };
+                //     },
+                //     cache: true
+                // }
 
             });
 

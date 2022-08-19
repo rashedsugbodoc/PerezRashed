@@ -212,6 +212,9 @@ class Customform extends MX_Controller {
         $data['id'] = $this->input->get('id');
         $customform_details = $this->customform_model->getCustomFormByCustomFormNumber($data['id']);
         $customformtype_details = $this->customform_model->getCustomFormTypeById($customform_details->type_id);
+        $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($customform_details->patient);
+        $patient_age = getPersonAge(date('d-m-Y H:i:s', strtotime($data['patient']->birthdate.' UTC')));
+        $data['patient_age_year'] = $patient_age->y;
         $this->load->view('home/dashboardv2');
         $this->load->view($customformtype_details->name, $data);
     }
