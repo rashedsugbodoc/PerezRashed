@@ -123,17 +123,19 @@
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
-                                                        <form>
-                                                            <input id="phone" class="form-control" name="phone" id="phone" value="<?php
-                                                            if (!empty($setval)) {
-                                                                echo set_value('phone');
-                                                            } elseif (!empty($companyuser->phone)) {
-                                                                echo $companyuser->phone;
-                                                            } else {
-                                                                echo '';
-                                                            }
-                                                            ?>" type="tel" maxlength="20" required>
-                                                        </form>
+                                                        <input id="mobile" name="mobile" class="form-control" type="tel" required value= 
+                                                            "<?php
+                                                                if (!empty($setval)) {
+                                                                    echo set_value('phone');
+                                                                } elseif (!empty($admin->phone)) {
+                                                                    echo $admin->phone;
+                                                                } else {
+                                                                    echo '';
+                                                                }
+                                                            ?>">
+                                                        <input type="hidden" name="phone" id="phone">
+                                                        <span id="error-msg" class="hide"></span>
+                                                        <span id="valid-msg" class="hide"> Valid</span>
                                                     </div>
                                                 </div>
                                             </div>

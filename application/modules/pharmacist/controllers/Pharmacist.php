@@ -109,7 +109,7 @@ class Pharmacist extends MX_Controller {
                 'upload_path' => "./uploads/",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "20480000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_size' => "2048", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "1768",
                 'max_width' => "2024"
             );
@@ -163,52 +163,99 @@ class Pharmacist extends MX_Controller {
                 if ($this->ion_auth->email_check($email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                     $data = array();
+                    $data['countries'] = $this->location_model->getCountry();
                     $data['pharmacist'] = $this->pharmacist_model->getPharmacistById($id);
                     $this->load->view('home/dashboardv2'); // just the header file
                     $this->load->view('add_newv2', $data);
                     // $this->load->view('home/footer'); // just the footer file
                 } else {
-                    $dfg = 7;
-                    $this->ion_auth->register($username, $password, $email, $dfg);
-                    $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
-                    $this->pharmacist_model->insertPharmacist($data);
-                    $pharmacist_user_id = $this->db->get_where('pharmacist', array('email' => $email))->row()->id;
-                    $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->pharmacist_model->updatePharmacist($pharmacist_user_id, $id_info);
-                    $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                    $set['settings'] = $this->settings_model->getSettings();
-                    $data1 = array(
-                        'firstname' => $fname,
-                        'lastname' => $lname,
-                        'name' => $name,
-                        'email' => $email,
-                        'password' => $password,
-                        'company' => $set['settings']->system_vendor,
-                        'hospital_name' => $set['settings']->title,
-                        'hospital_contact' => $set['settings']->phone
-                    );
+                    if ($this->upload->do_upload('img_url')) {
+                        $dfg = 7;
+                        $this->ion_auth->register($username, $password, $email, $dfg);
+                        $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
+                        $this->pharmacist_model->insertPharmacist($data);
+                        $pharmacist_user_id = $this->db->get_where('pharmacist', array('email' => $email))->row()->id;
+                        $id_info = array('ion_user_id' => $ion_user_id);
+                        $this->pharmacist_model->updatePharmacist($pharmacist_user_id, $id_info);
+                        $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+                        $set['settings'] = $this->settings_model->getSettings();
+                        $data1 = array(
+                            'firstname' => $fname,
+                            'lastname' => $lname,
+                            'name' => $name,
+                            'email' => $email,
+                            'password' => $password,
+                            'company' => $set['settings']->system_vendor,
+                            'hospital_name' => $set['settings']->title,
+                            'hospital_contact' => $set['settings']->phone
+                        );
 
-                    $autoemail = $this->email_model->getAutoEmailByType('pharmacist');
-                    if ($autoemail->status == 'Active') {
-                        $emailSettings = $this->email_model->getEmailSettings();
-                        $message1 = $autoemail->message;
-                        $messageprint1 = $this->parser->parse_string($message1, $data1);
-                        $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
-                        $this->email->to($email);
-                        $this->email->subject(lang('welcome_to').$set['settings']->title);
-                        $this->email->message($messageprint1);
-                        $this->email->send();
+                        $autoemail = $this->email_model->getAutoEmailByType('pharmacist');
+                        if ($autoemail->status == 'Active') {
+                            $emailSettings = $this->email_model->getEmailSettings();
+                            $message1 = $autoemail->message;
+                            $messageprint1 = $this->parser->parse_string($message1, $data1);
+                            $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                            $this->email->to($email);
+                            $this->email->subject(lang('welcome_to').$set['settings']->title);
+                            $this->email->message($messageprint1);
+                            $this->email->send();
+                        }
+                        $this->session->set_flashdata('success', lang('record_added'));
+                        redirect('pharmacist');
+                    } else {
+                        if ($_FILES['img_url']['size'] > $config['max_size']) {
+                            $this->session->set_flashdata('error', lang('validation_error'));
+                            $data = array();
+                            $data['countries'] = $this->location_model->getCountry();
+                            $data['pharmacist'] = $this->pharmacist_model->getPharmacistById($id);
+                            $this->load->view('home/dashboardv2'); // just the header file
+                            $this->load->view('add_newv2', $data);
+                        } else {
+                            $dfg = 7;
+                            $this->ion_auth->register($username, $password, $email, $dfg);
+                            $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
+                            $this->pharmacist_model->insertPharmacist($data);
+                            $pharmacist_user_id = $this->db->get_where('pharmacist', array('email' => $email))->row()->id;
+                            $id_info = array('ion_user_id' => $ion_user_id);
+                            $this->pharmacist_model->updatePharmacist($pharmacist_user_id, $id_info);
+                            $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+                            $set['settings'] = $this->settings_model->getSettings();
+                            $data1 = array(
+                                'firstname' => $fname,
+                                'lastname' => $lname,
+                                'name' => $name,
+                                'email' => $email,
+                                'password' => $password,
+                                'company' => $set['settings']->system_vendor,
+                                'hospital_name' => $set['settings']->title,
+                                'hospital_contact' => $set['settings']->phone
+                            );
+
+                            $autoemail = $this->email_model->getAutoEmailByType('pharmacist');
+                            if ($autoemail->status == 'Active') {
+                                $emailSettings = $this->email_model->getEmailSettings();
+                                $message1 = $autoemail->message;
+                                $messageprint1 = $this->parser->parse_string($message1, $data1);
+                                $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                                $this->email->to($email);
+                                $this->email->subject(lang('welcome_to').$set['settings']->title);
+                                $this->email->message($messageprint1);
+                                $this->email->send();
+                            }
+                            $this->session->set_flashdata('success', lang('record_added'));
+                            redirect('pharmacist');
+                        }
                     }
-                    $this->session->set_flashdata('success', lang('record_added'));
-                    redirect('pharmacist');
                 }
             } else { // Updating Pharmacist
-                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
-                $this->session->set_flashdata('fileError', $fileError);
+                // $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                // $this->session->set_flashdata('fileError', $fileError);
                 if ($email !== $emailById) {
                     if ($this->ion_auth->email_check($email)) {
                         $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                         $data = array();
+                        $data['countries'] = $this->location_model->getCountry();
                         $data['pharmacist'] = $this->pharmacist_model->getPharmacistById($id);
                         $this->load->view('home/dashboardv2'); // just the header file
                         $this->load->view('add_newv2', $data);
@@ -226,16 +273,41 @@ class Pharmacist extends MX_Controller {
                         redirect('pharmacist');
                     }
                 } else {
-                    $ion_user_id = $this->db->get_where('pharmacist', array('id' => $id))->row()->ion_user_id;
-                    if (empty($password)) {
-                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                    if ($this->upload->do_upload('img_url')) {
+                        $ion_user_id = $this->db->get_where('pharmacist', array('id' => $id))->row()->ion_user_id;
+                        if (empty($password)) {
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        } else {
+                            $password = $this->ion_auth_model->hash_password($password);
+                        }
+                        $this->pharmacist_model->updateIonUser($username, $email, $password, $ion_user_id);
+                        $this->pharmacist_model->updatePharmacist($id, $data);
+                        $this->session->set_flashdata('success', lang('record_updated'));
+                        redirect('pharmacist');
                     } else {
-                        $password = $this->ion_auth_model->hash_password($password);
+                        if ($_FILES['img_url']['size'] > $config['max_size']) {
+                            $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                            $this->session->set_flashdata('fileError', $fileError);
+                            $this->session->set_flashdata('error', lang('validation_error'));
+                            $data = array();
+                            $data['countries'] = $this->location_model->getCountry();
+                            $data['pharmacist'] = $this->pharmacist_model->getPharmacistById($id);
+                            $this->load->view('home/dashboardv2'); // just the header file
+                            $this->load->view('add_newv2', $data);
+                            // $this->load->view('home/footer'); // just the footer file
+                        } else {
+                            $ion_user_id = $this->db->get_where('pharmacist', array('id' => $id))->row()->ion_user_id;
+                            if (empty($password)) {
+                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                            } else {
+                                $password = $this->ion_auth_model->hash_password($password);
+                            }
+                            $this->pharmacist_model->updateIonUser($username, $email, $password, $ion_user_id);
+                            $this->pharmacist_model->updatePharmacist($id, $data);
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                            redirect('pharmacist');
+                        }
                     }
-                    $this->pharmacist_model->updateIonUser($username, $email, $password, $ion_user_id);
-                    $this->pharmacist_model->updatePharmacist($id, $data);
-                    $this->session->set_flashdata('success', lang('record_updated'));
-                    redirect('pharmacist');
                 }
 
                 

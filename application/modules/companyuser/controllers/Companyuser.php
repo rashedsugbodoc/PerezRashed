@@ -247,11 +247,12 @@ class Companyuser extends MX_Controller {
             $username = $name;
 
             if (empty($id)) {     // Adding New Company User
-                // $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
-                // $this->session->set_flashdata('fileError', $fileError);
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
                 if ($this->ion_auth->email_check($email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                     $data = array();
+                    $data['setval'] = 'setval';
                     $data['companyusers'] = $this->companyuser_model->getCompanyUser();
                     $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
                     $this->load->view('home/dashboardv2'); // just the header file
@@ -298,12 +299,11 @@ class Companyuser extends MX_Controller {
                         }
                     } else {
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
-                            $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
-                            $this->session->set_flashdata('fileError', $fileError);
                             $this->session->set_flashdata('error', lang('validation_error'));
                             $data = array();
                             // $id = $this->input->get('id');
                             if (!$this->ion_auth->in_group(('CompanyUser'))) {
+                                $data['setval'] = 'setval';
                                 $data['companies'] = $this->company_model->getCompany();
                                 $data['countries'] = $this->location_model->getCountry();
                                 $data['companyusers'] = $this->companyuser_model->getCompanyUser();
@@ -362,6 +362,7 @@ class Companyuser extends MX_Controller {
                     if ($this->ion_auth->email_check($email)) {
                         $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                         $data = array();
+                        $data['setval'] = 'setval';
                         $data['companyusers'] = $this->companyuser_model->getCompanyUser();
                         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
                         $this->load->view('home/dashboardv2'); // just the header file
@@ -391,6 +392,7 @@ class Companyuser extends MX_Controller {
                                 $data = array();
                                 // $id = $this->input->get('id');
                                 if (!$this->ion_auth->in_group(('CompanyUser'))) {
+                                    $data['setval'] = 'setval';
                                     $data['companies'] = $this->company_model->getCompany();
                                     $data['countries'] = $this->location_model->getCountry();
                                     $data['companyusers'] = $this->companyuser_model->getCompanyUser();
@@ -443,6 +445,7 @@ class Companyuser extends MX_Controller {
                             $data = array();
                             // $id = $this->input->get('id');
                             if (!$this->ion_auth->in_group(('CompanyUser'))) {
+                                $data['setval'] = 'setval';
                                 $data['companies'] = $this->company_model->getCompany();
                                 $data['countries'] = $this->location_model->getCountry();
                                 $data['companyusers'] = $this->companyuser_model->getCompanyUser();

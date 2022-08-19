@@ -210,6 +210,7 @@ class Admin extends MX_Controller {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                     // $this->session->setTempdata('error', lang('this_email_address_is_already_registered'), 5);
                     $data = array();
+                    $data['setval'] = 'setval';
                     $data['admin'] = $this->admin_model->getAdminById($id);
                     $data['admins'] = $this->admin_model->getAdmin();
                     $data['countries'] = $this->location_model->getCountry();
@@ -280,6 +281,7 @@ class Admin extends MX_Controller {
                             $this->session->set_flashdata('fileError', $fileError);
                             $this->session->set_flashdata('error', lang('validation_error'));
                             $data = array();
+                            $data['setval'] = 'setval';
                             $data['admin'] = $this->admin_model->getAdminById($id);
                             $data['admins'] = $this->admin_model->getAdmin();
                             $data['countries'] = $this->location_model->getCountry();
@@ -355,6 +357,7 @@ class Admin extends MX_Controller {
                     if ($this->ion_auth->email_check($email)) {
                         $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                         $data = array();
+                        $data['setval'] = 'setval';
                         $data['admin'] = $this->admin_model->getAdminById($id);
                         $data['admins'] = $this->admin_model->getAdmin();
                         $data['countries'] = $this->location_model->getCountry();
@@ -423,6 +426,7 @@ class Admin extends MX_Controller {
                             $this->session->set_flashdata('fileError', $fileError);
                             $this->session->set_flashdata('error', lang('validation_error'));
                             $data = array();
+                            $data['setval'] = 'setval';
                             $data['admin'] = $this->admin_model->getAdminById($id);
                             $data['admins'] = $this->admin_model->getAdmin();
                             $data['countries'] = $this->location_model->getCountry();

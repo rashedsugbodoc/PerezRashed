@@ -175,39 +175,84 @@ class Accountant extends MX_Controller {
                     $this->load->view('add_newv2', $data);
                     // $this->load->view('home/footer'); // just the footer file
                 } else {
-                    $dfg = 3;
-                    $this->ion_auth->register($username, $password, $email, $dfg);
-                    $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
-                    $this->accountant_model->insertAccountant($data);
-                    $accountant_user_id = $this->db->get_where('accountant', array('email' => $email))->row()->id;
-                    $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->accountant_model->updateAccountant($accountant_user_id, $id_info);
-                    $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                    $set['settings'] = $this->settings_model->getSettings();
-                    $data1 = array(
-                        'firstname' => $fname,
-                        'lastname' => $lname,
-                        'name' => $name,
-                        'email' => $email,
-                        'password' => $password,
-                        'company' => $set['settings']->system_vendor,
-                        'hospital_name' => $set['settings']->title,
-                        'hospital_contact' => $set['settings']->phone
-                    );
+                    if ($this->upload->do_upload('img_url')) {
+                        $dfg = 3;
+                        $this->ion_auth->register($username, $password, $email, $dfg);
+                        $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
+                        $this->accountant_model->insertAccountant($data);
+                        $accountant_user_id = $this->db->get_where('accountant', array('email' => $email))->row()->id;
+                        $id_info = array('ion_user_id' => $ion_user_id);
+                        $this->accountant_model->updateAccountant($accountant_user_id, $id_info);
+                        $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+                        $set['settings'] = $this->settings_model->getSettings();
+                        $data1 = array(
+                            'firstname' => $fname,
+                            'lastname' => $lname,
+                            'name' => $name,
+                            'email' => $email,
+                            'password' => $password,
+                            'company' => $set['settings']->system_vendor,
+                            'hospital_name' => $set['settings']->title,
+                            'hospital_contact' => $set['settings']->phone
+                        );
 
-                    $autoemail = $this->email_model->getAutoEmailByType('accountant');
-                    if ($autoemail->status == 'Active') {
-                        $emailSettings = $this->email_model->getEmailSettings();
-                        $message1 = $autoemail->message;
-                        $messageprint1 = $this->parser->parse_string($message1, $data1);
-                        $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
-                        $this->email->to($email);
-                        $this->email->subject(lang('welcome_to').$set['settings']->title);
-                        $this->email->message($messageprint1);
-                        $this->email->send();
+                        $autoemail = $this->email_model->getAutoEmailByType('accountant');
+                        if ($autoemail->status == 'Active') {
+                            $emailSettings = $this->email_model->getEmailSettings();
+                            $message1 = $autoemail->message;
+                            $messageprint1 = $this->parser->parse_string($message1, $data1);
+                            $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                            $this->email->to($email);
+                            $this->email->subject(lang('welcome_to').$set['settings']->title);
+                            $this->email->message($messageprint1);
+                            $this->email->send();
+                        }
+                        $this->session->set_flashdata('success', lang('record_added'));
+                        redirect('accountant');
+                    } else {
+                        if ($_FILES['img_url']['size'] > $config['max_size']) {
+                            $this->session->set_flashdata('error', lang('validation_error'));
+                            $data['setval'] = 'setval';
+                            $data['countries'] = $this->location_model->getCountry();
+                            $data['accountant'] = $this->accountant_model->getAccountantById($id);
+                            $this->load->view('home/dashboardv2'); // just the header file
+                            $this->load->view('add_newv2', $data);
+                        } else {
+                            $dfg = 3;
+                            $this->ion_auth->register($username, $password, $email, $dfg);
+                            $ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
+                            $this->accountant_model->insertAccountant($data);
+                            $accountant_user_id = $this->db->get_where('accountant', array('email' => $email))->row()->id;
+                            $id_info = array('ion_user_id' => $ion_user_id);
+                            $this->accountant_model->updateAccountant($accountant_user_id, $id_info);
+                            $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
+                            $set['settings'] = $this->settings_model->getSettings();
+                            $data1 = array(
+                                'firstname' => $fname,
+                                'lastname' => $lname,
+                                'name' => $name,
+                                'email' => $email,
+                                'password' => $password,
+                                'company' => $set['settings']->system_vendor,
+                                'hospital_name' => $set['settings']->title,
+                                'hospital_contact' => $set['settings']->phone
+                            );
+
+                            $autoemail = $this->email_model->getAutoEmailByType('accountant');
+                            if ($autoemail->status == 'Active') {
+                                $emailSettings = $this->email_model->getEmailSettings();
+                                $message1 = $autoemail->message;
+                                $messageprint1 = $this->parser->parse_string($message1, $data1);
+                                $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                                $this->email->to($email);
+                                $this->email->subject(lang('welcome_to').$set['settings']->title);
+                                $this->email->message($messageprint1);
+                                $this->email->send();
+                            }
+                            $this->session->set_flashdata('success', lang('record_added'));
+                            redirect('accountant');
+                        }
                     }
-                    $this->session->set_flashdata('success', lang('record_added'));
-                    redirect('accountant');
                 }
             } else { // Updating Accountant
                 $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
@@ -233,16 +278,38 @@ class Accountant extends MX_Controller {
                         redirect('accountant');
                     }
                 } else {
-                    $ion_user_id = $this->db->get_where('accountant', array('id' => $id))->row()->ion_user_id;
-                    if (empty($password)) {
-                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                    if ($this->upload->do_upload('img_url')) {
+                        $ion_user_id = $this->db->get_where('accountant', array('id' => $id))->row()->ion_user_id;
+                        if (empty($password)) {
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        } else {
+                            $password = $this->ion_auth_model->hash_password($password);
+                        }
+                        $this->accountant_model->updateIonUser($username, $email, $password, $ion_user_id);
+                        $this->accountant_model->updateAccountant($id, $data);
+                        $this->session->set_flashdata('success', lang('record_updated'));
+                        redirect('accountant');
                     } else {
-                        $password = $this->ion_auth_model->hash_password($password);
+                        if ($_FILES['img_url']['size'] > $config['max_size']) {
+                            $this->session->set_flashdata('error', lang('validation_error'));
+                            $data['setval'] = 'setval';
+                            $data['countries'] = $this->location_model->getCountry();
+                            $data['accountant'] = $this->accountant_model->getAccountantById($id);
+                            $this->load->view('home/dashboardv2'); // just the header file
+                            $this->load->view('add_newv2', $data);
+                        } else {
+                            $ion_user_id = $this->db->get_where('accountant', array('id' => $id))->row()->ion_user_id;
+                            if (empty($password)) {
+                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                            } else {
+                                $password = $this->ion_auth_model->hash_password($password);
+                            }
+                            $this->accountant_model->updateIonUser($username, $email, $password, $ion_user_id);
+                            $this->accountant_model->updateAccountant($id, $data);
+                            $this->session->set_flashdata('success', lang('record_updated'));
+                            redirect('accountant');
+                        }
                     }
-                    $this->accountant_model->updateIonUser($username, $email, $password, $ion_user_id);
-                    $this->accountant_model->updateAccountant($id, $data);
-                    $this->session->set_flashdata('success', lang('record_updated'));
-                    redirect('accountant');
                 }
 
 

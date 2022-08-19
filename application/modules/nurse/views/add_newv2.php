@@ -190,7 +190,9 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('postal'); ?></label>
                                                         <input type="text" name="postal" class="form-control" value="<?php
-                                                            if (!empty($nurse->postal)) {
+                                                            if (!empty($setval)) {
+                                                                echo set_value('postal');
+                                                            } elseif (!empty($nurse->postal)) {
                                                                 echo $nurse->postal;
                                                             }
                                                         ?>">
