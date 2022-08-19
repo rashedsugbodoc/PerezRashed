@@ -20,9 +20,9 @@ class Settings extends MX_Controller {
         $data['entities'] = $this->settings_model->getEntityType();
         $data['zones'] = timezone_identifiers_list();
         $data['countries'] = $this->location_model->getCountry();
-        $data['states'] = $this->location_model->getState();
-        $data['cities'] = $this->location_model->getCity();
-        $data['barangays'] = $this->location_model->getBarangay();
+        //$data['states'] = $this->location_model->getState();
+        //$data['cities'] = $this->location_model->getCity();
+        //$data['barangays'] = $this->location_model->getBarangay();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('settingsv2', $data);
         // $this->load->view('home/footer'); // just the footer file
