@@ -16,6 +16,16 @@
                                     </div>
                                     <form role="form" id="addCompanyForm" action="company/addNew" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('addCompanyForm');">
                                     <div class="card-body">
+                                        <?php echo validation_errors(); ?>
+                                        <?php
+                                            $file_error = $this->session->flashdata('fileError');
+
+                                            if(!empty($file_error)) {
+                                                echo $file_error;
+                                            }else{
+
+                                            }
+                                        ?>
                                         <div class="row">
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
@@ -88,7 +98,7 @@
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('country'); ?></label>
+                                                    <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
                                                     <select class="form-control select2" name="country_id" id="country" required>
                                                         <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
                                                         <?php foreach ($countries as $country) { ?>
@@ -105,7 +115,7 @@
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('state_province'); ?></label>
+                                                    <label class="form-label"><?php echo lang('state_province'); ?> <span class="text-red">*</span></label>
                                                     <select class="form-control select2" name="state_id" id="state" value='' required disabled>
                                                         <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
                                                     </select>    
@@ -113,7 +123,7 @@
                                             </div>
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
-                                                    <label class="form-label"><?php echo lang('city_municipality'); ?></label>
+                                                    <label class="form-label"><?php echo lang('city_municipality'); ?> <span class="text-red">*</span></label>
                                                     <select class="form-control select2" name="city_id" id="city" value='' required disabled>
                                                         <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
                                                     </select>

@@ -19,6 +19,7 @@ class Company extends MX_Controller {
         $this->load->model('companyuser/companyuser_model');
         $this->load->module('patient');
         $this->load->module('sms');
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group(array('admin','CompanyUser','Accountant','Doctor','superadmin'))) {
             redirect('home/permission');
         }
@@ -155,7 +156,7 @@ class Company extends MX_Controller {
                 'upload_path' => "./uploads/",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "20480000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_size' => "2048", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "1768",
                 'max_width' => "2024"
             );
@@ -206,64 +207,145 @@ class Company extends MX_Controller {
             }
             $username = $this->input->post('name');
             if (empty($id)) {     // Adding New Company
-                $this->company_model->insertCompany($data);
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
+                if ($this->upload->do_upload('img_url')) {
+                    $this->company_model->insertCompany($data);
 
-                //sms
-                $set['settings'] = $this->settings_model->getSettings();
-                $autosms = $this->sms_model->getAutoSmsByType('doctor');
-                $message = $autosms->message;
-                $to = $phone;
-                $name1 = explode(' ', $name);
-                if (!isset($name1[1])) {
-                    $name1[1] = null;
+                    //sms
+                    $set['settings'] = $this->settings_model->getSettings();
+                    $autosms = $this->sms_model->getAutoSmsByType('doctor');
+                    $message = $autosms->message;
+                    $to = $phone;
+                    $name1 = explode(' ', $name);
+                    if (!isset($name1[1])) {
+                        $name1[1] = null;
+                    }
+                    $data1 = array(
+                        'firstname' => $name1[0],
+                        'lastname' => $name1[1],
+                        'name' => $name,
+                        'display_name' => $display_name,
+                        'email' => $email,
+                        'address' => $address,
+                        'profile' => $profile,
+                        'type_id' => $type_id,
+                        'classification_id' => $classification_id,
+                        'registration_number' => $registration_number,
+                        'company' => $set['settings']->system_vendor,
+                        'hospital_name' => $set['settings']->title,
+                        'hospital_contact' => $set['settings']->phone
+                    );
+
+                    if ($autosms->status == 'Active') {
+                        $messageprint = $this->parser->parse_string($message, $data1);
+                        $data2[] = array($to => $messageprint);
+                        $this->sms->sendSms($to, $message, $data2);
+                    }
+                    //end
+                    //email
+
+                    $autoemail = $this->email_model->getAutoEmailByType('doctor');
+                    if ($autoemail->status == 'Active') {
+                        $emailSettings = $this->email_model->getEmailSettings();
+                        $message1 = $autoemail->message;
+                        $messageprint1 = $this->parser->parse_string($message1, $data1);
+                        $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                        $this->email->to($email);
+                        $this->email->subject(lang('welcome_to').$set['settings']->title);
+                        $this->email->message($messageprint1);
+                        $this->email->send();
+                    }
+                    $this->session->set_flashdata('success', lang('record_added'));
+
+                    redirect('company');
+                } else {
+                    if ($_FILES['img_url']['size'] > $config['max_size']) {
+                        $this->session->set_flashdata('error', lang('validation_error'));
+                        $data = array();
+                        $data['setval'] = 'setval';
+                        $data['types'] = $this->company_model->getCompanyType();
+                        $data['classifications'] = $this->company_model->getCompanyClassification();
+                        $data['countries'] = $this->location_model->getCountry();
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                    } else {
+                        $this->company_model->insertCompany($data);
+
+                        //sms
+                        $set['settings'] = $this->settings_model->getSettings();
+                        $autosms = $this->sms_model->getAutoSmsByType('doctor');
+                        $message = $autosms->message;
+                        $to = $phone;
+                        $name1 = explode(' ', $name);
+                        if (!isset($name1[1])) {
+                            $name1[1] = null;
+                        }
+                        $data1 = array(
+                            'firstname' => $name1[0],
+                            'lastname' => $name1[1],
+                            'name' => $name,
+                            'display_name' => $display_name,
+                            'email' => $email,
+                            'address' => $address,
+                            'profile' => $profile,
+                            'type_id' => $type_id,
+                            'classification_id' => $classification_id,
+                            'registration_number' => $registration_number,
+                            'company' => $set['settings']->system_vendor,
+                            'hospital_name' => $set['settings']->title,
+                            'hospital_contact' => $set['settings']->phone
+                        );
+
+                        if ($autosms->status == 'Active') {
+                            $messageprint = $this->parser->parse_string($message, $data1);
+                            $data2[] = array($to => $messageprint);
+                            $this->sms->sendSms($to, $message, $data2);
+                        }
+                        //end
+                        //email
+
+                        $autoemail = $this->email_model->getAutoEmailByType('doctor');
+                        if ($autoemail->status == 'Active') {
+                            $emailSettings = $this->email_model->getEmailSettings();
+                            $message1 = $autoemail->message;
+                            $messageprint1 = $this->parser->parse_string($message1, $data1);
+                            $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                            $this->email->to($email);
+                            $this->email->subject(lang('welcome_to').$set['settings']->title);
+                            $this->email->message($messageprint1);
+                            $this->email->send();
+                        }
+                        $this->session->set_flashdata('success', lang('record_added'));
+
+                        redirect('company');
+                    }
                 }
-                $data1 = array(
-                    'firstname' => $name1[0],
-                    'lastname' => $name1[1],
-                    'name' => $name,
-                    'display_name' => $display_name,
-                    'email' => $email,
-                    'address' => $address,
-                    'profile' => $profile,
-                    'type_id' => $type_id,
-                    'classification_id' => $classification_id,
-                    'registration_number' => $registration_number,
-                    'company' => $set['settings']->system_vendor,
-                    'hospital_name' => $set['settings']->title,
-                    'hospital_contact' => $set['settings']->phone
-                );
-
-                if ($autosms->status == 'Active') {
-                    $messageprint = $this->parser->parse_string($message, $data1);
-                    $data2[] = array($to => $messageprint);
-                    $this->sms->sendSms($to, $message, $data2);
-                }
-                //end
-                //email
-
-                $autoemail = $this->email_model->getAutoEmailByType('doctor');
-                if ($autoemail->status == 'Active') {
-                    $emailSettings = $this->email_model->getEmailSettings();
-                    $message1 = $autoemail->message;
-                    $messageprint1 = $this->parser->parse_string($message1, $data1);
-                    $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
-                    $this->email->to($email);
-                    $this->email->subject(lang('welcome_to').$set['settings']->title);
-                    $this->email->message($messageprint1);
-                    $this->email->send();
-                }
-
-                //end
-
-
-                $this->session->set_flashdata('success', lang('record_added'));
-                
             } else { // Updating Company
-                $this->company_model->updateCompany($id, $data);
-                $this->session->set_flashdata('success', lang('record_updated'));
+                if ($this->upload->do_upload('img_url')) {
+                    $this->company_model->updateCompany($id, $data);
+                    $this->session->set_flashdata('success', lang('record_updated'));
+
+                    redirect('company');
+                } else {
+                    if ($_FILES['img_url']['size'] > $config['max_size']) {
+                        $this->session->set_flashdata('error', lang('validation_error'));
+                        $data = array();
+                        $data['setval'] = 'setval';
+                        $data['types'] = $this->company_model->getCompanyType();
+                        $data['classifications'] = $this->company_model->getCompanyClassification();
+                        $data['countries'] = $this->location_model->getCountry();
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                    } else {
+                        $this->company_model->updateCompany($id, $data);
+                        $this->session->set_flashdata('success', lang('record_updated'));
+
+                        redirect('company');
+                    }
+                }
             }
             // Loading View
-            redirect('company');
         }
     }
 
