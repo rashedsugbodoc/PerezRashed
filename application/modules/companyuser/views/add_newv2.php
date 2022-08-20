@@ -240,8 +240,8 @@
                                                 </div>
                                                 <div class="col-sm-12 col-md-6">
                                                     <div class="form-group">
-                                                        <label class="form-label">Scope</label>
-                                                        <select class="form-control select2" name="scope[]" id="<?php echo $id?'editScope':'selectScope' ?>" multiple>
+                                                        <label class="form-label">Scope <span class="text-red">*</span></label>
+                                                        <select class="form-control select2" name="scope[]" id="<?php echo $id?'editScope':'selectScope' ?>" multiple required>
                                                             <!-- <?php foreach($scopes as $scope) { ?>
                                                                 <option value="<?php echo $scope->id ?>" selected><?php echo $scope->statename.' ('.$scope->countryname.')'; ?></option>
                                                             <?php } ?> -->
@@ -252,6 +252,7 @@
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
                                                     <label class="form-label"><?php echo lang('image'); ?></label>
+                                                    <span class="text-muted">( Upload less than 2MB Image or PDF and 2K by 2K Max Dimension)</span>
                                                     <input type="file" name="img_url" id="img" class="dropify" data-default-file="<?php if(!empty($companyuser->img_url)) echo $companyuser->img_url; ?>"/>
                                                 </div>
                                             </div>

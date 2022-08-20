@@ -228,8 +228,8 @@
                                             <div class="col-md-6 col-sm-6">
                                                 <div class="form-group">
                                                     <label class="form-label"><?php echo lang('image'); ?></label>
-                                                    <label class="text-muted"><small>(<?php echo lang('profile_picture_description'); ?>)</small></label>
-                                                        <input type="file" name="img_url" id="image" class="dropify"/>
+                                                    <span class="text-muted">( Upload less than 2MB Image or PDF and 2K by 2K Max Dimension)</span>
+                                                    <input type="file" name="img_url" id="image" class="dropify"/>
                                                 </div>
                                             </div>
                                         </div>

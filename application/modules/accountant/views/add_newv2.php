@@ -109,7 +109,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('email'); ?></label>
+                                                        <label><?php echo lang('email'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" name="email" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('email');
@@ -118,7 +118,7 @@
                                                         } else {
                                                             echo '';
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -151,7 +151,7 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label><?php echo lang('address'); ?></label>
+                                                        <label><?php echo lang('address'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" name="address" class="form-control" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('address');
@@ -160,14 +160,14 @@
                                                         } else {
                                                             echo '';
                                                         }
-                                                        ?>">
+                                                        ?>" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('country'); ?></label>
+                                                        <label class="form-label"><?php echo lang('country'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2" name="country_id" id="country" required>
                                                             <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
                                                             <?php foreach ($countries as $country) { ?>
@@ -184,7 +184,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('state_province'); ?></label>
+                                                        <label class="form-label"><?php echo lang('state_province'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2" name="state_id" id="state" value='' required disabled>
                                                             <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
                                                         </select>    
@@ -192,7 +192,7 @@
                                                 </div>
                                                 <div class="col-md-6 col-sm-6">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('city_municipality'); ?></label>
+                                                        <label class="form-label"><?php echo lang('city_municipality'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2" name="city_id" id="city" value='' required disabled>
                                                             <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
                                                         </select>
@@ -223,7 +223,8 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
-                                                    <label class="form-label"><?php echo lang('image'); ?><span class="text-red">*</span></label>
+                                                    <label class="form-label"><?php echo lang('image'); ?></label>
+                                                    <span class="text-muted">( Upload less than 2MB Image or PDF and 2K by 2K Max Dimension)</span>
                                                     <input type="file" name="img_url" id="img" class="dropify" data-default-file="<?php if(!empty($accountant->img_url)) echo $accountant->img_url; ?>"/>
                                                 </div>
                                             </div>
