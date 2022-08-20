@@ -1318,10 +1318,18 @@
                         $('#editEncounterForm').find('[name="location"]').val("0").change()
                     }
 
-                    if (response.encounter.encounter_status != null) {
-                        $('#editEncounterForm').find('[name="encounter_status"]').val(response.encounter.encounter_status).change()
-                    }
-                    console.log(response.encounter.location);
+                    // if (response.encounter.encounter_status != null) {
+                    //     $('#editEncounterForm').find('[name="encounter_status"]').val(response.encounter.encounter_status).change()
+                    // }
+                    // console.log(response.encounter.location);
+
+                    $.each(response.encounter_status, function(key, value) {
+                        if (value.id == response.encounter.encounter_status) {
+                            $("#editEncounterForm").find('[name=encounter_status]').append($('<option selected>').text(value.display_name).val(value.id)).end();
+                        } else {
+                            $("#editEncounterForm").find('[name=encounter_status]').append($('<option>').text(value.display_name).val(value.id)).end();
+                        }
+                    });
                     
 
                     $('#myModal2').modal('show');

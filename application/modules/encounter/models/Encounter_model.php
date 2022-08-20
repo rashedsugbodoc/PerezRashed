@@ -411,6 +411,11 @@ class Encounter_model extends CI_model {
 
     }
 
+    function getEncounterStatus() {
+        $query = $this->db->get('encounter_status');
+        return $query->result();
+    }
+
     function getEncounterStatusById($id) {
         $this->db->where('id', $id);
         $query = $this->db->get('encounter_status');
