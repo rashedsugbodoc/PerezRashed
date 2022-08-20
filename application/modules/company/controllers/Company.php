@@ -183,7 +183,8 @@ class Company extends MX_Controller {
                     'state_id' => $state,
                     'city_id' => $city,
                     'barangay_id' => $barangay,
-                    'postal' => $postal
+                    'postal' => $postal,
+                    'is_invoice_visible' => 1,
                 );
             } else {
                 //$error = array('error' => $this->upload->display_errors());
@@ -202,7 +203,8 @@ class Company extends MX_Controller {
                     'state_id' => $state,
                     'city_id' => $city,
                     'barangay_id' => $barangay,
-                    'postal' => $postal
+                    'postal' => $postal,
+                    'is_invoice_visible' => 1,
                 );
             }
             $username = $this->input->post('name');
