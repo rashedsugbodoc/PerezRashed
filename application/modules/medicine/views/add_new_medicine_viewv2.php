@@ -175,7 +175,8 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('category'); ?><span class="text-red"> *</span></label>
-                                                        <select class="form-control select2-show-search" name="category" id="category" value='' required>
+                                                        <select class="form-control select2-show-search" name="category" id="category" value="" data-placeholder="Choose one" required>
+                                                            <option label="Select ....."></option>
                                                             <?php foreach ($categories as $category) { ?>
                                                                 <option value="<?php echo $category->category; ?>" <?php
                                                                 if (!empty($medicine->category)) {

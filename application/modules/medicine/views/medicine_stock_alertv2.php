@@ -98,7 +98,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('add_quantity'); ?></label>
-                                                        <input type="text" class="form-control" name="qty" id="exampleInputEmail1" value='' placeholder="">
+                                                        <input type="text" class="form-control" name="qty" id="exampleInputEmail1" value='' placeholder="" required>
                                                     </div>
                                                     <input type="hidden" name="id" value=''>
                                                     <div class="form-group">
@@ -236,7 +236,14 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $('#loadMedicineForm').parsley();
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
