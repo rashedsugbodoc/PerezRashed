@@ -229,7 +229,7 @@
                                                     </div>
                                                 </div>
                                                 <?php if ($patient->sex === "female") { ?>
-                                                    <?php if ($patient_age_year >= 10 && $patient_age_year <= 49) { ?>
+                                                    <?php if ($patient_age_year >= TSEKAP_SEXUALHEALTH_FEMALEAGE_MINIMUM && $patient_age_year <= TSEKAP_SEXUALHEALTH_FEMALEAGE_MAXIMUM) { ?>
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
