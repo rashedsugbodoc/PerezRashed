@@ -453,10 +453,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php if ($patient->sex === "female") { ?>
-                                            <?php if ($patient_age_year >= 10 && $patient_age_year <= 49) { ?>
+                                        <?php /*if ($patient->sex === "female") {*/ ?>
+                                            <?php /*if ($patient_age_year >= 10 && $patient_age_year <= 49) {*/ ?>
                                                 <div class="col-md-6 col-sm-6">
-                                                    <div class="form-group">
+                                                    <div class="form-group" id="unmet_need_div">
                                                         <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
                                                         <div class="row" id="search_unmet_need" <?php
                                                             if (!empty($patient->unmet_need_id)) {
@@ -501,8 +501,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <?php } ?>
-                                        <?php } ?>
+                                            <?php /*}*/ ?>
+                                        <?php /*}*/ ?>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
@@ -911,22 +911,24 @@
     <script type="text/javascript">
         $(document).ready(function (response) {
             var customform = $("#customformForm").find('[name=id]').val();
-            $.ajax({
-                url: 'customform/editTsekapByJason?id='+customform,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var patients = response.patients;
-                    var patient = response.patient;
+            if (customform != "") {
+                $.ajax({
+                    url: 'customform/editTsekapByJason?id='+customform,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var patients = response.patients;
+                        var patient = response.patient;
 
-                    $.each(patients, function(key, value) {
-                        $("#customformForm").find('[name=patient]').append($('<option>').text(value.name).val(value.id)).end();
-                    });
+                        $.each(patients, function(key, value) {
+                            $("#customformForm").find('[name=patient]').append($('<option>').text(value.name).val(value.id)).end();
+                        });
 
-                    $("#customformForm").find('[name=patient]').val(patient).trigger('change');
-                }
-            })
+                        $("#customformForm").find('[name=patient]').val(patient).trigger('change');
+                    }
+                });
+            }
         });
     </script>
 
@@ -1067,10 +1069,13 @@
                     }                    
                     
                     var safe_water_id = patient_info.safe_water_supply_level_id;
-                    var safe_water_text = response.safe_water_supply.display_name;
-                    var safe_water_id_value = response.safe_water_supply.id;
-                    var safe_water_description = response.safe_water_supply.description;
-                    var safe_water_name = response.safe_water_supply.name;
+                    if (patient_info.safe_water_supply_level_id != "") {
+                        var safe_water_text = response.safe_water_supply_display_name;
+                        var safe_water_id_value = response.safe_water_supply_id;
+                        var safe_water_description = response.safe_water_supply_description;
+                        var safe_water_name = response.safe_water_supply_name;
+                    }
+
 
                     if (safe_water_id != null) {
                         $("#search_safe_water_supply").attr('hidden', true);
@@ -1081,27 +1086,42 @@
                         $("#safe_water_description").attr("data-original-title", safe_water_name);
                     } else if (safe_water_id == null) {
                         $("#input_safe_water_supply").attr('hidden', true);
+                        $("#search_safe_water_supply").attr('hidden', false);
                     } else {
-
+                        $("#input_safe_water_supply").attr('hidden', true);
+                        $("#search_safe_water_supply").attr('hidden', false);
                     }
 
                     var unmet_need_id = patient_info.unmet_need_id;
-                    var unmet_need_text = response.unmet_need.display_name;
-                    var unmet_need_id_value = response.unmet_need.id;
-                    var unmet_need_description = response.unmet_need.description;
-                    var unmet_need_name = response.unmet_need.name;
+                    if (unmet_need_id != "") {
+                        var unmet_need_text = response.unmet_need_display_name;
+                        var unmet_need_id_value = response.unmet_need_id;
+                        var unmet_need_description = response.unmet_need_description;
+                        var unmet_need_name = response.unmet_need_name;
+                    }
 
-                    if (unmet_need_id != null) {
-                        $("#search_unmet_need").attr('hidden', true);
-                        $("#input_unmet_need").attr('hidden', false);
-                        $("#unmet_need_text").val(unmet_need_text).end();
-                        $("#unmet_need").val(unmet_need_id_value).end();
-                        $("#unmet_need_description").attr("data-content", unmet_need_description);
-                        $("#unmet_need_description").attr("data-original-title", unmet_need_name);
-                    } else if (unmet_need_id == null) {
-                        $("#input_unmet_need").attr('hidden', true);
+                    if (patient_info.sex == "female") {
+                        if (response.patient_age_year >= <?php echo TSEKAP_SEXUALHEALTH_FEMALEAGE_MINIMUM; ?> && response.patient_age_year <= <?php echo TSEKAP_SEXUALHEALTH_FEMALEAGE_MAXIMUM; ?>) {
+                            $("#unmet_need_div").attr('hidden', false);
+                            if (unmet_need_id != null) {
+                                $("#search_unmet_need").attr('hidden', true);
+                                $("#input_unmet_need").attr('hidden', false);
+                                $("#unmet_need_text").val(unmet_need_text).end();
+                                $("#unmet_need").val(unmet_need_id_value).end();
+                                $("#unmet_need_description").attr("data-content", unmet_need_description);
+                                $("#unmet_need_description").attr("data-original-title", unmet_need_name);
+                            } else if (unmet_need_id == null) {
+                                $("#input_unmet_need").attr('hidden', true);
+                                $("#search_unmet_need").attr('hidden', false);
+                            } else {
+                                $("#input_unmet_need").attr('hidden', true);
+                                $("#search_unmet_need").attr('hidden', false);
+                            }
+                        } else {
+                            $("#unmet_need_div").attr('hidden', true);
+                        }
                     } else {
-
+                        $("#unmet_need_div").attr('hidden', true);
                     }
 
                     // $("#customformForm").find('[name=cancer]').find('option').remove();
@@ -1144,26 +1164,34 @@
                             }
                         });
                     } else {
-                        $(".illness").select2({
-                            placeholder: 'Select Status',
-                            allowClear: true,
-                            ajax: {
-                                url: 'customform/getDiseasesInfo',
-                                type: "post",
-                                dataType: 'json',
-                                delay: 250,
-                                data: function (params) {
-                                    return {
-                                        searchTerm: params.term // search term
-                                    };
-                                },
-                                processResults: function (response) {
-                                    return {
-                                        results: response
-                                    };
-                                },
-                                cache: true
-                            }
+                        // $(".illness").select2({
+                        //     placeholder: 'Select Status',
+                        //     allowClear: true,
+                        //     ajax: {
+                        //         url: 'customform/getDiseasesInfo',
+                        //         type: "post",
+                        //         dataType: 'json',
+                        //         delay: 250,
+                        //         data: function (params) {
+                        //             return {
+                        //                 searchTerm: params.term // search term
+                        //             };
+                        //         },
+                        //         processResults: function (response) {
+                        //             return {
+                        //                 results: response
+                        //             };
+                        //         },
+                        //         cache: true
+                        //     }
+                        // });
+                        $.each(response.diseases, function(key, value) {
+                            $("#customformForm").find('[name=cancer]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            $("#customformForm").find('[name=hypertension]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            $("#customformForm").find('[name=diabetes]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            $("#customformForm").find('[name=mental_health]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            $("#customformForm").find('[name=tuberculosis]').append($('<option>').text(value.display_name).val(value.id)).end();
+                            $("#customformForm").find('[name=cardiovascular]').append($('<option>').text(value.display_name).val(value.id)).end();
                         });
                     }
 

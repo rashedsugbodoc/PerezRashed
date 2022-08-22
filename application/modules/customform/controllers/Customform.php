@@ -13,9 +13,9 @@ class Customform extends MX_Controller {
         $this->load->model('doctor/doctor_model');
         $this->load->model('location/location_model');
         $this->load->helper('string');
-        // if (!$this->ion_auth->in_group('admin')) {
-        //     redirect('home/permission');
-        // }
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
     }
 
     public function index() {
@@ -126,7 +126,7 @@ class Customform extends MX_Controller {
         $deceased = $this->input->post('deceased');
         $user = $this->ion_auth->get_user_id();
         $date = gmdate('Y-m-d H:i:s');
-        $custom_form_number = 'C'.random_string('alnum', 6);
+        $custom_form_number = 'C'.strtoupper(random_string('alnum', 6));
         $patient_vitals = end($this->patient_model->getPatientVitalById($patient));
 
         $cancer = $this->input->post('cancer');
@@ -260,10 +260,20 @@ class Customform extends MX_Controller {
         $data['relation'] = $this->patient_model->getPatientRelationToHead();
         $data['sanitary_toilet'] = $this->patient_model->getSanitaryToilet();
         $data['safe_water_supply'] = $this->patient_model->getSafeWaterSupplyById($data['patient_details']->safe_water_supply_level_id);
+        $data['safe_water_supply_display_name'] = $data['safe_water_supply']->display_name;
+        $data['safe_water_supply_id'] = $data['safe_water_supply']->id;
+        $data['safe_water_supply_description'] = $data['safe_water_supply']->description;
+        $data['safe_water_supply_name'] = $data['safe_water_supply']->name;
         $data['unmet_need'] = $this->patient_model->getUnmetNeedById($data['patient_details']->unmet_need_id);
+        $data['unmet_need_display_name'] = $data['unmet_need']->display_name;
+        $data['unmet_need_id'] = $data['unmet_need']->id;
+        $data['unmet_need_description'] = $data['unmet_need']->description;
+        $data['unmet_need_name'] = $data['unmet_need']->name;
         $data['diseases'] = $this->customform_model->getDiseases();
         $data['covid_status'] = $this->customform_model->getCovidStatus();
         $data['medical_history'] = end($this->patient_model->getMedicationHistoryById($patient_id));
+        $patient_age = getPersonAge(date('d-m-Y H:i:s', strtotime($data['patient_details']->birthdate.' UTC')));
+        $data['patient_age_year'] = $patient_age->y;
 
         echo json_encode($data);
     }
