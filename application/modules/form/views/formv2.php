@@ -68,7 +68,7 @@
                                                         </div>
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('template'); ?> <span class="text-red">*</span></label>
+                                                                <label class="form-label"><?php echo lang('template'); ?></label>
                                                                 <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one" style="width:100%;">
                                                                     <option label="Select ....."></option>
                                                                     <?php foreach ($templates as $template) { ?>
