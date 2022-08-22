@@ -336,7 +336,7 @@
                                                         </div>
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('state_province'); ?></label>
+                                                                <label class="form-label"><?php echo lang('state_province'); ?> <span class="text-red">*</span></label>
                                                                 <select class="form-control select2-show-search" name="state_id" id="state" value='' required disabled>
                                                                     <option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>
                                                                 </select>    
@@ -344,7 +344,7 @@
                                                         </div>
                                                         <div class="col-sm-12 col-md-6">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('city_municipality'); ?></label>
+                                                                <label class="form-label"><?php echo lang('city_municipality'); ?> <span class="text-red">*</span></label>
                                                                 <select class="form-control select2-show-search" name="city_id" id="city" value='' required disabled>
                                                                     <option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>
                                                                 </select> 
