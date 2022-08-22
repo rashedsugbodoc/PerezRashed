@@ -421,7 +421,9 @@
                                                     <div class="card-header">
                                                         <h3 class="card-title"><?php echo lang('diagnosis') ?></h3>
                                                         <div class="card-options">
-                                                            <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
+                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -911,7 +913,9 @@
                                                             <?php echo lang('lab').' '.lang('request')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="labrequest/addLabRequestView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                                                <a href="labrequest/addLabRequestView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
@@ -981,7 +985,9 @@
                                                             <?php echo lang('forms')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <a href="form?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'admin'))) { ?>
+                                                                <a href="form?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                            <?php } ?>
                                                         </div>
                                                     </div>
                                                     <div class="card-body">
