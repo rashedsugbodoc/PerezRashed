@@ -457,7 +457,7 @@ class Encounter extends MX_Controller {
         $id = $this->input->get('id');
 
         $data['encounter'] = $this->encounter_model->getEncounterById($id);
-        $data['encounter_status'] = $this->encounter_model->getEncounterStatus();
+        $data['encounter_status'] = $this->encounter_model->getEncounterStatusByEncounterType($data['encounter']->encounter_type_id);
 
         echo json_encode($data);
     }
