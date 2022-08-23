@@ -644,17 +644,17 @@ class Encounter extends MX_Controller {
 
         $date = date("Y-m-d H:i:s", now('UTC'));
 
-        if ($status === "1" || $status === ENCOUNTER_STATUS_WAITING) {
+        if ($status === strval(ENCOUNTER_STATUS_WAITING) || $status === ENCOUNTER_STATUS_WAITING) {
             $status_time = array('waiting_started' => $date);
-        } elseif ($status === "2" || $status === ENCOUNTER_STATUS_READY_TO_SERVE) {
+        } elseif ($status === strval(ENCOUNTER_STATUS_READY_TO_SERVE) || $status === ENCOUNTER_STATUS_READY_TO_SERVE) {
             $status_time = array('ready_to_serve_at' => $date);
-        } elseif ($status === "3" || $status === ENCOUNTER_STATUS_STARTED) {
+        } elseif ($status === strval(ENCOUNTER_STATUS_STARTED) || $status === ENCOUNTER_STATUS_STARTED) {
             $status_time = array('started_at' => $date);
-        } elseif ($status === "4" || $status === ENCOUNTER_STATUS_ENDED) {
+        } elseif ($status === strval(ENCOUNTER_STATUS_ENDED) || $status === ENCOUNTER_STATUS_ENDED) {
             $status_time = array('ended_at' => $date);
-        } elseif ($status === "5" || $status === ENCOUNTER_STATUS_CANCELLED) {
+        } elseif ($status === strval(ENCOUNTER_STATUS_CANCELLED) || $status === ENCOUNTER_STATUS_CANCELLED) {
             $status_time = array('cancelled_at' => $date);
-        } elseif ($status === "6" || $status === ENCOUNTER_STATUS_RESCHEDULED) {
+        } elseif ($status === strval(ENCOUNTER_STATUS_RESCHEDULED) || $status === ENCOUNTER_STATUS_RESCHEDULED) {
             $status_time = array('rescheduled_at' => $date);
         }
 
