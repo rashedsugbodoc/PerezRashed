@@ -439,7 +439,9 @@
                                                                             <th class="text-center normal-caps"><?php echo lang('p/s'); ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('encounter'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
+                                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                                <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
+                                                                            <?php } ?>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -471,11 +473,11 @@
                                                                                 ?></td>
                                                                                 <td><?php echo $diag->diagnosis_notes; ?></td>
                                                                                 <td><?php echo $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number; ?></td>
-                                                                                <td>
-                                                                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                                <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                                    <td>
                                                                                         <a href="diagnosis/editDiagnosis?id=<?php echo $diag->patient_diagnosis_number ?>&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>
-                                                                                    <?php } ?>
-                                                                                </td>
+                                                                                    </td>
+                                                                                <?php } ?>
                                                                             </tr>
                                                                         <?php } ?>
                                                                     </tbody>
@@ -964,7 +966,9 @@
                                                                                 <td><?php echo $this->patient_model->getPatientById($labrequest->patient_id)->name ?></td>
                                                                                 <td><?php echo $this->doctor_model->getDoctorById($labrequest->doctor_id)->name ?></td>
                                                                                 <td>
-                                                                                    <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id; ?>"><i class="fe fe-edit"></i></a>
+                                                                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                                                                        <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id; ?>"><i class="fe fe-edit"></i></a>
+                                                                                    <?php } ?>
                                                                                     <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->lab_request_number ?>"><i class="fe fe-eye"></i></a>
                                                                                 </td>
                                                                             </tr>
@@ -1000,7 +1004,9 @@
                                                                             <th><?php echo lang('form').' '.lang('number') ?></th>
                                                                             <th><?php echo lang('name') ?></th>
                                                                             <th><?php echo lang('patient') ?></th>
-                                                                            <th><?php echo lang('actions') ?></th>
+                                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                                                                <th><?php echo lang('actions') ?></th>
+                                                                            <?php } ?>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
@@ -1015,9 +1021,11 @@
                                                                                     echo $patient_details;
                                                                                     ?>
                                                                                 </td>
-                                                                                <td>
-                                                                                    <a href="form?id=<?php echo $encounter_id?$form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory':$form->form_number.'&encounter_id='.$form->encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
-                                                                                </td>
+                                                                                <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                                                                    <td>
+                                                                                        <a href="form?id=<?php echo $encounter_id?$form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory':$form->form_number.'&encounter_id='.$form->encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
+                                                                                    </td>
+                                                                                <?php } ?>
                                                                             </tr>
                                                                         <?php } ?>
                                                                     </tbody>
