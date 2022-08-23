@@ -688,7 +688,7 @@ class Encounter extends MX_Controller {
         $this->encounter_model->insertEncounter($data_encounter);
         $inserted_id = $this->db->insert_id();
         if (!empty($root) && !empty($method)) {
-            $redirect = $root . '/' . $method . '?id=' . $patient->patient_id . '&encounter_id=' . $inserted_id;
+            $redirect = $root . '/' . $method . '?encounter_id=' . $inserted_id;
         }
         $data_appointment_encounter = array(
             'encounter_id' => $inserted_id
