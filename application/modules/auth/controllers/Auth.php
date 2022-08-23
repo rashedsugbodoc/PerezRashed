@@ -367,11 +367,38 @@ class Auth extends MX_Controller {
 
 		if ($activation)
 		{
+			/*remove sessions start*/
+			$this->ion_auth_model->trigger_events('logout');
+
+	        $identity = $this->config->item('identity', 'ion_auth');
+	        $this->session->unset_userdata(array($identity => '', 'id' => '', 'user_id' => ''));
+
+	        //delete the remember me cookies if they exist
+	        if (get_cookie($this->config->item('identity_cookie_name', 'ion_auth'))) {
+	            delete_cookie($this->config->item('identity_cookie_name', 'ion_auth'));
+	        }
+	        if (get_cookie($this->config->item('remember_cookie_name', 'ion_auth'))) {
+	            delete_cookie($this->config->item('remember_cookie_name', 'ion_auth'));
+	        }
+
+	        //Destroy the session
+	        $this->session->sess_destroy();
+
+	        //Recreate the session
+	        if (substr(CI_VERSION, 0, 1) == '2') {
+	            $this->session->sess_create();
+	        } else {
+	            $this->session->sess_regenerate(TRUE);
+	        }
+			/*remove sessions end*/
+
 			//redirect them to the auth page
-			$this->session->set_flashdata('message', $this->ion_auth->messages());
+			$this->session->set_flashdata('message', $this->ion_auth->messages('activate_successful'));
+			$data['message'] = $this->session->flashdata('message');
 			// $data['message'] = $this->ion_auth->messages();
 			// $this->load->view('auth/login', $data);
-			redirect("auth", 'refresh');
+			// redirect("auth/login");
+			$this->_render_page('auth/login', $data);
 		}
 		else
 		{
