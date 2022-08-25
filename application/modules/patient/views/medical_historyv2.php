@@ -422,7 +422,7 @@
                                                         <h3 class="card-title"><?php echo lang('diagnosis') ?></h3>
                                                         <div class="card-options">
                                                             <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
+                                                                <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&patient='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
