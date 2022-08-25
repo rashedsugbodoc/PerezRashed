@@ -868,8 +868,9 @@ class Doctor extends MX_Controller {
         $data['prescriptions'] = $this->prescription_model->getPrescriptionByDoctorId($id);
         $data['holidays'] = $this->schedule_model->getHolidaysByDoctor($id);
         $data['schedules'] = $this->schedule_model->getScheduleByDoctor($id, $location);
-
-
+        $today = date('Y-m-d');
+        $data['encounters'] = $this->encounter_model->getEncounter($today);
+        // $data['encounter_status'] = $this->encounter_model->getEncounterStatus();
 
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('detailsv2', $data);

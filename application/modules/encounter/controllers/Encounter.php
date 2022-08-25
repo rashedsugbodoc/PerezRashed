@@ -416,15 +416,16 @@ class Encounter extends MX_Controller {
         echo json_encode($response);
     }
 
-//     function getEncounterStatus() {
-//         // Search term
-//         $searchTerm = $this->input->post('searchTerm');
+    function getEncounterStatus() {
+        // Search term
+        $searchTerm = $this->input->post('searchTerm');
+        $type = $this->input->get('type');
 
-// // Get users
-//         $response = $this->encounter_model->getEncounterStatus($searchTerm);
+// Get users
+        $response = $this->encounter_model->getEncounterStatus($searchTerm);
 
-//         echo json_encode($response);
-//     }
+        echo json_encode($response);
+    }
 
     public function getStatusByEncounterType() {
         $data = array();
@@ -772,7 +773,18 @@ class Encounter extends MX_Controller {
         echo json_encode($data);
     }
 
-    
+    function updateEncounterStatus() {
+        $status = $this->input->get('status');
+        $id = $this->input->get('id');
+        $type = $this->input->get('type');
+        $date = date("Y-m-d H:i:s", now('UTC'));
+
+        $data = array(
+            'encounter_status' => $status,
+        );
+
+        $this->encounter_model->updateEncounter($id, $data);
+    }
 
 }
 

@@ -20,7 +20,8 @@
                                             <div class="tabs-menu1">
                                                 <!-- Tabs -->
                                                 <ul class="nav panel-tabs">
-                                                    <li class=""><a href="#todays" class="active" data-toggle="tab"><?php echo lang('todays'); ?> <?php echo lang('appointments'); ?></a></li>
+                                                    <li><a href="#encounter" class="active" data-toggle="tab"><?php echo lang('todays'); ?> <?php echo lang('encounter'); ?></a></li>
+                                                    <li class=""><a href="#todays" class="" data-toggle="tab"><?php echo lang('todays'); ?> <?php echo lang('appointments'); ?></a></li>
                                                     <li><a href="#patient" data-toggle="tab" class=""><?php echo lang('scheduled').' '.lang('patients'); ?></a></li>
                                                     <li><a href="#prescription" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
                                                     <li><a href="#schedule" data-toggle="tab" class=""><?php echo lang('schedule'); ?></a></li>
@@ -31,7 +32,58 @@
                                         </div>
                                         <div class="card panel-body tabs-menu-body br-tl-0 border-top-0 p-6 w-100 shadow2 crypto-content">
                                             <div class="tab-content">
-                                                <div class="tab-pane active" id="todays">
+                                                <div class="tab-pane active" id="encounter">
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-12">
+                                                            <label class="h3 pull-left"><?php echo lang('todays').' '.lang('encounter'); ?></label>
+                                                            <a class="btn btn-primary pull-right" href="appointment/addNewView?root=doctor&method=details"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-0">
+                                                        <div class="table-responsive">
+                                                            <form method="POST" id="statusForm">
+                                                                <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th><?php echo lang('date'); ?></th>
+                                                                            <th><?php echo lang('encounter'); ?> <?php echo lang('number'); ?></th>
+                                                                            <th><?php echo lang('patient'); ?></th>
+                                                                            <th><?php echo lang('doctor'); ?></th>
+                                                                            <th><?php echo lang('status'); ?></th>
+                                                                            <th><?php echo lang('actions'); ?></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <?php foreach($encounters as $encounter) { ?>
+                                                                            <tr>
+                                                                                <td class="w-10"><?php echo date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')); ?></td>
+                                                                                <td class="w-15"><?php echo $encounter->encounter_number; ?></td>
+                                                                                <td class="w-20"><?php echo $this->patient_model->getPatientById($encounter->patient_id)->name; ?></td>
+                                                                                <td class="w-20"><?php echo $this->doctor_model->getDoctorById($encounter->doctor)->name; ?></td>
+                                                                                <!-- <td><?php /*echo $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;*/ ?></td> -->
+                                                                                <td class="w-20">
+                                                                                    <select class="encounter_status select2-show-search w-100" name="encounter_status" id="encounter_status<?php echo $encounter->id; ?>" onchange="changeEncounterStatus(<?php echo $encounter->id; ?>, <?php echo $encounter->id; ?>);" data-id="<?php echo $encounter->id; ?>" data-type="<?php echo $encounter->encounter_type_id; ?>">
+                                                                                        <?php $encounter_type = $encounter->encounter_type_id; ?>
+                                                                                        <?php $encounter_status = $this->encounter_model->getEncounterStatus($encounter_type); ?>
+                                                                                        <?php foreach ($encounter_status as $status) { ?>
+                                                                                            <?php if($status->id === $encounter->encounter_status) { ?>
+                                                                                                <option value="<?php echo $status->id ?>" selected><?php echo $status->display_name; ?></option>
+                                                                                            <?php } else { ?>
+                                                                                                <option value="<?php echo $status->id ?>"><?php echo $status->display_name; ?></option>
+                                                                                            <?php } ?>
+                                                                                        <?php } ?>
+                                                                                    </select>
+                                                                                </td>
+                                                                                <td class="w-15"></td>
+                                                                            </tr>
+                                                                        <?php } ?>
+                                                                    </tbody>
+                                                                </table>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="todays">
                                                     <div class="row mb-3">
                                                         <div class="col-md-12">
                                                             <label class="h3 pull-left"><?php echo lang('todays_appointments'); ?></label>
@@ -1065,6 +1117,94 @@
 
     <!-- INTERNAL JS INDEX END -->
 
+    <!-- <script type="text/javascript">
+        $(document).ready(function () {
+            var encounter_id = $("input[name='encounter_id[]']").map(function(){return $(this).val();}).get();
+            // var encounter_id = $("#editable-sample6").find('[name="encounter_id[]"]').val();
+            console.log(encounter_id);
+            $(".encounter_status").select2({
+                placeholder: '<?php echo lang('search').' '.lang('referral_facility'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'encounter/getEncounterStatus?type='+encounter_id,
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        });
+    </script> -->
+
+    <script type="text/javascript">
+        function changeEncounterStatus(id, type) {
+            var status = $("#encounter_status"+id).val();
+                var data = $('#statusForm').serialize();
+                var base_url = '<?php echo base_url(); ?>';
+                $.ajax({
+                    url: base_url+'encounter/updateEncounterStatus?id='+id+'&type='+type+'&status='+status,
+                    type: 'POST',
+                    data: data,
+                    success: function(data) {
+
+                    }
+                });
+        }
+    </script>
+
+    <!-- <script type="text/javascript">
+        function changeEncounterStatus(e) {
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            var status = $(this).val();
+            alert($(this).val());
+            e.preventDefault();
+                var data = $('#statusForm').serialize();
+                var base_url = '<?php echo base_url(); ?>';
+                $.ajax({
+                    url: base_url+'encounter/updateEncounterStatus?id='+id+'&type='+type+'&status='+status,
+                    type: 'POST',
+                    data: data,
+                    success: function(data) {
+
+                    }
+                });
+        }
+    </script> -->
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function() {
+            $("#encounter_status").change(function () {
+                var id = $(this).data('id');
+                var type = $(this).data('type');
+                var status = $(this).val();
+                alert($(this).val());
+                // e.preventDefault();
+                    var data = $('#statusForm').serialize();
+                    var base_url = '<?php echo base_url(); ?>';
+                    $.ajax({
+                        url: base_url+'encounter/updateEncounterStatus?id='+id+'&type='+type+'&status='+status,
+                        type: 'POST',
+                        data: data,
+                        success: function(data) {
+
+                        }
+                    });
+            });
+        });
+    </script> -->
+
     <script type="text/javascript">
         $(document).ready(function () {
             $("#editable-sample").on("click", "#setStatusBtn", function () {
@@ -1999,7 +2139,7 @@
         $(document).ready(function () {
             $('#editable-sample4').DataTable({
                 responsive: true,
-                dom: "<'row'<'col-md-4 col-sm-4 text-left'B><'col-md-7 col-sm-7'f>>" +
+                dom: "<'row'<'col-sm-2'l><'col-sm-4 text-center'B><'col-sm-6'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
@@ -2066,7 +2206,7 @@
         $(document).ready(function () {
             $('#editable-sample5').DataTable({
                 responsive: true,
-                dom: "<'row'<'col-md-4 col-sm-4 text-left'B><'col-md-7 col-sm-7'f>>" +
+                dom: "<'row'<'col-sm-2'l><'col-sm-4 text-center'B><'col-sm-6'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
@@ -2111,6 +2251,72 @@
                                     columns: [0],
                                 }
                             },
+                        ]
+                    }
+                ],
+                aLengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                iDisplayLength: -1,
+                "order": [[0, "desc"]],
+                "language": {
+                    "lengthMenu": "_MENU_",
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search..."
+                },
+            });
+
+        });
+
+        $(document).ready(function () {
+            $('#editable-sample6').DataTable({
+                responsive: true,
+                dom: "<'row'<'col-sm-2'l><'col-sm-4 text-center'B><'col-sm-6'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    {
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            }
                         ]
                     }
                 ],

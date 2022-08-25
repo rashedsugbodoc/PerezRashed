@@ -10,8 +10,11 @@ class Encounter_model extends CI_model {
         $this->load->database();
     }
 
-    function getEncounter() {
+    function getEncounter($today = FALSE) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        if (!empty($today)) {
+            $this->db->where("(created_at LIKE '%" . $today . "%')", NULL, FALSE);
+        }
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('encounter');
         return $query->result();
@@ -411,7 +414,30 @@ class Encounter_model extends CI_model {
 
     }
 
-    function getEncounterStatus() {
+    // function getEncounterStatus($searchTerm) {
+    //     if (!empty($searchTerm)) {
+    //         $this->db->select('*');
+    //         // $this->db->where("FIND_IN_SET($id, applicable_encounter_type)");
+    //         $this->db->where("display_name like '%" . $searchTerm . "%' OR id like '%" . $searchTerm . "%'");
+    //         $fetched_records = $this->db->get('encounter_status');
+    //         $encounter_status = $fetched_records->result_array();
+    //     } else {
+    //         $this->db->select('*');
+    //         // $this->db->where("FIND_IN_SET($id, applicable_encounter_type)");
+    //         $this->db->limit(10);
+    //         $fetched_records = $this->db->get('encounter_status');
+    //         $encounter_status = $fetched_records->result_array();
+    //     }
+    //     // Initialize Array with fetched data
+    //     $data = array();
+    //     foreach ($encounter_status as $status) {
+    //         $data[] = array("id" => $status['id'], "text" => $status['display_name']);
+    //     }
+    //     return $data;
+    // }
+
+    function getEncounterStatus($id) {
+        $this->db->where("FIND_IN_SET($id, applicable_encounter_type)");
         $query = $this->db->get('encounter_status');
         return $query->result();
     }
