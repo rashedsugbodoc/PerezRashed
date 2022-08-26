@@ -2282,39 +2282,39 @@
                         buttons: [
                             {
                                 extend: 'copyHtml5',
-                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'excelHtml5',
-                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
-                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
-                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 },
                                 orientation: 'portrait',
                                 pageSize: 'LEGAL'
                             },
                             {
                                 extend: 'print',
-                                title: '<?php echo lang('appointments') . ' ' . lang('today');?>',
+                                title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 }
                             }
                         ]
