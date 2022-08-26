@@ -2506,7 +2506,7 @@ class Finance extends MX_Controller {
                 $flat_discount = 0;
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist'))) {
                 $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?finance_id=' . $payment->invoice_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
