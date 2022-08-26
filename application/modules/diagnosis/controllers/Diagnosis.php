@@ -29,6 +29,7 @@ class Diagnosis extends MX_Controller {
         if (empty($data['patient'])) {
             $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         }
+        $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient']);
         $data['settings'] = $this->settings_model->getSettings();
         $data['root'] = $this->input->get('root');
         $data['method'] = $this->input->get('method');
@@ -252,6 +253,12 @@ class Diagnosis extends MX_Controller {
         $patient = $this->patient_model->getPatientById($patient_id);
 
         $data['encounter'] = $this->encounter_model->getEncounterByPatientIdForDropdown($patient->id);
+
+        echo json_encode($data);
+    }
+
+    public function addDiagnosisByJason() {
+        $data['patient_details'] = array_slice($this->patient_model->getPatient(), 0, 10);
 
         echo json_encode($data);
     }

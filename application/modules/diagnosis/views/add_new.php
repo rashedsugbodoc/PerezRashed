@@ -83,14 +83,17 @@
                                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
                                                                 <select class="select2-show-search form-control pos_select" required id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($encounter->patient_id)) { ?>
-                                                                        <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
-                                                                    <?php } ?>
-                                                                    <?php if (!empty($diagnosis[0]->patient_id)) { ?>
+                                                                        <option value="<?php echo $encounter->patient_id; ?>" selected><?php echo $this->patient_model->getPatientById($encounter->patient_id)->name; ?></option>
+                                                                    <?php } elseif (!empty($diagnosis[0]->patient_id)) { ?>
                                                                         <option value="<?php echo $diagnosis[0]->patient_id; ?>" selected><?php echo $this->patient_model->getPatientById($diagnosis[0]->patient_id)->name; ?></option>
+                                                                    <?php } elseif (!empty($patient)) { ?>
+                                                                        <option value="<?php echo $patient; ?>" selected><?php echo $this->patient_model->getPatientByPatientNumber($patient)->name; ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                                 <?php if (!empty($encounter->patient_id)) { ?>
-                                                                    <input type="hidden" name="patient" value="<?php echo $patient->id ?>">
+                                                                    <input type="hidden" name="patient" value="<?php echo $encounter->patient_id ?>">
+                                                                <?php } elseif(!empty($patient)) { ?>
+                                                                    <input type="hidden" name="patient" value="<?php echo $patient_details->id ?>">
                                                                 <?php } ?>
                                                             </div>
                                                         </div>
@@ -331,6 +334,49 @@
         <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
 
     <!-- INTERNAL JS INDEX END -->
+
+    <!-- <script type="text/javascript">
+        $(document).ready(function() {
+            var patient_id = '<?php echo $patient_details->id ?>';
+            if (patient_id) {
+                $.ajax({
+                    url: 'diagnosis/addDiagnosisByJason',
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log(response.patient_details);
+                        $.each(response.patient_details, function(key, value) {
+                            if (patient_id == value.id) {
+                                $("#pos_select").append($('<option selected>').text(value.name).val(value.id)).end();
+                            } else {
+                                $("#pos_select").append($('<option>').text(value.name).val(value.id)).end();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var patient_id = '<?php echo $patient_details->id ?>';
+            $.ajax({
+                url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var encounter = response.encounter;
+                    var encounter_type = response.encounter_type;
+                    $.each(encounter, function (key, value) {
+                        $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
+                    });
+                }
+            })
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
