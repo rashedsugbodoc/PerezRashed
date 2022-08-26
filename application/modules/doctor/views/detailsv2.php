@@ -36,7 +36,7 @@
                                                     <div class="row mb-3">
                                                         <div class="col-md-12">
                                                             <label class="h3 pull-left"><?php echo lang('todays').' '.lang('encounter'); ?></label>
-                                                            <a class="btn btn-primary pull-right" href="appointment/addNewView?root=doctor&method=details"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
+                                                            <a class="btn btn-primary pull-right" href="encounter/addNewView?root=doctor&method=details&encounter_request=false"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
                                                         </div>
                                                     </div>
                                                     <div class="mb-0">

@@ -44,8 +44,15 @@ class Encounter extends MX_Controller {
         $data['patient_id'] = $this->input->get('patient_id');
         $root = $this->input->get('root');
         $method = $this->input->get('method');
+        $data['encounter_request'] = $this->input->get('encounter_request');
         if (!empty($root) && !empty($method)) {
-            $data['redirect'] = $root . '/' . $method . '?encounter_id=';
+            if ($data['encounter_request'] === "true") {
+                $data['redirect'] = $root . '/' . $method . '?encounter_id=';
+            } elseif ($data['encounter_request'] === "false") {
+                $data['redirect'] = $root . '/' . $method;
+            } else {
+                $data['redirect'] = $root . '/' . $method;
+            }
         }
         $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient_id']);
         $current_user = $this->ion_auth->get_user_id();
@@ -62,6 +69,7 @@ class Encounter extends MX_Controller {
         $id = $this->input->post('encounter_id');
 
         $redirect = $this->input->post('redirect');
+        $encounter_request = $this->input->post('encounter_request');
         $type = $this->input->post('type');
         $location = $this->input->post('location');
         if ($location == 0) {
@@ -179,8 +187,11 @@ class Encounter extends MX_Controller {
                 $this->session->set_flashdata('success', lang('record_added'));
 
                 $inserted_id = $this->db->insert_id();
-                if(!empty($redirect)) {
-                    $redirect = $redirect . $inserted_id;
+
+                if ($encounter_request === "true") {
+                    if(!empty($redirect)) {
+                        $redirect = $redirect . $inserted_id;
+                    }
                 }
 
                 $encounter_number = date('ymd').format_number_with_digits($inserted_id, 4);
