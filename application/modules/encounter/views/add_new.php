@@ -14,12 +14,12 @@
                                 <form method="POST" id="addEncounterForm" action="encounter/addnew" onsubmit="btnLoading('addEncounterForm');">
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
-                                            <input type="text" name="redirect" value="<?php
+                                            <input type="hidden" name="redirect" value="<?php
                                             if (!empty($redirect)) {
                                                 echo $redirect;
                                             }
                                             ?>">
-                                            <input type="text" name="encounter_request" value="<?php
+                                            <input type="hidden" name="encounter_request" value="<?php
                                             if (!empty($encounter_request)) {
                                                 echo $encounter_request;
                                             }
