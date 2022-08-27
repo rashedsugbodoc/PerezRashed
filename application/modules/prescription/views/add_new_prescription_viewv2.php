@@ -69,25 +69,24 @@
                                         <div class="col-md-4 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
-                                                <select class="select2-show-search form-control" name="patient" required id="patientchoose" <?php if (!empty($encounter_id)) { echo 'disabled'; } ?>>
+                                                <select class="select2-show-search form-control" name="patient" required id="patientchoose" <?php if (!empty($encounter_id) || !empty($patient_id)) { echo 'disabled'; } ?>>
                                                     <?php
                                                     if (!empty($setval)) {
                                                         $patientdetails = $this->db->get_where('patient', array('id' => set_value('patient')))->row();
                                                         ?>
                                                         <option value="<?php echo $patientdetails->id; ?>" selected="selected"><?php echo $patientdetails->name; ?> - (<?php echo lang('id'); ?> : <?php echo $patientdetails->id; ?>)</option>
-                                                    <?php } ?>
-                                                    <?php if (!empty($encounter_id)) { ?>
+                                                    <?php } elseif (!empty($encounter_id)) { ?>
                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
-                                                    <?php } ?>
-                                                    <?php if (!empty($prescription_number)) { ?>
+                                                    <?php } elseif (!empty($prescription_number)) { ?>
                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
-                                                    <?php } ?>
-                                                    <?php if (!empty($patient_id)) { ?>
+                                                    <?php } elseif (!empty($patient_id)) { ?>
                                                         <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientByPatientNumber($patient_id)->name; ?></option>
                                                     <?php } ?>
                                                 </select>
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <input type="hidden" name="patient" value="<?php echo $patient->id ?>">
+                                                <?php } elseif (!empty($patient_id)) { ?>
+                                                    <input type="hidden" name="patient" value="<?php echo $patient_details->id ?>">
                                                 <?php } ?>
                                             </div>
                                         </div>

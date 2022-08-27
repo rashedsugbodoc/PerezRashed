@@ -81,7 +81,7 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?></label>
-                                                                <select class="select2-show-search form-control pos_select" required id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } ?>>
+                                                                <select class="select2-show-search form-control pos_select" required id="pos_select" name="patient" placeholder="Search Patient" <?php if(!empty($encounter->patient_id)) { echo "disabled"; } elseif (!empty($patient)) { echo "disabled"; } ?>>
                                                                     <?php if (!empty($encounter->patient_id)) { ?>
                                                                         <option value="<?php echo $encounter->patient_id; ?>" selected><?php echo $this->patient_model->getPatientById($encounter->patient_id)->name; ?></option>
                                                                     <?php } elseif (!empty($diagnosis[0]->patient_id)) { ?>
@@ -518,7 +518,7 @@
                 placeholder: '<?php echo lang('select_doctor'); ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'doctor/getDoctorWithAddNewOption',
+                    url: 'doctor/getDoctorInfo',
                     type: "post",
                     dataType: 'json',
                     delay: 250,

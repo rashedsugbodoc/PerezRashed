@@ -28,8 +28,11 @@ class Diagnosis extends MX_Controller {
         $data['patient'] = $this->input->get('patient');
         if (empty($data['patient'])) {
             $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
+            $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient']->patient_id);
         }
-        $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient']);
+        if (empty($data['patient_details'])) {
+            $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient']);
+        }
         $data['settings'] = $this->settings_model->getSettings();
         $data['root'] = $this->input->get('root');
         $data['method'] = $this->input->get('method');
