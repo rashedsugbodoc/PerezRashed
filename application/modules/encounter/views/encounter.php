@@ -212,6 +212,14 @@
                                     <form role="form" id="editEncounterForm" action="encounter/addNew" class="clearfix" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><span id="date_status"></span> <?php echo lang('date'); ?></label>
+                                                        <input class="form-control flatpickr datetime" readonly name="datetime" placeholder="MM/DD/YYYY" type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter_type'); ?> <span class="text-danger">*</span></label>
@@ -1273,6 +1281,7 @@
             var iid = $(this).attr('data-id');
             
             $('#editEncounterForm').trigger("reset");
+            $('#date_status').html("").end()
             $.ajax({
                 url: 'encounter/editEncounterByJason?id=' + iid,
                 method: 'GET',
@@ -1280,6 +1289,14 @@
                 dataType: 'json',
                 success: function (response) {
                     console.log(response.encounter.encounter_type_id);
+
+                    $('.datetime').flatpickr({
+                        dateFormat: "F j, Y h:i K",
+                        defaultDate: response.datetime,
+                    });
+
+                    $("#date_status").text(response.prev_status).end();
+
                     $('#editEncounterForm').find('[name="encounter_id"]').val(response.encounter.id).end()
                     
                     $('#editEncounterForm').find('[name="reason"]').val(response.encounter.reason).end()

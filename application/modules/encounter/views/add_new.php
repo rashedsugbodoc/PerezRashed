@@ -29,6 +29,14 @@
                                     <div class="row">
                                         <div class="col-md-6 col-sm-12">
                                             <div class="form-group">
+                                                <label class="form-label"><?php echo lang('encounter') . ' ' . lang('date') ?><span class="text-red"> *</span></label>
+                                                <input type="text" class="form-control flatpickr" id="date1" required readonly placeholder="MM/DD/YYYY" name="datetime">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-sm-12">
+                                            <div class="form-group">
                                                 <label class="form-label"><?php echo lang('encounter_type'); ?></label>
                                                 <select class="select2-show-search form-control" name="type" id="encounter_type">
                                                     
@@ -246,11 +254,38 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
         <!-- parlsey js -->
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var date = $('#date').val();
+            console.log(date);
+            if (date === undefined) {
+                var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            } else {
+                var timenow = date;
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            }
+            flatpickr(".flatpickr", {
+                disable: [maxdate],
+                maxDate: maxdate,
+                altInput: true,
+                altFormat: "F j, Y h:i K",
+                dateFormat: "Y-m-d h:i K",
+                disableMobile: "true",
+                enableTime: true,
+                defaultDate: timenow,
+            });
+        });
+    </script>
 
     <script>
         $('#addEncounterForm').parsley();

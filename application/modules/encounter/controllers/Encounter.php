@@ -96,9 +96,27 @@ class Encounter extends MX_Controller {
 
         $user = $this->session->userdata('user_id');
 
-        $date = gmdate('Y-m-d H:i:s');
+        // $date = gmdate('Y-m-d H:i:s');
+        $date_time_measured = $this->input->post('datetime');
 
-        $encounter_status = $this->input->post('encounter_status');
+        $date_time_combined = strtotime($date_time_measured);
+        $date = gmdate('Y-m-d H:i:s', $date_time_combined);
+
+        $status = $this->input->post('encounter_status');
+
+        if ($status === strval(ENCOUNTER_STATUS_WAITING) || $status === ENCOUNTER_STATUS_WAITING) {
+            $status_time = array('waiting_started' => $date);
+        } elseif ($status === strval(ENCOUNTER_STATUS_READY_TO_SERVE) || $status === ENCOUNTER_STATUS_READY_TO_SERVE) {
+            $status_time = array('ready_to_serve_at' => $date);
+        } elseif ($status === strval(ENCOUNTER_STATUS_STARTED) || $status === ENCOUNTER_STATUS_STARTED) {
+            $status_time = array('started_at' => $date);
+        } elseif ($status === strval(ENCOUNTER_STATUS_ENDED) || $status === ENCOUNTER_STATUS_ENDED) {
+            $status_time = array('ended_at' => $date);
+        } elseif ($status === strval(ENCOUNTER_STATUS_CANCELLED) || $status === ENCOUNTER_STATUS_CANCELLED) {
+            $status_time = array('cancelled_at' => $date);
+        } elseif ($status === strval(ENCOUNTER_STATUS_RESCHEDULED) || $status === ENCOUNTER_STATUS_RESCHEDULED) {
+            $status_time = array('rescheduled_at' => $date);
+        }
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -174,16 +192,16 @@ class Encounter extends MX_Controller {
                     'referral_facility_name' => $provider_name,
                     'referral_staff_id' => $ref_doctor_id,
                     'referral_staff_name' => $ref_name,
-                    'started_at' => $date,
-                    'waiting_started' => $date,
                     'created_at' => $date,
                     'created_user_id' => $user,
-                    'encounter_status' => $encounter_status,
+                    'encounter_status' => $status,
                     'location_id' => $location,
                     'reason' => $reason,
                 );
 
-                $this->encounter_model->insertEncounter($data);
+                $data_encounter = array_merge($status_time, $data);
+
+                $this->encounter_model->insertEncounter($data_encounter);
                 $this->session->set_flashdata('success', lang('record_added'));
 
                 $inserted_id = $this->db->insert_id();
@@ -219,13 +237,14 @@ class Encounter extends MX_Controller {
                     'referral_staff_id' => $ref_doctor_id,
                     'referral_staff_name' => $ref_name,
                     'created_user_id' => $user,
-                    'encounter_status' => $encounter_status,
+                    'encounter_status' => $status,
                     'location_id' => $location,
                     'reason' => $reason,
                 );
 
+                $data_encounter = array_merge($status_time, $data);
 
-                $this->encounter_model->updateEncounter($id, $data);
+                $this->encounter_model->updateEncounter($id, $data_encounter);
 
                 if(!empty($redirect)) {
                     redirect($redirect);
@@ -469,6 +488,14 @@ class Encounter extends MX_Controller {
         $id = $this->input->get('id');
 
         $data['encounter'] = $this->encounter_model->getEncounterById($id);
+        if (!empty($data['encounter']->started_at)) {
+            $data['datetime'] = date('F j, Y h:i A' ,strtotime($data['encounter']->started_at.' UTC'));
+            $data['prev_status'] = lang('started');
+        } elseif (!empty($data['encounter']->waiting_started)) {
+            $data['datetime'] = date('F j, Y h:i A' ,strtotime($data['encounter']->waiting_started.' UTC'));
+            $data['prev_status'] = lang('waiting');
+        }        
+        // $data['prev_status'] = $status_display_name;
         $data['encounter_status'] = $this->encounter_model->getEncounterStatusByEncounterType($data['encounter']->encounter_type_id);
 
         echo json_encode($data);
