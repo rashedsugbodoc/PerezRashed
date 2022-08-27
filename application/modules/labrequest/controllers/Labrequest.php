@@ -44,7 +44,7 @@ class Labrequest extends MX_Controller {
             $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
             $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         }
-
+        $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($patient);
         $current_user = $this->ion_auth->get_user_id();
         if ($this->ion_auth->in_group('Doctor')) {
             $doctor_id = $this->db->get_where('doctor', array('ion_user_id' => $current_user))->row()->id;

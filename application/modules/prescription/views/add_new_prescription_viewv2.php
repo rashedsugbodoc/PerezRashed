@@ -83,7 +83,7 @@
                                                         <option value="<?php echo $patient->id; ?>" selected><?php echo $patient->name ?></option>
                                                     <?php } ?>
                                                     <?php if (!empty($patient_id)) { ?>
-                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientById($patient_id)->name; ?></option>
+                                                        <option value="<?php echo $patient_id ?>" selected="selected"><?php echo $this->patient_model->getPatientByPatientNumber($patient_id)->name; ?></option>
                                                     <?php } ?>
                                                 </select>
                                                 <?php if (!empty($encounter_id)) { ?>
@@ -361,6 +361,25 @@
         <!-- parlsey js -->
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var patient_id = '<?php echo $patient_details->id ?>';
+            $.ajax({
+                url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var encounter = response.encounter;
+                    var encounter_type = response.encounter_type;
+                    $.each(encounter, function (key, value) {
+                        $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
+                    });
+                }
+            })
+        });
+    </script>
 
     <script type="text/javascript">
         $('#prescriptionForm').parsley();

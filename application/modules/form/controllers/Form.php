@@ -77,7 +77,7 @@ class Form extends MX_Controller {
             $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
             $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
         }
-
+        $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient_id']);
 
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('formv2', $data);
