@@ -226,6 +226,19 @@ class Encounter extends MX_Controller {
                     redirect('encounter');
                 }
             } else {
+
+                if ($status === strval(ENCOUNTER_STATUS_WAITING) || $status === ENCOUNTER_STATUS_WAITING) {
+                    $encounter_details = $this->encounter_model->getEncounterById($id);
+                    $encounter_dates = array(
+                        'ready_to_serve_at' => null,
+                        'started_at' => null,
+                        'ended_at' => null,
+                        'cancelled_at' => null,
+                        'rescheduled_at' => null,
+                    );
+                    $status_time = array_merge($status_time, $encounter_dates);
+                }
+
                 $data = array(
                     'encounter_type_id' => $type,
                     'patient_id' => $patient_id,
