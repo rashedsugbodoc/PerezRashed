@@ -833,11 +833,15 @@ class Patient extends MX_Controller {
         $data = array();
         $patient_number = $this->input->get('id');
         $id = $this->patient_model->getPatientByPatientNumber($patient_number)->id;
+        if (empty($id)) {
+            redirect('home/permission');
+        }
         $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
         $data['safe_water_supply'] = $this->patient_model->getSafeWaterSupply();
         $data['unmet_need'] = $this->patient_model->getUnmetNeed();
         $patient_age = getPersonAge(date('d-m-Y H:i:s', strtotime($data['patient']->birthdate.' UTC')));
         $data['patient_age_year'] = $patient_age->y;
+        $data['medical_history'] = end($this->patient_model->getMedicationHistoryById($id));
         $this->load->view('home/dashboardv2');
         $this->load->view('population_profile', $data);
     }
@@ -1062,6 +1066,26 @@ class Patient extends MX_Controller {
         if ($deceased === "1") {
             $date_of_death = gmdate('Y-m-d H:i:s', strtotime($this->input->post('date_of_death')));
         }
+        $menarche = $this->input->post('menarche');
+        if ($menarche === "1") {
+            $menarche_specify = $this->input->post('specify_menarche');
+        }
+        $lmp_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('lmp_date')));
+        $newborn = $this->input->post('newborn');
+        $deworming = $this->input->post('deworming');
+        $supplement = $this->input->post('supplement');
+        $bcg = $this->input->post('bcg');
+        $hepb = $this->input->post('hepb');
+        $penta1 = $this->input->post('penta1');
+        $penta2 = $this->input->post('penta2');
+        $penta3 = $this->input->post('penta3');
+        $opv1 = $this->input->post('opv1');
+        $opv2 = $this->input->post('opv2');
+        $opv3 = $this->input->post('opv3');
+        $ipv1 = $this->input->post('ipv1');
+        $ipv2 = $this->input->post('ipv2');
+        $mmr1 = $this->input->post('mmr1');
+        $mmr2 = $this->input->post('mmr2');
         // if ($deceased === "0") {
         //     $deceased = null;
         // }
@@ -1092,7 +1116,32 @@ class Patient extends MX_Controller {
             'is_deceased' => (int)$deceased,
             'deceased_date' => $date_of_death,
         );
+
+        $data_medical_history = array(
+            'is_deworming_done' => $deworming,
+            'is_supplement_vitamin_a_done' => $supplement,
+            'is_immunization_bcg_done' => $bcg,
+            'is_immunization_hep_b_done' => $hepb,
+            'is_immunization_penta1_done' => $penta1,
+            'is_immunization_penta2_done' => $penta2,
+            'is_immunization_penta3_done' => $penta3,
+            'is_immunization_opv1_done' => $opv1,
+            'is_immunization_opv2_done' => $opv2,
+            'is_immunization_opv3_done' => $opv3,
+            'is_immunization_ipv1_done' => $ipv1,
+            'is_immunization_ipv2_done' => $ipv2,
+            'is_immunization_mmr1_done' => $mmr1,
+            'is_immunization_mmr2_done' => $mmr2,
+            'is_newborn_screening_done' => $newborn,
+            'is_menarche' => $menarche,
+            'menarche_age' => $menarche_specify,
+            'latest_pregnancy_last_menstrual_period' => $lmp_date,
+        );
+
+        $medical_history_id = end($this->patient_model->getMedicationHistoryById($id))->id;
+
         $this->session->set_flashdata('success', lang('record_added'));
+        $this->patient_model->updatePatientHealthDeclarationById($medical_history_id, $data_medical_history);
         $this->patient_model->updatePatient($id, $data);
 
         redirect('patient');
@@ -1251,7 +1300,11 @@ class Patient extends MX_Controller {
 
     function getPatientPopulationByJason() {
         $profile = $this->input->get('profile');
+        $id = $this->input->get('id');
+        $data['patient_details'] = $this->patient_model->getPatientById($id);
         $data['patient_profile'] = $this->patient_model->getPatientByFamilyProfileId($profile);
+        $patient_age = getPersonAge(date('d-m-Y H:i:s', strtotime($data['patient_details']->birthdate.' UTC')));
+        $data['patient_age_year'] = $patient_age->y;
 
         echo json_encode($data);
     }
@@ -1381,6 +1434,20 @@ class Patient extends MX_Controller {
             $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
             $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
             $data['settings'] = $this->settings_model->getSettings();
+            // $this->load->library('pagination');
+
+            // $config['base_url'] = 'patient/myDocuments/page/';
+            // $config['total_rows'] = 200;
+            // $config['per_page'] = 20;
+            // $config['full_tag_open'] = '<p>';
+            // $config['full_tag_close'] = '</p>';
+            // $config['num_tag_open'] = '<button class="btn btn-secondary">';
+            // $config['num_tag_close'] = '</button>';
+            // $config['cur_tag_open'] = '<button class="btn btn-secondary">';
+            // $config['cur_tag_close'] = '</button>';
+
+            // $this->pagination->initialize($config);
+
             $this->load->view('home/dashboardv2'); // just the header file
             $this->load->view('my_documentsv2', $data);
             // $this->load->view('home/footer'); // just the footer file

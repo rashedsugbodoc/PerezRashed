@@ -228,7 +228,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <?php if ($patient->sex === "female") { ?>
+                                                <!-- <?php if ($patient->sex === "female") { ?>
                                                     <?php if ($patient_age_year >= TSEKAP_SEXUALHEALTH_FEMALEAGE_MINIMUM && $patient_age_year <= TSEKAP_SEXUALHEALTH_FEMALEAGE_MAXIMUM) { ?>
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
@@ -277,41 +277,386 @@
                                                             </div>
                                                         </div>
                                                     <?php } ?>
-                                                <?php } ?>
+                                                <?php } ?> -->
                                             </div>
-                                            <!-- <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('nutrition').' '.lang('status'); ?></label>
-                                                        <select class="select2-show-search form-control">
-                                                            <option>Option1</option>
-                                                            <option>Option2</option>
-                                                            <option>Option3</option>
-                                                        </select>
+                                            <div id="female_form">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <h3>Female of Reproductive Age</h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('menarche'); ?></label>
+                                                            <div class="row">
+                                                                <div class="col-md-2 col-sm-12">
+                                                                    <label class="custom-control custom-radio">
+                                                                        <?php $menarche = 1; ?>
+                                                                        <input type="radio" class="custom-control-input" name="menarche" value="1" <?php
+                                                                        if ($medical_history->is_menarche == null){
+                                                                            echo "";
+                                                                        } elseif ($medical_history->is_menarche == 1) {
+                                                                            echo "checked";
+                                                                        }
+                                                                        ?>>
+                                                                        <span class="custom-control-label">Yes</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-2 col-sm-12">
+                                                                    <label class="custom-control custom-radio">
+                                                                        <input type="radio" class="custom-control-input" name="menarche" value="0" <?php
+                                                                        if ($medical_history->is_menarche == null){
+                                                                            echo "";
+                                                                        } elseif ($medical_history->is_menarche == 0) {
+                                                                            echo "checked";
+                                                                        }
+                                                                        ?>>
+                                                                        <span class="custom-control-label">No</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-8 col-sm-12" id="menarche-input">
+                                                                    <div class="input-group"><label class="align-self-center mb-0">Age of Menarche &nbsp</label><input type="number" class="form-control" name="specify_menarche" placeholder="Age of Menarche" value="<?php echo $medical_history->menarche_age; ?>"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group" id="unmet_need_div">
+                                                            <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
+                                                            <div class="row" id="search_unmet_need" <?php
+                                                                if (!empty($patient->unmet_need_id)) {
+                                                                    echo "hidden";
+                                                                }
+                                                            ?>>
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal3"><?php echo lang('select'); ?></a>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" id="input_unmet_need" <?php
+                                                                if (empty($patient->unmet_need_id)) {
+                                                                    echo "hidden";
+                                                                }
+                                                            ?>>
+                                                                <div class="col-md-9 col-sm-10">
+                                                                    <div class="input-group">
+                                                                        <input type="text" name="unmet_need_text" id="unmet_need_text" class="form-control" value="<?php
+                                                                            if (!empty($patient->unmet_need_id)) {
+                                                                                echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                            }
+                                                                        ?>">
+                                                                        <input type="hidden" name="unmet_need" id="unmet_need" class="form-control" value="<?php
+                                                                            if (!empty($patient->unmet_need_id)) {
+                                                                                echo $patient->unmet_need_id;
+                                                                            }
+                                                                        ?>">
+                                                                        <button class="btn btn-light" id="unmet_need_description" data-container="body" data-content="<?php
+                                                                            if (!empty($patient->unmet_need_id)) {
+                                                                                echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->description;
+                                                                            }
+                                                                        ?>" data-placement="top" data-popover-color="primary" title="<?php
+                                                                            if (!empty($patient->unmet_need_id)) {
+                                                                                echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                            }
+                                                                        ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3 col-sm-2">
+                                                                    <a class="btn btn-primary" data-toggle="modal" data-target="#myModal3">Change</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div> -->
+                                                    <?php if ($patient->sex === "female") { ?>
+                                                        <?php if ($patient_age_year >= TSEKAP_SEXUALHEALTH_FEMALEAGE_MINIMUM && $patient_age_year <= TSEKAP_SEXUALHEALTH_FEMALEAGE_MAXIMUM) { ?>
+                                                            <div class="col-md-6 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
+                                                                    <div class="row" id="search_unmet_need" <?php
+                                                                        if (!empty($patient->unmet_need_id)) {
+                                                                            echo "hidden";
+                                                                        }
+                                                                    ?>>
+                                                                        <div class="col-md-12 col-sm-12">
+                                                                            <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal3"><?php echo lang('select'); ?></a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row" id="input_unmet_need" <?php
+                                                                        if (empty($patient->unmet_need_id)) {
+                                                                            echo "hidden";
+                                                                        }
+                                                                    ?>>
+                                                                        <div class="col-md-9 col-sm-10">
+                                                                            <div class="input-group">
+                                                                                <input type="text" name="unmet_need_text" id="unmet_need_text" class="form-control" value="<?php
+                                                                                    if (!empty($patient->unmet_need_id)) {
+                                                                                        echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                                    }
+                                                                                ?>">
+                                                                                <input type="hidden" name="unmet_need" id="unmet_need" class="form-control" value="<?php
+                                                                                    if (!empty($patient->unmet_need_id)) {
+                                                                                        echo $patient->unmet_need_id;
+                                                                                    }
+                                                                                ?>">
+                                                                                <button class="btn btn-light" id="unmet_need_description" data-container="body" data-content="<?php
+                                                                                    if (!empty($patient->unmet_need_id)) {
+                                                                                        echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->description;
+                                                                                    }
+                                                                                ?>" data-placement="top" data-popover-color="primary" title="<?php
+                                                                                    if (!empty($patient->unmet_need_id)) {
+                                                                                        echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                                    }
+                                                                                ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3 col-sm-2">
+                                                                            <a class="btn btn-primary" data-toggle="modal" data-target="#myModal3">Change</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <?php } ?>
+                                                    <?php } ?>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Pregnant Date last Menstrual Perion</label>
+                                                            <input type="text" name="lmp_date" class="form-control flatpickr">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label">Underwent Newborn Screening</label>
-                                                        <label class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input" name="newborn-screening" value="Yes" checked>
-                                                            <span class="custom-control-label">Yes</span>
-                                                        </label>
-                                                        <label class="custom-control custom-radio">
-                                                            <input type="radio" class="custom-control-input" name="newborn-screening" value="No">
-                                                            <span class="custom-control-label">No</span>
-                                                        </label>
+                                            <div id="kid_age">
+                                                <div class="row">
+                                                    <div class="col-sm-12 col-md-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><h3>For Kids Under 5 Years Old</h3></label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('result'); ?></label>
-                                                        <input type="text" name="newborn-result" class="form-control">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><h4>Nutrition Status</h4></label>
+                                                            <label class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" name="deworming" value="1"<?php
+                                                                if ($medical_history->is_deworming_done == 1) {
+                                                                    echo 'checked';
+                                                                }
+                                                                ?>>
+                                                                <span class="custom-control-label">Deworming</span>
+                                                            </label>
+                                                            <label class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" name="supplement" value="1"<?php
+                                                                if ($medical_history->is_supplement_vitamin_a_done == 1) {
+                                                                    echo 'checked';
+                                                                }
+                                                                ?>>
+                                                                <span class="custom-control-label">Vitamin A Supplement</span>
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div> -->
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label><h4>Immunization Status</h4></label>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="bcg" value="1" <?php
+                                                                            if ($medical_history->is_immunization_bcg_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">BCG</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="hepb" value="1"<?php
+                                                                            if ($medical_history->is_immunization_hep_b_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">Hep B</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="penta1" value="1"<?php
+                                                                            if ($medical_history->is_immunization_penta1_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">Penta1</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="penta2" value="1"<?php
+                                                                            if ($medical_history->is_immunization_penta2_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">Penta2</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="penta3" value="1"<?php
+                                                                            if ($medical_history->is_immunization_penta3_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">Penta3</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="opv1" value="1"<?php
+                                                                            if ($medical_history->is_immunization_opv1_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">OPV1</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="opv2" value="1"<?php
+                                                                            if ($medical_history->is_immunization_opv2_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">OPV2</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="opv3" value="1"<?php
+                                                                            if ($medical_history->is_immunization_opv3_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">OPV3</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="ipv1" value="1"<?php
+                                                                            if ($medical_history->is_immunization_ipv1_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">IPV1</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="ipv2" value="1"<?php
+                                                                            if ($medical_history->is_immunization_ipv2_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">IPV2</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="mmr1" value="1"<?php
+                                                                            if ($medical_history->is_immunization_mmr1_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">MMR1</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-auto w-10">
+                                                                    <div class="form-group">
+                                                                        <label class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="mmr2" value="1"<?php
+                                                                            if ($medical_history->is_immunization_mmr2_done == 1) {
+                                                                                echo 'checked';
+                                                                            }
+                                                                            ?>>
+                                                                            <span class="custom-control-label">MMR2</span>
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label><h4>Newborn Screening</h4></label>
+                                                            <div class="row">
+                                                                <div class="col-md-2 col-sm-12">
+                                                                    <label class="custom-control custom-radio">
+                                                                        <?php $newborn = 1; ?>
+                                                                        <input type="radio" class="custom-control-input" name="newborn" value="1" <?php
+                                                                        if ($newborn == null){
+                                                                            echo "";
+                                                                        } elseif ($newborn == 1) {
+                                                                            echo "checked";
+                                                                        }
+                                                                        ?>>
+                                                                        <span class="custom-control-label">Yes</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-2 col-sm-12">
+                                                                    <label class="custom-control custom-radio">
+                                                                        <input type="radio" class="custom-control-input" name="newborn" value="0" <?php
+                                                                        if ($newborn == null){
+                                                                            echo "";
+                                                                        } elseif ($newborn == 0) {
+                                                                            echo "checked";
+                                                                        }
+                                                                        ?>>
+                                                                        <span class="custom-control-label">No</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-8 col-sm-12" id="newborn-input">
+                                                                    <div class="input-group"><label class="align-self-center mb-0">Result &nbsp</label><input type="text" class="form-control" name="specify_newborn" placeholder="Result"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
@@ -660,22 +1005,56 @@
 
     <!-- INTERNAL JS INDEX END -->
 
-    <!-- <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function (){
             var family_profile_id = $("#populationForm").find('[name=family_profile]').val();
+            var patient_id = '<?php echo $patient->id ?>';
+            var lmp_date = '<?php echo $medical_history->latest_pregnancy_last_menstrual_period; ?>';
             $.ajax({
-                url: 'patient/getPatientPopulationByJason?profile='+family_profile_id,
+                url: 'patient/getPatientPopulationByJason?profile='+family_profile_id+'&id='+patient_id,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
                 success: function (response) {
                     var patient_profile = response.patient_profile;
+                    var patient_details = response.patient_details;
+                    var menarche = '<?php echo $medical_history->is_menarche; ?>';
+                    var newborn = '<?php echo $medical_history->is_newborn_screening_done; ?>';
 
-                    $("#monthly_family_income").val(patient_profile.monthly_family_income).change();
+                    if (response.patient_age_year < <?php echo TSEKAP_KIDS_UNDER_YEARS_OLD; ?>) {
+                        $("#kid_age").attr('hidden', false);
+                    } else {
+                        $("#kid_age").attr('hidden', true);
+                    }
+
+                    if (menarche == 1) {
+                        $("#menarche-input").attr('hidden', false);
+                    } else if (menarche == 0) {
+                        $("#menarche-input").attr('hidden', true);
+                    } else {
+
+                    }
+
+                    if (newborn == 1) {
+                        $("#newborn-input").attr('hidden', false);
+                    } else if (newborn == 0) {
+                        $("#newborn-input").attr('hidden', true);
+                    } else {
+
+                    }
+
+                    $($("#populationForm").find('[name=lmp_date]')).flatpickr({
+                        altInput: true,
+                        altFormat: "F j, Y",
+                        maxDate: "today",
+                        disableMobile: true,
+                        defaultDate: lmp_date,
+                    });
+                    
                 }
             });
         })
-    </script> -->
+    </script>
 
     <!-- <script type="text/javascript">
         $(document).ready(function () {
@@ -694,6 +1073,30 @@
             })
         });
     </script> -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var date = $('#date').val();
+            console.log(date);
+            if (date === undefined) {
+                var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            } else {
+                var timenow = date;
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            }
+            flatpickr(".flatpickr", {
+                disable: [maxdate],
+                maxDate: maxdate,
+                altInput: true,
+                altFormat: "F j, Y h:i K",
+                dateFormat: "Y-m-d h:i K",
+                disableMobile: "true",
+                enableTime: true,
+                defaultDate: timenow,
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $('#search_family_head_button').click(function() {
@@ -799,6 +1202,20 @@
                     $("#date_of_death").attr("hidden", false);
                 } else {
                     $("#date_of_death").attr("hidden", true);
+                }
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=radio][name=newborn]').change(function() {
+                var is_newborn = this.value;
+                console.log(is_newborn);
+                if (is_newborn == "1") {
+                    $("#newborn-input").attr("hidden", false);
+                } else {
+                    $("#newborn-input").attr("hidden", true);
                 }
             })
         });
