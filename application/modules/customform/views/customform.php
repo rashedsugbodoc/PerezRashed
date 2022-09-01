@@ -23,7 +23,7 @@
                                 <div class="card">
                                     <div class="list-group list-group-transparent mb-0 mail-inbox pb-3">
                                         <?php foreach($customform_types as $cft) { ?>
-                                            <a id="<?php echo $cft->name ?>" class="list-group-item list-group-item-action d-flex align-items-center customform_type" data-id="<?php echo $cft->id; ?>" data-method="<?php echo $cft->method_name; ?>" data-name="<?php echo $cft->name; ?>">
+                                            <a id="<?php echo $cft->name ?>" class="list-group-item list-group-item-action d-flex align-items-center customform_type" data-id="<?php echo $cft->id; ?>" data-method="<?php echo $cft->method_name; ?>" data-name="<?php echo $cft->name; ?>" data-displayname="<?php echo $cft->display_name; ?>">
                                                 <svg class="svg-icon mr-2" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 8l-8 5-8-5v10h16zm0-2H4l8 4.99z" opacity=".3"/><path d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM20 6l-8 4.99L4 6h16zM4 8l8 5 8-5v10H4V8z"/></svg> <?php echo $cft->display_name; ?> <span class="ml-auto badge badge-success"><?php echo $this->customform_model->getCustomByTypeCount($cft->id); ?></span>
                                             </a>
                                         <?php } ?>
@@ -34,7 +34,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('tsekap').' '.lang('form'); ?>
+                                            <?php echo lang('custom').' '.lang('form'); ?>
                                         </div>
                                         <div class="card-options">
                                             <a id="customAddNew" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
@@ -47,7 +47,8 @@
                                                     <thead>
                                                         <tr>
                                                             <th><?php echo lang('date'); ?></th>
-                                                            <th><?php echo lang('form'); ?></th>
+                                                            <th><?php echo lang('reference').' '.lang('number'); ?></th>
+                                                            <th><?php echo lang('version'); ?></th>
                                                             <th><?php echo lang('patient'); ?></th>
                                                             <th><?php echo lang('action'); ?></th>
                                                         </tr>
@@ -648,8 +649,11 @@
                 var id = $(this).data('id');
                 var method = $(this).data('method');
                 var name = $(this).data('name');
+                var display_name = $(this).data('displayname');
 
                 $("#customAddNew").attr("href", "customform/addNew"+method+"?type="+name);
+
+                $(".card-title").text(display_name);
                 
                 var table = $('#editable-sample').DataTable({
                     responsive: true,
@@ -716,7 +720,7 @@
                         [10, 25, 50, 100, -1],
                         [10, 25, 50, 100, "All"]
                     ],
-                    iDisplayLength: 50,
+                    iDisplayLength: -1,
                     "order": [[0, "desc"]],
 
                     "language": {
@@ -733,7 +737,77 @@
     </script>
 
     <script type="text/javascript">
-        $('#editable-sample').DataTable();
+        $('#editable-sample').DataTable({
+            responsive: true,
+            //   dom: 'lfrBtip',
+            "processing": true,
+            // "serverSide": true,
+            "searchable": true,
+            scroller: {
+                loadingIndicator: true
+            },
+            dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            buttons: [
+                {
+                    extend: 'collection',
+                    text: 'Export',
+                    buttons: [
+                        {
+                            extend: 'copyHtml5',
+                            title: '<?php echo lang('patient') . ' ' . lang('list');?>',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3],
+                            }
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            title: '<?php echo lang('patient') . ' ' . lang('list');?>',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3],
+                            }
+                        },
+                        {
+                            extend: 'csvHtml5',
+                            title: '<?php echo lang('patient') . ' ' . lang('list');?>',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3],
+                            }
+                        },
+                        {
+                            extend: 'pdfHtml5',
+                            title: '<?php echo lang('patient') . ' ' . lang('list');?>',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3],
+                            },
+                            orientation: 'portrait',
+                            pageSize: 'LEGAL'
+                        },
+                        {
+                            extend: 'print',
+                            title: '<?php echo lang('patient') . ' ' . lang('list');?>',
+                            exportOptions: {
+                                columns: [0, 1, 2, 3],
+                            }
+                        }
+                    ]
+                }
+            ],
+            aLengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, "All"]
+            ],
+            iDisplayLength: -1,
+            "order": [[0, "desc"]],
+
+            "language": {
+                "lengthMenu": "_MENU_",
+                search: "_INPUT_",
+                "url": "common/assets/DataTables/languages/<?php echo $this->language; ?>.json"
+            },
+            "bDestroy": true
+        });
     </script>
 
     <script>

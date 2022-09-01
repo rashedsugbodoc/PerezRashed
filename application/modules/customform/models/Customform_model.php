@@ -79,8 +79,8 @@ class Customform_model extends CI_model {
         return $query->row();
     }
 
-    function getCustomFormByCustomFormNumber($id) {
-        $this->db->where('custom_form_number', $id);
+    function getCustomFormByReferenceNumber($id) {
+        $this->db->where('reference_number', $id);
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('custom_form');
         return $query->row();
@@ -98,6 +98,14 @@ class Customform_model extends CI_model {
         return $query->row();
     }
 
+    function countCustomFormByPatient($id, $type) {
+        $this->db->where('patient', $id);
+        $this->db->where('type_id', $type);
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('custom_form');
+        return $query->num_rows();
+    }
+
     function getCustomFormBySearchByDoctorIdByType($search, $id, $type) {
         $provider = $this->session->userdata('hospital_id');
         $this->db->order_by('id', 'desc');
@@ -108,6 +116,34 @@ class Customform_model extends CI_model {
                 ->get();
         ;
         return $query->result();
+    }
+
+    function getPatientCustomFormBySearchByDoctorIdByType($search, $id, $type) {
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $this->db->order_by('id', 'desc');
+            $data[] = $this->db->select('*')
+                    ->from('custom_form')
+                    ->where('type_id', $type)
+                    ->where('patient', $patient->id)
+                    ->where("(id LIKE '%" . $search . "%' OR patient LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get()->row();
+        }
+
+        return array_filter($data);
+
+        // $provider = $this->session->userdata('hospital_id');
+        // $this->db->order_by('id', 'desc');
+        // $query = $this->db->select('*')
+        //         ->from('custom_form')
+        //         ->where('type_id', $type)
+        //         ->where("(id LIKE '%" . $search . "%' OR patient LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%')", NULL, FALSE)
+        //         ->get();
+        // ;
+        // return $query->result();
     }
 
     function getCustomFormBySearchByType($search, $type) {
@@ -123,6 +159,37 @@ class Customform_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientCustomFormBySearchByType($search, $type) {
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $this->db->order_by('id', 'desc');
+            $this->db->limit($limit, $start);
+            $data[] = $this->db->select('*')
+                    ->from('custom_form')
+                    ->where('type_id', $type)
+                    ->where('patient', $patient->id)
+                    ->where("FIND_IN_SET($provider,visited_provider_id) > 0")
+                    ->where("(id LIKE '%" . $search . "%' OR patient LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get()->row();
+        }
+
+        return array_filter($data);
+
+        // $provider = $this->session->userdata('hospital_id');
+        // $this->db->order_by('id', 'desc');
+        // $query = $this->db->select('*')
+        //         ->from('custom_form')
+        //         ->where('type_id', $type)
+        //         ->where("FIND_IN_SET($provider,visited_provider_id) > 0")
+        //         ->where("(id LIKE '%" . $search . "%' OR patient LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%')", NULL, FALSE)
+        //         ->get();
+        // ;
+        // return $query->result();
+    }
+
     function getCustomFormByDoctorIdByType($id, $type) {
         $provider = $this->session->userdata('hospital_id');
         $this->db->where('doctor', $id);
@@ -132,11 +199,49 @@ class Customform_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientCustomFormByDoctorIdByType($id, $type) {
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $this->db->where('doctor', $id);
+            $this->db->where('type_id', $type);
+            $this->db->where('patient', $patient->id);
+            $this->db->order_by('id', 'desc');
+            $data[] = $this->db->get('custom_form')->row();
+        }
+
+        return array_filter($data);
+
+        // $provider = $this->session->userdata('hospital_id');
+        // $this->db->where('doctor', $id);
+        // $this->db->where('type_id', $type);
+        // $this->db->order_by('id','desc');
+        // $query = $this->db->get('custom_form');
+        // return $query->result();
+    }
+
     function getCustomFormByType($type) {
         $this->db->where('type_id', $type);
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('custom_form');
         return $query->result();
+    }
+
+    function getPatientCustomFormByType($type) {
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $this->db->where('type_id', $type);
+            $this->db->where('patient', $patient->id);
+            $this->db->order_by('id', 'desc');
+            $data[] = $this->db->get('custom_form')->row();
+        }
+
+        return array_filter($data);
     }
 
     function getCustomFormByLimitBySearchByDoctorIdByType($limit, $start, $search, $id, $type) {
@@ -152,6 +257,37 @@ class Customform_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientCustomFormByLimitBySearchByDoctorIdByType($limit, $start, $search, $id, $type) {
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $this->db->order_by('id', 'desc');
+            $this->db->limit($limit, $start);
+            $data[] = $this->db->select('*')
+                    ->from('custom_form')
+                    ->where('type_id', $type)
+                    ->where('doctor', $id)
+                    ->where('patient', $patient->id)
+                    ->where("(id LIKE '%" . $search . "%' OR patient LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get()->row();
+        }
+
+        return array_filter($data);
+
+        // $this->db->order_by('id', 'desc');
+        // $this->db->limit($limit, $start);
+        // $query = $this->db->select('*')
+        //         ->from('custom_form')
+        //         ->where('doctor', $id)
+        //         ->where('type_id', $type)
+        //         ->where("(id LIKE '%" . $search . "%' OR patient LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%')", NULL, FALSE)
+        //         ->get();
+        // ;
+        // return $query->result();
+    }
+
     function getCustomFormByLimitBySearchByType($limit, $start, $search, $type) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
@@ -164,12 +300,64 @@ class Customform_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientCustomFormByLimitBySearchByType($limit, $start, $search, $type) {
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $this->db->order_by('id', 'desc');
+            $this->db->limit($limit, $start);
+            $data[] = $this->db->select('*')
+                    ->from('custom_form')
+                    ->where('type_id', $type)
+                    ->where('patient', $patient->id)
+                    ->where("(id LIKE '%" . $search . "%' OR patient LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get()->row();
+        }
+
+        return array_filter($data);
+
+        // $this->db->order_by('id', 'desc');
+        // $this->db->limit($limit, $start);
+        // $query = $this->db->select('*')
+        //         ->from('custom_form')
+        //         ->where('type_id', $type)
+        //         ->where("(id LIKE '%" . $search . "%' OR patient LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%')", NULL, FALSE)
+        //         ->get();
+        // ;
+        // return $query->result();
+    }
+
     function getCustomFormByLimitByDoctorIdByType($limit, $start, $id, $type) {
         $this->db->where('doctor', $id);
         $this->db->where('type_id', $type);
         $this->db->order_by('id','desc');
         $query = $this->db->get('custom_form');
         return $query->result();
+    }
+
+    function getPatientCustomFormByLimitByDoctorIdByType($limit, $start, $id, $type) {
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $this->db->where('doctor', $id);
+            $this->db->where('type_id', $type);
+            $this->db->where('patient', $patient->id);
+            $this->db->order_by('id', 'desc');
+            $this->db->limit($limit, $start);
+            $data[] = $this->db->get('custom_form')->row();
+        }
+
+        return array_filter($data);
+
+        // $this->db->where('doctor', $id);
+        // $this->db->where('type_id', $type);
+        // $this->db->order_by('id','desc');
+        // $query = $this->db->get('custom_form');
+        // return $query->result();
     }
 
     function getCustomFormByLimitByType($limit, $start, $type) {
@@ -180,22 +368,67 @@ class Customform_model extends CI_model {
         return $query->result();
     }
 
+    function getPatientCustomFormByLimitByType($limit, $start, $type) {
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $this->db->where('type_id', $type);
+            $this->db->where('patient', $patient->id);
+            $this->db->order_by('id', 'desc');
+            $this->db->limit($limit, $start);
+            $data[] = $this->db->get('custom_form')->row();
+        }
+
+        return array_filter($data);
+    }
+
     function getCustomByTypeCount($type) {
         // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where('type_id', $type);
-        $this->db->order_by('id', 'desc');
-        $query = $this->db->get('custom_form');
-        return $query->num_rows();
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $this->db->where('type_id', $type);
+            $this->db->where('patient', $patient->id);
+            $this->db->order_by('id', 'desc');
+            $this->db->limit($limit, $start);
+            $data[] = $this->db->get('custom_form')->row();
+        }
+
+        $filter_data = array_filter($data);
+
+        $count_data = count($filter_data);
+
+        return $count_data;
+
+        // $this->db->where('type_id', $type);
+        // $this->db->order_by('id', 'desc');
+        // $query = $this->db->get('custom_form');
+        // return $query->num_rows();
     }
 
     function getCustomFormBySearchByTypeCount($search, $type) {
-        $query = $this->db->select('id')
+        $this->db->select('id');
+        $patients = $this->db->get('patient')->result();
+
+        $data = array();
+        foreach($patients as $patient) {
+            $data[] = $this->db->select('id')
                 ->from('custom_form')
                 ->where('type_id', $type)
+                ->where('patient', $patient->id)
                 ->where("(id LIKE '%" . $search . "%' OR patient LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
-        ;
-        return $query->num_rows();
+                ->get()->row();
+        }
+
+        $filter_data = array_filter($data);
+
+        $count_data = count($filter_data);
+
+        return $count_data;
     }
 
 }

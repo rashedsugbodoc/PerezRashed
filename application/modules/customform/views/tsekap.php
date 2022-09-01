@@ -38,8 +38,6 @@
                                                 <input type="text" name="family_profile_id" class="form-control" value="<?php
                                                     if (!empty($patient->family_profile_id)) {
                                                         echo $patient->family_profile_id;
-                                                    } else {
-                                                        echo $fpi;
                                                     }
                                                 ?>" readonly>
                                             </div>
@@ -453,56 +451,252 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php /*if ($patient->sex === "female") {*/ ?>
-                                            <?php /*if ($patient_age_year >= 10 && $patient_age_year <= 49) {*/ ?>
-                                                <div class="col-md-6 col-sm-6">
-                                                    <div class="form-group" id="unmet_need_div">
-                                                        <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
-                                                        <div class="row" id="search_unmet_need" <?php
-                                                            if (!empty($patient->unmet_need_id)) {
-                                                                echo "hidden";
-                                                            }
-                                                        ?>>
-                                                            <div class="col-md-12 col-sm-12">
-                                                                <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal3"><?php echo lang('select'); ?></a>
+                                    </div>
+                                    <div id="female_form">
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <h3>Female of Reproductive Age</h3>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="form-label"><?php echo lang('menarche'); ?></label>
+                                                    <div class="row">
+                                                        <div class="col-md-2 col-sm-12">
+                                                            <label class="custom-control custom-radio">
+                                                                <input type="radio" class="custom-control-input" name="menarche" value="1">
+                                                                <span class="custom-control-label">Yes</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-2 col-sm-12">
+                                                            <label class="custom-control custom-radio">
+                                                                <input type="radio" class="custom-control-input" name="menarche" value="0">
+                                                                <span class="custom-control-label">No</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-8 col-sm-12" id="menarche-input" hidden>
+                                                            <div class="input-group"><label class="align-self-center mb-0">Age of Menarche &nbsp</label><input type="text" class="form-control" name="specify_menarche" placeholder="Age of Menarche"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group" id="unmet_need_div">
+                                                    <label class="form-label"><?php echo lang('unmet').' '.lang('need'); ?></label>
+                                                    <div class="row" id="search_unmet_need" <?php
+                                                        if (!empty($patient->unmet_need_id)) {
+                                                            echo "hidden";
+                                                        }
+                                                    ?>>
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <a class="btn btn-primary w-100" data-toggle="modal" data-target="#myModal3"><?php echo lang('select'); ?></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" id="input_unmet_need" <?php
+                                                        if (empty($patient->unmet_need_id)) {
+                                                            echo "hidden";
+                                                        }
+                                                    ?>>
+                                                        <div class="col-md-9 col-sm-10">
+                                                            <div class="input-group">
+                                                                <input type="text" name="unmet_need_text" id="unmet_need_text" class="form-control" value="<?php
+                                                                    if (!empty($patient->unmet_need_id)) {
+                                                                        echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                    }
+                                                                ?>">
+                                                                <input type="hidden" name="unmet_need" id="unmet_need" class="form-control" value="<?php
+                                                                    if (!empty($patient->unmet_need_id)) {
+                                                                        echo $patient->unmet_need_id;
+                                                                    }
+                                                                ?>">
+                                                                <button class="btn btn-light" id="unmet_need_description" data-container="body" data-content="<?php
+                                                                    if (!empty($patient->unmet_need_id)) {
+                                                                        echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->description;
+                                                                    }
+                                                                ?>" data-placement="top" data-popover-color="primary" title="<?php
+                                                                    if (!empty($patient->unmet_need_id)) {
+                                                                        echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
+                                                                    }
+                                                                ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
                                                             </div>
                                                         </div>
-                                                        <div class="row" id="input_unmet_need" <?php
-                                                            if (empty($patient->unmet_need_id)) {
-                                                                echo "hidden";
-                                                            }
-                                                        ?>>
-                                                            <div class="col-md-9 col-sm-10">
-                                                                <div class="input-group">
-                                                                    <input type="text" name="unmet_need_text" id="unmet_need_text" class="form-control" value="<?php
-                                                                        if (!empty($patient->unmet_need_id)) {
-                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
-                                                                        }
-                                                                    ?>">
-                                                                    <input type="hidden" name="unmet_need" id="unmet_need" class="form-control" value="<?php
-                                                                        if (!empty($patient->unmet_need_id)) {
-                                                                            echo $patient->unmet_need_id;
-                                                                        }
-                                                                    ?>">
-                                                                    <button class="btn btn-light" id="unmet_need_description" data-container="body" data-content="<?php
-                                                                        if (!empty($patient->unmet_need_id)) {
-                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->description;
-                                                                        }
-                                                                    ?>" data-placement="top" data-popover-color="primary" title="<?php
-                                                                        if (!empty($patient->unmet_need_id)) {
-                                                                            echo $this->patient_model->getUnmetNeedById($patient->unmet_need_id)->display_name;
-                                                                        }
-                                                                    ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
-                                                                </div>
+                                                        <div class="col-md-3 col-sm-2">
+                                                            <a class="btn btn-primary" data-toggle="modal" data-target="#myModal3">Change</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-sm-6">
+                                                <div class="form-group">
+                                                    <label class="form-label">Pregnant Date last Menstrual Perion</label>
+                                                    <input type="text" name="lmp_date" class="form-control flatpickr">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="kid_age">
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12">
+                                                <div class="form-group">
+                                                    <label class="form-label"><h3>For Kids Under 5 Years Old</h3></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label class="form-label"><h4>Nutrition Status</h4></label>
+                                                    <label class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" name="deworming" value="1">
+                                                        <span class="custom-control-label">Deworming</span>
+                                                    </label>
+                                                    <label class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" name="supplement" value="1">
+                                                        <span class="custom-control-label">Vitamin A Supplement</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label><h4>Immunization Status</h4></label>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="bcg" value="1">
+                                                                    <span class="custom-control-label">BCG</span>
+                                                                </label>
                                                             </div>
-                                                            <div class="col-md-3 col-sm-2">
-                                                                <a class="btn btn-primary" data-toggle="modal" data-target="#myModal3">Change</a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="hepb" value="1">
+                                                                    <span class="custom-control-label">Hep B</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="penta1" value="1">
+                                                                    <span class="custom-control-label">Penta1</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="penta2" value="1">
+                                                                    <span class="custom-control-label">Penta2</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="penta3" value="1">
+                                                                    <span class="custom-control-label">Penta3</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="opv1" value="1">
+                                                                    <span class="custom-control-label">OPV1</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="opv2" value="1">
+                                                                    <span class="custom-control-label">OPV2</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="opv3" value="1">
+                                                                    <span class="custom-control-label">OPV3</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="ipv1" value="1">
+                                                                    <span class="custom-control-label">IPV1</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="ipv2" value="1">
+                                                                    <span class="custom-control-label">IPV2</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="mmr1" value="1">
+                                                                    <span class="custom-control-label">MMR1</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-auto w-10">
+                                                            <div class="form-group">
+                                                                <label class="custom-control custom-checkbox">
+                                                                    <input type="checkbox" class="custom-control-input" name="mmr2" value="1">
+                                                                    <span class="custom-control-label">MMR2</span>
+                                                                </label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            <?php /*}*/ ?>
-                                        <?php /*}*/ ?>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12 col-sm-12">
+                                                <div class="form-group">
+                                                    <label><h4>Newborn Screening</h4></label>
+                                                    <div class="row">
+                                                        <div class="col-md-2 col-sm-12">
+                                                            <label class="custom-control custom-radio">
+                                                                <input type="radio" class="custom-control-input" name="newborn" value="1">
+                                                                <span class="custom-control-label">Yes</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-2 col-sm-12">
+                                                            <label class="custom-control custom-radio">
+                                                                <input type="radio" class="custom-control-input" name="newborn" value="0">
+                                                                <span class="custom-control-label">No</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="col-md-8 col-sm-12" id="newborn-input" hidden>
+                                                            <div class="input-group"><label class="align-self-center mb-0">Result &nbsp</label><input type="text" class="form-control" name="specify_newborn" placeholder="Result"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 col-sm-12">
@@ -582,7 +776,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12 col-sm-12">
+                                        <div class="col-md-6 col-sm-12">
                                             <div class="form-group">
                                                 <label class="form-label"><?php echo lang('deceased'); ?></label>
                                                 <div class="row">
@@ -904,6 +1098,30 @@
 
     <!-- INTERNAL JS INDEX END -->
 
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var date = $('#date').val();
+            console.log(date);
+            if (date === undefined) {
+                var timenow = "<?php echo date('Y-m-d'); ?>";
+                var maxdate = "<?php echo date('Y-m-d', strtotime('today midnight') + 86400); ?>";
+            } else {
+                var timenow = date;
+                var maxdate = "<?php echo date('Y-m-d', strtotime('today midnight') + 86400); ?>";
+            }
+            flatpickr(".flatpickr", {
+                disable: [maxdate],
+                maxDate: maxdate,
+                altInput: true,
+                altFormat: "F j, Y",
+                dateFormat: "Y-m-d",
+                disableMobile: "true",
+                enableTime: true,
+                defaultDate: timenow,
+            });
+        });
+    </script>
+
     <script>
         $('#customformForm').parsley();
     </script>
@@ -952,7 +1170,20 @@
                 success: function (response) {
                     var patient_info = response.patient_details;
                     var patient_vital_info = response.patient_vitals;
-                    var patient_medication_history = response.medical_history;
+                    var patient_medical_history = response.medical_history;
+
+                    // $('.flatpickr').flatpickr({
+                    //     dateFormat: "F j, Y",
+                    //     defaultDate: patient_medical_history.latest_pregnancy_last_menstrual_period,
+                    // });
+
+                    $($("#customformForm").find('[name=lmp_date]')).flatpickr({
+                        altInput: true,
+                        altFormat: "F j, Y",
+                        maxDate: "today",
+                        disableMobile: true,
+                        defaultDate: patient_medical_history.latest_pregnancy_last_menstrual_period,
+                    });
 
                     $("#customformForm").find('[name=family_profile_id]').val(patient_info.family_profile_id);
                     $("#customformForm").find('[name=philhealth]').val(patient_info.national_healthcare_id);
@@ -964,7 +1195,7 @@
                     $("#customformForm").find('[name=email]').val(patient_info.email);
                     $("#customformForm").find('[name=mobile]').val(patient_info.phone);
                     $($("#customformForm").find('[name=birthdate]')).flatpickr({
-                        dateFormat: "F j, Y h:i K",
+                        dateFormat: "F j, Y",
                         defaultDate: response.patient_bdate,
                     });
                     $("#customformForm").find('[name=address]').val(patient_info.address);
@@ -1101,6 +1332,7 @@
                     }
 
                     if (patient_info.sex == "female") {
+                        $("#female_form").attr('hidden', false);
                         if (response.patient_age_year >= <?php echo TSEKAP_SEXUALHEALTH_FEMALEAGE_MINIMUM; ?> && response.patient_age_year <= <?php echo TSEKAP_SEXUALHEALTH_FEMALEAGE_MAXIMUM; ?>) {
                             $("#unmet_need_div").attr('hidden', false);
                             if (unmet_need_id != null) {
@@ -1121,7 +1353,14 @@
                             $("#unmet_need_div").attr('hidden', true);
                         }
                     } else {
+                        $("#female_form").attr('hidden', true);
                         $("#unmet_need_div").attr('hidden', true);
+                    }
+
+                    if (response.patient_age_year < <?php echo TSEKAP_KIDS_UNDER_YEARS_OLD; ?>) {
+                        $("#kid_age").attr('hidden', false);
+                    } else {
+                        $("#kid_age").attr('hidden', true);
                     }
 
                     // $("#customformForm").find('[name=cancer]').find('option').remove();
@@ -1132,32 +1371,32 @@
 
                     if (response.medical_history != false) {
                         $.each(response.diseases, function(key, value) {
-                            if (value.id == patient_medication_history.tsekap_medication_availment_cancer_status) {
+                            if (value.id == patient_medical_history.tsekap_medication_availment_cancer_status) {
                                 $("#customformForm").find('[name=cancer]').append($('<option selected>').text(value.display_name).val(value.id)).end();
                             } else {
                                 $("#customformForm").find('[name=cancer]').append($('<option>').text(value.display_name).val(value.id)).end();
                             }
-                            if (value.id == patient_medication_history.tsekap_medication_availment_hypertension_status) {
+                            if (value.id == patient_medical_history.tsekap_medication_availment_hypertension_status) {
                                 $("#customformForm").find('[name=hypertension]').append($('<option selected>').text(value.display_name).val(value.id)).end();
                             } else {
                                 $("#customformForm").find('[name=hypertension]').append($('<option>').text(value.display_name).val(value.id)).end();
                             }
-                            if (value.id == patient_medication_history.tsekap_medication_availment_diabetes_status) {
+                            if (value.id == patient_medical_history.tsekap_medication_availment_diabetes_status) {
                                 $("#customformForm").find('[name=diabetes]').append($('<option selected>').text(value.display_name).val(value.id)).end();
                             } else {
                                 $("#customformForm").find('[name=diabetes]').append($('<option>').text(value.display_name).val(value.id)).end();
                             }
-                            if (value.id == patient_medication_history.tsekap_medication_availment_mentalhealth_status) {
+                            if (value.id == patient_medical_history.tsekap_medication_availment_mentalhealth_status) {
                                 $("#customformForm").find('[name=mental_health]').append($('<option selected>').text(value.display_name).val(value.id)).end();
                             } else {
                                 $("#customformForm").find('[name=mental_health]').append($('<option>').text(value.display_name).val(value.id)).end();
                             }
-                            if (value.id == patient_medication_history.tsekap_medication_availment_tuberculosis_status) {
+                            if (value.id == patient_medical_history.tsekap_medication_availment_tuberculosis_status) {
                                 $("#customformForm").find('[name=tuberculosis]').append($('<option selected>').text(value.display_name).val(value.id)).end();
                             } else {
                                 $("#customformForm").find('[name=tuberculosis]').append($('<option>').text(value.display_name).val(value.id)).end();
                             }
-                            if (value.id == patient_medication_history.tsekap_medication_availment_cardiovasculardisease_status) {
+                            if (value.id == patient_medical_history.tsekap_medication_availment_cardiovasculardisease_status) {
                                 $("#customformForm").find('[name=cardiovascular]').append($('<option selected>').text(value.display_name).val(value.id)).end();
                             } else {
                                 $("#customformForm").find('[name=cardiovascular]').append($('<option>').text(value.display_name).val(value.id)).end();
@@ -1198,7 +1437,7 @@
 
                     if (response.medical_history != false) {
                         $.each(response.covid_status, function(key, value) {
-                            if (value.id == patient_medication_history.covid_status_id) {
+                            if (value.id == patient_medical_history.covid_status_id) {
                                 $("#customformForm").find('[name=covid]').append($('<option selected>').text(value.display_name).val(value.id)).end();
                             } else {
                                 $("#customformForm").find('[name=covid]').append($('<option>').text(value.display_name).val(value.id)).end();
@@ -1229,10 +1468,114 @@
                         });
                     }
 
-                    // alert(patient_medication_history.tsekap_medication_availment_mentalhealth_status);
+                    var menarche = patient_medical_history.is_menarche;
+
+                    if (menarche == 1) {
+                        $("#menarche-input").attr('hidden', false);
+                        $("#customformForm").find('[name=specify_menarche]').val(patient_medical_history.menarche_age);
+                    } else if (menarche == 0) {
+                        $("#menarche-input").attr('hidden', true);
+                    } else {
+
+                    }
+
+                    if (menarche == 1) {
+                        $("input:radio[name=menarche]:first").attr('checked', true);
+                    } else if (menarche == 0) {
+                        $("input:radio[name=menarche]:last").attr('checked', true);
+                    } else {
+
+                    }
+
+                    var newborn = patient_medical_history.is_newborn_screening_done;
+
+                    if (newborn == 1) {
+                        $("#newborn-input").attr('hidden', false);
+                        $("input:radio[name=newborn]:first").attr('checked', true);
+                        // $("#customformForm").find('[name=specify_newborn]').val(patient_medical_history.menarche_age);
+                    } else if (newborn == 0) {
+                        $("#newborn-input").attr('hidden', true);
+                        $("input:radio[name=newborn]:last").attr('checked', true);
+                    } else {
+
+                    }
+
+                    if (patient_medical_history.is_deworming_done == 1) {
+                        $("#customformForm").find('[name=deworming]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_supplement_vitamin_a_done == 1) {
+                        $("#customformForm").find('[name=supplement]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_bcg_done == 1) {
+                        $("#customformForm").find('[name=bcg]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_hep_b_done == 1) {
+                        $("#customformForm").find('[name=hepb]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_penta1_done == 1) {
+                        $("#customformForm").find('[name=penta1]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_penta2_done == 1) {
+                        $("#customformForm").find('[name=penta2]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_penta3_done == 1) {
+                        $("#customformForm").find('[name=penta3]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_opv1_done == 1) {
+                        $("#customformForm").find('[name=opv1]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_opv2_done == 1) {
+                        $("#customformForm").find('[name=opv2]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_opv3_done == 1) {
+                        $("#customformForm").find('[name=opv3]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_ipv1_done == 1) {
+                        $("#customformForm").find('[name=ipv1]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_ipv2_done == 1) {
+                        $("#customformForm").find('[name=ipv2]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_mmr1_done == 1) {
+                        $("#customformForm").find('[name=mmr1]').attr('checked', true);
+                    }
+                    if (patient_medical_history.is_immunization_mmr2_done == 1) {
+                        $("#customformForm").find('[name=mmr2]').attr('checked', true);
+                    }
+
+
+
+                    // alert(patient_medical_history.tsekap_medication_availment_mentalhealth_status);
                 }
             });
         })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=radio][name=menarche]').change(function() {
+                var menarche = this.value;
+                if (menarche == 1) {
+                    $("#menarche-input").attr("hidden", false);
+                } else {
+                    $("#menarche-input").attr("hidden", true);
+                }
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=radio][name=newborn]').change(function() {
+                var is_newborn = this.value;
+                console.log(is_newborn);
+                if (is_newborn == "1") {
+                    $("#newborn-input").attr("hidden", false);
+                } else {
+                    $("#newborn-input").attr("hidden", true);
+                }
+            })
+        });
     </script>
 
     <script type="text/javascript">

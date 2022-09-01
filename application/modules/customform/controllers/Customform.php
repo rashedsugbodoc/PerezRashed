@@ -36,7 +36,6 @@ class Customform extends MX_Controller {
     }
 
     public function addNewTsekap() {
-        $data['fpi'] = random_string('alnum', 8);
         $data['civil_status'] = $this->patient_model->getCivilStatus();
         $data['safe_water_supply'] = $this->patient_model->getSafeWaterSupply();
         $data['unmet_need'] = $this->patient_model->getUnmetNeed();
@@ -61,7 +60,7 @@ class Customform extends MX_Controller {
         $name = $f_name . ' ' . $m_name . ' ' . $l_name . ' ' . $suffix;
         $email = $this->input->post('email');
         $phone = $this->input->post('mobile');
-        $birthdate = $this->input->post('birthdate');
+        $birthdate = date('Y-m-d', strtotime($this->input->post('birthdate').' UTC'));
         $address = $this->input->post('address');
         $sex = $this->input->post('sex');
         $civil_status = $this->input->post('civil_status');
@@ -71,6 +70,10 @@ class Customform extends MX_Controller {
         $heightUnit = $this->input->post('height_unit');
         $weight = $this->input->post('weight');
         $weightUnit = $this->input->post('weight_unit');
+        $menarche = $this->input->post('menarche');
+        if ($menarche === "1") {
+            $menarche_specify = $this->input->post('specify_menarche');
+        }
 
         if(empty($weight)) {
             $weight = null;
@@ -137,6 +140,26 @@ class Customform extends MX_Controller {
         $cardiovascular = $this->input->post('cardiovascular');
         $covid = $this->input->post('covid');
 
+        $menarche = $this->input->post('menarche');
+        if ($menarche === "1") {
+            $menarche_specify = $this->input->post('specify_menarche');
+        }
+        $lmp_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('lmp_date')));
+        $newborn = $this->input->post('newborn');
+        $deworming = $this->input->post('deworming');
+        $supplement = $this->input->post('supplement');
+        $bcg = $this->input->post('bcg');
+        $hepb = $this->input->post('hepb');
+        $penta1 = $this->input->post('penta1');
+        $penta2 = $this->input->post('penta2');
+        $penta3 = $this->input->post('penta3');
+        $opv1 = $this->input->post('opv1');
+        $opv2 = $this->input->post('opv2');
+        $opv3 = $this->input->post('opv3');
+        $ipv1 = $this->input->post('ipv1');
+        $ipv2 = $this->input->post('ipv2');
+        $mmr1 = $this->input->post('mmr1');
+        $mmr2 = $this->input->post('mmr2');
 
         $data_custom_form = array();
         $data_patient_vital = array();
@@ -148,7 +171,7 @@ class Customform extends MX_Controller {
             'name' => $name,
             'created_user_id' => $user,
             'custom_form_date' => $date,
-            'custom_form_number' => $custom_form_number,
+            'reference_number' => $custom_form_number,
             'type_id' => 1,
         );
 
@@ -195,6 +218,24 @@ class Customform extends MX_Controller {
             'tsekap_medication_availment_tuberculosis_status' => $tuberculosis,
             'tsekap_medication_availment_cardiovasculardisease_status' => $cardiovascular,
             'covid_status_id' => $covid,
+            'is_deworming_done' => $deworming,
+            'is_supplement_vitamin_a_done' => $supplement,
+            'is_immunization_bcg_done' => $bcg,
+            'is_immunization_hep_b_done' => $hepb,
+            'is_immunization_penta1_done' => $penta1,
+            'is_immunization_penta2_done' => $penta2,
+            'is_immunization_penta3_done' => $penta3,
+            'is_immunization_opv1_done' => $opv1,
+            'is_immunization_opv2_done' => $opv2,
+            'is_immunization_opv3_done' => $opv3,
+            'is_immunization_ipv1_done' => $ipv1,
+            'is_immunization_ipv2_done' => $ipv2,
+            'is_immunization_mmr1_done' => $mmr1,
+            'is_immunization_mmr2_done' => $mmr2,
+            'is_newborn_screening_done' => $newborn,
+            'is_menarche' => $menarche,
+            'menarche_age' => $menarche_specify,
+            'latest_pregnancy_last_menstrual_period' => $lmp_date,
         );
 
         $medical_history_id = $this->patient_model->getPatientHealthDeclarationByPatientId($patient)->id;
@@ -210,18 +251,21 @@ class Customform extends MX_Controller {
 
     public function editTsekap() {
         $data['id'] = $this->input->get('id');
-        $customform_details = $this->customform_model->getCustomFormByCustomFormNumber($data['id']);
+        $customform_details = $this->customform_model->getCustomFormByReferenceNumber($data['id']);
         $customformtype_details = $this->customform_model->getCustomFormTypeById($customform_details->type_id);
         $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($customform_details->patient);
         $patient_age = getPersonAge(date('d-m-Y H:i:s', strtotime($data['patient']->birthdate.' UTC')));
         $data['patient_age_year'] = $patient_age->y;
+        $data['civil_status'] = $this->patient_model->getCivilStatus();
+        $data['safe_water_supply'] = $this->patient_model->getSafeWaterSupply();
+        $data['unmet_need'] = $this->patient_model->getUnmetNeed();
         $this->load->view('home/dashboardv2');
         $this->load->view($customformtype_details->name, $data);
     }
 
     public function editTsekapByJason() {
         $id = $this->input->get('id');
-        $customform_details = $this->customform_model->getCustomFormByCustomFormNumber($id);
+        $customform_details = $this->customform_model->getCustomFormByReferenceNumber($id);
         $customformtype_details = $this->customform_model->getCustomFormTypeById($customform_details->type_id);
         $data['patient'] = $customform_details->patient;
         $data['patients'] = $this->patient_model->getPatient();
@@ -291,29 +335,37 @@ class Customform extends MX_Controller {
         if ($limit == -1) {
             if (!empty($search)) {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['customforms'] = $this->customform_model->getCustomFormBySearchByDoctorIdByType($search, $doctor, $type);
+                    // $data['customforms'] = $this->customform_model->getCustomFormBySearchByDoctorIdByType($search, $doctor, $type);
+                    $data['customforms'] = $this->customform_model->getPatientCustomFormBySearchByDoctorIdByType($search, $doctor, $type);
                 } else {
-                    $data['customforms'] = $this->customform_model->getCustomFormBySearchByType($search, $type);
+                    // $data['customforms'] = $this->customform_model->getCustomFormBySearchByType($search, $type);
+                    $data['customforms'] = $this->customform_model->getPatientCustomFormBySearchByType($search, $type);
                 }
             } else {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['customforms'] = $this->customform_model->getCustomFormByDoctorIdByType($doctor, $type);
+                    // $data['customforms'] = $this->customform_model->getCustomFormByDoctorIdByType($doctor, $type);
+                    $data['customforms'] = $this->customform_model->getPatientCustomFormByDoctorIdByType($doctor, $type);
                 } else {
-                    $data['customforms'] = $this->customform_model->getCustomFormByType($type);
+                    // $data['customforms'] = $this->customform_model->getCustomFormByType($type);
+                    $data['customforms'] = $this->customform_model->getPatientCustomFormByType($type);
                 }
             }
         } else {
             if (!empty($search)) {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['customforms'] = $this->customform_model->getCustomFormByLimitBySearchByDoctorIdByType($limit, $start, $search, $doctor, $type);
+                    // $data['customforms'] = $this->customform_model->getCustomFormByLimitBySearchByDoctorIdByType($limit, $start, $search, $doctor, $type);
+                    $data['customforms'] = $this->customform_model->getPatientCustomFormByLimitBySearchByDoctorIdByType($limit, $start, $search, $doctor, $type);
                 } else {
-                    $data['customforms'] = $this->customform_model->getCustomFormByLimitBySearchByType($limit, $start, $search, $type);
+                    // $data['customforms'] = $this->customform_model->getCustomFormByLimitBySearchByType($limit, $start, $search, $type);
+                    $data['customforms'] = $this->customform_model->getPatientCustomFormByLimitBySearchByType($limit, $start, $search, $type);
                 }
             } else {
                 if ($this->ion_auth->in_group(array('Doctor'))) {
-                    $data['customforms'] = $this->customform_model->getCustomFormByLimitByDoctorIdByType($limit, $start, $doctor, $type);
+                    // $data['customforms'] = $this->customform_model->getCustomFormByLimitByDoctorIdByType($limit, $start, $doctor, $type);
+                    $data['customforms'] = $this->customform_model->getPatientCustomFormByLimitByDoctorIdByType($limit, $start, $doctor, $type);
                 } else {
-                    $data['customforms'] = $this->customform_model->getCustomFormByLimitByType($limit, $start, $type);
+                    // $data['customforms'] = $this->customform_model->getCustomFormByLimitByType($limit, $start, $type);
+                    $data['customforms'] = $this->customform_model->getPatientCustomFormByLimitByType($limit, $start, $type);
                 }
                 
             }
@@ -322,11 +374,12 @@ class Customform extends MX_Controller {
 
         foreach ($data['customforms'] as $customform) {
 
-            $options1 = '<a class="btn btn-info" href="customform/edit'.$this->customform_model->getCustomFormTypeById($customform->type_id)->method_name.'?id='.$customform->custom_form_number.'"><i class="fe fe-edit"></i></a>';
+            $options1 = '<a class="btn btn-info" href="customform/edit'.$this->customform_model->getCustomFormTypeById($customform->type_id)->method_name.'?id='.$customform->reference_number.'"><i class="fe fe-edit"></i></a>';
 
             $info[] = array(
-                $customform->custom_form_date,
-                $customform->custom_form_number,
+                date('Y-m-d H:i:s', strtotime($customform->custom_form_date.' UTC')),
+                $customform->reference_number,
+                $this->customform_model->countCustomFormByPatient($customform->patient, $type),
                 $this->patient_model->getPatientById($customform->patient)->name,
                 $options1,
                     //  $options2
