@@ -129,7 +129,7 @@ class Customform extends MX_Controller {
         $deceased = $this->input->post('deceased');
         $user = $this->ion_auth->get_user_id();
         $date = gmdate('Y-m-d H:i:s');
-        $custom_form_number = 'C'.strtoupper(random_string('alnum', 6));
+        $reference_number = 'C'.strtoupper(random_string('alnum', 6));
         $patient_vitals = end($this->patient_model->getPatientVitalById($patient));
 
         $cancer = $this->input->post('cancer');
@@ -171,7 +171,7 @@ class Customform extends MX_Controller {
             'name' => $name,
             'created_user_id' => $user,
             'custom_form_date' => $date,
-            'reference_number' => $custom_form_number,
+            'reference_number' => $reference_number,
             'type_id' => 1,
         );
 
