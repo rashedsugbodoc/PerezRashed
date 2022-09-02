@@ -27,11 +27,16 @@
                                         <div class="col-sm-12 col-md-12">
                                             <div class="form-group">
                                                 <label class="form-label">Patient <span class="text-red">*</span></label>
-                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" required>
+                                                <select class="form-control select2-show-search pos_select" id="pos_select" name="patient" data-placeholder="Choose one" required <?php if(!empty($patient_details)) { echo 'disabled'; } ?>>
                                                     <?php if (!empty($patients)) { ?>
                                                         <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> (ID:<?php echo $patients->id; ?>)</option>  
+                                                    <?php } elseif (!empty($patient_details)) { ?>
+                                                        <option value="<?php echo $patient_details->id; ?>" selected="selected"><?php echo $patient_details->name; ?> (ID:<?php echo $patient_details->id; ?>)</option>  
                                                     <?php } ?>
                                                 </select>
+                                                <?php if (!empty($patient_details)) { ?>
+                                                    <input type="hidden" name="patient" value="<?php echo $patient_details->id ?>">
+                                                <?php } ?>
                                             </div>
                                         </div>
                                     </div>

@@ -152,9 +152,10 @@ class Appointment extends MX_Controller {
         if (!empty($root) && !empty($method)) {
             $redirect = $root.'/'.$method.'?id='.$patient.'&encounter_id='.$data['encounter'];
         }
+        $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($patient);
         $data['redirect'] = $redirect;
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        // $data['patients'] = $this->patient_model->getPatient();
+        // $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboardv2', $data); // just the header file
         $this->load->view('add_newv2', $data);
