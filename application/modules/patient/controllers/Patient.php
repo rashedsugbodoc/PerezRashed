@@ -2268,7 +2268,7 @@ class Patient extends MX_Controller {
         // }
         
         $data['settings'] = $this->settings_model->getSettings();
-        $data['groups'] = $this->donor_model->getBloodBank();
+        // $data['groups'] = $this->donor_model->getBloodBank();
         $data['patient'] = $this->patient_model->getPatientByIdByVisitedProviderId($id);
         // if (empty($data['encounter_id'])) {
         //     $data['appointments'] = $this->appointment_model->getAppointmentByPatient($data['patient']->id);
@@ -2284,8 +2284,8 @@ class Patient extends MX_Controller {
         //     $data['labrequests'] = $this->labrequest_model->getLabrequestByPatientIdByEncounterId($data['patient']->id, $data['encounter_id']);
         // }
         // $data['service_category_group'] = $this->appointment_model->getServiceCategoryById($data['appointments_location']->service_category_group_id);
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        // $data['patients'] = $this->patient_model->getPatient();
+        // $data['doctors'] = $this->doctor_model->getDoctor();
         // if (empty($data['encounter_id'])) {
         //     $data['prescriptions'] = $this->prescription_model->getPrescriptionByPatientId($id);
         // } else {
