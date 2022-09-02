@@ -439,6 +439,7 @@
                                                                             <th class="text-center normal-caps"><?php echo lang('p/s'); ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('encounter'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('facility'); ?></th>
                                                                             <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
                                                                                 <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
                                                                             <?php } ?>
@@ -473,6 +474,30 @@
                                                                                 ?></td>
                                                                                 <td><?php echo $diag->diagnosis_notes; ?></td>
                                                                                 <td><?php echo $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number; ?></td>
+                                                                                <td><?php
+                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
+                                                                                    if (!empty($appointment->hospital_id)) {
+                                                                                        $appointment_facility = $facility->name;
+                                                                                    } else {
+                                                                                        $appointment_facility = '';
+                                                                                    }
+                                                                                    echo $appointment_facility; ?><br><?php
+                                                                                    echo '(' . lang('online') . ')';*/
+                                                                                    $facility = $this->branch_model->getBranchById($diag->location_id);
+                                                                                    $hospital = $this->hospital_model->getHospitalById($diag->hospital_id);
+                                                                                    $encounter_details = $this->encounter_model->getEncounterById($diag->encounter_id);
+                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+                                                                                    if (!empty($diag->encounter_id)) {
+                                                                                        if (!empty($encounter_location)) {
+                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                                                                                        } else {
+                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                                                                                        }
+                                                                                    } else {
+                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+                                                                                    }
+                                                                                    echo $appointment_facility;
+                                                                                ?></td>
                                                                                 <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
                                                                                     <td>
                                                                                         <a href="diagnosis/editDiagnosis?id=<?php echo $diag->patient_diagnosis_number ?>&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>
@@ -528,6 +553,7 @@
                                                                             <th class="text-center normal-caps"><?php echo lang('respiration_rate').'<br>'.'('.lang('bpm').')'; ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('pain_level').'<br>'.'('.lang('10_highest').')'; ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
+                                                                            <th class="text-center normal-caps"><?php echo lang('facility'); ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
                                                                             <!-- <?php if ($vital->recorded_user_id == $current_user) { ?>
                                                                                 <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
@@ -555,6 +581,30 @@
                                                                                 }
                                                                                 ?></td>
                                                                                 <td><?php echo $vital->note; ?></td>
+                                                                                <td><?php
+                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
+                                                                                    if (!empty($appointment->hospital_id)) {
+                                                                                        $appointment_facility = $facility->name;
+                                                                                    } else {
+                                                                                        $appointment_facility = '';
+                                                                                    }
+                                                                                    echo $appointment_facility; ?><br><?php
+                                                                                    echo '(' . lang('online') . ')';*/
+                                                                                    $facility = $this->branch_model->getBranchById($vital->location_id);
+                                                                                    $hospital = $this->hospital_model->getHospitalById($vital->hospital_id);
+                                                                                    $encounter_details = $this->encounter_model->getEncounterById($vital->encounter_id);
+                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+                                                                                    if (!empty($vital->encounter_id)) {
+                                                                                        if (!empty($encounter_location)) {
+                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                                                                                        } else {
+                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                                                                                        }
+                                                                                    } else {
+                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+                                                                                    }
+                                                                                    echo $appointment_facility;
+                                                                                ?></td>
                                                                                 <?php if ($vital->recorded_user_id == $current_user) { ?>
                                                                                     <td>
                                                                                         <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
@@ -950,6 +1000,7 @@
                                                                             <th class="border-bottom-0"><?php echo lang('lab').' '.lang('test'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
+                                                                            <th class="border-bottom-0"><?php echo lang('facility'); ?></th>
                                                                             <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
                                                                         </tr>
                                                                     </thead>
@@ -984,6 +1035,30 @@
                                                                                 </td>
                                                                                 <td><?php echo $this->patient_model->getPatientById($labrequest->patient_id)->name ?></td>
                                                                                 <td><?php echo $this->doctor_model->getDoctorById($labrequest->doctor_id)->name ?></td>
+                                                                                <td><?php
+                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
+                                                                                    if (!empty($appointment->hospital_id)) {
+                                                                                        $appointment_facility = $facility->name;
+                                                                                    } else {
+                                                                                        $appointment_facility = '';
+                                                                                    }
+                                                                                    echo $appointment_facility; ?><br><?php
+                                                                                    echo '(' . lang('online') . ')';*/
+                                                                                    $facility = $this->branch_model->getBranchById($labrequest->location_id);
+                                                                                    $hospital = $this->hospital_model->getHospitalById($labrequest->hospital_id);
+                                                                                    $encounter_details = $this->encounter_model->getEncounterById($labrequest->encounter_id);
+                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+                                                                                    if (!empty($labrequest->encounter_id)) {
+                                                                                        if (!empty($encounter_location)) {
+                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                                                                                        } else {
+                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                                                                                        }
+                                                                                    } else {
+                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+                                                                                    }
+                                                                                    echo $appointment_facility;
+                                                                                ?></td>
                                                                                 <td>
                                                                                     <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                                         <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id; ?>"><i class="fe fe-edit"></i></a>
@@ -1023,6 +1098,7 @@
                                                                             <th><?php echo lang('form').' '.lang('number') ?></th>
                                                                             <th><?php echo lang('name') ?></th>
                                                                             <th><?php echo lang('patient') ?></th>
+                                                                            <th><?php echo lang('facility'); ?></th>
                                                                             <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                                 <th><?php echo lang('actions') ?></th>
                                                                             <?php } ?>
@@ -1040,6 +1116,30 @@
                                                                                     echo $patient_details;
                                                                                     ?>
                                                                                 </td>
+                                                                                <td><?php
+                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
+                                                                                    if (!empty($appointment->hospital_id)) {
+                                                                                        $appointment_facility = $facility->name;
+                                                                                    } else {
+                                                                                        $appointment_facility = '';
+                                                                                    }
+                                                                                    echo $appointment_facility; ?><br><?php
+                                                                                    echo '(' . lang('online') . ')';*/
+                                                                                    $facility = $this->branch_model->getBranchById($form->location_id);
+                                                                                    $hospital = $this->hospital_model->getHospitalById($form->hospital_id);
+                                                                                    $encounter_details = $this->encounter_model->getEncounterById($form->encounter_id);
+                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+                                                                                    if (!empty($form->encounter_id)) {
+                                                                                        if (!empty($encounter_location)) {
+                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                                                                                        } else {
+                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                                                                                        }
+                                                                                    } else {
+                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+                                                                                    }
+                                                                                    echo $appointment_facility;
+                                                                                ?></td>
                                                                                 <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                                     <td>
                                                                                         <a href="form?id=<?php echo $encounter_id?$form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory':$form->form_number.'&encounter_id='.$form->encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
@@ -1199,6 +1299,22 @@
                                                                                 ?>
                                                                             </p>
                                                                             
+                                                                        </div>
+                                                                        <div class="pb-5">
+                                                                            <button class="btn btn-light brround pull-right" id="safe_water_description" data-container="body" data-content="<?php
+                                                                            $encounter_details = $this->encounter_model->getEncounterById($patient_material->encounter_id);
+                                                                            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+                                                                            if (!empty($patient_material->encounter_id)) {
+                                                                                if (!empty($encounter_location)) {
+                                                                                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                                                                                } else {
+                                                                                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                                                                                }
+                                                                            } else {
+                                                                                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+                                                                            }
+                                                                            echo $appointment_facility;
+                                                                            ?>" data-html="true" data-placement="top" data-popover-color="primary" title="<?php echo lang('facility') ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
                                                                         </div>
                                                                     </div>
                                                                 </div>
