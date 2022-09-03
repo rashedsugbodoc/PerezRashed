@@ -476,7 +476,7 @@
                                                     <tr>
                                                         <td>
                                                           <!--*** CONTENT GOES HERE ***-->
-                                                            <div class="pagez">
+                                                            <div class="pagez prescription-opacity">
                                                             <br/>
                                                                 <?php
                                                                 $medicine = $prescription->medicine;
