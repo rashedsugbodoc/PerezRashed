@@ -530,11 +530,23 @@ class Patient_model extends CI_model {
     }
 
     function updateIonUser($username, $email, $password, $ion_user_id) {
-        $uptade_ion_user = array(
-            'username' => $username,
-            'email' => $email,
-            'password' => $password
-        );
+        if (!empty($password)) {
+            $uptade_ion_user = array(
+                'username' => $username,
+                'email' => $email,
+                'password' => $password
+            );
+        } else {
+            $uptade_ion_user = array(
+                'username' => $username,
+                'email' => $email,
+            );
+        }
+        // $uptade_ion_user = array(
+        //     'username' => $username,
+        //     'email' => $email,
+        //     'password' => $password
+        // );
         $this->db->where('id', $ion_user_id);
         $this->db->update('users', $uptade_ion_user);
     }
