@@ -180,6 +180,7 @@ class Patient extends MX_Controller {
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
         $civil_status = $this->input->post('civil_status');
+        $allergies = $this->input->post('allergies');
 
         $phone = $this->input->post('phone');
         $sex = $this->input->post('sex');
@@ -346,6 +347,7 @@ class Patient extends MX_Controller {
                     'doctor' => $doctor,
                     'phone' => $phone,
                     'sex' => $sex,
+                    'allergies' => $allergies,
                     'birthdate' => $birthdate,
                     'bloodgroup' => $bloodgroup,
                     'add_date' => $add_date,
@@ -374,6 +376,7 @@ class Patient extends MX_Controller {
                     'doctor' => $doctor,
                     'phone' => $phone,
                     'sex' => $sex,
+                    'allergies' => $allergies,
                     'birthdate' => $birthdate,
                     'bloodgroup' => $bloodgroup,
                     'add_date' => $add_date,

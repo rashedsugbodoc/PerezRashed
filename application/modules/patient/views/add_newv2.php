@@ -475,6 +475,21 @@
                                                             <div class="row">
                                                                 <div class="col-md-12 col-sm-12">
                                                                     <div class="form-group">
+                                                                        <label class="form-label"><?php echo lang('allergies'); ?></label>
+                                                                        <input type="text" name="allergies" class="form-control" placeholder="<?php echo lang('allergies'); ?>" value="<?php
+                                                                        if (!empty($setval)) {
+                                                                            echo set_value('allergies');
+                                                                        }
+                                                                        elseif (!empty($patient->allergies)) {
+                                                                            echo $patient->allergies;
+                                                                        }
+                                                                        ?>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12 col-sm-12">
+                                                                    <div class="form-group">
                                                                         <label class="form-label"><?php echo lang('doctor'); ?></label>
                                                                         <select class="form-control select2" data-placeholder="Choose one" id="doctorchoose" name="doctor[]" multiple="multiple">
                                                                             
