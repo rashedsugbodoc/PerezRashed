@@ -446,6 +446,20 @@
     </script>
 
     <script type="text/javascript">
+        $(document).ready(function () {
+            // var timeslot = $("#myForm").find('[name=time_slot]').val();
+            // alert(timeslot);
+            $(".nextbtn").attr('disabled', true);
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("#aslots").change(function () {
+            $(".nextbtn").attr('disabled', false);
+        });
+    </script>
+
+    <script type="text/javascript">
         $('.nextbtn').on('click',function(e){
         e.preventDefault();
             var data = $('#myForm').serialize();
@@ -854,7 +868,11 @@
                     if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
                         $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
                     }
-
+                    if (slots != "") {
+                        $(".nextbtn").attr('disabled', false);
+                    } else {
+                        $(".nextbtn").attr('disabled', true);
+                    }
 
                     // Populate the form fields with the data returned from server
                     //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
