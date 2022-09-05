@@ -919,11 +919,15 @@ class Form extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
+        $patient_user_id = $this->ion_auth->get_user_id();
+        $patient_id = $this->patient_model->getPatientByIonUserId($patient_user_id)->id;
+
         $data['templates'] = $this->form_model->getTemplate();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->form_model->getFormCategory();
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['forms'] = $this->form_model->getFormByPatientId($patient_id);
 
         $data['settings'] = $this->settings_model->getSettings();
 
@@ -1004,7 +1008,7 @@ class Form extends MX_Controller {
                 // "draw" => 1,
                 "recordsTotal" => 0,
                 "recordsFiltered" => 0,
-                "data" => []
+                "data" => ['', '', '', ''],
             );
         }
 

@@ -15,18 +15,28 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
-                                        <table class="table table-bordered" id="editable-sample">
-                                            <thead>
-                                                <tr>
-                                                    <th><?php echo lang('report_id'); ?></th>
-                                                    <th><?php echo lang('patient'); ?></th>
-                                                    <th><?php echo lang('date'); ?></th>
-                                                    <th class=""><?php echo lang('options'); ?></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive">
+                                            <table id="editable-sample" class="table table-bordered text-nowrap key-buttons">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('report_id'); ?></th>
+                                                        <th><?php echo lang('patient'); ?></th>
+                                                        <th><?php echo lang('date'); ?></th>
+                                                        <th class=""><?php echo lang('options'); ?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach($forms as $form) { ?>
+                                                        <tr>
+                                                            <td><?php echo $form->form_number; ?></td>
+                                                            <td><?php echo $this->patient_model->getPatientById($form->patient)->name; ?></td>
+                                                            <td><?php echo date('Y-m-d H:i', strtotime($form->form_date.' UTC')); ?></td>
+                                                            <td><a class="btn btn-xs btn-info" href="form/formView?id=<?php echo $form->form_number ?>"><i class="fa fa-file"></i></a></td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -110,16 +120,16 @@
 
     <script>
         $(document).ready(function () {
-            var table = $('#editable-sample').DataTable({
+            table = $('#editable-sample').DataTable({
                 responsive: true,
 
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
-                "ajax": {
-                    url: "form/getMyForm",
-                    type: 'POST',
-                },
+                // "processing": true,
+                // "serverSide": true,
+                // "searchable": true,
+                // "ajax": {
+                //     url: "form/getMyForm",
+                //     type: 'POST',
+                // },
                 scroller: {
                     loadingIndicator: true
                 },
@@ -128,23 +138,54 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2],
-                        }
-                    },
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                },
+                                title: '<?php echo lang('forms'); ?>'
+                            },
+                        ],
+                    }
                 ],
 
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: 100,
+                iDisplayLength: 50,
                 "order": [[0, "desc"]],
 
                 "language": {
@@ -153,7 +194,7 @@
                     searchPlaceholder: "Search..."
                 }
             });
-            table.buttons().container().appendTo('.custom_buttons');
+            // table.buttons().container().appendTo('.custom_buttons');
         });
     </script>
 
