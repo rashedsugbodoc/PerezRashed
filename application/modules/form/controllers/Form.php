@@ -608,7 +608,8 @@ class Form extends MX_Controller {
                 $this->form_model->insertTemplate($data);
                 $inserted_id = $this->db->insert_id();
                 $this->session->set_flashdata('success', lang('record_added'));
-                redirect("form/addTemplateView?id=" . "$inserted_id");
+                // redirect("form/addTemplateView?id=" . "$inserted_id");
+                redirect("form/template");
             } else {
                 $data = array(
                     'name' => $name,
@@ -617,7 +618,8 @@ class Form extends MX_Controller {
                 );
                 $this->form_model->updateTemplate($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
-                redirect("form/addTemplateView?id=" . "$id");
+                // redirect("form/addTemplateView?id=" . "$id");
+                redirect("form/template");
             }
         }
     }
