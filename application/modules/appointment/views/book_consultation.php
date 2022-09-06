@@ -487,6 +487,9 @@
 
                 <?php unset($_SESSION['appointment_id']); ?>
                 
+                return $.growl.success({
+                    message: "<?php echo lang('record_added'); ?>"
+                });
                 
             }
 
@@ -500,9 +503,9 @@
 
                     event.preventDefault();
                     event.stopPropagation();
-                    return $.growl.success({
-                        message: "<?php echo lang('record_added'); ?>"
-                    });
+                    // return $.growl.success({
+                    //     message: "<?php echo lang('record_added'); ?>"
+                    // });
                     
                 }
             }); 
