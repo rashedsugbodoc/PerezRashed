@@ -751,6 +751,7 @@
         $(document).ready(function () {
             $(document.body).on('change', '#template', function () {
                 var iid = $("select.template option:selected").val();
+                CKEDITOR.instances.editor.setData('');
                 $.ajax({
                     url: 'form/getTemplateByIdByJason?id=' + iid,
                     method: 'GET',
