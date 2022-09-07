@@ -109,8 +109,9 @@
                                         <div class="main-contact-info-header">
                                             <div class="media">
                                                 <div class="main-img-user brround">
-                                                    <img alt="" src="<?php echo base_url('public/assets/images/users/12.jpg'); ?>" class="w-100 h-100 brround">
-                                                    <a href=""><svg class="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 6h-4.05l-1.83-2H9.88L8.05 6H4v12h16V6zm-8 11c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" opacity=".3"/><path d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM4 6h4.05l1.83-2h4.24l1.83 2H20v12H4V6zm8 1c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg></a>
+                                                    <div id="img1">
+                                                        
+                                                    </div>
                                                 </div>
                                                 <div class="media-body">
                                                     <h4>Dr. <span class="doctor_name"></span></h4>
@@ -260,6 +261,7 @@
                     $('.doctor_name').html("").end()
                     $('.specialty').html("").end()
                     $('#branches').html("").end()
+                    $('.img1-value').remove()
                     $('.bookBtn').html("").end()
                     $.ajax({
                         url: 'doctor/getDoctorById?id='+iid,
@@ -268,6 +270,7 @@
                         dataType: 'json',
                         success: function(response) {
                             $('.doctor_name').append(response.doctor.name).end()
+                            $("#img1").append('<img alt="" src="'+response.doctor.img_url+'" class="h-100 w-100 brround img1-value" max-width="120" max-height="120">');
                             // $('.specialty').append(response.specialties.display_name).end()
                             $.each(response.specialties, function(key, value) {
                                 $('.specialty').append(value.display_name_ph+", ").end();
@@ -326,7 +329,6 @@
                         $('.departmentClass').append(response.doctor.department).end()
                         $('.profileClass').append(response.doctor.profile).end()
                         $('.licenseClass').append(response.doctor.license).end()
-
                         if (typeof response.doctor.img_url !== 'undefined' && response.doctor.img_url != '') {
                             $("#img1").attr("src", response.doctor.img_url);
                         }
