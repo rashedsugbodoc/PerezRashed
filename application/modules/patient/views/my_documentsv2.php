@@ -145,6 +145,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <input type="hidden" name="redirect" value="patient/myDocuments">
                                                 <input type="hidden" name="patient" value='<?php echo $patient->id; ?>'>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">

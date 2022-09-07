@@ -1723,7 +1723,7 @@ class Patient extends MX_Controller {
     }
 
     function documents() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'DoctorAdmin'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'DoctorAdmin'))) {
             redirect('home/permission');
         }
         $data['patients'] = $this->patient_model->getPatient();
