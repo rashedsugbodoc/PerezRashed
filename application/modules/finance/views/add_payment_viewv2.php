@@ -820,11 +820,13 @@
 
 
                     var input2 = $('<input>').attr({
-                        type: 'text',
+                        type: 'number',
                         class: "remove",
                         id: 'idinput-' + idd,
                         name: 'quantity[]',
                         value: qtity,
+                        min: '0',
+                        oninput: "validity.valid||(value='');",
                     }).appendTo('#editPaymentForm .qfloww');
 
                     $('<input>').attr({
@@ -843,6 +845,30 @@
 
                 $(document).ready(function () {
                     $('#idinput-' + idd).keyup(function () {
+                        var qty = 0;
+                        var total = 0;
+                        $.each($('select.multi-selection option:selected'), function () {
+                            var id1 = $(this).data('idd');
+                            qty = $('#idinput-' + id1).val();
+                            var ekokk = $(this).data('id');
+                            total = total + qty * ekokk;
+                        });
+
+                        tot = total;
+
+                        var discount = $('#dis_id').val();
+                        var gross = tot - discount;
+                        $('#editPaymentForm').find('[name="subtotal"]').val(tot).end()
+                        $('#editPaymentForm').find('[name="grsss"]').val(gross)
+
+                        var amount_received = $('#amount_received').val();
+                        var change = amount_received - gross;
+                        $('#editPaymentForm').find('[name="change"]').val(change).end()
+
+
+                    });
+
+                    $('#idinput-' + idd).on("change", function () {
                         var qty = 0;
                         var total = 0;
                         $.each($('select.multi-selection option:selected'), function () {
@@ -966,11 +992,13 @@
 
 
                         var input2 = $('<input>').attr({
-                            type: 'text',
+                            type: 'number',
                             class: "remove",
                             id: 'idinput-' + idd,
                             name: 'quantity[]',
                             value: '1',
+                            min: '0',
+                            oninput: "validity.valid||(value='');",
                         }).appendTo('#editPaymentForm .qfloww');
 
                         $('<input>').attr({
@@ -989,6 +1017,30 @@
 
                     $(document).ready(function () {
                         $('#idinput-' + idd).keyup(function () {
+                            var qty = 0;
+                            var total = 0;
+                            $.each($('select.multi-selection option:selected'), function () {
+                                var id1 = $(this).data('idd');
+                                qty = $('#idinput-' + id1).val();
+                                var ekokk = $(this).data('id');
+                                total = total + qty * ekokk;
+                            });
+
+                            tot = total;
+
+                            var discount = $('#dis_id').val();
+                            var gross = tot - discount;
+                            $('#editPaymentForm').find('[name="subtotal"]').val(tot).end()
+                            $('#editPaymentForm').find('[name="grsss"]').val(gross)
+
+                            var amount_received = $('#amount_received').val();
+                            var change = amount_received - gross;
+                            $('#editPaymentForm').find('[name="change"]').val(change).end()
+
+
+                        });
+
+                        $('#idinput-' + idd).on("change", function () {
                             var qty = 0;
                             var total = 0;
                             $.each($('select.multi-selection option:selected'), function () {
