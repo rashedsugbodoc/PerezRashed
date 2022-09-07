@@ -120,9 +120,6 @@
                                                         <div class="btn-group mr-5">
                                                             <a class="btn btn-primary" data-toggle="modal" href="#myModal"><i class="fa fa-money"></i><span class="button-text"> <?php echo lang('make'); ?> <?php echo lang('payment'); ?></span></a>
                                                         </div>
-                                                        <div class="btn-group">
-                                                            <a href="#" class="btn btn-primary" data-target="#invoice" data-toggle="modal"><i class="fa fa-file"></i><span class="button-text"> <?php echo lang('invoice'); ?></span></a>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
