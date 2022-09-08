@@ -27,6 +27,10 @@ class Company_model extends CI_model {
         if ($this->ion_auth->in_group(array('CompanyUser'))) {
             $this->db->where('id', $company_id);
         }
+        $this->db->group_start();
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->or_where('hospital_id', null);
+        $this->db->group_end();
         $query = $this->db->get('company');
         return $query->result();
     }
@@ -58,11 +62,19 @@ class Company_model extends CI_model {
             $query = $this->db->select('*')
                     ->from('company')
                     ->where('id', $company_id)
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
                     ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
                     ->get();
         } else {
             $query = $this->db->select('*')
                     ->from('company')
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
                     ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
                     ->get();
         }
@@ -89,6 +101,10 @@ class Company_model extends CI_model {
         if ($this->ion_auth->in_group(array('CompanyUser'))) {
             $this->db->where('id', $company_id);
         }
+        $this->db->group_start();
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->or_where('hospital_id', null);
+        $this->db->group_end();
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->get('company');
@@ -111,11 +127,19 @@ class Company_model extends CI_model {
             $query = $this->db->select('*')
                     ->from('company')
                     ->where('id', $company_id)
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
                     ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
                     ->get();
         } else {
             $query = $this->db->select('*')
                     ->from('company')
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
                     ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%' OR display_name LIKE '%" . $search . "%')", NULL, FALSE)
                     ->get();
         }
