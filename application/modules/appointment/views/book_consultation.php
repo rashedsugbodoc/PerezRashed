@@ -84,7 +84,7 @@
                                                                                 </div> -->
                                                                                 <div class="media mr-4 mb-4">
                                                                                     <div class="mr-3 mt-1 ml-3">
-                                                                                        <i class="fa fa-map-marker fa-2x text-primary"></i>
+                                                                                        <i class="fa fa-money fa-2x text-primary"></i>
                                                                                     </div>
                                                                                     <div class="media-body">
                                                                                         <strong class="displayHospitalName">Chonghua Hospital</strong>
@@ -241,7 +241,7 @@
                                                         <div class="form-group mb-0 justify-content-end">
                                                             <div class="">
                                                                 <label class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input" name="example-checkbox2" value="option2">
+                                                                    <input type="checkbox" class="custom-control-input" id="terms" name="example-checkbox2">
                                                                     <span class="custom-control-label">I have read, understood, and accepted the <a href="#" class="text-info"><u>Terms & Conditions</u></a></span>
                                                                 </label>
                                                             </div>
@@ -249,7 +249,7 @@
                                                         <div class="form-group mb-0 justify-content-end">
                                                             <div class="">
                                                                 <label class="custom-control custom-checkbox">
-                                                                    <input type="checkbox" class="custom-control-input" name="example-checkbox2" value="option2">
+                                                                    <input type="checkbox" class="custom-control-input" id="policy" name="example-checkbox2">
                                                                     <span class="custom-control-label">I have read, understood, and accepted the <a href="#" class="text-info"><u>Privacy Policy</u></a></span>
                                                                 </label>
                                                             </div>
@@ -460,6 +460,32 @@
     </script>
 
     <script type="text/javascript">
+
+        var terms = $('#terms');
+        var policy = $('#policy');
+        // terms.change(function () {
+            
+        // })
+        terms.change(function () {
+            policy.change(function () {
+                if ($("#terms").is(':checked') && $("#policy").is(':checked')) {
+                    $('.nextbtn').attr('disabled', false);
+                } else {
+                    $('.nextbtn').attr('disabled', true);
+                }
+            })
+        });
+
+        policy.change(function () {
+            terms.change(function () {
+                if ($("#policy").is(':checked') && $("#terms").is(':checked')) {
+                    $('.nextbtn').attr('disabled', false);
+                } else {
+                    $('.nextbtn').attr('disabled', true);
+                }
+            })
+        });
+
         $('.nextbtn').on('click',function(e){
         e.preventDefault();
             var data = $('#myForm').serialize();
@@ -473,7 +499,7 @@
                 
             }
             if (step2.style.display == "block") {
-                
+                $('.nextbtn').attr('disabled', true);
             }
             if (step3.style.display == "block") {
                 $('.finish').attr('disabled', false);
@@ -494,7 +520,7 @@
             }
 
             $.ajax({
-                url:base_url+'appointment/addNewBookConsultation',
+                // url:base_url+'appointment/addNewBookConsultation',
                 method:'POST',
                 data:data,  
                 success:function(data){
@@ -703,6 +729,7 @@
                             $(".displayWeekDays").append($('<div class="row">').text(value.weekday)).end();
                             $(".displayTime").append($('<div class="row">').text(value.s_time + ' - ' + value.e_time)).end();
                         });
+                        $(".displayWeekDays").find('[class="row"]').append($('<i class="fa fa-calendar">')).end();
                     }
                 });
             });
