@@ -138,7 +138,7 @@
                                         <?php } ?>
                                         <div class="col-md-12 col-sm-12">
                                             <div class="form-group">
-                                                <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red">*</span></label>
                                                 <select class="form-control select2-show-search" name="encounter_id" id="encounter" required <?php if(!empty($encounter_id)) { echo "disabled"; } ?>>
                                                     <?php if (!empty($encounter_id)) { ?>
                                                         <option value="<?php echo $encounter->id; ?>" selected><?php echo $encounter->encounter_number . ' - ' . $encouter_type->display_name . ' - ' . date('M j, Y g:i a', strtotime($encounter->created_at.' UTC')); ?></option>
