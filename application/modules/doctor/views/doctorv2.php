@@ -51,7 +51,7 @@
                                                     <table id="editable-sample" class="table table-bordered text-nowrap key-buttons">
                                                         <thead>
                                                             <tr>
-                                                                <th><?php echo lang('doctor'); ?> <?php echo lang('id'); ?></th>
+                                                                <th><?php echo lang('image'); ?></th>
                                                                 <th><?php echo lang('name'); ?></th>
                                                                 <th><?php echo lang('email'); ?></th>
                                                                 <th><?php echo lang('phone'); ?></th>
@@ -1232,6 +1232,14 @@
                                 }
                             }
                         ]
+                    }
+                ],
+                'columnDefs': [
+                    {
+                        'targets': 0,
+                        'createdCell':  function (td, cellData, rowData, row, col) {
+                            $(td).attr('style', 'width:10%'); 
+                        }
                     }
                 ],
 
