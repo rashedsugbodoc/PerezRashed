@@ -477,6 +477,12 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <?php if (in_array('nurse', $this->modules)) { ?>
                                         <li><a href="nurse" class="slide-item"><?php echo lang('nurse'); ?></a></li>
                                     <?php } ?>
+                                    <?php if (in_array('midwife', $this->modules)) { ?>
+                                        <li><a href="midwife" class="slide-item"><?php echo lang('midwife'); ?></a></li>
+                                    <?php } ?>
+                                    <?php if (in_array('clerk', $this->modules)) { ?>
+                                        <li><a href="clerk" class="slide-item"><?php echo lang('clerk'); ?></a></li>
+                                    <?php } ?>
                                     <?php if (in_array('pharmacist', $this->modules)) { ?>
                                         <li><a href="pharmacist" class="slide-item"><?php echo lang('pharmacist'); ?></a></li>
                                     <?php } ?>
