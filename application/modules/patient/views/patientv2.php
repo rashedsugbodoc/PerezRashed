@@ -32,6 +32,7 @@
                                                     <table id="editable-sample" class="table table-bordered text-nowrap key-buttons">
                                                         <thead>
                                                             <tr>
+                                                                <th class="border-bottom-0"><?php echo lang('image'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('patient').' '.lang('id'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('name'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('phone'); ?></th>
@@ -1225,6 +1226,15 @@
                         ]
                     }
                 ],
+                'columnDefs': [
+                    {
+                        'targets': 0,
+                        'createdCell':  function (td, cellData, rowData, row, col) {
+                            $(td).attr('style', 'width:10%'); 
+                        }
+                    }
+                ],
+                
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]

@@ -4087,9 +4087,16 @@ class Patient extends MX_Controller {
 
             $doctorNames = $this->getDoctorList($patient->doctor);
 
+            if (file_exists($patient->img_url) === true) {
+                $img_url = $patient->img_url;
+            } else {
+                $img_url = 'public/assets/images/users/placeholder.jpg';
+            }
+
 
             if ($this->ion_auth->in_group(array('admin'))) {
                 $info[] = array(
+                    '<img style="width:95%;" src="'.$img_url.'">',
                     $patient->patient_id,
                     $patient->name,
                     $patient->phone,
@@ -4102,6 +4109,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) {
                 $info[] = array(
+                    '<img style="width:95%;" src="'.$img_url.'">',
                     $patient->patient_id,
                     $patient->name,
                     $patient->phone,
@@ -4114,6 +4122,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Laboratorist', 'Nurse', 'Doctor'))) {
                 $info[] = array(
+                    '<img style="width:95%;" src="'.$img_url.'">',
                     $patient->patient_id,
                     $patient->name,
                     $patient->phone,
@@ -4125,6 +4134,7 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('CompanyUser'))) {
                 $info[] = array(
+                    '<img style="width:95%;" src="'.$img_url.'">',
                     $patient->patient_id,
                     $patient->name,
                     $patient->phone,
