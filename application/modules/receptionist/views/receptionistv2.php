@@ -51,7 +51,7 @@
 
                                                             <?php foreach ($receptionists as $receptionist) { ?>
                                                                 <tr class="">
-                                                                    <td style="width:10%;"><img style="width:95%;" src="<?php echo $receptionist->img_url; ?>"></td> 
+                                                                    <td style="width:10%;"><img style="width:95%;" src="<?php echo file_exists($receptionist->img_url)?$receptionist->img_url:'public/assets/images/users/placeholder.jpg'; ?>"></td>
                                                                     <td> <?php echo $receptionist->name; ?></td>
                                                                     <td><?php echo $receptionist->email; ?></td>
                                                                     <td class="center"><?php echo $receptionist->address; ?></td>

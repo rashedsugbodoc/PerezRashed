@@ -51,7 +51,7 @@
 
                                                             <?php foreach ($nurses as $nurse) { ?>
                                                                 <tr class="">
-                                                                    <td style="width:10%;"><img style="width:95%;" src="<?php echo $nurse->img_url; ?>"></td>
+                                                                    <td style="width:10%;"><img style="width:95%;" src="<?php echo file_exists($nurse->img_url)?$nurse->img_url:'public/assets/images/users/placeholder.jpg'; ?>"></td>
                                                                     <td> <?php echo $nurse->name; ?></td>
                                                                     <td><?php echo $nurse->email; ?></td>
                                                                     <td class="center"><?php echo $nurse->address; ?></td>

@@ -52,7 +52,7 @@
 
                                                             <?php foreach ($companyusers as $companyuser) { ?>
                                                                 <tr class="">
-                                                                    <td style="width:10%;"><img style="width:95%;" src="<?php echo $companyuser->img_url; ?>"></td>
+                                                                    <td style="width:10%;"><img style="width:95%;" src="<?php echo file_exists($companyuser->img_url)?$companyuser->img_url:'public/assets/images/users/placeholder.jpg'; ?>"></td>
                                                                     <td> <?php echo $companyuser->name; ?></td>
                                                                     <td><?php echo $companyuser->email; ?></td>
                                                                     <td class="center"><?php echo $companyuser->address; ?></td>

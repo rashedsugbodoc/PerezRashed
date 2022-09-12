@@ -27,6 +27,7 @@
                                                     <table id="editable-sample" class="table table-bordered text-nowrap key-buttons">
                                                         <thead>
                                                             <tr>
+                                                                <th><?php echo lang('image'); ?></th>
                                                                 <th><?php echo lang('name'); ?></th>
                                                                 <th><?php echo lang('email'); ?></th>
                                                                 <th><?php echo lang('address'); ?></th>
@@ -50,6 +51,7 @@
 
                                                             <?php foreach ($admins as $admin) { ?>
                                                                 <tr class="">
+                                                                    <td style="width:10%;"><img style="width:95%;" src="<?php echo file_exists($admin->img_url)?$admin->img_url:'public/assets/images/users/placeholder.jpg'; ?>"></td>
                                                                     <td> <?php echo $admin->name; ?></td>
                                                                     <td><?php echo $admin->email; ?></td>
                                                                     <td class="center"><?php echo $admin->address; ?></td>
