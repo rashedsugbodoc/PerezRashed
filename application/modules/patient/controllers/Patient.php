@@ -4163,6 +4163,116 @@ class Patient extends MX_Controller {
         echo json_encode($output);
     }
 
+    function getVital() {
+        $patient_id = $this->input->get('patient_id');
+        $requestData = $_REQUEST;
+        $start = $requestData['start'];
+        $limit = $requestData['length'];
+        $search = $this->input->post('search')['value'];
+        $current_user = $this->ion_auth->get_user_id();
+
+        if (!empty($patient_id)) {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['vitals'] = $this->patient_model->getVitalBySearch($search, $patient_id);
+                } else {
+                    $data['vitals'] = $this->patient_model->getPatientVitalById($patient_id);
+                }
+            } else {
+                if (!empty($search)) {
+                    $data['vitals'] = $this->patient_model->getVitalByLimitBySearch($limit, $start, $search, $patient_id);
+                } else {
+                    $data['vitals'] = $this->patient_model->getVitalByLimit($limit, $start, $patient_id);
+                }
+            }
+        } else {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['vitals'] = $this->patient_model->getVitalBySearch($search);
+                } else {
+                    $data['vitals'] = $this->patient_model->getPatientVital();
+                }
+            } else {
+                if (!empty($search)) {
+                    $data['vitals'] = $this->patient_model->getVitalByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['vitals'] = $this->patient_model->getVitalByLimit($limit, $start);
+                }
+            }
+        }
+
+        foreach ($data['vitals'] as $vital) {
+            $measured_at = date('Y-m-d h:i A', strtotime($vital->measured_at.' UTC'));
+            $bpm = $vital->heart_rate;
+            $height = $vital->height_cm;
+            $weight = $vital->weight_kg;
+            $bmi = $vital->bmi;
+            $bp = $vital->systolic . ' / ' . $vital->diastolic;
+            $blood_sugar = $vital->blood_sugar_mg;
+            $temperature = $vital->temperature_celsius;
+            $spo2 = $vital->spo2;
+            $respiration_rate = $vital->respiration_rate;
+            $pain = $vital->pain;
+            $note = $vital->note;
+
+            $facility = $this->branch_model->getBranchById($vital->location_id);
+            $hospital = $this->hospital_model->getHospitalById($vital->hospital_id);
+            $encounter_details = $this->encounter_model->getEncounterById($vital->encounter_id);
+            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+            if (!empty($vital->encounter_id)) {
+                if (!empty($encounter_location)) {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                } else {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                }
+            } else {
+                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+            }
+
+            if ($vital->recorded_user_id == $current_user) {
+                $options1 = '<button type="button" class="btn btn-info editVitals" title="'.lang('edit').'" data-toggle="modal" data-id="'.$vital->id.'"><i class="fa fa-edit"></i> </button>';
+                $options2 = '<a class="btn btn-danger btn-xs " href="patient/deleteVital?id='.$vital->id.'" onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i> '.lang('delete').'</a>';
+            }
+
+            $info[] = array(
+                $measured_at,
+                $bpm,
+                $height,
+                $weight,
+                $bmi,
+                $bp,
+                $blood_sugar,
+                $temperature,
+                $spo2,
+                $respiration_rate,
+                $pain,
+                $note,
+                $appointment_facility,
+                $options1 . ' ' . $options2,
+            );
+        }
+
+        if (!empty($data['vitals'])) {
+            $output = array(
+                "draw" => intval($requestData['draw']),
+                "recordsTotal" => $this->patient_model->getVitalByPatientCount($patient_id),
+                "recordsFiltered" => $this->patient_model->getVitalBySearchByPatientCount($search, $patient_id),
+                "data" => $info
+            );
+        } else {
+            $output = array(
+                // "draw" => 1,
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => []
+            );
+        }
+
+        echo json_encode($output);
+
+
+    }
+
     function getPatientPayments() {
         $requestData = $_REQUEST;
         $start = $requestData['start'];
