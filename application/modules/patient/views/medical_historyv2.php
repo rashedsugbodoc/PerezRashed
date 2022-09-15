@@ -290,7 +290,7 @@
                                 <div class="col-md-5 col-lg-3 col-sm-12 pr-1">
                                     <div class="box-widget widget-user">
                                         <div class="widget-user-image d-lg-flex">
-                                            <center><img alt="User Avatar" class="rounded-circle p-1" src="<?php echo $patient->img_url?$patient->img_url:base_url('public/assets/images/users/placeholder.jpg'); ?>" style="width: 150px; height: 150px;" width="auto" height="auto"></center>
+                                            <center><img alt="User Avatar" class="rounded-circle p-1" src="<?php echo file_exists($patient->img_url)?$patient->img_url:base_url('public/assets/images/users/placeholder.jpg'); ?>" style="width: 150px; height: 150px;" width="auto" height="auto"></center>
                                         </div>
                                     </div>
                                 </div>
@@ -446,65 +446,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach ($diagnosis as $diag) { ?>
-                                                                            <tr class="text-center">
-                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($diag->diagnosis_date.' UTC')); ?></td>
-                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($diag->onset_date.' UTC')); ?></td>
-                                                                                <td><?php
-                                                                                    $diagnosis_long = $this->diagnosis_model->getDiagnosisById($diag->diagnosis_id)->long_description;
-                                                                                    if (!empty($diagnosis_long)) {
-                                                                                        echo $diagnosis_long;
-                                                                                    } else {
-                                                                                        echo $diag->patient_diagnosis_text;
-                                                                                    }
-                                                                                ?></td>
-                                                                                <td><?php
-                                                                                    if (!empty($diag->diagnosis_code)) {
-                                                                                        echo $diag->diagnosis_code;
-                                                                                    } else {
-                                                                                        echo "Unregistered ICD10";
-                                                                                    }
-                                                                                ?></td>
-                                                                                <td><?php
-                                                                                    if ($diag->is_primary_diagnosis == 1) {
-                                                                                        echo 'P';
-                                                                                    } else {
-                                                                                        echo 'S';
-                                                                                    }
-                                                                                ?></td>
-                                                                                <td><?php echo $diag->diagnosis_notes; ?></td>
-                                                                                <td><?php echo $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number; ?></td>
-                                                                                <td><?php
-                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
-                                                                                    if (!empty($appointment->hospital_id)) {
-                                                                                        $appointment_facility = $facility->name;
-                                                                                    } else {
-                                                                                        $appointment_facility = '';
-                                                                                    }
-                                                                                    echo $appointment_facility; ?><br><?php
-                                                                                    echo '(' . lang('online') . ')';*/
-                                                                                    $facility = $this->branch_model->getBranchById($diag->location_id);
-                                                                                    $hospital = $this->hospital_model->getHospitalById($diag->hospital_id);
-                                                                                    $encounter_details = $this->encounter_model->getEncounterById($diag->encounter_id);
-                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
-                                                                                    if (!empty($diag->encounter_id)) {
-                                                                                        if (!empty($encounter_location)) {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
-                                                                                        } else {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
-                                                                                        }
-                                                                                    } else {
-                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
-                                                                                    }
-                                                                                    echo $appointment_facility;
-                                                                                ?></td>
-                                                                                <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                    <td>
-                                                                                        <a href="diagnosis/editDiagnosis?id=<?php echo $diag->patient_diagnosis_number ?>&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>
-                                                                                    </td>
-                                                                                <?php } ?>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                        
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -538,7 +480,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
+                                                                <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center normal-caps"><?php echo lang('measured_at'); ?></th>
@@ -561,60 +503,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach ($vitals as $vital) { ?>
-                                                                            <tr class="text-center">
-                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($vital->measured_at.' UTC')); ?></td>
-                                                                                <td><?php echo $vital->heart_rate; ?></td>
-                                                                                <td><?php echo $vital->height_cm; ?></td>
-                                                                                <td><?php echo $vital->weight_kg; ?></td>
-                                                                                <td><?php echo $vital->bmi; ?></td>
-                                                                                <td><?php echo $vital->systolic . ' / ' . $vital->diastolic; ?></td>
-                                                                                <td><?php echo $vital->blood_sugar_mg; ?></td>
-                                                                                <td><?php echo $vital->temperature_celsius; ?></td>
-                                                                                <td><?php echo $vital->spo2; ?></td>
-                                                                                <td><?php echo $vital->respiration_rate; ?></td>
-                                                                                <td><?php
-                                                                                if (!empty($vital->pain)) {
-                                                                                    echo $vital->pain; 
-                                                                                } else {
-                                                                                    echo '0';
-                                                                                }
-                                                                                ?></td>
-                                                                                <td><?php echo $vital->note; ?></td>
-                                                                                <td><?php
-                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
-                                                                                    if (!empty($appointment->hospital_id)) {
-                                                                                        $appointment_facility = $facility->name;
-                                                                                    } else {
-                                                                                        $appointment_facility = '';
-                                                                                    }
-                                                                                    echo $appointment_facility; ?><br><?php
-                                                                                    echo '(' . lang('online') . ')';*/
-                                                                                    $facility = $this->branch_model->getBranchById($vital->location_id);
-                                                                                    $hospital = $this->hospital_model->getHospitalById($vital->hospital_id);
-                                                                                    $encounter_details = $this->encounter_model->getEncounterById($vital->encounter_id);
-                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
-                                                                                    if (!empty($vital->encounter_id)) {
-                                                                                        if (!empty($encounter_location)) {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
-                                                                                        } else {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
-                                                                                        }
-                                                                                    } else {
-                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
-                                                                                    }
-                                                                                    echo $appointment_facility;
-                                                                                ?></td>
-                                                                                <?php if ($vital->recorded_user_id == $current_user) { ?>
-                                                                                    <td>
-                                                                                        <button type="button" class="btn btn-info editVitals" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $vital->id; ?>"><i class="fa fa-edit"></i> </button>
-                                                                                        <a class="btn btn-danger btn-xs " href="patient/deleteVital?id=<?php echo $vital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
-                                                                                    </td>
-                                                                                <?php } else { ?>
-                                                                                    <td></td>
-                                                                                <?php } ?>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                        
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -676,109 +565,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php /*foreach ($appointments_location as $app_location) {*/ ?>
-                                                                            <!-- <tr>
-                                                                                <td><?php echo date('Y-m-d', strtotime($app_location->appointment_date.' UTC')); ?></td>
-                                                                                <td><?php echo $app_location->time_slot; ?></td>
-                                                                                <td>
-                                                                                    <?php
-                                                                                    $doctor_details = $this->doctor_model->getDoctorById($app_location->doctor);
-                                                                                    if (!empty($doctor_details)) {
-                                                                                        $appointment_doctor = $doctor_details->name;
-                                                                                    } else {
-                                                                                        $appointment_doctor = '';
-                                                                                    }
-                                                                                    echo $appointment_doctor;
-                                                                                    ?>
-                                                                                </td>
-                                                                                <td><?php
-                                                                                    if (empty($app_location->status)) {
-                                                                                        if (!empty($app_location->request)) {
-                                                                                            echo "Requested";
-                                                                                        }
-                                                                                    } else {
-                                                                                        echo $app_location->status;
-                                                                                    }
-                                                                                ?></td>
-                                                                                <td><?php
-                                                                                    $facility = $this->hospital_model->getHospitalById($app_location->hospital_id);
-                                                                                    if (!empty($app_location->hospital_id)) {
-                                                                                        $appointment_facility = $facility->name;
-                                                                                    } else {
-                                                                                        $appointment_facility = '';
-                                                                                    }
-                                                                                    echo $appointment_facility;?><br><?php
-                                                                                    echo '( ' . $this->branch_model->getBranchById($app_location->location_id)->display_name . ' )';
-                                                                                ?></td>
-                                                                                <td><?php echo $this->appointment_model->getServiceCategoryById($app_location->service_category_group_id)->display_name; ?></td>
-                                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
-                                                                                    <td class="no-print">
-                                                                                        
-                                                                                    </td>
-                                                                                <?php } ?>
-                                                                            </tr> -->
-                                                                        <?php /*}*/ ?>
-                                                                        <?php foreach ($appointments as $appointment) { ?>
-                                                                            <tr class="">
-
-                                                                                <td><?php echo date('Y-m-d', strtotime($appointment->appointment_date.' UTC')); ?></td>
-                                                                                <td><?php echo $appointment->time_slot; ?></td>
-                                                                                <td>
-                                                                                    <?php
-                                                                                    $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
-                                                                                    if (!empty($doctor_details)) {
-                                                                                        $appointment_doctor = $doctor_details->name;
-                                                                                    } else {
-                                                                                        $appointment_doctor = '';
-                                                                                    }
-                                                                                    echo $appointment_doctor;
-                                                                                    ?>
-                                                                                </td>
-                                                                                <td><?php
-                                                                                    if (empty($appointment->status)) {
-                                                                                        if (!empty($appointment->request)) {
-                                                                                            echo "Requested";
-                                                                                        }
-                                                                                    } else {
-                                                                                        echo $appointment->status;
-                                                                                    }
-                                                                                ?></td>
-                                                                                <td><?php
-                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
-                                                                                    if (!empty($appointment->hospital_id)) {
-                                                                                        $appointment_facility = $facility->name;
-                                                                                    } else {
-                                                                                        $appointment_facility = '';
-                                                                                    }
-                                                                                    echo $appointment_facility; ?><br><?php
-                                                                                    echo '(' . lang('online') . ')';*/
-                                                                                    $facility = $this->branch_model->getBranchById($appointment->location_id);
-                                                                                    $hospital = $this->hospital_model->getHospitalById($appointment->hospital_id);
-                                                                                    $encounter_details = $this->encounter_model->getEncounterById($appointment->encounter_id);
-                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
-                                                                                    if (!empty($appointment->encounter_id)) {
-                                                                                        if (!empty($encounter_location)) {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
-                                                                                        } else {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
-                                                                                        }
-                                                                                    } else {
-                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
-                                                                                    }
-                                                                                    echo $appointment_facility;
-                                                                                ?></td>
-                                                                                <td><?php echo $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name; ?></td>
-                                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
-                                                                                    <td class="no-print">
-                                                                                        <!-- <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"></i> </button> -->
-                                                                                        <a href="appointment/editAppointment?id=<?php echo $appointment->id; ?>&root=patient&method=medicalHistory&patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id; ?>" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>   
-                                                                                        <?php if ($this->ion_auth->in_group('admin')) { ?>
-                                                                                            <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                                                        <?php } ?>
-                                                                                    </td>
-                                                                                <?php } ?>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                        
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -821,42 +608,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach ($medical_histories as $medical_history) { ?>
-                                                                            <tr class="">
-
-                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($medical_history->case_date.' UTC')); ?></td>
-                                                                                <td><?php echo $medical_history->title; ?></td>
-                                                                                <td><?php echo $medical_history->description; ?></td>
-                                                                                <td><?php
-                                                                                    $facility = $this->hospital_model->getHospitalById($medical_history->hospital_id);
-                                                                                    $encounter_details = $this->encounter_model->getEncounterById($medical_history->encounter_id);
-                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
-                                                                                    if (!empty($medical_history->encounter_id)) {
-                                                                                        if (!empty($encounter_location)) {
-                                                                                            $case_facility = $facility->name. '<br>' . '(' . $encounter_location . ')';
-                                                                                        } else {
-                                                                                            $case_facility = $facility->name. '<br>' . '(' . lang('online') . ')';
-                                                                                        }
-                                                                                        
-                                                                                    } else {
-                                                                                        $case_facility = '';
-                                                                                    }
-                                                                                    echo $case_facility;
-                                                                                ?></td>
-                                                                                <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                        <td class="no-print">
-                                                                                            <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>
-                                                                                        </td>
-                                                                                    <?php } ?>
-                                                                                    <?php if ($this->ion_auth->in_group('admin')) { ?>   
-                                                                                        <td class="no-print">
-                                                                                            <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                                                        </td>
-                                                                                    <?php } ?>
-                                                                                <?php } ?>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                        
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -897,77 +649,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach ($prescriptions as $prescription) { ?>
-                                                                            <tr class="">
-                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($prescription->prescription_date.' UTC')); ?></td>
-                                                                                <td>
-                                                                                    <?php
-                                                                                    $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);
-                                                                                    if (!empty($doctor_details)) {
-                                                                                        $prescription_doctor = $doctor_details->name;
-                                                                                    } else {
-                                                                                        $prescription_doctor = '';
-                                                                                    }
-                                                                                    echo $prescription_doctor;
-                                                                                    ?>
-
-                                                                                </td>
-                                                                                <td>
-
-                                                                                    <?php
-                                                                                    if (!empty($prescription->medicine)) {
-                                                                                        $medicine = explode('###', $prescription->medicine);
-
-                                                                                        foreach ($medicine as $key => $value) {
-                                                                                            $medicine_id = explode('***', $value);
-                                                                                            $medicine_details = $this->medicine_model->getMedicineById($medicine_id[0]);
-                                                                                            if (!empty($medicine_details)) {
-                                                                                                $medicine_name_with_dosage = $medicine_details->name . ' -' . $medicine_id[1];
-                                                                                                $medicine_name_with_dosage = $medicine_name_with_dosage . ' | ' . $medicine_id[3] . '<br>';
-                                                                                                rtrim($medicine_name_with_dosage, ',');
-                                                                                                echo '<p>' . $medicine_name_with_dosage . '</p>';
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                    ?>
-
-
-                                                                                </td>
-                                                                                <td><?php
-                                                                                    $facility = $this->hospital_model->getHospitalById($prescription->hospital_id);
-                                                                                    $encounter_details = $this->encounter_model->getEncounterById($prescription->encounter_id);
-                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
-                                                                                    if (!empty($prescription->encounter_id)) {
-                                                                                        if (!empty($encounter_location)) {
-                                                                                            $prescription_facility = $facility->name.'(' . $encounter_location . ')';
-                                                                                        } else {
-                                                                                            $prescription_facility = $facility->name.'(' . lang('online') . ')';
-                                                                                        }
-                                                                                    } else {
-                                                                                        $prescription_facility = '';
-                                                                                    }
-                                                                                    echo $prescription_facility;
-                                                                                ?></td>
-                                                                                <td class="no-print">
-                                                                                    <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->prescription_number; ?>"><i class="fa fa-eye"></i></a> 
-                                                                                    <?php
-                                                                                    if ($this->ion_auth->in_group('Doctor')) {
-                                                                                        $current_user = $this->ion_auth->get_user_id();
-                                                                                        $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
-                                                                                        if ($prescription->doctor == $doctor_table_id) {
-                                                                                            ?>
-                                                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
-                                                                                                <a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id=<?php echo $prescription->prescription_number.'&root=patient&method=medicalHistory&encounter_id='.$prescription->encounter_id; ?>"><i class="fa fa-edit"></i></a>   
-                                                                                                <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
-                                                                                            <?php } ?>
-                                                                                            <?php
-                                                                                        }
-                                                                                    }
-                                                                                    ?>
-                                                                                    <a class="btn btn-info btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i></a>
-                                                                                </td>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                        
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -1005,68 +687,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach($labrequests as $labrequest) { ?>
-                                                                            <tr>
-                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($labrequest->created_at.' UTC')); ?></td>
-                                                                                <td><?php echo $labrequest->lab_request_number ?></td>
-                                                                                <td>
-                                                                                    <?php
-                                                                                        $labtests = $this->labrequest_model->getLabrequestByLabrequestNumber($labrequest->lab_request_number);
-                                                                                        $labtestdata = '';
-                                                                                        foreach ($labtests as $labtest) {
-                                                                                            $labrequest_text = $labtest->long_common_name;
-                                                                                            if (empty($labrequest_text)) {
-                                                                                                $labrequest_text = $labtest->lab_request_text;
-                                                                                            }
-
-                                                                                            $labloinc = $labtest->loinc_num;
-                                                                                            if (empty($labloinc)) {
-                                                                                                $labloinc = '';
-                                                                                            }
-
-                                                                                            $labtestsingle = '<div class="mb-3"><p class="mb-0"><strong>'.$labrequest_text.'</strong></p><p class="mb-0">'.$labtest->instructions.'</p><p class="mb-0">'.$labloinc.'</p></div>';
-                                                                                            $labtestdata .= $labtestsingle;
-                                                                                        }
-                                                                                        $alltest = $labtestdata;
-
-                                                                                        echo $alltest;
-
-                                                                                    ?>
-                                                                                </td>
-                                                                                <td><?php echo $this->patient_model->getPatientById($labrequest->patient_id)->name ?></td>
-                                                                                <td><?php echo $this->doctor_model->getDoctorById($labrequest->doctor_id)->name ?></td>
-                                                                                <td><?php
-                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
-                                                                                    if (!empty($appointment->hospital_id)) {
-                                                                                        $appointment_facility = $facility->name;
-                                                                                    } else {
-                                                                                        $appointment_facility = '';
-                                                                                    }
-                                                                                    echo $appointment_facility; ?><br><?php
-                                                                                    echo '(' . lang('online') . ')';*/
-                                                                                    $facility = $this->branch_model->getBranchById($labrequest->location_id);
-                                                                                    $hospital = $this->hospital_model->getHospitalById($labrequest->hospital_id);
-                                                                                    $encounter_details = $this->encounter_model->getEncounterById($labrequest->encounter_id);
-                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
-                                                                                    if (!empty($labrequest->encounter_id)) {
-                                                                                        if (!empty($encounter_location)) {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
-                                                                                        } else {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
-                                                                                        }
-                                                                                    } else {
-                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
-                                                                                    }
-                                                                                    echo $appointment_facility;
-                                                                                ?></td>
-                                                                                <td>
-                                                                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?>
-                                                                                        <a class="btn btn-info" href="labrequest/editLabRequestView?id=<?php echo $labrequest->lab_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id; ?>"><i class="fe fe-edit"></i></a>
-                                                                                    <?php } ?>
-                                                                                    <a class="btn btn-info" href="labrequest/labrequestView?id=<?php echo $labrequest->lab_request_number ?>"><i class="fe fe-eye"></i></a>
-                                                                                </td>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                        
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -1105,48 +726,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach($forms as $form) { ?>
-                                                                            <tr>
-                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($form->form_date.' UTC')); ?></td>
-                                                                                <td><?php echo $form->form_number; ?></td>
-                                                                                <td><?php echo $form->name; ?></td>
-                                                                                <td>
-                                                                                    <?php
-                                                                                    $patient_details = $this->patient_model->getPatientById($form->patient)->name;
-                                                                                    echo $patient_details;
-                                                                                    ?>
-                                                                                </td>
-                                                                                <td><?php
-                                                                                    /*$facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
-                                                                                    if (!empty($appointment->hospital_id)) {
-                                                                                        $appointment_facility = $facility->name;
-                                                                                    } else {
-                                                                                        $appointment_facility = '';
-                                                                                    }
-                                                                                    echo $appointment_facility; ?><br><?php
-                                                                                    echo '(' . lang('online') . ')';*/
-                                                                                    $facility = $this->branch_model->getBranchById($form->location_id);
-                                                                                    $hospital = $this->hospital_model->getHospitalById($form->hospital_id);
-                                                                                    $encounter_details = $this->encounter_model->getEncounterById($form->encounter_id);
-                                                                                    $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
-                                                                                    if (!empty($form->encounter_id)) {
-                                                                                        if (!empty($encounter_location)) {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
-                                                                                        } else {
-                                                                                            $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
-                                                                                        }
-                                                                                    } else {
-                                                                                        $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
-                                                                                    }
-                                                                                    echo $appointment_facility;
-                                                                                ?></td>
-                                                                                <?php if ($this->ion_auth->in_group('Doctor')) { ?>
-                                                                                    <td>
-                                                                                        <a href="form?id=<?php echo $encounter_id?$form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory':$form->form_number.'&encounter_id='.$form->encounter_id.'&root=patient&method=medicalHistory'; ?>" class="btn btn-info"><i class="fe fe-edit"></i></a>
-                                                                                    </td>
-                                                                                <?php } ?>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                        
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -1166,7 +746,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100 editable-sample5">
+                                                                <table id="editable-sample15" class="table table-bordered text-nowrap key-buttons w-100 editable-sample15">
                                                                     <thead>
                                                                         <tr>
                                                                             <th><?php echo lang('date'); ?></th>
@@ -1177,35 +757,35 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach ($labs as $lab) { ?>
-                                                                            <tr class="">
-                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($lab->lab_date.' UTC')); ?></td>
-                                                                                <td><?php echo $lab->id; ?></td>
+                                                                        <?php /*foreach ($labs as $lab) {*/ ?>
+                                                                            <!-- <tr class="">
+                                                                                <td><?php /*echo date('Y-m-d h:i A', strtotime($lab->lab_date.' UTC'));*/ ?></td>
+                                                                                <td><?php /*echo $lab->id;*/ ?></td>
                                                                                 <td>
                                                                                     <?php
-                                                                                    $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
+                                                                                    /*$doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
                                                                                     if (!empty($doctor_details)) {
                                                                                         $lab_doctor = $doctor_details->name;
                                                                                     } else {
                                                                                         $lab_doctor = '';
                                                                                     }
-                                                                                    echo $lab_doctor;
+                                                                                    echo $lab_doctor;*/
                                                                                     ?>
                                                                                 </td>
                                                                                 <td><?php
-                                                                                    $facility = $this->hospital_model->getHospitalById($lab->hospital_id);
+                                                                                    /*$facility = $this->hospital_model->getHospitalById($lab->hospital_id);
                                                                                     if (!empty($lab->hospital_id)) {
                                                                                         $lab_facility = $facility->name;
                                                                                     } else {
                                                                                         $lab_facility = '';
                                                                                     }
-                                                                                    echo $lab_facility;
+                                                                                    echo $lab_facility;*/
                                                                                 ?></td>
                                                                                 <td class="no-print">
-                                                                                    <a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=<?php echo $lab->id; ?>"><i class="fa fa-eye"></i></a>   
+                                                                                    <a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=<?php /*echo $lab->id;*/ ?>"><i class="fa fa-eye"></i></a>   
                                                                                 </td>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                            </tr> -->
+                                                                        <?php /*}*/ ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -1266,8 +846,8 @@
                                                                                 </div>
                                                                             <?php } else { ?>
                                                                                 <div class="panel-body text-center">
-                                                                                    <a class="example-image-link" href="<?php echo $patient_material->thumbnail_url?$patient_material->thumbnail_url:$patient_material->url; ?>" data-lightbox="example-1" target="_blank">
-                                                                                        <img class="example-image" src="<?php echo $patient_material->thumbnail_url?$patient_material->thumbnail_url:$patient_material->url; ?><?php if(!empty($patient_material->last_modified)) echo '?m='. $patient_material->last_modified;?>" alt="image-1" max-width="120" max-height="120"/>
+                                                                                    <a class="example-image-link" href="<?php echo file_exists($patient_material->url)?$patient_material->url:base_url('public/assets/images/users/document-placeholder.jpg'); ?>" data-lightbox="example-1" target="_blank">
+                                                                                        <img class="example-image" src="<?php echo file_exists($patient_material->thumbnail_url)?$patient_material->thumbnail_url:base_url('public/assets/images/users/document-placeholder.jpg'); ?><?php if(!empty($patient_material->last_modified)) echo '?m='. $patient_material->last_modified;?>" alt="image-1" width="auto" height="auto" style="height: 120px; width: 120px;"/>
                                                                                     </a>
                                                                                 </div>
                                                                             <?php } ?>
@@ -1355,28 +935,28 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                        <?php foreach ($encounters as $encounter) { ?>
-                                                                            <tr class="">
-                                                                                <td><?php echo date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')); ?></td>            
-                                                                                <td><?php echo $encounter->encounter_number; ?></td>
-                                                                                <td><?php echo $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name; ?></td>
+                                                                        <?php /*foreach ($encounters as $encounter) {*/ ?>
+                                                                            <!-- <tr class="">
+                                                                                <td><?php /*echo date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC'));*/ ?></td>            
+                                                                                <td><?php /*echo $encounter->encounter_number;*/ ?></td>
+                                                                                <td><?php /*echo $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name;*/ ?></td>
                                                                                 <td><?php
-                                                                                    if (!empty($encounter->location_id)) {
+                                                                                    /*if (!empty($encounter->location_id)) {
                                                                                         $facility = $this->hospital_model->getHospitalById($encounter->hospital_id);
                                                                                         echo $facility->name.'<br>'.'( '.$this->branch_model->getBranchById($encounter->location_id)->display_name.' )';
                                                                                     } else {
                                                                                         echo $this->hospital_model->getHospitalById($encounter->hospital_id)->name.'<br>'.'( '.lang('online').' )';
-                                                                                    }
+                                                                                    }*/
                                                                                 ?></td>
                                                                                 <td><?php
-                                                                                    if (!empty($encounter->encounter_status)) {
+                                                                                    /*if (!empty($encounter->encounter_status)) {
                                                                                         echo $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
                                                                                     } else {
                                                                                         echo "N/A";
-                                                                                    }
+                                                                                    }*/
                                                                                 ?></td>
-                                                                            </tr>
-                                                                        <?php } ?>
+                                                                            </tr> -->
+                                                                        <?php /*}*/ ?>
                                                                     </tbody>
                                                                 </table>
                                                             </div>
@@ -2017,7 +1597,7 @@
                         <!-- //Case History Modal Start -->
 
                             <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                <div class="modal-dialog" role="document">
+                                <div class="modal-dialog modal-md" role="document">
                                     <div class="modal-content modal-content-demo">
                                         <div class="modal-header">
                                             <h6 class="modal-title"><?php echo lang('add_case'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
@@ -2115,7 +1695,7 @@
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
-                                                            <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
+                                                            <input type="text" name="encounter_id" value="<?php echo $encounter_id ?>">
                                                         </div>
                                                     </div>
                                                 <?php } else { ?>
@@ -2171,7 +1751,7 @@
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
-                                                            <textarea id="description2" name="description" hidden="" readonly="" class="form-control" required rows="4"></textarea>
+                                                            <textarea id="description2" name="description" readonly="" hidden class="form-control" required rows="4"></textarea>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -2955,11 +2535,14 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $(".editbutton").click(function () {
+            $(document.body).on("click", ".editbutton", function () {
                 // e.preventDefault(e);
                 // Get the record's ID via attribute  
                 var iid = $(this).attr('data-id');
+                console.log(iid);
                 var patient = "<?php echo $patient->id; ?>";
+                document.getElementById("medical_historyEditForm").reset();
+                $('#medical_historyEditForm').trigger("reset");
                 // document.getElementById('quillEditor2').children[0].innerHTML = '';
                 $('#myModal2').modal('show');
                 $.ajax({
@@ -2987,6 +2570,7 @@
                             $("#edit_encounter_case").append($('<option>').text("Encounter No. : "+value.encounter_number+" - "+value.display_name+" - "+value.created_at).val(value.id)).end();
                         });
 
+                        // $('#medical_historyEditForm').find('[name="id"]').val(response.medical_history.id).change();
                         $('#medical_historyEditForm').find('[name="encounter_id"]').val(response.medical_history.encounter_id).change();
                         $('#medical_historyEditForm').find('[name="title"]').val(response.medical_history.title).end()
                         document.getElementById('quillEditor2').children[0].innerHTML = response.medical_history.description;
@@ -3645,9 +3229,23 @@
 
     <script>
         $(document).ready(function () {
-            $('.editable-sample').DataTable({
+            var encounter_id = '<?php echo $encounter_id; ?>';
+            var patient_id = '<?php echo $patient->id; ?>';
+            var table = $('#editable-sample').DataTable({
                 responsive: true,
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                //   dom: 'lfrBtip',
+
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
+                "ajax": {
+                    url: "diagnosis/getDiagnosis?patient_id="+patient_id+"&encounter_id="+encounter_id,
+                    type: 'POST',
+                },
+                scroller: {
+                    loadingIndicator: true
+                },
+                dom: "<'row'<'col-sm-2'l><'col-sm-6 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
@@ -3658,28 +3256,28 @@
                             {
                                 extend: 'copyHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
                                 title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
                             },
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
                                 title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
                             },
                             {
                                 extend: 'csvHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
                                 title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
                             },
                             {
                                 extend: 'pdfHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
                                 title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>',
                                 orientation: 'landscape',
@@ -3688,7 +3286,7 @@
                             {
                                 extend: 'print',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
                                 title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
                             },
@@ -3699,19 +3297,110 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: -1,
+                iDisplayLength: 10,
                 "order": [[0, "desc"]],
                 "language": {
                     "lengthMenu": "_MENU_",
-                }
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search...",
+                    "url": "common/assets/DataTables/languages/<?php echo $this->language; ?>.json"
+                },
+            });
+            table.buttons().container().appendTo('.custom_buttons');
+        });
 
+        $(document).ready(function () {
+            var encounter_id = '<?php echo $encounter_id; ?>';
+            var patient_id = '<?php echo $patient->id; ?>';
+            $('#editable-sample1').DataTable({
+                responsive: true,
+                //   dom: 'lfrBtip',
 
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
+                "ajax": {
+                    url: "patient/getVital?patient_id="+patient_id+"&encounter_id="+encounter_id,
+                    type: 'POST',
+                },
+                scroller: {
+                    loadingIndicator: true
+                },
+                dom: "<'row'<'col-sm-2'l><'col-sm-6 text-center'B><'col-sm-4'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    {
+                    extend: 'collection',
+                    text: 'Export',        
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>',
+                                orientation: 'landscape',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                },
+                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                            },
+                        ],
+                    }
+                ],
+                aLengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                iDisplayLength: 10,
+                "order": [[0, "desc"]],
+                "language": {
+                    "lengthMenu": "_MENU_",
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search...",
+                    "url": "common/assets/DataTables/languages/<?php echo $this->language; ?>.json"
+                },
             });
         });
 
         $(document).ready(function () {
+            var encounter_id = '<?php echo $encounter_id; ?>';
+            var patient_id = '<?php echo $patient->id; ?>';
             $('.editable-sample2').DataTable({
                 responsive: true,
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
+                "ajax": {
+                    url: "appointment/getAppointment?patient_id="+patient_id+"&encounter_id="+encounter_id,
+                    type: 'POST',
+                },
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -3776,8 +3465,16 @@
 
 
         $(document).ready(function () {
-            $('.editable-sample3').DataTable({
+            var patient_id = '<?php echo $patient->id; ?>';
+            var table = $('.editable-sample3').DataTable({
                 responsive: true,
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
+                "ajax": {
+                    url: "patient/getCaseList?patient_id="+patient_id,
+                    type: 'POST',
+                },
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -3838,11 +3535,20 @@
 
 
             });
+            table.buttons().container().appendTo('.custom_buttons');
         });
 
         $(document).ready(function () {
+            var patient_id = '<?php echo $patient->id; ?>';
             $('.editable-sample4').DataTable({
                 responsive: true,
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
+                "ajax": {
+                    url: "prescription/getPrescriptionListByDoctor?patient_id="+patient_id,
+                    type: 'POST',
+                },
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -3906,8 +3612,16 @@
         });
 
         $(document).ready(function () {
+            var patient_id = '<?php echo $patient->id; ?>';
             $('.editable-sample5').DataTable({
                 responsive: true,
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
+                "ajax": {
+                    url: "labrequest/getLabrequest?patient_id="+patient_id,
+                    type: 'POST',
+                },
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -3971,8 +3685,16 @@
         });
 
         $(document).ready(function () {
+            var patient_id = '<?php echo $patient->id; ?>';
             $('.editable-sample6').DataTable({
                 responsive: true,
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
+                "ajax": {
+                    url: "encounter/getEncounter?patient_id="+patient_id,
+                    type: 'POST',
+                },
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -4036,8 +3758,17 @@
         });
 
         $(document).ready(function () {
+            var patient_id = '<?php echo $patient->id; ?>';
+            var encounter_id = '<?php echo $encounter_id; ?>';
             $('.editable-sample7').DataTable({
                 responsive: true,
+                "processing": true,
+                // "serverSide": true,
+                "searchable": true,
+                "ajax": {
+                    url: "form/getForm?patient_id="+patient_id+'&encounter_id='+encounter_id,
+                    type: 'POST',
+                },
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
