@@ -35,7 +35,10 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
                                                                 <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" required name="date" type="text" readonly value="<?php
-                                                                if (!empty($case_lists->id)) {
+                                                                if (!empty($setval)) {
+                                                                    echo set_value('date');
+                                                                }
+                                                                elseif (!empty($case_lists->id)) {
                                                                     echo date('m/d/y', strtotime($case_lists->case_date.' UTC'));
                                                                 }
                                                                 ?>">
@@ -45,9 +48,13 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
                                                                 <select class="form-control select2-show-search" required id="patientchoose" name="patient_id">
-                                                                    <?php if(!empty($case_lists->id)) { ?>
-                                                                        <option value="<?php echo $case_lists->patient_id ?>"><?php echo $this->patient_model->getPatientById($case_lists->patient_id)->name ?></option>
-                                                                    <?php } ?>
+                                                                    <?php
+                                                                    if(!empty($setval)) {
+                                                                        ?><option value="<?php echo set_value('patient_id'); ?>"><?php echo $this->patient_model->getPatientById(set_value('patient_id'))->name; ?></option><?php
+                                                                    } elseif(!empty($case_lists->id)) {
+                                                                        ?><option value="<?php echo $case_lists->patient_id ?>"><?php echo $this->patient_model->getPatientById($case_lists->patient_id)->name ?></option><?php
+                                                                    }
+                                                                    ?>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -77,7 +84,10 @@
                                                             <div class="form-group">
                                                                 <label><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?><span class="text-red"> *</span></label>
                                                                 <input type="text" class="form-control" id="title" required name="title" placeholder="<?php echo lang('clinical'); ?> <?php echo lang('impression'); ?>" value="<?php
-                                                                if (!empty($case_lists->id)) {
+                                                                if (!empty($setval)) {
+                                                                    echo set_value('title');
+                                                                }
+                                                                elseif (!empty($case_lists->id)) {
                                                                     echo $case_lists->title;
                                                                 }
                                                                 ?>">
@@ -408,6 +418,22 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
+        $(document).ready(function() {
+            var patient_id = <?php echo set_value('patient_id'); ?>;
+            alert(patient_id);
+            $('#casebody').find('[name="patient_id"]').val(patient_id).change()
+            var accourdionHeader = document.getElementById("accordHeader");
+            var collapseOne31 = document.getElementById("collapseOne31");
+            if (patient_id) {
+                accourdionHeader.className = "collapsed text-dark border-bottom";
+                accourdionHeader.style.backgroundColor = "#fff";
+                collapseOne31.className = "panel-collapse collapse show";
+                $("#accordHeader").attr("aria-expanded", true);
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
         // $("#encounter").change(function() {
         //     var encounter = $("#encounter").val();
         //     $("#patientchoose").find('option').remove();
@@ -672,6 +698,41 @@
                     $("#casebody").attr("hidden", true);
                 }
             })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // var form_id = $("#form_id").val();
+            // var encounter_id = $("#formForm").find('[name="encounter_id"]').val();
+            // console.log(encounter_id);
+            // var add_new = "<?php echo $form_add_new; ?>";
+            // var z = document.getElementById("accordHeader");
+            // var x = document.getElementById("collapseOne31");
+            // if (form_id !== "") {
+            //     z.className = "collapsed text-dark border-bottom";
+            //     z.style.backgroundColor = "#fff";
+            //     x.className = "panel-collapse collapse show";
+            //     $("#accordHeader").attr("aria-expanded", true);
+
+            //     /*USE THIS TO GET THE ID ON URL*/
+            //         // var baseUrl = (window.location).href;
+            //         // var koopId = baseUrl.substring(baseUrl.lastIndexOf('=') + 1);
+            //         // alert(koopId)
+            //     /*END*/
+            // }
+            // if (add_new === "true") {
+            //     z.className = "collapsed text-dark border-bottom";
+            //     z.style.backgroundColor = "#fff";
+            //     x.className = "panel-collapse collapse show";
+            //     $("#accordHeader").attr("aria-expanded", true);
+            // }
+            // if (encounter_id !== null || add_new === "true") {
+            //     z.className = "collapsed text-dark border-bottom";
+            //     z.style.backgroundColor = "#fff";
+            //     x.className = "panel-collapse collapse show";
+            //     $("#accordHeader").attr("aria-expanded", true);
+            // }
         });
     </script>
 

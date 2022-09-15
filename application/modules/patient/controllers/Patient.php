@@ -2444,9 +2444,14 @@ class Patient extends MX_Controller {
                 $this->load->view('case_listv2');
                 // $this->load->view('home/footer'); // just the header file
             } else {
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['patients'] = $this->patient_model->getPatient();
+                $data['patient'] = $patient_id;
+                $data['medical_histories'] = $this->patient_model->getMedicalHistory();
+                $data['setval'] = 'setval';
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $this->load->view('home/dashboardv2'); // just the header file
-                $this->load->view('case_listv2');
+                $this->load->view('case_listv2', $data);
                 // $this->load->view('home/footer'); // just the header file
             }
         } else {
