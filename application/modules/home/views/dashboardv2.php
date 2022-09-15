@@ -148,7 +148,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <!-- Accordion Css -->
         <link href="<?php echo base_url('public/assets/plugins/accordion/accordion.css'); ?>" rel="stylesheet" />  
 
-        <link href="<?php echo base_url('public/assets/plugins/form-wizard/css/form-wizard.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/form-wizard/css/forn-wizard.css'); ?>" rel="stylesheet" />
         <link href="<?php echo base_url('public/assets/plugins/formwizard/smart_wizard.css'); ?>" rel="stylesheet">
         <link href="<?php echo base_url('public/assets/plugins/formwizard/smart_wizard_theme_dots.css'); ?>" rel="stylesheet">
         
