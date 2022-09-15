@@ -2612,8 +2612,8 @@ class Patient extends MX_Controller {
         // } else {
         //     $data['forms'] = $this->form_model->getFormByPatientIdByEncounterId($id, $data['encounter_id']);
         // }
-        $data['labs'] = $this->lab_model->getLabByPatientId($id);
-        $data['beds'] = $this->bed_model->getBedAllotmentsByPatientId($id);
+        /*$data['labs'] = $this->lab_model->getLabByPatientId($id);
+        $data['beds'] = $this->bed_model->getBedAllotmentsByPatientId($id);*/
         // if (empty($data['encounter_id'])) {
         //     $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
         // } else {
@@ -2927,77 +2927,77 @@ class Patient extends MX_Controller {
             }
         }
 
-        foreach ($data['labs'] as $lab) {
+        // foreach ($data['labs'] as $lab) {
 
-            $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
-            $lab_specialty = [];
-            $lab_doctor_specialty_explode = explode(',', $doctor_details->specialties);
-            $hospital_details = $this->hospital_model->getHospitalById($prescription->hospital_id);
-            $encounter = $this->encounter_model->getEncounterById($lab->encounter_id);
-            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
-            if (empty($branch_name)) {
-                $branch_name = "Online";
-            }
-            foreach($lab_doctor_specialty_explode as $lab_doctor_specialty) {
-                $lab_specialties = $this->specialty_model->getSpecialtyById($lab_doctor_specialty)->display_name_ph;
-                $lab_specialty[] = '<span class="badge badge-light badge-pill">'. $lab_specialties .'</span>';
-            }
+        //     $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
+        //     $lab_specialty = [];
+        //     $lab_doctor_specialty_explode = explode(',', $doctor_details->specialties);
+        //     $hospital_details = $this->hospital_model->getHospitalById($prescription->hospital_id);
+        //     $encounter = $this->encounter_model->getEncounterById($lab->encounter_id);
+        //     $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+        //     if (empty($branch_name)) {
+        //         $branch_name = "Online";
+        //     }
+        //     foreach($lab_doctor_specialty_explode as $lab_doctor_specialty) {
+        //         $lab_specialties = $this->specialty_model->getSpecialtyById($lab_doctor_specialty)->display_name_ph;
+        //         $lab_specialty[] = '<span class="badge badge-light badge-pill">'. $lab_specialties .'</span>';
+        //     }
 
-            if (!empty($lab_specialty)) {
-                $lab_spec = implode(' ', $lab_specialty);
-            } else {
-                $lab_spec = "N/A";
-            }
-            if (!empty($doctor_details)) {
-                $lab_doctor = $doctor_details->name;
-            } else {
-                $lab_doctor = '';
-            }
+        //     if (!empty($lab_specialty)) {
+        //         $lab_spec = implode(' ', $lab_specialty);
+        //     } else {
+        //         $lab_spec = "N/A";
+        //     }
+        //     if (!empty($doctor_details)) {
+        //         $lab_doctor = $doctor_details->name;
+        //     } else {
+        //         $lab_doctor = '';
+        //     }
 
             
-            if (!empty($lab->lab_date)) {
-                $timeline[strtotime($lab->lab_date.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($lab->lab_date.' UTC')) . '</span></li>
-                                            <li>
-                                                <i class="fa fa-envelope bg-primary"></i>
-                                                <div class="timelineleft-item">
-                                                    <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($lab->lab_date.' UTC')), 3) . '</span>
-                                                    <h3 class="timelineleft-header"><span>Lab</span></h3>
-                                                    <div class="timelineleft-body">
-                                                        <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($lab->lab_date.' UTC')) . '</h4>
-                                                        <a class="btn btn-xs btn-info" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i> ' . lang('view') . '</a>
-                                                    </div>
-                                                    <div class="timelineleft-footer border-top bg-light">
-                                                        <div class="d-flex align-items-center mt-auto">
-                                                            <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
-                                                            <div>
-                                                                <p class="font-weight-semibold mb-1">'. $lab_doctor .'</p>
-                                                                <small class="d-block text-muted">' . $lab_spec . '</small>
-                                                            </div>
-                                                            <div class="ml-auto mr-3 text-right">
-                                                                <div class="row">
-                                                                    <div class="col-md-12 col-sm-12">
-                                                                        <strong>'. $hospital_details->name .'</strong>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-12 col-sm-12">
-                                                                        <small>'. $branch_name .'</small>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div>
-                                                                <div>
-                                                                    <i class="fa fa-hospital-o fa-2x text-primary"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>';
-            } else {
-                '';
-            }
-        }
+        //     if (!empty($lab->lab_date)) {
+        //         $timeline[strtotime($lab->lab_date.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($lab->lab_date.' UTC')) . '</span></li>
+        //                                     <li>
+        //                                         <i class="fa fa-envelope bg-primary"></i>
+        //                                         <div class="timelineleft-item">
+        //                                             <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($lab->lab_date.' UTC')), 3) . '</span>
+        //                                             <h3 class="timelineleft-header"><span>Lab</span></h3>
+        //                                             <div class="timelineleft-body">
+        //                                                 <h4><i class=" fa fa-calendar"></i> ' . date('d-m-Y', strtotime($lab->lab_date.' UTC')) . '</h4>
+        //                                                 <a class="btn btn-xs btn-info" title="Lab" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '" target="_blank"><i class="fa fa-file-text"></i> ' . lang('view') . '</a>
+        //                                             </div>
+        //                                             <div class="timelineleft-footer border-top bg-light">
+        //                                                 <div class="d-flex align-items-center mt-auto">
+        //                                                     <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
+        //                                                     <div>
+        //                                                         <p class="font-weight-semibold mb-1">'. $lab_doctor .'</p>
+        //                                                         <small class="d-block text-muted">' . $lab_spec . '</small>
+        //                                                     </div>
+        //                                                     <div class="ml-auto mr-3 text-right">
+        //                                                         <div class="row">
+        //                                                             <div class="col-md-12 col-sm-12">
+        //                                                                 <strong>'. $hospital_details->name .'</strong>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                         <div class="row">
+        //                                                             <div class="col-md-12 col-sm-12">
+        //                                                                 <small>'. $branch_name .'</small>
+        //                                                             </div>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                     <div>
+        //                                                         <div>
+        //                                                             <i class="fa fa-hospital-o fa-2x text-primary"></i>
+        //                                                         </div>
+        //                                                     </div>
+        //                                                 </div>
+        //                                             </div>
+        //                                         </div>
+        //                                     </li>';
+        //     } else {
+        //         '';
+        //     }
+        // }
 
         foreach ($data['medical_histories'] as $medical_history) {
             $specialty = [];
@@ -4379,6 +4379,7 @@ class Patient extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $patient_id = $this->input->get('patient_id');
 
         if ($limit == -1) {
             if (!empty($search)) {
@@ -4410,6 +4411,12 @@ class Patient extends MX_Controller {
                 $options3 = ' <a type="button" class="btn btn-info btn-xs case" title="' . lang('case') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-file"> </i> </a>';
             }
 
+            if (!empty($patient_id)) {
+                if ($this->ion_auth->in_group('Doctor')) {
+                    $options4 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" title="'.lang('edit').'" data-toggle="modal" data-id="'.$medical_history->id.'"><i class="fa fa-edit"></i> </button>';
+                }
+            }
+
             if (!empty($case->patient_id)) {
                 $patient_info = $this->patient_model->getPatientById($case->patient_id);
                 if (!empty($patient_info)) {
@@ -4421,13 +4428,38 @@ class Patient extends MX_Controller {
                 $patient_details = '';
             }
 
-            $info[] = array(
-                date('Y-m-d', strtotime($case->case_date.' UTC')),
-                $patient_details,
-                $case->title,
-                $options3 . ' ' . $options1 . ' ' . $options2
-                    // $options4
-            );
+            $facility = $this->branch_model->getBranchById($case->location_id);
+            $hospital = $this->hospital_model->getHospitalById($case->hospital_id);
+            $encounter_details = $this->encounter_model->getEncounterById($case->encounter_id);
+            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+            if (!empty($case->encounter_id)) {
+                if (!empty($encounter_location)) {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                } else {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                }
+            } else {
+                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+            }
+
+            if (!empty($patient_id)) {
+                $info[] = array(
+                    date('Y-m-d', strtotime($case->case_date.' UTC')),
+                    $case->title,
+                    $case->description,
+                    $appointment_facility,
+                    $options4 . ' ' . $options2
+                        // $options4
+                );
+            } else {
+                $info[] = array(
+                    date('Y-m-d', strtotime($case->case_date.' UTC')),
+                    $patient_details,
+                    $case->title,
+                    $options3 . ' ' . $options1 . ' ' . $options2
+                        // $options4
+                );
+            }
         }
 
         if (!empty($data['cases'])) {

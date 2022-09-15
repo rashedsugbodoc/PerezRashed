@@ -550,6 +550,7 @@ class Prescription extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $patient_id = $this->input->get('patient_id');
         $doctor_ion_id = $this->ion_auth->get_user_id();
         $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
         if ($limit == -1) {
@@ -604,14 +605,40 @@ class Prescription extends MX_Controller {
             } else {
                 $patientname = $prescription->patientname;
             }
-            $info[] = array(
-                date('Y-m-d', strtotime($prescription->prescription_date.' UTC')),
-                $prescription->prescription_number,
-                $patientname,
-                $this->patient_model->getPatientById($prescription->patient)->patient_id,
-                $medicinelist,
-                $option1 . ' ' . $option3 . ' ' . $options4 . ' ' . $option2
-            );
+
+            $facility = $this->branch_model->getBranchById($prescription->location_id);
+            $hospital = $this->hospital_model->getHospitalById($prescription->hospital_id);
+            $encounter_details = $this->encounter_model->getEncounterById($prescription->encounter_id);
+            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+            if (!empty($prescription->encounter_id)) {
+                if (!empty($encounter_location)) {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                } else {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                }
+            } else {
+                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+            }
+
+            if(!empty($patient_id)) {
+                $info[] = array(
+                    date('Y-m-d', strtotime($prescription->prescription_date.' UTC')),
+                    $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->name,
+                    $medicinelist,
+                    $appointment_facility,
+                    $option1 . ' ' . $option3 . ' ' . $option2 . ' ' . $options4
+                );
+            } else {
+                $info[] = array(
+                    date('Y-m-d', strtotime($prescription->prescription_date.' UTC')),
+                    $prescription->prescription_number,
+                    $patientname,
+                    $this->patient_model->getPatientById($prescription->patient)->patient_id,
+                    $medicinelist,
+                    $option1 . ' ' . $option3 . ' ' . $options4 . ' ' . $option2
+                );
+            }
+
             $i = $i + 1;
         }
 

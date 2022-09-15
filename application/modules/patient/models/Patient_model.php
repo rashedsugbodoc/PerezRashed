@@ -796,6 +796,97 @@ class Patient_model extends CI_model {
         $this->db->delete('vital');
     }
 
+    function getVitalBySearch($search, $patient_id = null) {
+        $this->db->order_by('id', 'desc');
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('vital')
+                    ->where('patient_id', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR measured_at LIKE '%" . $search . "%' OR note LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        } else {
+            $query = $this->db->select('*')
+                    ->from('vital')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR measured_at LIKE '%" . $search . "%' OR note LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        }
+        return $query->result();
+    }
+
+    function getVitalByLimitBySearch($limit, $start, $search, $patient_id) {               
+        $this->db->order_by('id', 'desc');
+        $this->db->limit($limit, $start);
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('vital')
+                    ->where('patient_id', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR measured_at LIKE '%" . $search . "%' OR note LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        } else {
+            $query = $this->db->select('*')
+                    ->from('vital')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR measured_at LIKE '%" . $search . "%' OR note LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        }
+        return $query->result();       
+    }
+
+    function getVitalByLimit($limit, $start, $patient_id = null) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        if (!empty($patient_id)) {
+            $this->db->where('patient_id', $patient_id);
+        }
+        $this->db->order_by('id', 'desc');
+        $this->db->limit($limit, $start);
+        $query = $this->db->get('vital');
+        return $query->result();
+    }
+
+    function getPatientVital() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('vital');
+        return $query->result();
+    }
+
+    function getVitalByPatientCount($patient_id = null) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        if (!empty($patient_id)) {
+            $this->db->where('patient_id', $patient_id);
+        }
+        $this->db->order_by('id', 'desc');
+        $query = $this->db->get('vital');
+        return $query->num_rows();
+    }
+
+    function getVitalBySearchByPatientCount($search, $patient_id = null) {       
+        if (!empty($patient_id)) {
+            $query = $this->db->select('id')
+                    ->from('vital')
+                    ->where('patient_id', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR measured_at LIKE '%" . $search . "%' OR note LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        } else {
+            $query = $this->db->select('id')
+                    ->from('vital')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR measured_at LIKE '%" . $search . "%' OR note LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        }
+        return $query->num_rows();            
+    }
+
     function getCivilStatus() {
         $this->db->order_by('id','asc');
         $query = $this->db->get('civil_status');

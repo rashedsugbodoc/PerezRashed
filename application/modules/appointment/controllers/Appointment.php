@@ -1361,6 +1361,7 @@ class Appointment extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $patient_id = $this->input->get('patient_id');
 
         if ($limit == -1) {
             if (!empty($search)) {
@@ -1393,14 +1394,61 @@ class Appointment extends MX_Controller {
                 $options5 = '<a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
-            $info[] = array(
-                $appointment->id,
-                $appointment->name,
-                $appointment->phone,
-                $this->settings_model->getSettings()->currency . $this->appointment_model->getDueBalanceByAppointmentId($appointment->id),
-                $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
-                    //  $options2
-            );
+            if (!empty($patient_id)) {
+                $options6 = '<a href="appointment/editAppointment?id='.$appointment->id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id.'&encounter_id='.$encounter_id.'" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>';
+                $options7 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="'.lang("delete").'" href="appointment/delete?id='.$appointment->id.'" onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i> </a>';
+            }
+
+            $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
+            if (!empty($doctor_details)) {
+                $appointment_doctor = $doctor_details->name;
+            } else {
+                $appointment_doctor = '';
+            }
+
+            if (empty($appointment->status)) {
+                if (!empty($appointment->request)) {
+                    $status = "Requested";
+                }
+            } else {
+                    $status = $appointment->status;
+            }
+
+            $facility = $this->branch_model->getBranchById($appointment->location_id);
+            $hospital = $this->hospital_model->getHospitalById($appointment->hospital_id);
+            $encounter_details = $this->encounter_model->getEncounterById($appointment->encounter_id);
+            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+            if (!empty($appointment->encounter_id)) {
+                if (!empty($encounter_location)) {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                } else {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                }
+            } else {
+                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+            }
+
+            if(!empty($patient_id)) {
+                $info[] = array(
+                    date('Y-m-d', strtotime($appointment->appointment_date.' UTC')),
+                    $appointment->time_slot,
+                    $appointment_doctor,
+                    $status,
+                    $appointment_facility,
+                    $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name,
+                    $options6 . ' ' . $options7,
+                        //  $options2
+                );
+            } else {
+                $info[] = array(
+                    $appointment->id,
+                    $appointment->name,
+                    $appointment->phone,
+                    $this->settings_model->getSettings()->currency . $this->appointment_model->getDueBalanceByAppointmentId($appointment->id),
+                    $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
+                        //  $options2
+                );
+            }
         }
 
         if (!empty($data['appointments'])) {

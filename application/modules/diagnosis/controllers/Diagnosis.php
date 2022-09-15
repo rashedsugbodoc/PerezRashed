@@ -12,8 +12,10 @@ class Diagnosis extends MX_Controller {
         $this->load->model('patient/patient_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('encounter/encounter_model');
+        $this->load->model('branch/branch_model');
+        $this->load->model('hospital/hospital_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient'))) {
             redirect('home/permission');
         }
     }
@@ -264,6 +266,105 @@ class Diagnosis extends MX_Controller {
         $data['patient_details'] = array_slice($this->patient_model->getPatient(), 0, 10);
 
         echo json_encode($data);
+    }
+
+    public function getDiagnosis() {
+        $patient_id = $this->input->get('patient_id');
+        $requestData = $_REQUEST;
+        $start = $requestData['start'];
+        $limit = $requestData['length'];
+        $search = $this->input->post('search')['value'];
+
+        if(!empty($patient_id)) {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisBySearch($search, $patient_id);
+                } else {
+                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($patient_id);
+                }
+            } else {
+                if (!empty($search)) {
+                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimitBySearch($limit, $start, $search, $patient_id);
+                } else {
+                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimit($limit, $start, $patient_id);
+                }
+            }
+        } else {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisBySearch($search);
+                } else {
+                    $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosis();
+                }
+            } else {
+                if (!empty($search)) {
+                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimit($limit, $start);
+                }
+            }
+        }
+
+        foreach ($data['diagnosis'] as $diag) {
+
+            if (!empty($diag->diagnosis_code)) {
+                $diag_code = $diag->diagnosis_code;
+            } else {
+                $diag_code = "Unregistered ICD10";
+            }
+
+            if ($diag->is_primary_diagnosis == 1) {
+                $is_primary = 'P';
+            } else {
+                $is_primary = 'S';
+            }
+
+            $facility = $this->branch_model->getBranchById($diag->location_id);
+            $hospital = $this->hospital_model->getHospitalById($diag->hospital_id);
+            $encounter_details = $this->encounter_model->getEncounterById($diag->encounter_id);
+            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+            if (!empty($diag->encounter_id)) {
+                if (!empty($encounter_location)) {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                } else {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                }
+            } else {
+                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+            }
+
+            $info[] = array(
+                date('Y-m-d h:i A', strtotime($diag->diagnosis_date.' UTC')),
+                date('Y-m-d h:i A', strtotime($diag->onset_date.' UTC')),
+                $this->diagnosis_model->getDiagnosisById($diag->diagnosis_id)->long_description,
+                $diag_code,
+                $is_primary,
+                $diag->diagnosis_notes,
+                $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number,
+                $appointment_facility,
+                '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>'
+                    // $options4
+            );
+            
+        }
+
+        if (!empty($data['diagnosis'])) {
+            $output = array(
+                "draw" => intval($requestData['draw']),
+                "recordsTotal" => $this->diagnosis_model->getDiagnosisByPatientCount($patient_id),
+                "recordsFiltered" => $this->diagnosis_model->getDiagnosisBySearchByPatientCount($search, $patient_id),
+                "data" => $info
+            );
+        } else {
+            $output = array(
+                // "draw" => 1,
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => []
+            );
+        }
+
+        echo json_encode($output);
     }
 
 }

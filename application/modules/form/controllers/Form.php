@@ -833,6 +833,8 @@ class Form extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $patient_id = $this->input->get('patient_id');
+        $encounter_id = $this->input->get('encounter_id');
 
         if ($limit == -1) {
             if (!empty($search)) {
@@ -865,6 +867,17 @@ class Form extends MX_Controller {
                 $options3 = '';
             }
 
+            if (!empty($patient_id)) {
+                if ($this->ion_auth->in_group(array('Doctor'))) {
+                    if (!empty($encounter_id)) {
+                        $redirect = $form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory';
+                    } else {
+                        $redirect = $form->form_number.'&encounter_id='.$form->encounter_id.'&root=patient&method=medicalHistory';
+                    }
+                    $options4 = '<a href="form?id='.$redirect.'" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                }
+            }
+
             $doctor_info = $this->doctor_model->getDoctorById($form->doctor);
             if (!empty($doctor_info)) {
                 $doctor = $doctor_info->name;
@@ -883,14 +896,41 @@ class Form extends MX_Controller {
             } else {
                 $patient_details = ' ';
             }
-            $info[] = array(
-                date('Y-m-d', strtotime($form->form_date.' UTC')),
-                $form->form_number,
-                $form->name,
-                $patient_details,
-                $options1 . ' ' . $options2 . ' ' . $options3,
-                    // $options2 . ' ' . $options3
-            );
+
+            $facility = $this->branch_model->getBranchById($form->location_id);
+            $hospital = $this->hospital_model->getHospitalById($form->hospital_id);
+            $encounter_details = $this->encounter_model->getEncounterById($form->encounter_id);
+            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+            if (!empty($form->encounter_id)) {
+                if (!empty($encounter_location)) {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                } else {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                }
+            } else {
+                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+            }
+
+            if(!empty($patient_id)) {
+                $info[] = array(
+                    date('Y-m-d', strtotime($form->form_date.' UTC')),
+                    $form->form_number,
+                    $form->name,
+                    $patient_info->name,
+                    $appointment_facility,
+                    $options4,
+                        // $options2 . ' ' . $options3
+                );
+            } else {
+                $info[] = array(
+                    date('Y-m-d', strtotime($form->form_date.' UTC')),
+                    $form->form_number,
+                    $form->name,
+                    $patient_details,
+                    $options1 . ' ' . $options2 . ' ' . $options3,
+                        // $options2 . ' ' . $options3
+                );
+            }
         }
 
 

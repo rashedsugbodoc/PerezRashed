@@ -274,6 +274,7 @@ class Encounter extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $patient_id = $this->input->get('patient_id');
 
         if ($this->ion_auth->in_group('Doctor')) {
             $user = $this->session->userdata('user_id');
@@ -417,17 +418,36 @@ class Encounter extends MX_Controller {
                                 </div>
                             </div>';
             }
-            $info[] = array(
-                date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')),
-                $encounter->encounter_number,
-                $patient->name,
-                $doctor,
-                $due,
-                $payment_status,
-                $encounter_status,
-                $option6
-                    //  $options2
-            );
+
+            if (!empty($encounter->location_id)) {
+                $facility = $this->hospital_model->getHospitalById($encounter->hospital_id);
+                $encounter_facility = $facility->name.'<br>'.'( '.$this->branch_model->getBranchById($encounter->location_id)->display_name.' )';
+            } else {
+                $encounter_facility = $this->hospital_model->getHospitalById($encounter->hospital_id)->name.'<br>'.'( '.lang('online').' )';
+            }
+
+            if(!empty($patient_id)) {
+                $info[] = array(
+                    date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')),
+                    $encounter->encounter_number,
+                    $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name,
+                    $encounter_facility,
+                    $encounter_status,
+                        //  $options2
+                );
+            } else {
+                $info[] = array(
+                    date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC')),
+                    $encounter->encounter_number,
+                    $patient->name,
+                    $doctor,
+                    $due,
+                    $payment_status,
+                    $encounter_status,
+                    $option6
+                        //  $options2
+                );
+            }
         }
 
         if (!empty($data['encounters'])) {

@@ -334,6 +334,7 @@ class Labrequest extends MX_Controller {
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
         $current_user = $this->ion_auth->get_user_id();
+        $patient_id = $this->input->get('patient_id');
 
         if ($limit == -1) {
             if (!empty($search)) {
@@ -376,16 +377,42 @@ class Labrequest extends MX_Controller {
                 $labtestdata .= $labtestsingle;
             }
 
+            $facility = $this->branch_model->getBranchById($labrequest->location_id);
+            $hospital = $this->hospital_model->getHospitalById($labrequest->hospital_id);
+            $encounter_details = $this->encounter_model->getEncounterById($labrequest->encounter_id);
+            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+            if (!empty($labrequest->encounter_id)) {
+                if (!empty($encounter_location)) {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                } else {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                }
+            } else {
+                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+            }
+
             $alltest = $labtestdata;
 
-            $info[] = array(
-                date('Y-m-d H:i A', strtotime($labrequest->created_at.' UTC')),
-                $labrequest->lab_request_number,
-                $alltest,
-                $labrequest->patientname,
-                $doctor->name,
-                $option1 . ' ' . $option2 . ' ' . $option3,
-            );
+            if(!empty($patient_id)) {
+                $info[] = array(
+                    date('Y-m-d H:i A', strtotime($labrequest->created_at.' UTC')),
+                    $labrequest->lab_request_number,
+                    $alltest,
+                    $labrequest->patientname,
+                    $doctor->name,
+                    $appointment_facility,
+                    $option1 . ' ' . $option2 . ' ' . $option3,
+                );
+            } else {
+                $info[] = array(
+                    date('Y-m-d H:i A', strtotime($labrequest->created_at.' UTC')),
+                    $labrequest->lab_request_number,
+                    $alltest,
+                    $labrequest->patientname,
+                    $doctor->name,
+                    $option1 . ' ' . $option2 . ' ' . $option3,
+                );
+            }
         }
 
         if ($data['labrequests']) {
