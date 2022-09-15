@@ -2080,6 +2080,7 @@ class Patient extends MX_Controller {
         $encounter_id = (int)$this->input->post('encounter_id');
         $encounter_row = $this->encounter_model->getEncounterById($encounter_id);
         $patient_id = (int)$id;
+        $patient_details = $this->patient_model->getPatientById($id);
         $date_measured = $this->input->post('date');
         $time_measured = $this->input->post('time');
         $date_time_measured = $this->input->post('datetime');
@@ -2269,10 +2270,10 @@ class Patient extends MX_Controller {
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
                 $this->session->set_flashdata('error', lang('validation_error'));
-                redirect('patient/medicalHistory?id=' . $id);
+                redirect('patient/medicalHistory?id=' . $patient_details->patient_id);
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
-                redirect('patient/medicalHistory?id=' . $id);
+                redirect('patient/medicalHistory?id=' . $patient_details->patient_id);
             }
         } else {
             $data = array();
@@ -2331,7 +2332,7 @@ class Patient extends MX_Controller {
             }
             
             if (empty($redirect)) {
-                redirect('patient/medicalHistory?id=' . $id);
+                redirect('patient/medicalHistory?id=' . $patient_details->patient_id);
             } else {
                 redirect($redirect);
             }
@@ -2421,7 +2422,7 @@ class Patient extends MX_Controller {
 
         $redirect = $this->input->post('redirect');
         if (empty($redirect)) {
-            $redirect = 'patient/medicalHistory?id=' . $patient_id;
+            $redirect = 'patient/medicalHistory?id=' . $this->patient_model->getPatientById($patient_id)->patient_id;
         }
 
         // Validating patient Field
@@ -4170,6 +4171,7 @@ class Patient extends MX_Controller {
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
         $current_user = $this->ion_auth->get_user_id();
+        $encounter_id = $this->input->get('encounter_id');
 
         if (!empty($patient_id)) {
             if ($limit == -1) {
@@ -4229,6 +4231,8 @@ class Patient extends MX_Controller {
                 $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
             }
 
+            $options1 = '';
+            $options2 = '';
             if ($vital->recorded_user_id == $current_user) {
                 $options1 = '<button type="button" class="btn btn-info editVitals" title="'.lang('edit').'" data-toggle="modal" data-id="'.$vital->id.'"><i class="fa fa-edit"></i> </button>';
                 $options2 = '<a class="btn btn-danger btn-xs " href="patient/deleteVital?id='.$vital->id.'" onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i> '.lang('delete').'</a>';
@@ -4381,20 +4385,36 @@ class Patient extends MX_Controller {
         $search = $this->input->post('search')['value'];
         $patient_id = $this->input->get('patient_id');
 
-        if ($limit == -1) {
-            if (!empty($search)) {
-                $data['cases'] = $this->patient_model->getMedicalHistoryBySearch($search);
+        if (!empty($patient_id)) {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['cases'] = $this->patient_model->getMedicalHistoryBySearch($search, $patient_id);
+                } else {
+                    $data['cases'] = $this->patient_model->getMedicalHistory($patient_id);
+                }
             } else {
-                $data['cases'] = $this->patient_model->getMedicalHistory();
+                if (!empty($search)) {
+                    $data['cases'] = $this->patient_model->getMedicalHistoryByLimitBySearch($limit, $start, $search, $patient_id);
+                } else {
+                    $data['cases'] = $this->patient_model->getMedicalHistoryByLimit($limit, $start, $patient_id);
+                }
             }
         } else {
-            if (!empty($search)) {
-                $data['cases'] = $this->patient_model->getMedicalHistoryByLimitBySearch($limit, $start, $search);
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['cases'] = $this->patient_model->getMedicalHistoryBySearch($search);
+                } else {
+                    $data['cases'] = $this->patient_model->getMedicalHistory();
+                }
             } else {
-                $data['cases'] = $this->patient_model->getMedicalHistoryByLimit($limit, $start);
+                if (!empty($search)) {
+                    $data['cases'] = $this->patient_model->getMedicalHistoryByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['cases'] = $this->patient_model->getMedicalHistoryByLimit($limit, $start);
+                }
             }
+            //  $data['patients'] = $this->patient_model->getPatient();
         }
-        //  $data['patients'] = $this->patient_model->getPatient();
 
         foreach ($data['cases'] as $case) {
 
@@ -4413,7 +4433,7 @@ class Patient extends MX_Controller {
 
             if (!empty($patient_id)) {
                 if ($this->ion_auth->in_group('Doctor')) {
-                    $options4 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" title="'.lang('edit').'" data-toggle="modal" data-id="'.$medical_history->id.'"><i class="fa fa-edit"></i> </button>';
+                    $options4 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" title="'.lang('edit').'" data-toggle="modal" data-id="'.$case->id.'"><i class="fa fa-edit"></i> </button>';
                 }
             }
 
@@ -4448,7 +4468,7 @@ class Patient extends MX_Controller {
                     $case->title,
                     $case->description,
                     $appointment_facility,
-                    $options4 . ' ' . $options2
+                    '<button type="button" class="btn btn-info btn-xs btn_width editbutton" title="'.lang('edit').'" data-toggle="modal" data-id="'.$case->id.'"><i class="fa fa-edit"></i> </button>'
                         // $options4
                 );
             } else {

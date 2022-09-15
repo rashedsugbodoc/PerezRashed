@@ -315,25 +315,41 @@ class Patient_model extends CI_model {
         return $query->result();
     }
 
-    function getMedicalHistory() {
+    function getMedicalHistory($patient_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient_id', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('case_note');
         return $query->result();
     }
 
-    function getMedicalHistoryBySearch($search) {
+    function getMedicalHistoryBySearch($search, $patient_id = null) {
         $this->db->order_by('id', 'desc');
-        $query = $this->db->select('*')
-                ->from('case_note')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
-        ;
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('case_note')
+                    ->where('patient_id', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        } else {
+            $query = $this->db->select('*')
+                    ->from('case_note')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        }
         return $query->result();
     }
 
-    function getMedicalHistoryByLimit($limit, $start) {
+    function getMedicalHistoryByLimit($limit, $start, $patient_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient_id', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
@@ -341,15 +357,25 @@ class Patient_model extends CI_model {
         return $query->result();
     }
 
-    function getMedicalHistoryByLimitBySearch($limit, $start, $search) {
+    function getMedicalHistoryByLimitBySearch($limit, $start, $search, $patient_id = null) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->select('*')
-                ->from('case_note')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
-        ;
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('case_note')
+                    ->where('patient_id', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        } else {
+            $query = $this->db->select('*')
+                    ->from('case_note')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%' OR description LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        }
         return $query->result();
     }
 

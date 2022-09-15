@@ -274,6 +274,7 @@ class Diagnosis extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $encounter_id = $this->input->get('encounter_id');
 
         if(!empty($patient_id)) {
             if ($limit == -1) {
@@ -333,6 +334,10 @@ class Diagnosis extends MX_Controller {
                 $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
             }
 
+            if(!empty($patient_id)) {
+                $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+            }
+
             $info[] = array(
                 date('Y-m-d h:i A', strtotime($diag->diagnosis_date.' UTC')),
                 date('Y-m-d h:i A', strtotime($diag->onset_date.' UTC')),
@@ -342,7 +347,7 @@ class Diagnosis extends MX_Controller {
                 $diag->diagnosis_notes,
                 $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number,
                 $appointment_facility,
-                '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>'
+                $options1,
                     // $options4
             );
             

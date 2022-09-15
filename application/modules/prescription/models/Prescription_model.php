@@ -129,28 +129,45 @@ class Prescription_model extends CI_model {
         return $query->result();
     }
 
-    function getPrescriptionByDoctor($doctor_id) {
+    function getPrescriptionByDoctor($doctor_id, $patient_id = null) {
         $this->db->order_by('id', 'desc');
+        if (!empty($patient_id)) {
+            $this->db->where('patient', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor_id);
         $query = $this->db->get('prescription');
         return $query->result();
     }
 
-    function getPrescriptionBySearchByDoctor($doctor, $search) {
+    function getPrescriptionBySearchByDoctor($doctor, $search, $patient_id = null) {
         $this->db->order_by('id', 'desc');
-        $query = $this->db->select('*')
-                ->from('prescription')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
-        ;
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('prescription')
+                    ->where('patient', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('doctor', $doctor)
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        } else {
+            $query = $this->db->select('*')
+                    ->from('prescription')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('doctor', $doctor)
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        }
         return $query->result();
     }
 
-    function getPrescriptionByLimitByDoctor($doctor, $limit, $start) {
+    function getPrescriptionByLimitByDoctor($doctor, $limit, $start, $patient_id = null) {
         $this->db->order_by('id', 'desc');
+        if (!empty($patient_id)) {
+            $this->db->where('patient', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor);
         $this->db->limit($limit, $start);
@@ -158,16 +175,27 @@ class Prescription_model extends CI_model {
         return $query->result();
     }
 
-    function getPrescriptionByLimitBySearchByDoctor($doctor, $limit, $start, $search) {
+    function getPrescriptionByLimitBySearchByDoctor($doctor, $limit, $start, $search, $patient_id = null) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->select('*')
-                ->from('prescription')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where('doctor', $doctor)
-                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
-        ;
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('prescription')
+                    ->where('patient', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('doctor', $doctor)
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        } else {
+            $query = $this->db->select('*')
+                    ->from('prescription')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('doctor', $doctor)
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+            ;
+        }
         return $query->result();
     }
 

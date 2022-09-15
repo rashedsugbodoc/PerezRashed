@@ -836,20 +836,36 @@ class Form extends MX_Controller {
         $patient_id = $this->input->get('patient_id');
         $encounter_id = $this->input->get('encounter_id');
 
-        if ($limit == -1) {
-            if (!empty($search)) {
-                $data['forms'] = $this->form_model->getFormBysearch($search);
+        if (!empty($patient_id)) {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['forms'] = $this->form_model->getFormBysearch($search, $patient_id);
+                } else {
+                    $data['forms'] = $this->form_model->getForm($patient_id);
+                }
             } else {
-                $data['forms'] = $this->form_model->getForm();
+                if (!empty($search)) {
+                    $data['forms'] = $this->form_model->getFormByLimitBySearch($limit, $start, $search, $patient_id);
+                } else {
+                    $data['forms'] = $this->form_model->getFormByLimit($limit, $start, $patient_id);
+                }
             }
         } else {
-            if (!empty($search)) {
-                $data['forms'] = $this->form_model->getFormByLimitBySearch($limit, $start, $search);
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['forms'] = $this->form_model->getFormBysearch($search);
+                } else {
+                    $data['forms'] = $this->form_model->getForm();
+                }
             } else {
-                $data['forms'] = $this->form_model->getFormByLimit($limit, $start);
+                if (!empty($search)) {
+                    $data['forms'] = $this->form_model->getFormByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['forms'] = $this->form_model->getFormByLimit($limit, $start);
+                }
             }
+            //  $data['forms'] = $this->form_model->getForm();
         }
-        //  $data['forms'] = $this->form_model->getForm();
 
         foreach ($data['forms'] as $form) {
             $date = date('d-m-y', $form->date);
@@ -937,8 +953,8 @@ class Form extends MX_Controller {
         if (!empty($data['forms'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->form_model->getFormCount(),
-                "recordsFiltered" => $this->form_model->getFormBySearchCount($search),
+                "recordsTotal" => $this->form_model->getFormCount($patient_id),
+                "recordsFiltered" => $this->form_model->getFormBySearchCount($search, $patient_id),
                 "data" => $info
             );
         } else {

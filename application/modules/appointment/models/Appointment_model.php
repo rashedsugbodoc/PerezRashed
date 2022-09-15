@@ -22,8 +22,11 @@ class Appointment_model extends CI_model {
         $this->db->insert('appointment_location', $data2);
     }
 
-    function getAppointment() {
+    function getAppointment($patient_id = null) {
         $this->db->order_by('id', 'desc');
+        if (!empty($patient_id)) {
+            $this->db->where('patient', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('appointment');
         return $query->result();
@@ -80,13 +83,22 @@ class Appointment_model extends CI_model {
         return $query->num_rows();
     }
 
-    function getAppointmentBySearch($search) {
+    function getAppointmentBySearch($search, $patient_id = null) {
         $this->db->order_by('id', 'desc');
-        $query = $this->db->select('*')
-                ->from('appointment')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('appointment')
+                    ->where('patient', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('appointment')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
         return $query->result();
     }
 
@@ -131,7 +143,10 @@ class Appointment_model extends CI_model {
         return $query->num_rows();
     }
 
-    function getAppointmentByLimit($limit, $start) {
+    function getAppointmentByLimit($limit, $start, $patient_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
@@ -139,14 +154,23 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
-    function getAppointmentByLimitBySearch($limit, $start, $search) {
+    function getAppointmentByLimitBySearch($limit, $start, $search, $patient_id = null) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->select('*')
-                ->from('appointment')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('appointment')
+                    ->where('patient', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('appointment')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
         return $query->result();
     }
 

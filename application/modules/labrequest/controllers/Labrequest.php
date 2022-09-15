@@ -336,17 +336,33 @@ class Labrequest extends MX_Controller {
         $current_user = $this->ion_auth->get_user_id();
         $patient_id = $this->input->get('patient_id');
 
-        if ($limit == -1) {
-            if (!empty($search)) {
-                $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search);
+        if (!empty($patient_id)) {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search, $patient_id);
+                } else {
+                    $data['labrequests'] = $this->labrequest_model->getLabrequest($patient_id);
+                }
             } else {
-                $data['labrequests'] = $this->labrequest_model->getLabrequest();
+                if (!empty($search)) {
+                    $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search, $patient_id);
+                } else {
+                    $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start, $patient_id);
+                }
             }
         } else {
-            if (!empty($search)) {
-                $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search);
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search);
+                } else {
+                    $data['labrequests'] = $this->labrequest_model->getLabrequest();
+                }
             } else {
-                $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start);
+                if (!empty($search)) {
+                    $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start);
+                }
             }
         }
 
@@ -354,6 +370,11 @@ class Labrequest extends MX_Controller {
             $option1 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-edit"></i></a>';
             $option2 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-eye"></i></a>';
             $option3 = '<a class="btn btn-danger" href="labrequest/deleteLabrequestByRequestNumber?request_number='.$labrequest->lab_request_number.'"><i class="fe fe-trash-2"></i></a>';
+
+            if (!empty($patient_id)) {
+                $options4 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->lab_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id.'"><i class="fe fe-edit"></i></a>';
+                $options5 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-eye"></i></a>';
+            }
 
             $doctor = $this->doctor_model->getDoctorById($labrequest->doctor_id);
 
@@ -401,7 +422,7 @@ class Labrequest extends MX_Controller {
                     $labrequest->patientname,
                     $doctor->name,
                     $appointment_facility,
-                    $option1 . ' ' . $option2 . ' ' . $option3,
+                    $options4 . ' ' . $options5,
                 );
             } else {
                 $info[] = array(
@@ -418,8 +439,8 @@ class Labrequest extends MX_Controller {
         if ($data['labrequests']) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->labrequest_model->getLabrequestCount(),
-                "recordsFiltered" => $this->labrequest_model->getLabrequestBySearchCount($search),
+                "recordsTotal" => $this->labrequest_model->getLabrequestCount($patient_id),
+                "recordsFiltered" => $this->labrequest_model->getLabrequestBySearchCount($search, $patient_id),
                 "data" => $info
             );
         } else {

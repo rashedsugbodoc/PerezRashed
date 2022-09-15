@@ -553,17 +553,34 @@ class Prescription extends MX_Controller {
         $patient_id = $this->input->get('patient_id');
         $doctor_ion_id = $this->ion_auth->get_user_id();
         $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
-        if ($limit == -1) {
-            if (!empty($search)) {
-                $data['prescriptions'] = $this->prescription_model->getPrescriptionBysearchByDoctor($doctor, $search);
+
+        if (!empty($patient_id)) {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['prescriptions'] = $this->prescription_model->getPrescriptionBysearchByDoctor($doctor, $search, $patient_id);
+                } else {
+                    $data['prescriptions'] = $this->prescription_model->getPrescriptionByDoctor($doctor, $patient_id);
+                }
             } else {
-                $data['prescriptions'] = $this->prescription_model->getPrescriptionByDoctor($doctor);
+                if (!empty($search)) {
+                    $data['prescriptions'] = $this->prescription_model->getPrescriptionByLimitBySearchByDoctor($doctor, $limit, $start, $search, $patient_id);
+                } else {
+                    $data['prescriptions'] = $this->prescription_model->getPrescriptionByLimitByDoctor($doctor, $limit, $start, $patient_id);
+                }
             }
         } else {
-            if (!empty($search)) {
-                $data['prescriptions'] = $this->prescription_model->getPrescriptionByLimitBySearchByDoctor($doctor, $limit, $start, $search);
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['prescriptions'] = $this->prescription_model->getPrescriptionBysearchByDoctor($doctor, $search);
+                } else {
+                    $data['prescriptions'] = $this->prescription_model->getPrescriptionByDoctor($doctor);
+                }
             } else {
-                $data['prescriptions'] = $this->prescription_model->getPrescriptionByLimitByDoctor($doctor, $limit, $start);
+                if (!empty($search)) {
+                    $data['prescriptions'] = $this->prescription_model->getPrescriptionByLimitBySearchByDoctor($doctor, $limit, $start, $search);
+                } else {
+                    $data['prescriptions'] = $this->prescription_model->getPrescriptionByLimitByDoctor($doctor, $limit, $start);
+                }
             }
         }
 
@@ -585,6 +602,13 @@ class Prescription extends MX_Controller {
             }
 
             $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=' . $prescription->prescription_number . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
+
+            if (!empty($patient_id)) {
+                $options5 = '<a class="btn btn-info btn-xs" href="prescription/viewPrescription?id='.$prescription->prescription_number.'"><i class="fa fa-eye"></i></a>';
+                $options6 = '<a type="button" class="btn btn-info btn-xs" href="prescription/editPrescription?id='.$prescription->prescription_number.'&root=patient&method=medicalHistory&encounter_id='.$prescription->encounter_id.'"><i class="fa fa-edit"></i></a>';
+                $options7 = '<a class="btn btn-danger btn-xs " href="prescription/delete?id='.$prescription->id.'" onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i></a>';
+                $options8 = '<a class="btn btn-info btn-xs" title="'.lang('print').'" style="color: #fff;" href="prescription/viewPrescriptionPrint?id='.$prescription->id.'"target="_blank"> <i class="fa fa-print"></i></a>';
+            }
 
             if (!empty($prescription->medicine)) {
                 $medicine = explode('###', $prescription->medicine);
@@ -626,7 +650,7 @@ class Prescription extends MX_Controller {
                     $this->doctor_model->getDoctorByIonUserId($doctor_ion_id)->name,
                     $medicinelist,
                     $appointment_facility,
-                    $option1 . ' ' . $option3 . ' ' . $option2 . ' ' . $options4
+                    $options5 . ' ' . $options6 . ' ' . $options7 . ' ' . $options8
                 );
             } else {
                 $info[] = array(

@@ -1362,21 +1362,40 @@ class Appointment extends MX_Controller {
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
         $patient_id = $this->input->get('patient_id');
+        $encounter_id = $this->input->get('encounter_id');
 
-        if ($limit == -1) {
-            if (!empty($search)) {
-                $data['appointments'] = $this->appointment_model->getAppointmentBysearch($search);
+        $patient_details = $this->patient_model->getPatientById($patient_id);
+
+        if (!empty($patient_id)) {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['appointments'] = $this->appointment_model->getAppointmentBysearch($search, $patient_id);
+                } else {
+                    $data['appointments'] = $this->appointment_model->getAppointment($patient_id);
+                }
             } else {
-                $data['appointments'] = $this->appointment_model->getAppointment();
+                if (!empty($search)) {
+                    $data['appointments'] = $this->appointment_model->getAppointmentByLimitBySearch($limit, $start, $search, $patient_id);
+                } else {
+                    $data['appointments'] = $this->appointment_model->getAppointmentByLimit($limit, $start, $patient_id);
+                }
             }
         } else {
-            if (!empty($search)) {
-                $data['appointments'] = $this->appointment_model->getAppointmentByLimitBySearch($limit, $start, $search);
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['appointments'] = $this->appointment_model->getAppointmentBysearch($search);
+                } else {
+                    $data['appointments'] = $this->appointment_model->getAppointment();
+                }
             } else {
-                $data['appointments'] = $this->appointment_model->getAppointmentByLimit($limit, $start);
+                if (!empty($search)) {
+                    $data['appointments'] = $this->appointment_model->getAppointmentByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['appointments'] = $this->appointment_model->getAppointmentByLimit($limit, $start);
+                }
             }
+            //  $data['appointments'] = $this->appointment_model->getAppointment();
         }
-        //  $data['appointments'] = $this->appointment_model->getAppointment();
 
         foreach ($data['appointments'] as $appointment) {
 
@@ -1395,8 +1414,10 @@ class Appointment extends MX_Controller {
             }
 
             if (!empty($patient_id)) {
-                $options6 = '<a href="appointment/editAppointment?id='.$appointment->id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id.'&encounter_id='.$encounter_id.'" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>';
-                $options7 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="'.lang("delete").'" href="appointment/delete?id='.$appointment->id.'" onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i> </a>';
+                if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) {
+                    $options6 = '<a href="appointment/editAppointment?id='.$appointment->id.'&root=patient&method=medicalHistory&patient_id='.$patient_details->patient_id.'&encounter_id='.$encounter_id.'" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>';
+                    $options7 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="'.lang("delete").'" href="appointment/delete?id='.$appointment->id.'" onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i> </a>';
+                }
             }
 
             $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
