@@ -8,7 +8,7 @@ class Medicine extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('medicine_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Nurse', 'Receptionist', 'Accountant', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Nurse', 'Receptionist', 'Accountant', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -40,7 +40,7 @@ class Medicine extends MX_Controller {
     }
 
     public function medicineStockAlert() {
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Midwife'))) {
             redirect('home/permission');
         }
         $page_number = $this->input->get('page_number');
@@ -60,7 +60,7 @@ class Medicine extends MX_Controller {
     }
 
     public function medicineStockAlertByPageNumber() {
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Midwife'))) {
             redirect('home/permission');
         }
         $page_number = $this->input->get('page_number');
@@ -465,6 +465,32 @@ class Medicine extends MX_Controller {
 
 // Get users
         $response = $this->medicine_model->getMedicineInfo($searchTerm);
+
+        // $response = array();
+        // foreach($exploded_response as $exp_response) {
+        //     $exp_response_id = $exp_response['id'];
+        //     $final_response = explode('###', $exp_response_id);
+        //     $response_items = explode('*', $final_response[0]);
+        //     $response[] = $response_items[0];
+        // }
+
+        echo json_encode($response);
+    }
+
+    public function getMedicineforSelect2Search() {
+        $meds = $this->input->post('medszz');
+
+        $meds_list = explode('|', $meds);
+
+        $medss = array();
+        foreach($meds_list as $exp_response) {
+            // $exp_response_id = $exp_response['id'];
+            $final_response = explode('###', $exp_response);
+            $response_items = explode('*', $final_response[0]);
+            $medss[] = $response_items[0];
+        }
+
+        $response = $this->medicine_model->getMedicineInfo(end($medss));
 
         echo json_encode($response);
     }

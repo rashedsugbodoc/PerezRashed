@@ -17,7 +17,7 @@ class Appointment extends MX_Controller {
         $this->load->model('service/service_model');
         $this->load->model('encounter/encounter_model');
         $this->load->model('finance/finance_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Patient', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Patient', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -119,7 +119,7 @@ class Appointment extends MX_Controller {
 
     function calendar() {
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -141,7 +141,8 @@ class Appointment extends MX_Controller {
 
     public function addNewView() {
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Nurse', 'Clerk'))) {
+
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Nurse', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         $redirect = $this->input->get('redirect');
@@ -163,7 +164,7 @@ class Appointment extends MX_Controller {
     }
 
     public function addNew() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Nurse', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Nurse', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -1270,7 +1271,7 @@ class Appointment extends MX_Controller {
     }
 
     function editAppointment() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -1340,7 +1341,7 @@ class Appointment extends MX_Controller {
     }
 
     function delete() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 

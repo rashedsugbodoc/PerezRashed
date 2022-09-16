@@ -16,7 +16,7 @@ class Form extends MX_Controller {
         $this->load->model('receptionist/receptionist_model');
         $this->load->model('encounter/encounter_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Doctor', 'Patient', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Doctor', 'Patient', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -34,7 +34,7 @@ class Form extends MX_Controller {
             redirect('form/form1');
         }
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -88,7 +88,7 @@ class Form extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -157,7 +157,7 @@ class Form extends MX_Controller {
     }
 
     public function addFormView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -204,7 +204,7 @@ class Form extends MX_Controller {
     }
 
     public function addForm() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -473,10 +473,10 @@ class Form extends MX_Controller {
     }
 
     function editForm() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
-        if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse', 'Patient'))) {
+        if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse', 'Patient', 'Midwife'))) {
             $data = array();
             $data['settings'] = $this->settings_model->getSettings();
             $data['categories'] = $this->form_model->getFormCategory();
@@ -501,7 +501,7 @@ class Form extends MX_Controller {
     }
 
     function delete() {
-        if (!$this->ion_auth->in_group(array('admin'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -522,7 +522,7 @@ class Form extends MX_Controller {
     }
 
     public function template() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -538,7 +538,7 @@ class Form extends MX_Controller {
     }
 
     public function addTemplateView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -561,7 +561,7 @@ class Form extends MX_Controller {
     }
 
     public function addTemplate() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -624,7 +624,7 @@ class Form extends MX_Controller {
     }
 
     function editTemplate() {
-        if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse', 'Patient'))) {
+        if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse', 'Patient', 'Midwife'))) {
             $data = array();
             $data['settings'] = $this->settings_model->getSettings();
             $id = $this->input->get('id');
@@ -636,7 +636,7 @@ class Form extends MX_Controller {
     }
 
     function deleteTemplate() {
-        if (!$this->ion_auth->in_group(array('admin'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Midwife'))) {
             redirect('home/permission');
         }
         $id = $this->input->get('id');

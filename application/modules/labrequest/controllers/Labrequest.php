@@ -16,7 +16,7 @@ class Labrequest extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('specialty/specialty_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor','Patient', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor','Patient', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }

@@ -10,7 +10,7 @@ class Report extends MX_Controller {
         $this->load->model('report_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('patient/patient_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Laboratorist', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Laboratorist', 'Patient', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -26,7 +26,7 @@ class Report extends MX_Controller {
     }
 
     function birth() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Midwife'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -42,7 +42,7 @@ class Report extends MX_Controller {
     }
 
     function operation() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Midwife'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -58,7 +58,7 @@ class Report extends MX_Controller {
     }
 
     function expire() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Midwife'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {

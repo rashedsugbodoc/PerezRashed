@@ -9,13 +9,13 @@ class Bed extends MX_Controller {
         parent::__construct();
         $this->load->model('bed_model');
         $this->load->model('patient/patient_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         $data['beds'] = $this->bed_model->getBed();
@@ -124,7 +124,7 @@ class Bed extends MX_Controller {
     }
 
     public function bedCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -220,7 +220,7 @@ class Bed extends MX_Controller {
     }
 
     function bedAllotment() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {

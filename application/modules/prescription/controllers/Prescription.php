@@ -16,7 +16,7 @@ class Prescription extends MX_Controller {
         $this->load->model('specialty/specialty_model');
         $this->load->model('encounter/encounter_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Patient', 'Nurse', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Patient', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -42,7 +42,7 @@ class Prescription extends MX_Controller {
 
     function all() {
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Pharmacist', 'Nurse', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Pharmacist', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -57,7 +57,7 @@ class Prescription extends MX_Controller {
     }
 
     public function addPrescriptionView() {
-        if (!$this->ion_auth->in_group(array('Doctor'))) {
+        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -99,7 +99,7 @@ class Prescription extends MX_Controller {
 
     public function addNewPrescription() {
 
-        if (!$this->ion_auth->in_group(array('Doctor'))) {
+        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -377,7 +377,7 @@ class Prescription extends MX_Controller {
     }
 
     function editPrescription() {
-        if (!$this->ion_auth->in_group(array('Doctor'))) {
+        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -440,7 +440,7 @@ class Prescription extends MX_Controller {
     }
 
     function delete() {
-        if (!$this->ion_auth->in_group(array('Doctor'))) {
+        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
 

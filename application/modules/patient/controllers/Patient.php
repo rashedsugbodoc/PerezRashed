@@ -45,13 +45,13 @@ class Patient extends MX_Controller {
         $this->load->model('settings/settings_model');
         $this->load->model('email/email_model');
 
-        if (!$this->ion_auth->in_group(array('superadmin', 'admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('superadmin', 'admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
-        if ($this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'CompanyUser'))) {
+        if ($this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'CompanyUser', 'Midwife'))) {
             redirect('home/permission');
         }
         $data['doctors'] = $this->doctor_model->getDoctor();
@@ -80,7 +80,7 @@ class Patient extends MX_Controller {
     }
 
     public function calendar() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Patient', 'Midwife'))) {
             redirect('home/permission');
         }
         $data['settings'] = $this->settings_model->getSettings();
@@ -124,7 +124,7 @@ class Patient extends MX_Controller {
     }
 
     public function addNewView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -138,7 +138,7 @@ class Patient extends MX_Controller {
     }
 
     public function addNew() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -990,7 +990,7 @@ class Patient extends MX_Controller {
     }
 
     function editPatient() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -1689,7 +1689,7 @@ class Patient extends MX_Controller {
     }
 
     function patientPayments() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Midwife'))) {
             redirect('home/permission');
         }
         $data['groups'] = $this->donor_model->getBloodBank();
@@ -1702,7 +1702,7 @@ class Patient extends MX_Controller {
     }
 
     function caseList() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'Nurse', 'Receptionist', 'Midwife'))) {
             redirect('home/permission');
         }
         $case_note_number = $this->input->get('id');
@@ -1723,7 +1723,7 @@ class Patient extends MX_Controller {
     }
 
     function documents() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'DoctorAdmin', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'DoctorAdmin', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         $data['patients'] = $this->patient_model->getPatient();
@@ -2366,7 +2366,7 @@ class Patient extends MX_Controller {
     }
 
     public function deleteVital() {
-        if (!$this->ion_auth->in_group(array('Doctor'))) {
+        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -2382,7 +2382,7 @@ class Patient extends MX_Controller {
     }
 
     function addMedicalHistory() {
-        if (!$this->ion_auth->in_group(array('Doctor'))) {
+        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
         if ($this->ion_auth->in_group(array('Doctor'))) {
@@ -3903,7 +3903,7 @@ class Patient extends MX_Controller {
     }
 
     function editUpload() {
-        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         $document_number = $this->input->get('id');
@@ -3917,7 +3917,7 @@ class Patient extends MX_Controller {
     }
 
     function saveUploadEditChanges() {
-        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         $image_json_str = file_get_contents('php://input');
@@ -3942,7 +3942,7 @@ class Patient extends MX_Controller {
     }    
 
     function deleteCaseHistory() {
-        if (!$this->ion_auth->in_group(array('admin'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -3981,7 +3981,7 @@ class Patient extends MX_Controller {
     }
 
     function delete() {
-        if (!$this->ion_auth->in_group(array('admin', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         $data = array();

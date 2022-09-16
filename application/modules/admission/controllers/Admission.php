@@ -10,7 +10,7 @@ class Admission extends MX_Controller {
         $this->load->model('bed/bed_model');
         $this->load->model('admission/admission_model');
         $this->load->model('patient/patient_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist', 'Doctor', 'Accountant', 'CompanyUser'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist', 'Doctor', 'Accountant', 'CompanyUser', 'Midwife'))) {
             redirect('home/permission');
         }
     }

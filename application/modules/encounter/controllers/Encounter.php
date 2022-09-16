@@ -17,7 +17,7 @@ class Encounter extends MX_Controller {
         $this->load->model('appointment/appointment_model');
         $this->load->model('finance/finance_model');
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Nurse', 'Patient', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Nurse', 'Patient', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -292,7 +292,7 @@ class Encounter extends MX_Controller {
                     $data['encounters'] = $this->encounter_model->getEncounterByLimitByDoctorId($limit, $start, $doctor_id);
                 }
             }
-        } elseif ($this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        } elseif ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Midwife'))) {
             if ($limit == -1) {
                 if (!empty($search)) {
                     $data['encounters'] = $this->encounter_model->getEncounterBysearch($search);
