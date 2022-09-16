@@ -11,7 +11,7 @@ class Schedule extends MX_Controller {
         $this->load->model('branch/branch_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('appointment/appointment_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'Nurse', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
     }

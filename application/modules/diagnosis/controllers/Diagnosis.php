@@ -15,12 +15,15 @@ class Diagnosis extends MX_Controller {
         $this->load->model('branch/branch_model');
         $this->load->model('hospital/hospital_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Patient', 'Clerk'))) {
             redirect('home/permission');
         }
     }
 
     function addDiagnosisView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data = array();
 
         $data['encounter_id'] = $this->input->get('encounter_id');
@@ -51,7 +54,9 @@ class Diagnosis extends MX_Controller {
     }
 
     function addNew() {
-        
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $encounter_id = $this->input->post('encounter_id');
         $patient = $this->encounter_model->getEncounterById($encounter_id)->patient_id;
         $patient_name = $this->patient_model->getPatientById($patient)->name;
@@ -232,6 +237,9 @@ class Diagnosis extends MX_Controller {
     }
 
     public function editDiagnosis() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $diagnosis_number = $this->input->get('id');
 
         $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosisByNumber($diagnosis_number);

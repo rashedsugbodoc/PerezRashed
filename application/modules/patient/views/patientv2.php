@@ -16,7 +16,7 @@
                                         <div class="card-header">
                                             <div class="card-title"><?php echo lang('patient'); ?> <?php echo lang('list'); ?></div>
                                             <div class="card-options">
-                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?> 
+                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) { ?> 
                                                     <a href="patient/addNewView">
                                                         <div class="btn-group pull-right">
                                                             <button id="" class="btn btn-primary btn-xs">
@@ -37,7 +37,7 @@
                                                                 <th class="border-bottom-0"><?php echo lang('name'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('phone'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
-                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
+                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) { ?>
                                                                     <th class="border-bottom-0"><?php echo lang('due_balance'); ?></th>
                                                                 <?php } ?>
                                                                 <th class="border-bottom-0"><?php echo lang('options'); ?></th>

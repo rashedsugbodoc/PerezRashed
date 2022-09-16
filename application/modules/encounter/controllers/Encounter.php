@@ -17,7 +17,7 @@ class Encounter extends MX_Controller {
         $this->load->model('appointment/appointment_model');
         $this->load->model('finance/finance_model');
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Nurse', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Nurse', 'Patient', 'Clerk'))) {
             redirect('home/permission');
         }
     }

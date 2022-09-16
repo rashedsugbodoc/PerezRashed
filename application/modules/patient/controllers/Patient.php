@@ -45,7 +45,7 @@ class Patient extends MX_Controller {
         $this->load->model('settings/settings_model');
         $this->load->model('email/email_model');
 
-        if (!$this->ion_auth->in_group(array('superadmin', 'admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser'))) {
+        if (!$this->ion_auth->in_group(array('superadmin', 'admin', 'Nurse', 'Patient', 'Doctor', 'Laboratorist', 'Accountant', 'Receptionist','Pharmacist','CompanyUser', 'Clerk'))) {
             redirect('home/permission');
         }
     }
@@ -124,7 +124,7 @@ class Patient extends MX_Controller {
     }
 
     public function addNewView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -138,7 +138,7 @@ class Patient extends MX_Controller {
     }
 
     public function addNew() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Clerk'))) {
             redirect('home/permission');
         }
 
@@ -990,7 +990,7 @@ class Patient extends MX_Controller {
     }
 
     function editPatient() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -1723,7 +1723,7 @@ class Patient extends MX_Controller {
     }
 
     function documents() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'DoctorAdmin'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'DoctorAdmin', 'Clerk'))) {
             redirect('home/permission');
         }
         $data['patients'] = $this->patient_model->getPatient();
@@ -3903,7 +3903,7 @@ class Patient extends MX_Controller {
     }
 
     function editUpload() {
-        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin'))) {
+        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin', 'Clerk'))) {
             redirect('home/permission');
         }
         $document_number = $this->input->get('id');
@@ -3917,7 +3917,7 @@ class Patient extends MX_Controller {
     }
 
     function saveUploadEditChanges() {
-        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin'))) {
+        if (!$this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'Doctor', 'CompanyUser', 'admin', 'Clerk'))) {
             redirect('home/permission');
         }
         $image_json_str = file_get_contents('php://input');
@@ -3981,7 +3981,7 @@ class Patient extends MX_Controller {
     }
 
     function delete() {
-        if (!$this->ion_auth->in_group(array('admin'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -4050,7 +4050,7 @@ class Patient extends MX_Controller {
         foreach ($data['patients'] as $patient) {
 
             $active_status = $this->db->get_where('users', array('id' => $patient->ion_user_id))->row()->active;
-            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Clerk'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
                 if ($active_status == 1) {
                     $options1 = '';
@@ -4068,7 +4068,7 @@ class Patient extends MX_Controller {
 
             $options4 = '<a class="btn btn-success" title="' . lang('payment') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor', 'Clerk'))) {
                 $options5 = '<a class="btn btn-danger" title="' . lang('delete') . '" href="patient/delete?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
@@ -4081,7 +4081,7 @@ class Patient extends MX_Controller {
                 $options7 = '';
             }
 
-            if ($this->ion_auth->in_group(array('Doctor','CompanyUser','admin'))) {
+            if ($this->ion_auth->in_group(array('Doctor','CompanyUser','admin', 'Clerk'))) {
                 $options8 = '<a class="btn btn-info" href="patient/editIdentification?id='.$patient->patient_id.'">' . lang('edit') . ' ' . lang('identification') . '</a>';
                 $options9 = '<a class="btn btn-info" href="patient/editPopulation?id='.$patient->patient_id.'">'. lang('edit') . ' ' . lang('population') . ' ' . lang('census') .'</a>';
                 $options10 = '<a class="btn btn-info" href="patient/editHealthDeclaration?id='.$patient->patient_id.'">'. lang('edit') . ' ' . lang('health') . ' ' . lang('declaration') .'</a>';
@@ -4100,7 +4100,7 @@ class Patient extends MX_Controller {
             }
 
 
-            if ($this->ion_auth->in_group(array('admin'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
                 $info[] = array(
                     '<img style="width:95%;" src="'.$img_url.'">',
                     $patient->patient_id,
@@ -4577,7 +4577,7 @@ class Patient extends MX_Controller {
                     $patient_details,
                     $document->title,
                     $document->description,
-                    '<a class="example-image-link" href="' . $image . '" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $image . '?m='. $document->last_modified .'" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
+                    '<a class="example-image-link" href="' . $document->url . '?m='. $document->last_modified .'" data-lightbox="example-1" data-title="' . $document->title . '">' . '<img class="example-image" src="' . $document->url . '?m='. $document->last_modified .'" width="auto" height="auto" alt="image-1" style="max-width:150px;max-height:150px">' . '</a>',
                     $options1 . ' ' . $options2 . ' ' . $option3 . ' ' . $options4
                         // $options4
                 );

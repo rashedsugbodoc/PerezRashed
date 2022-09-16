@@ -16,7 +16,7 @@ class Labrequest extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('specialty/specialty_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor','Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor','Patient', 'Clerk'))) {
             redirect('home/permission');
         }
     }
@@ -27,6 +27,9 @@ class Labrequest extends MX_Controller {
     }
 
     function addLabRequestView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data = array();
 
         $patient = $this->input->get('patient_id');
@@ -56,6 +59,9 @@ class Labrequest extends MX_Controller {
     }
 
     function addNew() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('labrequest_number');
         $encounter_id = $this->input->post('encounter_id');
         $patient = $this->encounter_model->getEncounterById($encounter_id)->patient_id;
@@ -262,6 +268,9 @@ class Labrequest extends MX_Controller {
     }
 
     function editLabRequestView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data = array();
 
         $data['request_number'] = $this->input->get('id');
@@ -295,6 +304,9 @@ class Labrequest extends MX_Controller {
     }
 
     function deleteLabrequestByRequestNumber() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $request_number = $this->input->get('request_number');
 
         if ($this->labrequest_model->deleteLabrequestByRequestNumber($request_number)) {

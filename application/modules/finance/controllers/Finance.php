@@ -24,7 +24,7 @@ class Finance extends MX_Controller {
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->module('paypal');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Doctor', 'Patient', 'CompanyUser'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Doctor', 'Patient', 'CompanyUser', 'Clerk'))) {
             redirect('home/permission');
         }
     }
@@ -34,7 +34,7 @@ class Finance extends MX_Controller {
     }
 
     public function invoices() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'CompanyUser'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'CompanyUser', 'Clerk'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -61,7 +61,7 @@ class Finance extends MX_Controller {
     }
 
     public function addPaymentView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -120,7 +120,7 @@ class Finance extends MX_Controller {
     }
 
     public function addPayment() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -702,7 +702,7 @@ class Finance extends MX_Controller {
     }
 
     function editPayment() {
-        if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) {
+        if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
             $data = array();
             $data['discount_type'] = $this->finance_model->getDiscountType();
             $data['settings'] = $this->settings_model->getSettings();
@@ -1027,7 +1027,7 @@ class Finance extends MX_Controller {
     }
 
     public function paymentCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -1041,7 +1041,7 @@ class Finance extends MX_Controller {
     }
 
     public function addPaymentCategoryView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
             redirect('home/permission');
         }
         $data['categories'] = $this->finance_model->getServiceCategory();
@@ -1051,7 +1051,7 @@ class Finance extends MX_Controller {
     }
 
     public function addPaymentCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -1160,7 +1160,7 @@ class Finance extends MX_Controller {
     }
 
     function editPaymentCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -1185,7 +1185,7 @@ class Finance extends MX_Controller {
     }
 
     public function expense() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -1200,7 +1200,7 @@ class Finance extends MX_Controller {
     }
 
     public function addExpenseView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -1212,7 +1212,7 @@ class Finance extends MX_Controller {
     }
 
     public function addExpense() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -1278,7 +1278,7 @@ class Finance extends MX_Controller {
     }
 
     function editExpense() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -1318,7 +1318,7 @@ class Finance extends MX_Controller {
     }
 
     public function expenseCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -1331,7 +1331,7 @@ class Finance extends MX_Controller {
     }
 
     public function addExpenseCategoryView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk'))) {
             redirect('home/permission');
         }
         $this->load->view('home/dashboardv2'); // just the header file
@@ -1340,7 +1340,7 @@ class Finance extends MX_Controller {
     }
 
     public function addExpenseCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk'))) {
             redirect('home/permission');
         }
 
@@ -1382,7 +1382,7 @@ class Finance extends MX_Controller {
     }
 
     function editExpenseCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -1421,7 +1421,7 @@ class Finance extends MX_Controller {
 
     //start service category
     public function serviceCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -1434,7 +1434,7 @@ class Finance extends MX_Controller {
     }
 
     public function addServiceCategoryView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $this->load->view('home/dashboardv2'); // just the header file
@@ -1443,7 +1443,7 @@ class Finance extends MX_Controller {
     }
 
     public function addServiceCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -1484,7 +1484,7 @@ class Finance extends MX_Controller {
     }
 
     function editServiceCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -2506,7 +2506,7 @@ class Finance extends MX_Controller {
                 $flat_discount = 0;
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist', 'Clerk'))) {
                 $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?finance_id=' . $payment->invoice_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 

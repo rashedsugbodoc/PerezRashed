@@ -16,13 +16,12 @@ class Form extends MX_Controller {
         $this->load->model('receptionist/receptionist_model');
         $this->load->model('encounter/encounter_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Doctor', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Doctor', 'Patient', 'Clerk'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
-
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -35,7 +34,7 @@ class Form extends MX_Controller {
             redirect('form/form1');
         }
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
 
@@ -89,7 +88,7 @@ class Form extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
 
@@ -523,7 +522,7 @@ class Form extends MX_Controller {
     }
 
     public function template() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
 

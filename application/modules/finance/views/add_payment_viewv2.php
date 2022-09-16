@@ -472,7 +472,7 @@
                                                             <?php if (empty($payment->id)) { ?>
                                                             <label for="exampleInputEmail1"><?php echo lang('deposit_type'); ?></label>
                                                             <select class="form-control m-bot15 js-example-basic-single selecttype" id="selecttype" name="deposit_type" value=''> 
-                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) { ?>
+                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) { ?>
                                                                     <option value="Cash"> <?php echo lang('cash'); ?> </option>
                                                                     <!-- <option value="Card"> <?php /*echo lang('card');*/ ?> </option> -->
                                                                 <?php } ?>

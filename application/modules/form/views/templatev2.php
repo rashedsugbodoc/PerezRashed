@@ -12,13 +12,15 @@
                                     <?php echo lang('form_report'); ?> <?php echo lang('template'); ?>
                                 </div>
                                 <div class="card-options">
-                                    <a href="form/addTemplateView">
-                                        <div class="btn-group pull-right">
-                                            <button id="" class="btn btn-primary btn-xs">
-                                                <i class="fa fa-plus"></i> <?php echo lang('add_template'); ?>
-                                            </button>
-                                        </div>
-                                    </a>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                                        <a href="form/addTemplateView">
+                                            <div class="btn-group pull-right">
+                                                <button id="" class="btn btn-primary btn-xs">
+                                                    <i class="fa fa-plus"></i> <?php echo lang('add_template'); ?>
+                                                </button>
+                                            </div>
+                                        </a>
+                                    <?php } ?>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -27,19 +29,23 @@
                                         <thead >
                                             <tr>
                                                 <th><?php echo lang('name'); ?></th>
-                                                <th><?php echo lang('options'); ?></th>
+                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                                                    <th><?php echo lang('options'); ?></th>
+                                                <?php } ?>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($templates as $template) { ?>
                                                 <tr class="">
                                                     <td> <?php echo $template->name; ?></td>
-                                                    <td class="no-print">
-                                                        <a href="form/editTemplate?id=<?php echo $template->id;?>" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-id="<?php echo $template->id; ?>"><i class="fa fa-edit"> </i></a>   
-                                                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
-                                                        <a class="btn btn-danger btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="form/deleteTemplate?id=<?php echo $template->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
-                                                        <?php } ?>
-                                                    </td>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                                                        <td class="no-print">
+                                                            <a href="form/editTemplate?id=<?php echo $template->id;?>" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-id="<?php echo $template->id; ?>"><i class="fa fa-edit"> </i></a>   
+                                                            <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                                                <a class="btn btn-danger btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="form/deleteTemplate?id=<?php echo $template->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
+                                                            <?php } ?>
+                                                        </td>
+                                                    <?php } ?>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

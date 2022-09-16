@@ -303,7 +303,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <span class="side-menu__label"><?php echo lang('public').' '.lang('health').' '.lang('dashboard') ?></span></a>
                             </li>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
                             <li class="slide">
                                 <a class="side-menu__item" href="patient/addNewView">
 
@@ -345,7 +345,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist', 'Clerk'))) { ?>
                             <?php if (in_array('admission', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -371,7 +371,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Laboratorist', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Laboratorist', 'Receptionist', 'Clerk'))) { ?>
                             <?php if (in_array('patient', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -382,10 +382,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist'))) { ?>
                                             <li><a href="patient/patientPayments" class="slide-item"><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
-                                        <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist'))) { ?>
+                                        <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist', 'Clerk'))) { ?>
                                         <li><a href="patient/caseList" class="slide-item"><?php echo lang('case_notes'); ?></a></li>
                                         <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('DoctorAdmin', 'Doctor', 'admin'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('DoctorAdmin', 'Doctor', 'admin', 'Clerk'))) { ?>
                                             <li><a href="patient/documents" class="slide-item"><?php echo lang('documents'); ?></a></li>
                                         <?php } ?>
                                     </ul>
@@ -422,7 +422,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk'))) { ?>
                             <?php if (in_array('appointment', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -430,7 +430,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('appointment'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
                                         <li><a href="appointment" class="slide-item"><?php echo lang('all'); ?></a></li>
-                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
                                             <li><a href="appointment/addNewView" class="slide-item"><?php echo lang('add'); ?></a></li>
                                         <?php } ?>
                                         <li><a href="appointment/todays" class="slide-item"><?php echo lang('todays'); ?></a></li>
@@ -502,7 +502,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             </li>
                         <?php } ?>
                         
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser', 'Clerk'))) { ?>
                             <?php if (in_array('finance', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -511,18 +511,18 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <ul class="slide-menu">
 
                                         <li><a href="finance/invoices" class="slide-item"><?php echo lang('invoices'); ?></a></li>
-                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk'))) { ?>
                                             <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
                                         <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist', 'Clerk'))) { ?>
                                             <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('list_of_charges'); ?></a></li>
                                             <li><a href="finance/serviceCategory" class="slide-item"><?php echo lang('charge').' '.lang('categories'); ?> </a></li>
                                             <li><a href="finance/expense" class="slide-item"><?php echo lang('expense'); ?></a></li>
                                         <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk'))) { ?>
                                             <li><a href="finance/addExpenseView" class="slide-item"><?php echo lang('add_expense'); ?></a></li>
                                         <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist', 'Clerk'))) { ?>
                                             <li><a href="finance/expenseCategory" class="slide-item"><?php echo lang('expense_categories'); ?></a></li>
                                         <?php } ?>
                                     </ul>
@@ -539,7 +539,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Nurse', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Nurse', 'Receptionist', 'Clerk'))) { ?>
                             <?php if (in_array('prescription', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item"  href="prescription/all">
@@ -549,7 +549,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk'))) { ?>
                             <?php if (in_array('labrequest', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item"  href="labrequest">
@@ -594,7 +594,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk'))) { ?>
                             <?php if (in_array('form', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -602,14 +602,16 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('forms_reports'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
                                         <li><a href="form" class="slide-item"><?php echo lang('forms_reports'); ?></a></li>
-                                        <li><a href="form?addnew=true" class="slide-item"><?php echo lang('add_form_report'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                                            <li><a href="form?addnew=true" class="slide-item"><?php echo lang('add_form_report'); ?></a></li>
+                                        <?php } ?>
                                         <li><a href="form/template" class="slide-item"><?php echo lang('report_templates'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Accountant'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Accountant', 'Clerk'))) { ?>
                             <?php if (in_array('medicine', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -678,7 +680,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) { ?>
                             <?php if (in_array('bed', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">

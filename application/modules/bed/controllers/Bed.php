@@ -9,13 +9,13 @@ class Bed extends MX_Controller {
         parent::__construct();
         $this->load->model('bed_model');
         $this->load->model('patient/patient_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data['beds'] = $this->bed_model->getBed();
@@ -26,7 +26,7 @@ class Bed extends MX_Controller {
     }
 
     public function addBedView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -37,7 +37,7 @@ class Bed extends MX_Controller {
     }
 
     public function addBed() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -95,7 +95,7 @@ class Bed extends MX_Controller {
     }
 
     function editBed() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -124,7 +124,7 @@ class Bed extends MX_Controller {
     }
 
     public function bedCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist', 'Clerk'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -137,7 +137,7 @@ class Bed extends MX_Controller {
     }
 
     public function addCategoryView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $this->load->view('home/dashboard'); // just the header file
@@ -146,7 +146,7 @@ class Bed extends MX_Controller {
     }
 
     public function addCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -192,7 +192,7 @@ class Bed extends MX_Controller {
     }
 
     function editCategory() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -220,7 +220,7 @@ class Bed extends MX_Controller {
     }
 
     function bedAllotment() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Nurse', 'Laboratorist', 'Clerk'))) {
             redirect('home/permission');
         }
         if (!$this->ion_auth->logged_in()) {
@@ -236,7 +236,7 @@ class Bed extends MX_Controller {
     }
 
     function addAllotmentView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -248,7 +248,7 @@ class Bed extends MX_Controller {
     }
 
     function addAllotment() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -319,7 +319,7 @@ class Bed extends MX_Controller {
     }
 
     function editAllotment() {
-        if (!$this->ion_auth->in_group(array('admin', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();

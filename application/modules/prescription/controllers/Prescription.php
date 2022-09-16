@@ -16,7 +16,7 @@ class Prescription extends MX_Controller {
         $this->load->model('specialty/specialty_model');
         $this->load->model('encounter/encounter_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Patient', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Patient', 'Nurse', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
     }
@@ -42,7 +42,7 @@ class Prescription extends MX_Controller {
 
     function all() {
 
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Pharmacist', 'Nurse', 'Receptionist'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Pharmacist', 'Nurse', 'Receptionist', 'Clerk'))) {
             redirect('home/permission');
         }
 
