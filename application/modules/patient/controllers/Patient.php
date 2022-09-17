@@ -51,7 +51,7 @@ class Patient extends MX_Controller {
     }
 
     public function index() {
-        if ($this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'CompanyUser', 'Midwife'))) {
+        if ($this->ion_auth->in_group(array('Patient', 'Pharmacist', 'Accountant', 'CompanyUser'))) {
             redirect('home/permission');
         }
         $data['doctors'] = $this->doctor_model->getDoctor();
@@ -4050,7 +4050,7 @@ class Patient extends MX_Controller {
         foreach ($data['patients'] as $patient) {
 
             $active_status = $this->db->get_where('users', array('id' => $patient->ion_user_id))->row()->active;
-            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Doctor', 'Clerk', 'Midwife'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
                 if ($active_status == 1) {
                     $options1 = '';
@@ -4068,7 +4068,7 @@ class Patient extends MX_Controller {
 
             $options4 = '<a class="btn btn-success" title="' . lang('payment') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor', 'Clerk', 'Midwife'))) {
                 $options5 = '<a class="btn btn-danger" title="' . lang('delete') . '" href="patient/delete?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
@@ -4081,7 +4081,7 @@ class Patient extends MX_Controller {
                 $options7 = '';
             }
 
-            if ($this->ion_auth->in_group(array('Doctor','CompanyUser','admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('Doctor','CompanyUser','admin', 'Clerk', 'Midwife'))) {
                 $options8 = '<a class="btn btn-info" href="patient/editIdentification?id='.$patient->patient_id.'">' . lang('edit') . ' ' . lang('identification') . '</a>';
                 $options9 = '<a class="btn btn-info" href="patient/editPopulation?id='.$patient->patient_id.'">'. lang('edit') . ' ' . lang('population') . ' ' . lang('census') .'</a>';
                 $options10 = '<a class="btn btn-info" href="patient/editHealthDeclaration?id='.$patient->patient_id.'">'. lang('edit') . ' ' . lang('health') . ' ' . lang('declaration') .'</a>';
@@ -4100,7 +4100,7 @@ class Patient extends MX_Controller {
             }
 
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $info[] = array(
                     '<img style="width:95%;" src="'.$img_url.'">',
                     $patient->patient_id,
