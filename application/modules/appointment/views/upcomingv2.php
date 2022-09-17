@@ -12,7 +12,7 @@
                                     <?php echo lang('upcoming'); ?> <?php echo lang('appointments'); ?>
                                 </div>
                                 <div class="card-options">
-                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                                         <!-- <a data-toggle="modal" href="#myModal">
                                             <div class="btn-group pull-right">
                                                 <button id="" class="btn btn-primary btn-xs pull-right">
@@ -36,7 +36,7 @@
                                                     <th> <?php echo lang('doctor'); ?></th>
                                                     <th><?php echo lang('appointment').' '.lang('status'); ?></th>
                                                     <th> <?php echo lang('details'); ?></th>
-                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                                                         <th> <?php echo lang('options'); ?></th>
                                                     <?php } ?>
                                                 </tr>

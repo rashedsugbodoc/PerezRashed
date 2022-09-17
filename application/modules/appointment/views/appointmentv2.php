@@ -44,7 +44,7 @@
                                                                     <th> <?php echo lang('doctor'); ?></th>
                                                                     <th><?php echo lang('appointment').' '.lang('status'); ?></th>
                                                                     <th> <?php echo lang('details'); ?> </th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
+                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
                                                                 </tr>
@@ -75,7 +75,7 @@
                                                                     <th> <?php echo lang('doctor'); ?></th>
                                                                     <th><?php echo lang('appointment').' '.lang('status'); ?></th>
                                                                     <th> <?php echo lang('details'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
+                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
                                                                 </tr>
@@ -107,7 +107,7 @@
                                                                     <th><?php echo lang('doctor'); ?></th>
                                                                     <th><?php echo lang('appointment').' '.lang('status'); ?></th>
                                                                     <th><?php echo lang('details'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
+                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
                                                                 </tr>
@@ -139,7 +139,7 @@
                                                                     <th><?php echo lang('doctor'); ?></th>
                                                                     <th><?php echo lang('appointment').' '.lang('status'); ?></th>
                                                                     <th><?php echo lang('details'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
+                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
                                                                 </tr>
@@ -172,7 +172,7 @@
                                                                     <th><?php echo lang('doctor'); ?></th>
                                                                     <th><?php echo lang('appointment').' '.lang('status'); ?></th>
                                                                     <th><?php echo lang('details'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
+                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
                                                                 </tr>
@@ -204,7 +204,7 @@
                                                                     <th><?php echo lang('doctor'); ?></th>
                                                                     <th><?php echo lang('appointment').' '.lang('status'); ?></th>
                                                                     <th><?php echo lang('details'); ?></th>
-                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
+                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                                                                         <th> <?php echo lang('options'); ?></th>
                                                                     <?php } ?>
                                                                 </tr>

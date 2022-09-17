@@ -320,7 +320,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Midwife'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
                             <?php if (in_array('company', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item"  data-toggle="slide" href="javascript:;">
@@ -602,7 +602,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('forms_reports'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
                                         <li><a href="form" class="slide-item"><?php echo lang('forms_reports'); ?></a></li>
-                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Midwife'))) { ?>
                                             <li><a href="form?addnew=true" class="slide-item"><?php echo lang('add_form_report'); ?></a></li>
                                         <?php } ?>
                                         <li><a href="form/template" class="slide-item"><?php echo lang('report_templates'); ?></a></li>

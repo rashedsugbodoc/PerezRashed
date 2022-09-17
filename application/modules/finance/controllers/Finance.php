@@ -24,7 +24,7 @@ class Finance extends MX_Controller {
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->module('paypal');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Doctor', 'Patient', 'CompanyUser', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Doctor', 'Patient', 'CompanyUser', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }

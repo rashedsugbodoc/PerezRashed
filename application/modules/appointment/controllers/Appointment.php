@@ -1400,7 +1400,7 @@ class Appointment extends MX_Controller {
 
         foreach ($data['appointments'] as $appointment) {
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk', 'Midwife'))) {
                 $options1 = ' <a type="button" class="btn btn-info editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
             }
 
@@ -1410,7 +1410,7 @@ class Appointment extends MX_Controller {
 
             $options4 = '<a class="btn btn-success" title="' . lang('payment') . '" style="color: #fff;" href="finance/appointmentPaymentHistory?appointment=' . $appointment->id . '"><i class="fa fa-money"></i> ' . lang('payment') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $options5 = '<a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
@@ -1540,11 +1540,11 @@ class Appointment extends MX_Controller {
             }
             $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
             $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
-            if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) {
                 $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
             
@@ -1611,7 +1611,7 @@ class Appointment extends MX_Controller {
         }
 
         if (!empty($data['appointments'])) {
-            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
                 $output = array(
                     "draw" => intval($requestData['draw']),
                     "recordsTotal" => $this->appointment_model->getAppointmentCount(),
@@ -1687,7 +1687,7 @@ class Appointment extends MX_Controller {
             $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 
@@ -1718,7 +1718,7 @@ class Appointment extends MX_Controller {
         }
 
         if (!empty($data['appointments'])) {
-            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
                 $output = array(
                     "draw" => intval($requestData['draw']),
                     "recordsTotal" => $this->appointment_model->getRequestAppointmentCount(),
@@ -1794,7 +1794,7 @@ class Appointment extends MX_Controller {
             $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 
@@ -1825,7 +1825,7 @@ class Appointment extends MX_Controller {
         }
 
         if (!empty($data['appointments'])) {
-            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
                 $output = array(
                     "draw" => intval($requestData['draw']),
                     "recordsTotal" => $this->appointment_model->getPendingAppointmentCount(),
@@ -1902,7 +1902,7 @@ class Appointment extends MX_Controller {
             $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 
@@ -1995,7 +1995,7 @@ class Appointment extends MX_Controller {
         }
 
         if (!empty($data['appointments'])) {
-            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
                 $output = array(
                     "draw" => intval($requestData['draw']),
                     "recordsTotal" => $this->appointment_model->getConfirmedAppointmentCount(),
@@ -2071,7 +2071,7 @@ class Appointment extends MX_Controller {
             $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 
@@ -2111,7 +2111,7 @@ class Appointment extends MX_Controller {
         }
 
         if (!empty($data['appointments'])) {
-            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
                 $output = array(
                     "draw" => intval($requestData['draw']),
                     "recordsTotal" => $this->appointment_model->getTreatedAppointmentCount(),
@@ -2187,7 +2187,7 @@ class Appointment extends MX_Controller {
             $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 
@@ -2218,7 +2218,7 @@ class Appointment extends MX_Controller {
         }
 
         if (!empty($data['appointments'])) {
-            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
                 $output = array(
                     "draw" => intval($requestData['draw']),
                     "recordsTotal" => $this->appointment_model->getCancelledAppointmentCount(),
@@ -2295,7 +2295,7 @@ class Appointment extends MX_Controller {
             $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'&root=appointment&method=todays" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 
@@ -2451,7 +2451,7 @@ class Appointment extends MX_Controller {
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'&root=appointment&method=upcoming" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Clerk'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
 

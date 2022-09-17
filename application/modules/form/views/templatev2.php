@@ -12,7 +12,7 @@
                                     <?php echo lang('form_report'); ?> <?php echo lang('template'); ?>
                                 </div>
                                 <div class="card-options">
-                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Midwife'))) { ?>
                                         <a href="form/addTemplateView">
                                             <div class="btn-group pull-right">
                                                 <button id="" class="btn btn-primary btn-xs">
@@ -29,7 +29,7 @@
                                         <thead >
                                             <tr>
                                                 <th><?php echo lang('name'); ?></th>
-                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Midwife'))) { ?>
                                                     <th><?php echo lang('options'); ?></th>
                                                 <?php } ?>
                                             </tr>
@@ -38,7 +38,7 @@
                                             <?php foreach ($templates as $template) { ?>
                                                 <tr class="">
                                                     <td> <?php echo $template->name; ?></td>
-                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Midwife'))) { ?>
                                                         <td class="no-print">
                                                             <a href="form/editTemplate?id=<?php echo $template->id;?>" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-id="<?php echo $template->id; ?>"><i class="fa fa-edit"> </i></a>   
                                                             <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
