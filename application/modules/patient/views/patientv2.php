@@ -37,7 +37,7 @@
                                                                 <th class="border-bottom-0"><?php echo lang('name'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('phone'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
-                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) { ?>
+                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                                                                     <th class="border-bottom-0"><?php echo lang('due_balance'); ?></th>
                                                                 <?php } ?>
                                                                 <th class="border-bottom-0"><?php echo lang('options'); ?></th>
