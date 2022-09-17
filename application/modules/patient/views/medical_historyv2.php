@@ -194,9 +194,9 @@
                                         <select class="select2-show-search w-100" name="encounter_id" id="encounter_selection" data-placeholder="<?php echo lang('select').' '.lang('encounter') ?>">
                                             <option></option>
                                             <option value="All"><?php echo lang("all").' '.lang("encounter") ?></option>
-                                            <?php foreach($encounter_details as $encounter_detail) { ?>
-                                                <option value="<?php echo $encounter_detail->id ?>"><?php echo lang('encounter')." No. : ".$encounter_detail->encounter_number.' - '.date("M j, Y g:i A", strtotime($encounter_detail->created_at.' UTC')); ?></option>
-                                            <?php } ?>
+                                            <?php /*foreach($encounter_details as $encounter_detail) {*/ ?>
+                                                <!-- <option value="<?php echo $encounter_detail->id ?>"><?php echo lang('encounter')." No. : ".$encounter_detail->encounter_number.' - '.date("M j, Y g:i A", strtotime($encounter_detail->created_at.' UTC')); ?></option> -->
+                                            <?php /*}*/ ?>
                                         </select>
                                     <?php } ?>
                                 </div>
@@ -287,14 +287,14 @@
                                 </div>
                             </div> -->
                             <div class="row">
-                                <div class="col-md-5 col-lg-3 col-sm-12 pr-1">
+                                <div class="col-md-5 col-lg-2 col-sm-12 pr-1">
                                     <div class="box-widget widget-user">
                                         <div class="widget-user-image d-lg-flex">
                                             <center><img alt="User Avatar" class="rounded-circle p-1" src="<?php echo file_exists($patient->img_url)?$patient->img_url:base_url('public/assets/images/users/placeholder.jpg'); ?>" style="width: 150px; height: 150px;" width="auto" height="auto"></center>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-7 col-lg-9 col-sm-12 pl-0">
+                                <div class="col-md-7 col-lg-10 col-sm-12 pl-0">
                                     <div class="row mt-md-1 mt-sm-1 mr-lg-3 mr-mb-0 mr-sm-0">
                                         <div class="col-lg-9 col-md-12 col-sm-12">
                                             <h4 class="mb-3 mt-1 font-weight-bold h-6 text-md-center text-lg-left text-sm-center"><?php echo $patient->name; ?></h4>
@@ -2428,6 +2428,26 @@
                 var encounter_id = $("#encounter_selection").val();
                 var patient_id = $("#patient_id").val();
                 window.location.href = 'patient/medicalHistory?encounter_id='+encounter_id;
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $("document").ready(function() {
+            var patient = '<?php echo $patient->id; ?>';
+            $("#encounter_selection").find('option').remove();
+
+            $.ajax({
+                url: 'encounter/getEncounterByPatientIdJason?id='+patient,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var encounter = response.encounter;
+                    $.each(encounter, function (key, value) {
+                        $('#encounter_selection').append($('<option>').text(value.text).val(value.id)).end();
+                    });
+                }
             })
         });
     </script>

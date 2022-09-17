@@ -279,31 +279,63 @@ class Encounter extends MX_Controller {
         if ($this->ion_auth->in_group('Doctor')) {
             $user = $this->session->userdata('user_id');
             $doctor_id = $this->doctor_model->getDoctorByIonUserId($user)->id;
-            if ($limit == -1) {
-                if (!empty($search)) {
-                    $data['encounters'] = $this->encounter_model->getEncounterBySearchByDoctorId($search, $doctor_id);
+            if (!empty($patient_id)) {
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['encounters'] = $this->encounter_model->getEncounterBySearchByDoctorId($search, $doctor_id, $patient_id);
+                    } else {
+                        $data['encounters'] = $this->encounter_model->getEncounterByDoctorId($doctor_id, $patient_id);
+                    }
                 } else {
-                    $data['encounters'] = $this->encounter_model->getEncounterByDoctorId($doctor_id);
+                    if (!empty($search)) {
+                        $data['encounters'] = $this->encounter_model->getEncounterByLimitBySearchByDoctorId($limit, $start, $search, $doctor_id, $patient_id);
+                    } else {
+                        $data['encounters'] = $this->encounter_model->getEncounterByLimitByDoctorId($limit, $start, $doctor_id, $patient_id);
+                    }
                 }
             } else {
-                if (!empty($search)) {
-                    $data['encounters'] = $this->encounter_model->getEncounterByLimitBySearchByDoctorId($limit, $start, $search, $doctor_id);
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['encounters'] = $this->encounter_model->getEncounterBySearchByDoctorId($search, $doctor_id);
+                    } else {
+                        $data['encounters'] = $this->encounter_model->getEncounterByDoctorId($doctor_id);
+                    }
                 } else {
-                    $data['encounters'] = $this->encounter_model->getEncounterByLimitByDoctorId($limit, $start, $doctor_id);
+                    if (!empty($search)) {
+                        $data['encounters'] = $this->encounter_model->getEncounterByLimitBySearchByDoctorId($limit, $start, $search, $doctor_id);
+                    } else {
+                        $data['encounters'] = $this->encounter_model->getEncounterByLimitByDoctorId($limit, $start, $doctor_id);
+                    }
                 }
             }
         } elseif ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Midwife'))) {
-            if ($limit == -1) {
-                if (!empty($search)) {
-                    $data['encounters'] = $this->encounter_model->getEncounterBysearch($search);
+            if (!empty($patient_id)) {
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['encounters'] = $this->encounter_model->getEncounterBysearch($search, $patient_id);
+                    } else {
+                        $data['encounters'] = $this->encounter_model->getEncounter($patient_id);
+                    }
                 } else {
-                    $data['encounters'] = $this->encounter_model->getEncounter();
+                    if (!empty($search)) {
+                        $data['encounters'] = $this->encounter_model->getEncounterByLimitBySearch($limit, $start, $search, $patient_id);
+                    } else {
+                        $data['encounters'] = $this->encounter_model->getEncounterByLimit($limit, $start, $patient_id);
+                    }
                 }
             } else {
-                if (!empty($search)) {
-                    $data['encounters'] = $this->encounter_model->getEncounterByLimitBySearch($limit, $start, $search);
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['encounters'] = $this->encounter_model->getEncounterBysearch($search);
+                    } else {
+                        $data['encounters'] = $this->encounter_model->getEncounter();
+                    }
                 } else {
-                    $data['encounters'] = $this->encounter_model->getEncounterByLimit($limit, $start);
+                    if (!empty($search)) {
+                        $data['encounters'] = $this->encounter_model->getEncounterByLimitBySearch($limit, $start, $search);
+                    } else {
+                        $data['encounters'] = $this->encounter_model->getEncounterByLimit($limit, $start);
+                    }
                 }
             }
         }
@@ -855,6 +887,16 @@ class Encounter extends MX_Controller {
         );
 
         $this->encounter_model->updateEncounter($id, $data);
+    }
+
+    public function getEncounterByPatientIdJason() {
+        $patient_id = $this->input->get('id');
+
+        $patient = $this->patient_model->getPatientById($patient_id);
+
+        $data['encounter'] = $this->encounter_model->getEncounterByPatientIdForDropdown($patient->id);
+
+        echo json_encode($data);
     }
 
 }

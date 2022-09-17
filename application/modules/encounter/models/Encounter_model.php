@@ -10,8 +10,11 @@ class Encounter_model extends CI_model {
         $this->load->database();
     }
 
-    function getEncounter($today = FALSE) {
+    function getEncounter($today = FALSE, $patient_id = null) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        if (!empty($patient_id)) {
+            $this->db->where('patient_id', $patient_id);
+        }
         if (!empty($today)) {
             $this->db->where("(created_at LIKE '%" . $today . "%')", NULL, FALSE);
         }
@@ -81,6 +84,7 @@ class Encounter_model extends CI_model {
         $users = $fetched_records->result_array();
 
         $data = array();
+        $data[] = array("id" => 'All', "text" => lang('all') . ' ' . lang('encounter'));
         foreach ($users as $user) {
             $encounter_type_name = $this->getEncounterTypeById($user['encounter_type_id']);
             $data[] = array("id" => $user['id'], "text" =>  lang('encounter') . " No." . ' : ' . $user['encounter_number'] . ' - ' . $encounter_type_name->display_name . ' - ' . date("M j, Y g:i a", strtotime($user['created_at'].' UTC')));
@@ -153,7 +157,10 @@ class Encounter_model extends CI_model {
 
     }
 
-    function getEncounterByDoctorId($id) {
+    function getEncounterByDoctorId($id, $patient_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient_id', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor_id', $id);
         $query = $this->db->get('encounter');
@@ -193,24 +200,43 @@ class Encounter_model extends CI_model {
         return $query->row();
     }
 
-    function getEncounterBySearch($search) {
+    function getEncounterBySearch($search, $patient_id = null) {
         $this->db->order_by('id', 'desc');
-        $query = $this->db->select('*')
-                ->from('encounter')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('encounter')
+                    ->where('patient_id', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('encounter')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
         return $query->result();
     }
 
-    function getEncounterBySearchByDoctorId($search, $doctor_id) {
+    function getEncounterBySearchByDoctorId($search, $doctor_id, $patient_id = null) {
         $this->db->order_by('id', 'desc');
-        $query = $this->db->select('*')
-                ->from('encounter')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where('doctor', $doctor_id)
-                ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('encounter')
+                    ->where('patient_id', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('doctor', $doctor_id)
+                    ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('encounter')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('doctor', $doctor_id)
+                    ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
         return $query->result();
     }
 
@@ -223,30 +249,52 @@ class Encounter_model extends CI_model {
         return $query->num_rows();
     }
 
-    function getEncounterByLimitBySearch($limit, $start, $search) {
+    function getEncounterByLimitBySearch($limit, $start, $search, $patient_id = null) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->select('*')
-                ->from('encounter')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('encounter')
+                    ->where('patient_id', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('encounter')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
         return $query->result();
     }
 
-    function getEncounterByLimitBySearchByDoctorId($limit, $start, $search, $doctor_id) {
+    function getEncounterByLimitBySearchByDoctorId($limit, $start, $search, $doctor_id, $patient_id = null) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->select('*')
-                ->from('encounter')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where('doctor', $doctor_id)
-                ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('encounter')
+                    ->where('patient_id', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('doctor', $doctor_id)
+                    ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('encounter')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('doctor', $doctor_id)
+                    ->where("(id LIKE '%" . $search . "%' OR encounter_type_id LIKE '%" . $search . "%' OR encounter_status LIKE '%" . $search . "%' OR encounter_number LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
         return $query->result();
     }
 
-    function getEncounterByLimit($limit, $start) {
+    function getEncounterByLimit($limit, $start, $patient_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient_id', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
@@ -254,7 +302,10 @@ class Encounter_model extends CI_model {
         return $query->result();
     }
 
-    function getEncounterByLimitByDoctorId($limit, $start, $doctor_id) {
+    function getEncounterByLimitByDoctorId($limit, $start, $doctor_id, $patient_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient_id', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor_id);
         $this->db->order_by('id', 'desc');
