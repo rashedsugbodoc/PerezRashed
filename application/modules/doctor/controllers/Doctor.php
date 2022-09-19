@@ -893,11 +893,11 @@ class Doctor extends MX_Controller {
         $data['appointments'] = $this->appointment_model->getAppointmentByDoctor($id);
         $data['patients'] = $this->patient_model->getPatient();
         $date_from = strtotime(gmdate("Y-m-d"));
-        $data['upcoming_appointments'] = $this->appointment_model->getAppointmentByDoctorByDate($id, $date_from, $date_to);
+        $data['upcoming_appointments'] = $this->appointment_model->getAppointmentByDoctorByDate($id, $date_from, null);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['prescriptions'] = $this->prescription_model->getPrescriptionByDoctorId($id);
         $data['holidays'] = $this->schedule_model->getHolidaysByDoctor($id);
-        $data['schedules'] = $this->schedule_model->getScheduleByDoctor($id, $location);
+        $data['schedules'] = $this->schedule_model->getScheduleByDoctor($id, null);
         $today = date('Y-m-d');
         $data['encounters'] = $this->encounter_model->getEncounter($today);
         // $data['encounter_status'] = $this->encounter_model->getEncounterStatus();

@@ -351,7 +351,7 @@ $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->insert('time_schedule_location', $data2);
     }
 
-    function getScheduleByDoctor($doctor, $location) {
+    function getScheduleByDoctor($doctor, $location = null) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor);
         if (!empty($location)) {
