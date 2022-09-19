@@ -247,18 +247,18 @@
                                                                 <label class="form-label"><?php echo lang('suffix'); ?></label>
                                                                 <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                                     <option value="0" ><?php echo lang('none'); ?></option>
-                                                                    <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($patient->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
-                                                                    <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($patient->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
-                                                                    <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($patient->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
-                                                                    <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($patient->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
-                                                                    <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($patient->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
-                                                                    <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($patient->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
-                                                                    <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($patient->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
-                                                                    <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($patient->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
-                                                                    <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($patient->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
-                                                                    <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($patient->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
-                                                                    <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($patient->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
-                                                                    <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($patient->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
+                                                                    <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='Jr.') { echo 'selected'; } } ?>><?php echo lang('jr'); ?></option>
+                                                                    <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='Sr.') { echo 'selected'; } } ?>><?php echo lang('sr'); ?></option>
+                                                                    <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='I') { echo 'selected'; } } ?>><?php echo lang('i'); ?></option>
+                                                                    <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='II') { echo 'selected'; } } ?>><?php echo lang('ii'); ?></option>
+                                                                    <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='III') { echo 'selected'; } } ?>><?php echo lang('iii'); ?></option>
+                                                                    <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='IV') { echo 'selected'; } } ?>><?php echo lang('iv'); ?></option>
+                                                                    <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='V') { echo 'selected'; } } ?>><?php echo lang('v'); ?></option>
+                                                                    <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='VI') { echo 'selected'; } } ?>><?php echo lang('vi'); ?></option>
+                                                                    <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='VII') { echo 'selected'; } } ?>><?php echo lang('vii'); ?></option>
+                                                                    <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='VIII') { echo 'selected'; } } ?>><?php echo lang('viii'); ?></option>
+                                                                    <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='IX') { echo 'selected'; } } ?>><?php echo lang('ix'); ?></option>
+                                                                    <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif(!empty($patient->suffix)) { if($patient->suffix ==='X') { echo 'selected'; } } ?>><?php echo lang('x'); ?></option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -380,8 +380,10 @@
                                                                             if (!empty($setval)) {
                                                                                 echo set_value('civil_status');
                                                                             }
-                                                                            elseif ($patient->civil_status == $civil->name) {
-                                                                                echo 'selected';
+                                                                            elseif (!empty($patient->civil_status)) {
+                                                                                if ($patient->civil_status == $civil->name) {
+                                                                                    echo 'selected';
+                                                                                }
                                                                             }
                                                                         ?>> <?php echo $civil->display_name ?> </option>
                                                                     <?php } ?>
