@@ -513,7 +513,11 @@
                                                             echo $patient->patient_id;
                                                         }
                                                         ?>'>
-                                                        <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
+                                                        <input type="hidden" name="redirect" value="<?php
+                                                        if (!empty($redirect)) {
+                                                            echo $redirect;
+                                                        }
+                                                        ?>">
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-12 col-md-12">
