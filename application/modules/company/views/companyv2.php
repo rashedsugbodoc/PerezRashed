@@ -556,7 +556,7 @@
                 responsive: true,
 
                 "processing": true,
-                "serverSide": true,
+                // "serverSide": true,
                 "searchable": true,
                 "ajax": {
                     url: "company/getCompany",
