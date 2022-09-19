@@ -106,12 +106,15 @@
                                                                 <tbody>
                                                                     <?php
                                                                     foreach ($todays_appointments as $todays_appointment) {
+                                                                        $location_name = '';
                                                                         $patient_details = $this->patient_model->getPatientById($todays_appointment->patient);
-                                                                        $location_name = $this->branch_model->getBranchById($todays_appointment->location_id)->display_name;
+                                                                        $location_name = $this->branch_model->getBranchById($todays_appointment->location_id);
                                                                         $todays_appointment_service_type = $this->appointment_model->getServiceCategoryById($todays_appointment->service_category_group_id)->display_name;
                                                                         $todays_appointment_service = $this->appointment_model->getServicesByServiceId($todays_appointment->service_id)->category;
-                                                                        if(empty($location_name)) {
+                                                                        if(empty($location_name->display_name)) {
                                                                             $location_name = 'Online';
+                                                                        } else {
+                                                                            $location_name = $location_name->display_name;
                                                                         }
                                                                         if (!empty($patient_details)) {
                                                                             ?>
@@ -238,11 +241,13 @@
                                                                         <?php
                                                                         foreach ($upcoming_appointments as $upcoming_appointment) {
                                                                             $appointed_patient = $this->patient_model->getPatientById($upcoming_appointment->patient);
-                                                                            $upcoming_appointment_location_name = $this->branch_model->getBranchById($upcoming_appointment->location_id)->display_name;
+                                                                            $upcoming_appointment_location_name = $this->branch_model->getBranchById($upcoming_appointment->location_id);
                                                                             $upcoming_appointment_service_type = $this->appointment_model->getServiceCategoryById($upcoming_appointment->service_category_group_id)->display_name;
                                                                             $upcoming_appointment_service = $this->appointment_model->getServicesByServiceId($upcoming_appointment->service_id)->category;
-                                                                            if(empty($upcoming_appointment_location_name)) {
+                                                                            if(empty($upcoming_appointment_location_name->display_name)) {
                                                                                 $upcoming_appointment_location_name = 'Online';
+                                                                            } else {
+                                                                                $upcoming_appointment_location_name = $upcoming_appointment_location_name->display_name;
                                                                             }
                                                                             ?>
                                                                             <tr>
