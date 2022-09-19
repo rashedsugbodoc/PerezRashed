@@ -834,33 +834,67 @@ class Form extends MX_Controller {
         $search = $this->input->post('search')['value'];
         $patient_id = $this->input->get('patient_id');
         $encounter_id = $this->input->get('encounter_id');
+        $current_user = $this->ion_auth->get_user_id();
+        $doctor_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
 
         if (!empty($patient_id)) {
-            if ($limit == -1) {
-                if (!empty($search)) {
-                    $data['forms'] = $this->form_model->getFormBysearch($search, $patient_id);
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['forms'] = $this->form_model->getFormBysearch($search, $patient_id, $doctor_id);
+                    } else {
+                        $data['forms'] = $this->form_model->getForm($patient_id, $doctor_id);
+                    }
                 } else {
-                    $data['forms'] = $this->form_model->getForm($patient_id);
+                    if (!empty($search)) {
+                        $data['forms'] = $this->form_model->getFormByLimitBySearch($limit, $start, $search, $patient_id, $doctor_id);
+                    } else {
+                        $data['forms'] = $this->form_model->getFormByLimit($limit, $start, $patient_id, $doctor_id);
+                    }
                 }
             } else {
-                if (!empty($search)) {
-                    $data['forms'] = $this->form_model->getFormByLimitBySearch($limit, $start, $search, $patient_id);
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['forms'] = $this->form_model->getFormBysearch($search, $patient_id);
+                    } else {
+                        $data['forms'] = $this->form_model->getForm($patient_id);
+                    }
                 } else {
-                    $data['forms'] = $this->form_model->getFormByLimit($limit, $start, $patient_id);
+                    if (!empty($search)) {
+                        $data['forms'] = $this->form_model->getFormByLimitBySearch($limit, $start, $search, $patient_id);
+                    } else {
+                        $data['forms'] = $this->form_model->getFormByLimit($limit, $start, $patient_id);
+                    }
                 }
             }
         } else {
-            if ($limit == -1) {
-                if (!empty($search)) {
-                    $data['forms'] = $this->form_model->getFormBysearch($search);
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['forms'] = $this->form_model->getFormBysearch($search, null, $doctor_id);
+                    } else {
+                        $data['forms'] = $this->form_model->getForm(null, $doctor_id);
+                    }
                 } else {
-                    $data['forms'] = $this->form_model->getForm();
+                    if (!empty($search)) {
+                        $data['forms'] = $this->form_model->getFormByLimitBySearch($limit, $start, $search, null, $doctor_id);
+                    } else {
+                        $data['forms'] = $this->form_model->getFormByLimit($limit, $start, null, $doctor_id);
+                    }
                 }
             } else {
-                if (!empty($search)) {
-                    $data['forms'] = $this->form_model->getFormByLimitBySearch($limit, $start, $search);
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['forms'] = $this->form_model->getFormBysearch($search);
+                    } else {
+                        $data['forms'] = $this->form_model->getForm();
+                    }
                 } else {
-                    $data['forms'] = $this->form_model->getFormByLimit($limit, $start);
+                    if (!empty($search)) {
+                        $data['forms'] = $this->form_model->getFormByLimitBySearch($limit, $start, $search);
+                    } else {
+                        $data['forms'] = $this->form_model->getFormByLimit($limit, $start);
+                    }
                 }
             }
             //  $data['forms'] = $this->form_model->getForm();
