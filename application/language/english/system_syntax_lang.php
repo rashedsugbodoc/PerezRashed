@@ -799,6 +799,7 @@ $lang['wednesday'] = 'Wednesday';
 $lang['thursday'] = 'Thursday';
 $lang['time_schedule'] = 'Time Schedule';
 $lang['schedule'] = 'Schedule';
+$lang['schedules'] = 'Schedules';
 $lang['scheduled'] = 'Scheduled';
 $lang['rescheduled'] = 'Rescheduled';
 $lang['duration'] = 'Duration';

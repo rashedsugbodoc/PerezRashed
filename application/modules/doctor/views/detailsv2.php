@@ -23,8 +23,8 @@
                                                     <li><a href="#encounter" class="active" data-toggle="tab"><?php echo lang('todays'); ?> <?php echo lang('encounter'); ?></a></li>
                                                     <li class=""><a href="#todays" class="" data-toggle="tab"><?php echo lang('todays'); ?> <?php echo lang('appointments'); ?></a></li>
                                                     <li><a href="#patient" data-toggle="tab" class=""><?php echo lang('scheduled').' '.lang('patients'); ?></a></li>
-                                                    <li><a href="#prescription" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
-                                                    <li><a href="#schedule" data-toggle="tab" class=""><?php echo lang('schedule'); ?></a></li>
+                                                    <li><a href="#prescription" data-toggle="tab" class=""><?php echo lang('prescriptions'); ?></a></li>
+                                                    <li><a href="#schedule" data-toggle="tab" class=""><?php echo lang('schedules'); ?></a></li>
                                                     <li><a href="#holiday" data-toggle="tab" class=""><?php echo lang('holidays'); ?></a></li>
                                                     <li><a href="#calendar" data-toggle="tab" class=""><?php echo lang('calendar'); ?></a></li>
                                                 </ul>
