@@ -64,32 +64,57 @@ class Labrequest_model extends CI_model {
         return $data;
     }
 
-    function getLabrequestBySearch($search, $patient_id = null) {       
+    function getLabrequestBySearch($search, $patient_id = null, $doctor_id = null) {       
         $this->db->order_by('id', 'desc');
         if (!empty($patient_id)) {
-            $query = $this->db->select('*')
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('lab_request')
+                        ->where('patient_id', $patient_id)
+                        ->where('doctor_id', $doctor_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->group_by('lab_request_number')
+                        ->get();
+                ;
+            } else {
+                $query = $this->db->select('*')
                     ->from('lab_request')
                     ->where('patient_id', $patient_id)
                     ->where('hospital_id', $this->session->userdata('hospital_id'))
                     ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
                     ->group_by('lab_request_number')
                     ->get();
-            ;
+            }
         } else {
-            $query = $this->db->select('*')
-                    ->from('lab_request')
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
-                    ->group_by('lab_request_number')
-                    ->get();
-            ;
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('lab_request')
+                        ->where('doctor_id', $doctor_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->group_by('lab_request_number')
+                        ->get();
+                ;
+            } else {
+                $query = $this->db->select('*')
+                        ->from('lab_request')
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->group_by('lab_request_number')
+                        ->get();
+                ;
+            }
         }
         return $query->result();            
     }
 
-    function getLabrequest($patient_id = null) {
+    function getLabrequest($patient_id = null, $doctor_id = null) {
         if (!empty($patient_id)) {
             $this->db->where('patient_id', $patient_id);
+        }
+        if (!empty($doctor_id)) {
+            $this->db->where('doctor_id', $doctor_id);
         }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
@@ -151,33 +176,59 @@ class Labrequest_model extends CI_model {
         return $query->result();
     }
 
-    function getLabrequestByLimitBySearch($limit, $start, $search, $patient_id = null) {               
+    function getLabrequestByLimitBySearch($limit, $start, $search, $patient_id = null, $doctor_id = null) {               
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         if (!empty($patient_id)) {
-            $query = $this->db->select('*')
-                    ->from('lab_request')
-                    ->where('patient_id', $patient_id)
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
-                    ->group_by('lab_request_number')
-                    ->get();
-            ;
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('lab_request')
+                        ->where('doctor_id', $doctor_id)
+                        ->where('patient_id', $patient_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->group_by('lab_request_number')
+                        ->get();
+                ;
+            } else {
+                $query = $this->db->select('*')
+                        ->from('lab_request')
+                        ->where('patient_id', $patient_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->group_by('lab_request_number')
+                        ->get();
+                ;
+            }
         } else {
-            $query = $this->db->select('*')
-                    ->from('lab_request')
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
-                    ->group_by('lab_request_number')
-                    ->get();
-            ;
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('lab_request')
+                        ->where('doctor_id', $doctor_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->group_by('lab_request_number')
+                        ->get();
+                ;
+            } else {
+                $query = $this->db->select('*')
+                        ->from('lab_request')
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR long_common_name LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%' OR loinc_num LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->group_by('lab_request_number')
+                        ->get();
+                ;
+            }
         }
         return $query->result();       
     }
 
-    function getLabrequestByLimit($limit, $start, $patient_id = null) {
+    function getLabrequestByLimit($limit, $start, $patient_id = null, $doctor_id = null) {
         if (!empty($patient_id)) {
             $this->db->where('patient_id', $patient_id);
+        }
+        if (!empty($doctor_id)) {
+            $this->db->where('doctor_id', $doctor_id);
         }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');

@@ -347,33 +347,66 @@ class Labrequest extends MX_Controller {
         $search = $this->input->post('search')['value'];
         $current_user = $this->ion_auth->get_user_id();
         $patient_id = $this->input->get('patient_id');
+        $doctor_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
 
         if (!empty($patient_id)) {
-            if ($limit == -1) {
-                if (!empty($search)) {
-                    $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search, $patient_id);
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search, $patient_id, $doctor_id);
+                    } else {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequest($patient_id, $doctor_id);
+                    }
                 } else {
-                    $data['labrequests'] = $this->labrequest_model->getLabrequest($patient_id);
+                    if (!empty($search)) {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search, $patient_id, $doctor_id);
+                    } else {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start, $patient_id, $doctor_id);
+                    }
                 }
             } else {
-                if (!empty($search)) {
-                    $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search, $patient_id);
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search, $patient_id);
+                    } else {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequest($patient_id);
+                    }
                 } else {
-                    $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start, $patient_id);
+                    if (!empty($search)) {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search, $patient_id);
+                    } else {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start, $patient_id);
+                    }
                 }
             }
         } else {
-            if ($limit == -1) {
-                if (!empty($search)) {
-                    $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search);
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search, null, $doctor_id);
+                    } else {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequest(null, $doctor_id);
+                    }
                 } else {
-                    $data['labrequests'] = $this->labrequest_model->getLabrequest();
+                    if (!empty($search)) {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search, null, $doctor_id);
+                    } else {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start, null, $doctor_id);
+                    }
                 }
             } else {
-                if (!empty($search)) {
-                    $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search);
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestBySearch($search);
+                    } else {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequest();
+                    }
                 } else {
-                    $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start);
+                    if (!empty($search)) {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestByLimitBySearch($limit, $start, $search);
+                    } else {
+                        $data['labrequests'] = $this->labrequest_model->getLabrequestByLimit($limit, $start);
+                    }
                 }
             }
         }
