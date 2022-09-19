@@ -166,14 +166,27 @@ class Customform extends MX_Controller {
         $data_patient = array();
         $data_medical_history = array();
 
-        $data_custom_form = array(
-            'patient' => $patient,
-            'name' => $name,
-            'created_user_id' => $user,
-            'custom_form_date' => $date,
-            'reference_number' => $reference_number,
-            'type_id' => 1,
-        );
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_id = $this->doctor_model->getDoctorByIonUserId($user)->id;
+            $data_custom_form = array(
+                'patient' => $patient,
+                'name' => $name,
+                'doctor' => $doctor_id,
+                'created_user_id' => $user,
+                'custom_form_date' => $date,
+                'reference_number' => $reference_number,
+                'type_id' => 1,
+            );
+        } else {
+            $data_custom_form = array(
+                'patient' => $patient,
+                'name' => $name,
+                'created_user_id' => $user,
+                'custom_form_date' => $date,
+                'reference_number' => $reference_number,
+                'type_id' => 1,
+            );
+        }
 
         $data_patient_vital = array(
             'patient_id' => $patient,

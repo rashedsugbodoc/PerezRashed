@@ -384,13 +384,16 @@ class Customform_model extends CI_model {
         return array_filter($data);
     }
 
-    function getCustomByTypeCount($type) {
+    function getCustomByTypeCount($type, $doctor_id = null) {
         // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->select('id');
         $patients = $this->db->get('patient')->result();
 
         $data = array();
         foreach($patients as $patient) {
+            if (!empty($doctor_id)) {
+                $this->db->where('doctor', $doctor_id);
+            }
             $this->db->where('type_id', $type);
             $this->db->where('patient', $patient->id);
             $this->db->order_by('id', 'desc');
