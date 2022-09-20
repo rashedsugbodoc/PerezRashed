@@ -520,7 +520,7 @@
             }
 
             $.ajax({
-                // url:base_url+'appointment/addNewBookConsultation',
+                url:base_url+'appointment/addNewBookConsultation',
                 method:'POST',
                 data:data,  
                 success:function(data){
