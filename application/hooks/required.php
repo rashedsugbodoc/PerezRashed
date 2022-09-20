@@ -108,7 +108,7 @@ function required() {
     }
     if ($RTR->class == "frontend" || $RTR->class == "request") {
         $CI->db->where('hospital_id', 'superadmin');
-        $CI->language = $CI->db->get('settings')->row()->language;
+        $CI->language = $CI->db->get('website_settings')->row()->language;
         $CI->lang->load('system_syntax', $CI->language);
     }
     // Language
