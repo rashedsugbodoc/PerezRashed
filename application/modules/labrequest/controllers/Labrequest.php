@@ -16,7 +16,7 @@ class Labrequest extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('specialty/specialty_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor','Patient', 'Clerk', 'Midwife'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor','Patient', 'Clerk', 'Midwife', 'Nurse'))) {
             redirect('home/permission');
         }
     }
@@ -70,11 +70,12 @@ class Labrequest extends MX_Controller {
         }
         $patient_number = $this->patient_model->getPatientById($patient)->patient_id;
         $patient_name = $this->patient_model->getPatientById($patient)->name;
-        $doctor = $this->encounter_model->getEncounterById($encounter_id)->doctor;
-        if (empty($doctor)) {
-            $current_user = $this->ion_auth->get_user_id();
-            $doctor = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
-        }
+        // $doctor = $this->encounter_model->getEncounterById($encounter_id)->doctor;
+        // if (empty($doctor)) {
+        //     $current_user = $this->ion_auth->get_user_id();
+        //     $doctor = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
+        // }
+        $doctor = $this->input->post('doctor');
         $doctor_name = $this->doctor_model->getDoctorById($doctor)->name;
         $redirect = $this->input->post('redirect');
         $medical_redirect = $this->input->post('medical_history_redirect');
