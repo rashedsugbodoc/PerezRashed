@@ -539,7 +539,10 @@
                                                             <?php } ?>
                                                             <?php if ($this->ion_auth->in_group('Patient')) { ?>
                                                                 <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
+                                                                    <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
+                                                                        <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?> 
+                                                                    </a> -->
+                                                                    <a href="appointment/bookConsultation" class="btn btn-primary">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?> 
                                                                     </a>
                                                                 </div>
