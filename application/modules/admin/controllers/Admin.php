@@ -25,6 +25,9 @@ class Admin extends MX_Controller {
     }
 
     public function index() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $data['admins'] = $this->admin_model->getAdmin();
         $this->load->view('home/dashboardv2');
         $this->load->view('admin', $data);
@@ -94,6 +97,7 @@ class Admin extends MX_Controller {
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
+        $redirect = $this->input->post('redirect');
 
         $emailById = $this->admin_model->getAdminById($id)->email;
 
@@ -273,7 +277,11 @@ class Admin extends MX_Controller {
                         //end
 
                         $this->session->set_flashdata('success', lang('record_added'));
-                        redirect('admin');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('admin');
+                        }
                     } else {
                         //additional validation for uploading file in add modal
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
@@ -342,7 +350,11 @@ class Admin extends MX_Controller {
                             //end
 
                             $this->session->set_flashdata('success', lang('record_added'));
-                            redirect('admin');
+                            if (!empty($redirect)) {
+                                redirect($redirect);
+                            } else {
+                                redirect('admin');
+                            }
                         }
 
                         
@@ -376,7 +388,11 @@ class Admin extends MX_Controller {
                             $this->admin_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->admin_model->updateAdmin($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
-                            redirect('admin');
+                            if (!empty($redirect)) {
+                                redirect($redirect);
+                            } else {
+                                redirect('admin');
+                            }
                         } else {
                             //additional validation for uploading file in update modal if email not exist
                             if ($_FILES['img_url']['size'] > $config['max_size']) {
@@ -400,7 +416,11 @@ class Admin extends MX_Controller {
                                 $this->admin_model->updateIonUser($username, $email, $password, $ion_user_id);
                                 $this->admin_model->updateAdmin($id, $data);
                                 $this->session->set_flashdata('success', lang('record_updated'));
-                                redirect('admin');
+                                if (!empty($redirect)) {
+                                    redirect($redirect);
+                                } else {
+                                    redirect('admin');
+                                }
                             }
                             
                         }
@@ -418,7 +438,11 @@ class Admin extends MX_Controller {
                         $this->admin_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->admin_model->updateAdmin($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('admin');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('admin');
+                        }
                     } else {
                         //additional validation for uploading file in update modal if email exist
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
@@ -443,7 +467,11 @@ class Admin extends MX_Controller {
                             $this->admin_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->admin_model->updateAdmin($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
-                            redirect('admin');
+                            if (!empty($redirect)) {
+                                redirect($redirect);
+                            } else {
+                                redirect('admin');
+                            }
                         }
                     }
                 }
@@ -668,6 +696,18 @@ class Admin extends MX_Controller {
         $data['specialties'] = $this->getSpecialtyListArray($doctor_specialty);
 
         echo json_encode($data);        
+    }
+
+    public function editProfile() {
+        $data = array();
+        $user = $this->ion_auth->get_user_id();
+        $id = $this->admin_model->getAdminByIonUserId($user)->id;
+        $data['admin'] = $this->admin_model->getAdminById($id);
+        $data['countries'] = $this->location_model->getCountry();
+        $data['redirect'] = 'admin/editProfile';
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_new', $data);        
+        //$this->load->view('home/footer'); // just the footer file
     }
 
 }
