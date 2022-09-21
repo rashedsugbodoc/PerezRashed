@@ -10,12 +10,15 @@ class Midwife extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('midwife_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group('admin')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Midwife'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $data['midwifes'] = $this->midwife_model->getMidwife();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('midwifev2', $data);
@@ -23,6 +26,9 @@ class Midwife extends MX_Controller {
     }
 
     public function addNewView() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $data['countries'] = $this->location_model->getCountry();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
@@ -44,6 +50,7 @@ class Midwife extends MX_Controller {
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
+        $redirect = $this->input->post('redirect');
 
         $emailById = $this->midwife_model->getMidwifeById($id)->email;
 
@@ -211,7 +218,11 @@ class Midwife extends MX_Controller {
                             $this->email->send();
                         }
                         $this->session->set_flashdata('success', lang('record_added'));
-                        redirect('midwife');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('midwife');
+                        }
                     } else {
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
                             // $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
@@ -256,7 +267,11 @@ class Midwife extends MX_Controller {
                                 $this->email->send();
                             }
                             $this->session->set_flashdata('success', lang('record_added'));
-                            redirect('midwife');
+                            if (!empty($redirect)) {
+                                redirect($redirect);
+                            } else {
+                                redirect('midwife');
+                            }
                         }
                     }
                 }
@@ -281,20 +296,26 @@ class Midwife extends MX_Controller {
                         $this->midwife_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->midwife_model->updateMidwife($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('midwife');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('midwife');
+                        }
                     }
                 } else {
                     if ($this->upload->do_upload('img_url')) {
                         $ion_user_id = $this->db->get_where('midwife', array('id' => $id))->row()->ion_user_id;
-                        if (empty($password)) {
-                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                        } else {
-                            $password = $this->ion_auth_model->hash_password($password);
-                        }
+                        
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;/*Assign Existing Password already in Database*/
+
                         $this->midwife_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->midwife_model->updateMidwife($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('midwife');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('midwife');
+                        }
                     } else {
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
                             $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
@@ -308,15 +329,17 @@ class Midwife extends MX_Controller {
                             $this->load->view('add_newv2', $data);
                         } else {
                             $ion_user_id = $this->db->get_where('midwife', array('id' => $id))->row()->ion_user_id;
-                            if (empty($password)) {
-                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                            } else {
-                                $password = $this->ion_auth_model->hash_password($password);
-                            }
+                            
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;/*Assign Existing Password already in Database*/
+
                             $this->midwife_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->midwife_model->updateMidwife($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
-                            redirect('midwife');
+                            if (!empty($redirect)) {
+                                redirect($redirect);
+                            } else {
+                                redirect('midwife');
+                            }
                         }
                     }
                 }
@@ -393,6 +416,18 @@ class Midwife extends MX_Controller {
         $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
 
         echo json_encode($data);        
+    }
+
+    public function editProfile() {
+        $data = array();
+        $user = $this->ion_auth->get_user_id();
+        $id = $this->midwife_model->getMidwifeByIonUserId($user)->id;
+        $data['midwife'] = $this->midwife_model->getMidwifeById($id);
+        $data['countries'] = $this->location_model->getCountry();
+        $data['redirect'] = 'midwife/editProfile';
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);        
+        //$this->load->view('home/footer'); // just the footer file
     }
 
 }

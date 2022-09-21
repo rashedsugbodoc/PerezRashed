@@ -10,12 +10,15 @@ class Clerk extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('clerk_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group('admin')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Clerk'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $data['clerks'] = $this->clerk_model->getClerk();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('clerkv2', $data);
@@ -23,6 +26,9 @@ class Clerk extends MX_Controller {
     }
 
     public function addNewView() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $data['countries'] = $this->location_model->getCountry();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
@@ -44,6 +50,7 @@ class Clerk extends MX_Controller {
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
+        $redirect = $this->input->post('redirect');
 
         $emailById = $this->clerk_model->getClerkById($id)->email;
 
@@ -211,7 +218,11 @@ class Clerk extends MX_Controller {
                             $this->email->send();
                         }
                         $this->session->set_flashdata('success', lang('record_added'));
-                        redirect('clerk');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('clerk');
+                        }
                     } else {
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
                             // $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
@@ -256,7 +267,11 @@ class Clerk extends MX_Controller {
                                 $this->email->send();
                             }
                             $this->session->set_flashdata('success', lang('record_added'));
-                            redirect('clerk');
+                            if (!empty($redirect)) {
+                                redirect($redirect);
+                            } else {
+                                redirect('clerk');
+                            }
                         }
                     }
                 }
@@ -281,7 +296,11 @@ class Clerk extends MX_Controller {
                         $this->clerk_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->clerk_model->updateClerk($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('clerk');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('clerk');
+                        }
                     }
                 } else {
                     if ($this->upload->do_upload('img_url')) {
@@ -294,7 +313,11 @@ class Clerk extends MX_Controller {
                         $this->clerk_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->clerk_model->updateClerk($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('clerk');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('clerk');
+                        }
                     } else {
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
                             $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
@@ -316,7 +339,11 @@ class Clerk extends MX_Controller {
                             $this->clerk_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->clerk_model->updateClerk($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
-                            redirect('clerk');
+                            if (!empty($redirect)) {
+                                redirect($redirect);
+                            } else {
+                                redirect('clerk');
+                            }
                         }
                     }
                 }
@@ -393,6 +420,18 @@ class Clerk extends MX_Controller {
         $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
 
         echo json_encode($data);        
+    }
+
+    public function editProfile() {
+        $data = array();
+        $user = $this->ion_auth->get_user_id();
+        $id = $this->clerk_model->getClerkByIonUserId($user)->id;
+        $data['clerk'] = $this->clerk_model->getClerkById($id);
+        $data['countries'] = $this->location_model->getCountry();
+        $data['redirect'] = 'clerk/editProfile';
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);        
+        //$this->load->view('home/footer'); // just the footer file
     }
 
 }

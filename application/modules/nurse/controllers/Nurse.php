@@ -10,12 +10,15 @@ class Nurse extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('nurse_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group('admin')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $data['nurses'] = $this->nurse_model->getNurse();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('nursev2', $data);
@@ -23,6 +26,9 @@ class Nurse extends MX_Controller {
     }
 
     public function addNewView() {
+        if (!$this->ion_auth->in_group('admin')) {
+            redirect('home/permission');
+        }
         $data['countries'] = $this->location_model->getCountry();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
@@ -44,6 +50,7 @@ class Nurse extends MX_Controller {
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
+        $redirect = $this->input->post('redirect');
 
         $emailById = $this->nurse_model->getNurseById($id)->email;
 
@@ -211,7 +218,11 @@ class Nurse extends MX_Controller {
                             $this->email->send();
                         }
                         $this->session->set_flashdata('success', lang('record_added'));
-                        redirect('nurse');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('nurse');
+                        }
                     } else {
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
                             // $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
@@ -256,7 +267,11 @@ class Nurse extends MX_Controller {
                                 $this->email->send();
                             }
                             $this->session->set_flashdata('success', lang('record_added'));
-                            redirect('nurse');
+                            if (!empty($redirect)) {
+                                redirect($redirect);
+                            } else {
+                                redirect('nurse');
+                            }
                         }
                     }
                 }
@@ -273,28 +288,32 @@ class Nurse extends MX_Controller {
                         // $this->load->view('home/footer'); // just the footer file
                     } else {
                         $ion_user_id = $this->db->get_where('nurse', array('id' => $id))->row()->ion_user_id;
-                        if (empty($password)) {
-                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                        } else {
-                            $password = $this->ion_auth_model->hash_password($password);
-                        }
+                        
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;/*Assign Existing Password already in Database*/
+                        
                         $this->nurse_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->nurse_model->updateNurse($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('nurse');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('nurse');
+                        }
                     }
                 } else {
                     if ($this->upload->do_upload('img_url')) {
                         $ion_user_id = $this->db->get_where('nurse', array('id' => $id))->row()->ion_user_id;
-                        if (empty($password)) {
-                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                        } else {
-                            $password = $this->ion_auth_model->hash_password($password);
-                        }
+
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;/*Assign Existing Password already in Database*/
+
                         $this->nurse_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->nurse_model->updateNurse($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
-                        redirect('nurse');
+                        if (!empty($redirect)) {
+                            redirect($redirect);
+                        } else {
+                            redirect('nurse');
+                        }
                     } else {
                         if ($_FILES['img_url']['size'] > $config['max_size']) {
                             $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
@@ -308,15 +327,17 @@ class Nurse extends MX_Controller {
                             $this->load->view('add_newv2', $data);
                         } else {
                             $ion_user_id = $this->db->get_where('nurse', array('id' => $id))->row()->ion_user_id;
-                            if (empty($password)) {
-                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                            } else {
-                                $password = $this->ion_auth_model->hash_password($password);
-                            }
+                            
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;/*Assign Existing Password already in Database*/
+
                             $this->nurse_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->nurse_model->updateNurse($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));
-                            redirect('nurse');
+                            if (!empty($redirect)) {
+                                redirect($redirect);
+                            } else {
+                                redirect('nurse');
+                            }
                         }
                     }
                 }
@@ -398,6 +419,18 @@ class Nurse extends MX_Controller {
         $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
 
         echo json_encode($data);        
+    }
+
+    public function editProfile() {
+        $data = array();
+        $user = $this->ion_auth->get_user_id();
+        $id = $this->nurse_model->getNurseByIonUserId($user)->id;
+        $data['nurse'] = $this->nurse_model->getNurseById($id);
+        $data['countries'] = $this->location_model->getCountry();
+        $data['redirect'] = 'nurse/editProfile';
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);        
+        //$this->load->view('home/footer'); // just the footer file
     }
 
 }

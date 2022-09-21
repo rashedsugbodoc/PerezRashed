@@ -211,6 +211,7 @@
                                                 echo $clerk->id;
                                             }
                                             ?>'>
+                                            <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
                                                     <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
