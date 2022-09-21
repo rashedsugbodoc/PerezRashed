@@ -2447,6 +2447,7 @@
                 dataType: 'json',
                 success: function (response) {
                     var encounter = response.encounter;
+                    $('#encounter_selection').append($('<option>').text('<?php echo lang('all').' '.lang('encounter'); ?>').val('All')).end();
                     $.each(encounter, function (key, value) {
                         $('#encounter_selection').append($('<option>').text(value.text).val(value.id)).end();
                     });
