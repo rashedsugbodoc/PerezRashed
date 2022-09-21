@@ -444,7 +444,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="row">
+                                    <div class="row prescription-opacity">
                                         <div class="col-md-1 col-sm-1">
                                             
                                         </div>
