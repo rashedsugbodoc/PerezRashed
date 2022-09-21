@@ -273,11 +273,9 @@ class Receptionist extends MX_Controller {
                         // $this->load->view('home/footer'); // just the footer file
                     } else {
                         $ion_user_id = $this->db->get_where('receptionist', array('id' => $id))->row()->ion_user_id;
-                        if (empty($password)) {
-                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                        } else {
-                            $password = $this->ion_auth_model->hash_password($password);
-                        }
+                        
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+
                         $this->receptionist_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->receptionist_model->updateReceptionist($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
@@ -286,11 +284,9 @@ class Receptionist extends MX_Controller {
                 } else {
                     if ($this->upload->do_upload('img_url')) {
                         $ion_user_id = $this->db->get_where('receptionist', array('id' => $id))->row()->ion_user_id;
-                        if (empty($password)) {
-                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                        } else {
-                            $password = $this->ion_auth_model->hash_password($password);
-                        }
+                        
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+
                         $this->receptionist_model->updateIonUser($username, $email, $password, $ion_user_id);
                         $this->receptionist_model->updateReceptionist($id, $data);
                         $this->session->set_flashdata('success', lang('record_updated'));
@@ -306,11 +302,9 @@ class Receptionist extends MX_Controller {
                             $this->load->view('add_newv2', $data);
                         } else {
                             $ion_user_id = $this->db->get_where('receptionist', array('id' => $id))->row()->ion_user_id;
-                            if (empty($password)) {
-                                $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
-                            } else {
-                                $password = $this->ion_auth_model->hash_password($password);
-                            }
+                            
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                            
                             $this->receptionist_model->updateIonUser($username, $email, $password, $ion_user_id);
                             $this->receptionist_model->updateReceptionist($id, $data);
                             $this->session->set_flashdata('success', lang('record_updated'));

@@ -40,7 +40,7 @@ class Nurse_model extends CI_model {
         $this->db->delete('nurse');
     }
 
-    function updateIonUser($username, $email, $password, $ion_user_id) {
+    function updateIonUser($username, $email, $password = null, $ion_user_id) {
         $uptade_ion_user = array(
             'username' => $username,
             'email' => $email,
