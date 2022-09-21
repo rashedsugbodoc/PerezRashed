@@ -1476,8 +1476,8 @@ class Appointment extends MX_Controller {
         if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('appointment')->num_rows(),
-                "recordsFiltered" => $this->db->get('appointment')->num_rows(),
+                "recordsTotal" => count($data['appointments']),
+                "recordsFiltered" => count($data['appointments']),
                 "data" => $info
             );
         } else {
