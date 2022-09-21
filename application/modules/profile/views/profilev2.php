@@ -21,11 +21,18 @@
                                             <h4 class="pro-user-username text-dark mb-1 font-weight-bold"><?php echo $profile->name;?></h4>
                                             <h6 class="pro-user-desc text-muted"><?php echo ucfirst($group_name);?></h6>
                                             <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
-                                            <a href="<?php echo base_url('doctor/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
+                                                <a href="<?php echo base_url('doctor/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
+                                            <?php } elseif ($this->ion_auth->in_group(array('Patient'))) { ?>
+                                                <a href="<?php echo base_url('patient/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
+                                            <?php } elseif ($this->ion_auth->in_group(array('Midwife'))) { ?>
+                                                <a href="<?php echo base_url('midwife/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
+                                            <?php } elseif ($this->ion_auth->in_group(array('Nurse'))) { ?>
+                                                <a href="<?php echo base_url('nurse/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
+                                            <?php } elseif ($this->ion_auth->in_group(array('admin'))) { ?>
+                                                <a href="<?php echo base_url('admin/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
+                                            <?php } elseif ($this->ion_auth->in_group(array('Clerk'))) { ?>
+                                                <a href="<?php echo base_url('clerk/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
                                             <?php } ?>
-                                            <?php if ($this->ion_auth->in_group(array('Patient'))) { ?>
-                                            <a href="<?php echo base_url('patient/editProfile'); ?>" class="btn btn-primary btn-sm mt-3">Edit Profile</a>
-                                            <?php } ?>                                            
                                         </div>
                                     </div>
 
