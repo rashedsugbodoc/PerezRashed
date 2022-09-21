@@ -2763,8 +2763,9 @@ class Patient extends MX_Controller {
             $prescription_doctor_specialty_explode = explode(',', $doctor_details->specialties);
             $hospital_details = $this->hospital_model->getHospitalById($prescription->hospital_id);
             $encounter = $this->encounter_model->getEncounterById($prescription->encounter_id);
-            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
-            if (empty($branch_name)) {
+            if (!empty($encounter->location_id)) {
+                $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+            } else {
                 $branch_name = "Online";
             }
             foreach($prescription_doctor_specialty_explode as $prescription_doctor_specialty) {
@@ -3223,9 +3224,10 @@ class Patient extends MX_Controller {
 
             $hospital_details = $this->hospital_model->getHospitalById($diag->hospital_id);
             $encounter = $this->encounter_model->getEncounterById($diag->encounter_id);
-            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
-            if (empty($branch_name)) {
-                $branch_name = "Online";
+            if (!empty($encounter_location)) {
+                $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+            } else {
+                $branch_name = 'Online';
             }
 
             if (!empty($diag->created_at)) {
@@ -3360,13 +3362,18 @@ class Patient extends MX_Controller {
             $encounter_doctor_profile_name = $this->getPatientProfileNameByIonUserId($encounter->created_user_id);
             $encounter_appointment = $this->appointment_model->getAppointmentById($encounter->appointment_id);
             // $encounter_appointment_time = date('H:i', strtotime($encounter->waiting_started.' UTC'));
-            $encounter_appointment_time = $encounter_appointment->s_time . ' to ' . $encounter_appointment->e_time;
+            if (!empty($encounter->appointment_id)) {
+                $encounter_appointment_time = $encounter_appointment->s_time . ' to ' . $encounter_appointment->e_time;
+            } else {
+                $encounter_appointment_time = '';
+            }
             
 
             $hospital_details = $this->hospital_model->getHospitalById($encounter->hospital_id);
-            $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
-            if (empty($branch_name)) {
-                $branch_name = "Online";
+            if (!empty($encounter->location_id)) {
+                $branch_name = $this->branch_model->getBranchById($encounter->location_id)->display_name;
+            } else {
+                $branch_name = 'Online';
             }
             $encounter_specialty = [];
             $encounter_doctor_specialty_explode = explode(',', $encounter_doctor_details->specialties);
@@ -3385,8 +3392,16 @@ class Patient extends MX_Controller {
             
             
             if (!empty($encounter_appointment)) {
-                $encounter_appointment_service_group = $this->appointment_model->getServiceCategoryById($encounter_appointment->service_category_group_id)->display_name;
-                $encounter_services = $this->finance_model->getPaymentCategoryById($encounter_appointment->service_id)->description;
+                if (!empty($encounter_appointment->service_category_group_id)) {
+                    $encounter_appointment_service_group = $this->appointment_model->getServiceCategoryById($encounter_appointment->service_category_group_id)->display_name;
+                } else {
+                    $encounter_appointment_service_group = '';
+                }
+                if (!empty($encounter_appointment->service_id)) {
+                    $encounter_services = $this->finance_model->getPaymentCategoryById($encounter_appointment->service_id)->description;
+                } else {
+                    $encounter_services = '';
+                }
                 $encounter_appointment_date = date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter_appointment->appointment_date.' UTC'));
                 if (!empty($encounter->started_at)) {
                     $encounter_started_date = date('F j, Y H:i A', strtotime($encounter->started_at.' UTC'));
@@ -3414,23 +3429,23 @@ class Patient extends MX_Controller {
                                         </div>
                                     </div>';
                 $encounter_appointment_details = '<div class="form-group">
-                                                    <div class="media mr-4 mb-4">
-                                                        <div class="mr-3 mt-1 ml-3">
-                                                            <i class="fa fa-file-text-o fa-2x text-primary"></i>
-                                                        </div>
-                                                        <div class="media-body">
-                                                            <strong>'. $encounter_appointment_service_group .'</strong>
-                                                            <div class="row">
-                                                                <div class="col-md-10 mb-3">
-                                                                    <small class="text-muted">' . $encounter_services . '</small>
+                                                        <div class="media mr-4 mb-4">
+                                                            <div class="mr-3 mt-1 ml-3">
+                                                                <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                            </div>
+                                                            <div class="media-body">
+                                                                <strong>'. $encounter_appointment_service_group .'</strong>
+                                                                <div class="row">
+                                                                    <div class="col-md-10 mb-3">
+                                                                        <small class="text-muted">' . $encounter_services . '</small>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <div class="ml-auto mt-1 mr-3">
+                                                                <span class="badge badge-pill badge-primary"></span>
+                                                            </div>
                                                         </div>
-                                                        <div class="ml-auto mt-1 mr-3">
-                                                            <span class="badge badge-pill badge-primary"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>';
+                                                    </div>';
                 $encounter_date = '<div class="form-group">
                                         <div class="media mr-4 mb-4">
                                             <div class="mr-3 mt-1 ml-3">
@@ -3511,7 +3526,16 @@ class Patient extends MX_Controller {
                 $encounter_doctor = '';
             }
 
-            
+            if (empty($encounter_appointment_details)) {
+                $encounter_appointment_details = '';
+            }
+            if (empty($encounter_number_type_group)) {
+                $encounter_number_type_group = '';
+            }
+            if (empty($appointment_date)) {
+                $appointment_date = '';
+            }
+
             if (!empty($encounter->created_at)) {
                 $timeline[strtotime($encounter->created_at.' UTC') + 3] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', strtotime($encounter->created_at.' UTC')) . '</span></li>
                                             <li>
@@ -3522,7 +3546,7 @@ class Patient extends MX_Controller {
                                                     <div class="timelineleft-body">
                                                         '. $encounter_appointment_details .'
                                                         '. $encounter_number_type_group .'
-                                                        '. $appointment_id .'
+                                                        '. $encounter->appointment_id .'
                                                         '. $appointment_date .'
                                                         '. $encounter_date .'
                                                         <div class="form-group">
