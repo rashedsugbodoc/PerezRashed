@@ -1063,6 +1063,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <li><a href="patient/editProfile" class="slide-item"><?php echo lang('edit').' '.lang('profile'); ?></a></li>
                                     <?php } elseif ($this->ion_auth->in_group('CompanyUser')) { ?>
                                         <li><a href="companyuser/editProfile" class="slide-item"><?php echo lang('edit').' '.lang('profile'); ?></a></li>
+                                    <?php } elseif ($this->ion_auth->in_group('Midwife')) { ?>
+                                        <li><a href="midwife/editProfile" class="slide-item"><?php echo lang('edit').' '.lang('profile'); ?></a></li>
                                     <?php } ?>
                                 </ul>
                             </li>   
