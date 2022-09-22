@@ -1708,6 +1708,7 @@ class Finance extends MX_Controller {
     function deposit() {
         $id = $this->input->post('id');
         $patient = $this->input->post('patient');
+        $patient_details = $this->patient_model->getPatientById($patient);
         $payment_id = $this->input->post('payment_id');
         $date = time();
 
@@ -1869,7 +1870,7 @@ class Finance extends MX_Controller {
 
                 $this->session->set_flashdata('success', lang('updated'));
             }
-            redirect('finance/patientPaymentHistory?patient=' . $patient);
+            redirect('finance/patientPaymentHistory?patient=' . $patient_details->patient_id);
         }
     }
 

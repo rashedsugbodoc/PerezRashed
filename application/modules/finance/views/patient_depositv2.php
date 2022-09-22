@@ -129,7 +129,7 @@
                                         <a href="" class="btn btn-info" target="_blank"><i class="fe fe-eye"></i><span class="button-text"> <?php echo lang('statement_of_account'); ?></span></a>
                                     </div>
                                     <div class="flex-grow-1 mr-3">
-                                        <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('Doctor', 'Clerk'))) { ?>
                                             <a href="" class="btn btn-primary pull-right" data-toggle="modal" onclick="openModal()"><i class="fe fe-plus"></i><span class="button-text">  <?php echo lang('deposit'); ?></span></a>
                                         <?php } ?>
                                     </div>
@@ -532,7 +532,7 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('deposit_type'); ?></label>
                                                         <select class="form-control select2-show-search" id="selecttype" name="deposit_type" value=''> 
-                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) { ?>
                                                                 <option value="Cash"> <?php echo lang('cash'); ?> </option>
                                                                 <option value="Card"> <?php echo lang('card'); ?> </option>
                                                             <?php } ?>
