@@ -2820,7 +2820,7 @@ class Finance extends MX_Controller {
         foreach ($data['expenses'] as $expense) {
 
 
-            if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk'))) {
                 $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editExpense?id=' . $expense->id . '"><i class="fa fa-edit"> </i></a>';
             }
 

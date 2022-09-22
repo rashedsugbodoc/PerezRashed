@@ -30,7 +30,7 @@
                                                     <tr>
                                                         <th><?php echo lang('category').' '.lang('name'); ?></th>
                                                         <th><?php echo lang('description'); ?></th>
-                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk'))) { ?>
                                                             <th class="no-print"><?php echo lang('options'); ?></th>
                                                         <?php } ?>
                                                     </tr>
@@ -40,7 +40,7 @@
                                                         <tr class="">
                                                             <td><?php echo $category->category; ?></td>
                                                             <td> <?php echo $category->description; ?></td>
-                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk'))) { ?>
                                                                 <td class="no-print">
                                                                     <?php if(!empty($category->hospital_id)) { ?>
                                                                     <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editExpenseCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"></i> </a>

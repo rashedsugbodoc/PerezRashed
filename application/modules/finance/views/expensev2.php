@@ -14,7 +14,7 @@
                                             <?php echo lang('expenses'); ?> 
                                         </div>
                                         <div class="card-options">
-                                            <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor'))) { ?>
+                                            <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Clerk'))) { ?>
                                                 <a  href="finance/addExpenseView">
                                                     <button id="" class="btn btn-primary btn-xs">
                                                         <i class="fa fa-plus"></i> <?php echo lang('add_expense'); ?>
