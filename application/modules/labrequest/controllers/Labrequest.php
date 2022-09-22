@@ -22,6 +22,9 @@ class Labrequest extends MX_Controller {
     }
 
     function index() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
+            redirect('home/permission');
+        }
         $this->load->view('home/dashboardv2');
         $this->load->view('labrequest', $data);
     }
