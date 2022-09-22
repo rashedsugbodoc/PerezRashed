@@ -717,11 +717,11 @@ class Prescription extends MX_Controller {
 
             $option1 = '<a title="' . lang('view') . ' " class="btn btn-info btn-xs" href="prescription/viewPrescription?id=' . $prescription->prescription_number . '"><i class="fa fa-eye"></i> ' . lang('view') . ' </a>';
 
-            if ($this->ion_auth->in_group(array('Doctor'))) {
+            if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
                 $option3 = '<a class="btn btn-info btn-xs" href="prescription/editPrescription?id=' . $prescription->prescription_number . '" data-id="' . $prescription->prescription_number . '"><i class="fa fa-edit"></i> ' . lang('edit') . ' </a>';    
             }
 
-            if ($this->ion_auth->in_group(array('admin'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Midwife'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="prescription/delete?id=' . $prescription->id . '&admin=' . $prescription->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
             

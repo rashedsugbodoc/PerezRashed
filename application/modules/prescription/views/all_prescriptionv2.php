@@ -12,9 +12,9 @@
                                     <?php echo lang('prescription'); ?>
                                 </div>
                                 <div class="card-options">
-                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) { ?>
                                         <div class="col-md-4 no-print pull-right"> 
-                                            <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
                                                 <a href="prescription/addPrescriptionView">
                                                     <div class="btn-group pull-right">
                                                         <button id="" class="btn btn-primary btn-xs">
