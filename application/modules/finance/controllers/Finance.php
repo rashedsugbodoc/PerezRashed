@@ -1149,7 +1149,12 @@ class Finance extends MX_Controller {
                 $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 if ($group == "Doctor") {
-                    $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    // $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    if ($service_type == 9) {
+                        $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    } elseif ($service_type == 10) {
+                        $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    }
                 }
 
                 $this->finance_model->updatePaymentCategory($id, $data);
