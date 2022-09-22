@@ -329,7 +329,7 @@
                                                                             $group_short = "";
                                                                         }
                                                                     ?>
-                                                                    <option class="ooppttiioonn" data-doctor="<?php echo $this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name; ?>" data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>" data-cat_name="<?php echo $category->category; ?>" data-dr="<?php echo $group_short; ?>" value="<?php echo $category->category.'-'.$category->applicable_staff_id; ?>"
+                                                                    <option class="ooppttiioonn" data-doctor="<?php echo $this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name; ?>" data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>" data-cat_name="<?php echo $category->category; ?>" data-dr="<?php echo $group_short; ?>" value="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>"
                                                                             <?php
                                                                             if (!empty($payment->category_name)) {
                                                                                 $category_name = $payment->category_name;
