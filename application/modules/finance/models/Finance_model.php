@@ -842,9 +842,13 @@ class Finance_model extends CI_model {
     }
 
     function getExpenseCategory() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->or_where(array('hospital_id'=> NULL));
-        $query = $this->db->get('expense_category');
+        $query = $this->db->select('*')
+                ->from('expense_category')
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->or_where(array('hospital_id'=> NULL))
+                ->group_end()
+                ->get();
         return $query->result();
     }
 

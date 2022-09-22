@@ -14,7 +14,7 @@
                                             <?php echo lang('expense_categories'); ?>
                                         </div>
                                         <div class="card-options">
-                                            <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
+                                            <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor'))) { ?>
                                                 <a href="finance/addExpenseCategoryView">
                                                     <button id="" class="btn btn-primary btn-xs">
                                                         <i class="fa fa-plus"></i> <?php echo lang('add_expense_category'); ?>
@@ -30,7 +30,7 @@
                                                     <tr>
                                                         <th><?php echo lang('category').' '.lang('name'); ?></th>
                                                         <th><?php echo lang('description'); ?></th>
-                                                        <?php if ($this->ion_auth->in_group('admin')) { ?>
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                             <th class="no-print"><?php echo lang('options'); ?></th>
                                                         <?php } ?>
                                                     </tr>
@@ -40,7 +40,7 @@
                                                         <tr class="">
                                                             <td><?php echo $category->category; ?></td>
                                                             <td> <?php echo $category->description; ?></td>
-                                                            <?php if ($this->ion_auth->in_group('admin')) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                                 <td class="no-print">
                                                                     <?php if(!empty($category->hospital_id)) { ?>
                                                                     <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editExpenseCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"></i> </a>
