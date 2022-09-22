@@ -561,7 +561,7 @@ class Form extends MX_Controller {
     }
 
     public function addTemplate() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Nurse'))) {
             redirect('home/permission');
         }
 
