@@ -198,3 +198,16 @@ $lang['reset_password_new_password_confirm_label']            = 'Confirm New Pas
 $lang['reset_password_submit_btn']                            = 'Change';
 $lang['reset_password_validation_new_password_label']         = 'New Password';
 $lang['reset_password_validation_new_password_confirm_label'] = 'Confirm New Password';
+
+// Resend Activation Link
+$lang['resend_activation_heading']               = 'Resend Activation Link';
+$lang['resend_activation_subheading']            = 'Please enter your %s so we can send you a new link to activate your account.';
+$lang['forgot_password_email_label']             = '%s:';
+$lang['resend_activation_submit_btn']              = 'Submit';
+$lang['forgot_password_validation_email_label']  = 'Email Address';
+$lang['forgot_password_username_identity_label'] = 'Username';
+$lang['resend_activation_email_identity_label']  = 'Email';
+$lang['resend_activation_email_not_found']         = 'No record of that email address.';
+$lang['resend_activation_username_not_found']         = 'No record of that username.';
+$lang['back_to_login']         					 = 'Back to Login';
+
