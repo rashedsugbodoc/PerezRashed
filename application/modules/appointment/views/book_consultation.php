@@ -499,7 +499,19 @@
                 
             }
             if (step2.style.display == "block") {
-                $('.nextbtn').attr('disabled', true);
+                var with_done = $("a[href='#step-2']").parent().attr("class");
+                var step_status = with_done.includes('done');
+                if (step_status == true) {
+                    $('.nextbtn').attr('disabled', false);
+                } else {
+                    $('.nextbtn').attr('disabled', true);
+                }
+                // var remarks = $("#remarks").val();
+                // if (remarks == "") {
+                    
+                // } else {
+                //     $('.nextbtn').attr('disabled', false);
+                // }
             }
             if (step3.style.display == "block") {
                 $('.finish').attr('disabled', false);
