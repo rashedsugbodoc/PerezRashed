@@ -65,15 +65,20 @@ class Patient extends MX_Controller {
 
     public function findDoctors(){
         $data['specialties'] = $this->specialty_model->getSpecialty();
+        $user = $this->ion_auth->get_user_id();
+        $patient_details = $this->patient_model->getPatientByIonUserId($user);
         // $data['doctors'] = $this->doctor_model->getDoctor();
-        $data['doctors'] = $this->doctor_model->getAllDoctor();
+        $data['doctors'] = $this->doctor_model->getDoctorByCountryIdByIsBookableByIsVerified($patient_details->country_id, 1, 1);
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboardv2');
         $this->load->view('find_doctors', $data);
     }
 
     public function findClinicOrHospital() {
-        $data['hospitals'] = $this->hospital_model->getHospital();
+        $data['specialties'] = $this->specialty_model->getSpecialty();
+        $user = $this->ion_auth->get_user_id();
+        $patient_details = $this->patient_model->getPatientByIonUserId($user);
+        $data['hospitals'] = $this->hospital_model->getHospitalByCountryIdByIsActiveByIsPublic($patient_details->country_id, 1, 1);
         $data['entity_type'] = $this->settings_model->getEntityType();
         $this->load->view('home/dashboardv2');
         $this->load->view('find_clinic_hospital', $data);

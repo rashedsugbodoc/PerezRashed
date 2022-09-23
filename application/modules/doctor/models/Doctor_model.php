@@ -45,6 +45,14 @@ class Doctor_model extends CI_model {
         return $query->result();
     }
 
+    function getDoctorByCountryIdByIsBookableByIsVerified($countries = [], $is_bookable = null, $is_verified = null) {
+        $this->db->where_in('country_id', $countries);
+        $this->db->where('is_bookable', $is_bookable);
+        $this->db->where('is_verified', $is_verified);
+        $query = $this->db->get('doctor');
+        return $query->result();
+    }
+
     function getDoctorCount() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('doctor');
