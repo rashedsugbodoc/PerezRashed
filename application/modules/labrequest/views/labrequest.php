@@ -14,7 +14,9 @@
                                             <?php echo lang("lab") . ' ' . lang("requests"); ?>
                                         </div>
                                         <div class="card-options">
-                                            <a href="labrequest/addLabRequestView" class="btn btn-primary"><?php echo lang('add') . ' ' . lang("lab") . ' ' . lang("requests"); ?></a>
+                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
+                                                <a href="labrequest/addLabRequestView" class="btn btn-primary"><?php echo lang('add') . ' ' . lang("lab") . ' ' . lang("requests"); ?></a>
+                                            <?php } ?>
                                         </div>
                                     </div>
                                     <div class="card-body">
