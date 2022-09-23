@@ -37,10 +37,13 @@ $lang['deactivate_unsuccessful'] 	  	     = 'Unable to De-Activate Account';
 $lang['activation_email_successful'] 	  	 = 'We sent you an activation link. Check your email (and Spam folder) and click on the link to Activate your account.';
 $lang['activation_email_unsuccessful']   	 = 'Unable to Send Activation Email';
 
+// Resend Activation
+$lang['account_already_activated'] 		  	 = 'Account is already activated. You may proceed to login to your Account.';
+
 // Login / Logout
 $lang['login_successful'] 		  	         = 'Logged In Successfully';
 $lang['login_unsuccessful'] 		  	     = 'Incorrect Email or Password';
-$lang['login_unsuccessful_not_active'] 		 = 'Your Account has not been activated yet.<br>Click the link in the email we sent you to activate your account.';
+$lang['login_unsuccessful_not_active'] 		 = 'Your Account has not been activated yet.<br>Click the link in the email we sent you to activate your account. Or %s';
 $lang['login_timeout']                       = 'Temporarily Locked Out.  Try again later.';
 $lang['logout_successful'] 		 	         = 'Logged Out Successfully';
 
