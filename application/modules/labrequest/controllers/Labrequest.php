@@ -22,7 +22,7 @@ class Labrequest extends MX_Controller {
     }
 
     function index() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Clerk'))) {
             redirect('home/permission');
         }
         $this->load->view('home/dashboardv2');
@@ -416,10 +416,13 @@ class Labrequest extends MX_Controller {
         }
 
         foreach ($data['labrequests'] as $labrequest) {
-            $option1 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-edit"></i></a>';
+            if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
+                $option1 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-edit"></i></a>';
+            }
             $option2 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-eye"></i></a>';
-            $option3 = '<a class="btn btn-danger" href="labrequest/deleteLabrequestByRequestNumber?request_number='.$labrequest->lab_request_number.'"><i class="fe fe-trash-2"></i></a>';
-
+            if (!$this->ion_auth->in_group(array('admin', 'Midwife'))) {
+                $option3 = '<a class="btn btn-danger" href="labrequest/deleteLabrequestByRequestNumber?request_number='.$labrequest->lab_request_number.'"><i class="fe fe-trash-2"></i></a>';
+            }
             if (!empty($patient_id)) {
                 $options4 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->lab_request_number.'&root=patient&method=medicalHistory&encounter_id='.$encounter_id.'"><i class="fe fe-edit"></i></a>';
                 $options5 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-eye"></i></a>';
