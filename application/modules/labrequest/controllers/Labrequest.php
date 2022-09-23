@@ -420,7 +420,7 @@ class Labrequest extends MX_Controller {
                 $option1 = '<a class="btn btn-info" href="labrequest/editLabRequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-edit"></i></a>';
             }
             $option2 = '<a class="btn btn-info" href="labrequest/labrequestView?id='.$labrequest->lab_request_number.'"><i class="fe fe-eye"></i></a>';
-            if (!$this->ion_auth->in_group(array('admin', 'Midwife'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Midwife'))) {
                 $option3 = '<a class="btn btn-danger" href="labrequest/deleteLabrequestByRequestNumber?request_number='.$labrequest->lab_request_number.'"><i class="fe fe-trash-2"></i></a>';
             }
             if (!empty($patient_id)) {
