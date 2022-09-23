@@ -70,6 +70,40 @@ class Hospital_model extends CI_model {
         return $query->result();
     }
 
+    function getHospitalByCountryIdByIsActiveByIsPublic($countries = [], $is_active = null, $is_public = null) {
+        // $this->db->order_by('id', 'desc');
+        // $this->db->where_in('country_id', $)
+        // $query = $this->db->get('hospital');
+        // return $query->result();
+
+        // $this->db->select('a.id as hospital_id, a.name, b.id as settings_id, b.is_active, b.is_public, b.country_id, b.hospital_id');
+        // $this->db->from('hospital a');
+        // $this->db->join('settings b', 'b.hospital_id=hospital_id', 'right');
+        // $this->db->where_in('b.country_id', $countries);
+        // $this->db->where('b.is_active', $is_active);
+        // $this->db->where('b.is_public', $is_public);
+        // $fetched_records = $this->db->get();
+        // $hospital = $fetched_records->result();
+        // return $hospital;
+
+        $this->db->select('a.id as settings_id, a.is_active, a.is_public, a.country_id, a.hospital_id, b.id, b.name');
+        $this->db->from('settings a');
+        $this->db->join('hospital b', 'b.id=a.hospital_id', 'right');
+        $this->db->where_in('a.country_id', $countries);
+        $this->db->where('a.is_active', $is_active);
+        $this->db->where('a.is_public', $is_public);
+        $fetched_records = $this->db->get();
+        $hospital = $fetched_records->result();
+        return $hospital;
+
+        // $this->db->order_by('id', 'desc');
+        // $this->db->where_in('country_id', $countries);
+        // $this->db->where('is_active', $is_active);
+        // $this->db->where('is_public', $is_public);
+        // $query = $this->db->get('settings');
+        // return $query->result();
+    }
+
     function getLatestHospital() {
         $this->db->select('id');
         $this->db->order_by('id', 'desc');
