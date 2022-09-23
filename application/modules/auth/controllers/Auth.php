@@ -454,6 +454,81 @@ class Auth extends MX_Controller {
 		}
 	}
 
+	//resend activation link
+	function resend_activation()
+	{
+		//setting validation rules by checking wheather identity is username or email
+		if($this->config->item('identity', 'ion_auth') == 'username' )
+		{
+		   $this->form_validation->set_rules('email', $this->lang->line('resend_activation_username_identity_label'), 'required');
+		}
+		else
+		{
+		   $this->form_validation->set_rules('email', $this->lang->line('resend_activation_validation_email_label'), 'required|valid_email');
+		}
+
+
+		if ($this->form_validation->run() == false)
+		{
+			//setup the input
+			$data['email'] = array('name' => 'email',
+				'id' => 'email',
+			);
+
+			if ( $this->config->item('identity', 'ion_auth') == 'username' ){
+				$data['identity_label'] = $this->lang->line('resend_activation_username_identity_label');
+			}
+			else
+			{
+				$data['identity_label'] = $this->lang->line('resend_activation_email_identity_label');
+			}
+
+			//set any errors and display the form
+			$data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+			$this->_render_page('auth/resend_activation', $data);
+		}
+		else
+		{
+			// get identity from username or email
+			if ( $this->config->item('identity', 'ion_auth') == 'username' ){
+				$identity = $this->ion_auth->where('username', strtolower($this->input->post('email')))->users()->row();
+			}
+			else
+			{
+				$identity = $this->ion_auth->where('email', strtolower($this->input->post('email')))->users()->row();
+			}
+	            	if(empty($identity)) {
+
+	            		if($this->config->item('identity', 'ion_auth') == 'username')
+		            	{
+                                   $this->ion_auth->set_message('resend_activation_username_not_found');
+		            	}
+		            	else
+		            	{
+		            	   $this->ion_auth->set_message('resend_activation_email_not_found');
+		            	}
+
+		                $this->session->set_flashdata('message', $this->ion_auth->messages());
+                		redirect("auth/resend_activation", 'refresh');
+            		}
+
+			//run the resend activation method to email an activation code to the user
+			$activation = $this->ion_auth->resend_activation($identity->{$this->config->item('identity', 'ion_auth')});
+
+			if ($activation)
+			{
+				//if there were no errors
+				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				redirect("auth/login", 'refresh'); //we should display a confirmation page here instead of the login page
+			}
+			else
+			{
+				$this->session->set_flashdata('message', $this->ion_auth->errors());
+				redirect("auth/resend_activation", 'refresh');
+			}
+		}
+	}
+
 	//create a new user
 	function register()
 	{
