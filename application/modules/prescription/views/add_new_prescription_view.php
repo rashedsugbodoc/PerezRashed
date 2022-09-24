@@ -110,13 +110,13 @@ if ($this->ion_auth->in_group('Doctor')) {
                                                 ?></textarea>
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label class="control-label"><?php echo lang('note'); ?></label>
-                                            <textarea class="form-control ckeditor" id="editor3" name="note" value="" rows="30" cols="20"><?php
+                                            <label class="control-label"><?php echo lang('laboratory'); ?></label>
+                                            <textarea class="form-control ckeditor" id="editor3" name="laboratory" value="" rows="30" cols="20"><?php
                                                 if (!empty($setval)) {
-                                                    echo set_value('note');
+                                                    echo set_value('laboratory');
                                                 }
-                                                if (!empty($prescription->note)) {
-                                                    echo $prescription->note;
+                                                if (!empty($prescription->laboratory)) {
+                                                    echo $prescription->laboratory;
                                                 }
                                                 ?>        
                                             </textarea>
@@ -418,7 +418,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 <?php echo lang("instruction"); ?> \n\
 </label>\n\
 </div>\n\
-<div class=col-md-12><input class = "potency medi_div quantity" id="quantity' + count + '" name = "instruction[]" value = "" placeholder="After Food" required>\n\
+<div class=col-md-12><input class = "potency medi_div quantity" id="quantity' + count + '" name = "instruction[]" value = "" placeholder="After Food">\n\
 </div>\n\
 </div>\n\
 \n\

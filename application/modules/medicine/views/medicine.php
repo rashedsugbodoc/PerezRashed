@@ -7,13 +7,15 @@
             <header class="panel-heading">
                 <?php echo lang('medicine'); ?> 
                 <div class="clearfix no-print col-md-8 pull-right"> 
-                    <a data-toggle="modal" href="#myModal">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('add_medicine'); ?>
-                            </button>
-                        </div>
-                    </a>
+                    <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                        <a data-toggle="modal" href="#myModal">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_medicine'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <style>
@@ -62,7 +64,9 @@
                                 <th> <?php echo lang('company'); ?></th>
                                 <th> <?php echo lang('effects'); ?></th>
                                 <th> <?php echo lang('expiry_date'); ?></th>
-                                <th> <?php echo lang('options'); ?></th>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                    <th> <?php echo lang('options'); ?></th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>

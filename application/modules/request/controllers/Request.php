@@ -42,6 +42,8 @@ class Request extends MX_Controller {
     }
 
     public function addNew() {
+        $contact_name = $this->input->post('contact_name');
+        $contact_phone = $this->input->post('contact_phone');
         $id = $this->input->post('id');
         $name = $this->input->post('name');
         $address = $this->input->post('address');
@@ -60,6 +62,10 @@ class Request extends MX_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+        // Validating Contact Name Field
+        $this->form_validation->set_rules('contact_name', 'Name of the Contact Person', 'trim|required|min_length[1]|max_length[100]|xss_clean');   
+        // Validating Contact Phone Field
+        $this->form_validation->set_rules('contact_phone', 'Phone Number of the Contact Person', 'trim|required|min_length[1]|max_length[100]|xss_clean'); 
         // Validating Name Field
         $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Address Field
@@ -88,6 +94,8 @@ class Request extends MX_Controller {
             //$error = array('error' => $this->upload->display_errors());
             $data = array();
             $data = array(
+                'contact_name' => $contact_name,
+                'contact_phone' => $contact_phone,
                 'name' => $name,
                 'email' => $email,
                 'address' => $address,
@@ -101,10 +109,10 @@ class Request extends MX_Controller {
 
             if (empty($id)) {     // Adding New Request               
                 $this->request_model->insertRequest($data);
-                $this->session->set_flashdata('feedback', lang('new_request_created'));
+                $this->session->set_flashdata('success', 'new_request_created');
             } else { // Updating Request
                 $this->request_model->updateRequest($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', 'updated');
             }
             // Loading View
             redirect('frontend');
@@ -147,11 +155,13 @@ class Request extends MX_Controller {
             $module = $this->package_model->getPackageById($package)->module;
             $p_limit = $this->package_model->getPackageById($package)->p_limit;
             $d_limit = $this->package_model->getPackageById($package)->d_limit;
+            $loc_limit = $this->package_model->getPackageById($package)->loc_limit;
         } else {
             $default_package = $this->package_model->getDefaultPackage();
             $module = $default_package->module;
             $p_limit = $default_package->p_limit;
             $d_limit = $default_package->d_limit;
+            $loc_limit = $default_package->loc_limit;
         }
 
         $language_array = array('english', 'arabic', 'spanish', 'french', 'italian', 'portuguese');
@@ -170,6 +180,7 @@ class Request extends MX_Controller {
             'package' => $package,
             'p_limit' => $p_limit,
             'd_limit' => $d_limit,
+            'loc_limit' => $loc_limit,
             'module' => $module
         );
 
@@ -208,8 +219,7 @@ class Request extends MX_Controller {
                 'date_format' => $date_format,
                 'date_format_long' => $date_format_long,                
                 'system_vendor' => 'SugboDoc',
-                'discount' => 'flat',
-                'sms_gateway' => 'Twilio',                
+                'sms_gateway' => 'Semaphore',                
                 'currency' => '$'
             );
             $this->settings_model->insertSettings($hospital_settings_data);

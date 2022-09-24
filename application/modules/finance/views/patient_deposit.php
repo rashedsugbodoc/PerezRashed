@@ -46,7 +46,7 @@
                     <div class=" panel-body">
                         <div class="adv-table editable-table ">
                             <section class="col-md-12 no-print row">
-                                <form role="form" class="f_report" action="/finance/patientPaymentHistory" method="post" enctype="multipart/form-data">
+                                <form role="form" class="f_report" action="finance/patientPaymentHistory?patient=<?php echo $patient->id; ?>" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <!--     <label class="control-label col-md-3">Date Range</label> -->
                                         <div class="col-md-8">
@@ -363,7 +363,7 @@
                         </div>
                         <div class=""> 
                             <select class="form-control m-bot15 js-example-basic-single" id="selecttype" name="deposit_type" value=''> 
-                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) { ?>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) { ?>
                                     <option value="Cash"> <?php echo lang('cash'); ?> </option>
                                     <option value="Card"> <?php echo lang('card'); ?> </option>
                                 <?php } ?>

@@ -43,7 +43,9 @@
             <div class="w-40 bg-style h-100vh page-style">
                 <div class="page-content">
                     <div class="page-single-content">
-                        <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                        <a href="<?php echo base_url('')?>">
+                            <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                        </a>
                         <div class="card-body text-white py-5 px-8 text-center">
                             <img src="<?php echo base_url('public/assets/images/png/1.png'); ?>" alt="img" class="w-100 mx-auto text-center">
                         </div>
@@ -58,7 +60,9 @@
                                 <div class="col-md-8 mx-auto d-block">
                                     <div class="">
                                         <div class="text-white py-5 px-8 text-center">
-                                            <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                                            <a href="<?php echo base_url('')?>">
+                                                <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                                            </a>
                                         </div>
                                         <?php if($message) { ?>
                                             <div class="alert alert-info"><?php echo $message; ?></div>

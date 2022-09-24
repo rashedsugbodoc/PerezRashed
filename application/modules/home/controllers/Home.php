@@ -17,7 +17,7 @@ class Home extends MX_Controller {
         if (!$this->ion_auth->in_group(array('superadmin'))) {
             $data = array();
             $data['settings'] = $this->settings_model->getSettings();
-            $data['sum'] = $this->home_model->getSum('gross_total', 'payment');
+            $data['sum'] = $this->home_model->getSum('gross_total', 'invoice');
             $data['payments'] = $this->finance_model->getPayment();
             $data['notices'] = $this->notice_model->getNotice();
             $data['this_month'] = $this->finance_model->getThisMonth();
@@ -63,9 +63,9 @@ class Home extends MX_Controller {
 
             $data['this_year']['expense_per_month'] = $this->finance_model->getExpensePerMonthThisYear();
 
-            $this->load->view('dashboard'); // just the header file
-            $this->load->view('home', $data);
-            $this->load->view('footer', $data);
+            $this->load->view('dashboardv2'); // just the header file
+            $this->load->view('homev2', $data);
+            // $this->load->view('footer', $data);
             
         } else {
             $data['hospitals'] = $this->hospital_model->getHospital();

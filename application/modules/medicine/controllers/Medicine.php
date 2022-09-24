@@ -8,7 +8,7 @@ class Medicine extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('medicine_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor', 'Nurse', 'Receptionist', 'Accountant', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -19,9 +19,9 @@ class Medicine extends MX_Controller {
         $data['categories'] = $this->medicine_model->getMedicineCategory();
         $data['settings'] = $this->settings_model->getSettings();
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('medicine', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('medicinev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function medicineByPageNumber() {
@@ -40,6 +40,9 @@ class Medicine extends MX_Controller {
     }
 
     public function medicineStockAlert() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Midwife'))) {
+            redirect('home/permission');
+        }
         $page_number = $this->input->get('page_number');
         if (empty($page_number)) {
             $page_number = 0;
@@ -51,12 +54,15 @@ class Medicine extends MX_Controller {
         $data['pagee_number'] = $page_number;
         $data['settings'] = $this->settings_model->getSettings();
         $data['alert'] = 'Alert Stock';
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('medicine_stock_alert', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('medicine_stock_alertv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function medicineStockAlertByPageNumber() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Midwife'))) {
+            redirect('home/permission');
+        }
         $page_number = $this->input->get('page_number');
         if (empty($page_number)) {
             $page_number = 0;
@@ -107,16 +113,24 @@ class Medicine extends MX_Controller {
     }
 
     public function addMedicineView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->medicine_model->getMedicineCategory();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new_medicine_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_new_medicine_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewMedicine() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->post('id');
+        $form = $this->input->post('form');
         $name = $this->input->post('name');
         $category = $this->input->post('category');
         $price = $this->input->post('price');
@@ -124,6 +138,7 @@ class Medicine extends MX_Controller {
         $s_price = $this->input->post('s_price');
         $quantity = $this->input->post('quantity');
         $generic = $this->input->post('generic');
+        $uses = $this->input->post('uses');
         $company = $this->input->post('company');
         $effects = $this->input->post('effects');
         $e_date = $this->input->post('e_date');
@@ -137,12 +152,14 @@ class Medicine extends MX_Controller {
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
         // Validating Name Field
         $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        // Validating Name Field
+        $this->form_validation->set_rules('form', 'Form', 'trim|required|min_length[2]|max_length[500]|xss_clean');
         // Validating Category Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Purchase Price Field
         $this->form_validation->set_rules('price', 'Purchase Price', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Store Box Field
-        $this->form_validation->set_rules('box', 'Store Box', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('box', 'Store Box', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Selling Price Field
         $this->form_validation->set_rules('s_price', 'Selling Price', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Quantity Field
@@ -150,23 +167,39 @@ class Medicine extends MX_Controller {
         // Validating Generic Name Field
         $this->form_validation->set_rules('generic', 'Generic Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Company Name Field
-        $this->form_validation->set_rules('company', 'Company', 'trim|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('company', 'Company', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Effects Field
-        $this->form_validation->set_rules('effects', 'Effects', 'trim|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('effects', 'Effects', 'trim|required|min_length[2]|max_length[1000]|xss_clean');
         // Validating Expire Date Field
         $this->form_validation->set_rules('e_date', 'Expire Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Uses Field
+        $this->form_validation->set_rules('uses', 'Uses', 'trim|required|min_length[1]|max_length[1000]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
-            $data = array();
-            $data['categories'] = $this->medicine_model->getMedicineCategory();
-            $data['settings'] = $this->settings_model->getSettings();
-            $this->load->view('home/dashboard', $data); // just the header file
-            $this->load->view('add_new_medicine_view', $data);
-            $this->load->view('home/footer'); // just the header file
+            if(!empty($id)){
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['categories'] = $this->medicine_model->getMedicineCategory();
+                // $id = $this->input->get('id');
+                $data['medicine'] = $this->medicine_model->getMedicineById($id);
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_medicine_viewv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['categories'] = $this->medicine_model->getMedicineCategory();
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_medicine_viewv2', $data);
+                // $this->load->view('home/footer'); // just the header file
+            }
         } else {
             $data = array();
-            $data = array('name' => $name,
+            $data = array(
+                'name' => $name,
                 'category' => $category,
                 'price' => $price,
                 'box' => $box,
@@ -177,30 +210,38 @@ class Medicine extends MX_Controller {
                 'effects' => $effects,
                 'add_date' => $add_date,
                 'e_date' => $e_date,
+                'form' => $form,
+                'uses' => $uses,
             );
             if (empty($id)) {
                 $this->medicine_model->insertMedicine($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->medicine_model->updateMedicine($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('medicine');
         }
     }
 
     function editMedicine() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['categories'] = $this->medicine_model->getMedicineCategory();
         $id = $this->input->get('id');
         $data['medicine'] = $this->medicine_model->getMedicineById($id);
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new_medicine_view', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_new_medicine_viewv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function load() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $qty = $this->input->post('qty');
         $previous_qty = $this->db->get_where('medicine', array('id' => $id))->row()->quantity;
@@ -208,20 +249,27 @@ class Medicine extends MX_Controller {
         $data = array();
         $data = array('quantity' => $new_qty);
         $this->medicine_model->updateMedicine($id, $data);
-       $this->session->set_flashdata('feedback', lang('medicine_loaded'));
+       $this->session->set_flashdata('success', lang('medicine_loaded'));
         redirect('medicine');
     }
 
     function editMedicineByJason() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $data['medicine'] = $this->medicine_model->getMedicineById($id);
+        $data['expire_date'] = date("F j, Y", strtotime($data['medicine']->e_date.' UTC'));
         echo json_encode($data);
     }
 
     function delete() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $this->medicine_model->deleteMedicine($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('medicine');
     }
 
@@ -231,19 +279,25 @@ class Medicine extends MX_Controller {
         }
         $data['categories'] = $this->medicine_model->getMedicineCategory();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('medicine_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('medicine_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addCategoryView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new_category_view');
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_new_category_viewv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $category = $this->input->post('category');
         $description = $this->input->post('description');
@@ -255,10 +309,22 @@ class Medicine extends MX_Controller {
         // Validating Description Field
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $data['settings'] = $this->settings_model->getSettings();
-            $this->load->view('home/dashboard', $data); // just the header file
-            $this->load->view('add_new_category_view');
-            $this->load->view('home/footer'); // just the header file
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                // $id = $this->input->get('id');
+                $data['medicine'] = $this->medicine_model->getMedicineCategoryById($id);
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_category_viewv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_new_category_viewv2');
+                // $this->load->view('home/footer'); // just the header file
+            }
         } else {
             $data = array();
             $data = array('category' => $category,
@@ -266,35 +332,44 @@ class Medicine extends MX_Controller {
             );
             if (empty($id)) {
                 $this->medicine_model->insertMedicineCategory($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->medicine_model->updateMedicineCategory($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('medicine/medicineCategory');
         }
     }
 
     function edit_category() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $id = $this->input->get('id');
         $data['medicine'] = $this->medicine_model->getMedicineCategoryById($id);
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new_category_view', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_new_category_viewv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function editMedicineCategoryByJason() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $data['medicinecategory'] = $this->medicine_model->getMedicineCategoryById($id);
         echo json_encode($data);
     }
 
     function deleteMedicineCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         $this->medicine_model->deleteMedicineCategory($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('medicine/medicineCategory');
     }
 
@@ -323,24 +398,29 @@ class Medicine extends MX_Controller {
             $i = $i + 1;
             $settings = $this->settings_model->getSettings();
             if ($medicine->quantity <= 0) {
-                $quan = '<p class="os">Stock Out</p>';
+                $quan = '<p class="os">Out of Stock</p>';
             } else {
                 $quan = $medicine->quantity;
             }
-            $load = '<button type="button" class="btn btn-info btn-xs btn_width load" data-toggle="modal" data-id="' . $medicine->id . '">' . lang('load') . '</button>';
-            $option1 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" data-toggle="modal" data-id="' . $medicine->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</button>';
-
-            $option2 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="medicine/delete?id=' . $medicine->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+                $load = '<button type="button" class="btn btn-info btn-xs btn_width load" data-toggle="modal" data-id="' . $medicine->id . '">' . lang('load') . '</button>';
+            }
+            if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Doctor'))) {
+                $option1 = '<a href="medicine/editMedicine?id='.$medicine->id.'" class="btn btn-info"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $option2 = '<a class="btn btn-danger btn-xs btn_width delete_button" href="medicine/delete?id=' . $medicine->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
+            }
             $info[] = array(
                 $i,
+                $medicine->generic,
                 $medicine->name,
+                $medicine->form,
                 $medicine->category,
                 $medicine->box,
                 $settings->currency . $medicine->price,
                 $settings->currency . $medicine->s_price,
                 $quan . '<br>' . $load,
-                $medicine->generic,
                 $medicine->company,
+                $medicine->uses,
                 $medicine->effects,
                 $medicine->e_date,
                 $option1 . ' ' . $option2
@@ -351,8 +431,8 @@ class Medicine extends MX_Controller {
         if (!empty($data['medicines'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('medicine')->num_rows(),
-                "recordsFiltered" => $this->db->get('medicine')->num_rows(),
+                "recordsTotal" => $this->medicine_model->getMedicineCount(),
+                "recordsFiltered" => $this->medicine_model->getMedicineBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -385,6 +465,32 @@ class Medicine extends MX_Controller {
 
 // Get users
         $response = $this->medicine_model->getMedicineInfo($searchTerm);
+
+        // $response = array();
+        // foreach($exploded_response as $exp_response) {
+        //     $exp_response_id = $exp_response['id'];
+        //     $final_response = explode('###', $exp_response_id);
+        //     $response_items = explode('*', $final_response[0]);
+        //     $response[] = $response_items[0];
+        // }
+
+        echo json_encode($response);
+    }
+
+    public function getMedicineforSelect2Search() {
+        $meds = $this->input->post('medszz');
+
+        $meds_list = explode('|', $meds);
+
+        $medss = array();
+        foreach($meds_list as $exp_response) {
+            // $exp_response_id = $exp_response['id'];
+            $final_response = explode('###', $exp_response);
+            $response_items = explode('*', $final_response[0]);
+            $medss[] = $response_items[0];
+        }
+
+        $response = $this->medicine_model->getMedicineInfo(end($medss));
 
         echo json_encode($response);
     }

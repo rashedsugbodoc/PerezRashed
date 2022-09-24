@@ -16,24 +16,137 @@ class Appointment_model extends CI_model {
         $this->db->insert('appointment', $data2);
     }
 
-    function getAppointment() {
+    function insertAppointmentForLocation($data) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('appointment_location', $data2);
+    }
+
+    function getAppointment($patient_id = null) {
         $this->db->order_by('id', 'desc');
+        if (!empty($patient_id)) {
+            $this->db->where('patient', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('appointment');
         return $query->result();
+
+        // $this->db->order_by('id', 'desc');
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $query = $this->db->get('appointment');
+        // $appointment_list1 = query->result();
+        // $this->db->order_by('id', 'desc');
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $query2 = $this->db->get('appointment_location');
+        // $appointment_list2 = query2->result();
+        // $mergedAppointments = array_merge($appointment_list1, $appointment_list2);
+        // return $mergedAppointments;
     }
 
-    function getAppointmentBySearch($search) {
+    function getAppointmentForLocation() {
         $this->db->order_by('id', 'desc');
-        $query = $this->db->select('*')
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('appointment_location');
+        return $query->result();
+    }
+
+    function getAppointmentCount() {
+        $this->db->order_by('id', 'desc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getAppointmentCountByDoctor($id) {
+        $this->db->order_by('id', 'desc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('doctor', $id);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getAppointmentByTodayCount() {
+        $today = strtotime(date('Y-m-d'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('date', $today);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getAppointmentByUpcomingCount() {
+        $today = strtotime(date('Y-m-d'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('date >', $today);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getAppointmentBySearch($search, $patient_id = null) {
+        $this->db->order_by('id', 'desc');
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('appointment')
+                    ->where('patient', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('appointment')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
+        return $query->result();
+    }
+
+    function getAppointmentBySearchCount($search) {
+        $query = $this->db->select('id')
                 ->from('appointment')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
-        return $query->result();
+        return $query->num_rows();
     }
 
-    function getAppointmentByLimit($limit, $start) {
+    function getAppointmentBySearchCountByDoctor($search, $doctor) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('doctor', $doctor)
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getAppointmentByTodayBySearchCount($search) {
+        $today = strtotime(date('Y-m-d'));
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('date', $today)
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getAppointmentByUpcomingBySearchCount($search) {
+        $today = strtotime(date('Y-m-d'));
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('date >', $today)
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getAppointmentByLimit($limit, $start, $patient_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient', $patient_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
@@ -41,14 +154,23 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
-    function getAppointmentByLimitBySearch($limit, $start, $search) {
+    function getAppointmentByLimitBySearch($limit, $start, $search, $patient_id = null) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->select('*')
-                ->from('appointment')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if (!empty($patient_id)) {
+            $query = $this->db->select('*')
+                    ->from('appointment')
+                    ->where('patient', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('appointment')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
         return $query->result();
     }
 
@@ -67,7 +189,29 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
+    function getAppointmentByDoctorByDate($doctor, $date_from, $date_to = null) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('doctor', $doctor);
+        if(!empty($date_from)) {
+            $this->db->where('date >=', $date_from);
+        }
+        if(!empty($date_to)) {
+            $this->db->where('date <=', $date_to);
+        }
+        $query = $this->db->get('appointment');
+        return $query->result();
+    }
+
     function getAppointmentRequest() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('request', 'Yes');
+        $query = $this->db->get('appointment');
+        return $query->result();
+    }
+
+    function getAppointmentRequestCount() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->where('request', 'Yes');
@@ -88,6 +232,23 @@ class Appointment_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->where('patient', $patient);
         $query = $this->db->get('appointment');
+        return $query->result();
+    }
+
+    function getAppointmentByPatientByEncounterId($patient, $encounter_id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $patient);
+        $this->db->where('encounter_id', $encounter_id);
+        $query = $this->db->get('appointment');
+        return $query->result();
+    }
+
+    function getAppointmentByPatientForLocation($patient) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $patient);
+        $query = $this->db->get('appointment_location');
         return $query->result();
     }
 
@@ -139,6 +300,11 @@ class Appointment_model extends CI_model {
         $this->db->update('appointment', $data);
     }
 
+    function updateAppointmentForLocation($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('appointment_location', $data);
+    }
+
     function delete($id) {
         $this->db->where('id', $id);
         $this->db->delete('appointment');
@@ -162,6 +328,23 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
+    function getRequestAppointmentCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('status', 'Requested');
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getRequestAppointmentCountByDoctor($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('status', 'Requested');
+        $this->db->where('doctor', $id);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
     function getRequestAppointmentBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -171,6 +354,27 @@ class Appointment_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getRequestAppointmentBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Requested')
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getRequestAppointmentBySearchCountByDoctor($search, $id) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Requested')
+                ->where('doctor', $id)
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getRequestAppointmentByLimit($limit, $start) {
@@ -202,6 +406,21 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
+    function getPendingAppointmentCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('status', 'Pending Confirmation');
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getPendingAppointmentCountByDoctor($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('status', 'Pending Confirmation');
+        $this->db->where('doctor', $id);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
     function getPendingAppointmentBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -211,6 +430,27 @@ class Appointment_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getPendingAppointmentBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Pending Confirmation')
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getPendingAppointmentBySearchCountByDoctor($search, $id) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Pending Confirmation')
+                ->where('doctor', $id)
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getPendingAppointmentByLimit($limit, $start) {
@@ -242,6 +482,21 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
+    function getConfirmedAppointmentCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('status', 'Confirmed');
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getConfirmedAppointmentCountByDoctor($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('status', 'Confirmed');
+        $this->db->where('doctor', $id);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
     function getConfirmedAppointmentBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -251,6 +506,27 @@ class Appointment_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getConfirmedAppointmentBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Confirmed')
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getConfirmedAppointmentBySearchCountByDoctor($search, $id) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Confirmed')
+                ->where('doctor', $id)
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getConfirmedAppointmentByLimit($limit, $start) {
@@ -277,9 +553,24 @@ class Appointment_model extends CI_model {
     function getTreatedAppointment() {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where('status', 'Treated');
+        $this->db->where('status', 'Consulted');
         $query = $this->db->get('appointment');
         return $query->result();
+    }
+
+    function getTreatedAppointmentCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('status', 'Consulted');
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getTreatedAppointmentCountByDoctor($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('status', 'Consulted');
+        $this->db->where('doctor', $id);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
     }
 
     function getTreatedAppointmentBySearch($search) {
@@ -287,16 +578,37 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where('status', 'Treated')
+                ->where('status', 'Consulted')
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
     }
 
+    function getTreatedAppointmentBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Consulted')
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getTreatedAppointmentBySearchCountByDoctor($search, $id) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Consulted')
+                ->where('doctor', $id)
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
     function getTreatedAppointmentByLimit($limit, $start) {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where('status', 'Treated');
+        $this->db->where('status', 'Consulted');
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
         return $query->result();
@@ -308,7 +620,7 @@ class Appointment_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('appointment')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where('status', 'Treated')
+                ->where('status', 'Consulted')
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
@@ -322,6 +634,21 @@ class Appointment_model extends CI_model {
         return $query->result();
     }
 
+    function getCancelledAppointmentCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('status', 'Cancelled');
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
+    function getCancelledAppointmentCountByDoctor($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('status', 'Cancelled');
+        $this->db->where('doctor', $id);
+        $query = $this->db->get('appointment');
+        return $query->num_rows();
+    }
+
     function getCancelledAppointmentBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -331,6 +658,27 @@ class Appointment_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getCancelledAppointmentBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Cancelled')
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
+    function getCancelledAppointmentBySearchCountByDoctor($search, $id) {
+        $query = $this->db->select('id')
+                ->from('appointment')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where('status', 'Cancelled')
+                ->where('doctor', $id)
+                ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getCancelledAppointmentByLimit($limit, $start) {
@@ -525,7 +873,7 @@ class Appointment_model extends CI_model {
     function getTreatedAppointmentByDoctor($doctor) {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where('status', 'Treated');
+        $this->db->where('status', 'Consulted');
         $this->db->where('doctor', $doctor);
         $query = $this->db->get('appointment');
         return $query->result();
@@ -535,7 +883,7 @@ class Appointment_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
                 ->from('appointment')
-                ->where('status', 'Treated')
+                ->where('status', 'Consulted')
                 ->where('doctor', $doctor)
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
@@ -545,7 +893,7 @@ class Appointment_model extends CI_model {
     function getTreatedAppointmentByLimitByDoctor($doctor, $limit, $start) {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where('status', 'Treated');
+        $this->db->where('status', 'Consulted');
         $this->db->where('doctor', $doctor);
         $this->db->limit($limit, $start);
         $query = $this->db->get('appointment');
@@ -557,7 +905,7 @@ class Appointment_model extends CI_model {
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
                 ->from('appointment')
-                ->where('status', 'Treated')
+                ->where('status', 'Consulted')
                 ->where('doctor', $doctor)
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
@@ -604,6 +952,103 @@ class Appointment_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR patientname LIKE '%" . $search . "%' OR doctorname LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getServiceCategoryGroupInfoForConsultation($searchTerm) {
+        $settings = $this->settings_model->getSettings()->entity_type_id;
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('service_category_group')
+                    ->where("FIND_IN_SET($settings, applicable_entity_type)")
+                    ->where("is_consultation", 1)
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $this->db->where("FIND_IN_SET($settings, applicable_entity_type)");
+            $this->db->where("is_consultation", 1);
+            $fetched_records = $this->db->get('service_category_group');
+            $users = $fetched_records->result_array();
+        }
+
+
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('*');
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get('doctor');
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['display_name']);
+        }
+        return $data;
+    }
+
+     function getServiceCategoryById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('service_category_group');
+        return $query->row();
+    }
+
+    function getServicesByServiceCategoryGroupByDoctorHospital($serviceCategoryGroup, $doctorHospital) {
+        //$newDate = date("m-d-Y", strtotime($date));
+        // $weekday = strftime("%A", $date);
+
+        // $this->db->where('date', $date);
+        // $this->db->where('doctor', $doctor);
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $holiday = $this->db->get('holidays')->result();
+
+        // if (empty($holiday)) {
+        //     $this->db->where('date', $date);
+        //     $this->db->where('doctor', $doctor);
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $query = $this->db->get('appointment')->result();
+
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('doctor', $doctor);
+        //     $this->db->where('weekday', $weekday);
+        //     $this->db->where('location_id', $location);
+        //     $this->db->order_by('s_time_key', 'asc');
+        //     $query1 = $this->db->get('time_slot_location')->result();
+
+        //     $availabletimeSlot = array();
+        //     $bookedTimeSlot = array();
+
+        //     foreach ($query1 as $timeslot) {
+        //         $availabletimeSlot[] = $timeslot->s_time . ' To ' . $timeslot->e_time;
+        //     }
+        //     foreach ($query as $bookedTime) {
+        //         if ($bookedTime->status != 'Cancelled') {
+        //             $bookedTimeSlot[] = $bookedTime->time_slot;
+        //         }
+        //     }
+
+        //     $availableSlot = array_diff($availabletimeSlot, $bookedTimeSlot);
+        // } else {
+        //     $availableSlot = array();
+        // }
+
+        $this->db->where('service_category_group_id', $serviceCategoryGroup);
+        $this->db->where('hospital_id', $doctorHospital);
+        $services = $this->db->get('charge')->result();
+
+        return $services;
+    }
+
+    function getServicesByServiceId($services) {
+        $this->db->where('id', $services);
+        $services = $this->db->get('charge')->row();
+
+        return $services;
     }
 
 }

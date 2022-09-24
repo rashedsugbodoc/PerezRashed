@@ -75,7 +75,7 @@ class Email extends MX_Controller {
             );
 
             $this->email_model->updateEmailSettings($data);
-            $this->session->set_flashdata('feedback', lang('updated'));
+            $this->session->set_flashdata('success', lang('record_updated'));
 
             redirect('email/settings');
         }
@@ -239,9 +239,9 @@ class Email extends MX_Controller {
                     // $this->session->set_flashdata('feedback', 'Message Sent');
                 }
             }
-            $this->session->set_flashdata('feedback', lang('message_sent'));
+            $this->session->set_flashdata('success', lang('message_sent'));
         } else {
-            $this->session->set_flashdata('feedback', lang('not_sent'));
+            $this->session->set_flashdata('error', lang('not_sent'));
         }
         redirect('email/sendView');
     }
@@ -273,7 +273,7 @@ class Email extends MX_Controller {
                 'user' => $this->ion_auth->get_user_id()
             );
             $this->email_model->insertEmail($data_p);
-            $this->session->set_flashdata('feedback', lang('message_sent'));
+            $this->session->set_flashdata('success', lang('message_sent'));
         }
 
         redirect('appointment/upcoming');
@@ -428,7 +428,7 @@ class Email extends MX_Controller {
     function delete() {
         $id = $this->input->get('id');
         $this->email_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('email/sent');
     }
 
@@ -467,7 +467,7 @@ class Email extends MX_Controller {
             $i = $i + 1;
             if ($this->ion_auth->in_group(array('admin'))) {
 
-                $options1 = ' <a type="button" class="btn btn-success btn-xs btn_width editbutton1" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"> </i></a>';
+                $options1 = ' <a type="button" class="btn btn-info btn-xs btn_width editbutton1" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"> </i></a>';
                 // $options1 = '<a type='button" class="btn btn-success btn-xs btn_width" title="" . lang('edit') . '"data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"></i></a>';
                 //    $options2 = '<a class="btn btn-danger btn-xs btn_width" title="' . lang('delete') . '" href="sms/deleteTemplate?id=' . $case->id . '&redirect=sms/smsTemplate" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash-o"></i></a>';
             }
@@ -542,7 +542,7 @@ class Email extends MX_Controller {
             );
 
             $this->email_model->updateAutoEmailTemplate($data, $id);
-            $this->session->set_flashdata('feedback', lang('updated'));
+            $this->session->set_flashdata('success', lang('record_updated'));
 
             redirect('email/autoEmailTemplate');
         }
@@ -586,10 +586,10 @@ class Email extends MX_Controller {
             );
             if (empty($id)) {
                 $this->email_model->addManualEmailTemplate($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->email_model->updateManualEmailTemplate($data, $id);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('email/sendView');
         }
@@ -665,7 +665,7 @@ class Email extends MX_Controller {
     public function deleteManualEmailTemplate() {
         $id = $this->input->get('id');
         $this->email_model->deleteManualEmailTemplate($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('email/manualEmailTemplate');
     }
 

@@ -67,6 +67,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
         <link rel="stylesheet" type="text/css" href="common/assets/DataTables/DataTables-1.10.16/custom/css/datatable-responsive-cdn-version-1-0-7.css" />
 
+        <!-- Notifications  Css -->
+        <link href="<?php echo base_url('public/assets/plugins/notify/css/jquery.growl.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/notify/css/notifIt.css'); ?>" rel="stylesheet" />
+
 
         <!-- Google Fonts -->
 
@@ -246,7 +250,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <span class="badge bg-secondary">
                                             <?php
                                             $this->db->where('hospital_id', $this->hospital_id);
-                                            $query = $this->db->get('payment');
+                                            $query = $this->db->get('invoice');
                                             $query = $query->result();
                                             foreach ($query as $payment) {
                                                 $payment_date = date('y/m/d', $payment->date);
@@ -276,7 +280,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                 ?></p>
                                         </li>
                                         <li>
-                                            <a href="finance/payment"><p class="purple"> <?php echo lang('see_all_payments'); ?></p></a>
+                                            <a href="finance/invoices"><p class="purple"> <?php echo lang('see_all_payments'); ?></p></a>
                                         </li>
                                     </ul>
                                 </li>
@@ -539,13 +543,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         </li>
                         <!-- user login dropdown end -->
                     </ul>
-                    <?php
-                    $message = $this->session->flashdata('feedback');
-                    if (!empty($message)) {
-                        ?>
-                        
-                        <div class="alert alert-info pull-right notification-alert" role="alert"><?php echo $message; ?></div>
-                    <?php } ?> 
+                    
                 </div>
             </header>
             <!--header end-->
@@ -572,7 +570,18 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('superadmin'))) { ?>
+                                <li class="sub-menu">
+                                    <a href="javascript:;" >
+                                        <i class="fa fa-city"></i>
+                                        <span><?php echo lang('accounts'); ?></span>
+                                    </a>
+                                    <ul class="sub">
+                                        <li><a href="company"><i class="fa fa-city"></i><?php echo lang('payer_accounts'); ?></a></li>
+                                    </ul>
+                                </li>
+                        <?php } ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'CompanyUser'))) { ?>
                             <?php if (in_array('company', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -584,7 +593,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </ul>
                                 </li>
                             <?php } ?>
-                        <?php } ?>
+                        <?php } ?>                        
                         <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist'))) { ?>
                             <?php if (in_array('admission', $this->modules)) { ?>
                                 <li class="sub-menu">
@@ -608,12 +617,12 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a href="doctor"><i class="fa fa-user"></i><?php echo lang('list_of_doctors'); ?></a></li>
-                                        <li><a href="appointment/treatmentReport"><i class="fa fa-history"></i><?php echo lang('treatment_history'); ?></a></li>
+                                        <li><a href="appointment/consultationReport"><i class="fa fa-history"></i><?php echo lang('consultation_history'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
                         <?php } ?>                        
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Nurse', 'Doctor', 'Laboratorist', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Laboratorist', 'Receptionist'))) { ?>
                             <?php if (in_array('patient', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -626,8 +635,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist'))) { ?>
                                             <li><a href="patient/patientPayments"><i class="fa fa-money-check"></i><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
-                                        <?php if (!$this->ion_auth->in_group(array('Accountant', 'Receptionist'))) { ?>
-                                            <li><a href="patient/caseList"><i class="fa fa-book"></i><?php echo lang('case'); ?> <?php echo lang('manager'); ?></a></li>
+                                        <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist'))) { ?>
+                                            <li><a href="patient/caseList"><i class="fa fa-book"></i><?php echo lang('case'); ?> <?php echo lang('history'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                             <li><a href="patient/documents"><i class="fa fa-file"></i><?php echo lang('documents'); ?></a></li>
                                         <?php } ?>
                                     </ul>
@@ -675,7 +686,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub"> 
                                         <li><a href="appointment"><i class="fa fa-list-alt"></i><?php echo lang('all'); ?></a></li>
-                                        <li><a href="appointment/addNewView"><i class="fa fa-plus"></i><?php echo lang('add'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                            <li><a href="appointment/addNewView"><i class="fa fa-plus"></i><?php echo lang('add'); ?></a></li>
+                                        <?php } ?>
                                         <li><a href="appointment/todays"><i class="fa fa-list-alt"></i><?php echo lang('today'); ?></a></li>
                                         <li><a href="appointment/upcoming"><i class="fa fa-list-alt"></i><?php echo lang('upcoming'); ?></a></li>
                                         <li><a href="appointment/calendar"><i class="fa fa-list-alt"></i><?php echo lang('calendar'); ?></a></li>
@@ -716,6 +729,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php if ($this->ion_auth->in_group(array('Patient'))) { ?>
                             <?php if (in_array('appointment', $this->modules)) { ?>
                                 <li><a href="appointment/myTodays"><i class="fa fa-headphones"></i><?php echo lang('todays'); ?> <?php echo lang('appointment'); ?></a></li>
+                                <li><a href="patient/findDoctors"><i class="fa fa-user-md"></i><?php echo lang('find_doctors'); ?></a></li>
                             <?php } ?>
                         <?php } ?>
 
@@ -732,44 +746,51 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span><?php echo lang('human_resources'); ?></span>
                                 </a>
                                 <ul class="sub">
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('nurse', $this->modules)) { ?>
                                         <li><a href="nurse"><i class="fa fa-user"></i><?php echo lang('nurse'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('pharmacist', $this->modules)) { ?>
                                         <li><a href="pharmacist"><i class="fa fa-user"></i><?php echo lang('pharmacist'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('laboratorist', $this->modules)) { ?>
                                         <li><a href="laboratorist"><i class="fa fa-user"></i><?php echo lang('laboratorist'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('accountant', $this->modules)) { ?>
                                         <li><a href="accountant"><i class="fa fa-user"></i><?php echo lang('accountant'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('receptionist', $this->modules)) { ?>
                                         <li><a href="receptionist"><i class="fa fa-user"></i><?php echo lang('receptionist'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('companyuser', $this->modules)) { ?>
                                         <li><a href="companyuser"><i class="fa fa-user"></i><?php echo lang('company_user'); ?></a></li>
                                     <?php } ?>
                                 </ul>
                             </li>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group('admin')) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser'))) { ?>
                             <?php if (in_array('finance', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
                                         <i class="fa fa-money-check"></i>
-                                        <span><?php echo lang('financial_activities'); ?></span>
+                                        <span><?php echo lang('bills_and_payments'); ?></span>
                                     </a>
                                     <ul class="sub">
-                                        <li><a  href="finance/payment"><i class="fa fa-money-check"></i> <?php echo lang('invoices'); ?></a></li>
-                                        <li><a  href="finance/addPaymentView"><i class="fa fa-plus"></i><?php echo lang('add_invoice'); ?></a></li>
-                                        <li><a  href="finance/paymentCategory"><i class="fa fa-list"></i><?php echo lang('service_listing'); ?></a></li>
-                                        <li><a  href="finance/serviceCategory"><i class="fa fa-th-list"></i><?php echo lang('service_categories'); ?> </a></li>
-                                        <li><a  href="finance/expense"><i class="fa fa-money-check"></i><?php echo lang('expense'); ?></a></li>
-                                        <li><a  href="finance/addExpenseView"><i class="fa fa-plus"></i><?php echo lang('add_expense'); ?></a></li>
-                                        <li><a  href="finance/expenseCategory"><i class="fa fa-edit"></i><?php echo lang('expense_categories'); ?> </a></li>
 
-
+                                        <li><a  href="finance/invoices"><i class="fa fa-money-check"></i> <?php echo lang('invoices'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
+                                            <li><a  href="finance/addPaymentView"><i class="fa fa-plus"></i><?php echo lang('add_invoice'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist'))) { ?>
+                                            <li><a  href="finance/paymentCategory"><i class="fa fa-list"></i><?php echo lang('service_listing'); ?></a></li>
+                                            <li><a  href="finance/serviceCategory"><i class="fa fa-th-list"></i><?php echo lang('service_categories'); ?> </a></li>
+                                            <li><a  href="finance/expense"><i class="fa fa-money-check"></i><?php echo lang('expense'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant'))) { ?>
+                                            <li><a  href="finance/addExpenseView"><i class="fa fa-plus"></i><?php echo lang('add_expense'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist'))) { ?>
+                                            <li><a  href="finance/expenseCategory"><i class="fa fa-edit"></i><?php echo lang('expense_categories'); ?> </a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li> 
                             <?php } ?>
@@ -784,23 +805,11 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                 </li>
                             <?php } ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>
-                                <li class="sub-menu">
-                                    <a href="javascript:;" >
-                                        <i class="fa fa-money-check"></i>
-                                        <span><?php echo lang('financial_activities'); ?></span>
-                                    </a>
-                                    <ul class="sub">
-                                        <li><a  href="finance/payment"><i class="fa fa-money-check"></i> <?php echo lang('payments'); ?></a></li>
-                                        <li><a  href="finance/addPaymentView"><i class="fa fa-plus"></i><?php echo lang('add_payment'); ?></a></li>
-                                    </ul>
-                                </li> 
-                            <?php } ?>
                         <?php } ?>
 
 
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Nurse', 'Receptionist'))) { ?>
                             <?php if (in_array('prescription', $this->modules)) { ?>
                                 <li>
                                     <a href="prescription/all" >
@@ -812,7 +821,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php } ?>
 
                         <?php
-                        if ($this->ion_auth->in_group(array('Receptionist'))) {
+                        if ($this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Doctor'))) {
                             ?>
                             <?php if (in_array('lab', $this->modules)) { ?>
                                 <li>
@@ -827,7 +836,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         ?>
                         
                         <?php
-                        if ($this->ion_auth->in_group(array('Receptionist'))) {
+                        if ($this->ion_auth->in_group(array('Receptionist', 'Nurse'))) {
                             ?>
                             <?php if (in_array('form', $this->modules)) { ?>
                                 <li>
@@ -841,20 +850,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         }
                         ?>                        
 
-                        <?php
-                        if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) {
-                            ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>
-                                <li>
-                                    <a href="finance/UserActivityReport">
-                                        <i class="fa fa-file-user"></i>
-                                        <span><?php echo lang('user_activity_report'); ?></span>
-                                    </a>
-                                </li>
-                            <?php } ?>
-                            <?php
-                        }
-                        ?>
+                        
 
 
 
@@ -876,7 +872,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
 
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
                             <?php if (in_array('lab', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -885,14 +881,16 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="lab"><i class="fa fa-file-medical"></i><?php echo lang('lab_reports'); ?></a></li>
-                                        <li><a  href="lab/addLabView"><i class="fa fa-plus"></i><?php echo lang('add_lab_report'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
+                                            <li><a  href="lab/addLabView"><i class="fa fa-plus"></i><?php echo lang('add_lab_report'); ?></a></li>
+                                        <?php } ?>
                                         <li><a  href="lab/template"><i class="fa fa-plus"></i><?php echo lang('template'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                             <?php if (in_array('form', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -911,7 +909,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
 
 
-                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Accountant'))) { ?>
                             <?php if (in_array('medicine', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -920,11 +918,14 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </a>
                                     <ul class="sub">
                                         <li><a  href="medicine"><i class="fa fa-medkit"></i><?php echo lang('medicine_list'); ?></a></li>
-                                        <li><a  href="medicine/addMedicineView"><i class="fa fa-plus"></i><?php echo lang('add_medicine'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                            <li><a  href="medicine/addMedicineView"><i class="fa fa-plus"></i><?php echo lang('add_medicine'); ?></a></li>
+                                        <?php } ?>
                                         <li><a  href="medicine/medicineCategory"><i class="fa fa-edit"></i><?php echo lang('medicine_category'); ?></a></li>
-                                        <li><a  href="medicine/addCategoryView"><i class="fa fa-plus"></i><?php echo lang('add_medicine_category'); ?></a></li>
-                                        <li><a  href="medicine/medicineStockAlert"><i class="fa fa-plus"></i><?php echo lang('medicine_stock_alert'); ?></a></li>
-
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                            <li><a  href="medicine/addCategoryView"><i class="fa fa-plus"></i><?php echo lang('add_medicine_category'); ?></a></li>
+                                            <li><a  href="medicine/medicineStockAlert"><i class="fa fa-plus"></i><?php echo lang('medicine_stock_alert'); ?></a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -937,7 +938,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
 
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Accountant'))) { ?>
                             <?php if (in_array('pharmacy', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -1002,7 +1003,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) { ?>
                             <?php if (in_array('bed', $this->modules)) { ?>
                                 <li class="sub-menu">
                                     <a href="javascript:;" >
@@ -1019,15 +1020,15 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Laboratorist', 'Doctor'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor'))) { ?>
 
                             <li class="sub-menu">
                                 <a href="javascript:;" >
-                                    <i class="fas fa-file-medical-alt"></i>
-                                    <span><?php echo lang('report'); ?></span>
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                    <span><?php echo lang('financial_reports'); ?></span>
                                 </a>
                                 <ul class="sub">
-                                    <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) { ?>
                                         <?php if (in_array('finance', $this->modules)) { ?>
                                             <li><a  href="finance/financialReport"><i class="fa fa-book"></i><?php echo lang('financial_report'); ?></a></li>
                                             <li> <a href="finance/AllUserActivityReport">  <i class="fa fa-home"></i><span><?php echo lang('user_activity_report'); ?></span> </a></li>
@@ -1035,7 +1036,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <?php } ?>
                                     <?php } ?>
 
-                                    <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) { ?>
                                         <?php if (in_array('finance', $this->modules)) { ?>
                                             <li><a  href="finance/doctorsCommission"><i class="fa fa-edit"></i><?php echo lang('doctors_commission'); ?> </a></li>
                                             <li><a  href="finance/monthly"><i class="fa fa-chart-bar"></i> <?php echo lang('monthly_sales'); ?> </a></li>
@@ -1044,7 +1045,19 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             <li><a  href="finance/dailyExpense"><i class="fa fa-chart-area"></i> <?php echo lang('daily_expense'); ?> </a></li>                              
                                         <?php } ?>
                                     <?php } ?>
+                                </ul>
+                            </li>
 
+                        <?php } ?>
+
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor'))) { ?>
+
+                            <li class="sub-menu">
+                                <a href="javascript:;" >
+                                    <i class="fas fa-file-medical-alt"></i>
+                                    <span><?php echo lang('medical_reports'); ?></span>
+                                </a>
+                                <ul class="sub">
                                     <?php if (in_array('report', $this->modules)) { ?>
                                         <li><a  href="report/birth"><i class="fas fa-file-medical"></i><?php echo lang('birth_report'); ?></a></li>
                                         <li><a  href="report/operation"><i class="fa fa-wheelchair"></i><?php echo lang('operation_report'); ?></a></li>
@@ -1142,86 +1155,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
 
 
-                        <?php if ($this->ion_auth->in_group('CompanyUser')) { ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>
-                                <li class="sub-menu">
-                                    <a href="javascript:;" >
-                                        <i class="fa fa-money-bill-alt"></i>
-                                        <span><?php echo lang('invoices'); ?></span>
-                                    </a>
-                                    <ul class="sub">
-                                        <li>
-                                            <a href="finance/payment" >
-                                                <i class="fa fa-money-check"></i>
-                                                <span> <?php echo lang('invoices'); ?> </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            <?php } ?>
-                        <?php } ?>
+                        
 
 
-                        <?php if ($this->ion_auth->in_group('Accountant')) { ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>
-                                <li class="sub-menu">
-                                    <a href="javascript:;" >
-                                        <i class="fa fa-money-bill-alt"></i>
-                                        <span><?php echo lang('invoices'); ?></span>
-                                    </a>
-                                    <ul class="sub">
-                                        <li>
-                                            <a href="finance/payment" >
-                                                <i class="fa fa-money-check"></i>
-                                                <span> <?php echo lang('invoices'); ?> </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="finance/addPaymentView" >
-                                                <i class="fa fa-plus"></i>
-                                                <span> <?php echo lang('add_invoice'); ?> </span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="finance/paymentCategory" >
-                                                <i class="fa fa-edit"></i>
-                                                <span> <?php echo lang('service_listing'); ?> </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="finance/expense" >
-                                        <i class="fa fa-money-check"></i>
-                                        <span> <?php echo lang('expense'); ?> </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="finance/addExpenseView" >
-                                        <i class="fa fa-plus"></i>
-                                        <span> <?php echo lang('add_expense'); ?> </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="finance/expenseCategory" >
-                                        <i class="fa fa-edit"></i>
-                                        <span> <?php echo lang('expense_categories'); ?> </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="finance/doctorsCommission" >
-                                        <i class="fa fa-edit"></i>
-                                        <span> <?php echo lang('doctors_commission'); ?> </span>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="finance/financialReport" >
-                                        <i class="fa fa-book"></i>
-                                        <span> <?php echo lang('financial_report'); ?> </span>
-                                    </a>
-                                </li>
-                            <?php } ?>
-                        <?php } ?>
+                        
 
                         <?php if ($this->ion_auth->in_group('Pharmacist')) { ?>
                             <?php if (in_array('medicine', $this->modules)) { ?>
@@ -1251,7 +1188,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group('Nurse')) { ?>
+                        <?php if ($this->ion_auth->in_group(array('Nurse', 'Doctor'))) { ?>
                             <?php if (in_array('bed', $this->modules)) { ?>
                                 <li>
                                     <a href="bed" >
@@ -1267,18 +1204,20 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                                 <li>
                                     <a href="bed/bedAllotment" >
-                                        <i class="fa fa-plus"></i>
+                                        <i class="fa fa-bed"></i>
                                         <span> <?php echo lang('bed_allotments'); ?> </span>
                                     </a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('donor', $this->modules)) { ?>
-                                <li>
-                                    <a href="donor" >
-                                        <i class="fa fa-medkit"></i>
-                                        <span> <?php echo lang('donor'); ?> </span>
-                                    </a>
-                                </li>
+                                <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                    <li>
+                                        <a href="donor" >
+                                            <i class="fa fa-medkit"></i>
+                                            <span> <?php echo lang('donor'); ?> </span>
+                                        </a>
+                                    </li>
+                                <?php } ?>
                                 <li>
                                     <a href="donor/bloodBank" >
                                         <i class="fa fa-tint"></i>

@@ -4,8 +4,8 @@
 <html lang="en" <?php
 if (!$this->ion_auth->in_group(array('superadmin'))) {
     $this->db->where('hospital_id', $this->hospital_id);
-    $settings_lang = $this->db->get('settings')->row()->language;
-    if ($settings_lang == 'arabic') {
+    $settings = $this->db->get('settings')->row();
+    if ($settings->language == 'arabic') {
         ?>     
               dir="rtl"
           <?php } else { ?>
@@ -14,8 +14,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
           }
       } else {
           $this->db->where('hospital_id', 'superadmin');
-          $settings_lang = $this->db->get('settings')->row()->language;
-          if ($settings_lang == 'arabic') {
+          if ($settings->language == 'arabic') {
               ?>
               dir="rtl"     
           <?php } else { ?> 
@@ -24,29 +23,33 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
           }
       }
       ?>>
+      <?php
+      function isMobile() {
+            return preg_match("/(avantgo|blackberry|bolt|boost|cricket|docomo|fone|hiptop|mini|mobi|palm|phone|pie|tablet|up\.browser|up\.link|webos|wos)/i", $_SERVER["HTTP_USER_AGENT"]);
+        }
+      ?>
+
     <head>
         <base href="<?php echo base_url(); ?>">
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+        <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
         <meta name="description" content="">
         <meta name="author" content="Rygel">
         <meta name="keywords" content="Hospital Information System, Clinic, Management, Software, Finance">
-        <link rel="shortcut icon" href="uploads/favicon.png">
-        <title> <?php echo $this->router->fetch_class(); ?> | 
-            <?php
+        <title> <?php echo $this->router->fetch_class(); ?> | <?php
             if ($this->ion_auth->in_group(array('superadmin'))) {
                 $this->db->where('hospital_id', 'superadmin');
             } else {
                 $this->db->where('hospital_id', $this->hospital_id);
             }
-            ?>
-            <?php
-            echo $this->db->get('settings')->row()->system_vendor;
+            ?><?php echo $this->db->get('settings')->row()->system_vendor;
             ?>  
         </title>
         
         <!--Favicon -->
-        <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>" type="image/x-icon"/>
+        <link rel="shortcut icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>">
+        <link rel="icon" type="image/png" href="<?php echo base_url('public/assets/images/brand/android-chrome-192x192.png'); ?>" sizes="192x192">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url('public/assets/images/brand/apple-touch-icon.png'); ?>">
 
         <!-- Bootstrap css -->
         <link href="<?php echo base_url('public/assets/plugins/bootstrap/css/bootstrap.css'); ?>" rel="stylesheet" />
@@ -80,27 +83,35 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
         <!-- Data table css -->
         <link href="<?php echo base_url('public/assets/plugins/datatable/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" />
+        <!-- Data table css -->
+        <link href="<?php echo base_url('public/assets/plugins/datatable/dataTables.bootstrap4.min.css') ?>" rel="stylesheet" />
         <link href="<?php echo base_url('public/assets/plugins/datatable/css/buttons.bootstrap4.min.css'); ?>" rel="stylesheet">
-        <link href="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.css'); ?>" rel="stylesheet" />        
+        <link href="<?php echo base_url('public/assets/plugins/datatable/responsive.bootstrap4.min.css'); ?>" rel="stylesheet" />  
 
-        <!--Daterangepicker css-->
-        <link href="<?php echo base_url('public/assets/plugins/bootstrap-daterangepicker/daterangepicker.css') ?>" rel="stylesheet" />
-        <!-- Fullcalendar css-->
-        <link href='<?php echo base_url('public/assets/plugins/fullcalendar/fullcalendar.css'); ?>' rel='stylesheet' />
         <!-- Slect2 css -->
-        <link href="<?php echo base_url('public/assets/plugins/select2/select2.min.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/select2/select2.min.css'); ?>" rel="stylesheet" />      
 
         <!-- File Uploads css -->
         <link href="<?php echo base_url('public/assets/plugins/fancyuploder/fancy_fileupload.css'); ?>" rel="stylesheet" />
 
+        <!--Daterangepicker css-->
+        <link href="<?php echo base_url('public/assets/plugins/bootstrap-daterangepicker/daterangepicker.css') ?>" rel="stylesheet" />
+
+        <!-- Fullcalendar css-->
+        <link href='<?php echo base_url('public/assets/plugins/fullcalendar/fullcalendar.css'); ?>' rel='stylesheet' />
+
         <!-- Time picker css -->
         <link href="<?php echo base_url('public/assets/plugins/time-picker/jquery.timepicker.css'); ?>" rel="stylesheet" />
+
+        <!-- Morris Charts css -->
+        <link href="<?php echo base_url('public/assets/plugins/morris/morris.css') ?>" rel="stylesheet" />
 
         <!-- Date Picker css -->
         <link href="<?php echo base_url('public/assets/plugins/date-picker/date-picker.css'); ?>" rel="stylesheet" />
 
         <!-- File Uploads css-->
         <link href="<?php echo base_url('public/assets/plugins/fileupload/css/fileupload.css'); ?>" rel="stylesheet" type="text/css" />
+
         <!--Mutipleselect css-->
         <link rel="stylesheet" href="<?php echo base_url('public/assets/plugins/multipleselect/multiple-select.css'); ?>">
 
@@ -122,15 +133,88 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
         <link href="<?php echo base_url('public/assets/plugins/quill/quill.bubble.css'); ?>" rel="stylesheet">
 
         <!-- WYSIWYG Editor css -->
-        <link href="<?php echo base_url('public/assets/plugins/wysiwyag/richtext.css'); ?>" rel="stylesheet" />                
+        <link href="<?php echo base_url('public/assets/plugins/wysiwyag/richtext.css'); ?>" rel="stylesheet" />
+
+        <!-- Notifications  Css -->
+        <link href="<?php echo base_url('public/assets/plugins/notify/css/jquery.growl.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/notify/css/notifIt.css'); ?>" rel="stylesheet" />
+
+        <!-- News-Ticker css-->
+        <link href="<?php echo base_url('public/assets/plugins/newsticker/newsticker.css') ?>" rel="stylesheet" />  
+
+        <!-- Prism Css -->
+        <link href="<?php echo base_url('public/assets/plugins/prism/prism.css'); ?>" rel="stylesheet">
+
+        <!-- Accordion Css -->
+        <link href="<?php echo base_url('public/assets/plugins/accordion/accordion.css'); ?>" rel="stylesheet" />  
+
+        <link href="<?php echo base_url('public/assets/plugins/form-wizard/css/forn-wizard.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/formwizard/smart_wizard.css'); ?>" rel="stylesheet">
+        <link href="<?php echo base_url('public/assets/plugins/formwizard/smart_wizard_theme_dots.css'); ?>" rel="stylesheet">
+        
+        <!-- Image Editor -->
+        <link href="<?php echo base_url('public/assets/plugins/image-editor/styles.min.css'); ?>" rel="stylesheet" />    
+        <link rel="stylesheet" type="text/css" href="common/assets/jquery-multi-select/css/multi-select.css" />
+
+        <!--Int Tel Input-->
+        <link rel="stylesheet" href="<?php echo base_url('common/assets/intl-tel-input/build/css/intlTelInput.css');?>">
+        <link rel="stylesheet" href="<?php echo base_url('common/assets/intl-tel-input/examples/css/isValidNumber.css');?>">
+
+        <!-- ion.rangeSlider css -->
+        <link href="<?php echo base_url('public/assets/plugins/ion-rangeslider/css/ion.rangeSlider.css'); ?>" rel="stylesheet">
+        <link href="<?php echo base_url('public/assets/plugins/ion-rangeslider/css/ion.rangeSlider.skinFlat.css'); ?>" rel="stylesheet">
+
+        <!-- FlatPicker css -->
+        <link href="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.min.css'); ?>" rel="stylesheet">
+        <link href="<?php echo base_url('common/assets/flatpickr/dist/themes/sugbodoc_purple.css'); ?>" rel="stylesheet">
+
+        <!---Sweetalert css-->
+        <link href="<?php echo base_url('public/assets/plugins/sweet-alert/jquery.sweet-modal.min.css'); ?>" rel="stylesheet" />
+        <link href="<?php echo base_url('public/assets/plugins/sweet-alert/sweetalert.css'); ?>" rel="stylesheet" />
+
         <!-- INTERNAL CSS END -->
 
         <style>
-            #ui-datepicker-div {
+            div#ui-datepicker-div {
+                z-index: 10001 !important;
+            }
+            div#ui-datepicker-div2 {
+                z-index: 10001 !important;
+            }
+            div#ui-datepicker-div3 {
                 z-index: 10001 !important;
             }
             .ui-timepicker-wrapper {
                 z-index: 10001 !important;
+            }
+            .app-sidebar.app-sidebar2 {
+                z-index: 976 !important;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility {
+                background-color: #ffffff;
+                color: #4454c3;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility:hover {
+                background-color: #ffffff;
+                color: #343a40;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility.active {
+                background-color: #4454c3;
+                color: #ffffff;
+            }
+            a.dt-button.dropdown-item.buttons-columnVisibility.active:hover {
+                background-color: #4454c3;
+                color: #343a40;
+            }
+            .dt-button-collection.dropdown-menu{
+                border: solid 1px;
+                /*padding: 0px;*/
+                border-radius: 0px;
+                padding-top: 1px;
+                padding-bottom: 1px;
+            }
+            .hidden {
+                display: none;
             }
         </style>
 
@@ -142,7 +226,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
         <?php
         if (!$this->ion_auth->in_group(array('superadmin'))) {
-            if ($settings_lang == 'arabic') {
+            if ($settings->language == 'arabic') {
                 ?>
                 <style>
                     #main-content {
@@ -159,7 +243,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                 <?php
             }
         } else {
-            if ($settings_lang == 'arabic') {
+            if ($settings->language == 'arabic') {
                 ?>
                 <style>
                     #main-content {
@@ -182,6 +266,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
 
     <body class="app sidebar-mini light-mode default-sidebar">
 
+
         <!---Global-loader-->
         <div id="global-loader" >
             <img src="<?php echo base_url('public/assets/images/svgs/loader.svg'); ?>" alt="loader">
@@ -196,8 +281,10 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                     <div class="app-sidebar__logo">
                         <a class="header-brand" href="<?php echo base_url('home'); ?>">
                             <!--logo start-->
-                            <img src="<?php if(!empty($settings->logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/logo.png');} ?>" class="header-brand-img desktop-logo" alt="Rygel Dash logo">
-                            <img src="<?php if(!empty($settings->mobile_logo)) { echo $settings->logo; } else { echo base_url('public/assets/images/brand/favicon.png');} ?>" class="header-brand-img mobile-logo" alt="Rygel Dash logo">
+                            <img src="<?php echo base_url('public/assets/images/brand/logo.png'); ?>" class="header-brand-img desktop-lgo" alt="Rygel Dash logo">
+                            <img src="<?php echo base_url('public/assets/images/brand/logo1.png'); ?>" class="header-brand-img dark-logo" alt="Rygel Dash logo">
+                            <img src="<?php echo base_url('public/assets/images/brand/favicon.png'); ?>" class="header-brand-img mobile-logo" alt="Rygel Dash logo">
+                            <img src="<?php echo base_url('public/assets/images/brand/favicon1.png'); ?>" class="header-brand-img darkmobile-logo" alt="Rygel Dash logo">
                             <!--logo end-->
                         </a>
                     </div>
@@ -209,6 +296,21 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><g opacity="1"><path d="M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g><g fill="currentColor" ><path d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g></svg>
                             <span class="side-menu__label"><?php echo lang('dashboard'); ?></span></a>
                         </li>
+                        <?php if ($this->ion_auth->in_group(array('CompanyUser'))) { ?>
+                            <li>
+                                <a class="side-menu__item" href="company/home">
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><g opacity="1"><path d="M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g><g fill="currentColor" ><path d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g></svg>
+                                <span class="side-menu__label"><?php echo lang('public').' '.lang('health').' '.lang('dashboard') ?></span></a>
+                            </li>
+                        <?php } ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Receptionist', 'Clerk'))) { ?>
+                            <li class="slide">
+                                <a class="side-menu__item" href="patient/addNewView">
+
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" ><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M15 16c-2.69 0-5.77 1.28-6 2h12c-.2-.71-3.3-2-6-2z" opacity=".3"></path><circle cx="15" cy="8" opacity=".6" r="2"></circle><path d="M15 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 8c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2 2.7 0 5.8 1.29 6 2H9zm-3-3v-3h3v-2H6V7H4v3H1v2h3v3z" fill="currentColor"></path></svg>
+                                <span class="side-menu__label"><?php echo lang('register_new_patient'); ?></span></a>
+                            </li>
+                        <?php } ?>
                         <?php if ($this->ion_auth->in_group('admin')) { ?>
                             <?php if (in_array('department', $this->modules)) { ?>
                                 <li class="slide">
@@ -218,7 +320,20 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                            <?php if (in_array('company', $this->modules)) { ?>
+                                <li class="slide">
+                                    <a class="side-menu__item"  data-toggle="slide" href="javascript:;">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M7 19h6V5H7v14zm3-8h2v2h-2v-2z" opacity=".3"/><path d="M19 19V4h-4V3H5v16H3v2h12V6h2v15h4v-2h-2zm-6 0H7V5h6v14zm-3-8h2v2h-2z" fill="currentColor"/></svg>
+                                    <span class="side-menu__label"><?php echo lang('encounter'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <ul class="slide-menu">
+                                        <li><a href="encounter" class="slide-item"><?php echo lang('all') . ' ' . lang('encounter'); ?></a></li>
+                                        <li><a href="encounter/addNewView" class="slide-item"><?php echo lang('add_new');?></a></li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'CompanyUser'))) { ?>
                             <?php if (in_array('company', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item"  data-toggle="slide" href="javascript:;">
@@ -229,8 +344,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </ul>
                                 </li>
                             <?php } ?>
-                        <?php } ?>   
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist'))) { ?>
+                        <?php } ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                             <?php if (in_array('admission', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -242,7 +357,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </ul>
                                 </li>
                             <?php } ?>
-                        <?php } ?>                                             
+                        <?php } ?>
                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                             <?php if (in_array('doctor', $this->modules)) { ?>
                                 <li class="slide">
@@ -251,12 +366,12 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('doctor'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
                                         <li><a href="doctor" class="slide-item"><?php echo lang('list_of_doctors'); ?></a></li>
-                                        <li><a href="appointment/treatmentReport" class="slide-item"><?php echo lang('treatment_history'); ?></a></li>
+                                        <li><a href="appointment/consultationReport" class="slide-item"><?php echo lang('consultation_history'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
                         <?php } ?>
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Nurse', 'Doctor', 'Laboratorist', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Laboratorist', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                             <?php if (in_array('patient', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -267,25 +382,22 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist'))) { ?>
                                             <li><a href="patient/patientPayments" class="slide-item"><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
-                                        <?php if (!$this->ion_auth->in_group(array('Accountant', 'Receptionist'))) { ?>
-                                        <li><a href="patient/caseList" class="slide-item"><?php echo lang('case'); ?> <?php echo lang('manager'); ?></a></li>
-                                        <li><a href="patient/documents" class="slide-item"><?php echo lang('documents'); ?></a></li>
+                                        <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist', 'Clerk'))) { ?>
+                                        <li><a href="patient/caseList" class="slide-item"><?php echo lang('case_notes'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('DoctorAdmin', 'Doctor', 'admin', 'Clerk', 'Midwife'))) { ?>
+                                            <li><a href="patient/documents" class="slide-item"><?php echo lang('documents'); ?></a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>
                             <?php } ?>
                         <?php } ?>
-
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist'))) { ?>
-                            <?php if (in_array('appointment', $this->modules)) { ?>
-                                <li class="slide">
-                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 8h14V6H5z" opacity="1" /><path d="M7 11h2v2H7zm12-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-4 3h2v2h-2zm-4 0h2v2h-2z"  fill="currentColor"/></svg>
-                                    <span class="side-menu__label"><?php echo lang('schedule'); ?></span><i class="angle fa fa-angle-right"></i></a>
-                                    <ul class="slide-menu">
-                                        <li><a href="schedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
-                                        <li><a href="schedule/allHolidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
-                                    </ul>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist'))) { ?>
+                            <?php if (in_array('customform', $this->modules)) { ?>
+                                <li>
+                                    <a class="side-menu__item" href="customform">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><g opacity="1"><path d="M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g><g fill="currentColor" ><path d="M16,11V3H8v6H2v12h20V11H16z M10,5h4v14h-4V5z M4,11h4v8H4V11z M20,19h-4v-6h4V19z"/></g></svg>
+                                    <span class="side-menu__label"><?php echo lang('custom').' '.lang('form'); ?></span></a>
                                 </li>
                             <?php } ?>
                         <?php } ?>
@@ -294,11 +406,33 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php if (in_array('appointment', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 8h14V6H5z" opacity="1" /><path d="M7 11h2v2H7zm12-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-4 3h2v2h-2zm-4 0h2v2h-2z"  fill="currentColor"/></svg>
+                                    <span class="side-menu__label"><?php echo lang('schedule'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <ul class="slide-menu">
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist'))) { ?>
+                                            <li><a href="schedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
+                                            <li><a href="schedule/allHolidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                            <li><a href="schedule/timeSchedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
+                                            <li><a href="schedule/holidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
+                                        <?php } ?>
+                                    </ul>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>
+
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
+                            <?php if (in_array('appointment', $this->modules)) { ?>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><rect height="2" opacity="1" width="14" x="5" y="6"/><path fill="currentColor" d="M5,10h14v2h2V6c0-1.1-0.9-2-2-2h-1V2h-2v2H8V2H6v2H5C3.89,4,3.01,4.9,3.01,6L3,20c0,1.1,0.89,2,2,2h7v-2H5V10z M5,6h14v2H5 V6z M22.84,16.28l-0.71,0.71l-2.12-2.12l0.71-0.71c0.39-0.39,1.02-0.39,1.41,0l0.71,0.71C23.23,15.26,23.23,15.89,22.84,16.28z M19.3,15.58l2.12,2.12l-5.3,5.3H14v-2.12L19.3,15.58z"/></svg>
                                     <span class="side-menu__label"><?php echo lang('appointment'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
                                         <li><a href="appointment" class="slide-item"><?php echo lang('all'); ?></a></li>
-                                        <li><a href="appointment/addNewView" class="slide-item"><?php echo lang('add'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
+                                            <li><a href="appointment/addNewView" class="slide-item"><?php echo lang('add'); ?></a></li>
+                                        <?php } ?>
                                         <li><a href="appointment/todays" class="slide-item"><?php echo lang('todays'); ?></a></li>
                                         <li><a href="appointment/upcoming" class="slide-item"><?php echo lang('upcoming'); ?></a></li>
                                         <li><a href="appointment/calendar" class="slide-item"><?php echo lang('calendar'); ?></a></li>
@@ -311,9 +445,24 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php if ($this->ion_auth->in_group(array('Patient'))) { ?>
                             <?php if (in_array('appointment', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="appointment/myTodays">
+                                    <a class="side-menu__item"  href="appointment/myTodays">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><rect height="2" opacity="1" width="14" x="5" y="6"/><path fill="currentColor" d="M5,10h14v2h2V6c0-1.1-0.9-2-2-2h-1V2h-2v2H8V2H6v2H5C3.89,4,3.01,4.9,3.01,6L3,20c0,1.1,0.89,2,2,2h7v-2H5V10z M5,6h14v2H5 V6z M22.84,16.28l-0.71,0.71l-2.12-2.12l0.71-0.71c0.39-0.39,1.02-0.39,1.41,0l0.71,0.71C23.23,15.26,23.23,15.89,22.84,16.28z M19.3,15.58l2.12,2.12l-5.3,5.3H14v-2.12L19.3,15.58z"/></svg>
                                     <span class="side-menu__label"><?php echo lang('todays'); ?> <?php echo lang('appointment'); ?></span></a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item"  href="appointment/bookConsultation">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><rect height="2" opacity="1" width="14" x="5" y="6"/><path fill="currentColor" d="M5,10h14v2h2V6c0-1.1-0.9-2-2-2h-1V2h-2v2H8V2H6v2H5C3.89,4,3.01,4.9,3.01,6L3,20c0,1.1,0.89,2,2,2h7v-2H5V10z M5,6h14v2H5 V6z M22.84,16.28l-0.71,0.71l-2.12-2.12l0.71-0.71c0.39-0.39,1.02-0.39,1.41,0l0.71,0.71C23.23,15.26,23.23,15.89,22.84,16.28z M19.3,15.58l2.12,2.12l-5.3,5.3H14v-2.12L19.3,15.58z"/></svg>
+                                    <span class="side-menu__label"><?php echo lang('book'); ?> <?php echo lang('appointment'); ?></span></a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item"  href="patient/findDoctors">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g fill="currentColor"><g><g><path d="M4,18c0.22-0.72,3.31-2,6-2c0-0.7,0.13-1.37,0.35-1.99C7.62,13.91,2,15.27,2,18v2h9.54c-0.52-0.58-0.93-1.25-1.19-2H4z"/><path d="M10,13c2.21,0,4-1.79,4-4c0-2.21-1.79-4-4-4C7.79,5,6,6.79,6,9C6,11.21,7.79,13,10,13z M10,7c1.1,0,2,0.89,2,2 c0,1.1-0.9,2-2,2s-2-0.9-2-2C8,7.89,8.9,7,10,7z"/><g opacity=".3"><path d="M10.35,18c0,0-0.35-0.79-0.35-2c-2.69,0-5.77,1.28-6,2H10.35z"/></g><path d="M19.43,18.02C19.79,17.43,20,16.74,20,16c0-2.21-1.79-4-4-4s-4,1.79-4,4c0,2.21,1.79,4,4,4c0.74,0,1.43-0.22,2.02-0.57 c0.93,0.93,1.62,1.62,2.57,2.57L22,20.59C20.5,19.09,21.21,19.79,19.43,18.02z M16,18c-1.1,0-2-0.9-2-2c0-1.1,0.9-2,2-2 s2,0.9,2,2C18,17.1,17.1,18,16,18z"/></g><g opacity=".3"><circle cx="10" cy="9" r="2"/></g></g></g></svg>
+                                    <span class="side-menu__label"><?php echo lang('find_doctors'); ?></span></a>
+                                </li>
+                                <li class="slide">
+                                    <a class="side-menu__item"  href="patient/findClinicOrHospital">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g fill="currentColor"><g><g><path d="M4,18c0.22-0.72,3.31-2,6-2c0-0.7,0.13-1.37,0.35-1.99C7.62,13.91,2,15.27,2,18v2h9.54c-0.52-0.58-0.93-1.25-1.19-2H4z"/><path d="M10,13c2.21,0,4-1.79,4-4c0-2.21-1.79-4-4-4C7.79,5,6,6.79,6,9C6,11.21,7.79,13,10,13z M10,7c1.1,0,2,0.89,2,2 c0,1.1-0.9,2-2,2s-2-0.9-2-2C8,7.89,8.9,7,10,7z"/><g opacity=".3"><path d="M10.35,18c0,0-0.35-0.79-0.35-2c-2.69,0-5.77,1.28-6,2H10.35z"/></g><path d="M19.43,18.02C19.79,17.43,20,16.74,20,16c0-2.21-1.79-4-4-4s-4,1.79-4,4c0,2.21,1.79,4,4,4c0.74,0,1.43-0.22,2.02-0.57 c0.93,0.93,1.62,1.62,2.57,2.57L22,20.59C20.5,19.09,21.21,19.79,19.43,18.02z M16,18c-1.1,0-2-0.9-2-2c0-1.1,0.9-2,2-2 s2,0.9,2,2C18,17.1,17.1,18,16,18z"/></g><g opacity=".3"><circle cx="10" cy="9" r="2"/></g></g></g></svg>
+                                    <span class="side-menu__label"><?php echo lang('find_clinic_hospital'); ?></span></a>
                                 </li>
                             <?php } ?>
                         <?php } ?>
@@ -324,43 +473,58 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><rect fill="none" height="24" width="24"/><g opacity="1"><path d="M8.07,16c0.09-0.23,0.13-0.39,0.91-0.69c0.97-0.38,1.99-0.56,3.02-0.56s2.05,0.18,3.02,0.56c0.77,0.3,0.81,0.46,0.91,0.69 H8.07z M12,8c0.55,0,1,0.45,1,1s-0.45,1-1,1s-1-0.45-1-1S11.45,8,12,8" /></g><g ><path fill="currentColor" d="M4,13c1.1,0,2-0.9,2-2c0-1.1-0.9-2-2-2s-2,0.9-2,2C2,12.1,2.9,13,4,13z M5.13,14.1C4.76,14.04,4.39,14,4,14 c-0.99,0-1.93,0.21-2.78,0.58C0.48,14.9,0,15.62,0,16.43V18l4.5,0v-1.61C4.5,15.56,4.73,14.78,5.13,14.1z M20,13c1.1,0,2-0.9,2-2 c0-1.1-0.9-2-2-2s-2,0.9-2,2C18,12.1,18.9,13,20,13z M24,16.43c0-0.81-0.48-1.53-1.22-1.85C21.93,14.21,20.99,14,20,14 c-0.39,0-0.76,0.04-1.13,0.1c0.4,0.68,0.63,1.46,0.63,2.29V18l4.5,0V16.43z M16.24,13.65c-1.17-0.52-2.61-0.9-4.24-0.9 c-1.63,0-3.07,0.39-4.24,0.9C6.68,14.13,6,15.21,6,16.39V18h12v-1.61C18,15.21,17.32,14.13,16.24,13.65z M8.07,16 c0.09-0.23,0.13-0.39,0.91-0.69c0.97-0.38,1.99-0.56,3.02-0.56s2.05,0.18,3.02,0.56c0.77,0.3,0.81,0.46,0.91,0.69H8.07z M12,8 c0.55,0,1,0.45,1,1s-0.45,1-1,1s-1-0.45-1-1S11.45,8,12,8 M12,6c-1.66,0-3,1.34-3,3c0,1.66,1.34,3,3,3s3-1.34,3-3 C15,7.34,13.66,6,12,6L12,6z"/></g></svg>
                                 <span class="side-menu__label"><?php echo lang('human_resources'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                 <ul class="slide-menu">
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <li><a href="admin" class="slide-item"><?php echo lang('administrator'); ?></a></li>
+                                    <?php if (in_array('nurse', $this->modules)) { ?>
                                         <li><a href="nurse" class="slide-item"><?php echo lang('nurse'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('midwife', $this->modules)) { ?>
+                                        <li><a href="midwife" class="slide-item"><?php echo lang('midwife'); ?></a></li>
+                                    <?php } ?>
+                                    <?php if (in_array('clerk', $this->modules)) { ?>
+                                        <li><a href="clerk" class="slide-item"><?php echo lang('clerk'); ?></a></li>
+                                    <?php } ?>
+                                    <?php if (in_array('pharmacist', $this->modules)) { ?>
                                         <li><a href="pharmacist" class="slide-item"><?php echo lang('pharmacist'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('laboratorist', $this->modules)) { ?>
                                         <li><a href="laboratorist" class="slide-item"><?php echo lang('laboratorist'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('accountant', $this->modules)) { ?>
                                         <li><a href="accountant" class="slide-item"><?php echo lang('accountant'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('receptionist', $this->modules)) { ?>
                                         <li><a href="receptionist" class="slide-item"><?php echo lang('receptionist'); ?></a></li>
                                     <?php } ?>
-                                    <?php if (in_array('medicine', $this->modules)) { ?>
+                                    <?php if (in_array('companyuser', $this->modules)) { ?>
                                         <li><a href="companyuser" class="slide-item"><?php echo lang('company_user'); ?></a></li>
                                     <?php } ?>                                    
                                 </ul>
                             </li>
                         <?php } ?>
                         
-                        <?php if ($this->ion_auth->in_group('admin')) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Receptionist', 'Accountant', 'CompanyUser', 'Clerk'))) { ?>
                             <?php if (in_array('finance', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g fill="currentColor" ><rect fill="none" height="24" width="24"/><path d="M17,6H3v8h14V6z M10,13c-1.66,0-3-1.34-3-3s1.34-3,3-3s3,1.34,3,3S11.66,13,10,13z" opacity=".3"/><g><path d="M17,4H3C1.9,4,1,4.9,1,6v8c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V6C19,4.9,18.1,4,17,4L17,4z M3,14V6h14v8H3z"/><path d="M10,7c-1.66,0-3,1.34-3,3s1.34,3,3,3s3-1.34,3-3S11.66,7,10,7L10,7z"/></g><path d="M23,7v11c0,1.1-0.9,2-2,2H4c0-1,0-0.9,0-2h17V7C22.1,7,22,7,23,7z"/></g></svg>
-                                    <span class="side-menu__label"><?php echo lang('financial_activities'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <span class="side-menu__label"><?php echo lang('bills_and_payments'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
 
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
-                                        <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
-                                        <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('service_listing'); ?></a></li>
-                                        <li><a href="finance/serviceCategory" class="slide-item"><?php echo lang('service_categories'); ?> </a></li>
-                                        <li><a href="finance/expense" class="slide-item"><?php echo lang('expense'); ?></a></li>
-                                        <li><a href="finance/addExpenseView" class="slide-item"><?php echo lang('add_expense'); ?></a></li>
-                                        <li><a href="finance/expenseCategory" class="slide-item"><?php echo lang('expense_categories'); ?></a></li>
+                                        <li><a href="finance/invoices" class="slide-item"><?php echo lang('invoices'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk'))) { ?>
+                                            <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist', 'Clerk'))) { ?>
+                                            <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('list_of_charges'); ?></a></li>
+                                            <li><a href="finance/serviceCategory" class="slide-item"><?php echo lang('charge').' '.lang('categories'); ?> </a></li>
+                                            <li><a href="finance/expense" class="slide-item"><?php echo lang('expense'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk'))) { ?>
+                                            <li><a href="finance/addExpenseView" class="slide-item"><?php echo lang('add_expense'); ?></a></li>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist', 'Clerk'))) { ?>
+                                            <li><a href="finance/expenseCategory" class="slide-item"><?php echo lang('expense_categories'); ?></a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -368,25 +532,14 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php if ($this->ion_auth->in_group('Receptionist')) { ?>
                             <?php if (in_array('appointment', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="appointment/calendar">
+                                    <a class="side-menu__item" href="appointment/calendar">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="14.31" y1="8" x2="20.05" y2="17.94"></line><line x1="9.69" y1="8" x2="21.17" y2="8"></line><line x1="7.38" y1="12" x2="13.12" y2="2.06"></line><line x1="9.69" y1="16" x2="3.95" y2="6.06"></line><line x1="14.31" y1="16" x2="2.83" y2="16"></line><line x1="16.62" y1="12" x2="10.88" y2="21.94"></line></svg>
                                     <span class="side-menu__label"><?php echo lang('calendar'); ?></span></a>
                                 </li>
                             <?php } ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>
-                                <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="javascript:;">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="14.31" y1="8" x2="20.05" y2="17.94"></line><line x1="9.69" y1="8" x2="21.17" y2="8"></line><line x1="7.38" y1="12" x2="13.12" y2="2.06"></line><line x1="9.69" y1="16" x2="3.95" y2="6.06"></line><line x1="14.31" y1="16" x2="2.83" y2="16"></line><line x1="16.62" y1="12" x2="10.88" y2="21.94"></line></svg>
-                                    <span class="side-menu__label"><?php echo lang('financial_activities'); ?></span><i class="angle fa fa-angle-right"></i></a>
-                                    <ul class="slide-menu">
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
-                                        <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
-                                    </ul>
-                                </li>
-                            <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                             <?php if (in_array('prescription', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item"  href="prescription/all">
@@ -396,35 +549,25 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk', 'Midwife'))) { ?>
+                            <?php if (in_array('labrequest', $this->modules)) { ?>
+                                <li class="slide">
+                                    <a class="side-menu__item"  href="labrequest">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="24px" height="24px"><path fill="currentColor" d="M301.26 352l78.06-78.06c6.25-6.25 6.25-16.38 0-22.63l-22.63-22.63c-6.25-6.25-16.38-6.25-22.63 0L256 306.74l-83.96-83.96C219.31 216.8 256 176.89 256 128c0-53.02-42.98-96-96-96H16C7.16 32 0 39.16 0 48v256c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16v-80h18.75l128 128-78.06 78.06c-6.25 6.25-6.25 16.38 0 22.63l22.63 22.63c6.25 6.25 16.38 6.25 22.63 0L256 397.25l78.06 78.06c6.25 6.25 16.38 6.25 22.63 0l22.63-22.63c6.25-6.25 6.25-16.38 0-22.63L301.26 352zM64 96h96c17.64 0 32 14.36 32 32s-14.36 32-32 32H64V96z"></path></svg>
+                                    <span class="side-menu__label"><?php echo lang('lab') . ' ' . lang('requests'); ?></span></a>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>
+
+                        <?php if ($this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Doctor'))) { ?>
                             <?php if (in_array('lab', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="lab/lab1">
+                                    <a class="side-menu__item" href="lab/lab1">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g fill="currentColor"><g><polygon opacity=".3" points="13,6 11,6 11,11.33 6,18 18,18 13,11.33"/><path d="M20.8,18.4L15,10.67V6.5l1.35-1.69C16.61,4.48,16.38,4,15.96,4H8.04C7.62,4,7.39,4.48,7.65,4.81L9,6.5v4.17L3.2,18.4 C2.71,19.06,3.18,20,4,20h16C20.82,20,21.29,19.06,20.8,18.4z M6,18l5-6.67V6h2v5.33L18,18H6z"/></g></g></svg>
                                     <span class="side-menu__label"><?php echo lang('lab_reports'); ?></span></a>
                                 </li>
                             <?php } ?>
                         <?php } ?>
-
-                        <?php if ($this->ion_auth->in_group(array('Receptionist'))) { ?>
-                            <?php if (in_array('form', $this->modules)) { ?>
-                                <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="form/form1">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <span class="side-menu__label"><?php echo lang('forms_reports'); ?></span></a>
-                                </li>
-                            <?php } ?>
-                        <?php } ?>
-
-                        <?php if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) { ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>
-                                <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="finance/UserActivityReport">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <span class="side-menu__label"><?php echo lang('user_activity_report'); ?></span></a>
-                                </li>
-                            <?php } ?>
-                        <?php  } ?>
 
                         <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                             <?php if (in_array('prescription', $this->modules)) { ?>
@@ -436,7 +579,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
                             <?php if (in_array('lab', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -451,7 +594,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                             <?php if (in_array('form', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -459,14 +602,16 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('forms_reports'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
                                         <li><a href="form" class="slide-item"><?php echo lang('forms_reports'); ?></a></li>
-                                        <li><a href="form/addFormView" class="slide-item"><?php echo lang('add_form_report'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Midwife'))) { ?>
+                                            <li><a href="form?addnew=true" class="slide-item"><?php echo lang('add_form_report'); ?></a></li>
+                                        <?php } ?>
                                         <li><a href="form/template" class="slide-item"><?php echo lang('report_templates'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Accountant', 'Clerk', 'Midwife'))) { ?>
                             <?php if (in_array('medicine', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -474,16 +619,20 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('medicine'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
                                         <li><a href="medicine" class="slide-item"><?php echo lang('medicine_list'); ?></a></li>
-                                        <li><a href="medicine/addMedicineView" class="slide-item"><?php echo lang('add_medicine'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                            <li><a href="medicine/addMedicineView" class="slide-item"><?php echo lang('add_medicine'); ?></a></li>
+                                        <?php } ?>
                                         <li><a href="medicine/medicineCategory" class="slide-item"><?php echo lang('medicine_category'); ?></a></li>
-                                        <li><a href="medicine/addCategoryView" class="slide-item"><?php echo lang('add_medicine_category'); ?></a></li>
-                                        <li><a href="medicine/medicineStockAlert" class="slide-item"><?php echo lang('medicine_stock_alert'); ?></a></li>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                                            <li><a href="medicine/addCategoryView" class="slide-item"><?php echo lang('add_medicine_category'); ?></a></li>
+                                            <li><a href="medicine/medicineStockAlert" class="slide-item"><?php echo lang('medicine_stock_alert'); ?></a></li>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                             <?php } ?>
                         <?php } ?>
                         
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist', 'Accountant'))) { ?>
                             <?php if (in_array('pharmacy', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -531,7 +680,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
 
-                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
                             <?php if (in_array('bed', $this->modules)) { ?>
                                 <li class="slide">
                                     <a class="side-menu__item" data-toggle="slide" href="javascript:;">
@@ -548,20 +697,20 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php } ?>
                         
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Laboratorist', 'Doctor'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor'))) { ?>
                             <li class="slide">
                                 <a class="side-menu__item" data-toggle="slide" href="javascript:;">
                                 <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 5v14h14V5H5zm4 12H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" opacity=".3"/><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
-                                <span class="side-menu__label"><?php echo lang('report'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                <span class="side-menu__label"><?php echo lang('financial_reports'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                 <ul class="slide-menu">
-                                    <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) { ?>
                                         <?php if (in_array('finance', $this->modules)) { ?>
                                             <li><a href="finance/financialReport" class="slide-item"><?php echo lang('financial_report'); ?></a></li>
                                             <li><a href="finance/AllUserActivityReport" class="slide-item"><?php echo lang('user_activity_report'); ?></a></li>
                                             <li><a href="finance/allAccountActivityReport" class="slide-item"><?php echo lang('all');?> <?php echo lang('accounts_report'); ?></a></li>
                                         <?php } ?>
                                     <?php } ?>
-                                    <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) { ?>
                                         <?php if (in_array('finance', $this->modules)) { ?>
                                             <li><a href="finance/doctorsCommission" class="slide-item"><?php echo lang('doctors_commission'); ?></a></li>
                                             <li><a href="finance/monthly" class="slide-item"><?php echo lang('monthly_sales'); ?></a></li>
@@ -570,6 +719,16 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             <li><a href="finance/dailyExpense" class="slide-item"><?php echo lang('daily_expense'); ?></a></li>
                                         <?php } ?>
                                     <?php } ?>
+                                </ul>
+                            </li>
+                        <?php } ?>
+
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Midwife'))) { ?>
+                            <li class="slide">
+                                <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g><path d="M15,9c0,1.1-0.9,2-2,2h-2c-1.1,0-2-0.9-2-2H4v11h16V9H15z M11,16H9v2H7v-2H5v-2h2v-2h2v2h2V16z M17,17.5h-4 V16h4V17.5z M19,14.5h-6V13h6V14.5z" opacity=".3"/><path d="M20,7h-5V4c0-1.1-0.9-2-2-2h-2C9.9,2,9,2.9,9,4v3H4C2.9,7,2,7.9,2,9v11c0,1.1,0.9,2,2,2h16c1.1,0,2-0.9,2-2V9 C22,7.9,21.1,7,20,7z M11,4h2v5h-2V4z M20,20H4V9h5c0,1.1,0.9,2,2,2h2c1.1,0,2-0.9,2-2h5V20z M11,16H9v2H7v-2H5v-2h2v-2h2v2h2V16z M13,14.5V13h6v1.5H13z M13,17.5V16h4v1.5H13z" fill="currentColor"/></g></svg>
+                                <span class="side-menu__label"><?php echo lang('medical_reports'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                <ul class="slide-menu">
                                     <?php if (in_array('report', $this->modules)) { ?>
                                         <li><a href="report/birth" class="slide-item"><?php echo lang('birth_report'); ?></a></li>
                                         <li><a href="report/operation" class="slide-item"><?php echo lang('operation_report'); ?></a></li>
@@ -642,59 +801,18 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     </ul>
                                 </li>
                             <?php } ?>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 4C9.24 4 7 6.24 7 9c0 2.85 2.92 7.21 5 9.88 2.11-2.69 5-7 5-9.88 0-2.76-2.24-5-5-5zm0 7.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" opacity=".3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z" fill="currentColor"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/></svg>
+                                    <span class="side-menu__label"><?php echo lang('locations'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <ul class="slide-menu">
+                                        <li><a href="branch" class="slide-item"><?php echo lang('list_of'); ?> <?php echo lang('locations'); ?></a></li>
+                                        <li><a href="branch/addNewView" class="slide-item"><?php echo lang('add_new'); ?></a></li>
+                                    </ul>
+                                </li>
                         <?php } ?>                         
-                        <?php if ($this->ion_auth->in_group('CompanyUser')) { ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>                
-                                <li class="slide">
-                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="side-menu__icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                                    <span class="side-menu__label"><?php echo lang('invoices'); ?></span><i class="angle fa fa-angle-right"></i></a>
-                                    <ul class="slide-menu">
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
-                                    </ul>
-                                </li>                                                                                                                                                             
-                            <?php } ?>
-                        <?php } ?>
+                        
 
-                        <?php if ($this->ion_auth->in_group('Accountant')) { ?>
-                            <?php if (in_array('finance', $this->modules)) { ?>                
-                                <li class="slide">
-                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="side-menu__icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-                                    <span class="side-menu__label"><?php echo lang('invoices'); ?></span><i class="angle fa fa-angle-right"></i></a>
-                                    <ul class="slide-menu">
-                                        <li><a href="finance/payment" class="slide-item"><?php echo lang('invoices'); ?></a></li>
-                                        <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
-                                        <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('service_listing'); ?></a></li>
-                                    </ul>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="finance/expense">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <span class="side-menu__label"><?php echo lang('expense'); ?></span></a>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="finance/addExpenseView">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <span class="side-menu__label"><?php echo lang('add_expense'); ?></span></a>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="finance/expenseCategory">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <span class="side-menu__label"><?php echo lang('expense_categories'); ?></span></a>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="finance/doctorsCommission">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <span class="side-menu__label"><?php echo lang('doctors_commission'); ?></span></a>
-                                </li>
-                                <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="finance/financialReport">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <span class="side-menu__label"><?php echo lang('financial_report'); ?></span></a>
-                                </li>                                                                                                                                                                
-                            <?php } ?>
-                        <?php } ?>
 
                         <?php if ($this->ion_auth->in_group('Pharmacist')) { ?>
                             <?php if (in_array('medicine', $this->modules)) { ?>
@@ -721,30 +839,32 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             <?php } ?>
                         <?php  } ?>
 
-                        <?php if ($this->ion_auth->in_group('Nurse')) { ?>
+                        <?php if ($this->ion_auth->in_group(array('Nurse', 'Doctor'))) { ?>
                             <?php if (in_array('bed', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="bed">
+                                    <a class="side-menu__item" href="bed">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                     <span class="side-menu__label"><?php echo lang('bed_list'); ?></span></a>
                                 </li>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="bed/bedCategory">
+                                    <a class="side-menu__item" href="bed/bedCategory">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                     <span class="side-menu__label"><?php echo lang('bed_category'); ?></span></a>
                                 </li>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="bed/bedAllotment">
+                                    <a class="side-menu__item" href="bed/bedAllotment">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                     <span class="side-menu__label"><?php echo lang('bed_allotments'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('donor', $this->modules)) { ?>                                                            
-                                <li class="slide">
-                                    <a class="side-menu__item"  href="donor">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <span class="side-menu__label"><?php echo lang('donor'); ?></span></a>
-                                </li>
+                                <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                    <li class="slide">
+                                        <a class="side-menu__item"  href="donor">
+                                        <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                        <span class="side-menu__label"><?php echo lang('donor'); ?></span></a>
+                                    </li>
+                                <?php } ?>
                                 <li class="slide">
                                     <a class="side-menu__item"  href="donor/bloodBank">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -756,57 +876,59 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                         <?php if ($this->ion_auth->in_group('Patient')) { ?>
                             <?php if (in_array('lab', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="lab/myLab">
+                                    <a class="side-menu__item" href="lab/myLab">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><rect fill="none" height="24" width="24"/></g><g fill="currentColor"><g><polygon opacity=".3" points="13,6 11,6 11,11.33 6,18 18,18 13,11.33"/><path d="M20.8,18.4L15,10.67V6.5l1.35-1.69C16.61,4.48,16.38,4,15.96,4H8.04C7.62,4,7.39,4.48,7.65,4.81L9,6.5v4.17L3.2,18.4 C2.71,19.06,3.18,20,4,20h16C20.82,20,21.29,19.06,20.8,18.4z M6,18l5-6.67V6h2v5.33L18,18H6z"/></g></g></svg>
-                                    <span class="side-menu__label"><?php echo lang('my'); ?><?php echo lang('diagnosis'); ?> <?php echo lang('reports'); ?></span></a>
+                                    <span class="side-menu__label"><?php echo lang('my'); ?><?php echo lang('lab'); ?> <?php echo lang('results'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('form', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="form/myForm">
+                                    <a class="side-menu__item" href="form/myForm">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><path d="M0,0h24v24H0V0z" fill="none"/></g><g fill="currentColor"><path d="M15,5H5v14h14V9h-4V5z M7,7h5v2H7V7z M17,17H7v-2h10V17z M17,11v2H7v-2H17z" opacity=".3"/><path d="M7,13h10v-2H7V13z M7,17h10v-2H7V17z M16,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V8L16,3z M19,19H5V5 h10v4h4V19z M12,7H7v2h5V7z"/></g></svg>
                                     <span class="side-menu__label"><?php echo lang('my'); ?> <?php echo lang('forms_reports'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('appointment', $this->modules)) { ?>                                                            
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="patient/calendar">
+                                    <a class="side-menu__item" href="patient/calendar">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 8h14V6H5z" opacity="1" /><path d="M7 11h2v2H7zm12-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2zm-4 3h2v2h-2zm-4 0h2v2h-2z"  fill="currentColor"/></svg>
                                     <span class="side-menu__label"><?php echo lang('appointment'); ?> <?php echo lang('calendar'); ?></span></a>
                                 </li>
                             <?php } ?>
+                            <?php if (!$this->ion_auth->in_group('Patient')) { ?>
                             <?php if (in_array('patient', $this->modules)) { ?>                                                               
                                 <li class="slide">
-                                    <a class="side-menu__item"  data-toggle="slide" href="patient/myCaseList">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                    <span class="side-menu__label"><?php echo lang('cases'); ?></span></a>
+                                    <a class="side-menu__item" href="patient/myCaseList">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z" opacity=".3"></path><path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z" fill="currentColor"></path></svg>
+                                    <span class="side-menu__label"><?php echo lang('case_notes'); ?></span></a>
                                 </li>
+                            <?php } ?>
                             <?php } ?>
                             <?php if (in_array('prescription', $this->modules)) { ?>                                                            
                                 <li class="slide">
-                                    <a class="side-menu__item"  href="patient/myPrescription">
+                                    <a class="side-menu__item" href="patient/myPrescription">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="24px" height="24px"><path fill="currentColor" d="M301.26 352l78.06-78.06c6.25-6.25 6.25-16.38 0-22.63l-22.63-22.63c-6.25-6.25-16.38-6.25-22.63 0L256 306.74l-83.96-83.96C219.31 216.8 256 176.89 256 128c0-53.02-42.98-96-96-96H16C7.16 32 0 39.16 0 48v256c0 8.84 7.16 16 16 16h32c8.84 0 16-7.16 16-16v-80h18.75l128 128-78.06 78.06c-6.25 6.25-6.25 16.38 0 22.63l22.63 22.63c6.25 6.25 16.38 6.25 22.63 0L256 397.25l78.06 78.06c6.25 6.25 16.38 6.25 22.63 0l22.63-22.63c6.25-6.25 6.25-16.38 0-22.63L301.26 352zM64 96h96c17.64 0 32 14.36 32 32s-14.36 32-32 32H64V96z"></path></svg>
                                     <span class="side-menu__label"><?php echo lang('prescription'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('patient', $this->modules)) { ?>                                                           
                                 <li class="slide">
-                                    <a class="side-menu__item"  href="patient/myDocuments">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                    <a class="side-menu__item" href="patient/myDocuments">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M11.17 8l-.58-.59L9.17 6H4v12h16V8h-8z" opacity=".8"></path><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V6h5.17l1.41 1.41.59.59H20v10z" fill="currentColor"></path></svg>
                                     <span class="side-menu__label"><?php echo lang('documents'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('finance', $this->modules)) { ?>                                                            
                                 <li class="slide">
-                                    <a class="side-menu__item"  href="patient/myPaymentHistory">
+                                    <a class="side-menu__item" href="patient/myPaymentHistory">
                                     <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g fill="currentColor" ><rect fill="none" height="24" width="24"/><path d="M17,6H3v8h14V6z M10,13c-1.66,0-3-1.34-3-3s1.34-3,3-3s3,1.34,3,3S11.66,13,10,13z" opacity=".3"/><g><path d="M17,4H3C1.9,4,1,4.9,1,6v8c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V6C19,4.9,18.1,4,17,4L17,4z M3,14V6h14v8H3z"/><path d="M10,7c-1.66,0-3,1.34-3,3s1.34,3,3,3s3-1.34,3-3S11.66,7,10,7L10,7z"/></g><path d="M23,7v11c0,1.1-0.9,2-2,2H4c0-1,0-0.9,0-2h17V7C22.1,7,22,7,23,7z"/></g></svg>
                                     <span class="side-menu__label"><?php echo lang('bills_and_payments'); ?></span></a>
                                 </li>
                             <?php } ?>
                             <?php if (in_array('report', $this->modules)) { ?>
                                 <li class="slide">
-                                    <a class="side-menu__item"  href="report/myreports">
-                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                    <a class="side-menu__item" href="report/myreports">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none"></path><path d="M19 3H5c-1.1 0-2 .9-2 2v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM5 10h3.13c.21.78.67 1.47 1.27 2H5v-2zm14 2h-4.4c.6-.53 1.06-1.22 1.27-2H19v2zm0-4h-5v1c0 1.07-.93 2-2 2s-2-.93-2-2V8H5V5h14v3zm-5 7v1c0 .47-.19.9-.48 1.25-.37.45-.92.75-1.52.75s-1.15-.3-1.52-.75c-.29-.35-.48-.78-.48-1.25v-1H3v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-4h-7zm-9 2h3.13c.02.09.06.17.09.25.24.68.65 1.28 1.18 1.75H5v-2zm14 2h-4.4c.54-.47.95-1.07 1.18-1.75.03-.08.07-.16.09-.25H19v2z" fill="currentColor"></path><path d="M8.13 10H5v2h4.4c-.6-.53-1.06-1.22-1.27-2zm6.47 2H19v-2h-3.13c-.21.78-.67 1.47-1.27 2zm-6.38 5.25c-.03-.08-.06-.16-.09-.25H5v2h4.4c-.53-.47-.94-1.07-1.18-1.75zm7.65-.25c-.02.09-.06.17-.09.25-.23.68-.64 1.28-1.18 1.75H19v-2h-3.13z" opacity=".7"></path></svg>
                                     <span class="side-menu__label"><?php echo lang('other'); ?> <?php echo lang('reports'); ?></span></a>
                                 </li>
                             <?php } ?>
@@ -825,40 +947,50 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                             </li>
                         <?php  } ?>
 
-                        <?php if (!$this->ion_auth->in_group(array('admin', 'Patient', 'superadmin'))) { ?>
-                            <li class="slide">
-                                <a class="side-menu__item" data-toggle="slide" href="javascript:;">
-                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 8l-8 5-8-5v10h16zm0-2H4l8 4.99z" opacity="1"/><path fill="currentColor" d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM20 6l-8 4.99L4 6h16zM4 8l8 5 8-5v10H4V8z"/></svg>
-                                <span class="side-menu__label"><?php echo lang('email'); ?></span><i class="angle fa fa-angle-right"></i></a>
-                                <ul class="slide-menu">
-                                    <li><a href="email/sendView" class="slide-item"><?php echo lang('new'); ?></a></li>
-                                </ul>
-                            </li>
+                        <?php if (in_array('email', $this->modules)) { ?>
+                            <?php if (!$this->ion_auth->in_group(array('admin', 'Patient', 'superadmin'))) { ?>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 8l-8 5-8-5v10h16zm0-2H4l8 4.99z" opacity="1"/><path fill="currentColor" d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM20 6l-8 4.99L4 6h16zM4 8l8 5 8-5v10H4V8z"/></svg>
+                                    <span class="side-menu__label"><?php echo lang('email'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <ul class="slide-menu">
+                                        <li><a href="email/sendView" class="slide-item"><?php echo lang('new'); ?></a></li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
                         <?php } ?>
 
                         <?php if ($this->ion_auth->in_group('superadmin')) { ?>
                             <li class="slide">
-                                <a class="side-menu__item"  data-toggle="slide" href="hospital">
+                                <a class="side-menu__item"  data-toggle="slide" href="javascript:;">
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><circle cx="12" cy="8" opacity="1" r="2.1"/><path d="M12 14.9c-2.97 0-6.1 1.46-6.1 2.1v1.1h12.2V17c0-.64-3.13-2.1-6.1-2.1z" opacity="1"/><path fill="currentColor" d="M12 13c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4zm6.1 5.1H5.9V17c0-.64 3.13-2.1 6.1-2.1s6.1 1.46 6.1 2.1v1.1zM12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6.1c1.16 0 2.1.94 2.1 2.1 0 1.16-.94 2.1-2.1 2.1S9.9 9.16 9.9 8c0-1.16.94-2.1 2.1-2.1z"/></svg>
+                                <span class="side-menu__label"><?php echo lang('accounts'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                <ul class="slide-menu">
+                                    <li><a href="company" class="slide-item"><?php echo lang('payer_accounts'); ?></a></li>
+                                </ul>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item"  href="hospital">
                                 <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                 <span class="side-menu__label"><?php echo lang('all_hospitals'); ?></span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item"  data-toggle="slide" href="hospital/addNewView">
+                                <a class="side-menu__item"  href="hospital/addNewView">
                                 <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                 <span class="side-menu__label"><?php echo lang('create_new_hospital'); ?></span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item"  data-toggle="slide" href="hospital/package">
+                                <a class="side-menu__item"  href="hospital/package">
                                 <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                 <span class="side-menu__label"><?php echo lang('packages'); ?></span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item"  data-toggle="slide" href="hospital/package/addNewView">
+                                <a class="side-menu__item"  href="hospital/package/addNewView">
                                 <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                 <span class="side-menu__label"><?php echo lang('add_new_package'); ?></span></a>
                             </li>
                             <li class="slide">
-                                <a class="side-menu__item"  data-toggle="slide" href="request">
+                                <a class="side-menu__item"  href="request">
                                 <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
                                 <span class="side-menu__label"><?php echo lang('requests'); ?></span></a>
                             </li>
@@ -872,14 +1004,70 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <li><a href="slide" class="slide-item"><?php echo lang('new'); ?></a></li>
                                     <li><a href="service" class="slide-item"><?php echo lang('services'); ?></a></li>
                                 </ul>
-                            </li>         
-                        <?php  } ?>                                                                  
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M19.28 8.6l-.7-1.21-1.27.51-1.06.43-.91-.7c-.39-.3-.8-.54-1.23-.71l-1.06-.43-.16-1.13L12.7 4h-1.4l-.19 1.35-.16 1.13-1.06.44c-.41.17-.82.41-1.25.73l-.9.68-1.05-.42-1.27-.52-.7 1.21 1.08.84.89.7-.14 1.13c-.03.3-.05.53-.05.73s.02.43.05.73l.14 1.13-.89.7-1.08.84.7 1.21 1.27-.51 1.06-.43.91.7c.39.3.8.54 1.23.71l1.06.43.16 1.13.19 1.36h1.39l.19-1.35.16-1.13 1.06-.43c.41-.17.82-.41 1.25-.73l.9-.68 1.04.42 1.27.51.7-1.21-1.08-.84-.89-.7.14-1.13c.04-.31.05-.52.05-.73 0-.21-.02-.43-.05-.73l-.14-1.13.89-.7 1.1-.84zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z" opacity="1"/><path fill="currentColor" d="M19.43 12.98c.04-.32.07-.64.07-.98 0-.34-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.09-.16-.26-.25-.44-.25-.06 0-.12.01-.17.03l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.06-.02-.12-.03-.18-.03-.17 0-.34.09-.43.25l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.09.16.26.25.44.25.06 0 .12-.01.17-.03l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.06.02.12.03.18.03.17 0 .34-.09.43-.25l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zm-1.98-1.71c.04.31.05.52.05.73 0 .21-.02.43-.05.73l-.14 1.13.89.7 1.08.84-.7 1.21-1.27-.51-1.04-.42-.9.68c-.43.32-.84.56-1.25.73l-1.06.43-.16 1.13-.2 1.35h-1.4l-.19-1.35-.16-1.13-1.06-.43c-.43-.18-.83-.41-1.23-.71l-.91-.7-1.06.43-1.27.51-.7-1.21 1.08-.84.89-.7-.14-1.13c-.03-.31-.05-.54-.05-.74s.02-.43.05-.73l.14-1.13-.89-.7-1.08-.84.7-1.21 1.27.51 1.04.42.9-.68c.43-.32.84-.56 1.25-.73l1.06-.43.16-1.13.2-1.35h1.39l.19 1.35.16 1.13 1.06.43c.43.18.83.41 1.23.71l.91.7 1.06-.43 1.27-.51.7 1.21-1.07.85-.89.7.14 1.13zM12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 6c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>
+                                <span class="side-menu__label"><?php echo lang('settings'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                <ul class="slide-menu">
+                                    <li><a href="settings" class="slide-item"><?php echo lang('system_settings'); ?></a></li>
+                                    <li><a href="pgateway" class="slide-item"><?php echo lang('payment_gateway'); ?></a></li>
+                                    <li><a href="settings/language" class="slide-item"><?php echo lang('language'); ?></a></li>
+                                </ul>
+                            </li>
+                            <li class="slide">
+                                <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M20 8l-8 5-8-5v10h16zm0-2H4l8 4.99z" opacity="1"/><path fill="currentColor" d="M4 20h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2zM20 6l-8 4.99L4 6h16zM4 8l8 5 8-5v10H4V8z"/></svg>
+                                <span class="side-menu__label"><?php echo lang('email'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                <ul class="slide-menu">
+                                    <li><a href="email/autoEmailTemplate" class="slide-item"><?php echo lang('autoemailtemplate'); ?></a></li>
+                                    <li><a href="email/sendView" class="slide-item"><?php echo lang('new'); ?></a></li>
+                                    <li><a href="email/sent" class="slide-item"><?php echo lang('sent'); ?></a></li>
+                                    <?php if ($this->ion_auth->in_group(array('admin'))) { ?>                                        
+                                        <li><a href="email/settings" class="slide-item"><?php echo lang('settings'); ?></a></li>
+                                    <?php } ?>
+                                </ul>
+                            </li>
+                            <?php if (in_array('sms', $this->super_modules)) { ?>
+                            <li class="slide">
+                                <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M4 18l2-2h14V4H4v14zm11-9h2v2h-2V9zm-4 0h2v2h-2V9zM7 9h2v2H7V9z" opacity="1"/><path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12zM7 9h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+                                <span class="side-menu__label"><?php echo lang('sms'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                <ul class="slide-menu">
+                                    <li><a href="sms/autoSMSTemplate" class="slide-item"><?php echo lang('autosmstemplate'); ?></a></li>
+                                    <li><a href="sms/sendView" class="slide-item"><?php echo lang('write_message'); ?></a></li>
+                                    <li><a href="sms/sent" class="slide-item"><?php echo lang('sent_messages'); ?></a></li>
+                                    <li><a href="sms/settings" class="slide-item"><?php echo lang('sms_settings'); ?></a></li>
+                                </ul>
+                            </li>
+                            <?php } ?>
+                        <?php  } ?>
 
-                        <li class="slide">
+                        <!-- <li class="slide">
                             <a class="side-menu__item" href="profile">
                             <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><circle cx="12" cy="8" opacity="1" r="2.1"/><path d="M12 14.9c-2.97 0-6.1 1.46-6.1 2.1v1.1h12.2V17c0-.64-3.13-2.1-6.1-2.1z" opacity="1"/><path fill="currentColor" d="M12 13c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4zm6.1 5.1H5.9V17c0-.64 3.13-2.1 6.1-2.1s6.1 1.46 6.1 2.1v1.1zM12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6.1c1.16 0 2.1.94 2.1 2.1 0 1.16-.94 2.1-2.1 2.1S9.9 9.16 9.9 8c0-1.16.94-2.1 2.1-2.1z"/></svg>
                             <span class="side-menu__label"><?php echo lang('profile'); ?> </span></a>
-                        </li>
+                        </li> -->
+                        <li class="slide">
+                                <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><circle cx="12" cy="8" opacity="1" r="2.1"/><path d="M12 14.9c-2.97 0-6.1 1.46-6.1 2.1v1.1h12.2V17c0-.64-3.13-2.1-6.1-2.1z" opacity="1"/><path fill="currentColor" d="M12 13c-2.67 0-8 1.34-8 4v3h16v-3c0-2.66-5.33-4-8-4zm6.1 5.1H5.9V17c0-.64 3.13-2.1 6.1-2.1s6.1 1.46 6.1 2.1v1.1zM12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6.1c1.16 0 2.1.94 2.1 2.1 0 1.16-.94 2.1-2.1 2.1S9.9 9.16 9.9 8c0-1.16.94-2.1 2.1-2.1z"/></svg>
+                                <span class="side-menu__label"><?php echo lang('profile'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                <ul class="slide-menu">
+                                    <?php if ($this->ion_auth->in_group('Patient')) { ?>
+                                        <li><a href="patient/editIdentification" class="slide-item"><?php echo lang('edit').' '.lang('identification'); ?></a></li>
+                                    <?php } ?>
+                                    <li><a href="profile/changePassword" class="slide-item"><?php echo lang('change_password'); ?></a></li>
+                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                        <li><a href="doctor/editProfile" class="slide-item"><?php echo lang('edit').' '.lang('profile'); ?></a></li>
+                                    <?php } elseif ($this->ion_auth->in_group('Patient')) { ?>
+                                        <li><a href="patient/editProfile" class="slide-item"><?php echo lang('edit').' '.lang('profile'); ?></a></li>
+                                    <?php } elseif ($this->ion_auth->in_group('CompanyUser')) { ?>
+                                        <li><a href="companyuser/editProfile" class="slide-item"><?php echo lang('edit').' '.lang('profile'); ?></a></li>
+                                    <?php } elseif ($this->ion_auth->in_group('Midwife')) { ?>
+                                        <li><a href="midwife/editProfile" class="slide-item"><?php echo lang('edit').' '.lang('profile'); ?></a></li>
+                                    <?php } ?>
+                                </ul>
+                            </li>   
                         <?php if ($this->ion_auth->in_group('admin')) { ?>
                             <li class="slide">
                                 <a class="side-menu__item" href="settings/subscription">
@@ -942,6 +1130,8 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             </a>
                                         </div>
                                     </div>
+                                    <!-- All Notification start -->
+                                    <?php if ($settings->is_display_notification_panel == 1) { ?>
                                     <!-- Bed Notification start -->
                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse'))) { ?> 
                                         <?php if (in_array('bed', $this->modules)) { ?>                                    
@@ -1027,7 +1217,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                     <span class="nav-unread badge bg-secondary badge-pill">
                                                         <?php
                                                         $this->db->where('hospital_id', $this->hospital_id);
-                                                        $query = $this->db->get('payment');
+                                                        $query = $this->db->get('invoice');
                                                         $query = $query->result();
                                                         foreach ($query as $payment) {
                                                             $payment_date = date('y/m/d', $payment->date);
@@ -1057,12 +1247,12 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                             ?>
                                                         </a>
                                                     </div>
-                                                    <a href="finance/payment" class="dropdown-item d-flex pb-3">
+                                                    <a href="finance/invoices" class="dropdown-item d-flex pb-3">
                                                         <div class="notifyimg bg-info">
                                                             <i class="fe fe-eye"></i>
                                                         </div>
                                                         <div>
-                                                            <div class="mt-2"><?php echo lang('see_all_payments'); ?></div>
+                                                            <div class="mt-2"><?php echo lang('see_all_invoices'); ?></div>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -1269,20 +1459,26 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             </div>
                                         <?php } ?>
                                     <?php } ?>
-                                    <!-- report notification end -->            
+                                    <!-- report notification end -->
+                                    <?php } ?>
+                                    <!-- All Notification end -->            
                                     <div class="d-flex order-lg-2 ml-auto">
                                         
                                         <div class="dropdown profile-dropdown">
                                             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                                                 <span>
-                                                    <img src="<?php echo base_url('public/assets/images/users/16.jpg'); ?>" alt="img" class="avatar avatar-md brround">
+                                                    <?php
+                                                        $user = $this->session->userdata('user_id');
+                                                        $user_image = $this->session->userdata('profile_img_url');
+                                                    ?>
+                                                    <img src="<?php echo base_url($user_image); ?>" alt="img" class="avatar avatar-md brround">
                                                 </span>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow animated">
                                                 <div class="text-center">
                                                     <a href="#" class="dropdown-item text-center user pb-0 font-weight-bold">
                                                         <?php
-                                                        $username = $this->ion_auth->user()->row()->username;
+                                                        $username = $this->session->userdata('name');
                                                         if (!empty($username)) {
                                                             echo $username;
                                                         }
@@ -1292,7 +1488,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                     <div class="dropdown-divider"></div>
                                                 </div>
                                                 <?php if (!$this->ion_auth->in_group('admin')) { ?> 
-                                                    <a class="dropdown-item d-flex" href="#">
+                                                    <a class="dropdown-item d-flex" href="home">
                                                         <svg class="header-icon mr-3" x="1008" y="1248" viewBox="0 0 24 24"  height="100%" width="100%" preserveAspectRatio="xMidYMid meet" focusable="false">
                                                             <path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 16c-2.69 0-5.77 1.28-6 2h12c-.2-.71-3.3-2-6-2z" opacity=".3"/><circle cx="12" cy="8" opacity=".3" r="2"/><path d="M12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2 2.7 0 5.8 1.29 6 2H6zm6-6c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z"/>
                                                         </svg>

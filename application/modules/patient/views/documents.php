@@ -18,6 +18,17 @@
             </header> 
             <div class="">
                 <div class="">
+                    <?php echo validation_errors(); ?>
+                    <?php
+                        $file_error = $this->session->flashdata('fileError');
+                        $other_error_list = $this->session->flashdata('error_list');
+                        if(!empty($file_error)) {
+                            echo $file_error;
+                        }
+                        if(!empty($other_error_list)) {
+                            echo $other_error_list;
+                        }
+                    ?>
                     <div class="adv-table editable-table panel-body">
                         <table class="table table-striped table-hover table-bordered" id="editable-sample">
                             <thead>
@@ -72,7 +83,8 @@
                     <div class="form-group">
                         <label for="exampleInputEmail1"> <?php echo lang('file'); ?></label>
                         <input type="file" name="img_url">
-                        <span class="help-block"><?php echo lang('recommended_size'); ?> : 3000 x 2024</span>
+                        <span class="help-block"><?php echo lang('recommended_size'); ?> : <strong>3000 x 2024</strong></span>
+                        <span class="help-block"><?php echo lang('upload_either_types'); ?> <?php echo lang('max_size_of'); ?> <strong>10 MB</strong></span>
                     </div>
                     <input type="hidden" name="redirect" value='patient/documents'>
                     <div class="form-group">

@@ -10,9 +10,11 @@ class Lab extends MX_Controller {
         $this->load->model('lab_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('patient/patient_model');
+        $this->load->model('branch/branch_model');
+        $this->load->model('location/location_model');
         $this->load->model('accountant/accountant_model');
         $this->load->model('receptionist/receptionist_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Nurse', 'Laboratorist', 'Doctor', 'Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Laboratorist', 'Doctor', 'Patient'))) {
             redirect('home/permission');
         }
     }
@@ -55,9 +57,9 @@ class Lab extends MX_Controller {
         $data['categories'] = $this->lab_model->getLabCategory();
 
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('lab', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('labv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function lab() {
@@ -88,13 +90,13 @@ class Lab extends MX_Controller {
         $data['labs'] = $this->lab_model->getLab();
 
         if (!empty($id)) {
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_lab_view', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_lab_viewv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         } else {
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('lab', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('labv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
@@ -119,12 +121,15 @@ class Lab extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('lab_1', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('lab_1v2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addLabView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
         $data = array();
 
 
@@ -141,12 +146,15 @@ class Lab extends MX_Controller {
         $data['categories'] = $this->lab_model->getLabCategory();
         // $data['patients'] = $this->patient_model->getPatient();
         // $data['doctors'] = $this->doctor_model->getDoctor();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_lab_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_lab_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addLab() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
 
         $report = $this->input->post('report');
@@ -154,6 +162,7 @@ class Lab extends MX_Controller {
         $patient = $this->input->post('patient');
 
         $redirect = $this->input->post('redirect');
+        $name = $this->input->post('name');
 
         $p_name = $this->input->post('p_name');
         $p_email = $this->input->post('p_email');
@@ -186,7 +195,12 @@ class Lab extends MX_Controller {
         $doctor = $this->input->post('doctor');
         $date = $this->input->post('date');
         if (!empty($date)) {
+            if (empty($id)) {
+                $time = date('H:i:s');
+                $date = $date .' '. $time;
+            }
             $date = strtotime($date);
+            $date = gmdate('Y-m-d H:i:s', $date);
         } else {
             $date = time();
         }
@@ -201,12 +215,41 @@ class Lab extends MX_Controller {
 // Validating Category Field
 // $this->form_validation->set_rules('category_amount[]', 'Category', 'min_length[1]|max_length[100]');
 // Validating Price Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('report', 'Report', 'trim|required|max_length[10000]|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|max_length[100]|xss_clean');
 // Validating Price Field
         $this->form_validation->set_rules('discount', 'Discount', 'trim|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
-            redirect('lab/addLabView');
+            if(!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse', 'Patient'))) {
+                    $data = array();
+                    $data['templates'] = $this->lab_model->getTemplate();
+                    $data['settings'] = $this->settings_model->getSettings();
+                    $data['categories'] = $this->lab_model->getLabCategory();
+                    $data['patients'] = $this->patient_model->getPatient();
+                    $data['doctors'] = $this->doctor_model->getDoctor();
+                    // $id = $this->input->get('id');
+                    $data['lab'] = $this->lab_model->getLabById($id);
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_lab_viewv2', $data);
+                    // $this->load->view('home/footer'); // just the header file
+                }
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['categories'] = $this->lab_model->getLabCategory();
+                $data['patients'] = $this->patient_model->getPatient();
+                $data['doctors'] = $this->doctor_model->getDoctor();
+                $data['lab'] = $this->lab_model->getLabById($id);
+                $data['templates'] = $this->lab_model->getTemplate();
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_lab_viewv2', $data);
+                // $this->load->view('home/footer'); // just the header file
+            }
+            
         } else {
             if (!empty($p_name)) {
 
@@ -214,6 +257,7 @@ class Lab extends MX_Controller {
                     'patient_id' => $patient_id,
                     'name' => $p_name,
                     'email' => $p_email,
+                    'doctor' => $doctor,
                     'phone' => $p_phone,
                     'sex' => $p_gender,
                     'age' => $p_age,
@@ -223,7 +267,7 @@ class Lab extends MX_Controller {
                 $username = $this->input->post('p_name');
 // Adding New Patient
                 if ($this->ion_auth->email_check($p_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $p_email, $dfg);
@@ -241,7 +285,7 @@ class Lab extends MX_Controller {
 
                 $limit = $this->doctor_model->getLimit();
                 if ($limit <= 0) {
-                    $this->session->set_flashdata('feedback', lang('doctor_limit_exceed'));
+                    $this->session->set_flashdata('error', lang('doctor_limit_exceed'));
                     redirect('doctor');
                 }
 
@@ -253,7 +297,7 @@ class Lab extends MX_Controller {
                 $username = $this->input->post('d_name');
 // Adding New Patient
                 if ($this->ion_auth->email_check($d_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfgg = 4;
                     $this->ion_auth->register($username, $password, $d_email, $dfgg);
@@ -300,36 +344,38 @@ class Lab extends MX_Controller {
                     // 'category_name' => $category_name,
                     'report' => $report,
                     'patient' => $patient,
-                    'date' => $date,
+                    'lab_date' => $date,
                     'doctor' => $doctor,
                     'user' => $user,
                     'patient_name' => $patient_name,
                     'patient_phone' => $patient_phone,
                     'patient_address' => $patient_address,
                     'doctor_name' => $doctor_name,
-                    'date_string' => $date_string
+                    'name' => $name,
                 );
 
 
                 $this->lab_model->insertLab($data);
                 $inserted_id = $this->db->insert_id();
 
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 redirect($redirect);
             } else {
                 $data = array(
                     //   'category_name' => $category_name,
                     'report' => $report,
                     'patient' => $patient,
+                    'lab_date' => $date,
                     'doctor' => $doctor,
                     'user' => $user,
                     'patient_name' => $patient_details->name,
                     'patient_phone' => $patient_details->phone,
                     'patient_address' => $patient_details->address,
                     'doctor_name' => $doctor_details->name,
+                    'name' => $name,
                 );
                 $this->lab_model->updateLab($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 redirect($redirect);
             }
         }
@@ -344,14 +390,14 @@ class Lab extends MX_Controller {
             $data['doctors'] = $this->doctor_model->getDoctor();
             $id = $this->input->get('id');
             $data['lab'] = $this->lab_model->getLabById($id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_lab_view', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_lab_viewv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
     function delete() {
-        if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+        if ($this->ion_auth->in_group(array('admin'))) {
             $id = $this->input->get('id');
 
             $lab_details = $this->lab_model->getLabById($id);
@@ -360,8 +406,8 @@ class Lab extends MX_Controller {
             }
 
             $this->lab_model->deleteLab($id);
-            $this->session->set_flashdata('feedback', lang('deleted'));
-            redirect('lab/lab');
+            $this->session->set_flashdata('success', lang('record_deleted'));
+            redirect('lab');
         } else {
             redirect('home/permission');
         }
@@ -374,9 +420,9 @@ class Lab extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['templates'] = $this->lab_model->getTemplate();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('template', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('templatev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addTemplateView() {
@@ -387,9 +433,9 @@ class Lab extends MX_Controller {
         }
 
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_template', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_templatev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function getTemplateByIdByJason() {
@@ -407,12 +453,28 @@ class Lab extends MX_Controller {
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
-        $this->form_validation->set_rules('report', 'Report', 'trim|min_length[1]|max_length[10000]|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('template', 'Template', 'trim|required|min_length[1]|max_length[10000]|xss_clean');
 // Validating Price Field
         $this->form_validation->set_rules('user', 'User', 'trim|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
-            redirect('lab/addTemplate');
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['template'] = $this->lab_model->getTemplateById($id);
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_templatev2', $data);
+                // $this->load->view('home/footer'); // just the footer file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['setval'] = 'setval';
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_templatev2', $data);
+                // $this->load->view('home/footer'); // just the footer file
+            }
         } else {
             $data = array();
             if (empty($id)) {
@@ -423,7 +485,7 @@ class Lab extends MX_Controller {
                 );
                 $this->lab_model->insertTemplate($data);
                 $inserted_id = $this->db->insert_id();
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 redirect("lab/addTemplateView?id=" . "$inserted_id");
             } else {
                 $data = array(
@@ -432,7 +494,7 @@ class Lab extends MX_Controller {
                     'user' => $user,
                 );
                 $this->lab_model->updateTemplate($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 redirect("lab/addTemplateView?id=" . "$id");
             }
         }
@@ -444,16 +506,16 @@ class Lab extends MX_Controller {
             $data['settings'] = $this->settings_model->getSettings();
             $id = $this->input->get('id');
             $data['template'] = $this->lab_model->getTemplateById($id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_template', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_templatev2', $data);
+            // $this->load->view('home/footer'); // just the footer file
         }
     }
 
     function deleteTemplate() {
         $id = $this->input->get('id');
         $this->lab_model->deleteTemplate($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('lab/template');
     }
 
@@ -553,14 +615,25 @@ class Lab extends MX_Controller {
         $id = $this->input->get('id');
         $data['settings'] = $this->settings_model->getSettings();
         $data['lab'] = $this->lab_model->getLabById($id);
+        $limit = 3;
+        $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
+
+        if ($this->ion_auth->in_group(array('Patient'))) {
+            $current_patient = $this->ion_auth->get_user_id();
+            $patient_id = $this->patient_model->getPatientByIonUserId($current_patient)->id;
+            //if patient logged in isn't the owner of the invoice being viewed, then prohibit him from viewing invoice
+            if ($patient_id != $data['lab']->patient) {
+                redirect('home/permission');
+            }
+        }
 
         if ($data['lab']->hospital_id != $this->session->userdata('hospital_id')) {
             $this->load->view('home/permission');
         }
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('invoice', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('invoicev2', $data);
+        // $this->load->view('home/footer'); // just the footer fi
     }
 
     function patientLabHistory() {
@@ -657,7 +730,7 @@ class Lab extends MX_Controller {
 
         foreach ($data['labs'] as $lab) {
             $date = date('d-m-y', $lab->date);
-            if ($this->ion_auth->in_group(array('admin', 'Laboratorist', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
                 $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="lab?id=' . $lab->id . '"><i class="fa fa-edit"> </i> ' . lang('') . '</a>';
             } else {
                 $options1 = '';
@@ -665,7 +738,7 @@ class Lab extends MX_Controller {
 
             $options2 = '<a class="btn btn-xs btn-info" title="' . lang('lab') . '" style="color: #fff;" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist'))) {
+            if ($this->ion_auth->in_group(array('admin'))) {
                 $options3 = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="lab/delete?id=' . $lab->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>' . lang('') . '</a>';
             } else {
                 $options3 = '';
@@ -692,7 +765,7 @@ class Lab extends MX_Controller {
             $info[] = array(
                 $lab->id,
                 $patient_details,
-                $date,
+                date('Y-m-d', strtotime($lab->lab_date.' UTC')),
                 $options1 . ' ' . $options2 . ' ' . $options3,
                     // $options2 . ' ' . $options3
             );
@@ -702,8 +775,8 @@ class Lab extends MX_Controller {
         if (!empty($data['labs'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('lab')->num_rows(),
-                "recordsFiltered" => $this->db->get('lab')->num_rows(),
+                "recordsTotal" => $this->lab_model->getLabCount(),
+                "recordsFiltered" => $this->lab_model->getLabBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -734,9 +807,9 @@ class Lab extends MX_Controller {
 
         $data['settings'] = $this->settings_model->getSettings();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('my_lab', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('my_labv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function getMyLab() {

@@ -13,6 +13,7 @@ class Meeting extends MX_Controller {
         $this->load->model('doctor/doctor_model');
         $this->load->model('patient/patient_model');
         $this->load->model('sms/sms_model');
+        $this->load->model('encounter/encounter_model');
         $this->load->module('sms');
 
 
@@ -54,9 +55,48 @@ class Meeting extends MX_Controller {
     function jitsiLive() {
         $appointment_id = $this->input->get('id');
         $data['appointmentid'] = $appointment_id;
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('jitsi', $data);
-        $this->load->view('home/footer'); // just the header file
+        $data['appointment_details'] = $this->appointment_model->getAppointmentById($appointment_id);
+        $data['patient_details'] = $this->patient_model->getPatientById($data['appointment_details']->patient);
+        $data['doctor_details'] = $this->doctor_model->getDoctorById($data['appointment_details']->doctor);
+        $birthdate = $data['patient_details']->birthdate;
+        $patient_id = $data['patient_details']->id;
+        $doctor_id = $data['doctor_details']->id;       
+        $data['display_name'] = $this->ion_auth->user()->row()->username;
+        $data['email'] = $this->ion_auth->user()->row()->email;
+        $data['users_latest_note'] = $this->patient_model->getLatestMedicalHistoryByPatientId($patient_id);
+        $data['latest'] = $data['users_latest_note'][0];
+
+        $patient = $data['appointment_details']->patient;
+        $doctor = $data['appointment_details']->doctor;
+        $remarks = $data['appointment_details']->remarks;
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $encounter_status = ENCOUNTER_STATUS_STARTED;
+        } elseif ($this->ion_auth->in_group(array('Patient'))) {
+            $encounter_status = ENCOUNTER_STATUS_WAITING;
+        }
+
+        $this->createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor, $encounter_status);
+
+        $data['appointment_details'] = $this->appointment_model->getAppointmentById($appointment_id);
+        $data['patient_details'] = $this->patient_model->getPatientById($data['appointment_details']->patient);
+        $data['doctor_details'] = $this->doctor_model->getDoctorById($data['appointment_details']->doctor);
+        $birthdate = $data['patient_details']->birthdate;
+        $patient_id = $data['patient_details']->id;
+        $doctor_id = $data['doctor_details']->id;   
+
+        $patient = $data['appointment_details']->patient;
+        $doctor = $data['appointment_details']->doctor;
+        $remarks = $data['appointment_details']->remarks;
+
+        if(!empty($birthdate)){
+            $data['age'] = computeAge($birthdate);
+        } else {
+            $data['age'] = NULL;
+        }
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('jitsiv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function jitsi() {
@@ -71,7 +111,7 @@ class Meeting extends MX_Controller {
             $doctor_details = $this->doctor_model->getDoctorByIonUserId($doctor_ion_id);
             $doctor_id = $doctor_details->id;
             if ($doctor_id != $doctor) {
-                $this->session->set_flashdata('feedback', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
+                $this->session->set_flashdata('error', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
                 redirect('appointment');
             }
         } elseif ($this->ion_auth->in_group(array('Patient'))) {
@@ -79,12 +119,68 @@ class Meeting extends MX_Controller {
             $patient_details = $this->patient_model->getPatientByIonUserId($patient_ion_id);
             $patient_id = $patient_details->id;
             if ($patient_id != $patient) {
-                $this->session->set_flashdata('feedback', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
+                $this->session->set_flashdata('error', lang('you_do_not_have_permission_to_initiate_this_live_meeting'));
                 redirect('appointment');
             }
         }
         $this->sendSmsDuringMeeting($patient, $doctor, $start_date, $appointment_details);
         redirect('meeting/jitsiLive?id=' . $appointment_id);
+    }
+
+    function createEncounterFromAppointment($appointment_id, $remarks, $patient, $doctor, $encounter_status) {
+        $appointment_exist = $this->encounter_model->getEncounterByAppointmentId($appointment_id)->appointment_id;
+        $encounter = $this->encounter_model->getEncounterByAppointmentId($appointment_id);
+        $appointment_encounter_status = $this->encounter_model->getEncounterByAppointmentId($appointment_id)->encounter_status;
+
+        if(empty($appointment_exist)) {
+            $encounter_type_name = "virtual_consult";
+
+            $encounter_type_id = $this->encounter_model->getEncounterTypeIdByName($encounter_type_name)->id;
+
+            $date = date("Y-m-d H:i:s", now('UTC'));
+            $user = $this->session->userdata('user_id');
+
+            $data_encounter = array(
+                'encounter_type_id' => $encounter_type_id,
+                'appointment_id' => $appointment_id,
+                'patient_id' => $patient,
+                'rendering_staff_id' => $doctor,
+                'created_at' => $date,
+                'started_at' => $date,
+                'waiting_started' => $date,
+                'encounter_status' => $encounter_status,
+                'created_user_id' => $user,
+                'reason' => $remarks,
+                'doctor' => $doctor,
+            );
+
+            $this->encounter_model->insertEncounter($data_encounter);
+            $inserted_id = $this->db->insert_id();
+            $data_appointment_encounter = array(
+                'encounter_id' => $inserted_id
+            );
+            $this->appointment_model->updateAppointment($appointment_id, $data_appointment_encounter);
+
+            $encounter_number = date('ymd').format_number_with_digits($inserted_id, 3);
+
+            $data_encounter = array(
+                'encounter_number' => $encounter_number,
+            );
+
+            $this->encounter_model->updateEncounter($inserted_id, $data_encounter);
+        } else {
+            if ($encounter_status != ENCOUNTER_STATUS_STARTED) {
+                $encounter_status = $encounter->encounter_status;
+            } else {
+                $encounter_status = $encounter_status;
+            }
+
+            $data_encounter = array(
+                'encounter_status' => $encounter_status,
+            );
+
+            $this->encounter_model->updateEncounter($encounter->id, $data_encounter);
+        }
     }
 
     function instantLive() {
@@ -1587,7 +1683,6 @@ class Meeting extends MX_Controller {
 
         echo json_encode($output);
     }
-
 }
 
 /* End of file meeting.php */

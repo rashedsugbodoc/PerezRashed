@@ -8,13 +8,15 @@
             <header class="panel-heading">
                 <?php echo lang('operation_report'); ?>
                 <div class="col-md-4 no-print pull-right"> 
-                    <a data-toggle="modal" href="#myModal">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('add_new_report'); ?>
-                            </button>
-                        </div>
-                    </a>
+                    <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                        <a data-toggle="modal" href="#myModal">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_new_report'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <div class="panel-body">
@@ -27,7 +29,9 @@
                                 <th><?php echo lang('description'); ?></th>
                                 <th><?php echo lang('doctor'); ?></th>
                                 <th><?php echo lang('date'); ?></th>
-                                <th class="no-print"><?php echo lang('options'); ?></th>
+                                <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                    <th class="no-print"><?php echo lang('options'); ?></th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,10 +54,12 @@
                                 <td> <?php echo $report->description; ?></td>
                                 <td><?php echo $report->doctor; ?></td>
                                 <td class="center"><?php echo $report->date; ?></td>
-                                <td class="no-print">
-                                    <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $report->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                    <a class="btn btn-danger btn-xs btn_width delete_button" href="report/delete?id=<?php echo $report->id; ?>" title="<?php echo lang('delete'); ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                </td>
+                                <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                    <td class="no-print">
+                                        <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $report->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                        <a class="btn btn-danger btn-xs btn_width delete_button" href="report/delete?id=<?php echo $report->id; ?>" title="<?php echo lang('delete'); ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                    </td>
+                                <?php } ?>
                             </tr>
                         <?php } ?>
 
@@ -109,14 +115,14 @@
                                     echo 'selected';
                                 }
                             }
-                            ?>><?php echo lang('expire'); ?></option>
+                            ?>><?php echo lang('death'); ?></option>
                         </select>
                     </div>
                     <div class="form-group">
 
 
                         <label for="exampleInputEmail1"><?php echo lang('description'); ?></label>
-                        <input type="text" class="form-control" name="description" id="exampleInputEmail1" value='' placeholder="">
+                        <textarea class="ckeditor form-control" id="editor" name="description" value="" rows="5"></textarea>
 
                     </div>
                     <div class="form-group">
@@ -203,14 +209,14 @@
                                     echo 'selected';
                                 }
                             }
-                            ?>><?php echo lang('expire'); ?></option>
+                            ?>><?php echo lang('death'); ?></option>
                         </select>
                     </div>
                     <div class="form-group">
 
 
                         <label for="exampleInputEmail1"><?php echo lang('description'); ?></label>
-                        <input type="text" class="form-control" name="description" id="exampleInputEmail1" value='' placeholder="">
+                        <textarea class="ckeditor form-control editor" id="editor" name="description" value="" rows="10"></textarea>
 
                     </div>
                     <div class="form-group">
@@ -275,7 +281,7 @@
                                                     // Populate the form fields with the data returned from server
                                                     $('#editReportForm').find('[name="id"]').val(response.report.id).end()
                                                     $('#editReportForm').find('[name="type"]').val(response.report.report_type).end()
-                                                    $('#editReportForm').find('[name="description"]').val(response.report.description).end()
+                                                    CKEDITOR.instances['editor'].setData(response.report.description)
                                                     $('#editReportForm').find('[name="patient"]').val(response.report.patient).end()
                                                     $('#editReportForm').find('[name="doctor"]').val(response.report.doctor).end()
                                                     $('#editReportForm').find('[name="date"]').val(response.report.date).end()

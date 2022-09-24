@@ -10,7 +10,7 @@ class Admission extends MX_Controller {
         $this->load->model('bed/bed_model');
         $this->load->model('admission/admission_model');
         $this->load->model('patient/patient_model');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Accountant'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Receptionist', 'Doctor', 'Accountant', 'CompanyUser', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -75,10 +75,10 @@ class Admission extends MX_Controller {
             );
             if (empty($id)) {
                 $this->bed_model->insertBed($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->bed_model->updateBed($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('bed');
         }
@@ -228,6 +228,7 @@ class Admission extends MX_Controller {
         // Validating Status Field
         $this->form_validation->set_rules('status', 'Status', 'trim|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
+            $this->session->set_flashdata('error', lang('validation_error'));
             $data = array();
             $data['beds'] = $this->bed_model->getBed();
             $data['patients'] = $this->patient_model->getPatient();
@@ -258,11 +259,11 @@ class Admission extends MX_Controller {
                 $data = array_merge($data, $data2);
                 $this->admission_model->insertAdmission($data);
                 $this->admission_model->updateBedByBedId($bed_id, $data1);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->admission_model->updateAdmission($id, $data);
                 $this->admission_model->updateBedByBedId($bed_id, $data1);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('admission/admissions');
         }

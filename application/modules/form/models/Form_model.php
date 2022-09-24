@@ -16,25 +16,93 @@ class Form_model extends CI_model {
         $this->db->insert('form', $data2);
     }
 
-    function getForm() {
+    function getForm($patient_id = null, $doctor_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient', $patient_id);
+        }
+        if (!empty($doctor_id)) {
+            $this->db->where('doctor', $doctor_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $query = $this->db->get('form');
         return $query->result();
     }
 
-    function getFormBySearch($search) {
+    function getFormCount($patient_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient', $patient_id);
+        }
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('form');
+        return $query->num_rows();
+    }
+
+    function getFormBySearch($search, $patient_id = null, $doctor_id = null) {
         $this->db->order_by('id', 'desc');
-        $query = $this->db->select('*')
-                ->from('form')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if (!empty($patient_id)) {
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('form')
+                        ->where('doctor', $doctor_id)
+                        ->where('patient', $patient_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+            } else {
+                $query = $this->db->select('*')
+                        ->from('form')
+                        ->where('patient', $patient_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+            }
+        } else {
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('form')
+                        ->where('doctor', $doctor_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+            } else {
+                $query = $this->db->select('*')
+                        ->from('form')
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+            }
+        }
 
         return $query->result();
     }
 
-    function getFormByLimit($limit, $start) {
+    function getFormBySearchCount($search, $patient_id = null) {
+        if (!empty($patient_id)) {
+            $query = $this->db->select('id')
+                    ->from('form')
+                    ->where('patient', $patient_id)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        } else {
+            $query = $this->db->select('id')
+                    ->from('form')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                    ->get();
+        }
+
+        return $query->num_rows();
+    }
+
+    function getFormByLimit($limit, $start, $patient_id = null, $doctor_id = null) {
+        if (!empty($patient_id)) {
+            $this->db->where('patient', $patient_id);
+        }
+        if (!empty($doctor_id)) {
+            $this->db->where('doctor', $doctor_id);
+        }
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
@@ -42,14 +110,42 @@ class Form_model extends CI_model {
         return $query->result();
     }
 
-    function getFormByLimitBySearch($limit, $start, $search) {
+    function getFormByLimitBySearch($limit, $start, $search, $patient_id = null, $doctor_id = null) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->select('*')
-                ->from('form')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
-                ->get();
+        if (!empty($patient_id)) {
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('form')
+                        ->where('doctor', $doctor_id)
+                        ->where('patient', $patient_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+            } else {
+                $query = $this->db->select('*')
+                        ->from('form')
+                        ->where('patient', $patient_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+            }
+        } else {
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('form')
+                        ->where('doctor', $doctor_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+            } else {
+                $query = $this->db->select('*')
+                        ->from('form')
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR patient_phone LIKE '%" . $search . "%' OR patient_address LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%'OR name LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+            }
+        }
 
         return $query->result();
         
@@ -62,10 +158,33 @@ class Form_model extends CI_model {
         return $query->row();
     }
 
+    function getFormByFormNumber($form_number) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('form_number', $form_number);
+        $query = $this->db->get('form');
+        return $query->row();
+    }
+
+    function getFormByEncounterId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('encounter_id', $id);
+        $query = $this->db->get('form');
+        return $query->row();
+    }
+
     function getFormByPatientId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->where('patient', $id);
+        $query = $this->db->get('form');
+        return $query->result();
+    }
+
+    function getFormByPatientIdByEncounterId($id, $encounter_id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $id);
+        $this->db->where('encounter_id', $encounter_id);
         $query = $this->db->get('form');
         return $query->result();
     }
@@ -119,6 +238,8 @@ class Form_model extends CI_model {
 
     function getFormCategory() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->or_where('hospital_id', null);
+        // $this->db->limit(10);
         $query = $this->db->get('form_category');
         return $query->result();
     }
@@ -214,9 +335,15 @@ class Form_model extends CI_model {
         return $query->row();
     }
     
-     function deletetemplate($id) {
+    function deletetemplate($id) {
         $this->db->where('id', $id);
         $this->db->delete('form_template');
+    }
+
+    function validateFormNumber($form_number) {
+        $this->db->where('form_number', $form_number);
+        $query = $this->db->get('form');
+        return $query->row();
     }
 
 }

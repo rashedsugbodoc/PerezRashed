@@ -18,6 +18,7 @@ class Accountant_model extends CI_model {
 
     function getAccountant() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
         $query = $this->db->get('accountant');
         return $query->result();
     }
@@ -39,7 +40,7 @@ class Accountant_model extends CI_model {
         $this->db->delete('accountant');
     }
 
-    function updateIonUser($username, $email, $password, $ion_user_id) {
+    function updateIonUser($username, $email, $password = null, $ion_user_id) {
         $uptade_ion_user = array(
             'username' => $username,
             'email' => $email,

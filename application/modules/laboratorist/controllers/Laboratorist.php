@@ -8,7 +8,8 @@ class Laboratorist extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('laboratorist_model');
-
+        $this->load->model('location/location_model');
+        $this->load->helper('string');
         if (!$this->ion_auth->in_group('admin')) {
             redirect('home/permission');
         }
@@ -17,53 +18,82 @@ class Laboratorist extends MX_Controller {
     public function index() {
 
         $data['laboratorists'] = $this->laboratorist_model->getLaboratorist();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('laboratorist', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('laboratoristv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewView() {
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new');
-        $this->load->view('home/footer'); // just the header file
+        $data['countries'] = $this->location_model->getCountry();
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
         $id = $this->input->post('id');
-        $name = $this->input->post('name');
-        $password = $this->input->post('password');
+        $fname = $this->input->post('fname');
+        $mname = $this->input->post('mname');
+        $lname = $this->input->post('lname');
+        $suffix = $this->input->post('suffix');
+        $password = random_string('alnum', 8);
         $email = $this->input->post('email');
         $address = $this->input->post('address');
+        $country = $this->input->post('country_id');
+        $state = $this->input->post('state_id');
+        $city = $this->input->post('city_id');
+        $barangay = $this->input->post('barangay_id');
+        $postal = $this->input->post('postal');
         $phone = $this->input->post('phone');
+
+        $emailById = $this->laboratorist_model->getLaboratoristById($id)->email;
+
+        if ($suffix === '0') {
+            $suffix = null;
+        }
+
+        $name = $fname.' '.$mname.' '.$lname.' '.$suffix;
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         // Validating Name Field
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[5]|max_length[100]|xss_clean');
-        // Validating Password Field
-        if (empty($id)) {
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('fname', 'First Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Name Field
+        $this->form_validation->set_rules('lname', 'Last Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        
+        if ($email !== $emailById) {
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|is_unique[laboratorist.email]|max_length[100]|xss_clean');
+        } else {
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|valid_email|max_length[100]|xss_clean');
         }
-        // Validating Email Field
-        $this->form_validation->set_rules('email', 'Email', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        
+        $this->form_validation->set_message('is_unique',lang('this_email_address_is_already_registered'));
         // Validating Address Field   
         $this->form_validation->set_rules('address', 'Address', 'trim|required|min_length[5]|max_length[500]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('country_id', 'Country', 'trim|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('state_id', 'State', 'trim|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('city_id', 'City', 'trim|max_length[100]|xss_clean');
         // Validating Phone Field           
         $this->form_validation->set_rules('phone', 'Phone', 'trim|required|min_length[5]|max_length[50]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['laboratorist'] = $this->laboratorist_model->getLaboratoristById($id);
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the footer file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $file_name = $_FILES['img_url']['name'];
@@ -83,7 +113,7 @@ class Laboratorist extends MX_Controller {
                 'upload_path' => "./uploads/",
                 'allowed_types' => "gif|jpg|png|jpeg|pdf",
                 'overwrite' => False,
-                'max_size' => "20480000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+                'max_size' => "2048", // Can be set to particular file size , here it is 2 MB(2048 Kb)
                 'max_height' => "1768",
                 'max_width' => "2024"
             );
@@ -97,26 +127,50 @@ class Laboratorist extends MX_Controller {
                 $data = array();
                 $data = array(
                     'img_url' => $img_url,
+                    'firstname' => $fname,
+                    'lastname' => $lname,
+                    'middlename' => $mname,
+                    'suffix' => $suffix,
                     'name' => $name,
                     'email' => $email,
                     'address' => $address,
-                    'phone' => $phone
+                    'phone' => $phone,
+                    'country_id' => $country,
+                    'state_id' => $state,
+                    'city_id' => $city,
+                    'barangay_id' => $barangay,
+                    'postal' => $postal
                 );
             } else {
                 //$error = array('error' => $this->upload->display_errors());
                 $data = array();
                 $data = array(
+                    'firstname' => $fname,
+                    'lastname' => $lname,
+                    'middlename' => $mname,
+                    'suffix' => $suffix,
                     'name' => $name,
                     'email' => $email,
                     'address' => $address,
-                    'phone' => $phone
+                    'phone' => $phone,
+                    'country_id' => $country,
+                    'state_id' => $state,
+                    'city_id' => $city,
+                    'barangay_id' => $barangay,
+                    'postal' => $postal
                 );
             }
-            $username = $this->input->post('name');
+            $username = $name;
             if (empty($id)) {     // Adding New laboratorist
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
                 if ($this->ion_auth->email_check($email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
-                    redirect('laboratorist/addNewView');
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+                    $data = array();
+                    $data['laboratorist'] = $this->laboratorist_model->getLaboratoristById($id);
+                    $this->load->view('home/dashboardv2'); // just the header file
+                    $this->load->view('add_newv2', $data);
+                    // $this->load->view('home/footer'); // just the footer file
                 } else {
                     $dfg = 8;
                     $this->ion_auth->register($username, $password, $email, $dfg);
@@ -126,21 +180,70 @@ class Laboratorist extends MX_Controller {
                     $id_info = array('ion_user_id' => $ion_user_id);
                     $this->laboratorist_model->updateLaboratorist($laboratorist_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
-                    $this->session->set_flashdata('feedback', lang('added'));
+                    $set['settings'] = $this->settings_model->getSettings();
+                    $data1 = array(
+                        'firstname' => $fname,
+                        'lastname' => $lname,
+                        'name' => $name,
+                        'email' => $email,
+                        'password' => $password,
+                        'company' => $set['settings']->system_vendor,
+                        'hospital_name' => $set['settings']->title,
+                        'hospital_contact' => $set['settings']->phone
+                    );
+
+                    $autoemail = $this->email_model->getAutoEmailByType('labtechnician');
+                    if ($autoemail->status == 'Active') {
+                        $emailSettings = $this->email_model->getEmailSettings();
+                        $message1 = $autoemail->message;
+                        $messageprint1 = $this->parser->parse_string($message1, $data1);
+                        $this->email->from($emailSettings->admin_email, $emailSettings->admin_email_display_name);
+                        $this->email->to($email);
+                        $this->email->subject(lang('welcome_to').$set['settings']->title);
+                        $this->email->message($messageprint1);
+                        $this->email->send();
+                    }
+                    $this->session->set_flashdata('success', lang('record_added'));
+                    redirect('laboratorist');
                 }
             } else { // Updating laboratorist
-                $ion_user_id = $this->db->get_where('laboratorist', array('id' => $id))->row()->ion_user_id;
-                if (empty($password)) {
-                    $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                $fileError = $this->upload->display_errors('<div class="alert alert-danger">', '</div>');
+                $this->session->set_flashdata('fileError', $fileError);
+                if ($email !== $emailById) {
+                    if ($this->ion_auth->email_check($email)) {
+                        $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
+                        $data = array();
+                        $data['laboratorist'] = $this->laboratorist_model->getLaboratoristById($id);
+                        $this->load->view('home/dashboardv2'); // just the header file
+                        $this->load->view('add_newv2', $data);
+                        // $this->load->view('home/footer'); // just the footer file
+                    } else {
+                        $ion_user_id = $this->db->get_where('laboratorist', array('id' => $id))->row()->ion_user_id;
+                        if (empty($password)) {
+                            $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                        } else {
+                            $password = $this->ion_auth_model->hash_password($password);
+                        }
+                        $this->laboratorist_model->updateIonUser($username, $email, $password, $ion_user_id);
+                        $this->laboratorist_model->updateLaboratorist($id, $data);
+                        $this->session->set_flashdata('success', lang('record_updated'));
+                        redirect('laboratorist');
+                    }
                 } else {
-                    $password = $this->ion_auth_model->hash_password($password);
+                    $ion_user_id = $this->db->get_where('laboratorist', array('id' => $id))->row()->ion_user_id;
+                    if (empty($password)) {
+                        $password = $this->db->get_where('users', array('id' => $ion_user_id))->row()->password;
+                    } else {
+                        $password = $this->ion_auth_model->hash_password($password);
+                    }
+                    $this->laboratorist_model->updateIonUser($username, $email, $password, $ion_user_id);
+                    $this->laboratorist_model->updateLaboratorist($id, $data);
+                    $this->session->set_flashdata('success', lang('record_updated'));
+                    redirect('laboratorist');
                 }
-                $this->laboratorist_model->updateIonUser($username, $email, $password, $ion_user_id);
-                $this->laboratorist_model->updateLaboratorist($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
             }
             // Loading View
-            redirect('laboratorist');
+            // redirect('laboratorist');
         }
     }
 
@@ -149,18 +252,28 @@ class Laboratorist extends MX_Controller {
         $this->load->view('laboratorist', $data);
     }
 
-    function editLboratorist() {
+    function editLaboratorist() {
         $data = array();
         $id = $this->input->get('id');
+        $data['countries'] = $this->location_model->getCountry();
         $data['laboratorist'] = $this->laboratorist_model->getLaboratoristById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function editLaboratoristByJason() {
         $id = $this->input->get('id');
         $data['laboratorist'] = $this->laboratorist_model->getLaboratoristById($id);
+        $country_id = $data['laboratorist']->country_id;
+        $state_id = $data['laboratorist']->state_id;
+        $city_id = $data['laboratorist']->city_id;
+        $barangay_id = $data['laboratorist']->barangay_id;
+
+        $data['country']= $this->location_model->getCountryById($country_id);
+        $data['state']= $this->location_model->getStateById($state_id);
+        $data['city']= $this->location_model->getCityById($city_id);
+        $data['barangay']= $this->location_model->getBarangayById($barangay_id);
         echo json_encode($data);
     }
 
@@ -177,8 +290,35 @@ class Laboratorist extends MX_Controller {
         $this->db->where('id', $ion_user_id);
         $this->db->delete('users');
         $this->laboratorist_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('laboratorist');
+    }
+
+    function getStateByCountryIdByJason() {
+        $data = array();
+        $country_id = $this->input->get('country');
+
+        $data['state'] = $this->location_model->getStateByCountryId($country_id);
+        
+        echo json_encode($data);        
+    }
+
+    public function getCityByStateIdByJason() {
+        $data = array();
+        $state_id = $this->input->get('state');
+
+        $data['city'] = $this->location_model->getCityByStateId($state_id);
+
+        echo json_encode($data);        
+    }
+
+    public function getBarangayByCityIdByJason() {
+        $data = array();
+        $city_id = $this->input->get('city');
+
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
+
+        echo json_encode($data);        
     }
 
 }

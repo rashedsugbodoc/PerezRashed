@@ -4,7 +4,7 @@
     <section class="wrapper site-min-height">
         <!-- page start-->
         <div class="col-md-8 row">
-            <section class="col-md-10 row">
+            <section class="panel col-md-10">
                 <header class="panel-heading">
                     <?php
                     if (!empty($settings->name)) {
@@ -41,7 +41,7 @@
                                             echo $settings->salt;
                                         }
                                         ?>'>
-                                    </div
+                                    </div>
                                 <?php } ?>
                                 <?php if ($settings->name == "Paystack") { ?>
                                     <div class="form-group">
@@ -59,7 +59,7 @@
                                             echo $settings->public_key;
                                         }
                                         ?>'>
-                                    </div
+                                    </div>
                                 <?php } ?>
 
                                 <?php if ($settings->name == "PayPal") { ?>
@@ -108,6 +108,24 @@
                                             echo $settings->publish;
                                         }
                                         ?>'>
+                                    </div>
+                                <?php } ?>
+                                <?php if ($settings->name == "Paymongo") { ?>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1"><?php echo lang('public_key'); ?> </label>
+                                        <input type="text" class="form-control" name="public_key" id="exampleInputEmail1" value='<?php
+                                        if (!empty($settings->public_key)) {
+                                            echo $settings->public_key;
+                                        }
+                                        ?>'>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1"> <?php echo lang('secretkey'); ?> </label>
+                                        <input type="text" class="form-control" name="secret" id="exampleInputEmail1" value="<?php
+                                        if (!empty($settings->secret)) {
+                                            echo $settings->secret;
+                                        }
+                                        ?>" placeholder="">
                                     </div>
                                 <?php } ?>
                                 <div class="form-group">

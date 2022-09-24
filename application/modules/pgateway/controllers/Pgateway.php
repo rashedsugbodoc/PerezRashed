@@ -7,6 +7,7 @@ class pgateway extends MX_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->model('settings/settings_model');
         $this->load->model('pgateway_model');
         $this->load->model('patient/patient_model');
         $this->load->model('donor/donor_model');
@@ -15,22 +16,23 @@ class pgateway extends MX_Controller {
 
     public function index() {
         $data = array();
+
         $id = $this->ion_auth->get_user_id();
         $data['settings'] = $this->settings_model->getSettings();
         $data['pgateways'] = $this->pgateway_model->getPaymentGateway();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('pgateway', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('pgatewayv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     public function settings() {
         $data = array();
         $id = $this->input->get('id');
         $data['settings'] = $this->pgateway_model->getPaymentGatewaySettingsById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('settings', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('settingsv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     public function addNewSettings() {
@@ -69,6 +71,12 @@ class pgateway extends MX_Controller {
 
             $this->form_validation->set_rules('secret', 'API Secret Key', 'required|trim|xss_clean');
             $this->form_validation->set_rules('publish', 'API Publish Key', 'required|trim|xss_clean');
+        }
+        if ($pgateway->name == 'Paymongo') {
+            // Validating Name Field
+            $this->form_validation->set_rules('public_key', 'Public Key', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            // Validating Email Field
+            $this->form_validation->set_rules('secret', 'Secret key', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         }
         if ($pgateway->name == 'PayPal') {
             // Validating Name Field
@@ -111,6 +119,13 @@ class pgateway extends MX_Controller {
                     'status' => $status
                 );
             }
+            if ($pgateway->name == 'Paymongo') {
+                $data = array(
+                    'secret' => $secret,
+                    'public_key' => $public_key,
+                    'status' => $status
+                );
+            }            
             if ($pgateway->name == 'PayPal') {
                 $data = array(
                     'name' => $name,

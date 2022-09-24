@@ -25,9 +25,7 @@
                                 <th> <?php  echo lang('category'); ?> </th>
                                 <th> <?php  echo lang('date'); ?> </th>
                                 <th> <?php  echo lang('amount'); ?> </th>
-                                <?php if ($this->ion_auth->in_group('admin')) { ?>
-                                    <th> <?php  echo lang('options'); ?> </th>
-                                <?php } ?>
+                                <th> <?php  echo lang('options'); ?> </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,12 +47,12 @@
                                 <td><?php echo $expense->category; ?></td>
                                 <td> <?php echo date('d/m/y', $expense->date); ?></td>
                                 <td><?php echo $settings->currency; ?> <?php echo $expense->amount; ?></td>             
-                                <?php if ($this->ion_auth->in_group('admin')) { ?>
                                     <td>
                                         <a class="btn btn-info btn-xs editbutton" href="finance/pharmacy/editExpense?id=<?php echo $expense->id; ?>"><i class="fa fa-edit"></i>  <?php  echo lang('edit'); ?></a>
-                                        <a class="btn btn-danger btn-xs" href="finance/pharmacy/deleteExpense?id=<?php echo $expense->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i>  <?php  echo lang('delete'); ?></a>
+                                        <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
+                                            <a class="btn btn-danger btn-xs" href="finance/pharmacy/deleteExpense?id=<?php echo $expense->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i>  <?php  echo lang('delete'); ?></a>
+                                        <?php } ?>
                                     </td>
-                                <?php } ?>
                             </tr>
                         <?php } ?>
 

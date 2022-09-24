@@ -5,7 +5,16 @@
         <!-- page start-->
         <section class="panel">
             <header class="panel-heading">
-                <i class="fa fa-package-o"></i>  <?php echo lang('all_packages'); ?>
+                <?php echo lang('all_packages'); ?>
+                <div class="col-md-4 no-print pull-right">
+                    <a data-toggle="modal" href="hospital/package/addNewView">
+                        <div class="btn-group pull-right">
+                            <button id="" class="btn btn-primary btn-xs">
+                                <i class="fa fa-plus"></i> <?php echo lang('add_new_package'); ?>
+                            </button>
+                        </div>
+                    </a>
+                </div>
             </header>
 
             <style>
@@ -27,15 +36,7 @@
 
             <div class="panel-body">
                 <div class="adv-table editable-table">
-                    <div class="clearfix no-print">
-                        <a data-toggle="modal" href="hospital/package/addNewView">
-                            <div class="btn-group">
-                                <button id="" class="btn green">
-                                    <i class="fa fa-plus"></i>   <?php echo lang('add_new_package'); ?>
-                                </button>
-                            </div>
-                        </a>
-                    </div>
+
                     <div class="space15"></div>
                     <table class="table table-striped table-hover table-bordered" id="editable-sample">
                         <thead>
@@ -43,6 +44,7 @@
                                 <th> <?php echo lang('package'); ?> <?php echo lang('name'); ?></th>
                                 <th> <?php echo lang('patient'); ?> <?php echo lang('limit'); ?></th>
                                 <th> <?php echo lang('doctor'); ?> <?php echo lang('limit'); ?></th>
+                                <th> <?php echo lang('location'); ?> <?php echo lang('limit'); ?></th>
                                 <th> <?php echo lang('permitted_modules'); ?></th>
                                 <th> <?php echo lang('restricted_modules'); ?></th>
                                 <th class="no-print"> <?php echo lang('options'); ?></th>
@@ -69,6 +71,7 @@
                                 <td> <?php echo $package->name; ?></td>
                                 <td><?php echo $package->p_limit; ?></td>
                                 <td class="center"><?php echo $package->d_limit; ?></td>
+                                <td class="center"><?php echo $package->loc_limit; ?></td>
                                 <td class="center" style="text-transform: capitalize;"><?php
                                     $modules = explode(',', $package->module);
                                     foreach ($modules as $key => $value) {
@@ -77,7 +80,7 @@
                                     ?></td>
                                 <td class="center" style="text-transform: capitalize;">
                                     <?php
-                                    $all_modules = array('accountant', 'appointment', 'lab', 'bed', 'department', 'doctor', 'donor', 'finance', 'form', 'pharmacy', 'laboratorist', 'medicine', 'nurse', 'patient', 'pharmacist', 'prescription', 'receptionist', 'report', 'sms', 'notice', 'email');
+                                    $all_modules = array('accountant', 'admission', 'appointment', 'bed', 'branch', 'company', 'companyuser', 'department', 'doctor', 'donor', 'email', 'encounter', 'finance', 'form', 'lab', 'laboratorist', 'medicine', 'notice', 'nurse', 'patient', 'pharmacist', 'pharmacy', 'prescription', 'receptionist', 'report', 'sms', 'vital');
                                     $restricted_modules = array_diff($all_modules, $modules);
                                     foreach ($restricted_modules as $key1 => $value1) {
                                         echo $value1 . '<br>';

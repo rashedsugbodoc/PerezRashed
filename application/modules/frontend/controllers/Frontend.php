@@ -9,8 +9,9 @@ class Frontend extends MX_Controller {
         parent::__construct();
 
         $this->load->model('frontend_model');
+        $this->load->model('request/request_model');
         $this->load->model('doctor/doctor_model');
-         $this->load->model('hospital/package_model');
+        $this->load->model('hospital/package_model');
         $this->load->model('patient/patient_model');
         $this->load->model('slide/slide_model');
         $this->load->model('service/service_model');
@@ -27,195 +28,103 @@ class Frontend extends MX_Controller {
         $data['slides'] = $this->slide_model->getSlide();
         $data['services'] = $this->service_model->getService();
         $data['featureds'] = $this->featured_model->getFeatured();
-        $this->load->view('frontend', $data);
+        $data['settings'] = $this->frontend_model->getSettings();
+        $this->load->view('frontend/header');
+        $this->load->view('frontendv2', $data);
+        $this->load->view('frontend/footer');
     }
 
+    public function terms_and_conditions() {
+        $this->load->view('frontend/header');
+        $this->load->view('frontend/terms');
+        $this->load->view('frontend/footer');
+    }
+
+    public function privacy_policy() {
+        $this->load->view('frontend/header');
+        $this->load->view('frontend/privacy');
+        $this->load->view('frontend/footer');
+    }    
+
     public function addNew() {
+        $contact_name = $this->input->post('contact_name');
+        $contact_phone = $this->input->post('contact_phone');
         $id = $this->input->post('id');
+        $name = $this->input->post('name');
+        $address = $this->input->post('address');
+        $email = $this->input->post('email');
+        $phone = $this->input->post('phone');
+        $package = $this->input->post('package');
+        $language = $this->input->post('language');
+        $status = 'Pending';
 
-        $patient = $this->input->post('patient');
 
-        $doctor = $this->input->post('doctor');
-        $date = $this->input->post('date');
-        if (!empty($date)) {
-            $date = strtotime($date);
+        $language_array = array('english', 'arabic', 'spanish', 'french', 'italian', 'portuguese');
+
+        if (!in_array($language, $language_array)) {
+            $language = 'english';
         }
-
-
-        $time_slot = $this->input->post('time_slot');
-
-        $time_slot_explode = explode('To', $time_slot);
-
-        $s_time = trim($time_slot_explode[0]);
-        $e_time = trim($time_slot_explode[1]);
-
-
-        $remarks = $this->input->post('remarks');
-
-        $sms = $this->input->post('sms');
-
-        $status = 'Requested';
-
-        $redirect = 'frontend';
-
-        $request = 'Yes';
-
-
-
-
-        $user = '';
-
-
-
-
-        if ((empty($id))) {
-            $add_date = date('m/d/y');
-            $registration_time = time();
-            $patient_add_date = $add_date;
-            $patient_registration_time = $registration_time;
-        }
-
-        $s_time_key = $this->getArrayKey($s_time);
-
-
-        $p_name = $this->input->post('p_name');
-        $p_email = $this->input->post('p_email');
-        if (empty($p_email)) {
-            $p_email = $p_name . '-' . rand(1, 1000) . '-' . $p_name . '-' . rand(1, 1000) . '@example.com';
-        }
-        if (!empty($p_name)) {
-            $password = $p_name . '-' . rand(1, 100000000);
-        }
-        $p_phone = $this->input->post('p_phone');
-        $p_age = $this->input->post('p_age');
-        $p_gender = $this->input->post('p_gender');
-        $patient_id = rand(10000, 1000000);
-
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
-
-
-        if ($patient == 'add_new') {
-            $this->form_validation->set_rules('p_name', 'Patient Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-            $this->form_validation->set_rules('p_phone', 'Patient Phone', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-        }
-
-        if ($patient == 'patient_id') {
-            $this->form_validation->set_rules('patient_id', 'Patient Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-        }
-
-
+        // Validating Contact Name Field
+        $this->form_validation->set_rules('contact_name', 'Name of the Contact Person', 'trim|required|min_length[1]|max_length[100]|xss_clean');   
+        // Validating Contact Phone Field
+        $this->form_validation->set_rules('contact_phone', 'Phone Number of the Contact Person', 'trim|required|min_length[1]|max_length[100]|xss_clean'); 
         // Validating Name Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-        // Validating Doctor Field
-        $this->form_validation->set_rules('doctor', 'Doctor', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-        // Validating Date Field
-        $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-        // Validating Address Field   
-        $this->form_validation->set_rules('remarks', 'Remarks', 'trim|min_length[1]|max_length[1000]|xss_clean');
+        $this->form_validation->set_rules('name', 'Clinic Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Address Field
+        $this->form_validation->set_rules('address', 'Clinic Address', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Email Field
+        $this->form_validation->set_rules('email', 'Clinic Email', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Phone Field           
+        $this->form_validation->set_rules('phone', 'Clinic Phone', 'trim|required|min_length[1]|max_length[50]|xss_clean');
+        // Validating Status Field           
+        $this->form_validation->set_rules('status', 'Status', 'trim|min_length[1]|max_length[50]|xss_clean');
+
+
+        // Validating Language Field           
+        $this->form_validation->set_rules('language', 'Language', 'trim|required|min_length[1]|max_length[50]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
-
-            $this->session->set_flashdata('feedback', 'Form Validation Error !');
-            redirect("frontend");
+            if (!empty($id)) {
+                redirect("request/editRequest?id=$id");
+            } else {
+                $data['packages'] = $this->package_model->getPackage();
+                $this->load->view('frontendv2', $data);
+            }
         } else {
-
-
-            if ($patient == 'patient_id') {
-                $patient = $this->input->post('patient_id');
-
-                if (!empty($patient)) {
-                    $patient_exist = $this->patient_model->getPatientById($patient)->id;
-                }
-
-                if (empty($patient_exist)) {
-                    $this->session->set_flashdata('feedback', 'Invalid Patient Id !');
-                    redirect("frontend");
-                }
-            }
-
-            if ($patient == 'add_new') {
-                $data_p = array(
-                    'patient_id' => $patient_id,
-                    'name' => $p_name,
-                    'email' => $p_email,
-                    'phone' => $p_phone,
-                    'sex' => $p_gender,
-                    'age' => $p_age,
-                    'add_date' => $patient_add_date,
-                    'registration_time' => $patient_registration_time,
-                    'how_added' => 'from_appointment'
-                );
-                $username = $this->input->post('p_name');
-                // Adding New Patient
-                if ($this->ion_auth->email_check($p_email)) {
-                    $this->session->set_flashdata('feedback', 'Email Address of Patient Is Already Registered');
-                } else {
-                    $dfg = 5;
-                    $this->ion_auth->register($username, $password, $p_email, $dfg);
-                    $ion_user_id = $this->db->get_where('users', array('email' => $p_email))->row()->id;
-                    $this->patient_model->insertPatient($data_p);
-                    $patient_user_id = $this->db->get_where('patient', array('email' => $p_email))->row()->id;
-                    $id_info = array('ion_user_id' => $ion_user_id);
-                    $this->patient_model->updatePatient($patient_user_id, $id_info);
-                }
-
-                $patient = $patient_user_id;
-                //    }
-            }
             //$error = array('error' => $this->upload->display_errors());
             $data = array();
             $data = array(
-                'patient' => $patient,
-                'doctor' => $doctor,
-                'date' => $date,
-                's_time' => $s_time,
-                'e_time' => $e_time,
-                'time_slot' => $time_slot,
-                'remarks' => $remarks,
-                'add_date' => $add_date,
-                'registration_time' => $registration_time,
+                'contact_name' => $contact_name,
+                'contact_phone' => $contact_phone,
+                'name' => $name,
+                'email' => $email,
+                'address' => $address,
+                'phone' => $phone,
+                'package' => $package,
+                'language' => $language,
                 'status' => $status,
-                's_time_key' => $s_time_key,
-                'user' => $user,
-                'request' => $request
             );
+
             $username = $this->input->post('name');
-            if (empty($id)) {     // Adding New department
-                $this->frontend_model->insertAppointment($data);
 
-                if (!empty($sms)) {
-                    $this->sms->sendSmsDuringAppointment($patient, $doctor, $date, $s_time, $e_time);
-                }
-
-                $patient_doctor = $this->patient_model->getPatientById($patient)->doctor;
-
-                $patient_doctors = explode(',', $patient_doctor);
-
-
-
-                if (!in_array($doctor, $patient_doctors)) {
-                    $patient_doctors[] = $doctor;
-                    $doctorss = implode(',', $patient_doctors);
-                    $data_d = array();
-                    $data_d = array('doctor' => $doctorss);
-                    $this->patient_model->updatePatient($patient, $data_d);
-                }
-                $this->session->set_flashdata('feedback', 'Appointment Added Successfully. Please wait. You will get a confirmation sms.');
+            if (empty($id)) {     // Adding New Request               
+                $this->request_model->insertRequest($data);
+                $this->session->set_flashdata('success', 'new_request_created');
+            } else { // Updating Request
+                $this->request_model->updateRequest($id, $data);
+                $this->session->set_flashdata('success', 'updated');
             }
-
-            if (!empty($redirect)) {
-                redirect($redirect);
-            } else {
-                redirect('appointment');
-            }
+            // Loading View
+            redirect('frontend');
         }
     }
 
     function getArrayKey($s_time) {
         $all_slot = array(
-            0 => '12:00 PM',
+            0 => '12:00 AM',
             1 => '12:05 AM',
             2 => '12:10 AM',
             3 => '12:15 AM',
@@ -359,7 +268,7 @@ class Frontend extends MX_Controller {
             141 => '11:45 AM',
             142 => '11:50 AM',
             143 => '11:55 AM',
-            144 => '12:00 AM',
+            144 => '12:00 PM',
             145 => '12:05 PM',
             146 => '12:10 PM',
             147 => '12:15 PM',
@@ -539,7 +448,7 @@ class Frontend extends MX_Controller {
 
         $facebook_id = $this->input->post('facebook_id');
         $twitter_id = $this->input->post('twitter_id');
-        $twitter_username = $this->input->post('twitter_username');
+        $instagram_id = $this->input->post('instagram_id');
         $google_id = $this->input->post('google_id');
         $youtube_id = $this->input->post('youtube_id');
         $skype_id = $this->input->post('skype_id');
@@ -578,7 +487,7 @@ class Frontend extends MX_Controller {
             // Validating Currency Field   
             $this->form_validation->set_rules('twitter_id', 'Teitter Id', 'trim|min_length[1]|max_length[100]|xss_clean');
             // Validating Currency Field   
-            $this->form_validation->set_rules('twitter_username', 'Teitter Username', 'trim|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('instagram_id', 'Teitter Username', 'trim|min_length[1]|max_length[100]|xss_clean');
             // Validating Currency Field   
             $this->form_validation->set_rules('google_id', 'Google Id', 'trim|min_length[1]|max_length[100]|xss_clean');
             // Validating Currency Field   
@@ -637,7 +546,7 @@ class Frontend extends MX_Controller {
                         'doctor_block__text_under_title' => $doctor_block_text_under_title,
                         'facebook_id' => $facebook_id,
                         'twitter_id' => $twitter_id,
-                        'twitter_username' => $twitter_username,
+                        'instagram_id' => $instagram_id,
                         'google_id' => $google_id,
                         'youtube_id' => $youtube_id,
                         'skype_id' => $skype_id,
@@ -658,7 +567,7 @@ class Frontend extends MX_Controller {
                         'doctor_block__text_under_title' => $doctor_block_text_under_title,
                         'facebook_id' => $facebook_id,
                         'twitter_id' => $twitter_id,
-                        'twitter_username' => $twitter_username,
+                        'instagram_id' => $instagram_id,
                         'google_id' => $google_id,
                         'youtube_id' => $youtube_id,
                         'skype_id' => $skype_id,

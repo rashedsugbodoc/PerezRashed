@@ -49,9 +49,9 @@ class Pharmacy extends MX_Controller {
         
         
         
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('finance/pharmacy/home', $data);
-        $this->load->view('home/footer');
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('finance/pharmacy/homev2', $data);
+        // $this->load->view('home/footer');
     }
 
     public function index() {
@@ -163,7 +163,7 @@ class Pharmacy extends MX_Controller {
         $quantity = $this->input->post('quantity');
 
         if (empty($item_selected)) {
-            $this->session->set_flashdata('feedback', lang('select_an_item'));
+            $this->session->set_flashdata('error', lang('select_an_item'));
             redirect('finance/pharmacy/addPaymentView');
         } else {
             $item_quantity_array = array();
@@ -235,7 +235,7 @@ class Pharmacy extends MX_Controller {
                     $this->db->where('id', $key);
                     $this->db->update('medicine', array('quantity' => $new_qty));
                 }
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 redirect("finance/pharmacy/invoice?id=" . "$inserted_id");
             } else {
                 $data = array(
@@ -265,7 +265,7 @@ class Pharmacy extends MX_Controller {
                     }
                 }
                 $this->pharmacy_model->updatePayment($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 redirect("finance/pharmacy/invoice?id=" . "$id");
             }
         }
@@ -291,7 +291,7 @@ class Pharmacy extends MX_Controller {
     }
 
     function delete() {
-        if ($this->ion_auth->in_group('admin')) {
+        if ($this->ion_auth->in_group(array('admin', 'Accountant'))) {
             $id = $this->input->get('id');
             
             $payment_details = $this->pharmacy_model->getPaymentById($id);
@@ -316,8 +316,10 @@ class Pharmacy extends MX_Controller {
             }
 
             $this->pharmacy_model->deletePayment($id);
-            $this->session->set_flashdata('feedback', lang('deleted'));
+            $this->session->set_flashdata('success', lang('record_deleted'));
             redirect('finance/pharmacy/payment');
+        } else {
+            redirect('home/permission');
         }
     }
 
@@ -354,12 +356,30 @@ class Pharmacy extends MX_Controller {
         $this->form_validation->set_rules('amount', 'Amount', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Company Name Field
         if ($this->form_validation->run() == FALSE) {
-            $data = array();
-            $data['settings'] = $this->settings_model->getSettings();
-            $data['categories'] = $this->pharmacy_model->getExpenseCategory();
-            $this->load->view('home/dashboard', $data); // just the header file
-            $this->load->view('add_expense_view', $data);
-            $this->load->view('home/footer'); // just the header file
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['categories'] = $this->pharmacy_model->getExpenseCategory();
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['expense'] = $this->pharmacy_model->getExpenseById($id);
+                
+                if($data['expense']->hospital_id != $this->session->userdata('hospital_id')){
+                    redirect('home/permission');
+                }
+                
+                $this->load->view('home/dashboard', $data); // just the header file
+                $this->load->view('pharmacy/add_expense_view', $data);
+                $this->load->view('home/footer'); // just the footer file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['categories'] = $this->pharmacy_model->getExpenseCategory();
+                $this->load->view('home/dashboard', $data); // just the header file
+                $this->load->view('pharmacy/add_expense_view', $data);
+                $this->load->view('home/footer'); // just the header file
+            }
+            
         } else {
             $data = array();
             if (empty($id)) {
@@ -376,10 +396,10 @@ class Pharmacy extends MX_Controller {
             }
             if (empty($id)) {
                 $this->pharmacy_model->insertExpense($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->pharmacy_model->updateExpense($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('finance/pharmacy/expense');
         }
@@ -402,6 +422,9 @@ class Pharmacy extends MX_Controller {
     }
 
     function deleteExpense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         
         $data['expense'] = $this->pharmacy_model->getExpenseById($id);        
@@ -410,7 +433,7 @@ class Pharmacy extends MX_Controller {
         }
         
         $this->pharmacy_model->deleteExpense($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('finance/pharmacy/expense');
     }
 
@@ -445,9 +468,26 @@ class Pharmacy extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $this->load->view('home/dashboard', $data); // just the header file
-            $this->load->view('pharmacy/add_expense_category');
-            $this->load->view('home/footer'); // just the header file
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['category'] = $this->pharmacy_model->getExpenseCategoryById($id);
+                       
+                if($data['category']->hospital_id != $this->session->userdata('hospital_id')){
+                    redirect('home/permission');
+                }
+                
+                $this->load->view('home/dashboard', $data); // just the header file
+                $this->load->view('pharmacy/add_expense_category', $data);
+                $this->load->view('home/footer'); // just the footer file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $this->load->view('home/dashboard', $data); // just the header file
+                $this->load->view('pharmacy/add_expense_category');
+                $this->load->view('home/footer'); // just the header file
+            }
+            
         } else {
             $data = array();
             $data = array('category' => $category,
@@ -455,10 +495,10 @@ class Pharmacy extends MX_Controller {
             );
             if (empty($id)) {
                 $this->pharmacy_model->insertExpenseCategory($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->pharmacy_model->updateExpenseCategory($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('finance/pharmacy/expenseCategory');
         }
@@ -480,6 +520,9 @@ class Pharmacy extends MX_Controller {
     }
 
     function deleteExpenseCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
         
         $data['category'] = $this->pharmacy_model->getExpenseCategoryById($id);              
@@ -488,7 +531,7 @@ class Pharmacy extends MX_Controller {
         }
         
         $this->pharmacy_model->deleteExpenseCategory($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('finance/pharmacy/expenseCategory');
     }
 
@@ -664,10 +707,8 @@ class Pharmacy extends MX_Controller {
         foreach ($data['payments'] as $payment) {
             //$i = $i + 1;
             $settings = $this->settings_model->getSettings();
-            if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) {
-                $option1 = '<a class="btn btn-info btn-xs editbutton" href="finance/pharmacy/editPayment?id=' . $payment->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
-            }
-            if ($this->ion_auth->in_group('admin')) {
+            $option1 = '<a class="btn btn-info btn-xs editbutton" href="finance/pharmacy/editPayment?id=' . $payment->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Accountant'))) {
                 $option2 = '<a class="btn btn-danger btn-xs" href="finance/pharmacy/delete?id=' . $payment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             }
             $option3 = '<a class="btn btn-xs green" style="color: #fff;" href="finance/pharmacy/invoice?id=' . $payment->id . '"><i class="fa fa-file-invoice"></i> ' . lang('invoice') . '</a>';

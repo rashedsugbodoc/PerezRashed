@@ -103,10 +103,10 @@ class Sms extends MX_Controller {
             );
             if (empty($id)) {
                 $this->sms_model->addSmsSettings($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->sms_model->updateSmsSettings($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('sms');
         }
@@ -117,7 +117,7 @@ class Sms extends MX_Controller {
         if (!empty($sms_gateway)) {
             $smsSettings = $this->sms_model->getSmsSettingsByGatewayName($sms_gateway);
         } else {
-            $this->session->set_flashdata('feedback', lang('gatewany_not_selected'));
+            $this->session->set_flashdata('error', lang('gatewany_not_selected'));
             redirect('sms/sendView');
         }
         $j = sizeof($data);
@@ -302,9 +302,9 @@ class Sms extends MX_Controller {
                 'user' => $this->ion_auth->get_user_id()
             );
             $this->sms_model->insertSms($data);
-            $this->session->set_flashdata('feedback', lang('message_sent'));
+            $this->session->set_flashdata('success', lang('message_sent'));
         } else {
-            $this->session->set_flashdata('feedback', lang('not_sent'));
+            $this->session->set_flashdata('error', lang('not_sent'));
         }
         redirect('sms/sendView');
     }
@@ -332,7 +332,7 @@ class Sms extends MX_Controller {
                 'user' => $this->ion_auth->get_user_id()
             );
             $this->sms_model->insertSms($data_p);
-            $this->session->set_flashdata('feedback', lang('message_sent'));
+            $this->session->set_flashdata('success', lang('message_sent'));
         }
 
         redirect('appointment/upcoming');
@@ -469,7 +469,7 @@ class Sms extends MX_Controller {
     function delete() {
         $id = $this->input->get('id');
         $this->sms_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('deleted'));
         redirect('sms/sent');
     }
 
@@ -508,7 +508,7 @@ class Sms extends MX_Controller {
             $i = $i + 1;
             if ($this->ion_auth->in_group(array('admin'))) {
 
-                $options1 = ' <a type="button" class="btn btn-success btn-xs btn_width editbutton1" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"> </i></a>';
+                $options1 = ' <a type="button" class="btn btn-info btn-xs btn_width editbutton1" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"> </i></a>';
                 // $options1 = '<a type='button" class="btn btn-success btn-xs btn_width" title="" . lang('edit') . '"data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"></i></a>';
                 //    $options2 = '<a class="btn btn-danger btn-xs btn_width" title="' . lang('delete') . '" href="sms/deleteTemplate?id=' . $case->id . '&redirect=sms/smsTemplate" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash-o"></i></a>';
             }
@@ -583,7 +583,7 @@ class Sms extends MX_Controller {
             );
 
             $this->sms_model->updateAutoSMSTemplate($data, $id);
-            $this->session->set_flashdata('feedback', lang('updated'));
+            $this->session->set_flashdata('success', lang('record_updated'));
 
             redirect('sms/autoSMSTemplate');
         }
@@ -627,10 +627,10 @@ class Sms extends MX_Controller {
             );
             if (empty($id)) {
                 $this->sms_model->addManualSMSTemplate($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->sms_model->updateManualSMSTemplate($data, $id);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('sms/sendView');
         }
@@ -706,7 +706,7 @@ class Sms extends MX_Controller {
     public function deleteManualSMSTemplate() {
         $id = $this->input->get('id');
         $this->sms_model->deleteManualSMSTemplate($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('sms/manualSMSTemplate');
     }
 

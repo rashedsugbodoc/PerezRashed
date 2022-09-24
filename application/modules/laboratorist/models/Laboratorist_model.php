@@ -18,6 +18,7 @@ class Laboratorist_model extends CI_model {
 
     function getLaboratorist() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
         $query = $this->db->get('laboratorist');
         return $query->result();
     }
@@ -48,6 +49,13 @@ class Laboratorist_model extends CI_model {
         );
         $this->db->where('id', $ion_user_id);
         $this->db->update('users', $uptade_ion_user);
+    }
+
+    function getLaboratoristByIonUserId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('ion_user_id', $id);
+        $query = $this->db->get('laboratorist');
+        return $query->row();
     }
 
 }

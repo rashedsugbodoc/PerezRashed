@@ -184,7 +184,7 @@
         <?php echo lang('prescription'); ?> :  <?php echo $this->db->count_all('prescription'); ?> <hr>
                                     </div>
                                     <div class="home_section">
-        <?php echo lang('case_history'); ?> :  <?php echo $this->db->count_all('medical_history'); ?> <hr>
+        <?php echo lang('case_history'); ?> :  <?php echo $this->db->count_all('case_note'); ?> <hr>
                                     </div>
                                     <div class="home_section">
         <?php echo lang('lab_reports'); ?> :  <?php echo $this->db->count_all('lab'); ?> <hr>
@@ -193,7 +193,7 @@
         <?php echo lang('documents'); ?> :  <?php echo $this->db->count_all('patient_material'); ?> <hr>
                                     </div>
                                     <div class="home_section">
-        <?php echo lang('total'); ?>  <?php echo lang('invoice'); ?> :  <?php echo $this->db->count_all('payment'); ?> <hr>
+        <?php echo lang('total'); ?>  <?php echo lang('invoice'); ?> :  <?php echo $this->db->count_all('invoice'); ?> <hr>
                                     </div>
                                     <div class="home_section">
         <?php echo lang('medicine'); ?> :  <?php echo $this->db->count_all('medicine'); ?> <hr>
@@ -338,7 +338,7 @@
                                             <h3 class="">
                                                 <?php
                                                 $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-                                                $this->db->from('medical_history');
+                                                $this->db->from('case_note');
                                                 $count = $this->db->count_all_results();
                                                 echo $count;
                                                 ?>
@@ -411,7 +411,7 @@
                         <?php if (in_array('finance', $this->modules)) { ?>
                             <div class="col-lg-3 col-sm-6">
                                 <?php if ($this->ion_auth->in_group('admin')) { ?>
-                                    <a href="finance/payment">
+                                    <a href="finance/invoices">
                                     <?php } ?>
                                     <section class="panel home_sec_yellow">
                                         <div class="symbol yellow">
@@ -421,7 +421,7 @@
                                             <h3 class="">
                                                 <?php
                                                 $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-                                                $this->db->from('payment');
+                                                $this->db->from('invoice');
                                                 $count = $this->db->count_all_results();
                                                 echo $count;
                                                 ?>
@@ -807,10 +807,13 @@
 
             <section class="col-md-12">
                 <div class="col-lg-6 col-sm-6 row">
-                    <h1><span class="livee"><?php echo lang('live'); ?></span> <?php echo lang('hospitals'); ?></h1>
+                    <h1><?php echo lang('live'); ?> <?php echo lang('healthcare_providers'); ?></h1>
                 </div>
             </section>
-            <?php foreach ($hospitals as $hospital) { ?>    
+            <?php foreach ($hospitals as $hospital) {
+                $this->db->where('hospital_id', $hospital->id);
+                $admin = $this->db->get('admin')->row(); 
+            ?>      
                 <div class="col-lg-6 col-sm-6">
                     <section class="row panel col-md-12">   
                         <div class="row symbol super col-md-6">
@@ -818,13 +821,13 @@
                         </div>
                         <div class="value super1 col-md-6"> 
                             <p class="">
-                                Email:   <?php echo $hospital->email; ?>
+                                Admin Email:   <?php echo $admin->email; ?>
                             </p>
                             <p class="">
-                                Address:   <?php echo $hospital->address; ?>
+                                Provider Address:   <?php echo $hospital->address; ?>
                             </p>
                             <p class="">
-                                Phone:  <?php echo $hospital->phone; ?>
+                                Provider Phone:  <?php echo $hospital->phone; ?>
                             </p>
                         </div>
                     </section>

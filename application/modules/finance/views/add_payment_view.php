@@ -24,6 +24,7 @@
                     ?>
                 </header>
                 <div class="panel-body">
+                    <?php echo validation_errors(); ?>
                     <div class="adv-table editable-table ">
                         <style> 
                             form{
@@ -187,7 +188,7 @@
                                         <select class="form-control m-bot15  add_payer" id="company" name="company_id" value=''>
                                             <?php if (!empty($payment)) { ?>
                                                 <option value="<?php echo $company->id; ?>" selected="selected"><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
-                                            <?php } ?>
+                                            <?php }?>
                                         </select>
                                     </div>
                                 </div>                                
@@ -297,6 +298,41 @@
                                     ?>' placeholder=" ">
                                 </div> 
                             </div>   
+                            <div class="row">
+                                <div class="col-md-12 form-group">
+                                    <label><?php echo lang('completion_status');?> </label>
+                                    <select class="form-control" name="completion_status" value='<?php
+                                    if (!empty($payment->completion_status)) {
+                                        echo $payment->completion_status;
+                                    }
+                                    ?>'>
+                                        <option value="in progress" <?php
+                                                if (!empty($payment->completion_status)) {
+                                                    if ($payment->completion_status == 'in progress') {
+                                                    echo 'selected';
+                                                    }
+                                                }
+                                                ?>
+                                        > <?php echo lang('in_progress'); ?> </option>
+                                        <option value="completed" <?php
+                                                if (!empty($payment->completion_status)) {
+                                                    if ($payment->completion_status == 'completed') {
+                                                    echo 'selected';
+                                                    }
+                                                }
+                                                ?>
+                                        > <?php echo lang('completed'); ?> </option>
+                                        <option value="cancelled" <?php
+                                                if (!empty($payment->completion_status)) {
+                                                    if ($payment->completion_status == 'cancelled') {
+                                                    echo 'selected';
+                                                    }
+                                                }
+                                                ?>
+                                        > <?php echo lang('cancelled'); ?> </option>                                        
+                                    </select>
+                                </div>
+                            </div>
                             <div class="row">                                                  
                                 <div class="col-md-12 form-group">
                                     <?php if (empty($payment)) { ?>

@@ -16,6 +16,9 @@ class Donor extends MX_Controller {
     }
 
     public function index() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data['donors'] = $this->donor_model->getDonor();
         $data['groups'] = $this->donor_model->getBloodBank();
         $this->load->view('home/dashboard'); // just the header file
@@ -24,7 +27,7 @@ class Donor extends MX_Controller {
     }
 
     public function addDonorView() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -35,7 +38,7 @@ class Donor extends MX_Controller {
     }
 
     public function addDonor() {
-        if ($this->ion_auth->in_group('Patient')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
@@ -57,11 +60,11 @@ class Donor extends MX_Controller {
         // Validating Name Field
         $this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Name Field
-        $this->form_validation->set_rules('group', 'group', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('group', 'group', 'trim|required|min_length[2]|max_length[20]|xss_clean');
         // Validating Name Field
-        $this->form_validation->set_rules('age', 'age', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('age', 'age', 'trim|required|min_length[2]|max_length[10]|xss_clean');
         // Validating Name Field
-        $this->form_validation->set_rules('sex', 'sex', 'trim|required|min_length[2]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('sex', 'sex', 'trim|required|min_length[2]|max_length[10]|xss_clean');
         // Validating Name Field
         $this->form_validation->set_rules('ldd', 'Last Donation Date', 'trim|required|min_length[2]|max_length[100]|xss_clean');
         // Validating Name Field
@@ -71,6 +74,7 @@ class Donor extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['groups'] = $this->donor_model->getBloodBank();
                 $data['donor'] = $this->donor_model->getDonorById($id);
@@ -78,6 +82,7 @@ class Donor extends MX_Controller {
                 $this->load->view('add_donor', $data);
                 $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['groups'] = $this->donor_model->getBloodBank();
@@ -98,16 +103,20 @@ class Donor extends MX_Controller {
             );
             if (empty($id)) {
                 $this->donor_model->insertDonor($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->donor_model->updateDonor($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('donor');
         }
     }
 
     function editDonor() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
         $data['groups'] = $this->donor_model->getBloodBank();
         $id = $this->input->get('id');
@@ -124,9 +133,13 @@ class Donor extends MX_Controller {
     }
 
     function delete() {
+        if (!$this->ion_auth->in_group('admin')) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->get('id');
         $this->donor_model->deleteDonor($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('donor');
     }
 
@@ -134,6 +147,11 @@ class Donor extends MX_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
+
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Laboratorist', 'Nurse'))) {
+            redirect('home/permission');
+        }
+
         $data['groups'] = $this->donor_model->getBloodBank();
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('blood_bank', $data);
@@ -141,12 +159,20 @@ class Donor extends MX_Controller {
     }
 
     public function updateView() {
+        if (!$this->ion_auth->in_group('admin')) {
+            redirect('home/permission');
+        }
+
         $this->load->view('home/dashboard'); // just the header file
         $this->load->view('update_blood_bank');
         $this->load->view('home/footer'); // just the header file
     }
 
     public function updateBloodBank() {
+        if (!$this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->post('id');
         $group = $this->input->post('group');
         $status = $this->input->post('status');
@@ -156,8 +182,17 @@ class Donor extends MX_Controller {
         // Validating Description Field
         $this->form_validation->set_rules('status', 'Status', 'required|min_length[5]|max_length[100]');
         if ($this->form_validation->run() == FALSE) {
-             $this->session->set_flashdata('feedback', lang('validation_error'));
-            redirect('donor/bloodBank');
+            if (!empty($id)) {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                $data['donor'] = $this->donor_model->getBloodBankById($id);
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('update_blood_bank', $data);
+                $this->load->view('home/footer'); // just the footer file
+            } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
+                redirect('donor/bloodBank');
+            }
         } else {
             $data = array();
             $data = array(
@@ -165,7 +200,7 @@ class Donor extends MX_Controller {
             );
 
             $this->donor_model->updateBloodBank($id, $data);
-            $this->session->set_flashdata('feedback', lang('updated'));
+            $this->session->set_flashdata('success', lang('record_updated'));
             redirect('donor/bloodBank');
         }
     }

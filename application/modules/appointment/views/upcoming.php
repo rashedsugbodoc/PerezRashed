@@ -8,14 +8,15 @@
             <header class="panel-heading">
                 <?php echo lang('upcoming'); ?> <?php echo lang('appointments'); ?>
                 <div class="col-md-4 clearfix pull-right custom_buttons">
-                    <a data-toggle="modal" href="#myModal">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i>   <?php echo lang('add_appointment'); ?> 
-                            </button>
-                        </div>
-                    </a>
-
+                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                        <a data-toggle="modal" href="#myModal">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs pull-right">
+                                    <i class="fa fa-plus"></i>   <?php echo lang('add_appointment'); ?> 
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <div class="panel-body">
@@ -30,7 +31,9 @@
                                 <th> <?php echo lang('date-time'); ?></th>
                                 <th> <?php echo lang('remarks'); ?></th>
                                 <th> <?php echo lang('status'); ?></th>
-                                <th> <?php echo lang('options'); ?></th>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                    <th> <?php echo lang('options'); ?></th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -181,8 +184,6 @@
                                         ?> > <?php echo lang('confirmed'); ?> </option>
                                     <option value="Treated" <?php
                                         ?> > <?php echo lang('treated'); ?> </option>
-                                    <option value="Cancelled" <?php
-                                        ?> > <?php echo lang('cancelled'); ?> </option>
                                 </select>
                             </div>                    
                             <div class="col-md-6 form-group">
@@ -319,7 +320,6 @@
                             <div class="col-md-6 form-group">
                                 <label for="exampleInputEmail1">Available Slots</label>
                                 <select class="form-control" name="time_slot" id="aslots1" value=''> 
-
                                 </select>
                             </div>                            
                         </div>

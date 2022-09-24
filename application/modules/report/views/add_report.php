@@ -18,6 +18,7 @@
                     <div class="clearfix">
                         <div class="col-lg-12">
                             <?php echo validation_errors(); ?>
+                            
                             <form role="form" action="report/addReport" method="post" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('select_type'); ?></label>
@@ -61,22 +62,21 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-
-
                                     <label for="exampleInputEmail1"><?php echo lang('description'); ?></label>
-                                    <input type="text" class="form-control" name="description" id="exampleInputEmail1" value='<?php
-                                    if (!empty($setval)) {
-                                        echo set_value('description');
-                                    }
-                                    if (!empty($report->description)) {
-                                        echo $report->description;
-                                    }
-                                    ?>' placeholder="">
-
+                                    <textarea class="ckeditor form-control editor" id="editor" name="description" value="" rows="10">
+                                        <?php
+                                            if (!empty($setval)) {
+                                                echo set_value('description');
+                                            }
+                                            if (!empty($report->description)) {
+                                                echo $report->description;
+                                            }
+                                        ?>
+                                    </textarea>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
-                                    <select class="form-control m-bot15 js-example-basic-single" name="patient" value=''> 
+                                    <select class="form-control js-example-basic-single" name="patient" value=''> 
                                         <?php foreach ($patients as $patient) { ?>
                                             <option value="<?php echo $patient->name . '*' . $patient->ion_user_id; ?>" <?php
                                             if (!empty($report->patient)) {
@@ -90,7 +90,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('doctor'); ?></label>
-                                    <select class="form-control m-bot15 js-example-basic-single" name="doctor" value=''> 
+                                    <select class="form-control js-example-basic-single" name="doctor" value=''> 
                                         <?php foreach ($doctors as $doctor) { ?>
                                             <option value="<?php echo $doctor->name; ?>" <?php
                                             if (!empty($setval)) {
@@ -109,7 +109,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
-                                    <input class="form-control form-control-inline input-medium default-date-picker" name="date"  size="16" type="text" value="<?php
+                                    <input class="form-control form-control-inline input-medium default-date-picker" readonly="" name="date"  size="16" type="text" value="<?php
                                     if (!empty($setval)) {
                                         echo set_value('date');
                                     }

@@ -9,7 +9,7 @@
                 <div class="col-md-4 no-print pull-right">
                     <a data-toggle="modal" class="pull-right" href="hospital/addNewView">
                         <div class="btn-group">
-                            <button id="" class="btn green">
+                            <button id="" class="btn btn-primary">
                                 <i class="fa fa-plus"></i>   <?php echo lang('create_new_hospital'); ?>
                             </button>
                         </div>
@@ -40,12 +40,14 @@
                     <table class="table table-striped table-hover table-bordered" id="editable-sample">
                         <thead>
                             <tr>
-                                <th> <?php echo lang('title'); ?></th>
-                                <th> <?php echo lang('email'); ?></th>
-                                <th> <?php echo lang('address'); ?></th>
+                                <th> <?php echo lang('healthcare_provider'); ?> <?php echo lang('name'); ?></th>
+                                <th> <?php echo lang('provider'); ?> <?php echo lang('email'); ?></th>
+                                <th> <?php echo lang('provider'); ?> <?php echo lang('address'); ?> </th>
                                 <th> <?php echo lang('phone'); ?></th>
                                 <th> <?php echo lang('package'); ?></th>
-                                <th> <?php echo lang('status'); ?></th>
+                                <th> <?php echo lang('login'); ?></th>
+                                <th> <?php echo lang('active'); ?></th>
+                                <th> <?php echo lang('public'); ?></th>
                                 <th class="no-print"> <?php echo lang('options'); ?></th>
                             </tr>
                         </thead>
@@ -64,12 +66,15 @@
                         </style>
 
                         <?php
-                        foreach ($hospitals as $hospital) {
-                            ?>
+                            foreach ($hospitals as $hospital) {
+                                $this->db->where('hospital_id', $hospital->id);
+                                $settings = $this->db->get('settings')->row();                                                            
+                        ?>
+                                        
                             <tr class="">
                                 <td> <?php echo $hospital->name; ?></td>
-                                <td><?php echo $hospital->email; ?></td>
-                                <td class="center"><?php echo $hospital->address; ?></td>
+                                <td><?php echo $settings->email; ?></td>
+                                <td class="center"><?php echo $settings->address; ?>, <?php echo $this->location_model->getBarangayById($settings->barangay_id)->name; ?> <br><?php echo $this->location_model->getCityById($settings->city_id)->name; ?>, <?php echo $this->location_model->getStateById($settings->state_id)->name; ?>, <?php echo $this->location_model->getCountryById($settings->country_id)->name; ?></td>
                                 <td><?php echo $hospital->phone; ?></td>
                                 <td>
                                     <?php
@@ -83,27 +88,60 @@
                                     $status = $this->db->get_where('users', array('id' => $hospital->ion_user_id))->row()->active;
                                     if ($status == '1') {
                                         ?>
-                                        <button type="button" class="btn btn-info btn-xs btn_width" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('active'); ?></button> 
+                                        <button type="button" class="btn btn-info btn-xs btn_width" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('enabled'); ?></button> 
                                     <?php } else { ?>
                                         <button type="button" class="btn btn-danger btn-xs delete_button" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('disabled'); ?></button> 
                                         <?php
                                     }
                                     ?>
                                 </td>
+                                <td>
+                                    <?php
+                                    $active = $settings->is_active;
+                                    if ($active == '1') {
+                                        ?>
+                                        <button type="button" class="btn btn-info btn-xs btn_width" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('active'); ?></button> 
+                                    <?php } else { ?>
+                                        <button type="button" class="btn btn-danger btn-xs delete_button" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('deactivated'); ?></button> 
+                                        <?php
+                                    }
+                                    ?>
+                                </td>         
+                                <td>
+                                    <?php
+                                    $public = $settings->is_public;
+                                    if ($public == 1) {
+                                        ?>
+                                        <button type="button" class="btn btn-info btn-xs btn_width" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('public'); ?></button> 
+                                    <?php } else { ?>
+                                        <button type="button" class="btn btn-danger btn-xs delete_button" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('hidden'); ?></button> 
+                                        <?php
+                                    }
+                                    ?>
+                                </td>                                                           
                                 <td class="no-print">
                                     <?php
                                     $status = $this->db->get_where('users', array('id' => $hospital->ion_user_id))->row()->active;
                                     if ($status == '1') {
                                         ?>
-                                        <a href="hospital/deactivate?hospital_id=<?php echo $hospital->ion_user_id; ?>" type="button" class="btn btn-default btn-xs" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('disable'); ?></a>  
-
+                                        <a href="hospital/disablelogin?hospital_id=<?php echo $hospital->ion_user_id; ?>" type="button" class="btn btn-default btn-xs" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('disable').' '.lang('login'); ?></a>
                                     <?php } else {
                                         ?>
-
-                                        <a href="hospital/activate?hospital_id=<?php echo $hospital->ion_user_id; ?>" type="button" class="btn btn-success btn-xs" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('enable'); ?></a>  
+                                        <a href="hospital/enablelogin?hospital_id=<?php echo $hospital->ion_user_id; ?>" type="button" class="btn btn-success btn-xs" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('enable').' '.lang('login'); ?></a>
                                         <?php
                                     }
                                     ?>
+                                    <?php
+                                    $active = $this->db->get_where('settings', array('hospital_id' => $hospital->id))->row()->is_active;
+                                    if ($active == '1') {
+                                        ?>
+                                        <a href="hospital/deactivate?hospital_id=<?php echo $hospital->id; ?>" type="button" class="btn btn-default btn-xs" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('deactivate'); ?></a>
+                                    <?php } else {
+                                        ?>
+                                        <a href="hospital/activate?hospital_id=<?php echo $hospital->id; ?>" type="button" class="btn btn-success btn-xs" data-toggle="modal" data-id="<?php echo $hospital->id; ?>"><?php echo lang('activate'); ?></a>
+                                        <?php
+                                    }
+                                    ?>                                    
                                     <a type="button" class="btn btn-info btn-xs btn_width" data-toggle="" href="hospital/editHospital?id=<?php echo $hospital->id; ?>" data-id="<?php echo $hospital->id; ?>"><i class="fa fa-edit"></i></a>   
                                     <a class="btn btn-danger btn-xs btn_width delete_button" href="hospital/delete?id=<?php echo $hospital->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i></a>
                                 </td>
@@ -372,8 +410,7 @@
                 [10, 25, 50, 100, "All"]
             ],
             iDisplayLength: -1,
-            "order": [[0, "desc"]],
-
+            
             "language": {
                 "lengthMenu": "_MENU_",
                 search: "_INPUT_",

@@ -191,10 +191,10 @@
                                                         ?>' placeholder="">
                                                     </div>
                                                      <div class="form-group col-md-6">
-                                                        <label for="exampleInputEmail1"><?php echo lang('twitter_username'); ?></label>
-                                                        <input type="text" class="form-control" name="twitter_username" id="exampleInputEmail1" value='<?php
-                                                        if (!empty($settings->twitter_username)) {
-                                                            echo $settings->twitter_username;
+                                                        <label for="exampleInputEmail1"><?php echo lang('instagram_id'); ?></label>
+                                                        <input type="text" class="form-control" name="instagram_id" id="exampleInputEmail1" value='<?php
+                                                        if (!empty($settings->instagram_id)) {
+                                                            echo $settings->instagram_id;
                                                         }
                                                         ?>' placeholder="">
                                                     </div>

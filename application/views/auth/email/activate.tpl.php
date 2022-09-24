@@ -1,6 +1,5 @@
 <html>
 <body>
-	<h1><?php echo sprintf(lang('email_activate_heading'), $identity);?></h1>
-	<p><?php echo sprintf(lang('email_activate_subheading'), anchor('auth/activate/'. $id .'/'. $activation, lang('email_activate_link')));?></p>
+<div style="font-family: sans-serif;background-color: #eeeeef; padding: 50px 0; "><div style="max-width:640px; margin:0 auto; "><div style="color: #fff; text-align: center; background-color:#8e98db; padding: 30px; border-top-left-radius: 3px; border-top-right-radius: 3px; margin: 0;"><h1><?php echo sprintf(lang('email_activation_subject'));?></h1></div><div style="padding: 20px; background-color: rgb(255, 255, 255); color: rgb(85, 85, 85); font-size: 14px;"><p> Hi <?php echo $username;?>,<br><br><br><?php echo lang('email_activation_welcome');?>!<br><p><?php echo sprintf(lang('email_activate_heading'), $identity);?></p></p><p> <?php echo sprintf("%s", anchor('auth/activate/'. $id .'/'. $activation, lang('email_activate_link'),array('style' => 'border-radius: 4px;background-color: #4454c3;font-weight: bold;letter-spacing: normal;line-height: 100%;text-align: center;text-decoration: none;color: #FFFFFF; font-size:  15px;padding: 10px 15px;-webkit-text-size-adjust: 100%;display: inline-block;')));?></p><p><?php echo sprintf(lang('email_activate_subheading'));?><br></p><br><?php echo sprintf(lang('email_activation_complimentary_close'));?>,<p><b>The SugboDoc Team</b></p></div></div></div>
 </body>
 </html>

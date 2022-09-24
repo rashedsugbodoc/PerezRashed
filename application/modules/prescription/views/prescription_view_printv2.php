@@ -180,7 +180,7 @@
                                             </div>
                                             <div class="col-md-3 p-0">
                                                 <div class="form-group mb-0">
-                                                    <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <?php echo $prescription->id; ?></label>
+                                                    <label class="form-label mb-0"><?php echo lang('prescription_id');?> : <?php echo $prescription->prescription_number; ?></label>
                                                 </div>
                                             </div>
                                             <div class="col-md-3 p-0">
@@ -241,16 +241,16 @@
                                                 <div class="row">
                                                     <div class="col-md-12 pl-0">
                                                         <div class="form-group">
-                                                            <label class="form-label font-weight-bold"><?php echo lang('history'); ?>:</label>
-                                                            <label class="form-label"><?php echo $prescription->symptom; ?></label>
+                                                            <label class="form-label font-weight-bold"><?php echo lang('laboratory'); ?>:</label>
+                                                            <label class="form-label"><?php echo $prescription->laboratory; ?></label>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-12 pl-0">
                                                         <div class="form-group">
-                                                            <label class="form-label font-weight-bold"><?php echo lang('note'); ?>:</label>
-                                                            <label class="form-label"><?php echo $prescription->note; ?></label>
+                                                            <label class="form-label font-weight-bold"><?php echo lang('history'); ?>:</label>
+                                                            <label class="form-label"><?php echo $prescription->symptom; ?></label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -382,6 +382,9 @@
                 window.print();
               });
         </script>
+
+    </body>
+</html> 
         
 
 <!--OLD Starts Here-->

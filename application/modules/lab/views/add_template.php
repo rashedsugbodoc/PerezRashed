@@ -80,6 +80,7 @@
                         </style>
 
                         <form role="form" id="editLabForm" class="clearfix" action="lab/addTemplate" method="post" enctype="multipart/form-data">
+                            <?php echo validation_errors(); ?>
                             <div class="col-md-12 lab pad_bot row">
                                 <div class="col-md-3 lab_label"> 
                                     <label for="exampleInputEmail1"> <?php echo lang('template'); ?> <?php echo lang('name'); ?></label>

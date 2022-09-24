@@ -7,13 +7,15 @@
             <header class="panel-heading">
                 <?php echo lang('bed'); ?>  
                 <div class="col-md-4 no-print pull-right"> 
-                    <a data-toggle="modal" href="#myModal">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
-                            </button>
-                        </div>
-                    </a>
+                    <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) { ?>
+                        <a data-toggle="modal" href="#myModal">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <div class="panel-body">
@@ -25,7 +27,9 @@
                                 <th><?php echo lang('bed_id'); ?></th>
                                 <th><?php echo lang('description'); ?></th>
                                 <th><?php echo lang('status'); ?></th>
-                                <th class="no-print"><?php echo lang('options'); ?></th>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) { ?>
+                                    <th class="no-print"><?php echo lang('options'); ?></th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>

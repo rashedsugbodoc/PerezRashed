@@ -19,6 +19,9 @@
                             <div class="clearfix">
                                 <form role="form" id="editFormForm" class="clearfix" action="form/addForm" method="post" enctype="multipart/form-data">
                                     <div class="">
+                                        <div class="form-group col-md-12">
+                                            <?php echo validation_errors(); ?>
+                                        </div>
                                         <div class="form-group col-md-6"> 
                                             <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
                                             <input type="text" class="form-control pay_in default-date-picker" name="date" value='<?php
@@ -34,7 +37,7 @@
                                             <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
                                             <select class="form-control m-bot15 pos_select" id="pos_select" name="patient" value=''> 
                                                <?php if (!empty($form->patient)) { ?>
-                                                    <option value="<?php echo $patients->id; ?>" selected="selected"><?php echo $patients->name; ?> - <?php echo $patients->id; ?></option>  
+                                                    <option value="<?php echo $form->name; ?>" selected="selected"><?php echo $form->patient_name; ?> - <?php echo $form->patient; ?></option>  
                                                 <?php } ?>
                                             </select>
                                         </div> 
@@ -134,7 +137,9 @@
                                         <div class="form-group col-md-6">
                                             <label for="exampleInputEmail1"> <?php echo lang('refd_by_doctor'); ?></label>
                                             <select class="form-control m-bot15 add_doctor" id="add_doctor" name="doctor" value=''>  
-                                               
+                                               <?php if (!empty($form->patient)) { ?>
+                                                    <option value="<?php echo $form->name; ?>" selected="selected"><?php echo $form->doctor_name; ?> - <?php echo $form->doctor; ?></option>  
+                                                <?php } ?>
                                             </select>
                                         </div>
 
@@ -198,7 +203,8 @@
                                     <div class="">
                                         <div class="form-group col-md-12">
                                             <label for="exampleInputEmail1"><?php echo lang('name'); ?></label>
-                                            <input type="text" class="form-control" name="form_name" value='' placeholder="<?php echo lang('form_report_name'); ?>">
+                                            <input type="text" class="form-control" name="form_name" placeholder="<?php echo lang('form_report_name'); ?>" value='<?php if (!empty($form->name)) {echo $form->name;} ?>
+                                            '>
                                         </div>
                                     </div>
 
@@ -400,7 +406,7 @@
                     }
                 }
             </style>
-            <section class="col-md-4">
+            <section class="col-md-5">
                 <div class="row">
                     <div class="text-center invoice-btn col-md-4 pull-right">
                             <a class="btn btn-info invoice_button" onclick="javascript:window.print();"><i class="fa fa-print"></i> <?php echo lang('print'); ?> </a>

@@ -1532,7 +1532,7 @@ $temp_phone = str_replace('.','',$temp_phone);
 
 
         $data['message'] = 'successful';
-        echo json_encode($date);
+        echo json_encode($data);
     }
     
     //Invoice Details of Payment

@@ -7,12 +7,13 @@
         <meta name="description" content="">
         <meta name="author" content="Sugbodoc">
         <meta name="keyword" content="Hospital, Clinic, Management, Software, HIS, Accounting">
-        <link rel="shortcut icon" href="uploads/favicon.png">
 
         <title>Login - <?php echo $this->db->get('settings')->row()->system_vendor; ?></title>
 
         <!--Favicon -->
-        <link rel="icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>" type="image/x-icon"/>
+        <link rel="shortcut icon" href="<?php echo base_url('public/assets/images/brand/favicon.ico'); ?>">
+        <link rel="icon" type="image/png" href="<?php echo base_url('public/assets/images/brand/android-chrome-192x192.png'); ?>" sizes="192x192">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url('public/assets/images/brand/apple-touch-icon.png'); ?>">
 
         <!-- Bootstrap css -->
         <link href="<?php echo base_url('public/assets/plugins/bootstrap/css/bootstrap.css'); ?>" rel="stylesheet" />
@@ -42,7 +43,9 @@
             <div class="w-40 bg-style h-100vh page-style">
                 <div class="page-content">
                     <div class="page-single-content">
-                        <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                        <a href="<?php echo base_url('')?>">
+                            <img src="<?php echo base_url('uploads/new-sugbodoc-white-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                        </a>
                         <div class="card-body text-white py-5 px-8 text-center">
                             <img src="<?php echo base_url('public/assets/images/png/5.png'); ?>" alt="img" class="w-100 mx-auto text-center">
                         </div>
@@ -57,7 +60,9 @@
                                 <div class="col-md-8 mx-auto d-block">
                                     <div class="">
                                         <div class="text-white py-1 px-8 text-center">
-                                            <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                                            <a href="<?php echo base_url('')?>">
+                                                <img src="<?php echo base_url('uploads/new-sugbodoc-purple-logo.png'); ?>" alt="img" class="header-brand-img mb-5">
+                                            </a>
                                         </div>
                                         <?php if($message) { ?>
                                             <div class="alert alert-info"><?php echo $message; ?></div>
@@ -77,9 +82,13 @@
                                         <div class="col-12">
                                             <a href="<?php echo base_url('auth/forgot_password'); ?>" class="btn btn-link box-shadow-0 px-0"><?php echo lang('login_forgot_password');?></a>
                                         </div>
+                                        <input type="hidden" name="<?=$csrf_token_name; ?>" value="<?=$csrf_token_hash;?>">
                                         <div class="col-12">
                                             <button type="submit"class="btn btn-primary btn-block"><?php echo lang('login_submit_btn');?></button>
                                         </div>
+                                    </div>
+                                    <div class="pt-4">
+                                        <div class="font-weight-normal fs-16"><?php echo lang('dont_have_an_account');?> <a class="btn-link font-weight-normal" href="auth/register"><?php echo lang('register_here');?></a></div>
                                     </div>
                                 </div>
                             </div>

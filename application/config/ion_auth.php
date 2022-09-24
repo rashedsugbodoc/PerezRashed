@@ -136,8 +136,8 @@ $config['argon2_admin_params']		= [
  | The library will fail for empty password or password size above 4096 bytes.
  | This is an arbitrary (long) value to protect against DOS attack.
  */
-$config['site_title']                 = "Example.com";       // Site Title, example.com
-$config['admin_email']                = "admin@example.com"; // Admin Email, admin@example.com
+$config['site_title']                 = "SugboDoc";       // Site Title, example.com
+$config['admin_email']                = "team@sugbodoc.com"; // Admin Email, admin@example.com
 $config['default_group']              = 'members';           // Default group, use name
 $config['admin_group']                = 'admin';             // Default administrators group, use name
 $config['identity']                   = 'email';             /* You can use any unique column in your table as identity column.
@@ -146,7 +146,7 @@ $config['identity']                   = 'email';             /* You can use any 
 															    		   update the UNIQUE constraint in your DB */
 $config['min_password_length']        = 5;                   // Minimum Required Length of Password (not enforced by lib - see note above)
 $config['max_password_length']        = 20; 
-$config['email_activation']           = FALSE;               // Email Activation for registration
+$config['email_activation']           = TRUE;               // Email Activation for registration
 $config['manual_activation']          = FALSE;               // Manual Activation for registration
 $config['remember_users']             = TRUE;                // Allow users to be remembered and enable auto-login
 $config['user_expire']                = 86500;               // How long to remember the user (seconds). Set to zero for no expiration - see sess_expiration in CodeIgniter Session Config for session expiration

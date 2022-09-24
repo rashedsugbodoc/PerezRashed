@@ -39,7 +39,7 @@ class Pharmacist_model extends CI_model {
         $this->db->delete('pharmacist');
     }
 
-    function updateIonUser($username, $email, $password, $ion_user_id) {
+    function updateIonUser($username, $email, $password = null, $ion_user_id) {
         $uptade_ion_user = array(
             'username' => $username,
             'email' => $email,
@@ -47,6 +47,13 @@ class Pharmacist_model extends CI_model {
         );
         $this->db->where('id', $ion_user_id);
         $this->db->update('users', $uptade_ion_user);
+    }
+
+    function getPharmacistByIonUserId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('ion_user_id', $id);
+        $query = $this->db->get('pharmacist');
+        return $query->row();
     }
 
 }

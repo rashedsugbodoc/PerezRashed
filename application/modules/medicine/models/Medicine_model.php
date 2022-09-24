@@ -23,6 +23,12 @@ class Medicine_model extends CI_model {
         return $query->result();
     }
 
+    function getMedicineCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('medicine');
+        return $query->num_rows();
+    }
+
     function getLatestMedicine() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
@@ -108,6 +114,7 @@ class Medicine_model extends CI_model {
 
     function getMedicineCategory() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->or_where(array('hospital_id' => NULL));
         $query = $this->db->get('medicine_category');
         return $query->result();
     }
@@ -159,6 +166,15 @@ class Medicine_model extends CI_model {
         return $query->result();
     }
 
+    function getMedicineBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('medicine')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR category LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR e_date LIKE '%" . $search . "%'OR generic LIKE '%" . $search . "%'OR company LIKE '%" . $search . "%'OR effects LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
+    }
+
     function getMedicineByLimit($limit, $start) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
@@ -181,8 +197,8 @@ class Medicine_model extends CI_model {
     function getMedicineNameByAvailablity($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
-            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
             $this->db->where("name like '%" . $searchTerm . "%' ");
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
             $fetched_records = $this->db->get('medicine');
             $query = $fetched_records->result();
         } else {
@@ -199,8 +215,8 @@ class Medicine_model extends CI_model {
     function getMedicineInfo($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
+            $this->db->where("id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR generic LIKE '%" . $searchTerm . "%'");
             $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-            $this->db->where("id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%'");
             $fetched_records = $this->db->get('medicine');
             $users = $fetched_records->result_array();
         } else {
@@ -213,7 +229,7 @@ class Medicine_model extends CI_model {
         // Initialize Array with fetched data
         $data = array();
         foreach ($users as $user) {
-            $data[] = array("id" => $user['id'] . '*' . $user['name'], "text" => $user['name']);
+            $data[] = array("id" => $user['id'] . '*' . $user['name'] . '*' . $user['uses'] . '*' . $user['form'] . '*' . $user['generic'], "text" => $user['generic'] . ' ( ' . $user['name'] . ' ) ' . $user['form']);
         }
         return $data;
     }
@@ -221,9 +237,9 @@ class Medicine_model extends CI_model {
     function getMedicineInfoForPharmacySale($searchTerm) {
         if (!empty($searchTerm)) {
             $this->db->select('*');
-            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
             $this->db->where('quantity >', '0');
             $this->db->where("id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%'");
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
             $fetched_records = $this->db->get('medicine');
             $users = $fetched_records->result_array();
         } else {

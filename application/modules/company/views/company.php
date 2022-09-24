@@ -7,13 +7,15 @@
             <header class="panel-heading">
                 <?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>    
                 <div class="col-md-4 no-print pull-right"> 
-                    <a data-toggle="modal" href="#myModal">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
-                            </button>
-                        </div>
-                    </a>
+                    <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                        <a data-toggle="modal" href="#myModal">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <div class="panel-body">
@@ -81,7 +83,7 @@
                     </div>                    
                     <div class="form-group col-md-6">
                         <label for="exampleInputEmail1"><?php echo lang('email'); ?></label>
-                        <input type="text" class="form-control" name="email" id="exampleInputEmail1" value='' placeholder="">
+                        <input type="email" class="form-control" name="email" id="exampleInputEmail1" value='' placeholder="">
                     </div>
 
 

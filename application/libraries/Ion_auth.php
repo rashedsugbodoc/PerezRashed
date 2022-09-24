@@ -69,7 +69,7 @@ class Ion_auth {
         $this->load->library('session');
 
         $this->load->model('ion_auth_model');
-        
+        $this->load->model('settings/settings_model');
         $this->load->model('email/email_model');
         
 
@@ -134,11 +134,11 @@ class Ion_auth {
         if ($this->ion_auth_model->forgotten_password($identity)) {   //changed
             // Get user information
             $identifier = $this->ion_auth_model->identity_column; // use model identity column, so it can be overridden in a controller
-            $user = $this->where($identifier, $identity)->where('active', 1)->users()->row();  //changed to get_user_by_identity from email
+            $user = $this->where($identifier, $identity)->users()->row();  //changed to get_user_by_identity from email
 
             if ($user) {
                 $data = array(
-                    'identity' => $user->{$this->config->item('identity', 'ion_auth')},
+                    'identity' => $user->{$this->config->item('identity', 'ion_auth')},'username' => $user->username,
                     'forgotten_password_code' => $user->forgotten_password_code
                 );
 
@@ -154,9 +154,9 @@ class Ion_auth {
                     
                     $message = $this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_forgot_password', 'ion_auth'), $data, true);
                     $this->email->clear();
-                    $this->email->from($admin_email->admin_email, $admin_email->admin_email_display_name);
+                    $this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth') . ' ' . $this->lang->line('team'));
                     $this->email->to($user->email);
-                    $this->email->subject($settings->system_vendor . ' - ' . $this->lang->line('email_forgotten_password_subject'));
+                    $this->email->subject($this->lang->line('email_forgotten_password_subject'));
                     $this->email->message($message);
 
                     if ($this->email->send()) {
@@ -259,6 +259,66 @@ class Ion_auth {
     }
 
     /**
+     * resend activation link feature
+     *
+     * @return mixed  boolian / array
+     * @author Mathew
+     * */
+    public function resend_activation($identity) {    //changed $email to $identity
+        if ($this->ion_auth_model->forgotten_password($identity)) {   //changed
+            // Get user information
+            $identifier = $this->ion_auth_model->identity_column; // use model identity column, so it can be overridden in a controller
+            $user = $this->where($identifier, $identity)->users()->row();  //changed to get_user_by_identity from email
+
+            if ($user) {
+
+                if($user->active == 1) {
+                    $this->set_message('account_already_activated');
+                    return TRUE;
+                }
+
+                $data = array(
+                    'identity' => $user->{$this->config->item('identity', 'ion_auth')},'username' => $user->username,
+                    'id' => $user->id,
+                    'activation' => $user->activation_code
+                );
+
+                if (!$this->config->item('use_ci_email', 'ion_auth')) {
+                    $this->set_message('activation_email_successful');
+                    return $data;
+                } else {
+
+                    $admin_email = $this->email_model->getEmailSettings();
+                    
+                    $settings = $this->settings_model->getSettings();
+                    
+                    
+                    $message = $this->load->view($this->config->item('email_templates', 'ion_auth') . $this->config->item('email_activate', 'ion_auth'), $data, true);
+                    $this->email->clear();
+                    $this->email->from($this->config->item('admin_email', 'ion_auth'), $this->config->item('site_title', 'ion_auth') . ' ' . $this->lang->line('team'));
+                    $this->email->to($user->email);
+                    $this->email->subject($this->lang->line('email_activation_subject'));
+                    $this->email->message($message);
+
+                    if ($this->email->send()) {
+                        $this->set_message('activation_email_successful');
+                        return TRUE;
+                    } else {
+                        $this->set_error('activation_email_unsuccessful');
+                        return FALSE;
+                    }
+                }
+            } else {
+                $this->set_error('activation_email_unsuccessful');
+                return FALSE;
+            }
+        } else {
+            $this->set_error('activation_email_unsuccessful');
+            return FALSE;
+        }
+    }
+
+    /**
      * register
      *
      * @return void
@@ -308,6 +368,7 @@ class Ion_auth {
             $data = array(
                 'identity' => $user->{$identity},
                 'id' => $user->id,
+                'username' => $user->username,
                 'email' => $email,
                 'activation' => $activation_code,
             );

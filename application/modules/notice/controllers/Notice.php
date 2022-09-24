@@ -23,6 +23,10 @@ class Notice extends MX_Controller {
     }
 
     public function addNewView() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
         $data['notices'] = $this->notice_model->getNotice();
         $data['settings'] = $this->settings_model->getSettings();
         $this->load->view('home/dashboard', $data); // just the header file
@@ -31,6 +35,9 @@ class Notice extends MX_Controller {
     }
 
     public function addNew() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
 
         $id = $this->input->post('id');
         $title = $this->input->post('title');
@@ -46,7 +53,7 @@ class Notice extends MX_Controller {
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
         // Validating Title Field
-        $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[5]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('title', 'Title', 'trim|required|min_length[5]|max_length[500]|xss_clean');
         // Validating Description Field
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[5]|max_length[100]|xss_clean');
         // Validating date Field
@@ -55,8 +62,15 @@ class Notice extends MX_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                redirect("notice/editNotice?id=$id");
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                // $id = $this->input->get('id');
+                $data['notice'] = $this->notice_model->getNoticeById($id);
+                $this->load->view('home/dashboard'); // just the header file
+                $this->load->view('add_new', $data);
+                $this->load->view('home/footer'); // just the footer file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $this->load->view('home/dashboard'); // just the header file
                 $this->load->view('add_new');
                 $this->load->view('home/footer'); // just the header file
@@ -76,10 +90,10 @@ class Notice extends MX_Controller {
 
             if (empty($id)) {     // Adding New Notice
                 $this->notice_model->insertNotice($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else { // Updating Notice
                 $this->notice_model->updateNotice($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
             redirect('notice'); 
@@ -110,7 +124,7 @@ class Notice extends MX_Controller {
         $data = array();
         $id = $this->input->get('id');
         $this->notice_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('error', lang('record_deleted'));
         redirect('notice');
     }
 

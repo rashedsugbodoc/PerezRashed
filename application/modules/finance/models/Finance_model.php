@@ -13,20 +13,26 @@ class Finance_model extends CI_model {
     function insertPayment($data) {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
-        $this->db->insert('payment', $data2);
+        $this->db->insert('invoice', $data2);
     }
 
     function getPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
+
+    function getPaymentCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('invoice');
+        return $query->num_rows();
+    }    
 
     function getPaymentBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
-                ->from('payment')
+                ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
@@ -37,7 +43,7 @@ class Finance_model extends CI_model {
     function getPaymentByCompanyIdBySearch($company_id, $search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
-                ->from('payment')
+                ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where('company_id', $company_id)
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
@@ -50,7 +56,7 @@ class Finance_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -59,7 +65,7 @@ class Finance_model extends CI_model {
         $this->db->where('company_id', $company_id);
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -74,7 +80,7 @@ class Finance_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
-                ->from('payment')
+                ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
@@ -86,7 +92,7 @@ class Finance_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
-                ->from('payment')
+                ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where('company_id', $company_id)
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
@@ -97,7 +103,14 @@ class Finance_model extends CI_model {
     function getPaymentById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
+        return $query->row();
+    }
+
+    function getPaymentByFinanceNumber($invoice_number) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('invoice_number', $invoice_number);
+        $query = $this->db->get('invoice');
         return $query->row();
     }
 
@@ -105,7 +118,24 @@ class Finance_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
         $this->db->where('patient', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
+        return $query->result();
+    }
+
+    function getPaymentByPatientIdByDoctorId($id, $doctor_id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $id);
+        $this->db->where('doctor', $doctor_id);
+        $query = $this->db->get('invoice');
+        return $query->result();
+    }
+
+    function getPaymentByPatientIdByVisitedProviderId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->order_by('id', 'desc');
+        $this->db->where('patient', $id);
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -115,7 +145,7 @@ class Finance_model extends CI_model {
         $this->db->where('patient', $id);
         $this->db->where('date >=', $date_from);
         $this->db->where('date <=', $date_to);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -123,7 +153,7 @@ class Finance_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('user', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -131,13 +161,13 @@ class Finance_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('company_id', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
     function thisMonthPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment')->result();
+        $query = $this->db->get('invoice')->result();
         $total = array();
         foreach ($query as $q) {
             if (date('m/Y', time()) == date('m/Y', $q->date)) {
@@ -185,7 +215,7 @@ class Finance_model extends CI_model {
 
     function thisDayPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment')->result();
+        $query = $this->db->get('invoice')->result();
         $total = array();
         foreach ($query as $q) {
             if (date('d/m/Y', time()) == date('d/m/Y', $q->date)) {
@@ -233,7 +263,7 @@ class Finance_model extends CI_model {
 
     function thisYearPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment')->result();
+        $query = $this->db->get('invoice')->result();
         $total = array();
         foreach ($query as $q) {
             if (date('Y', time()) == date('Y', $q->date)) {
@@ -317,7 +347,7 @@ class Finance_model extends CI_model {
 
     function getPaymentPerMonthThisYear() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment')->result();
+        $query = $this->db->get('invoice')->result();
         $total = array();
         foreach ($query as $q) {
             if (date('Y', time()) == date('Y', $q->date)) {
@@ -631,7 +661,7 @@ class Finance_model extends CI_model {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('patient', $id);
         $this->db->where('status', 'unpaid');
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -646,7 +676,7 @@ class Finance_model extends CI_model {
     function updatePayment($id, $data) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $this->db->update('payment', $data);
+        $this->db->update('invoice', $data);
     }
 
     function insertOtPayment($data) {
@@ -682,43 +712,59 @@ class Finance_model extends CI_model {
     function insertPaymentCategory($data) {
         $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
         $data2 = array_merge($data, $data1);
-        $this->db->insert('payment_category', $data2);
+        $this->db->insert('charge', $data2);
     }
 
     function getPaymentCategory() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('payment_category');
+        $query = $this->db->get('charge');
+        return $query->result();
+    }
+
+    function getPaymentCategoryByServiceGroup() {
+        // $valid_group_display = 'clinic_consultation_service,doctor_teleconsult_service';
+        // $this->db->where("FIND_IN_SET(name, '".$valid_group_display."')");
+        $group_details = $this->db->get('service_category_group')->result();
+        $group_id = [];
+        foreach ($group_details as $group_detail) {
+            $group_id[] = $group_detail->id;
+        }
+        $valid_group = implode(',', $group_id);
+
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where("FIND_IN_SET(service_category_group_id, '".$valid_group."')");
+        $query = $this->db->get('charge');
         return $query->result();
     }
 
     function getPaymentCategoryById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment_category');
+        $query = $this->db->get('charge');
         return $query->row();
     }
 
     function getDoctorCommissionByCategory($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment_category');
+        $query = $this->db->get('charge');
         return $query->row();
     }
 
     function updatePaymentCategory($id, $data) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $this->db->update('payment_category', $data);
+        $this->db->update('charge', $data);
     }
 
     function deletePayment($id) {
         $this->db->where('id', $id);
-        $this->db->delete('payment');
+        $this->db->delete('invoice');
     }
 
     function deletePaymentCategory($id) {
         $this->db->where('id', $id);
-        $this->db->delete('payment_category');
+        $this->db->delete('charge');
     }
 
     function insertExpense($data) {
@@ -733,6 +779,12 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getExpenseCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('expense');
+        return $query->num_rows();
+    }
+
     function getExpenseBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -741,6 +793,15 @@ class Finance_model extends CI_model {
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR datestring LIKE '%" . $search . "%' OR category LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getExpenseBySearchCount($search) {
+        $query = $this->db->select('*')
+                ->from('expense')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR datestring LIKE '%" . $search . "%' OR category LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getExpenseByLimit($limit, $start) {
@@ -781,8 +842,13 @@ class Finance_model extends CI_model {
     }
 
     function getExpenseCategory() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('expense_category');
+        $query = $this->db->select('*')
+                ->from('expense_category')
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->or_where(array('hospital_id'=> NULL))
+                ->group_end()
+                ->get();
         return $query->result();
     }
 
@@ -801,14 +867,142 @@ class Finance_model extends CI_model {
 
     function getServiceCategory() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->or_where(array('hospital_id'=> NULL));
         $query = $this->db->get('service_category');
         return $query->result();
     }
 
     function getServiceCategoryById($id) {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
         $query = $this->db->get('service_category');
+        return $query->row();
+    }
+
+    function getServiceCategoryGroupByEntityType($searchTerm) {
+        $settings = $this->settings_model->getSettings()->entity_type_id;
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('service_category_group')
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->limit(10);
+            $this->db->where("FIND_IN_SET($settings, applicable_entity_type)");
+            $fetched_records = $this->db->get('service_category_group');
+            $users = $fetched_records->result_array();
+        }
+
+
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('*');
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get('doctor');
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['display_name']);
+        }
+        return $data;
+    }
+
+    function getStaffInfo($searchTerm) {
+        // $settings = $this->settings_model->getSettings()->entity_type_id;
+        // if (!empty($searchTerm)) {
+        //     $query = $this->db->select('a.id as user_id, a.username as user_username')
+        //             ->from('users a')
+        //             ->join('users_groups')
+        //             ->where("(a.id LIKE '%" . $searchTerm . "%' OR a.username LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+        //             ->get();
+        //     $users = $query->result_array();
+        // } else {
+        //     $this->db->select('a.id as user_id, a.username as user_username');
+        //     $this->db->from('users a');
+        //     $this->db->limit(10);
+        //     $fetched_records = $this->db->get();
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+        // // if ($this->ion_auth->in_group(array('Doctor'))) {
+        // //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        // //     $this->db->select('*');
+        // //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // //     $this->db->where('ion_user_id', $doctor_ion_id);
+        // //     $fetched_records = $this->db->get('doctor');
+        // //     $users = $fetched_records->result_array();
+        // // }
+
+
+        // // Initialize Array with fetched data
+        // $data = array();
+        // foreach ($users as $user) {
+        //     $data[] = array("id" => $user['user_id'], "text" => $user['user_username']);
+        // }
+        // return $data;
+
+        $valid_users = '4,6';
+        $user = $this->ion_auth->get_user_id();
+        $user_hospital_ion = $this->db->select('hospital_ion_id')
+                                    ->where('id', $user)
+                                    ->get('users')
+                                    ->row();
+        // $user_groups = $this->getUsersByValidUsers($valid_users);
+
+        if (!empty($searchTerm)) {
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->where('hospital_ion_id', $user_hospital_ion->hospital_ion_id);
+            $this->db->where("(a.user_id LIKE '%" . $searchTerm . "%' OR b.username LIKE '%" . $searchTerm . "%')", NULL, FALSE);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        } else {
+            $this->db->select('a.user_id, a.group_id, b.username, c.name');
+            $this->db->from('users_groups a');
+            $this->db->join('users b', 'b.id=a.user_id', 'left');
+            $this->db->join('groups c', 'c.id=a.group_id', 'left');
+            $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+            $this->db->where('hospital_ion_id', $user_hospital_ion->hospital_ion_id);
+            $this->db->limit(10);
+            $fetched_records = $this->db->get();
+            $users = $fetched_records->result_array();
+        }
+
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('a.user_id, a.group_id, b.username, c.name');
+        //     $this->db->from('users_groups a');
+        //     $this->db->join('users b', 'b.id=a.user_id', 'left');
+        //     $this->db->join('groups c', 'c.id=a.group_id', 'left');
+        //     $this->db->where("FIND_IN_SET(c.id, '".$valid_users."')");
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get();
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['user_id'], "text" => $user['username'].' ('.$user['name'].')');
+        }
+        return $data;
+    }
+
+    function getServiceCategoryGroupById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('service_category_group');
         return $query->row();
     }
 
@@ -845,7 +1039,7 @@ class Finance_model extends CI_model {
 
     function getPaymentByDoctor($doctor) {
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor);
         $query = $this->db->get();
@@ -877,7 +1071,7 @@ class Finance_model extends CI_model {
 
     function getPaymentByDate($date_from, $date_to) {
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('date >=', $date_from);
         $this->db->where('date <=', $date_to);
@@ -887,7 +1081,7 @@ class Finance_model extends CI_model {
 
     function getPaymentByDoctorDate($doctor, $date_from, $date_to) {
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('doctor', $doctor);
         $this->db->where('date >=', $date_from);
@@ -941,15 +1135,15 @@ class Finance_model extends CI_model {
     function makeStatusPaid($id, $patient_id, $data, $data1) {
         $this->db->where('patient', $patient_id);
         $this->db->where('status', 'paid-last');
-        $this->db->update('payment', $data);
+        $this->db->update('invoice', $data);
         $this->db->where('id', $id);
-        $this->db->update('payment', $data1);
+        $this->db->update('invoice', $data1);
     }
 
     function makePaidByPatientIdByStatus($id, $data, $data1) {
         $this->db->where('patient', $id);
         $this->db->where('status', 'paid-last');
-        $this->db->update('payment', $data1);
+        $this->db->update('invoice', $data1);
 
         $this->db->where('patient', $id);
         $this->db->where('status', 'paid-last');
@@ -957,7 +1151,7 @@ class Finance_model extends CI_model {
 
         $this->db->where('patient', $id);
         $this->db->where('status', 'unpaid');
-        $this->db->update('payment', $data);
+        $this->db->update('invoice', $data);
 
         $this->db->where('patient', $id);
         $this->db->where('status', 'unpaid');
@@ -972,7 +1166,7 @@ class Finance_model extends CI_model {
     function lastPaidInvoice($id) {
         $this->db->where('patient', $id);
         $this->db->where('status', 'paid-last');
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->result();
     }
 
@@ -985,7 +1179,7 @@ class Finance_model extends CI_model {
 
     function amountReceived($id, $data) {
         $this->db->where('id', $id);
-        $query = $this->db->update('payment', $data);
+        $query = $this->db->update('invoice', $data);
     }
 
     function otAmountReceived($id, $data) {
@@ -995,7 +1189,7 @@ class Finance_model extends CI_model {
 
     function getThisMonth() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $payments = $this->db->get('payment')->result();
+        $payments = $this->db->get('invoice')->result();
         foreach ($payments as $payment) {
             if (date('m/y', $payment->date) == date('m/y', time())) {
                 $this_month_payment[] = $payment->gross_total;
@@ -1042,7 +1236,7 @@ class Finance_model extends CI_model {
     function getPaymentByUserIdByDate($user, $date_from, $date_to) {
         $this->db->order_by('id', 'desc');
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('user', $user);
         $this->db->where('date >=', $date_from);
@@ -1054,7 +1248,7 @@ class Finance_model extends CI_model {
     function getPaymentByCompanyIdByDate($company, $date_from, $date_to) {
         $this->db->order_by('id', 'desc');
         $this->db->select('*');
-        $this->db->from('payment');
+        $this->db->from('invoice');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('company_id', $company);
         $this->db->where('date >=', $date_from);
@@ -1112,7 +1306,7 @@ class Finance_model extends CI_model {
     }
 
     function getDueBalanceByPatientId($patient) {
-        $query = $this->db->get_where('payment', array('patient' => $patient->id))->result();
+        $query = $this->db->get_where('invoice', array('patient' => $patient->id))->result();
         $deposits = $this->db->get_where('patient_deposit', array('patient' => $patient->id))->result();
         $balance = array();
         $deposit_balance = array();
@@ -1140,7 +1334,7 @@ class Finance_model extends CI_model {
         $last = $this->db->order_by('id', "asc")
                 ->limit(1)
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->get('payment')
+                ->get('invoice')
                 ->row();
         return $last;
     }
@@ -1151,7 +1345,7 @@ class Finance_model extends CI_model {
         $last = $this->db->order_by('id', "desc")
                 ->limit(1)
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->get('payment')
+                ->get('invoice')
                 ->row();
         return $last;
     }
@@ -1159,15 +1353,57 @@ class Finance_model extends CI_model {
     function getPreviousPaymentById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->previous_row();
     }
 
     function getNextPaymentById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
-        $query = $this->db->get('payment');
+        $query = $this->db->get('invoice');
         return $query->row();
+    }
+
+    function getInvoiceStatusByCompanyClassificationName($name, $user) {
+        $this->db->where('applicable_account_classification', $name);
+        $this->db->where("FIND_IN_SET('".$user."', applicable_user_group)");
+        $this->db->order_by('id', 'asc');
+        $query = $this->db->get('invoice_payment_status');
+        return $query->result();
+
+    }
+
+    function getInvoicePaymentStatusById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('invoice_payment_status');
+        return $query->row();
+    }
+
+    function getPaymentByEncounterIdByPatientId($encounter_id, $patient_id) {
+        $this->db->where('encounter_id', $encounter_id);
+        $this->db->where('patient', $patient_id);
+        $query = $this->db->get('invoice');
+        return $query->result();
+    }
+
+    function validateInvoiceNumber($invoice_number) {
+        $this->db->where('invoice_number', $invoice_number);
+        $query = $this->db->get('invoice');
+        return $query->row();
+    }
+
+    function checkPhysicalChargesListByApplicableStaffId($id) {
+        $this->db->where('service_category_group_id', 9);
+        $this->db->where('applicable_staff_id', $id);
+        $query = $this->db->get('charge');
+        return $query->num_rows();
+    }
+
+    function checkVirtualChargesListByApplicableStaffId($id) {
+        $this->db->where('service_category_group_id', 10);
+        $this->db->where('applicable_staff_id', $id);
+        $query = $this->db->get('charge');
+        return $query->num_rows();
     }
 
 }

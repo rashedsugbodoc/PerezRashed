@@ -76,7 +76,7 @@
 
                 <?php } ?>
 
-                <?php if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) { ?>
+                <?php if ($this->ion_auth->in_group(array('CompanyUser', 'Accountant'))) { ?>
                     <section class="col-md-5 no-print row pull-left"> 
                         <a href="finance/accountActivityReport?account=<?php echo $company->id; ?>">
                             <div class="btn-group">
@@ -152,7 +152,7 @@
                 }
             </style>
             <div class="col-md-12">
-                <?php if ($this->ion_auth->in_group(array('Accountant', 'Receptionist'))) { ?>
+                <?php if ($this->ion_auth->in_group(array('Receptionist'))) { ?>
 
 
                     <section class="col-md-6 no-print">
@@ -186,7 +186,7 @@
 
                 <?php } ?>
 
-                <?php if ($this->ion_auth->in_group(array('admin')) || $this->ion_auth->get_user_id() == '341') { ?>
+                <?php if ($this->ion_auth->in_group(array('admin', 'CompanyUser', 'Accountant')) || $this->ion_auth->get_user_id() == '341') { ?>
                     <div class="row">
                         <section class="col-md-12 no-print">
                             <form role="form" class="f_report" action="finance/allAccountActivityReportDateWise" method="post" enctype="multipart/form-data">
@@ -264,12 +264,12 @@
                                             <tr class="">
                                                 <td><?php echo date('d/m/y', $payment->date); ?></td>
                                                 <td> <?php echo $payment->id; ?></td>
-                                                <td><?php echo $settings->currency; ?> <?php echo $payment->gross_total; ?></td>
+                                                <td><?php echo $settings->currency; ?> <?php echo number_format($payment->gross_total,2); ?></td>
                                                 <td><?php
                                                     if (!empty($payment->amount_received)) {
                                                         echo $settings->currency;
                                                     }
-                                                    ?> <?php echo $payment->amount_received; ?></td>
+                                                    ?> <?php echo number_format($payment->amount_received,2); ?></td>
 
                                             </tr>
 
@@ -315,8 +315,8 @@
                                 <tr class="total">
                                     <td></td>
                                     <td> <strong> <?php echo lang('total'); ?> </strong></td>
-                                    <td> <strong> <?php echo $settings->currency; ?> <?php echo $total_p; ?> </strong></td>
-                                    <td> <strong> <?php echo $settings->currency; ?> <?php echo $total_d; ?> </strong></td>
+                                    <td> <strong> <?php echo $settings->currency; ?> <?php echo number_format($total_p,2); ?> </strong></td>
+                                    <td> <strong> <?php echo $settings->currency; ?> <?php echo number_format($total_d,2); ?> </strong></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -46,6 +46,15 @@
 
 <script type="text/javascript" src="common/assets/bootstrap-fileupload/bootstrap-fileupload.js"></script>
 
+<!-- popover js -->
+<script src="<?php echo base_url('public/assets/js/popover.js'); ?>"></script>
+
+<!-- Notifications js -->
+<script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
+<script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
+<script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
+<script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
 
 <?php
 $language = $this->db->get('settings')->row()->language;
@@ -217,9 +226,46 @@ if ($language == 'english') {
 
 <script>
     $(document).ready(function () {
-        $(".notification-alert").hide();
-        $(".notification-alert").fadeIn(1000);
-        $(".notification-alert").delay(4000).slideUp(2000);
+        var error = "<?php echo $this->session->flashdata('error') ?>";
+        var success = "<?php echo $this->session->flashdata('success') ?>";
+        var notice = "<?php echo $this->session->flashdata('notice') ?>";
+        var warning = "<?php echo $this->session->flashdata('warning') ?>";
+
+
+        if (success) {
+            event.preventDefault();
+            event.stopPropagation();
+            return $.growl.success({
+                message: success
+            });
+        }
+        if (error) {
+            event.preventDefault();
+            event.stopPropagation();
+            return $.growl.error({
+                message: error
+            });
+        }
+        if (warning) {
+            event.preventDefault();
+            event.stopPropagation();
+            return $.growl.warning({
+                message: warning
+            });
+        }
+        if (notice) {
+            event.preventDefault();
+            event.stopPropagation();
+            return $.growl.notice({
+                message: notice
+            });
+        }
+
+        var error = "<?php unset($_SESSION['error']); ?>";
+        var success = "<?php unset($_SESSION['success']); ?>";
+        var warning = "<?php unset($_SESSION['warning']); ?>";
+        var notice = "<?php unset($_SESSION['notice']); ?>";
+
     });
 </script>
 

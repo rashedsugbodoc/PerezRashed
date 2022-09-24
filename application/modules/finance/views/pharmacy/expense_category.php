@@ -24,7 +24,7 @@
                             <tr>
                                 <th> <?php echo lang('category'); ?> </th>
                                 <th> <?php echo lang('description'); ?> </th>
-                                <?php if ($this->ion_auth->in_group('admin')) { ?>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                     <th> <?php echo lang('options'); ?> </th>
                                 <?php } ?>
                             </tr>
@@ -44,7 +44,7 @@
                             <tr class="">
                                 <td><?php echo $category->category; ?></td>
                                 <td> <?php echo $category->description; ?></td>
-                                <?php if ($this->ion_auth->in_group('admin')) { ?>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Accountant'))) { ?>
                                     <td>
                                         <a class="btn btn-info btn-xs editbutton" href="finance/pharmacy/editExpenseCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"></i>  <?php echo lang('edit'); ?></a>
                                         <a class="btn btn-danger btn-xs" href="finance/pharmacy/deleteExpenseCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i>  <?php echo lang('delete'); ?></a>

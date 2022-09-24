@@ -929,7 +929,7 @@ class Ion_auth_model extends CI_Model
 		    'password'   => $password,
 		    'email'      => $email,
 		    'ip_address' => $ip_address,
-		    'created_on' => date('Y-m-d H:i:s', time()),
+		    'created_on' => gmdate('Y-m-d H:i:s'),
 		    'active'     => ($manual_activation === false ? 1 : 0)
 		);
 
@@ -1696,7 +1696,7 @@ class Ion_auth_model extends CI_Model
 
 		$this->trigger_events('extra_where');
 
-		$this->db->update($this->tables['users'], array('last_login' => date('Y-m-d H:i:s',time())), array('id' => $id));
+		$this->db->update($this->tables['users'], array('last_login' => gmdate('Y-m-d H:i:s')), array('id' => $id));
 
 		return $this->db->affected_rows() == 1;
 	}

@@ -8,6 +8,8 @@ class Auth extends MX_Controller {
 		$this->load->database();
 		$this->load->library(array('ion_auth','form_validation'));
 		$this->load->helper(array('url','language'));
+		$this->load->model('patient/patient_model');
+		$this->load->model('location/location_model');
 
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
@@ -49,6 +51,8 @@ class Auth extends MX_Controller {
 			redirect('home');
 		}
 		$data['title'] = "Login";
+		$data['csrf_token_name'] = $this->security->get_csrf_token_name();
+        $data['csrf_token_hash'] = $this->security->get_csrf_hash();
 
 		//validate form input
 		$this->form_validation->set_rules('identity', 'Identity', 'required');
@@ -63,8 +67,14 @@ class Auth extends MX_Controller {
 			if ($this->ion_auth->login($this->input->post('identity'), $this->input->post('password'), $remember))
 			{
 				//if the login is successful
-				//redirect them back to the home page
+				//check if the login was redirected from an originally requested URL and redirect to that if true
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				if ($this->session->userdata('last_page')) {
+					$redirectURL = $this->session->userdata('last_page');
+					$this->session->unset_userdata('last_page');
+					redirect($redirectURL);
+				}
+				//or else redirect them back to the home page				
 				redirect('home', 'refresh');
 			}
 			else
@@ -102,6 +112,7 @@ class Auth extends MX_Controller {
 
 		//log the user out
 		$logout = $this->ion_auth->logout();
+		unset($_SESSION['activeTab']);
 
 		//redirect them to the login page
 		$this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -356,9 +367,38 @@ class Auth extends MX_Controller {
 
 		if ($activation)
 		{
+			/*remove sessions start*/
+			$this->ion_auth_model->trigger_events('logout');
+
+	        $identity = $this->config->item('identity', 'ion_auth');
+	        $this->session->unset_userdata(array($identity => '', 'id' => '', 'user_id' => ''));
+
+	        //delete the remember me cookies if they exist
+	        if (get_cookie($this->config->item('identity_cookie_name', 'ion_auth'))) {
+	            delete_cookie($this->config->item('identity_cookie_name', 'ion_auth'));
+	        }
+	        if (get_cookie($this->config->item('remember_cookie_name', 'ion_auth'))) {
+	            delete_cookie($this->config->item('remember_cookie_name', 'ion_auth'));
+	        }
+
+	        //Destroy the session
+	        $this->session->sess_destroy();
+
+	        //Recreate the session
+	        if (substr(CI_VERSION, 0, 1) == '2') {
+	            $this->session->sess_create();
+	        } else {
+	            $this->session->sess_regenerate(TRUE);
+	        }
+			/*remove sessions end*/
+
 			//redirect them to the auth page
-			$this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect("auth", 'refresh');
+			$this->session->set_flashdata('message', $this->ion_auth->messages('activate_successful'));
+			$data['message'] = $this->session->flashdata('message');
+			// $data['message'] = $this->ion_auth->messages();
+			// $this->load->view('auth/login', $data);
+			// redirect("auth/login");
+			$this->_render_page('auth/login', $data);
 		}
 		else
 		{
@@ -414,46 +454,183 @@ class Auth extends MX_Controller {
 		}
 	}
 
+	//resend activation link
+	function resend_activation()
+	{
+		//setting validation rules by checking wheather identity is username or email
+		if($this->config->item('identity', 'ion_auth') == 'username' )
+		{
+		   $this->form_validation->set_rules('email', $this->lang->line('resend_activation_username_identity_label'), 'required');
+		}
+		else
+		{
+		   $this->form_validation->set_rules('email', $this->lang->line('resend_activation_validation_email_label'), 'required|valid_email');
+		}
+
+
+		if ($this->form_validation->run() == false)
+		{
+			//setup the input
+			$data['email'] = array('name' => 'email',
+				'id' => 'email',
+			);
+
+			if ( $this->config->item('identity', 'ion_auth') == 'username' ){
+				$data['identity_label'] = $this->lang->line('resend_activation_username_identity_label');
+			}
+			else
+			{
+				$data['identity_label'] = $this->lang->line('resend_activation_email_identity_label');
+			}
+
+			//set any errors and display the form
+			$data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+			$this->_render_page('auth/resend_activation', $data);
+		}
+		else
+		{
+			// get identity from username or email
+			if ( $this->config->item('identity', 'ion_auth') == 'username' ){
+				$identity = $this->ion_auth->where('username', strtolower($this->input->post('email')))->users()->row();
+			}
+			else
+			{
+				$identity = $this->ion_auth->where('email', strtolower($this->input->post('email')))->users()->row();
+			}
+	            	if(empty($identity)) {
+
+	            		if($this->config->item('identity', 'ion_auth') == 'username')
+		            	{
+                                   $this->ion_auth->set_message('resend_activation_username_not_found');
+		            	}
+		            	else
+		            	{
+		            	   $this->ion_auth->set_message('resend_activation_email_not_found');
+		            	}
+
+		                $this->session->set_flashdata('message', $this->ion_auth->messages());
+                		redirect("auth/resend_activation", 'refresh');
+            		}
+
+			//run the resend activation method to email an activation code to the user
+			$activation = $this->ion_auth->resend_activation($identity->{$this->config->item('identity', 'ion_auth')});
+
+			if ($activation)
+			{
+				//if there were no errors
+				$this->session->set_flashdata('message', $this->ion_auth->messages());
+				redirect("auth/login", 'refresh'); //we should display a confirmation page here instead of the login page
+			}
+			else
+			{
+				$this->session->set_flashdata('message', $this->ion_auth->errors());
+				redirect("auth/resend_activation", 'refresh');
+			}
+		}
+	}
+
 	//create a new user
-	function create_user()
+	function register()
 	{
 		$data['title'] = "Create User";
+		$data['civil_status'] = $this->patient_model->getCivilStatus();
+		$data['blood_groups'] = $this->patient_model->getBloodGroup();
+		$data['countries'] = $this->location_model->getCountry();
+		$firstname = $this->input->post('first_name');
+		$middlename = $this->input->post('middle_name');
+		$lastname = $this->input->post('last_name');
+		$suffix = $this->input->post('suffix');
+		$company = $this->input->post('company');
+		$phone = $this->input->post('mobile');
+		$email = $this->input->post('email');
+		$birthdate = $this->input->post('bdate');
+		$sex = $this->input->post('gender');
+		$civil_status = $this->input->post('civil_status');
+		$bloodgroup = $this->input->post('blood_group');
+		$allergies = $this->input->post('allergies');
+		$address = $this->input->post('address');
+		$country_id = $this->input->post('country_id');
+		$state_id = $this->input->post('state_id');
+		$city_id = $this->input->post('city_id');
+		$barangay_id = $this->input->post('barangay_id');
+		$postal = $this->input->post('postal');
+		$password = $this->input->post('password');
+		$phone = $this->input->post('phone');
 
-		if (!$this->ion_auth->logged_in() || !$this->ion_auth->is_admin())
+		if ($this->ion_auth->logged_in())
 		{
-			redirect('auth', 'refresh');
+			//redirect('auth', 'refresh');
+			$this->ion_auth->logout();
+		}
+		if (empty($suffix)) {
+			$suffix = null;
 		}
 
 		$tables = $this->config->item('tables','ion_auth');
 
 		//validate form input
-		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required');
-		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'));
-		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]');
-		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'required');
-		$this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'));
-		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]');
-		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required');
+		$this->form_validation->set_rules('first_name', $this->lang->line('create_user_validation_fname_label'), 'required|max_length[100]|xss_clean');
+		$this->form_validation->set_rules('middle_name', $this->lang->line('create_user_validation_mname_label'), 'max_length[100]|xss_clean');
+		$this->form_validation->set_rules('last_name', $this->lang->line('create_user_validation_lname_label'), 'required|max_length[100]|xss_clean');
+		$this->form_validation->set_rules('email', $this->lang->line('create_user_validation_email_label'), 'required|valid_email|is_unique['.$tables['users'].'.email]|xss_clean');
+		$this->form_validation->set_rules('mobile', $this->lang->line('create_user_validation_phone_label'), 'required|min_length[7]|max_length[30]|xss_clean');
+		$this->form_validation->set_rules('phone', $this->lang->line('create_user_validation_phone_label'), 'min_length[7]|max_length[30]|xss_clean');
+		$this->form_validation->set_rules('allergies', $this->lang->line('allergies'), 'max_length[100]|xss_clean');
+		$this->form_validation->set_rules('company', $this->lang->line('create_user_validation_company_label'), 'max_length[100]|xss_clean');
+		$this->form_validation->set_rules('address', $this->lang->line('create_user_validation_address_label'), 'required|max_length[100]|xss_clean');
+		$this->form_validation->set_rules('postal', $this->lang->line('postal_code'), 'max_length[80]|xss_clean');
+		$this->form_validation->set_rules('password', $this->lang->line('create_user_validation_password_label'), 'required|min_length[' . $this->config->item('min_password_length', 'ion_auth') . ']|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|matches[password_confirm]|xss_clean');
+		$this->form_validation->set_rules('password_confirm', $this->lang->line('create_user_validation_password_confirm_label'), 'required|max_length[' . $this->config->item('max_password_length', 'ion_auth') . ']|xss_clean');
 
 		if ($this->form_validation->run() == true)
 		{
-			$username = strtolower($this->input->post('first_name')) . ' ' . strtolower($this->input->post('last_name'));
-			$email    = strtolower($this->input->post('email'));
+			$fullname = $firstname.' '.$middlename.' '.$lastname.' '.$suffix;
+			$today =  gmdate('Y-m-d H:i:s');
+			$email    = strtolower($email);
 			$password = $this->input->post('password');
+			$dfg = 5;
 
-			$additional_data = array(
-				'first_name' => $this->input->post('first_name'),
-				'last_name'  => $this->input->post('last_name'),
-				'company'    => $this->input->post('company'),
-				'phone'      => $this->input->post('phone'),
+			$patient_data = array(
+				'firstname' 	=> $firstname,
+				'lastname'  	=> $lastname,
+				'name'			=> $fullname,
+				'company'		=> $company,
+				'phone'			=> $phone,
+				'email'			=> $email,
+				'middlename' 	=> $middlename,
+				'suffix'		=> $suffix,
+				'birthdate'	 	=> $birthdate,
+				'sex'		 	=> $sex,
+				'civil_status'	=> $civil_status,
+				'bloodgroup'	=> $bloodgroup,
+				'allergies'		=> $allergies,
+				'address'		=> $address,
+				'country_id'	=> $country_id,
+				'state_id'		=> $state_id,
+				'city_id'		=> $city_id,
+				'barangay_id'	=> $barangay_id,
+				'postal'	    => $postal,
+				'registration_time' => $today,
+				'how_added' => 'auth/register',
+				'privacy_level_id' => 3
 			);
 		}
-		if ($this->form_validation->run() == true && $this->ion_auth->register($username, $password, $email, $additional_data))
+		if ($this->form_validation->run() == true && $this->ion_auth->register($fullname, $password, $email, $dfg))
 		{
 			//check to see if we are creating the user
 			//redirect them back to the admin page
+			$countryname = $this->location_model->getCountryById($country_id)->name;
+			$ion_user_id = $this->db->get_where('users', array('email' => $email))->row()->id;
+			$this->patient_model->insertPatientInSystemHospital($patient_data);
+			$patient_user_id = $this->db->get_where('patient', array('email' => $email))->row()->id;
+			$patient_number = $countryname[0]. gmdate("y") .dechex(gmdate("n")). format_number_with_digits($patient_user_id, 4);
+            $id_info = array('ion_user_id' => $ion_user_id, 'patient_id' => $patient_number);
+            $this->patient_model->updatePatient($patient_user_id, $id_info);
+            $this->hospital_model->addHospitalIdToIonUser($ion_user_id, 1);
 			$this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect("auth", 'refresh');
+			//redirect("auth", 'refresh');
+			$data['message'] = $this->ion_auth->messages();
+			$this->load->view('auth/login', $data);
 		}
 		else
 		{
@@ -461,52 +638,10 @@ class Auth extends MX_Controller {
 			//set the flash data error message if there is one
 			$data['message'] = (validation_errors() ? validation_errors() : ($this->ion_auth->errors() ? $this->ion_auth->errors() : $this->session->flashdata('message')));
 
-			$data['first_name'] = array(
-				'name'  => 'first_name',
-				'id'    => 'first_name',
-				'type'  => 'text',
-				'value' => $this->form_validation->set_value('first_name'),
-			);
-			$data['last_name'] = array(
-				'name'  => 'last_name',
-				'id'    => 'last_name',
-				'type'  => 'text',
-				'value' => $this->form_validation->set_value('last_name'),
-			);
-			$data['email'] = array(
-				'name'  => 'email',
-				'id'    => 'email',
-				'type'  => 'text',
-				'value' => $this->form_validation->set_value('email'),
-			);
-			$data['company'] = array(
-				'name'  => 'company',
-				'id'    => 'company',
-				'type'  => 'text',
-				'value' => $this->form_validation->set_value('company'),
-			);
-			$data['phone'] = array(
-				'name'  => 'phone',
-				'id'    => 'phone',
-				'type'  => 'text',
-				'value' => $this->form_validation->set_value('phone'),
-			);
-			$data['password'] = array(
-				'name'  => 'password',
-				'id'    => 'password',
-				'type'  => 'password',
-				'value' => $this->form_validation->set_value('password'),
-			);
-			$data['password_confirm'] = array(
-				'name'  => 'password_confirm',
-				'id'    => 'password_confirm',
-				'type'  => 'password',
-				'value' => $this->form_validation->set_value('password_confirm'),
-			);
-
-			$this->_render_page('auth/create_user', $data);
+			$this->_render_page('auth/register', $data);
 		}
 	}
+
 
 	//edit a user
 	function edit_user($id)
@@ -804,5 +939,32 @@ class Auth extends MX_Controller {
 
 		if (!$render) return $view_html;
 	}
+
+	function getStateByCountryIdByJason() {
+        $data = array();
+        $country_id = $this->input->get('country');
+
+        $data['state'] = $this->location_model->getStateByCountryId($country_id);
+        
+        echo json_encode($data);        
+    }
+
+    public function getCityByStateIdByJason() {
+        $data = array();
+        $state_id = $this->input->get('state');
+
+        $data['city'] = $this->location_model->getCityByStateId($state_id);
+
+        echo json_encode($data);        
+    }
+
+    public function getBarangayByCityIdByJason() {
+        $data = array();
+        $city_id = $this->input->get('city');
+
+        $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
+
+        echo json_encode($data);        
+    }
 
 }

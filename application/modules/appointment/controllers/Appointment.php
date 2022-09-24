@@ -7,15 +7,17 @@ class Appointment extends MX_Controller {
 
     function __construct() {
         parent::__construct();
-
+        $this->load->model('branch/branch_model');
         $this->load->model('appointment_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('patient/patient_model');
         $this->load->model('sms/sms_model');
         $this->load->module('sms');
-
-
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Patient', 'Receptionist'))) {
+        $this->load->model('location/location_model');
+        $this->load->model('service/service_model');
+        $this->load->model('encounter/encounter_model');
+        $this->load->model('finance/finance_model');
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor', 'Patient', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -31,18 +33,46 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('appointment', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('appointmentv2', $data);
+        // $this->load->view('home/footer'); // just the header file
+    }
+
+    public function bookConsultation() {
+        if (!$this->ion_auth->in_group(array('Patient'))) {
+            redirect('home/permission');
+        }
+
+        $data['id'] = $this->input->get('id');
+        $data['doctor_id'] = $this->input->get('doctor_id');
+        $data['provider'] = $this->input->get('provider_id');
+        $data['doctor'] = $this->doctor_model->getDoctorByIdFromConsultation($data['doctor_id']);
+
+        // $data['branches'] = $this->branch_model->getBranches();
+        $data['settings'] = $this->settings_model->getSettings();
+        $barangay_id = $data['settings']->barangay_id;
+        $state_id = $data['settings']->state_id;
+        $city_id = $data['settings']->city_id;
+        $country_id = $data['settings']->country_id;
+
+        $data['state'] = $this->location_model->getStateById($state_id);
+        $data['city'] = $this->location_model->getCityById($city_id);
+        $data['barangay'] = $this->location_model->getBarangayById($barangay_id);
+        $data['country'] = $this->location_model->getCountryById($country_id);
+        $patient_ion_id = $this->ion_auth->get_user_id();
+        $data['patient_id'] = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
+
+        $this->load->view('home/dashboardv2');
+        $this->load->view('book_consultation',$data);
     }
 
     public function request() {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('appointment_request', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('appointment_requestv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function todays() {
@@ -54,9 +84,9 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('todays', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('todaysv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function upcoming() {
@@ -68,9 +98,9 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('upcoming', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('upcomingv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function myTodays() {
@@ -82,14 +112,14 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('my_todays', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('my_todaysv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function calendar() {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -104,34 +134,62 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('calendar', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('calendarv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNewView() {
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
+
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Nurse', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
-
-        $data['patients'] = $this->patient_model->getPatient();
-        $data['doctors'] = $this->doctor_model->getDoctor();
+        $redirect = $this->input->get('redirect');
+        $patient = $this->input->get('patient_id');
+        $data['encounter'] = $this->input->get('encounter_id');
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
+        if (!empty($root) && !empty($method)) {
+            $redirect = $root.'/'.$method.'?id='.$patient.'&encounter_id='.$data['encounter'];
+        }
+        $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($patient);
+        $data['redirect'] = $redirect;
+        // $data['patients'] = $this->patient_model->getPatient();
+        // $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addNew() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient', 'Nurse', 'Clerk', 'Midwife'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->post('id');
         $patient = $this->input->post('patient');
         $doctor = $this->input->post('doctor');
         $date = $this->input->post('date');
-        if (!empty($date)) {
-            $date = strtotime($date);
+        $service_category_group = $this->input->post('service_category_group');
+        $service = $this->input->post('service');
+        $location = $this->input->post('branch');
+        $appointment_registration = gmdate('Y-m-d H:i:s');
+        $staff = $this->input->post('staff');
+        $encounter_id = $this->input->post('encounter_id');
+
+        if (empty($encounter_id)) {
+            $encounter_id = null;
         }
 
+        $virtual = $this->appointment_model->getServiceCategoryById($service_category_group)->is_virtual;
+
+        if (!empty($virtual)) {
+            $service_type = "Virtual";
+        } else {
+            $service_type = "Inperson";
+        }
 
         $time_slot = $this->input->post('time_slot');
 
@@ -140,6 +198,14 @@ class Appointment extends MX_Controller {
         $s_time = trim($time_slot_explode[0]);
         $e_time = trim($time_slot_explode[1]);
 
+        $date1 = $date;
+        if (!empty($date)) {
+            $date = strtotime($date);
+        }
+
+        $date_time_combined = strtotime($date1 . ' ' . $s_time);
+
+        $appointment_date = gmdate('Y-m-d H:i:s', $date_time_combined);
 
         $remarks = $this->input->post('remarks');
 
@@ -158,9 +224,9 @@ class Appointment extends MX_Controller {
 
         $user = $this->ion_auth->get_user_id();
 
-        if ($this->ion_auth->in_group(array('Patient'))) {
-            $user = '';
-        }
+        // if ($this->ion_auth->in_group(array('Patient'))) {
+        //     $user = '';
+        // }
 
 
 
@@ -196,12 +262,20 @@ class Appointment extends MX_Controller {
         if ($patient == 'add_new') {
             $this->form_validation->set_rules('p_name', 'Patient Name', 'trim|required|min_length[1]|max_length[100]|xss_clean');
             $this->form_validation->set_rules('p_phone', 'Patient Phone', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+            $this->form_validation->set_rules('p_email', 'Email', 'trim|required|valid_email|min_length[1]|max_length[1000]|xss_clean');
+            $this->form_validation->set_rules('p_age', 'Age', 'trim|numeric|required|min_length[1]|max_length[100]|xss_clean');
         }
 
         // Validating Name Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         // Validating Password Field
         $this->form_validation->set_rules('doctor', 'Doctor', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Email Field
+
+        if ($time_slot == 'Not Selected') {
+                $this->form_validation->set_rules('time_slot', 'Timeslot', 'trim|required|check_default|xss_clean');
+                $this->form_validation->set_message('check_default', lang('time_slot_not_selected_error'));
+        }
 
         // Validating Email Field
         $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
@@ -210,18 +284,28 @@ class Appointment extends MX_Controller {
         // Validating Email Field
         $this->form_validation->set_rules('e_time', 'End Time', 'trim|min_length[1]|max_length[100]|xss_clean');
         // Validating Address Field   
-        $this->form_validation->set_rules('remarks', 'Remarks', 'trim|min_length[1]|max_length[1000]|xss_clean');
+        $this->form_validation->set_rules('remarks', 'Remarks', 'trim|min_length[1]|max_length[500]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                redirect("appointment/editAppointment?id=$id");
+                $data = array();
+                // $id = $this->input->get('id');
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data['settings'] = $this->settings_model->getSettings();
+                $data['appointment'] = $this->appointment_model->getAppointmentById($id);
+                $data['patients'] = $this->patient_model->getPatientById($data['appointment']->patient);
+                $data['doctors'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             } else {
+                $this->session->set_flashdata('error', lang('validation_error'));
                 $data['patients'] = $this->patient_model->getPatient();
                 $data['doctors'] = $this->doctor_model->getDoctor();
                 $data['settings'] = $this->settings_model->getSettings();
-                $this->load->view('home/dashboard', $data); // just the header file
-                $this->load->view('add_new', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2', $data); // just the header file
+                $this->load->view('add_newv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
 
@@ -229,7 +313,7 @@ class Appointment extends MX_Controller {
 
                 $limit = $this->patient_model->getLimit();
                 if ($limit <= 0) {
-                    $this->session->set_flashdata('feedback', lang('patient_limit_exceed'));
+                    $this->session->set_flashdata('warning', lang('patient_limit_exceed'));
                     redirect('patient');
                 }
 
@@ -247,7 +331,7 @@ class Appointment extends MX_Controller {
                 $username = $this->input->post('p_name');
                 // Adding New Patient
                 if ($this->ion_auth->email_check($p_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $p_email, $dfg);
@@ -288,20 +372,58 @@ class Appointment extends MX_Controller {
                 'date' => $date,
                 's_time' => $s_time,
                 'e_time' => $e_time,
-                'time_slot' => $time_slot,
                 'remarks' => $remarks,
+                'time_slot' => $time_slot,
                 'add_date' => $add_date,
                 'registration_time' => $registration_time,
+                'location_id' => $location,
                 'status' => $status,
                 's_time_key' => $s_time_key,
                 'user' => $user,
                 'request' => $request,
                 'room_id' => $room_id,
-                'live_meeting_link' => $live_meeting_link
+                'live_meeting_link' => $live_meeting_link,
+                'service_category_group_id' => $service_category_group,
+                'service_id' => $service,
+                'appointment_registration_time' => $appointment_registration,
+                'appointment_date' => $appointment_date,
+                'service_type' => $service_type,
+                'encounter_id' => $encounter_id,
             );
             $username = $this->input->post('name');
             if (empty($id)) {     // Adding New department
                 $this->appointment_model->insertAppointment($data);
+                // $inserted_id = $this->db->insert_id();
+                // $encounter_details = $this->encounter_model->getEncounterById($encounter_id);
+
+                // if (empty($encounter_details->appointment_id)) {
+                //     $data_appointment = array(
+                //         'appointment_id' => $inserted_id,
+                //     );
+                //     $this->encounter_model->updateEncounter($encounter_id, $data_appointment);
+                // } 
+                // else {
+                //     $date = gmdate('Y-m-d H:i:s');
+
+                //     $data_encounter = array(
+                //         'encounter_type_id' => $encounter_details->,
+                //         'patient_id' => $encounter_details->patient_id,
+                //         'doctor' => $encounter_details->doctor,
+                //         'rendering_staff_id' => $encounter_details->rendering_staff_id,
+                //         'rendering_staff_name' => $encounter_details->,
+                //         'referral_facility_id' => $encounter_details->,
+                //         'referral_facility_name' => $encounter_details->,
+                //         'referral_staff_id' => $encounter_details->,
+                //         'referral_staff_name' => $encounter_details->,
+                //         'started_at' => $date,
+                //         'waiting_started' => $date,
+                //         'created_at' => $date,
+                //         'created_user_id' => $user,
+                //         'encounter_status' => $encounter_details->,
+                //         'location_id' => $encounter_details->,
+                //         'reason' => $encounter_details->,
+                //     );
+                // }
 
                 /* if (!empty($sms)) {
                   $this->sms->sendSmsDuringAppointment($patient, $doctor, $date, $s_time, $e_time);
@@ -321,7 +443,7 @@ class Appointment extends MX_Controller {
                     $this->patient_model->updatePatient($patient, $data_d);
                 }
                 $this->sendSmsDuringAppointment($id, $data, $patient, $doctor, $status);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else { // Updating department
                 $previous_status = $this->appointment_model->getAppointmentById($id)->status;
                 if ($previous_status != "Confirmed") {
@@ -331,7 +453,7 @@ class Appointment extends MX_Controller {
                 }
                 $this->appointment_model->updateAppointment($id, $data);
 
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             // Loading View
 
@@ -341,6 +463,240 @@ class Appointment extends MX_Controller {
                 redirect('appointment');
             }
         }
+    }
+
+    public function addNewBookConsultation() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Patient'))) {
+            redirect('home/permission');
+        }
+
+        $data['settings'] = $this->settings_model->getSettings();
+
+        // $id = $this->input->post('id');
+        $id = $this->session->userdata('appointment_id');
+        $patient = $this->input->post('patient');
+        $doctor = $this->input->post('doctor');
+        $date = $this->input->post('date');
+        $service_category_group = $this->input->post('service_category_group');
+        $service = $this->input->post('service');
+        $location = $this->input->post('branch');
+        $appointment_registration = date('Y-m-d H:i:s', now('UTC'));
+
+        $virtual = $this->appointment_model->getServiceCategoryById($service_category_group)->is_virtual;
+
+        if (!empty($virtual)) {
+            $service_type = "Virtual";
+        } else {
+            $service_type = "Inperson";
+        }
+
+        $date1 = $date;
+        if (!empty($date)) {
+            $date = strtotime($date);
+        }
+
+
+        $time_slot = $this->input->post('time_slot');
+
+        $time_slot_explode = explode('To', $time_slot);
+
+        $s_time = trim($time_slot_explode[0]);
+        $e_time = trim($time_slot_explode[1]);
+
+        $date_time_combined = strtotime($date1 . ' ' . $s_time);
+
+        $appointment_date = gmdate('Y-m-d H:i:s', $date_time_combined);
+
+        $remarks = $this->input->post('remarks');
+
+        $sms = $this->input->post('sms');
+
+        $status = $this->input->post('status');
+
+        $redirect = $this->input->post('redirect');
+
+        $request = $this->input->post('request');
+
+        if (empty($request)) {
+            $request = '';
+        }
+
+
+        $user = $this->ion_auth->get_user_id();
+
+        // if ($this->ion_auth->in_group(array('Patient'))) {
+        //     $user = '';
+        // }
+
+
+
+        if ((empty($id))) {
+            $add_date = date('m/d/y');
+            $registration_time = time();
+            $patient_add_date = $add_date;
+            $patient_registration_time = $registration_time;
+        } else {
+            $add_date = $this->appointment_model->getAppointmentById($id)->add_date;
+            $registration_time = $this->appointment_model->getAppointmentById($id)->registration_time;
+        }
+
+        $s_time_key = $this->getArrayKey($s_time);
+
+
+        $p_name = $this->input->post('p_name');
+        $p_email = $this->input->post('p_email');
+        if (empty($p_email)) {
+            $p_email = $p_name . '-' . rand(1, 1000) . '-' . $p_name . '-' . rand(1, 1000) . '@example.com';
+        }
+        if (!empty($p_name)) {
+            $password = $p_name . '-' . rand(1, 100000000);
+        }
+        $p_phone = $this->input->post('p_phone');
+        $p_age = $this->input->post('p_age');
+        $p_gender = $this->input->post('p_gender');
+        $patient_id = rand(10000, 1000000);
+
+        $this->load->library('form_validation');
+        $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
+
+        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Password Field
+        $this->form_validation->set_rules('doctor', 'Doctor', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Email Field
+
+        if ($time_slot == 'Not Selected') {
+                $this->form_validation->set_rules('time_slot', 'Timeslot', 'trim|required|check_default|xss_clean');
+                $this->form_validation->set_message('check_default', lang('time_slot_not_selected_error'));
+        }
+
+        // Validating Email Field
+        $this->form_validation->set_rules('date', 'Date', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        // Validating Email Field
+        $this->form_validation->set_rules('s_time', 'Start Time', 'trim|min_length[1]|max_length[100]|xss_clean');
+        // Validating Email Field
+        $this->form_validation->set_rules('e_time', 'End Time', 'trim|min_length[1]|max_length[100]|xss_clean');
+        // Validating Address Field   
+        $this->form_validation->set_rules('remarks', 'Remarks', 'trim|max_length[500]|xss_clean');
+
+        if ($this->form_validation->run() == FALSE) {
+            echo "failed";
+        } else {
+            if (empty($id)) {
+                $room_id = 'hms-meeting-' . $patient_phone . '-' . rand(10000, 1000000) . '-' . $this->hospital_id;
+                $live_meeting_link = 'https://meet.jit.si/' . $room_id;
+            } else {
+                $appointment_details = $this->appointment_model->getAppointmentById($id);
+                $room_id = $appointment_details->room_id;
+                $live_meeting_link = $appointment_details->live_meeting_link;
+            }
+
+            $patientname = $this->patient_model->getPatientById($patient)->name;
+            $doctorname = $this->doctor_model->getDoctorById($doctor)->name;
+
+            $data = array();
+            
+            $username = $this->input->post('name');
+
+            if (empty($id)) {
+                
+                $data = array(
+                    'patient' => $patient,
+                    'patientname' => $patientname,
+                    'doctor' => $doctor,
+                    'doctorname' => $doctorname,
+                    'date' => $date,
+                    's_time' => $s_time,
+                    'e_time' => $e_time,
+                    'time_slot' => $time_slot,
+                    'add_date' => $add_date,
+                    'registration_time' => $registration_time,
+                    'location_id' => $location,
+                    'status' => $status,
+                    's_time_key' => $s_time_key,
+                    'user' => $user,
+                    'request' => $request,
+                    'room_id' => $room_id,
+                    'live_meeting_link' => $live_meeting_link,
+                    'service_category_group_id' => $service_category_group,
+                    'service_id' => $service,
+                    'appointment_registration_time' => $appointment_registration,
+                    'appointment_date' => $appointment_date,
+                    'service_type' => $service_type,
+                );
+
+                $this->appointment_model->insertAppointment($data);
+                $inserted_id = $this->db->insert_id();
+                $data['appointment_id'] = $inserted_id;
+                $session_data = array('appointment_id' => $inserted_id);
+                $this->session->set_userdata($session_data);
+                $patient_doctor = $this->patient_model->getPatientById($patient)->doctor;
+
+                $patient_doctors = explode(',', $patient_doctor);
+
+
+
+                if (!in_array($doctor, $patient_doctors)) {
+                    $patient_doctors[] = $doctor;
+                    $doctorss = implode(',', $patient_doctors);
+                    $data_d = array();
+                    $data_d = array('doctor' => $doctorss);
+                    $this->patient_model->updatePatient($patient, $data_d);
+                }
+                $this->sendSmsDuringAppointment($id, $data, $patient, $doctor, $status);
+                $this->session->set_flashdata('success', lang('record_added'));
+                if (!empty($redirect)) {
+                    echo json_encode($data);
+                } else {
+                    redirect('appointment');
+                }
+
+                
+            } else {
+                $data = array(
+                    'patient' => $patient,
+                    'patientname' => $patientname,
+                    'doctor' => $doctor,
+                    'doctorname' => $doctorname,
+                    'date' => $date,
+                    's_time' => $s_time,
+                    'e_time' => $e_time,
+                    'time_slot' => $time_slot,
+                    'add_date' => $add_date,
+                    'registration_time' => $registration_time,
+                    'location_id' => $location,
+                    'status' => $status,
+                    's_time_key' => $s_time_key,
+                    'user' => $user,
+                    'request' => $request,
+                    'room_id' => $room_id,
+                    'live_meeting_link' => $live_meeting_link,
+                    'service_category_group_id' => $service_category_group,
+                    'service_id' => $service,
+                    'appointment_registration_time' => $appointment_registration,
+                    'appointment_date' => $appointment_date,
+                    'service_type' => $service_type,
+                    'remarks' => $remarks,
+                );
+
+                $this->appointment_model->updateAppointment($id, $data);
+
+                // if (!empty($virtual)) {
+                //     $this->appointment_model->updateAppointment($id, $data);
+                // } else {
+                //     $this->appointment_model->updateAppointmentForLocation($id, $data);
+                // }
+                
+            }
+        }
+
+        
+
+        if (!empty($redirect)) {
+            redirect($redirect);
+        } else {
+            redirect('appointment');
+        }
+        
     }
 
     function sendSmsDuringAppointment($id, $data, $patient, $doctor, $status) {
@@ -852,30 +1208,32 @@ class Appointment extends MX_Controller {
                 $appointment_status = lang('pending_confirmation');
             } elseif ($entry->status == 'Confirmed') {
                 $appointment_status = lang('confirmed');
-            } elseif ($entry->status == 'Treated') {
-                $appointment_status = lang('treated');
+            } elseif ($entry->status == 'Consulted') {
+                $appointment_status = lang('consulted');
             } elseif ($entry->status == 'Cancelled') {
                 $appointment_status = lang('cancelled');
             } elseif ($entry->status == 'Requested') {
                 $appointment_status = lang('requested');
+            } else {
+                $appointment_status = lang('not_available');
             }
 
-            $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/> Doctor: ' . $doctor . '<br/>' . lang('remarks') . ': ' . $entry->remarks;
+            $info = '<br/>' . lang('status') . ': ' . $appointment_status . '<br>' . lang('patient') . ': ' . $patient_name . '<br/>' . lang('phone') . ': ' . $patient_mobile . '<br/> Doctor: ' . $doctor . '<br/>' . lang('reason') . ': ' . $entry->remarks;
             if ($entry->status == 'Pending Confirmation') {
                 //  $color = '#098098';
-                $color = 'yellowgreen';
+                $color = 'rgba(69, 170, 242,0.15)';
             }
             if ($entry->status == 'Confirmed') {
-                $color = '#009988';
+                $color = 'rgba(68, 84, 195, 0.15)';
             }
-            if ($entry->status == 'Treated') {
-                $color = '#112233';
+            if ($entry->status == 'Consulted') {
+                $color = 'rgba(45, 206, 137, 0.15)';
             }
             if ($entry->status == 'Cancelled') {
-                $color = 'red';
+                $color = 'rgba(247, 45, 102, 0.15)';
             }
             if ($entry->status == 'Requested') {
-                $color = '#6883a3';
+                $color = 'rgba(236, 180, 3, 0.5)';
             }
 
             $jsonevents[] = array(
@@ -907,33 +1265,49 @@ class Appointment extends MX_Controller {
         $data['mmrdoctor'] = $this->doctor_model->getDoctorById($id);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('appointment_by_doctor', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('appointment_by_doctorv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function editAppointment() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
         $id = $this->input->get('id');
+        $root = $this->input->get('root');
+        $method = $this->input->get('method');
+        $patient = $this->input->get('patient_id');
+        $data['encounter'] = $this->input->get('encounter_id');
+        if (!empty($root) && !empty($method)) {
+            $data['redirect'] = $root.'/'.$method.'?id='.$patient.'&encounter_id='.$data['encounter'];
+        }
+
 
         $data['settings'] = $this->settings_model->getSettings();
         $data['appointment'] = $this->appointment_model->getAppointmentById($id);
         $data['patients'] = $this->patient_model->getPatientById($data['appointment']->patient);
         $data['doctors'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('add_new', $data);
-        $this->load->view('home/footer'); // just the footer file 
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('add_newv2', $data);
+        // $this->load->view('home/footer'); // just the footer file 
     }
 
     function editAppointmentByJason() {
         $id = $this->input->get('id');
         $data['appointment'] = $this->appointment_model->getAppointmentById($id);
+        $data['service_category'] = $this->appointment_model->getServiceCategoryById($data['appointment']->service_category_group_id);
+        $data['services'] = $this->appointment_model->getServicesByServiceId($data['appointment']->service_id);
+        $data['branch'] = $this->branch_model->getBranchById($data['appointment']->location_id);
         $data['patient'] = $this->patient_model->getPatientById($data['appointment']->patient);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['appointment']->doctor);
+        $data['datetime'] = date('F j, Y h:i A' ,strtotime($data['appointment']->appointment_date.' UTC'));
         echo json_encode($data);
     }
 
-    function treatmentReport() {
+    function consultationReport() {
         $data['settings'] = $this->settings_model->getSettings();
         $data['doctors'] = $this->doctor_model->getDoctor();
 
@@ -951,9 +1325,9 @@ class Appointment extends MX_Controller {
             $data['to'] = $this->input->post('date_to');
         }
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('treatment_history', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('consultation_historyv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function myAppointments() {
@@ -967,11 +1341,15 @@ class Appointment extends MX_Controller {
     }
 
     function delete() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk', 'Midwife'))) {
+            redirect('home/permission');
+        }
+
         $data = array();
         $id = $this->input->get('id');
         $doctor_id = $this->input->get('doctor_id');
         $this->appointment_model->delete($id);
-        $this->session->set_flashdata('feedback', lang('deleted'));
+        $this->session->set_flashdata('success', lang('record_deleted'));
         if (!empty($doctor_id)) {
             redirect('appointment/getAppointmentByDoctorId?id=' . $doctor_id);
         } else {
@@ -984,26 +1362,45 @@ class Appointment extends MX_Controller {
         $start = $requestData['start'];
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
+        $patient_id = $this->input->get('patient_id');
+        $encounter_id = $this->input->get('encounter_id');
 
-        if ($limit == -1) {
-            if (!empty($search)) {
-                $data['appointments'] = $this->appointment_model->getAppointmentBysearch($search);
+        $patient_details = $this->patient_model->getPatientById($patient_id);
+
+        if (!empty($patient_id)) {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['appointments'] = $this->appointment_model->getAppointmentBysearch($search, $patient_id);
+                } else {
+                    $data['appointments'] = $this->appointment_model->getAppointment($patient_id);
+                }
             } else {
-                $data['appointments'] = $this->appointment_model->getAppointment();
+                if (!empty($search)) {
+                    $data['appointments'] = $this->appointment_model->getAppointmentByLimitBySearch($limit, $start, $search, $patient_id);
+                } else {
+                    $data['appointments'] = $this->appointment_model->getAppointmentByLimit($limit, $start, $patient_id);
+                }
             }
         } else {
-            if (!empty($search)) {
-                $data['appointments'] = $this->appointment_model->getAppointmentByLimitBySearch($limit, $start, $search);
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['appointments'] = $this->appointment_model->getAppointmentBysearch($search);
+                } else {
+                    $data['appointments'] = $this->appointment_model->getAppointment();
+                }
             } else {
-                $data['appointments'] = $this->appointment_model->getAppointmentByLimit($limit, $start);
+                if (!empty($search)) {
+                    $data['appointments'] = $this->appointment_model->getAppointmentByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['appointments'] = $this->appointment_model->getAppointmentByLimit($limit, $start);
+                }
             }
+            //  $data['appointments'] = $this->appointment_model->getAppointment();
         }
-        //  $data['appointments'] = $this->appointment_model->getAppointment();
 
         foreach ($data['appointments'] as $appointment) {
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
-                //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk', 'Midwife'))) {
                 $options1 = ' <a type="button" class="btn btn-info editbutton" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
             }
 
@@ -1013,25 +1410,74 @@ class Appointment extends MX_Controller {
 
             $options4 = '<a class="btn btn-success" title="' . lang('payment') . '" style="color: #fff;" href="finance/appointmentPaymentHistory?appointment=' . $appointment->id . '"><i class="fa fa-money"></i> ' . lang('payment') . '</a>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
                 $options5 = '<a class="btn btn-danger" title="' . lang('delete') . '" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
-            $info[] = array(
-                $appointment->id,
-                $appointment->name,
-                $appointment->phone,
-                $this->settings_model->getSettings()->currency . $this->appointment_model->getDueBalanceByAppointmentId($appointment->id),
-                $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
-                    //  $options2
-            );
+            if (!empty($patient_id)) {
+                if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) {
+                    $options6 = '<a href="appointment/editAppointment?id='.$appointment->id.'&root=patient&method=medicalHistory&patient_id='.$patient_details->patient_id.'&encounter_id='.$encounter_id.'" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>';
+                    $options7 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="'.lang("delete").'" href="appointment/delete?id='.$appointment->id.'" onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i> </a>';
+                }
+            }
+
+            $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
+            if (!empty($doctor_details)) {
+                $appointment_doctor = $doctor_details->name;
+            } else {
+                $appointment_doctor = '';
+            }
+
+            if (empty($appointment->status)) {
+                if (!empty($appointment->request)) {
+                    $status = "Requested";
+                }
+            } else {
+                    $status = $appointment->status;
+            }
+
+            $facility = $this->branch_model->getBranchById($appointment->location_id);
+            $hospital = $this->hospital_model->getHospitalById($appointment->hospital_id);
+            $encounter_details = $this->encounter_model->getEncounterById($appointment->encounter_id);
+            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
+            if (!empty($appointment->encounter_id)) {
+                if (!empty($encounter_location)) {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
+                } else {
+                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                }
+            } else {
+                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
+            }
+
+            if(!empty($patient_id)) {
+                $info[] = array(
+                    date('Y-m-d', strtotime($appointment->appointment_date.' UTC')),
+                    $appointment->time_slot,
+                    $appointment_doctor,
+                    $status,
+                    $appointment_facility,
+                    $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name,
+                    $options6 . ' ' . $options7,
+                        //  $options2
+                );
+            } else {
+                $info[] = array(
+                    $appointment->id,
+                    $appointment->name,
+                    $appointment->phone,
+                    $this->settings_model->getSettings()->currency . $this->appointment_model->getDueBalanceByAppointmentId($appointment->id),
+                    $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
+                        //  $options2
+                );
+            }
         }
 
         if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('appointment')->num_rows(),
-                "recordsFiltered" => $this->db->get('appointment')->num_rows(),
+                "recordsTotal" => count($data['appointments']),
+                "recordsFiltered" => count($data['appointments']),
                 "data" => $info
             );
         } else {
@@ -1087,10 +1533,21 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             $i = $i + 1;
+            $appointment_encounter = $appointment->encounter_id;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
+            if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Clerk', 'Midwife'))) {
+                $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
+            }
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</button>';
-
-            $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
+            
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
             if (!empty($patientdetails)) {
                 $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
@@ -1104,13 +1561,35 @@ class Appointment extends MX_Controller {
                 $doctorname = $appointment->doctorname;
             }
 
-
+            $options7 = "";
+            $options8 = "";
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 if ($appointment->status == 'Confirmed') {
-                    if ($appointment->status == 'Confirmed') {
-                        $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
-                    } else {
-                        $options7 = '';
+                    $encounter = $this->encounter_model->getEncounterById($appointment->encounter_id);
+                    $service_category_group = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->is_virtual;
+                    if (!empty($service_category_group)) { //Virtual
+                        if (!empty($service_category_group)) {
+                            if (empty($appointment->encounter_id)) {
+                                $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                            } else {
+                                if (empty($encounter->ended_at)) {
+                                    $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                                    $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-appointment="' . $appointment->id . '" data-encounter="' . $appointment_encounter . '" data-patient="' . $appointment->patientname . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
+                                } else {
+                                    $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
+                                }
+                            }
+                        }
+                    } else { //Face to Face
+                        if (!empty($appointment->encounter_id)) {
+                            if (empty($encounter->ended_at)) {
+                                $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-appointment="' . $appointment->id . '" data-encounter="' . $appointment_encounter . '" data-patient="' . $appointment->patientname . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
+                            } else {
+                                $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
+                            }
+                        } else {
+                            $options7 = '<a href="encounter/startEncounterFromAppointment?appointment_id='.$appointment->id.'" data-id="' . $appointment->encounter_id . '" class="btn btn-primary">'. lang('start') .' '. lang('encounter') .'</a>';
+                        }
                     }
                 } else {
                     $options7 = '';
@@ -1121,23 +1600,32 @@ class Appointment extends MX_Controller {
 
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
-                $option1 . ' ' . $option2 . ' ' . $options7
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
+                $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
             );
         }
 
         if (!empty($data['appointments'])) {
-            $output = array(
-                "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('appointment')->num_rows(),
-                "recordsFiltered" => $this->db->get('appointment')->num_rows(),
-                "data" => $info
-            );
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getAppointmentCount(),
+                    "recordsFiltered" => $this->appointment_model->getAppointmentBySearchCount($search),
+                    "data" => $info
+                );
+            } else {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getAppointmentCountByDoctor($doctor),
+                    "recordsFiltered" => $this->appointment_model->getAppointmentBySearchCountByDoctor($search, $doctor),
+                    "data" => $info
+                );
+            }
         } else {
             $output = array(
                 // "draw" => 1,
@@ -1191,10 +1679,18 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //  $i = $i + 1;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
+            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</button>';
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
 
-            $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
             if (!empty($patientdetails)) {
                 $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
@@ -1210,24 +1706,33 @@ class Appointment extends MX_Controller {
 
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2
             );
             $i = $i + 1;
         }
 
         if (!empty($data['appointments'])) {
-            $output = array(
-                "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
-                "data" => $info
-            );
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getRequestAppointmentCount(),
+                    "recordsFiltered" => $this->appointment_model->getRequestAppointmentBySearchCount($search),
+                    "data" => $info
+                );
+            } else {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getRequestAppointmentCountByDoctor($doctor),
+                    "recordsFiltered" => $this->appointment_model->getRequestAppointmentBySearchCountByDoctor($search, $doctor),
+                    "data" => $info
+                );
+            }
         } else {
             $output = array(
                 // "draw" => 1,
@@ -1281,11 +1786,17 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //  $i = $i + 1;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
+            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</button>';
-
-            $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
-
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
 
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
             if (!empty($patientdetails)) {
@@ -1302,24 +1813,33 @@ class Appointment extends MX_Controller {
 
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2
             );
             $i = $i + 1;
         }
 
         if (!empty($data['appointments'])) {
-            $output = array(
-                "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
-                "data" => $info
-            );
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getPendingAppointmentCount(),
+                    "recordsFiltered" => $this->appointment_model->getPendingAppointmentBySearchCount($search),
+                    "data" => $info
+                );
+            } else {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getPendingAppointmentCountByDoctor($doctor),
+                    "recordsFiltered" => $this->appointment_model->getPendingAppointmentBySearchCountByDoctor($search, $doctor),
+                    "data" => $info
+                );
+            }
         } else {
             $output = array(
                 // "draw" => 1,
@@ -1373,10 +1893,19 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //    $i = $i + 1;
+            $appointment_encounter = $appointment->encounter_id;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
+            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</button>';
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
 
-            $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
             if (!empty($patientdetails)) {
                 $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
@@ -1391,9 +1920,61 @@ class Appointment extends MX_Controller {
             }
 
 
+            // if ($this->ion_auth->in_group(array('Doctor'))) {
+            //     if ($appointment->status == 'Confirmed') {
+            //         if (!empty($appointment->encounter_id)) {
+            //             $encounter = $this->encounter_model->getEncounterById($appointment->encounter_id);
+            //             $service_category_group = $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id);
+                        
+
+            //             if (empty($encounter->ended_at)) {
+            //                 if (!empty($service_category_group->is_virtual)) {
+            //                     $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+            //                 }
+            //                 $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-id="' . $appointment->encounter_id . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
+            //             } else {
+            //                 $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
+            //             }
+            //         } else {
+            //             $options7 = '<a href="encounter/startEncounterFromAppointment?appointment_id='.$appointment->id.'" data-id="' . $appointment->encounter_id . '" class="btn btn-primary">'. lang('start') .' '. lang('encounter') .'</a>';
+            //         }
+            //     } else {
+            //         $options7 = '';
+            //     }
+            // } else {
+            //     $options7 = '';
+            // }
+
+            $options7 = "";
+            $options8 = "";
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 if ($appointment->status == 'Confirmed') {
-                    $options7 = '<a class="btn btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                    $encounter = $this->encounter_model->getEncounterById($appointment->encounter_id);
+                    $service_category_group = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->is_virtual;
+                    if (!empty($service_category_group)) { //Virtual
+                        if (!empty($service_category_group)) {
+                            if (empty($appointment->encounter_id)) {
+                                $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                            } else {
+                                if (empty($encounter->ended_at)) {
+                                    $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                                    $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-appointment="' . $appointment->id . '" data-encounter="' . $appointment_encounter . '" data-patient="' . $appointment->patientname . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
+                                } else {
+                                    $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
+                                }
+                            }
+                        }
+                    } else { //Face to Face
+                        if (!empty($appointment->encounter_id)) {
+                            if (empty($encounter->ended_at)) {
+                                $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-appointment="' . $appointment->id . '" data-encounter="' . $appointment_encounter . '" data-patient="' . $appointment->patientname . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
+                            } else {
+                                $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
+                            }
+                        } else {
+                            $options7 = '<a href="encounter/startEncounterFromAppointment?appointment_id='.$appointment->id.'" data-id="' . $appointment->encounter_id . '" class="btn btn-primary">'. lang('start') .' '. lang('encounter') .'</a>';
+                        }
+                    }
                 } else {
                     $options7 = '';
                 }
@@ -1402,24 +1983,33 @@ class Appointment extends MX_Controller {
             }
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
-                $option1 . ' ' . $option2 . ' ' . $options7
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
+                $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
             );
             $i = $i + 1;
         }
 
         if (!empty($data['appointments'])) {
-            $output = array(
-                "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
-                "data" => $info
-            );
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getConfirmedAppointmentCount(),
+                    "recordsFiltered" => $this->appointment_model->getConfirmedAppointmentBySearchCount($search),
+                    "data" => $info
+                );
+            } else {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getConfirmedAppointmentCountByDoctor($doctor),
+                    "recordsFiltered" => $this->appointment_model->getConfirmedAppointmentBySearchCountByDoctor($search, $doctor),
+                    "data" => $info
+                );
+            }
         } else {
             $output = array(
                 // "draw" => 1,
@@ -1473,10 +2063,18 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //  $i = $i + 1;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
+            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</button>';
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
 
-            $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
             if (!empty($patientdetails)) {
                 $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
@@ -1501,24 +2099,33 @@ class Appointment extends MX_Controller {
             }
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2
             );
             $i = $i + 1;
         }
 
         if (!empty($data['appointments'])) {
-            $output = array(
-                "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
-                "data" => $info
-            );
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getTreatedAppointmentCount(),
+                    "recordsFiltered" => $this->appointment_model->getTreatedAppointmentBySearchCount($search),
+                    "data" => $info
+                );
+            } else {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getTreatedAppointmentCountByDoctor($doctor),
+                    "recordsFiltered" => $this->appointment_model->getTreatedAppointmentBySearchCountByDoctor($search, $doctor),
+                    "data" => $info
+                );
+            }
         } else {
             $output = array(
                 // "draw" => 1,
@@ -1572,10 +2179,18 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             // $i = $i + 1;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
+            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</button>';
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
 
-            $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
             if (!empty($patientdetails)) {
                 $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
@@ -1591,24 +2206,33 @@ class Appointment extends MX_Controller {
 
 
             $info[] = array(
-                $appointment->id,
+                date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                $patientdetails->patient_id,
                 $patientname,
                 $doctorname,
-                date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                $appointment->remarks,
                 $appointment->status,
+                '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                 $option1 . ' ' . $option2
             );
             $i = $i + 1;
         }
 
         if (!empty($data['appointments'])) {
-            $output = array(
-                "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
-                "data" => $info
-            );
+            if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getCancelledAppointmentCount(),
+                    "recordsFiltered" => $this->appointment_model->getCancelledAppointmentBySearchCount($search),
+                    "data" => $info
+                );
+            } else {
+                $output = array(
+                    "draw" => intval($requestData['draw']),
+                    "recordsTotal" => $this->appointment_model->getCancelledAppointmentCountByDoctor($doctor),
+                    "recordsFiltered" => $this->appointment_model->getCancelledAppointmentBySearchCountByDoctor($search, $doctor),
+                    "data" => $info
+                );
+            }
         } else {
             $output = array(
                 // "draw" => 1,
@@ -1662,10 +2286,19 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //$i = $i + 1;
+            $appointment_encounter = $appointment->encounter_id;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
+            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'&root=appointment&method=todays" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</button>';
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
 
-            $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
             if (!empty($patientdetails)) {
                 $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
@@ -1679,9 +2312,45 @@ class Appointment extends MX_Controller {
                 $doctorname = $appointment->doctorname;
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            // if ($this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            //     if ($appointment->status == 'Confirmed') {
+            //         $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+            //     } else {
+            //         $options7 = '';
+            //     }
+            // } else {
+            //     $options7 = '';
+            // }
+            $options7 = "";
+            $options8 = "";
+            if ($this->ion_auth->in_group(array('Doctor'))) {
                 if ($appointment->status == 'Confirmed') {
-                    $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                    $encounter = $this->encounter_model->getEncounterById($appointment->encounter_id);
+                    $service_category_group = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->is_virtual;
+                    if (!empty($service_category_group)) { //Virtual
+                        if (!empty($service_category_group)) {
+                            if (empty($appointment->encounter_id)) {
+                                $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                            } else {
+                                if (empty($encounter->ended_at)) {
+                                    $options7 = '<a class="btn btn-cyan btn-xs" title="' . lang('start_video_call') . '" style="color: #fff;" href="meeting/instantLive?id=' . $appointment->id . '" target="_blank" data-id="' . $appointment->encounter_id . '" onclick="return confirm(\'Are you sure you want to start the video call with this patient? An SMS and Email reminder with the meeting link will be sent to the Patient.\');"><i class="fa fa-headphones"></i> ' . lang('start_video_call') . '</a>';
+                                    $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-appointment="' . $appointment->id . '" data-encounter="' . $appointment_encounter . '" data-patient="' . $appointment->patientname . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
+                                } else {
+                                    $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
+                                }
+                            }
+                        }
+                    } else { //Face to Face
+                        if (!empty($appointment->encounter_id)) {
+                            if (empty($encounter->ended_at)) {
+                                $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-danger btn-md btn-block endEncounter" data-appointment="' . $appointment->id . '" data-encounter="' . $appointment_encounter . '" data-patient="' . $appointment->patientname . '">'. lang('end') .' '. lang('encounter') .'</a></div>';
+                            } else {
+                                $options8 = '<div class="btn-group mb-0 endEncounterDiv"><a class="btn btn-light btn-md btn-block" data-id="' . $appointment->encounter_id . '">' . lang('encounter') . ' has '. lang('ended') .'</a></div>';
+                            }
+                        } else {
+                            $options7 = '<a href="encounter/startEncounterFromAppointment?appointment_id='.$appointment->id.'" data-id="' . $appointment->encounter_id . '" class="btn btn-primary">'. lang('start') .' '. lang('encounter') .'</a>';
+                        }
+                    }
                 } else {
                     $options7 = '';
                 }
@@ -1691,32 +2360,33 @@ class Appointment extends MX_Controller {
 
             if ($appointment->date == strtotime(date('Y-m-d'))) {
                 $info[] = array(
-                    $appointment->id,
+                    date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                    $patientdetails->patient_id,
                     $patientname,
                     $doctorname,
-                    date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                    $appointment->remarks,
                     $appointment->status,
-                    $option1 . ' ' . $option2 . ' ' . $options7
+                    '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
+                    $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
                 );
                 $i = $i + 1;
             } else {
-                $info1[] = array($appointment->id,
+                $info1[] = array(
+                    date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                    $patientdetails->patient_id,
                     $appointment->patientname,
                     $appointment->doctorname,
-                    date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                    $appointment->remarks,
                     $appointment->status,
+                    '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                     $option1 . ' ' . $option2 . ' ' . $options7
                 );
             }
         }
 
-        if ($i !== 0) {
+        if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->appointment_model->getAppointmentByTodayCount(),
+                "recordsFiltered" => $this->appointment_model->getAppointmentByTodayBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -1772,12 +2442,20 @@ class Appointment extends MX_Controller {
         $i = 0;
         foreach ($data['appointments'] as $appointment) {
             //$i = $i + 1;
+            $location_name = $this->branch_model->getBranchById($appointment->location_id)->display_name;
+            if(empty($location_name)) {
+                $location_name = 'Online';
+            }
+            $appointment_service_type = $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name;
+            $appointment_service = $this->appointment_model->getServicesByServiceId($appointment->service_id)->category;
+            $patientdetails = $this->patient_model->getPatientById($appointment->patient);
+            $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'&root=appointment&method=upcoming" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
-            $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</button>';
+            if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+            }
 
-            $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
             if ($appointment->date > strtotime(date('Y-m-d'))) {
-                $patientdetails = $this->patient_model->getPatientById($appointment->patient);
                 if (!empty($patientdetails)) {
                     $patientname = ' <a type="button" class="history" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';
                 } else {
@@ -1799,12 +2477,12 @@ class Appointment extends MX_Controller {
                     $options7 = '';
                 }
                 $info[] = array(
-                    $appointment->id,
+                    date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
+                    $patientdetails->patient_id,
                     $patientname,
                     $doctorname,
-                    date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                    $appointment->remarks,
                     $appointment->status,
+                    '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                     $option1 . ' ' . $option2 . ' ' . $options7
                 );
                 $i = $i + 1;
@@ -1818,22 +2496,23 @@ class Appointment extends MX_Controller {
                 } else {
                     $options7 = '';
                 }
-                $info1[] = array($appointment->id,
+                $info1[] = array(
+                    date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                    $patientdetails->patient_id,
                     $appointment->patientname,
                     $appointment->doctorname,
-                    date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
-                    $appointment->remarks,
                     $appointment->status,
+                    '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                     $option1 . ' ' . $option2 . ' ' . $options7
                 );
             }
         }
 
-        if ($i !== 0) {
+        if (!empty($data['appointments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $i,
-                "recordsFiltered" => $i,
+                "recordsTotal" => $this->appointment_model->getAppointmentByUpcomingCount(),
+                "recordsFiltered" => $this->appointment_model->getAppointmentByUpcomingBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -1927,7 +2606,7 @@ class Appointment extends MX_Controller {
                         $appointment->id,
                         $patientname,
                         $doctorname,
-                        date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                        date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                         $appointment->remarks,
                         $appointment->status,
                         $options7
@@ -1937,7 +2616,7 @@ class Appointment extends MX_Controller {
                     $info1[] = array($appointment->id,
                         $appointment->patientname,
                         $appointment->doctorname,
-                        date('d-m-Y', $appointment->date) . '<br>' . $appointment->s_time . '-' . $appointment->e_time,
+                        date('Y-m-d', $appointment->date) . '<br>' . $appointment->s_time . ' to ' . $appointment->e_time,
                         $appointment->remarks,
                         $appointment->status,
                         $options7
@@ -1963,6 +2642,78 @@ class Appointment extends MX_Controller {
         }
 
         echo json_encode($output);
+    }
+
+    public function getBranchInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+        $provider = $this->input->get('provider');
+
+// Get users
+        $response = $this->branch_model->getBranchInfo($searchTerm, $provider);
+
+        echo json_encode($response);
+    }
+
+    public function getBranchInfoWithHospital() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->branch_model->getBranchInfoWithHospital($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getServiceCategoryGroupInfoForConsultation() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->appointment_model->getServiceCategoryGroupInfoForConsultation($searchTerm);
+
+        echo json_encode($response);
+    }
+
+//     public function getServicesByServiceCategoryGroup() {
+// // Search term
+//         $searchTerm = $this->input->post('searchTerm');
+//         $serviceType = $this->input->get('serviceType');
+
+// // Get users
+//         $response = $this->appointment_model->getServicesByServiceCategoryGroup($searchTerm, $serviceType);
+
+//         echo json_encode($response);
+//     }
+
+    public function getServicesByServiceCategoryGroupByDoctorHospital() {
+        $data = array();
+        $serviceCategoryGroup = $this->input->get('servicecategorygroup');
+        $doctor = $this->input->get('doctor');
+        $doctorHospital = $this->doctor_model->getDoctorById($doctor)->hospital_id;
+        if (!empty($date)) {
+            $date = strtotime($date);
+        }
+        
+        $data['services'] = $this->appointment_model->getServicesByServiceCategoryGroupByDoctorHospital($serviceCategoryGroup, $doctorHospital);
+        // $data['aslots'] = $this->schedule_model->getAvailableSlotByDoctorByDateByLocation($date, $doctor, $location);
+        echo json_encode($data);
+    }
+
+    public function getServiceCategoryById() {
+        $data = array();
+        $service_category = $this->input->get('id');
+        $data['is_virtual'] = $this->appointment_model->getServiceCategoryById($service_category)->is_virtual;
+
+        echo json_encode($data);
+    }
+
+    public function getServicesByServiceId() {
+        $data = array();
+        $services = $this->input->get('id');
+        $data['services'] = $this->appointment_model->getServicesByServiceId($services);
+
+        echo json_encode($data);
     }
 
 }

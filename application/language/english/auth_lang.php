@@ -28,6 +28,8 @@ $lang['login_password_label']  = 'Password';
 $lang['login_remember_label']  = 'Remember Me:';
 $lang['login_submit_btn']      = 'Login';
 $lang['login_forgot_password'] = 'Forgot your password?';
+$lang['dont_have_an_account']  = 'Don\'t have an account?';
+$lang['register_here']  	   = 'Register here';
 
 // Index
 $lang['index_heading']           = 'Users';
@@ -52,6 +54,54 @@ $lang['deactivate_submit_btn']               = 'Submit';
 $lang['deactivate_validation_confirm_label'] = 'confirmation';
 $lang['deactivate_validation_user_id_label'] = 'user ID';
 
+// Patient Registration
+$lang['register_heading']         = 'Register';
+$lang['register_subheading']      = 'Create your account as a Patient';
+$lang['personal_information']             			   = 'Personal Information';
+$lang['patient']                           			   = 'Patient';
+$lang['registration']                        = 'Registration';
+$lang['create_your_account']                           = 'Create your account';
+$lang['first_name']                       	   = 'First Name';
+$lang['middle_name']                             = 'Middle Name';
+$lang['last_name']                               = 'Last Name';
+$lang['suffix']                       				   = 'Suffix';
+$lang['jr'] 										   = 'Jr';
+$lang['sr'] 										   = 'Sr';
+$lang['i'] 											   = 'I';
+$lang['ii'] 										   = 'II';
+$lang['iii'] 										   = 'III';
+$lang['iv'] 										   = 'IV';
+$lang['v'] 											   = 'V';
+$lang['vi'] 										   = 'VI';
+$lang['vii'] 										   = 'VII';
+$lang['viii'] 										   = 'VIII';
+$lang['ix'] 										   = 'IX';
+$lang['x'] 											   = 'X';
+$lang['none']										   = 'none';
+$lang['birth_date']                                    = 'Birth Date';
+$lang['sex']                                           = 'Sex';
+$lang['civil_status']                                  = 'Civil Status';
+$lang['blood_type']                                    = 'Blood Type';
+$lang['allergies']                                     = 'Allergies';
+$lang['allergies_placeholder']                         = 'Allergies (if any)';
+$lang['company']                                   	   = 'Company';
+$lang['address']                                       = 'Address';
+$lang['country_placeholder']						   = 'Country';
+$lang['province']                                      = 'Province';
+$lang['state_province']                                = 'State / Province';
+$lang['city_municipality']                             = 'City / Municipality';
+$lang['barangay']           						   = 'Barangay';
+$lang['postal']           						   	   = 'Postal';
+$lang['postal_code']           						   = 'Postal Code';
+$lang['street_number']                                 = 'Street Number';
+$lang['street_name']                                   = 'Street Name';
+$lang['country']           							   = 'Country';
+$lang['mobile_number']                                 = 'Mobile Number';
+$lang['email_address']         						   = 'Email Address';
+$lang['profile_picture'] 							   = 'Profile Picture';
+$lang['password'] 							           = 'Password';
+$lang['confirm'] 							           = 'Confirm';
+
 // Create User
 $lang['create_user_heading']                           = 'Create User';
 $lang['create_user_subheading']                        = 'Please enter the user\'s information below.';
@@ -64,8 +114,11 @@ $lang['create_user_password_label']                    = 'Password:';
 $lang['create_user_password_confirm_label']            = 'Confirm Password:';
 $lang['create_user_submit_btn']                        = 'Create User';
 $lang['create_user_validation_fname_label']            = 'First Name';
+$lang['create_user_validation_mname_label']            = 'Middle Name';
 $lang['create_user_validation_lname_label']            = 'Last Name';
+$lang['create_user_validation_address_label']          = 'Address';
 $lang['create_user_validation_email_label']            = 'Email Address';
+$lang['create_user_validation_phone_label']            = 'Mobile Number';
 $lang['create_user_validation_phone1_label']           = 'First Part of Phone';
 $lang['create_user_validation_phone2_label']           = 'Second Part of Phone';
 $lang['create_user_validation_phone3_label']           = 'Third Part of Phone';
@@ -145,3 +198,16 @@ $lang['reset_password_new_password_confirm_label']            = 'Confirm New Pas
 $lang['reset_password_submit_btn']                            = 'Change';
 $lang['reset_password_validation_new_password_label']         = 'New Password';
 $lang['reset_password_validation_new_password_confirm_label'] = 'Confirm New Password';
+
+// Resend Activation Link
+$lang['resend_activation_heading']               = 'Resend Activation Link';
+$lang['resend_activation_subheading']            = 'Please enter your %s so we can send you a new link to activate your account.';
+$lang['forgot_password_email_label']             = '%s:';
+$lang['resend_activation_submit_btn']              = 'Submit';
+$lang['forgot_password_validation_email_label']  = 'Email Address';
+$lang['forgot_password_username_identity_label'] = 'Username';
+$lang['resend_activation_email_identity_label']  = 'Email';
+$lang['resend_activation_email_not_found']         = 'No record of that email address.';
+$lang['resend_activation_username_not_found']         = 'No record of that username.';
+$lang['back_to_login']         					 = 'Back to Login';
+

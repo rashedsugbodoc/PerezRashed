@@ -102,7 +102,7 @@
                                     }
                                     if (!empty($doctor_amount)) {
                                         $doctor_total = array_sum($doctor_amount);
-                                        echo $doctor_total;
+                                        echo number_format($doctor_total,2);
                                     } else {
                                         $doctor_total = 0;
                                         echo $doctor_total;
@@ -114,7 +114,7 @@
 
                                     $doctor_gross = $doctor_total;
                                     if (!empty($doctor_gross)) {
-                                        echo $doctor_gross;
+                                        echo number_format($doctor_gross,2);
                                     } else {
                                         echo'0';
                                     }

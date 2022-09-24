@@ -34,7 +34,9 @@
                                     <td> <?php echo $template->name; ?></td>
                                     <td class="no-print">
                                         <a href="form/editTemplate?id=<?php echo $template->id;?>" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $template->id; ?>"><i class="fa fa-edit"> </i></a>   
+                                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
                                         <a class="btn btn-danger btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="form/deleteTemplate?id=<?php echo $template->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
+                                        <?php } ?>
                                     </td>
                                 </tr>
                             <?php } ?>

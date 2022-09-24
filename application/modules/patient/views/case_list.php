@@ -3,42 +3,52 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
+        <?php echo validation_errors(); ?>
         <div class="row">
-            <section class="col-md-5">
-                <div class="panel">
-                    <header class="panel-heading">
-                        <?php echo lang('add'); ?> <?php echo lang('case'); ?> 
-                    </header> 
+            <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                <section class="col-md-5">
+                    <div class="panel">
+                        <header class="panel-heading">
+                            <?php echo lang('add'); ?> <?php echo lang('case'); ?> 
+                        </header> 
 
-                    <div class=""> 
-                        <form role="form" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data">
-                            <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
-                                <input type="text" class="form-control form-control-inline input-medium default-date-picker" name="date" id="exampleInputEmail1" value='' placeholder="" readonly="" required="">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
-                                <select class="form-control m-bot15" id="patientchoose" name="patient_id" value=''>
+                        <div class="panel-body"> 
+                            <div class="adv-table editable-table ">
+                                <div class="clearfix">
+                                    <form role="form" action="patient/addMedicalHistory" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <div class="form-group col-md-6">
+                                            <label for="exampleInputEmail1"><?php echo lang('date'); ?></label>
+                                            <input type="text" class="form-control form-control-inline input-medium default-date-picker" name="date" id="exampleInputEmail1" value='' placeholder="" readonly="" required="">
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label for="exampleInputEmail1"><?php echo lang('patient'); ?></label>
+                                            <select class="form-control m-bot15" id="patientchoose" name="patient_id" value=''>
 
-                                </select>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label for="exampleInputEmail1"><?php echo lang('title'); ?></label>
+                                            <input type="text" class="form-control form-control-inline input-medium" name="title" id="exampleInputEmail1" value='' placeholder="">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <label class=""><?php echo lang('case'); ?></label>
+                                            <textarea class="form-control ckeditor" name="description" value="" rows="70" cols="70"></textarea>
+                                        </div>
+                                        <input type="hidden" name="redirect" value='patient/caseList'>
+                                        <section class="col-md-12">
+                                            <button type="submit" name="submit" class="btn btn-primary pull-right no-print"><?php echo lang('submit'); ?></button>
+                                        </section>
+                                    </form>
+                                </div>
                             </div>
-                            <div class="form-group col-md-12">
-                                <label for="exampleInputEmail1"><?php echo lang('title'); ?></label>
-                                <input type="text" class="form-control form-control-inline input-medium" name="title" id="exampleInputEmail1" value='' placeholder="">
-                            </div>
-                            <div class="form-group col-md-12">
-                                <label class=""><?php echo lang('case'); ?></label>
-                                <textarea class="form-control ckeditor" name="description" value="" rows="70" cols="70"></textarea>
-                            </div>
-                            <input type="hidden" name="redirect" value='patient/caseList'>
-                            <section class="col-md-12">
-                                <button type="submit" name="submit" class="btn btn-primary pull-right no-print"><?php echo lang('submit'); ?></button>
-                            </section>
-                        </form>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
             <section class="col-md-7">
+            <?php } ?>
+            <?php if (!$this->ion_auth->in_group(array('Doctor'))) { ?>
+            <section class="col-md-12">
+            <?php } ?>
                 <div class="panel">
                     <header class="panel-heading">
                         <?php echo lang('all'); ?> <?php echo lang('case'); ?>

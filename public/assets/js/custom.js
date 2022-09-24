@@ -373,3 +373,11 @@
 	
 })(jQuery);
 
+function btnLoading(form) {
+		var parsley_validation = $('#'+form).parsley().validate();
+		if (parsley_validation === true) {
+				// $("#submit").addClass('btn-loading');
+				$("#"+form).find('[name="submit"]').addClass('btn-loading');
+		}
+}
+

@@ -65,7 +65,7 @@
                                 </div> -->
                                 <div class="row page-rightheader ml-auto .d-block d-print-none">
                                     <div class="flex-grow-1">
-                                        <a href="finance/payment" class="btn btn-cyan"><i class="fe fe-arrow-left"></i><span class="button-text"> <?php echo lang('back_to_all_invoices'); ?></span></a>
+                                        <a href="finance/invoices" class="btn btn-cyan"><i class="fe fe-arrow-left"></i><span class="button-text"> <?php echo lang('back_to_all_invoices'); ?></span></a>
                                     </div>
                                     <div class="flex-grow-2">
                                         <button type="button" class="btn btn-info" id="create_pdf"><i class="fe fe-download"></i><span class="button-text"> <?php echo lang('download'); ?></span></button>
@@ -151,7 +151,7 @@
                                                                     <span>: </span>
                                                                 </td>
                                                                 <td class="w-63 p-0">
-                                                                    <span><?php echo $payment->id;?></span>
+                                                                    <span><?php echo $payment->invoice_number;?></span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="p-0">

@@ -8,6 +8,7 @@ class Finance extends MX_Controller {
     function __construct() {
         parent::__construct();
         $this->load->model('finance_model');
+        $this->load->model('encounter/encounter_model');
         $this->load->model('doctor/doctor_model');
         $this->load->model('patient/patient_model');
         $this->load->model('finance/pharmacy_model');
@@ -15,31 +16,36 @@ class Finance extends MX_Controller {
         $this->load->model('receptionist/receptionist_model');
         $this->load->model('pgateway/pgateway_model');
         $this->load->model('company/company_model');
+        $this->load->model('settings/settings_model');
         $this->load->model('companyuser/companyuser_model');
+        $this->load->model('branch/branch_model');
+        $this->load->model('location/location_model');
         $this->load->module('sms');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->module('paypal');
-
-        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Nurse', 'Laboratorist', 'Doctor', 'CompanyUser'))) {
+        $this->load->helper('string');
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Doctor', 'Patient', 'CompanyUser', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
 
     public function index() {
-
         redirect('finance/financial_report');
     }
 
-    public function payment() {
+    public function invoices() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'CompanyUser', 'Clerk'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
 
         $data['settings'] = $this->settings_model->getSettings();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('payment', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('paymentv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function amountDistribution() {
@@ -55,51 +61,115 @@ class Finance extends MX_Controller {
     }
 
     public function addPaymentView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist', 'Clerk'))) {
+            redirect('home/permission');
+        }
         $data = array();
+        $id = $this->input->get('id');
+        $data['id'] = $id;
+        $encounter_id = $this->input->get('encounter_id');
+        $data['patient_id'] = $this->input->get('patient_id');
+        $data['staffs'] = $this->encounter_model->getUser();
+        if (!empty($encounter_id)) {
+            $data['encounter_id'] = $encounter_id;
+            $data['encounter'] = $this->encounter_model->getEncounterById($encounter_id);
+            $data['encounter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
+            $data['doctorr'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
+            $data['patientt'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
+        }
+        
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['settings'] = $this->settings_model->getSettings();
-        $data['categories'] = $this->finance_model->getPaymentCategory();
-        $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
+        $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_payment_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_payment_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
+    }
+
+    public function getOutstandingBalanceByPatientIdByEncounterId($encounter_id, $patient_id) {
+        $invoices_by_encounter = $this->finance_model->getPaymentByEncounterIdByPatientId($encounter_id, $patient_id);
+
+        $invoices = [];
+        $invoices_amount = [];
+        foreach($invoices_by_encounter as $invoice_encounter) {
+            $invoices[] = $invoice_encounter->id;
+            $invoices_amount[] = $invoice_encounter->gross_total;
+        }
+
+        $total_invoices_amount = array_sum($invoices_amount);
+
+        $deposits = [];
+        foreach($invoices as $invoice) {
+            $deposits_details = [];
+            $deposits_details[] = $this->finance_model->getDepositByPaymentId($invoice);
+            foreach($deposits_details as $dep_details) {
+                $deposits_amount = $dep_details->deposited_amount;
+                foreach($dep_details as $details) {
+                    $deposits[] = $details->deposited_amount;
+                }
+            }
+        }
+
+        $deposit = array_sum($deposits);
+
+        $outstanding_balance = $total_invoices_amount - $deposit;
+
+        return $outstanding_balance;
     }
 
     public function addPayment() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist', 'Clerk'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $item_selected = array();
         $quantity = array();
         $category_selected = array();
         // $amount_by_category = $this->input->post('category_amount');
+        $payment_status = (int)$this->input->post('payment_status');
+        $encounter_id = $this->input->post('encounter_id');
         $category_selected = $this->input->post('category_name');
         $item_selected = $this->input->post('category_id');
         $quantity = $this->input->post('quantity');
         $remarks = $this->input->post('remarks');
+        $completion_status = $this->input->post('completion_status');
         $company_id = $this->input->post('company_id');
 
-        if (empty($item_selected)) {
-            $this->session->set_flashdata('feedback', lang('select_an_item'));
-            redirect('finance/addPaymentView');
-        } else {
-            $item_quantity_array = array();
-            $item_quantity_array = array_combine($item_selected, $quantity);
+        $doctor_item_selected_explode = [];
+        foreach ($item_selected as $selected) {
+            $doctor_item_selected_explode[] = explode('-', $selected);
         }
+        $doctor_selected = [];
+        $items_selected = [];
+        foreach ($doctor_item_selected_explode as $doctor_item_selected) {
+            $items_selected[] = $doctor_item_selected[0];
+            $doctor_selected[] = $doctor_item_selected[1];
+        }
+
+        // $doctor_items = array_combine($items_selected, $doctor_selected);
+
+        $item_quantity_array = array();
+        // $item_quantity_array = array_combine($items_selected, $quantity);
+        $item_quantity_array = $items_selected;
         $cat_and_price = array();
         if (!empty($item_quantity_array)) {
             foreach ($item_quantity_array as $key => $value) {
-                $current_item = $this->finance_model->getPaymentCategoryById($key);
+                $current_item = $this->finance_model->getPaymentCategoryById($value);
+                $items_service_type = $this->finance_model->getServiceCategoryGroupById($current_item->service_category_group_id);
+                if(!empty($items_service_type->is_virtual)) {
+                    $doctor_fee = $this->doctor_model->getDoctorByIonUserId($doctor_selected[$key])->virtual_consultation_fee;
+                } else {
+                    $doctor_fee = $this->doctor_model->getDoctorByIonUserId($doctor_selected[$key])->physical_consultation_fee;
+                }
                 $category_price = $current_item->c_price;
-                $category_type = $current_item->type;
-                $qty = $value;
-                $cat_and_price[] = $key . '*' . $category_price . '*' . $category_type . '*' . $qty;
+                $category_id = $current_item->category_id;
+                $qty = $quantity[$key];
+                $cat_and_price[] = $value . '-' . $doctor_selected[$key] . '*' . $category_price . '*' . $category_id . '*' . $qty;
                 $amount_by_category[] = $category_price * $qty;
             }
             $category_name = implode(',', $cat_and_price);
-        } else {
-            $this->session->set_flashdata('feedback', lang('attend_the_required_fields'));
-            redirect('finance/addPaymentView');
         }
 
         $patient = $this->input->post('patient');
@@ -133,7 +203,12 @@ class Finance extends MX_Controller {
         $d_phone = $this->input->post('d_phone');
 
         $doctor = $this->input->post('doctor');
+        $rendering_user = $this->input->post('rendering_user');
+        if ($rendering_user === "add_new") {
+            $rendering_user = null;
+        }
         $date = time();
+        $today_date_time = gmdate('Y-m-d H:i:s');
         $date_string = date('d-m-y', $date);
         $discount = $this->input->post('discount');
         if (empty($discount)) {
@@ -142,6 +217,43 @@ class Finance extends MX_Controller {
         $amount_received = $this->input->post('amount_received');
         $deposit_type = $this->input->post('deposit_type');
         $user = $this->ion_auth->get_user_id();
+        $current_user_group = $this->ion_auth->get_users_groups()->row()->name;
+
+        $company_classification = $this->company_model->getClassificationByCompanyId($company_id);
+        $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
+        $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+
+        do {
+            $raw_invoice_number = 'I'.random_string('alnum', 6);
+            $validate_number = $this->finance_model->validateInvoiceNumber($raw_invoice_number);
+        } while($validate_number != 0);
+
+        $invoice_number = strtoupper($raw_invoice_number);
+
+        foreach ($payment_status_list as $status_list) {
+            if ($status_list->name === "paid") {
+                $paid_status = $status_list->id;
+            } elseif ($status_list->name === "unpaid") {
+                $unpaid_status = $status_list->id;
+            } elseif ($status_list->name === "overdue") {
+                $overdue_status = $status_list->id;
+            }
+        }
+        // $payment_status_list = $this->
+
+        if (empty($payment_status)) {
+            $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
+            $gross = $this->input->post('grsss');
+            $received_deposit_amount = $amount_received + $deposit_amount;
+
+            if ($received_deposit_amount >= $gross) {
+                $payment_status = $paid_status;
+            } else {
+                $payment_status = $unpaid_status;
+            }
+        }
+
+        $outstanding_balance = $this->getOutstandingBalanceByPatientIdByEncounterId($encounter_id, $patient) - $amount_received;
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -149,18 +261,31 @@ class Finance extends MX_Controller {
 // Validating Category Field
 // $this->form_validation->set_rules('category_amount[]', 'Category', 'min_length[1]|max_length[100]');
 // Validating Price Field
-        $this->form_validation->set_rules('patient', 'Patient', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Price Field
-        $this->form_validation->set_rules('discount', 'Discount', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('company_id', 'Company', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+
+        $this->form_validation->set_rules('category_name[]', 'Charge', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         if ($this->form_validation->run() == FALSE) {
-            redirect('finance/addPaymentView');
+            $this->session->set_flashdata('error', lang('validation_error'));
+            $data = array();
+            $data['discount_type'] = $this->finance_model->getDiscountType();
+            $data['settings'] = $this->settings_model->getSettings();
+            $data['categories'] = $this->finance_model->getPaymentCategory();
+            $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
+            $data['patients'] = $this->patient_model->getPatient();
+            $data['doctors'] = $this->doctor_model->getDoctor();
+            $data['company'] = $this->company_model->getCompany();
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_payment_viewv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         } else {
             if (!empty($p_name)) {
 
                 $limit = $this->patient_model->getLimit();
                 if ($limit <= 0) {
-                    $this->session->set_flashdata('feedback', lang('patient_limit_exceed'));
+                    $this->session->set_flashdata('warning', lang('patient_limit_exceed'));
                     redirect('patient');
                 }
 
@@ -177,7 +302,7 @@ class Finance extends MX_Controller {
                 $username = $this->input->post('p_name');
 // Adding New Patient
                 if ($this->ion_auth->email_check($p_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfg = 5;
                     $this->ion_auth->register($username, $password, $p_email, $dfg);
@@ -195,7 +320,7 @@ class Finance extends MX_Controller {
 
                 $limit = $this->doctor_model->getLimit();
                 if ($limit <= 0) {
-                    $this->session->set_flashdata('feedback', lang('doctor_limit_exceed'));
+                    $this->session->set_flashdata('warning', lang('doctor_limit_exceed'));
                     redirect('doctor');
                 }
 
@@ -207,7 +332,7 @@ class Finance extends MX_Controller {
                 $username = $this->input->post('d_name');
 // Adding New Patient
                 if ($this->ion_auth->email_check($d_email)) {
-                    $this->session->set_flashdata('feedback', lang('this_email_address_is_already_registered'));
+                    $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
                     $dfgg = 4;
                     $this->ion_auth->register($username, $password, $d_email, $dfgg);
@@ -228,17 +353,6 @@ class Finance extends MX_Controller {
             if ($doctor == 'add_new') {
                 $doctor = $doctor_user_id;
             }
-
-
-
-
-
-
-
-
-
-
-
 
             $amount = array_sum($amount_by_category);
             $sub_total = $amount;
@@ -275,6 +389,8 @@ class Finance extends MX_Controller {
                     $hospital_amount = $gross_total;
                 }
             }
+
+            $unpaid_total = $gross_total - $amount_received;
             $data = array();
 
             if (!empty($patient)) {
@@ -301,12 +417,13 @@ class Finance extends MX_Controller {
                     'category_name' => $category_name,
                     'patient' => $patient,
                     'date' => $date,
+                    'created_at' => $today_date_time,
                     'amount' => $sub_total,
                     'doctor' => $doctor,
+                    'rendering_staff_id' => $rendering_user,
                     'discount' => $discount,
                     'flat_discount' => $flat_discount,
                     'gross_total' => $gross_total,
-                    'status' => 'unpaid',
                     'hospital_amount' => $hospital_amount,
                     'doctor_amount' => $doctor_amount,
                     'user' => $user,
@@ -316,12 +433,43 @@ class Finance extends MX_Controller {
                     'doctor_name' => $doctor_name,
                     'date_string' => $date_string,
                     'remarks' => $remarks,
-                    'company_id' => $company_id
+                    'completion_status' => $completion_status,
+                    'company_id' => $company_id,
+                    'payment_status' => $payment_status,
+                    'encounter_id' => $encounter_id,
+                    'invoice_number' => $invoice_number,
                 );
 
 
                 $this->finance_model->insertPayment($data);
                 $inserted_id = $this->db->insert_id();
+
+                $encounter_data = $this->encounter_model->getEncounterById($encounter_id);
+                $encounter_payment_status = $encounter_data->payment_status;
+                $encounter_invoice_id = $encounter_data->invoice_id;
+
+                if (empty($encounter_invoice_id)) {
+                    $finance_encounter = array(
+                        'payment_status' => $payment_status,
+                        'invoice_id' => $inserted_id,
+                    );
+
+                    $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
+                }
+
+                if ($outstanding_balance <= 0) {
+                    $payment_status = $paid_status;
+                    $finance_encounter = array(
+                        'payment_status' => $payment_status,
+                    );
+                    $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
+                } elseif ($outstanding_balance > 0) {
+                    $payment_status = $unpaid_status;
+                    $finance_encounter = array(
+                        'payment_status' => $payment_status,
+                    );
+                    $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
+                }
 
                 //sms
                 $set['settings'] = $this->settings_model->getSettings();
@@ -337,6 +485,7 @@ class Finance extends MX_Controller {
                     'lastname' => $name1[1],
                     'name' => $patient_name,
                     'amount' => number_format($gross_total,2),
+                    'unpaid_amount' => number_format($unpaid_total,2),
                     'date' => date('F j, Y',$date),
                     'hospital_name' => $set['settings']->title,
                     'hospital_contact' => $set['settings']->phone,
@@ -385,7 +534,6 @@ class Finance extends MX_Controller {
                             'discount' => $discount,
                             'flat_discount' => $flat_discount,
                             'gross_total' => $gross_total,
-                            'status' => 'unpaid',
                             'hospital_amount' => $hospital_amount,
                             'doctor_amount' => $doctor_amount,
                             'patient_name' => $patient_name,
@@ -394,6 +542,7 @@ class Finance extends MX_Controller {
                             'doctor_name' => $doctor_name,
                             'date_string' => $date_string,
                             'remarks' => $remarks,
+                            'completion_status' => $completion_status,
                             'company_id' => $company_id,
                             'deposited_amount' => $amount_received,
                             'payment_id' => $inserted_id,
@@ -403,7 +552,8 @@ class Finance extends MX_Controller {
                             'cvv' => $cvv,
                             'from' => 'pos',
                             'user' => $user,
-                            'cardholdername' => $this->input->post('cardholder')
+                            'cardholdername' => $this->input->post('cardholder'),
+                            'payment_status' => $payment_status
                         );
                         //    $data_payments['all_details'] = $all_details;
                         //    $this->load->view('home/dashboard'); // just the header file
@@ -449,13 +599,13 @@ class Finance extends MX_Controller {
                             $data_payment = array('amount_received' => $amount_received, 'deposit_type' => $deposit_type);
                             $this->finance_model->updatePayment($inserted_id, $data_payment);
                         } else {
-                            $this->session->set_flashdata('feedback', lang('transaction_failed'));
+                            $this->session->set_flashdata('error', lang('transaction_failed'));
                         }
                         redirect("finance/invoice?id=" . "$inserted_id");
                     } elseif ($gateway == 'Pay U Money') {
                         redirect("payu/check1?deposited_amount=" . "$amount_received" . '&payment_id=' . $inserted_id);
                     } else {
-                        $this->session->set_flashdata('feedback', lang('payment_failed_no_gateway_selected'));
+                        $this->session->set_flashdata('error', lang('payment_failed_no_gateway_selected'));
                         redirect("finance/invoice?id=" . "$inserted_id");
                     }
                 } else {
@@ -469,13 +619,16 @@ class Finance extends MX_Controller {
                         'deposit_type' => $deposit_type,
                         'user' => $user
                     );
-                    $this->finance_model->insertDeposit($data1);
 
-                    $data_payment = array('amount_received' => $amount_received, 'deposit_type' => $deposit_type);
-                    $this->finance_model->updatePayment($inserted_id, $data_payment);
+                    if (!empty($amount_received)) {
+                        $this->finance_model->insertDeposit($data1);
+                        $data_payment = array('amount_received' => $amount_received, 'deposit_type' => $deposit_type);
+                        $this->finance_model->updatePayment($inserted_id, $data_payment);
+                    }
 
-                    $this->session->set_flashdata('feedback', lang('added'));
-                    redirect("finance/invoice?id=" . "$inserted_id");
+                    $this->session->set_flashdata('success', lang('record_added'));
+
+                    redirect("finance/invoice?id=" . "$invoice_number");
                 }
             } else {
                 $deposit_edit_amount = $this->input->post('deposit_edit_amount');
@@ -512,67 +665,81 @@ class Finance extends MX_Controller {
                     'patient_address' => $patient_details->address,
                     'doctor_name' => $doctor_details->name,
                     'remarks' => $remarks,
-                    'company_id' => $company_id
+                    'last_modified' => $today_date_time,
+                    'completion_status' => $completion_status,
+                    'company_id' => $company_id,
+                    'payment_status' => $payment_status
                 );
 
-                if (!empty($deposit_id->id)) {
-                    $data1 = array(
-                        'date' => $date,
-                        'patient' => $patient,
-                        'payment_id' => $id,
-                        'company_id' => $company_id,
-                        'deposited_amount' => $amount_received,
-                        'user' => $user
-                    );
-                    $this->finance_model->updateDeposit($deposit_id->id, $data1);
-                } else {
-                    $data1 = array(
-                        'date' => $date,
-                        'patient' => $patient,
-                        'payment_id' => $id,
-                        'company_id' => $company_id,
-                        'deposited_amount' => $amount_received,
-                        'amount_received_id' => $id . '.' . 'gp',
-                        'user' => $user
-                    );
-                    $this->finance_model->insertDeposit($data1);
-                }
+                // if (!empty($deposit_id->id)) {
+                //     $data1 = array(
+                //         'date' => $date,
+                //         'patient' => $patient,
+                //         'payment_id' => $id,
+                //         'company_id' => $company_id,
+                //         'deposited_amount' => $amount_received,
+                //         'user' => $user
+                //     );
+                //     $this->finance_model->updateDeposit($deposit_id->id, $data1);
+                // } else {
+                //     $data1 = array(
+                //         'date' => $date,
+                //         'patient' => $patient,
+                //         'payment_id' => $id,
+                //         'company_id' => $company_id,
+                //         'deposited_amount' => $amount_received,
+                //         'amount_received_id' => $id . '.' . 'gp',
+                //         'user' => $user
+                //     );
+                //     $this->finance_model->insertDeposit($data1);
+                // }
+                $invoice_number = $this->finance_model->getPaymentById($id)->invoice_number;
                 $this->finance_model->updatePayment($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
-                redirect("finance/invoice?id=" . "$id");
+                $this->session->set_flashdata('success', lang('record_updated'));
+                redirect("finance/invoice?id=" . "$invoice_number");
             }
         }
     }
 
     function editPayment() {
-        if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
             $data = array();
             $data['discount_type'] = $this->finance_model->getDiscountType();
             $data['settings'] = $this->settings_model->getSettings();
-            $data['categories'] = $this->finance_model->getPaymentCategory();
+            $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
             // $data['patients'] = $this->patient_model->getPatient();
             //  $data['doctors'] = $this->doctor_model->getDoctor();
+            $invoice_number = $this->input->get('finance_id');
             $id = $this->input->get('id');
+            $finance_id = $this->finance_model->getPaymentByFinanceNumber($invoice_number)->id;
 
             if (!empty($id)) {
-                $payment_details = $this->finance_model->getPaymentById($id);
+                $payment_details = $this->finance_model->getPaymentById($finance_id);
                 if ($payment_details->hospital_id != $this->session->userdata('hospital_id')) {
                     redirect('home/permission');
                 }
             }
 
-            $data['payment'] = $this->finance_model->getPaymentById($id);
-            $data['patients'] = $this->patient_model->getPatientById($data['payment']->patient);
-            $data['doctors'] = $this->doctor_model->getDoctorById($data['payment']->doctor);
+            $data['encounter'] = $this->encounter_model->getEncounterById($id);
+            $data['staffs'] = $this->encounter_model->getUser();
+            $data['payment'] = $this->finance_model->getPaymentById($finance_id);
+            // $data['patients'] = $this->patient_model->getPatientById($data['payment']->patient);
+            // $data['doctors'] = $this->doctor_model->getDoctorById($data['payment']->doctor);
+            $data['encounters'] = $this->encounter_model->getEncounter();
+            $data['patients'] = $this->patient_model->getPatient();
+            $data['doctors'] = $this->doctor_model->getDoctor();
+            $data['companies'] = $this->company_model->getCompany();
             $data['company'] = $this->company_model->getCompanyById($data['payment']->company_id);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('add_payment_view', $data);
-            $this->load->view('home/footer'); // just the footer file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('add_payment_viewv2', $data);
+            // $this->load->view('home/footer'); // just the footer file
+        } else {
+            redirect('home/permission');
         }
     }
 
     function delete() {
-        if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist'))) {
+        if ($this->ion_auth->in_group(array('admin'))) {
             $id = $this->input->get('id');
 
             if (!empty($id)) {
@@ -584,8 +751,10 @@ class Finance extends MX_Controller {
 
             $this->finance_model->deletePayment($id);
             $this->finance_model->deleteDepositByInvoiceId($id);
-            $this->session->set_flashdata('feedback', lang('deleted'));
-            redirect('finance/payment');
+            $this->session->set_flashdata('success', lang('record_deleted'));
+            redirect('finance/invoices');
+        } else {
+            redirect('home/permission');
         }
     }
 
@@ -737,7 +906,7 @@ class Finance extends MX_Controller {
                 );
                 $this->finance_model->insertDeposit($data1);
 
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
                 redirect("finance/otInvoice?id=" . "$inserted_id");
             } else {
                 $a_r_i = $id . '.' . 'ot';
@@ -774,7 +943,7 @@ class Finance extends MX_Controller {
                 );
                 $this->finance_model->updateDeposit($deposit_id, $data1);
                 $this->finance_model->updateOtPayment($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
                 redirect("finance/otInvoice?id=" . "$id");
             }
         }
@@ -821,7 +990,7 @@ class Finance extends MX_Controller {
         if ($this->ion_auth->in_group(array('admin', 'Accountant'))) {
             $id = $this->input->get('id');
             $this->finance_model->deleteOtPayment($id);
-            $this->session->set_flashdata('feedback', lang('deleted'));
+            $this->session->set_flashdata('success', lang('record_deleted'));
             redirect('finance/otPayment');
         }
     }
@@ -858,30 +1027,52 @@ class Finance extends MX_Controller {
     }
 
     public function paymentCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
         $data['categories'] = $this->finance_model->getPaymentCategory();
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('payment_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('payment_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addPaymentCategoryView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
+            redirect('home/permission');
+        }
         $data['categories'] = $this->finance_model->getServiceCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_payment_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_payment_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addPaymentCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
+        $service_type = $this->input->post('service_type');
         $name = $this->input->post('name');
         $category_id = $this->input->post('category_id');
         $description = $this->input->post('description');
         $c_price = $this->input->post('c_price');
         $d_commission = $this->input->post('d_commission');
+        $s_commission = $this->input->post('s_commission');
+        $staff = $this->input->post('staffs');
+
+        if ($staff == "") {
+            $staff = null;
+        }
+
+        if ($staff == 0) {
+            $staff = null;
+        }
+
+        $group = $this->ion_auth->get_users_groups($staff)->row()->name;
 
         if (empty($c_price)) {
             $c_price = 0;
@@ -895,22 +1086,30 @@ class Finance extends MX_Controller {
 // Validating Description Field
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Description Field
-        $this->form_validation->set_rules('c_price', 'Category price', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('c_price', 'Price', 'trim|min_length[1]|required|numeric|max_length[100]|xss_clean');
 // Validating Doctor Commission Rate Field
-        $this->form_validation->set_rules('d_commission', 'Doctor Commission rate', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('d_commission', 'Doctor Commission rate', 'trim|numeric|min_length[1]|max_length[100]|xss_clean');
 // Validating Service Category Name Field
         $this->form_validation->set_rules('category_id', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');        
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                $this->session->set_flashdata('feedback', lang('validation_error'));
-                redirect('finance/editPaymentCategory?id=' . $id);
+                $this->session->set_flashdata('error', lang('validation_error'));
+                $data = array();
+                // $id = $this->input->get('id');
+                $data['service'] = $this->finance_model->getPaymentCategoryById($id);
+                $data['categories'] = $this->finance_model->getServiceCategory();
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_payment_categoryv2', $data);
+                // $this->load->view('home/footer'); // just the footer file
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_payment_category', $data);
-                $this->load->view('home/footer'); // just the header file
+                $data['categories'] = $this->finance_model->getServiceCategory();
+                $data['settings'] = $this->settings_model->getSettings();
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_payment_categoryv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
@@ -918,57 +1117,109 @@ class Finance extends MX_Controller {
                 'description' => $description,
                 'category_id' => $category_id,
                 'c_price' => $c_price,
-                'd_commission' => $d_commission
+                'd_commission' => $d_commission,
+                'staff_commission' => $s_commission,
+                'service_category_group_id' => $service_type,
+                'applicable_staff_id' => $staff,
             );
+
+            if ($group == "Doctor") {
+                $doctor_details = $this->doctor_model->getDoctorByIonUserId($staff);
+                if ($service_type == 9) {
+                    $doctor_data = array(
+                        'physical_consultation_fee' => $c_price
+                    );
+                } elseif ($service_type == 10) {
+                    $doctor_data = array(
+                        'virtual_consultation_fee' => $c_price
+                    );
+                }
+            }
+
             if (empty($id)) {
+                if ($group == "Doctor") {
+                    if ($service_type == 9) {
+                        $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    } elseif ($service_type == 10) {
+                        $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    }
+                }
+
                 $this->finance_model->insertPaymentCategory($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
+                if ($group == "Doctor") {
+                    // $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    if ($service_type == 9) {
+                        $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    } elseif ($service_type == 10) {
+                        $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    }
+                }
+
                 $this->finance_model->updatePaymentCategory($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('finance/paymentCategory');
         }
     }
 
     function editPaymentCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $id = $this->input->get('id');
         $data['service'] = $this->finance_model->getPaymentCategoryById($id);
         $data['categories'] = $this->finance_model->getServiceCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_payment_category', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $data['settings'] = $this->settings_model->getSettings();
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_payment_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function deletePaymentCategory() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->get('id');
         $this->finance_model->deletePaymentCategory($id);
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('finance/paymentCategory');
     }
 
     public function expense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
         $data['settings'] = $this->settings_model->getSettings();
         $data['expenses'] = $this->finance_model->getExpense();
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('expense', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('expensev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addExpenseView() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getExpenseCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_expense_view', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_expense_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addExpense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $category = $this->input->post('category');
         $date = time();
@@ -983,23 +1234,23 @@ class Finance extends MX_Controller {
 // Validating Category Field
         $this->form_validation->set_rules('category', 'Category', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Generic Name Field
-        $this->form_validation->set_rules('amount', 'Amount', 'trim|required|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('amount', 'Amount', 'trim|required|numeric|min_length[1]|max_length[100]|xss_clean');
 // Validating Note Field
-        $this->form_validation->set_rules('note', 'Note', 'trim|min_length[1]|max_length[100]|xss_clean');
+        $this->form_validation->set_rules('note', 'Note', 'trim|min_length[1]|max_length[1000]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                $this->session->set_flashdata('feedback', lang('validation_error'));
+                $this->session->set_flashdata('error', lang('validation_error'));
                 redirect('finance/editExpense?id=' . $id);
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
                 $data['settings'] = $this->settings_model->getSettings();
                 $data['categories'] = $this->finance_model->getExpenseCategory();
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_expense_view', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_expense_viewv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
@@ -1022,16 +1273,19 @@ class Finance extends MX_Controller {
             }
             if (empty($id)) {
                 $this->finance_model->insertExpense($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->finance_model->updateExpense($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('finance/expense');
         }
     }
 
     function editExpense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $data['categories'] = $this->finance_model->getExpenseCategory();
         $data['settings'] = $this->settings_model->getSettings();
@@ -1045,12 +1299,15 @@ class Finance extends MX_Controller {
         }
 
         $data['expense'] = $this->finance_model->getExpenseById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_expense_view', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_expense_viewv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function deleteExpense() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
 
         if (!empty($id)) {
@@ -1060,27 +1317,38 @@ class Finance extends MX_Controller {
             }
         }
 
+        $this->session->set_flashdata('success', lang('record_deleted'));
         $this->finance_model->deleteExpense($id);
         redirect('finance/expense');
     }
 
     public function expenseCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
         $data['categories'] = $this->finance_model->getExpenseCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('expense_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('expense_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addExpenseCategoryView() {
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_expense_category');
-        $this->load->view('home/footer'); // just the header file
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk', 'Doctor'))) {
+            redirect('home/permission');
+        }
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_expense_categoryv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addExpenseCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk', 'Doctor'))) {
+            redirect('home/permission');
+        }
+
         $id = $this->input->post('id');
         $category = $this->input->post('category');
         $description = $this->input->post('description');
@@ -1093,14 +1361,14 @@ class Finance extends MX_Controller {
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                $this->session->set_flashdata('feedback', lang('validation_error'));
+                $this->session->set_flashdata('error', lang('validation_error'));
                 redirect('finance/editExpenseCategory?id=' . $id);
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_expense_category', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_expense_categoryv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
@@ -1109,16 +1377,19 @@ class Finance extends MX_Controller {
             );
             if (empty($id)) {
                 $this->finance_model->insertExpenseCategory($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->finance_model->updateExpenseCategory($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('finance/expenseCategory');
         }
     }
 
     function editExpenseCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk', 'Doctor'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $id = $this->input->get('id');
 
@@ -1130,12 +1401,15 @@ class Finance extends MX_Controller {
         }
 
         $data['category'] = $this->finance_model->getExpenseCategoryById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_expense_category', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_expense_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function deleteExpenseCategory() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
 
         if (!empty($id)) {
@@ -1145,28 +1419,38 @@ class Finance extends MX_Controller {
             }
         }
 
+        $this->session->set_flashdata('success', lang('record_deleted'));
         $this->finance_model->deleteExpenseCategory($id);
         redirect('finance/expenseCategory');
     }
 
     //start service category
     public function serviceCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
         $data['categories'] = $this->finance_model->getServiceCategory();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('service_category', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('service_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addServiceCategoryView() {
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_service_category');
-        $this->load->view('home/footer'); // just the header file
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) {
+            redirect('home/permission');
+        }
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_service_categoryv2');
+        // $this->load->view('home/footer'); // just the header file
     }
 
     public function addServiceCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->post('id');
         $category = $this->input->post('category');
         $description = $this->input->post('description');
@@ -1179,14 +1463,14 @@ class Finance extends MX_Controller {
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[100]|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             if (!empty($id)) {
-                $this->session->set_flashdata('feedback', lang('validation_error'));
+                $this->session->set_flashdata('error', lang('validation_error'));
                 redirect('finance/editServiceCategory?id=' . $id);
             } else {
                 $data = array();
                 $data['setval'] = 'setval';
-                $this->load->view('home/dashboard'); // just the header file
-                $this->load->view('add_service_category', $data);
-                $this->load->view('home/footer'); // just the header file
+                $this->load->view('home/dashboardv2'); // just the header file
+                $this->load->view('add_service_categoryv2', $data);
+                // $this->load->view('home/footer'); // just the header file
             }
         } else {
             $data = array();
@@ -1195,16 +1479,19 @@ class Finance extends MX_Controller {
             );
             if (empty($id)) {
                 $this->finance_model->insertServiceCategory($data);
-                $this->session->set_flashdata('feedback', lang('added'));
+                $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 $this->finance_model->updateServiceCategory($id, $data);
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('finance/serviceCategory');
         }
     }
 
     function editServiceCategory() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Clerk'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $id = $this->input->get('id');
 
@@ -1216,12 +1503,15 @@ class Finance extends MX_Controller {
         }
 
         $data['category'] = $this->finance_model->getServiceCategoryById($id);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('add_service_category', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_service_categoryv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     function deleteServiceCategory() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
         $id = $this->input->get('id');
 
         if (!empty($id)) {
@@ -1231,6 +1521,7 @@ class Finance extends MX_Controller {
             }
         }
 
+        $this->session->set_flashdata('success', lang('record_deleted'));
         $this->finance_model->deleteServiceCategory($id);
         redirect('finance/serviceCategory');
     }
@@ -1238,10 +1529,14 @@ class Finance extends MX_Controller {
     //end service category
 
     function invoice() {
-        $id = $this->input->get('id');
+        $invoice_number = $this->input->get('id');
+        $id = $this->finance_model->getPaymentByFinanceNumber($invoice_number)->id;
         $data['payment'] = $this->finance_model->getPaymentById($id);
         $data['patient'] = $this->patient_model->getPatientById($data['payment']->patient);
+        $data['encounter'] = $this->encounter_model->getEncounterByInvoiceId($id);
         $patient_hospital_id = $data['patient']->hospital_id;
+        $limit = 4;
+        $data['branches'] = $this->branch_model->getBranchesByLimit($limit);
 
         if (!empty($data['patient']->birthdate)) {
             $birthDate = strtotime($data['patient']->birthdate);
@@ -1264,7 +1559,8 @@ class Finance extends MX_Controller {
     }
 
     function printInvoice() {
-        $id = $this->input->get('id');
+        $invoice_number = $this->input->get('id');
+        $id = $this->finance_model->getPaymentByFinanceNumber($invoice_number)->id;
         $data['settings'] = $this->settings_model->getSettings();
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['payment'] = $this->finance_model->getPaymentById($id);
@@ -1299,7 +1595,7 @@ class Finance extends MX_Controller {
     function amountReceived() {
         $id = $this->input->post('id');
         $amount_received = $this->input->post('amount_received');
-        $previous_amount_received = $this->db->get_where('payment', array('id' => $id))->row()->amount_received;
+        $previous_amount_received = $this->db->get_where('invoice', array('id' => $id))->row()->amount_received;
         $amount_received = $amount_received + $previous_amount_received;
         $data = array();
         $data = array('amount_received' => $amount_received);
@@ -1322,56 +1618,97 @@ class Finance extends MX_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
-        $patient = $this->input->get('patient');
-        if (empty($patient)) {
-            $patient = $this->input->post('patient');
+        $patient_number = $this->input->get('patient');
+        if (empty($patient_number)) {
+            $patient_number = $this->input->post('patient');
+        }
+        $patient = $this->patient_model->getPatientByPatientNumber($patient_number)->id;
+        $provider_logged = $this->session->userdata('hospital_id');
+        $patient_details = $this->patient_model->getPatientById($patient, 0);
+        $patient_isolated_provider = explode(',', $patient_details->isolated_provider_id);
+        $patient_unrestricted_provider = explode(',', $patient_details->unrestricted_provider_id);
+        $patient_authorized_provider = explode(',', $patient_details->authorized_provider_id);
+        $patient_privacy_level_id = $this->patient_model->getPrivacyLevelById($patient_details->privacy_level_id);
+        $user = $this->ion_auth->get_user_id();
+
+        // if ($this->ion_auth->in_group(array('admin'))) {
+        //     if ($provider_logged !== $patient_details->hospital_id) {
+        //         redirect('home/permission');
+        //     }
+        // }
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_id = $this->doctor_model->getDoctorByIonUserId($user)->id;
+            $visited_provider = explode(',', $patient_details->visited_provider_id);
+            $privacy = in_array($provider_logged, $visited_provider);
+            if ($privacy === FALSE) {
+                redirect('home/permission');
+            }
         }
 
-
-        $patient_hospital_id = $this->patient_model->getPatientById($patient)->hospital_id;
-        if ($patient_hospital_id != $this->session->userdata('hospital_id')) {
-            redirect('home/permission');
-        }
+        // if ($patient_hospital_id != $this->session->userdata('hospital_id')) {
+        //     redirect('home/permission');
+        // }
 
 
 
         $data['settings'] = $this->settings_model->getSettings();
         $date_from = strtotime($this->input->post('date_from'));
         $date_to = strtotime($this->input->post('date_to'));
+        
         if (!empty($date_to)) {
             $date_to = $date_to + 86399;
+            if (empty($date_from)) {
+                $date_from = 0;
+            }
+        } else {
+            if (!empty($date_from)) {
+                $date_to = strtotime(date('Y-m-d')) + 86399;
+            }
         }
+
+
 
         $data['date_from'] = $date_from;
         $data['date_to'] = $date_to;
 
-        if (!empty($date_from)) {
-            $data['payments'] = $this->finance_model->getPaymentByPatientIdByDate($patient, $date_from, $date_to);
-            $data['deposits'] = $this->finance_model->getDepositByPatientIdByDate($patient, $date_from, $date_to);
-            $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
-        } else {
-            $data['payments'] = $this->finance_model->getPaymentByPatientId($patient);
+        if (empty($date_from) && empty($date_to)) {
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                $data['payments'] = $this->finance_model->getPaymentByPatientIdByDoctorId($patient, $doctor_id);
+            } else {
+                $data['payments'] = $this->finance_model->getPaymentByPatientId($patient);
+            }
             $data['pharmacy_payments'] = $this->pharmacy_model->getPaymentByPatientId($patient);
             $data['ot_payments'] = $this->finance_model->getOtPaymentByPatientId($patient);
             $data['deposits'] = $this->finance_model->getDepositByPatientId($patient);
-            $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);
+            if (!empty($data['settings']->payment_gateway)) {
+                $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);    
+            }
+            
+        } else {
+            $data['payments'] = $this->finance_model->getPaymentByPatientIdByDate($patient, $date_from, $date_to);
+            $data['deposits'] = $this->finance_model->getDepositByPatientIdByDate($patient, $date_from, $date_to);
+            if (!empty($data['settings']->payment_gateway)) {
+                $data['gateway'] = $this->finance_model->getGatewayByName($data['settings']->payment_gateway);    
+            }
         }
 
 
 
-        $data['patient'] = $this->patient_model->getPatientByid($patient);
+        $data['patient'] = $this->patient_model->getPatientById($patient, 0);
 
 
 
 
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('patient_deposit', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('patient_depositv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function deposit() {
         $id = $this->input->post('id');
         $patient = $this->input->post('patient');
+        $patient_details = $this->patient_model->getPatientById($patient);
         $payment_id = $this->input->post('payment_id');
         $date = time();
 
@@ -1385,6 +1722,26 @@ class Finance extends MX_Controller {
         }
         $payment_details = $this->finance_model->getPaymentById($payment_id);
         $user = $this->ion_auth->get_user_id();
+
+        $payment_details = $this->finance_model->getPaymentById($payment_id);
+        $encounter_id = $payment_details->encounter_id;
+
+        $current_user_group = $this->ion_auth->get_users_groups()->row()->name;
+        $company_classification = $this->company_model->getClassificationByCompanyId($payment_details->company_id);
+        $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
+        $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+
+        foreach ($payment_status_list as $status_list) {
+            if ($status_list->name === "paid") {
+                $paid_status = $status_list->id;
+            } elseif ($status_list->name === "unpaid") {
+                $unpaid_status = $status_list->id;
+            } elseif ($status_list->name === "overdue") {
+                $overdue_status = $status_list->id;
+            }
+        }
+
+        $outstanding_balance = $this->getOutstandingBalanceByPatientIdByEncounterId($encounter_id, $patient) - $deposited_amount;
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -1470,21 +1827,35 @@ class Finance extends MX_Controller {
                             );
                             $this->finance_model->insertDeposit($data1);
 
-                            $this->session->set_flashdata('feedback', lang('added'));
+                            $this->session->set_flashdata('success', lang('added'));
                         } else {
-                            $this->session->set_flashdata('feedback', lang('transaction_failed'));
+                            $this->session->set_flashdata('error', lang('transaction_failed'));
                         }
                         redirect('finance/patientPaymentHistory?patient=' . $patient);
                         // redirect("finance/invoice?id=" . "$inserted_id");
                     } elseif ($gateway == 'Pay U Money') {
                         redirect("payu/check?deposited_amount=" . "$deposited_amount" . '&payment_id=' . $payment_id);
                     } else {
-                        $this->session->set_flashdata('feedback', lang('payment_failed_no_gateway_selected'));
+                        $this->session->set_flashdata('error', lang('payment_failed_no_gateway_selected'));
                         redirect('finance/patientPaymentHistory?patient=' . $patient);
                     }
                 } else {
                     $this->finance_model->insertDeposit($data);
-                    $this->session->set_flashdata('feedback', lang('added'));
+                    $this->session->set_flashdata('success', lang('added'));
+
+                    if ($outstanding_balance <= 0) {
+                        $payment_status = $paid_status;
+                        $finance_encounter = array(
+                            'payment_status' => $payment_status,
+                        );
+                        $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
+                    } elseif ($outstanding_balance > 0) {
+                        $payment_status = $unpaid_status;
+                        $finance_encounter = array(
+                            'payment_status' => $payment_status,
+                        );
+                        $this->encounter_model->updateEncounter($encounter_id, $finance_encounter);
+                    }
                 }
             } else {
                 $this->finance_model->updateDeposit($id, $data);
@@ -1497,9 +1868,9 @@ class Finance extends MX_Controller {
                     $this->finance_model->updatePayment($amount_received_payment_id[0], $data_amount_received);
                 }
 
-                $this->session->set_flashdata('feedback', lang('updated'));
+                $this->session->set_flashdata('success', lang('updated'));
             }
-            redirect('finance/patientPaymentHistory?patient=' . $patient);
+            redirect('finance/patientPaymentHistory?patient=' . $patient_details->patient_id);
         }
     }
 
@@ -1507,6 +1878,59 @@ class Finance extends MX_Controller {
         $id = $this->input->get('id');
         $data['deposit'] = $this->finance_model->getDepositById($id);
         echo json_encode($data);
+    }
+
+    function getDepositsByInvoiceIdByJason() {
+        $id = $this->input->get('invoice_id');
+        $data['deposit'] = $this->finance_model->getDepositByPaymentId($id);
+
+        $date = [];
+        foreach ($data['deposit'] as $deposit) {
+            $date[] = date('Y-m-d', $deposit->date.' UTC');
+        }
+
+        $data['date'] = $date;
+
+        echo json_encode($data);
+    }
+
+    function getDeposit() {
+        $invoice_id = $this->input->get('invoice_id');
+        $requestData = $_REQUEST;
+
+        $data['deposit'] = $this->finance_model->getDepositByPaymentId($invoice_id);
+
+        foreach ($data['deposit'] as $deposit) {
+            $options1 = '<button type="button" class="btn btn-info deposit-list"><i class="fa fa-eye"></i></button>';
+
+            $info[] = array(
+                date('Y-m-d' ,$deposit->date.' UTC'),
+                $deposit->payment_id,
+                $deposit->receipt_number,
+                $deposit->deposited_amount,
+                $deposit->status,
+                $options1,
+            );
+        }
+
+        if (!empty($data['deposit'])) {
+            $output = array(
+                "draw" => intval($requestData['draw']),
+                // "recordsTotal" => $this->finance_model->getDepositCount(),
+                // "recordsFilterd" => $this->finance_model->getDepositBySeachCount($search),
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => $info
+            );
+        } else {
+            $output = array(
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => []
+            );
+        }
+
+        echo json_encode($output);
     }
 
     function deleteDeposit() {
@@ -1531,6 +1955,7 @@ class Finance extends MX_Controller {
 
         $this->finance_model->deleteDeposit($id);
 
+        $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('finance/patientPaymentHistory?patient=' . $patient);
     }
 
@@ -1589,6 +2014,9 @@ class Finance extends MX_Controller {
     }
 
     function doctorsCommission() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $date_from = strtotime($this->input->post('date_from'));
         $date_to = strtotime($this->input->post('date_to'));
         if (!empty($date_to)) {
@@ -1600,9 +2028,9 @@ class Finance extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['from'] = $this->input->post('date_from');
         $data['to'] = $this->input->post('date_to');
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('doctors_commission', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('doctors_commissionv2', $data);
+        // $this->load->view('home/footer'); // just the footer fi
     }
 
     function docComDetails() {
@@ -1624,12 +2052,15 @@ class Finance extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['from'] = $this->input->post('date_from');
         $data['to'] = $this->input->post('date_to');
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('doc_com_view', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('doc_com_viewv2', $data);
+        // $this->load->view('home/footer'); // just the footer fi
     }
 
     function financialReport() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $date_from = strtotime($this->input->post('date_from'));
         $date_to = strtotime($this->input->post('date_to'));
         if (!empty($date_to)) {
@@ -1655,9 +2086,9 @@ class Finance extends MX_Controller {
         $data['from'] = $this->input->post('date_from');
         $data['to'] = $this->input->post('date_to');
         $data['settings'] = $this->settings_model->getSettings();
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('financial_report', $data);
-        $this->load->view('home/footer'); // just the footer fi
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('financial_reportv2', $data);
+        // $this->load->view('home/footer'); // just the footer fi
     }
 
     function UserActivityReport() {
@@ -1706,6 +2137,9 @@ class Finance extends MX_Controller {
     function accountActivityReport() {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
+        }
+        if ($this->ion_auth->in_group(array('Doctor', 'Receptionist', 'Nurse', 'Laboratorist', 'Patient'))) {
+            redirect('home/permission');
         }
         $account = $this->input->get('account');
         $data['company'] = $this->company_model->getCompanyById($account);
@@ -1776,6 +2210,11 @@ class Finance extends MX_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
+
+        if ($this->ion_auth->in_group(array('Doctor', 'Receptionist', 'Nurse', 'Laboratorist', 'Patient'))) {
+            redirect('home/permission');
+        }
+
         $account = $this->input->post('account');
         $data['company'] = $this->company_model->getCompanyById($account);
         $date_from = strtotime($this->input->post('date_from'));
@@ -1800,11 +2239,16 @@ class Finance extends MX_Controller {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
+
+        if ($this->ion_auth->in_group(array('Receptionist', 'Nurse', 'Laboratorist', 'Patient'))) {
+            redirect('home/permission');
+        }
+
         $account = $this->input->get('account');
 
         if (!empty($account)) {
             $data['company'] = $this->company_model->getCompanyById($account);
-            $data['settings'] = $this->settings_model->getSettings();
+            
             $hour = 0;
             $TODAY_ON = $this->input->get('today');
             $YESTERDAY_ON = $this->input->get('yesterday');
@@ -1829,14 +2273,14 @@ class Finance extends MX_Controller {
             if (!empty($ALL)) {
                 $data['payments'] = $this->finance_model->getPaymentByCompanyId($account);
                 $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyId($account);
-                $data['deposits'] = $this->finance_model->getDepositByUserId($account);
+                $data['deposits'] = $this->finance_model->getDepositByCompanyId($account);
                 $data['day'] = 'All';
             }
 
-
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('account_activity_report', $data);
-            $this->load->view('home/footer'); // just the header file
+            $data['settings'] = $this->settings_model->getSettings();
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('account_activity_reportv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
 
         if (empty($account)) {
@@ -1849,9 +2293,9 @@ class Finance extends MX_Controller {
             $data['payments'] = $this->finance_model->getPaymentByDate($today, $today_last);
             $data['ot_payments'] = $this->finance_model->getOtPaymentByDate($today, $today_last);
             $data['deposits'] = $this->finance_model->getDepositsByDate($today, $today_last);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('all_account_activity_report', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('all_account_activity_reportv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
 
@@ -1923,9 +2367,9 @@ class Finance extends MX_Controller {
             $data['settings'] = $this->settings_model->getSettings();
             $data['date_from'] = $date_from;
             $data['date_to'] = $date_to;
-            $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($user, $date_from, $date_to);
-            $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyIdByDate($user, $date_from, $date_to);
-            $data['deposits'] = $this->finance_model->getDepositByCompanyIdByDate($user, $date_from, $date_to);
+            $data['payments'] = $this->finance_model->getPaymentByCompanyIdByDate($account, $date_from, $date_to);
+            $data['ot_payments'] = $this->finance_model->getOtPaymentByCompanyIdByDate($account, $date_from, $date_to);
+            $data['deposits'] = $this->finance_model->getDepositByCompanyIdByDate($account, $date_from, $date_to);
 
             $this->load->view('home/dashboard'); // just the header file
             $this->load->view('account_activity_report', $data);
@@ -1948,6 +2392,9 @@ class Finance extends MX_Controller {
     }
 
     function AllUserActivityReport() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
         }
@@ -1991,9 +2438,9 @@ class Finance extends MX_Controller {
             }
 
 
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('user_activity_report', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('user_activity_reportv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
 
         if (empty($user)) {
@@ -2006,9 +2453,9 @@ class Finance extends MX_Controller {
             $data['payments'] = $this->finance_model->getPaymentByDate($today, $today_last);
             $data['ot_payments'] = $this->finance_model->getOtPaymentByDate($today, $today_last);
             $data['deposits'] = $this->finance_model->getDepositsByDate($today, $today_last);
-            $this->load->view('home/dashboard'); // just the header file
-            $this->load->view('all_user_activity_report', $data);
-            $this->load->view('home/footer'); // just the header file
+            $this->load->view('home/dashboardv2'); // just the header file
+            $this->load->view('all_user_activity_reportv2', $data);
+            // $this->load->view('home/footer'); // just the header file
         }
     }
     function getPayment() {
@@ -2058,20 +2505,20 @@ class Finance extends MX_Controller {
         //  $data['payments'] = $this->finance_model->getPayment();
 
         foreach ($data['payments'] as $payment) {
-            $date = date('d-m-y', $payment->date);
+            $date = date('Y-m-d', $payment->date);
 
-            $discount = $payment->discount;
-            if (empty($discount)) {
-                $discount = 0;
+            $flat_discount = $payment->flat_discount;
+            if (empty($flat_discount)) {
+                $flat_discount = 0;
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant'))) {
-                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?id=' . $payment->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist', 'Clerk'))) {
+                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?finance_id=' . $payment->invoice_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
-            $options2 = '<a class="btn btn-success btn-xs" title="' . lang('invoice') . '" href="finance/invoice?id=' . $payment->id . '"><i class="fa fa-file-invoice"></i> ' . lang('invoice') . '</a>';
-            $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" href="finance/printInvoice?id=' . $payment->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
-            if ($this->ion_auth->in_group(array('admin', 'Accountant'))) {
+            $options2 = '<a class="btn btn-success btn-xs" title="' . lang('invoice') . '" href="finance/invoice?id=' . $payment->invoice_number . '"><i class="fa fa-file-invoice"></i> ' . lang('invoice') . '</a>';
+            $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" href="finance/printInvoice?id=' . $payment->invoice_number . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
+            if ($this->ion_auth->in_group(array('admin'))) {
                 $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/delete?id=' . $payment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
@@ -2103,12 +2550,12 @@ class Finance extends MX_Controller {
             }
 
             $info[] = array(
-                $payment->id,
+                $date,
+                $payment->invoice_number,
                 $patient_details,
                 $doctor,
-                $date,
                 $settings->currency . '' . number_format($payment->amount,2),
-                $settings->currency . '' . number_format($discount,2),
+                $settings->currency . '' . number_format($flat_discount,2),
                 $settings->currency . '' . number_format($payment->gross_total,2),
                 $settings->currency . '' . number_format(($this->finance_model->getDepositAmountByPaymentId($payment->id)),2),
                 $settings->currency . '' . number_format(($payment->gross_total - $this->finance_model->getDepositAmountByPaymentId($payment->id)),2),
@@ -2127,8 +2574,8 @@ class Finance extends MX_Controller {
         if (!empty($data['payments'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('payment')->num_rows(),
-                "recordsFiltered" => $this->db->get('payment')->num_rows(),
+                "recordsTotal" => $this->finance_model->getPaymentCount(), 
+                "recordsFiltered" => count($data['payments']),
                 "data" => $info
             );
         } else {
@@ -2201,6 +2648,9 @@ class Finance extends MX_Controller {
     }
 
     function daily() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $year = $this->input->get('year');
         $month = $this->input->get('month');
@@ -2232,12 +2682,15 @@ class Finance extends MX_Controller {
         $data['last_minute'] = $last_minute;
         $data['all_payments'] = $all_payments;
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('daily', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('dailyv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function dailyExpense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $year = $this->input->get('year');
         $month = $this->input->get('month');
@@ -2271,12 +2724,15 @@ class Finance extends MX_Controller {
 
 
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('daily_expense', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('daily_expensev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function monthly() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $year = $this->input->get('year');
 
@@ -2304,12 +2760,15 @@ class Finance extends MX_Controller {
         $data['last_minute'] = $last_minute;
         $data['all_payments'] = $all_payments;
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('monthly', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('monthlyv2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function monthlyExpense() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant'))) {
+            redirect('home/permission');
+        }
         $data = array();
         $year = $this->input->get('year');
 
@@ -2337,9 +2796,9 @@ class Finance extends MX_Controller {
         $data['last_minute'] = $last_minute;
         $data['all_expenses'] = $all_expenses;
 
-        $this->load->view('home/dashboard', $data); // just the header file
-        $this->load->view('monthly_expense', $data);
-        $this->load->view('home/footer'); // just the header file
+        $this->load->view('home/dashboardv2', $data); // just the header file
+        $this->load->view('monthly_expensev2', $data);
+        // $this->load->view('home/footer'); // just the header file
     }
 
     function getExpense() {
@@ -2367,11 +2826,11 @@ class Finance extends MX_Controller {
         foreach ($data['expenses'] as $expense) {
 
 
-            if ($this->ion_auth->in_group(array('admin'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk'))) {
                 $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editExpense?id=' . $expense->id . '"><i class="fa fa-edit"> </i></a>';
             }
 
-            $options2 = '<a class="btn btn-success btn-xs" title="' . lang('invoice') . '" style="color: #fff;" href="finance/expenseInvoice?id=' . $expense->id . '"><i class="fa fa-file-invoice"></i> </a>';
+            $options2 = '<a class="btn btn-info btn-xs" title="' . lang('invoice') . '" style="color: #fff;" href="finance/expenseInvoice?id=' . $expense->id . '"><i class="fa fa-file"></i> </a>';
             //$options4 = '<a class="btn btn-info btn-xs invoicebutton" title="' . lang('print') . '" style="color: #fff;" href="finance/printInvoice?id=' . $payment->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
             if ($this->ion_auth->in_group(array('admin'))) {
                 $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/deleteExpense?id=' . $expense->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> </a>';
@@ -2405,8 +2864,8 @@ class Finance extends MX_Controller {
         if (!empty($data['expenses'])) {
             $output = array(
                 "draw" => intval($requestData['draw']),
-                "recordsTotal" => $this->db->get('expense')->num_rows(),
-                "recordsFiltered" => $this->db->get('expense')->num_rows(),
+                "recordsTotal" => $this->finance_model->getExpenseCount(),
+                "recordsFiltered" => $this->finance_model->getExpenseBySearchCount($search),
                 "data" => $info
             );
         } else {
@@ -2422,6 +2881,40 @@ class Finance extends MX_Controller {
 
 
         echo json_encode($output);
+    }
+
+    public function getServiceCategoryGroupByEntityType() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->finance_model->getServiceCategoryGroupByEntityType($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getStaffInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->finance_model->getStaffInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getInvoiceStatusByCompanyClassificationName() {
+        $data = array();
+        $id = $this->input->get('id');
+
+        $companyId = $this->company_model->getClassificationByCompanyId($id);
+        $companyClassificationName = $this->company_model->getCompanyClassificationById($companyId->classification_id);
+        $current_user = $this->ion_auth->get_users_groups()->row()->name;
+        $data['name'] = $this->finance_model->getInvoiceStatusByCompanyClassificationName($companyClassificationName->name, $current_user);
+        $data['company_name'] = $companyClassificationName->name;
+        
+
+        echo json_encode($data);        
     }
 
 }

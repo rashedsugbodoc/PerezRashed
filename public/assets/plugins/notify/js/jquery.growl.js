@@ -257,11 +257,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     Growl.settings = {
       namespace: 'growl',
-      duration: 3200,
+      duration: 4000,
       close: "&#215;",
-      location: "default",
+      location: "tc",
       style: "default",
-      size: "medium",
+      size: "large",
       delayOnHover: true
     };
 
@@ -281,8 +281,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var settings;
     settings = {
-      title: "Error!",
-      style: "error"
+      title: "",
+      style: "error",
+      size: "large",
     };
     return $.growl($.extend(settings, options));
   };
@@ -292,8 +293,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var settings;
     settings = {
-      title: "Notice!",
-      style: "notice"
+      title: "",
+      style: "notice",
+      size: "medium",
+    };
+    return $.growl($.extend(settings, options));
+  };
+
+  $.growl.success = function () {
+    var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+    var settings;
+    settings = {
+      title: "",
+      style: "success",
+      size: "medium",
     };
     return $.growl($.extend(settings, options));
   };
@@ -303,8 +317,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     var settings;
     settings = {
-      title: "Warning!",
+      title: "",
       style: "warning"
+
     };
     return $.growl($.extend(settings, options));
   };

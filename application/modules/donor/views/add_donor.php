@@ -16,8 +16,10 @@
                 <div class="panel-body">
                     <div class="adv-table editable-table row">
                         <div class="clearfix">
-                            <?php echo validation_errors(); ?>
                             <form role="form" action="donor/addDonor" class="clearfix" method="post" enctype="multipart/form-data">
+                                <div class="form-group col-md-12">
+                                    <?php echo validation_errors(); ?>
+                                </div>
                                 <div class="form-group col-md-5">
                                     <label for="exampleInputEmail1"><?php echo lang('name'); ?></label>
                                     <input type="text" class="form-control" name="name" id="exampleInputEmail1" value='<?php

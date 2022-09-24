@@ -23,7 +23,9 @@
                             <tr>
                                 <th>Blood Group</th>
                                 <th>Status</th>
-                                <th>Options</th>
+                                <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                    <th>Options</th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,9 +43,11 @@
                             <tr class="">
                                 <td><?php echo $group->group; ?></td>
                                 <td> <?php echo $group->status; ?></td>
-                                <td>
-                                   <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $group->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                </td>
+                                <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                    <td>
+                                       <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $group->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                    </td>
+                                <?php } ?>
                             </tr>
                         <?php } ?>
                         </tbody>

@@ -4,26 +4,24 @@
     <section class="wrapper site-min-height">
         <!-- page start-->
         <div class="row">
-            <section class="col-md-7">
+            <section class="col-md-7 col-sm-12">
                 <div class="panel">
                     <header class="panel-heading">
                         <?php
                         if (!empty($company->id))
-                            echo lang('edit_company');
+                            echo lang('edit_account');
                         else
-                            echo lang('add_company');
+                            echo lang('add_account');
                         ?>
                     </header> 
                     <div class="panel-body">
                         <div class="adv-table editable-table ">
                             <div class="clearfix">
                                 <div class="col-lg-12">
-                                    <div class="col-lg-3"></div>
-                                    <div class="col-lg-6">
+                                    <div class="row">
                                         <?php echo validation_errors(); ?>
-                                        <?php echo $this->session->flashdata('feedback'); ?>
+                                        <?php echo $this->session->flashdata('feedback'); ?> 
                                     </div>
-                                    <div class="col-lg-3"></div>
                                 </div>
                                 <form role="form" action="company/addNew" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
@@ -50,7 +48,7 @@
                                     </div>                       
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo lang('email'); ?></label>
-                                        <input type="text" class="form-control" name="email" id="exampleInputEmail1" value='<?php
+                                        <input type="email" class="form-control" name="email" id="exampleInputEmail1" value='<?php
                                         if (!empty($setval)) {
                                             echo set_value('email');
                                         }
@@ -83,6 +81,17 @@
                                         }
                                         ?>' placeholder="">
                                     </div>
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1"><?php echo lang('registration'); ?> <?php echo lang('number'); ?></label>
+                                        <input type="text" class="form-control" name="registration_number" id="exampleInputEmail1" value='<?php
+                                        if (!empty($setval)) {
+                                            echo set_value('registration_number');
+                                        }
+                                        if (!empty($company->registration_number)) {
+                                            echo $company->registration_number;
+                                        }
+                                        ?>' placeholder="">
+                                    </div>                                    
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"><?php echo lang('type'); ?></label>
                                         <select class="form-control m-bot15" name="type_id" value=''>

@@ -55,7 +55,14 @@
                                     ?>' placeholder="" required="">
                                 </div>
 
-
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo lang('location'); ?> <?php echo lang('limit'); ?></label>
+                                    <input type="text" class="form-control" name="loc_limit" id="exampleInputEmail1" value='<?php
+                                    if (!empty($package->loc_limit)) {
+                                        echo $package->loc_limit;
+                                    }
+                                    ?>' placeholder="" required="">
+                                </div>
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('price'); ?> </label>
@@ -65,6 +72,22 @@
                                     }
                                     ?>' placeholder="">
                                 </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo lang('platform_percentage_fee'); ?> </label>
+                                    <input type="text" class="form-control" name="platform_percent_fee" id="exampleInputEmail1" value='<?php
+                                    if (!empty($package->platform_percent_fee)) {
+                                        echo $package->platform_percent_fee;
+                                    }
+                                    ?>' placeholder="" required="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1"><?php echo lang('platform_flat_fee'); ?> </label>
+                                    <input type="text" class="form-control" name="platform_flat_fee" id="exampleInputEmail1" value='<?php
+                                    if (!empty($package->platform_flat_fee)) {
+                                        echo $package->platform_flat_fee;
+                                    }
+                                    ?>' placeholder="" required="">
+                                </div>                                
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1"><?php echo lang('show_in_frontend'); ?></label>
@@ -122,6 +145,17 @@
                                            > <?php echo lang('accountant'); ?>
 
                                     <br>
+                                    <input type='checkbox' value = "admission" name="module[]"  <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('admission', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('admission'); ?>
+                                    
+                                    <br>                                    
                                     <input type='checkbox' value = "appointment" name="module[]"  <?php
                                     if (!empty($package->id)) {
                                         if (in_array('appointment', $modules1)) {
@@ -132,16 +166,6 @@
                                     }
                                     ?>> <?php echo lang('appointment'); ?>
                                     
-                                    <br>
-                                    <input type='checkbox' value = "lab" name="module[]"  <?php
-                                    if (!empty($package->id)) {
-                                        if (in_array('lab', $modules1)) {
-                                            echo 'checked';
-                                        }
-                                    } else {
-                                        echo 'checked';
-                                    }
-                                    ?>> <?php echo lang('lab_tests'); ?>
                                     <br>
                                     <input type='checkbox' value = "bed" name="module[]" <?php
                                     if (!empty($package->id)) {
@@ -154,6 +178,39 @@
                                     ?>> <?php echo lang('bed'); ?>
 
                                     <br>
+                                    <input type='checkbox' value = "branch" name="module[]" <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('branch', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('branch'); ?>
+
+                                    <br>                                    
+                                    <input type='checkbox' value = "company" name="module[]"  <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('company', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('company'); ?>
+                                    
+                                    <br>
+                                    <input type='checkbox' value = "companyuser" name="module[]"  <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('companyuser', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('company_user'); ?>
+                                    
+                                    <br>                                                                          
                                     <input type='checkbox' value = "department" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('department', $modules1)) {
@@ -187,6 +244,29 @@
                                     ?>> <?php echo lang('donor'); ?>
 
                                     <br>
+                                    <input type='checkbox' value = "email" name="module[]" <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('email', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('email'); ?>
+
+
+                                    <br>                                    
+                                    <input type='checkbox' value = "encounter" name="module[]" <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('encounter', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?> required=""> <?php echo lang('encounter'); ?>
+
+                                    <br>                                    
                                     <input type='checkbox' value = "finance" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('finance', $modules1)) {
@@ -209,17 +289,17 @@
                                     ?>> <?php echo lang('forms_reports'); ?>
 
                                     <br>
-                                    <input type='checkbox' value = "pharmacy" name="module[]" <?php
+
+                                    <input type='checkbox' value = "lab" name="module[]"  <?php
                                     if (!empty($package->id)) {
-                                        if (in_array('pharmacy', $modules1)) {
+                                        if (in_array('lab', $modules1)) {
                                             echo 'checked';
                                         }
                                     } else {
                                         echo 'checked';
                                     }
-                                    ?>> <?php echo lang('pharmacy'); ?>
-
-                                    <br>
+                                    ?>> <?php echo lang('lab'); ?>
+                                    <br>                                    
                                     <input type='checkbox' value = "laboratorist" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('laboratorist', $modules1)) {
@@ -242,6 +322,18 @@
                                     ?> required=""> <?php echo lang('medicine'); ?>
 
                                     <br>
+                                    <input type='checkbox' value = "notice" name="module[]" <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('notice', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('notice'); ?>
+
+
+                                    <br>                                    
                                     <input type='checkbox' value = "nurse" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('nurse', $modules1)) {
@@ -275,6 +367,18 @@
                                     ?> required=""> <?php echo lang('pharmacist'); ?>
 
                                     <br>
+
+                                    <input type='checkbox' value = "pharmacy" name="module[]" <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('pharmacy', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('pharmacy'); ?>
+
+                                    <br>
                                     <input type='checkbox' value = "prescription" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('prescription', $modules1)) {
@@ -285,7 +389,7 @@
                                     }
                                     ?>> <?php echo lang('prescription'); ?>
 
-                                    <br>
+                                    <br>                                                                        
                                     <input type='checkbox' value = "receptionist" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('receptionist', $modules1)) {
@@ -309,30 +413,7 @@
 
 
                                     <br>
-                                    <input type='checkbox' value = "notice" name="module[]" <?php
-                                    if (!empty($package->id)) {
-                                        if (in_array('notice', $modules1)) {
-                                            echo 'checked';
-                                        }
-                                    } else {
-                                        echo 'checked';
-                                    }
-                                    ?>> <?php echo lang('notice'); ?>
 
-
-                                    <br>
-                                    <input type='checkbox' value = "email" name="module[]" <?php
-                                    if (!empty($package->id)) {
-                                        if (in_array('email', $modules1)) {
-                                            echo 'checked';
-                                        }
-                                    } else {
-                                        echo 'checked';
-                                    }
-                                    ?>> <?php echo lang('email'); ?>
-
-
-                                    <br>
                                     <input type='checkbox' value = "sms" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('sms', $modules1)) {
@@ -342,6 +423,16 @@
                                         echo 'checked';
                                     }
                                     ?>> <?php echo lang('sms'); ?>
+                                    <br>
+                                    <input type='checkbox' value = "vital" name="module[]" <?php
+                                    if (!empty($package->id)) {
+                                        if (in_array('vital', $modules1)) {
+                                            echo 'checked';
+                                        }
+                                    } else {
+                                        echo 'checked';
+                                    }
+                                    ?>> <?php echo lang('vital_signs'); ?>
 
 
 

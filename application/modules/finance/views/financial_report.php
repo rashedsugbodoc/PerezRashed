@@ -60,7 +60,7 @@
                         <table class="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
-                                    <th> <?php echo lang('category'); ?></th>
+                                    <th> <?php echo lang('service'); ?> <?php echo lang('name'); ?></th>
                                     <th> <?php echo lang('quantity'); ?></th>
                                     <th class="hidden-phone"> <?php echo lang('amount'); ?></th>
 
@@ -122,7 +122,7 @@
                                                     }
                                                 }
                                                 if (!empty($amount_per_category)) {
-                                                    echo array_sum($amount_per_category);
+                                                    echo number_format(array_sum($amount_per_category),2);
                                                     $total_payment_by_category[] = array_sum($amount_per_category);
                                                 } else {
                                                     echo '0';
@@ -146,7 +146,7 @@
                                         <?php echo $settings->currency; ?>
                                         <?php
                                         if (!empty($total_payment_by_category)) {
-                                            echo array_sum($total_payment_by_category);
+                                            echo number_format(array_sum($total_payment_by_category),2);
                                         } else {
                                             echo '0';
                                         }
@@ -165,7 +165,7 @@
                                                 $discount[] = $payment->flat_discount;
                                             }
                                             if ($paid_number > 0) {
-                                                echo array_sum($discount);
+                                                echo number_format(array_sum($discount),2);
                                             } else {
                                                 echo '0';
                                             }
@@ -198,7 +198,7 @@
                                 </tr>
                                 -->
                                 <tr>
-                                    <td><h5><i class="fa fa-money-bill-alt"></i> <?php echo lang('gross_income'); ?></h5></td>
+                                    <td><h5><?php echo lang('gross_income'); ?></h5></td>
                                     <td></td>
                                     <td>
                                         <?php echo $settings->currency; ?>
@@ -206,7 +206,7 @@
                                         if (!empty($payments)) {
                                             if ($paid_number > 0) {
                                                 $gross = array_sum($total_payment_by_category) - array_sum($discount) + array_sum($vat);
-                                                echo $gross;
+                                                echo number_format($gross,2);
                                             } else {
                                                 echo '0';
                                             }
@@ -228,7 +228,7 @@
                                             }
                                             if ($paid_number > 0) {
                                                 $hospital_amount = array_sum($hospital_amount);
-                                                echo $hospital_amount;
+                                                echo number_format($hospital_amount,2);
                                             } else {
                                                 echo '0';
                                             }
@@ -250,7 +250,7 @@
                                             }
                                             if ($paid_number > 0) {
                                                 $gross_doctor_amount = array_sum($doctor_amount);
-                                                echo $gross_doctor_amount;
+                                                echo number_format($gross_doctor_amount,2);
                                             } else {
                                                 echo '0';
                                             }
@@ -280,7 +280,7 @@
                         <table class="table table-striped table-advance table-hover">
                             <thead>
                                 <tr>
-                                    <th> <?php echo lang('category'); ?></th>
+                                    <th> <?php echo lang('expense'); ?> <?php echo lang('name'); ?></th>
                                     <th class="hidden-phone"> <?php echo lang('amount'); ?></th>
                                 </tr>
                             </thead>
@@ -301,7 +301,7 @@
                                             }
                                             if (!empty($amount_per_category)) {
                                                 $total_expense_by_category[] = array_sum($amount_per_category);
-                                                echo array_sum($amount_per_category);
+                                                echo number_format(array_sum($amount_per_category),2);
                                             } else {
                                                 echo '0';
                                             }
@@ -345,9 +345,11 @@
                                         <?php echo $settings->currency; ?>
                                         <?php
                                         if (empty($gross)) {
-                                            $gross = 0;
+                                            echo $gross = 0;
+                                        } else {
+                                            echo number_format($gross,2);
                                         }
-                                        echo $gross_bill = $gross;
+                                        $gross_bill = $gross;
                                         ?>
                                     </div>
                                 </div>
@@ -372,12 +374,7 @@
                                         if (!empty($payments)) {
                                             if ($paid_number > 0) {
                                                 $gross = $hospital_amount;
-                                                echo $gross;
-                                            }
-                                        } elseif (!empty($payments)) {
-                                            if (($paid_number > 0)) {
-                                                $gross = $hospital_amount;
-                                                echo $gross;
+                                                echo number_format($gross,2);
                                             }
                                         } else {
                                             echo '0';
@@ -410,7 +407,14 @@
                                         if (empty($gross_doctor_amount_ot)) {
                                             $gross_doctor_amount_ot = 0;
                                         }
-                                        echo $doctor_gross = $gross_doctor_amount + $gross_doctor_amount_ot;
+
+                                        $doctor_gross = $gross_doctor_amount + $gross_doctor_amount_ot;
+
+                                        if(empty($doctor_gross)) {
+                                            echo '0';
+                                        } else {
+                                            echo number_format($doctor_gross,2);
+                                        }
                                         ?>
 
                                     </div>
@@ -441,9 +445,11 @@
                                             foreach ($deposits as $deposit) {
                                                 $deposited_amount[] = $deposit->deposited_amount;
                                             }
-                                            if ($paid_number > 0) {
-                                                $deposited_amount = array_sum($deposited_amount);
-                                                echo $deposited_amount;
+
+                                            $deposited_amount = array_sum($deposited_amount);
+
+                                            if ($deposited_amount > 0) {
+                                                echo number_format($deposited_amount,2);
                                             } else {
                                                 echo '0';
                                             }
@@ -481,7 +487,7 @@
                                             }
                                             if ($paid_number > 0) {
                                                 $deposited_amount = array_sum($deposited_amount);
-                                                echo $gross_bill - $deposited_amount;
+                                                echo number_format($gross_bill - $deposited_amount,2);
                                             } else {
                                                 echo '0';
                                             }
@@ -516,7 +522,7 @@
                                         <?php echo $settings->currency; ?>
                                         <?php
                                         if (!empty($total_expense_by_category)) {
-                                            echo array_sum($total_expense_by_category);
+                                            echo number_format(array_sum($total_expense_by_category),2);
                                         } else {
                                             echo '0';
                                         }

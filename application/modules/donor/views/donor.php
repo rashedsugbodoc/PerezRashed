@@ -9,13 +9,15 @@
                 <?php echo lang('donor'); ?> 
                 <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
                     <div class="col-md-4 no-print pull-right"> 
-                        <a data-toggle="modal" href="#myModal">
-                            <div class="btn-group pull-right">
-                                <button id="" class="btn btn-primary btn-xs">
-                                    <i class="fa fa-plus"></i> <?php echo lang('add_donor'); ?>
-                                </button>
-                            </div>
-                        </a>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
+                            <a data-toggle="modal" href="#myModal">
+                                <div class="btn-group pull-right">
+                                    <button id="" class="btn btn-primary btn-xs">
+                                        <i class="fa fa-plus"></i> <?php echo lang('add_donor'); ?>
+                                    </button>
+                                </div>
+                            </a>
+                        <?php } ?>
                     </div>
                 <?php } ?>
             </header>
@@ -32,7 +34,7 @@
                                 <th><?php echo lang('last_donation_date'); ?></th>
                                 <th><?php echo lang('phone'); ?></th>
                                 <th><?php echo lang('email'); ?></th>
-                                <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Laboratorist', 'Doctor'))) { ?>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
                                     <th class="no-print"><?php echo lang('options'); ?></th>
                                 <?php } ?>
                             </tr>
@@ -60,7 +62,7 @@
                                 <td><?php echo $donor->ldd; ?></td>
                                 <td><?php echo $donor->phone; ?></td>
                                 <td><?php echo $donor->email; ?></td>
-                                <?php if ($this->ion_auth->in_group(array('admin', 'Nurse', 'Laboratorist', 'Doctor'))) { ?>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
                                     <td class="no-print">
                                         <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $donor->id; ?>"><i class="fa fa-edit"> </i></button>   
                                         <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="donor/delete?id=<?php echo $donor->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>

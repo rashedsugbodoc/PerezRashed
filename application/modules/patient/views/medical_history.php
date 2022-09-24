@@ -5,6 +5,36 @@
 <section id="main-content">
     <section class="wrapper site-min-height">
         <!-- page start-->
+        <?php if ($this->ion_auth->in_group(array('Patient'))) { ?>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
+                            <div class="col-md-4 text-center">
+                                <a href="patient/findDoctors">
+                                    <i class="fa fa-search fa-5x"></i>
+                                    <p style="margin-bottom: 0px;"><label class="form-label">Find Doctors</label></p>
+                                </a>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <a data-toggle="modal" href="#addAppointmentModal">
+                                    <i class="fa fa-calendar fa-5x"></i>
+                                    <p style="margin-bottom: 0px;"><label class="form-label">Book Appointment</label></p>
+                                </a>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <a>
+                                    <i class="fa fa-home fa-5x"></i>
+                                    <p style="margin-bottom: 0px;"><label class="form-label">Find Hospital/Clinic</label></p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php } ?>
         <div class="row">
             <section class="col-md-3">
                 <div class="panel">
@@ -63,15 +93,19 @@
                                 <li class="">
                                     <a data-toggle="tab" href="#about"><?php echo lang('prescription'); ?></a>
                                 </li>
-                                <li class="">
-                                    <a data-toggle="tab" href="#lab"><?php echo lang('lab'); ?></a>
-                                </li>
+                                <?php if (in_array('lab', $this->modules)) { ?>
+                                    <li class="">
+                                        <a data-toggle="tab" href="#lab"><?php echo lang('lab'); ?></a>
+                                    </li>
+                                <?php } ?>
                                 <li class="">
                                     <a data-toggle="tab" href="#profile"><?php echo lang('documents'); ?></a>
                                 </li>
-                                <li class="">
-                                    <a data-toggle="tab" href="#contact"><?php echo lang('bed'); ?></a>
-                                </li>
+                                <?php if (in_array('bed', $this->modules)) { ?>
+                                    <li class="">
+                                        <a data-toggle="tab" href="#contact"><?php echo lang('bed'); ?></a>
+                                    </li>
+                                <?php } ?>
                                 <li class="">
                                     <a data-toggle="tab" href="#timeline"><?php echo lang('timeline'); ?></a> 
                                 </li>
@@ -81,13 +115,14 @@
                         <div class="tab-content">
                             <div id="appointments" class="tab-pane active">
                                 <div class="">
-                                    <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                             </a>
                                         </div>
-                                    <?php } else { ?>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group('Patient')) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?> 
@@ -102,7 +137,8 @@
                                                     <th><?php echo lang('time_slot'); ?></th>
                                                     <th><?php echo lang('doctor'); ?></th>
                                                     <th><?php echo lang('status'); ?></th>
-                                                    <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                                    <th><?php echo lang('facility'); ?></th>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                     <?php } ?>
                                                 </tr>
@@ -125,10 +161,21 @@
                                                             ?>
                                                         </td>
                                                         <td><?php echo $appointment->status; ?></td>
-                                                        <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                                        <td><?php
+                                                            $facility = $this->hospital_model->getHospitalById($appointment->hospital_id);
+                                                            if (!empty($appointment->hospital_id)) {
+                                                                $appointment_facility = $facility->name;
+                                                            } else {
+                                                                $appointment_facility = '';
+                                                            }
+                                                            echo $appointment_facility;
+                                                        ?></td>
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
                                                             <td class="no-print">
                                                                 <button type="button" class="btn btn-info btn-xs btn_width editAppointmentButton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $appointment->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                                                <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                <?php if ($this->ion_auth->in_group('admin')) { ?>
+                                                                    <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="appointment/delete?id=<?php echo $appointment->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                <?php } ?>
                                                             </td>
                                                         <?php } ?>
                                                     </tr>
@@ -141,7 +188,7 @@
                             <div id="home" class="tab-pane">
                                 <div class="">
 
-                                    <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
                                         <div class=" no-print">
                                             <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
                                                 <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
@@ -158,7 +205,8 @@
                                                     <th><?php echo lang('date'); ?></th>
                                                     <th><?php echo lang('title'); ?></th>
                                                     <th><?php echo lang('description'); ?></th>
-                                                    <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                                    <th><?php echo lang('facility'); ?></th>
+                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                     <?php } ?>
                                                 </tr>
@@ -170,11 +218,26 @@
                                                         <td><?php echo date('d-m-Y', $medical_history->date); ?></td>
                                                         <td><?php echo $medical_history->title; ?></td>
                                                         <td><?php echo $medical_history->description; ?></td>
+                                                        <td><?php
+                                                            $facility = $this->hospital_model->getHospitalById($medical_history->hospital_id);
+                                                            if (!empty($medical_history->hospital_id)) {
+                                                                $case_facility = $facility->name;
+                                                            } else {
+                                                                $case_facility = '';
+                                                            }
+                                                            echo $case_facility;
+                                                        ?></td>
                                                         <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
-                                                            <td class="no-print">
-                                                                <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                                                <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                                            </td>
+                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                <td class="no-print">
+                                                                    <button type="button" class="btn btn-info btn-xs btn_width editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $medical_history->id; ?>"><i class="fa fa-edit"></i> </button>
+                                                                </td>
+                                                            <?php } ?>
+                                                            <?php if ($this->ion_auth->in_group('admin')) { ?>   
+                                                                <td class="no-print">
+                                                                    <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="patient/deleteCaseHistory?id=<?php echo $medical_history->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                </td>
+                                                            <?php } ?>
                                                         <?php } ?>
                                                     </tr>
                                                 <?php } ?>
@@ -227,6 +290,7 @@
                                                     <th><?php echo lang('date'); ?></th>
                                                     <th><?php echo lang('doctor'); ?></th>
                                                     <th><?php echo lang('medicine'); ?></th>
+                                                    <th><?php echo lang('facility'); ?></th>
                                                     <th class="no-print"><?php echo lang('options'); ?></th>
                                                 </tr>
                                             </thead>
@@ -267,6 +331,15 @@
 
 
                                                         </td>
+                                                        <td><?php
+                                                            $facility = $this->hospital_model->getHospitalById($prescription->hospital_id);
+                                                            if (!empty($prescription->hospital_id)) {
+                                                                $prescription_facility = $facility->name;
+                                                            } else {
+                                                                $prescription_facility = '';
+                                                            }
+                                                            echo $prescription_facility;
+                                                        ?></td>
                                                         <td class="no-print">
                                                             <a class="btn btn-info btn-xs" href="prescription/viewPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-eye"></i> <?php echo lang('view'); ?> </a> 
                                                             <?php
@@ -275,12 +348,16 @@
                                                                 $doctor_table_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
                                                                 if ($prescription->doctor == $doctor_table_id) {
                                                                     ?>
-                                                                    <a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
-                                                                    <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                    <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                        <a type="button" class="btn btn-info btn-xs" data-toggle="modal" href="prescription/editPrescription?id=<?php echo $prescription->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>   
+                                                                    <?php } ?>
                                                                     <?php
                                                                 }
                                                             }
                                                             ?>
+                                                            <?php if ($this->ion_auth->in_group('admin')) { ?> 
+                                                                <a class="btn btn-danger btn-xs " href="prescription/delete?id=<?php echo $prescription->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                            <?php } ?>
                                                             <a class="btn btn-info btn-xs" title="<?php echo lang('print'); ?>" style="color: #fff;" href="prescription/viewPrescriptionPrint?id=<?php echo $prescription->id; ?>"target="_blank"> <i class="fa fa-print"></i> <?php echo lang('print'); ?></a>
                                                         </td>
                                                     </tr>
@@ -290,43 +367,55 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="lab" class="tab-pane"> <div class="">
-                                    <div class="adv-table editable-table ">
-                                        <table class="table table-striped table-hover table-bordered" id="">
-                                            <thead>
-                                                <tr>
-                                                    <th><?php echo lang('id'); ?></th>
-                                                    <th><?php echo lang('date'); ?></th>
-                                                    <th><?php echo lang('doctor'); ?></th>
-                                                    <th class="no-print"><?php echo lang('options'); ?></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php foreach ($labs as $lab) { ?>
-                                                    <tr class="">
-                                                        <td><?php echo $lab->id; ?></td>
-                                                        <td><?php echo date('m/d/Y', $lab->date); ?></td>
-                                                        <td>
-                                                            <?php
-                                                            $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
-                                                            if (!empty($doctor_details)) {
-                                                                $lab_doctor = $doctor_details->name;
-                                                            } else {
-                                                                $lab_doctor = '';
-                                                            }
-                                                            echo $lab_doctor;
-                                                            ?>
-                                                        </td>
-                                                        <td class="no-print">
-                                                            <a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=<?php echo $lab->id; ?>"><i class="fa fa-eye"> <?php echo lang('report'); ?> </i></a>   
-                                                        </td>
+                            <?php if (in_array('lab', $this->modules)) { ?>
+                                <div id="lab" class="tab-pane"> <div class="">
+                                        <div class="adv-table editable-table ">
+                                            <table class="table table-striped table-hover table-bordered" id="">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('id'); ?></th>
+                                                        <th><?php echo lang('date'); ?></th>
+                                                        <th><?php echo lang('doctor'); ?></th>
+                                                        <th><?php echo lang('facility'); ?></th>
+                                                        <th class="no-print"><?php echo lang('options'); ?></th>
                                                     </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    <?php foreach ($labs as $lab) { ?>
+                                                        <tr class="">
+                                                            <td><?php echo $lab->id; ?></td>
+                                                            <td><?php echo date('m/d/Y', $lab->date); ?></td>
+                                                            <td>
+                                                                <?php
+                                                                $doctor_details = $this->doctor_model->getDoctorById($lab->doctor);
+                                                                if (!empty($doctor_details)) {
+                                                                    $lab_doctor = $doctor_details->name;
+                                                                } else {
+                                                                    $lab_doctor = '';
+                                                                }
+                                                                echo $lab_doctor;
+                                                                ?>
+                                                            </td>
+                                                            <td><?php
+                                                                $facility = $this->hospital_model->getHospitalById($lab->hospital_id);
+                                                                if (!empty($lab->hospital_id)) {
+                                                                    $lab_facility = $facility->name;
+                                                                } else {
+                                                                    $lab_facility = '';
+                                                                }
+                                                                echo $lab_facility;
+                                                            ?></td>
+                                                            <td class="no-print">
+                                                                <a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=<?php echo $lab->id; ?>"><i class="fa fa-eye"> <?php echo lang('report'); ?> </i></a>   
+                                                            </td>
+                                                        </tr>
+                                                    <?php } ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php } ?>
                             <div id="profile" class="tab-pane"> <div class="">
                                     <div class=" no-print">
                                         <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal1">
@@ -338,12 +427,21 @@
                                             <?php foreach ($patient_materials as $patient_material) { ?>
                                                 <div class="panel col-md-3"  style="width: 200px ;height: 200px; margin: 10px; padding: 5px;">
 
+                                                    <?php if (pathinfo($patient_material->url, PATHINFO_EXTENSION) === 'pdf'){ ?>
+                                                        <div class="panel-body text-center">
+                                                            <a class="example-image-link" href="<?php echo $patient_material->url; ?>" target="_blank">
+                                                                <img class="example-image" src="uploads/PDF_DefaultImage.png" alt="image-1" width="120" height="120"/></a>
+                                      <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
+                                                        </div>
+                                                    <?php } else { ?>
+                                                        <div class="panel-body text-center">
+                                                            <a class="example-image-link" href="<?php echo $patient_material->url; ?>" data-lightbox="example-1">
+                                                                <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" width="120" height="120"/></a>
+                                      <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
+                                                        </div>
+                                                    <?php } ?>
                                                     <div class="panel-body text-center">
-                                                        <a class="example-image-link" href="<?php echo $patient_material->url; ?>" data-lightbox="example-1">
-                                                            <img class="example-image" src="<?php echo $patient_material->url; ?>" alt="image-1" width="120" height="120"/></a>
-                                  <!--  <img src="<?php echo $patient_material->url; ?>" height="100" width="100">-->
-                                                    </div>
-                                                    <div class="panel-body text-center">
+                                                        <p class="text-muted"><?php echo lang('uploader'); ?>: (Test Name)</p>
                                                         <?php
                                                         if (!empty($patient_material->title)) {
                                                             echo $patient_material->title;
@@ -354,7 +452,7 @@
                                                     
                                                     <div class="text-center" style="vertical-align: bottom;">
                                                         <a class="btn btn-info btn-xs btn_width" href="<?php echo $patient_material->url; ?>" download> <?php echo lang('download'); ?> </a>
-                                                        <?php if (!$this->ion_auth->in_group(array('Patient'))) { ?>
+                                                        <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
                                                             <a class="btn btn-danger btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="patient/deletePatientMaterial?id=<?php echo $patient_material->id; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                         <?php } ?>
 
@@ -368,50 +466,62 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="contact" class="tab-pane"> 
-                                <div class="">
-                                    <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
-                                        <div class=" no-print">
-                                            <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModa3">
-                                                <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                            </a>
+                            <?php if (in_array('bed', $this->modules)) { ?>
+                                <div id="contact" class="tab-pane"> 
+                                    <div class="">
+                                        <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                            <div class=" no-print">
+                                                <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModa3">
+                                                    <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                </a>
+                                            </div>
+                                        <?php } ?>
+                                        <div class="adv-table editable-table ">
+                                            <table class="table table-striped table-hover table-bordered" id="">
+                                                <thead>
+                                                    <tr>
+                                                        <th><?php echo lang('bed_id'); ?></th>
+                                                        <th><?php echo lang('alloted_time'); ?></th>
+                                                        <th><?php echo lang('discharge_time'); ?></th>
+                                                        <th><?php echo lang('facility'); ?></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <style>
+
+                                                    .img_url{
+                                                        height:20px;
+                                                        width:20px;
+                                                        background-size: contain; 
+                                                        max-height:20px;
+                                                        border-radius: 100px;
+                                                    }
+
+                                                </style>
+
+                                                <?php foreach ($beds as $bed) { ?>
+                                                    <tr class="">
+                                                        <td><?php echo $bed->bed_id; ?></td>            
+                                                        <td><?php echo $bed->a_time; ?></td>
+                                                        <td><?php echo $bed->d_time; ?></td>
+                                                        <td><?php
+                                                            $facility = $this->hospital_model->getHospitalById($bed->hospital_id);
+                                                            if (!empty($bed->hospital_id)) {
+                                                                $bed_facility = $facility->name;
+                                                            } else {
+                                                                $bed_facility = '';
+                                                            }
+                                                            echo $bed_facility;
+                                                        ?></td>
+                                                    </tr>
+                                                <?php } ?>
+                                                </tbody>
+                                            </table>
                                         </div>
-                                    <?php } ?>
-                                    <div class="adv-table editable-table ">
-                                        <table class="table table-striped table-hover table-bordered" id="">
-                                            <thead>
-                                                <tr>
-                                                    <th><?php echo lang('bed_id'); ?></th>
-                                                    <th><?php echo lang('alloted_time'); ?></th>
-                                                    <th><?php echo lang('discharge_time'); ?></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            <style>
-
-                                                .img_url{
-                                                    height:20px;
-                                                    width:20px;
-                                                    background-size: contain; 
-                                                    max-height:20px;
-                                                    border-radius: 100px;
-                                                }
-
-                                            </style>
-
-                                            <?php foreach ($beds as $bed) { ?>
-                                                <tr class="">
-                                                    <td><?php echo $bed->bed_id; ?></td>            
-                                                    <td><?php echo $bed->a_time; ?></td>
-                                                    <td><?php echo $bed->d_time; ?></td>
-                                                </tr>
-                                            <?php } ?>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
-                            </div>
+                            <?php } ?>
                             <div id="timeline" class="tab-pane"> 
                                 <div class="">
                                     <div class="">
@@ -562,7 +672,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 
 <!-- Add Appointment Modal-->
 <div class="modal fade" id="addAppointmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg"">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -661,7 +771,7 @@ if ($this->ion_auth->in_group('Doctor')) {
 
 <!-- Edit Event Modal-->
 <div class="modal fade" id="editAppointmentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg"">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>

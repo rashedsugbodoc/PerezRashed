@@ -7,13 +7,15 @@
             <header class="panel-heading">
                 <?php echo lang('bed_categories'); ?>  
                 <div class="col-md-4 no-print pull-right"> 
-                    <a data-toggle="modal" href="#myModal">
-                        <div class="btn-group pull-right">
-                            <button id="" class="btn btn-primary btn-xs">
-                                <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
-                            </button>
-                        </div>
-                    </a>
+                    <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) { ?>
+                        <a data-toggle="modal" href="#myModal">
+                            <div class="btn-group pull-right">
+                                <button id="" class="btn btn-primary btn-xs">
+                                    <i class="fa fa-plus"></i> <?php echo lang('add_new'); ?>
+                                </button>
+                            </div>
+                        </a>
+                    <?php } ?>
                 </div>
             </header>
             <div class="panel-body">
@@ -24,7 +26,9 @@
                             <tr>
                                 <th><?php echo lang('category'); ?></th>
                                 <th><?php echo lang('description'); ?></th>
-                                <th class="no-print"><?php echo lang('options'); ?></th>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) { ?>
+                                    <th class="no-print"><?php echo lang('options'); ?></th>
+                                <?php } ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,10 +49,14 @@
                             <tr class="">
                                 <td><?php echo $category->category; ?></td>
                                 <td> <?php echo $category->description; ?></td>
-                                <td class="no-print">
-                                    <button type="button" title="<?php echo lang('edit'); ?>" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> </button>   
-                                    <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="bed/deleteBedCategory/delete?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
-                                </td>
+                                <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist'))) { ?>
+                                    <td class="no-print">
+                                        <button type="button" title="<?php echo lang('edit'); ?>" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $category->id; ?>"><i class="fa fa-edit"></i> </button>   
+                                        <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                        <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="bed/deleteBedCategory/delete?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                        <?php } ?>
+                                    </td>
+                                <?php } ?>
                             </tr>
                         <?php } ?>
 

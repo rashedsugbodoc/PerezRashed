@@ -16,10 +16,47 @@ class Doctor_model extends CI_model {
         $this->db->insert('doctor', $data2);
     }
 
+    function insertUserSignatureByUserId($signature) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($signature, $data1);
+        $this->db->insert('user_signature', $data2);
+    }
+
+    function updateUserSignatureByUserId($user, $signature) {
+        $this->db->where('user_id', $user);
+        $this->db->update('user_signature', $signature);
+    }
+
+    function getUserSignatureByUserId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('user_id', $id);
+        $query = $this->db->get('user_signature');
+        return $query->row();
+    }
+
     function getDoctor() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $query = $this->db->get('doctor');
         return $query->result();
+    }
+
+    function getAllDoctor() {
+        $query = $this->db->get('doctor');
+        return $query->result();
+    }
+
+    function getDoctorByCountryIdByIsBookableByIsVerified($countries = [], $is_bookable = null, $is_verified = null) {
+        $this->db->where_in('country_id', $countries);
+        $this->db->where('is_bookable', $is_bookable);
+        $this->db->where('is_verified', $is_verified);
+        $query = $this->db->get('doctor');
+        return $query->result();
+    }
+
+    function getDoctorCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('doctor');
+        return $query->num_rows();
     }
 
     function getLimit() {
@@ -33,9 +70,18 @@ class Doctor_model extends CI_model {
         $query = $this->db->select('*')
                 ->from('doctor')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         return $query->result();
+    }
+
+    function getDoctorBySearchCount($search) {
+        $query = $this->db->select('id')
+                ->from('doctor')
+                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%')", NULL, FALSE)
+                ->get();
+        return $query->num_rows();
     }
 
     function getDoctorByLimit($limit, $start) {
@@ -47,19 +93,24 @@ class Doctor_model extends CI_model {
     }
 
     function getDoctorByLimitBySearch($limit, $start, $search) {
-        $this->db->like('id', $search);
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
                 ->from('doctor')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
-                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%')", NULL, FALSE)
+                ->where("(id LIKE '%" . $search . "%' OR name LIKE '%" . $search . "%' OR phone LIKE '%" . $search . "%' OR address LIKE '%" . $search . "%'OR email LIKE '%" . $search . "%'OR department LIKE '%" . $search . "%'OR profile LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
 
         return $query->result();
     }
 
     function getDoctorById($id) {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('id', $id);
+        $query = $this->db->get('doctor');
+        return $query->row();
+    }
+
+    function getDoctorByIdFromConsultation($id) {
         $this->db->where('id', $id);
         $query = $this->db->get('doctor');
         return $query->row();
@@ -122,7 +173,47 @@ class Doctor_model extends CI_model {
         // Initialize Array with fetched data
         $data = array();
         foreach ($users as $user) {
-            $data[] = array("id" => $user['id'], "text" => $user['name'] . ' (' . lang('id') . ': ' . $user['id'] . ')');
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
+        }
+        return $data;
+    }
+
+    function getDoctorInfoByCountry($searchTerm, $country_id, $provider) {
+        if (!empty($searchTerm)) {
+            $this->db->select('*');
+            $this->db->where('country_id', $country_id);
+            $this->db->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE);
+            if (!empty($provider)) {
+                $this->db->where('hospital_id', $provider);
+            }
+            $query = $this->db->get('doctor');
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where('country_id', $country_id);
+            if (!empty($provider)) {
+                $this->db->where('hospital_id', $provider);
+            }
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_ion_id = $this->ion_auth->get_user_id();
+            $this->db->select('*');
+            $this->db->where('country_id', $country_id);
+            $this->db->where('ion_user_id', $doctor_ion_id);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
         }
         return $data;
     }
@@ -159,7 +250,43 @@ class Doctor_model extends CI_model {
         $data = array();
         $data[] = array("id" => 'add_new', "text" => lang('add_new'));
         foreach ($users as $user) {
-            $data[] = array("id" => $user['id'], "text" => $user['name'] . ' (' . lang('id') . ': ' . $user['id'] . ')');
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
+        }
+        return $data;
+    }
+
+    function getDoctorWithoutAddNewOption($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('doctor')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+        if ($this->ion_auth->in_group(array('Doctor'))) {
+            $doctor_ion_id = $this->ion_auth->get_user_id();
+            $this->db->select('*');
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->where('ion_user_id', $doctor_ion_id);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
         }
         return $data;
     }
