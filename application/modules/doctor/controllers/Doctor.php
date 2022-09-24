@@ -28,7 +28,7 @@ class Doctor extends MX_Controller {
 
     public function index() {
 
-        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
+        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -75,7 +75,7 @@ class Doctor extends MX_Controller {
     }
 
     public function addNewDoctor() {
-        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
+        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         
