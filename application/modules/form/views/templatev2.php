@@ -41,7 +41,7 @@
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Midwife'))) { ?>
                                                         <td class="no-print">
                                                             <a href="form/editTemplate?id=<?php echo $template->id;?>" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-id="<?php echo $template->id; ?>"><i class="fa fa-edit"> </i></a>   
-                                                            <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Midwife'))) { ?>
                                                                 <a class="btn btn-danger btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="form/deleteTemplate?id=<?php echo $template->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
                                                             <?php } ?>
                                                         </td>
