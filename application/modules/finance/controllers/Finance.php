@@ -267,6 +267,9 @@ class Finance extends MX_Controller {
 
         $this->form_validation->set_rules('category_name[]', 'Charge', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
+        $this->form_validation->set_rules('quantity[]', 'Quantity', 'trim|required|is_natural_no_zero|xss_clean');
+
+
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', lang('validation_error'));
             $data = array();
