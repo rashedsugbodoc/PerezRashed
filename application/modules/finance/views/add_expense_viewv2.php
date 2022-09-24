@@ -24,8 +24,8 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('category'); ?></label>
-                                                        <select class="form-control select2-show-search" name="category">
+                                                        <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
+                                                        <select class="form-control select2-show-search" name="category" required>
                                                             <option value=""><?php echo lang('select_category');?></option>
                                                             <?php foreach ($categories as $category) { ?>
                                                             <option value="<?php echo $category->category; ?>" <?php
@@ -46,7 +46,7 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('amount'); ?></label>
+                                                        <label class="form-label"><?php echo lang('amount'); ?> <span class="text-red">*</span></label>
                                                         <input type="text" class="form-control" name="amount" id="exampleInputEmail1" value='<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('amount');
@@ -54,7 +54,7 @@
                                                         if (!empty($expense->amount)) {
                                                             echo $expense->amount;
                                                         }
-                                                        ?>' placeholder="<?php echo $settings->currency; ?>">
+                                                        ?>' placeholder="<?php echo $settings->currency; ?>" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -144,6 +144,9 @@
         <script src="<?php echo base_url('public/assets/plugins/select2/select2.full.min.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/select2.js'); ?>"></script>
 
+        <!-- parlsey js -->
+        <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
         <!-- Notifications js -->
         <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
@@ -151,6 +154,10 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $('#expenseForm').parsley();
+    </script>
 
     <script>
         $(document).ready(function () {
