@@ -307,7 +307,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('virtual_consultation_fee');?><span class="text-danger"> *</span></label>
-                                                        <input type="number" name="virtual_consultation_fee" class="form-control" placeholder="Enter Digit without decimal" value="<?php
+                                                        <input type="number" name="virtual_consultation_fee" class="form-control" placeholder="Enter Digit without decimal" min="0" oninput="validity.valid||(value='');" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('virtual_consultation_fee');
                                                         }
@@ -320,7 +320,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('in_person_consultation_fee');?><span class="text-danger"> *</span></label>
-                                                        <input type="number" name="in_person_consultation_fee" class="form-control" placeholder="Enter Digit without decimal" value="<?php
+                                                        <input type="number" name="in_person_consultation_fee" class="form-control" placeholder="Enter Digit without decimal" min="0" oninput="validity.valid||(value='');" value="<?php
                                                         if (!empty($setval)) {
                                                             echo set_value('in_person_consultation_fee');
                                                         }
