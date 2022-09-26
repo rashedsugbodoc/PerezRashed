@@ -522,7 +522,7 @@
             var city = "<?php echo set_value('city_id') ?>";
             var barangay = "<?php echo set_value('barangay_id') ?>";
             
-            if (setval != "" || setval != null) {
+            if (setval != "") {
                 $.ajax({
                     url: 'doctor/getStateByCountryIdByJason?country=' + country,
                     method: 'GET',
