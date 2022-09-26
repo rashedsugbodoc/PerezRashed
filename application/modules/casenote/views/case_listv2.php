@@ -12,7 +12,7 @@
                             </style>
                         <?php echo validation_errors(); ?>
                         <div class="row mt-5">
-                            <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
                             <div class="col-md-12 col-sm-12 col-lg-12" id="addCase">
                                 <div class="panel-group panel-group-primary mb-5"  role="tablist" aria-multiselectable="true" id="accordion3">
                                     <div class="panel panel-default active">

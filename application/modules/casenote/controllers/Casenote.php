@@ -219,7 +219,7 @@ class Casenote extends MX_Controller {
 
         foreach ($data['cases'] as $case) {
 
-            if ($this->ion_auth->in_group(array('Doctor'))) {
+            if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
                 $options1 = ' <a href="casenote?id='.$case->case_note_number.'" class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '"><i class="fa fa-edit"> </i> </a>';
             }
@@ -228,7 +228,7 @@ class Casenote extends MX_Controller {
                 $options2 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="' . lang('delete') . '" href="casenote/delete?id=' . $case->id . '&redirect=case" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>';
             }
 
-            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor', 'Midwife'))) {
                 $options3 = ' <a type="button" class="btn btn-info btn-xs case" title="' . lang('case') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-file"> </i> </a>';
             }
 
