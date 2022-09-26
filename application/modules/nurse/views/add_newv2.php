@@ -369,7 +369,7 @@
             
             if (setval != "" || setval != null) {
                 $.ajax({
-                    url: 'doctor/getStateByCountryIdByJason?country=' + country,
+                    url: 'nurse/getStateByCountryIdByJason?country=' + country,
                     method: 'GET',
                     data: '',
                     dataType: 'json',
@@ -394,7 +394,7 @@
 
 
                         $.ajax({
-                            url: 'doctor/getCityByStateIdByJason?state=' + state,
+                            url: 'nurse/getCityByStateIdByJason?state=' + state,
                             method: 'GET',
                             data: '',
                             dataType: 'json',
@@ -418,7 +418,7 @@
                                 }
 
                                 $.ajax({
-                                    url: 'doctor/getBarangayByCityIdByJason?city=' + city,
+                                    url: 'nurse/getBarangayByCityIdByJason?city=' + city,
                                     method: 'GET',
                                     data: '',
                                     dataType: 'json',
