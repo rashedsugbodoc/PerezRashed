@@ -172,8 +172,7 @@
                                                                     if ($country->id == set_value('country_id')) {
                                                                         echo 'selected';
                                                                     }
-                                                                }
-                                                                elseif (!empty($doctor->country_id)) {
+                                                                } elseif (!empty($doctor->country_id)) {
                                                                     if ($country->id == $doctor->country_id) {
                                                                         echo 'selected';
                                                                     }
@@ -229,7 +228,7 @@
                                                             <!-- <?php foreach ($specialties as $specialty) { ?>
                                                                 <option value="<?php echo $specialty->display_name; ?>" <?php
                                                                 if (!empty($setval)) {
-                                                                    if ($specialty->display_name == set_value('department')) {
+                                                                    if ($specialty->display_name == set_value('specialization')) {
                                                                         echo 'selected';
                                                                     }
                                                                 }
@@ -239,7 +238,7 @@
                                                                     }
                                                                 }
                                                                 ?> > <?php echo $specialty->display_name; ?> </option>
-                                                                    <?php } ?>  -->
+                                                                    <?php } ?> -->
                                                         </select>
                                                     </div>
                                                 </div>
@@ -514,6 +513,98 @@
 
     <!-- INTERNAL JS INDEX END -->
     <script src="<?php echo base_url('public/assets/plugins/signature/signature_plugin.min.js'); ?>"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var setval = "<?php echo $setval ?>";
+            var country = "<?php echo set_value('country_id') ?>";
+            var state = "<?php echo set_value('state_id') ?>";
+            var city = "<?php echo set_value('city_id') ?>";
+            var barangay = "<?php echo set_value('barangay_id') ?>";
+            
+            if (setval != null) {
+                $.ajax({
+                    url: 'doctor/getStateByCountryIdByJason?country=' + country,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var result_state = response.state;
+                        if (country != null) {
+                            $("#state").attr("disabled", false);
+                        } else {
+                            $("#state").attr("disabled", true);
+                        }
+
+                        $.each(result_state, function (key, value) {
+                            $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+                        if (state == null) {
+                            $('#state').val("0");
+                        } else {
+                            $('#state').val(state);
+                            $('#state').attr("disabled", false);
+                        }
+
+
+                        $.ajax({
+                            url: 'doctor/getCityByStateIdByJason?state=' + state,
+                            method: 'GET',
+                            data: '',
+                            dataType: 'json',
+                            success: function (response) {
+                                var result_city = response.city;
+                                if (state != null) {
+                                    $("#city").attr("disabled", false);
+                                } else {
+                                    $("#city").attr("disabled", true);
+                                }
+
+                                $.each(result_city, function (key, value) {
+                                    $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                                });
+
+                                if (city == null) {
+                                    $('#city').val("0");
+                                } else {
+                                    $('#city').val(city);
+                                    $('#city').attr("disabled", false);
+                                }
+
+                                $.ajax({
+                                    url: 'doctor/getBarangayByCityIdByJason?city=' + city,
+                                    method: 'GET',
+                                    data: '',
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        var result_barangay = response.barangay;
+                                        if (city != null) {
+                                            $("#barangay").attr("disabled", false);
+                                        } else {
+                                            $("#barangay").attr("disabled", true);
+                                        }
+
+                                        $.each(result_barangay, function (key, value) {
+                                            $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                                        });
+
+                                        if (barangay == null) {
+                                            $('#barangay').val("0");
+                                        } else {
+                                            $('#barangay').val(barangay);
+                                            $('#barangay').attr("disabled", false);
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                    }
+                });
+            }
+        })
+    </script>
+
     <script>
     $(function() {
         // init signaturepad
