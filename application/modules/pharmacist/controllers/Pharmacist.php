@@ -86,9 +86,10 @@ class Pharmacist extends MX_Controller {
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 $data = array();
+                $data['countries'] = $this->location_model->getCountry();
                 $data['setval'] = 'setval';
                 $this->load->view('home/dashboardv2'); // just the header file
-                $this->load->view('add_newv2');
+                $this->load->view('add_newv2', $data);
                 // $this->load->view('home/footer'); // just the header file
             }
         } else {
