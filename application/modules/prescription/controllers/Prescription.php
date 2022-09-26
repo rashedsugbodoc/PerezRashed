@@ -659,7 +659,7 @@ class Prescription extends MX_Controller {
                     $patientname,
                     $this->patient_model->getPatientById($prescription->patient)->patient_id,
                     $medicinelist,
-                    $option1 . ' ' . $option3 . ' ' . $options4 . ' ' . $option2
+                    $option1 . ' ' . $option3 . ' ' . $option2
                 );
             }
 
@@ -765,7 +765,7 @@ class Prescription extends MX_Controller {
                 $doctorname,
                 $patientname,
                 $medicinelist,
-                $option1 . ' ' . $option3 . ' ' . $options4 . ' ' . $option2
+                $option1 . ' ' . $option3 . ' ' . $option2
             );
             $i = $i + 1;
         }
