@@ -70,7 +70,10 @@ class Sms_model extends CI_model {
     }
 
     function getAutoSMSTemplate() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->group_start();
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->or_where('hospital_id', null);
+        $this->db->group_end();
         $this->db->order_by('id', 'asc');
         $query = $this->db->get('autosmstemplate');
         return $query->result();
@@ -80,7 +83,10 @@ class Sms_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
                 ->from('autosmstemplate')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->or_where('hospital_id', null)
+                ->group_end()
                 ->where("(id LIKE '%" . $search . "%' OR message LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         ;
@@ -88,7 +94,10 @@ class Sms_model extends CI_model {
     }
 
     function getAutoSMSTemplateByLimit($limit, $start) {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->group_start();
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->or_where('hospital_id', null);
+        $this->db->group_end();
         $this->db->order_by('id', 'asc');
         $this->db->limit($limit, $start);
         $query = $this->db->get('autosmstemplate');
@@ -100,7 +109,10 @@ class Sms_model extends CI_model {
         $this->db->limit($limit, $start);
         $query = $this->db->select('*')
                 ->from('autosmstemplate')
-                ->where('hospital_id', $this->session->userdata('hospital_id'))
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->or_where('hospital_id', null)
+                ->group_end()
                 ->where("(id LIKE '%" . $search . "%' OR message LIKE '%" . $search . "%')", NULL, FALSE)
                 ->get();
         ;
