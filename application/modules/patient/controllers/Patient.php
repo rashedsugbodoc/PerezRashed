@@ -1091,7 +1091,7 @@ class Patient extends MX_Controller {
             $config = array(
                 'file_name' => $new_file_name,
                 'encrypt_name' => TRUE,
-                'upload_path' => "./uploads/profile/",
+                'upload_path' => "./uploads/documents/identifications",
                 'allowed_types' => "jpg|png|jpeg",
                 'overwrite' => False,
                 'max_size' => "2000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
@@ -1107,7 +1107,7 @@ class Patient extends MX_Controller {
             $path = $this->upload->data();
             
             if (!empty($path['file_name'])) {
-                $img_url = "uploads/profile/" . $path['file_name'];
+                $img_url = "uploads/documents/identification/" . $path['file_name'];
             } else {
                 $img_url = $this->patient_model->getPatientById($id)->img_url;
             }
