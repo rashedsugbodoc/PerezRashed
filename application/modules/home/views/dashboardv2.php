@@ -794,7 +794,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <li><a href="sms/sendView" class="slide-item"><?php echo lang('write_message'); ?></a></li>
                                         <li><a href="sms/sent" class="slide-item"><?php echo lang('sent_messages'); ?></a></li>
                                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>                                        
-                                            <li><a href="email/settings" class="slide-item"><?php echo lang('sms_settings'); ?></a></li>
+                                            <li><a href="sms" class="slide-item"><?php echo lang('sms_settings'); ?></a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>
