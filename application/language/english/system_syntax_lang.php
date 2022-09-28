@@ -1196,3 +1196,5 @@ $lang['pwd'] = 'PWD';
 $lang['deceased'] = 'Deceased';
 $lang['menarche'] = 'Menarche';
 $lang['version'] = 'Version';
+$lang['fixed_amount'] = 'Fixed Amount';
+$lang['variable_amount'] = 'Variable Amount';

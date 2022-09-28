@@ -815,31 +815,42 @@
                     {
 
                     } else {
-                        $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + doctor_detail + ' - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
+                        // $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + doctor_detail + ' - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
+                        $("#editPaymentForm .qfloww").append('<div class="row mt-5">\n\
+                            <div class="col-md-10">\n\
+                                <div class="remove1" id="id-div'+ idd +'">\n\
+                                    '+ $(this).data("cat_name") + doctor_detail +' - <?php echo $settings->currency; ?> '+ $(this).data('id') +'\n\
+                                </div>\n\
+                            </div>\n\
+                            <div class="col-md-2">\n\
+                                <input type="number" class="remove form-control" id="idinput-'+idd+'" name="quantity[]" value="1" min="0" oninput="validity.valid||(value='+"'0'"+');">\n\
+                                <input type="hidden" class="remove" id="categoryinput-'+ idd +'" name="category_id[]" value="'+idd+'">\n\
+                            </div>\n\
+                        </div>');
                     }
 
 
-                    var input2 = $('<input>').attr({
-                        type: 'number',
-                        class: "remove",
-                        id: 'idinput-' + idd,
-                        name: 'quantity[]',
-                        value: qtity,
-                        min: '0',
-                        oninput: "validity.valid||(value='');",
-                    }).appendTo('#editPaymentForm .qfloww');
+                    // var input2 = $('<input>').attr({
+                    //     type: 'number',
+                    //     class: "remove",
+                    //     id: 'idinput-' + idd,
+                    //     name: 'quantity[]',
+                    //     value: qtity,
+                    //     min: '0',
+                    //     oninput: "validity.valid||(value='');",
+                    // }).appendTo('#editPaymentForm .qfloww');
 
-                    $('<input>').attr({
-                        type: 'hidden',
-                        class: "remove",
-                        id: 'categoryinput-' + idd,
-                        name: 'category_id[]',
-                        value: idd,
-                    }).appendTo('#editPaymentForm .qfloww');
+                    // $('<input>').attr({
+                    //     type: 'hidden',
+                    //     class: "remove",
+                    //     id: 'categoryinput-' + idd,
+                    //     name: 'category_id[]',
+                    //     value: idd,
+                    // }).appendTo('#editPaymentForm .qfloww');
 
-                    $('<br>').attr({
-                        class: "br"+idd,
-                    }).appendTo('#editPaymentForm .qfloww');
+                    // $('<br>').attr({
+                    //     class: "br"+idd,
+                    // }).appendTo('#editPaymentForm .qfloww');
                 }
 
 
@@ -987,31 +998,46 @@
                         {
 
                         } else {
-                            $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + doctor_detail + ' - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>')
+                            // $("#editPaymentForm .qfloww").append('<div class="remove1" id="id-div' + idd + '">  ' + $(this).data("cat_name") + doctor_detail + ' - <?php echo $settings->currency; ?> ' + $(this).data('id') + '</div>');
+                            $("#editPaymentForm .qfloww").append('<div class="row mt-5">\n\
+                                    <div class="col-md-10">\n\
+                                        <div class="remove1" id="id-div'+ idd +'">\n\
+                                            '+ $(this).data("cat_name") + doctor_detail +' - <?php echo $settings->currency; ?> '+ $(this).data('id') +'\n\
+                                        </div>\n\
+                                    </div>\n\
+                                    <div class="col-md-2">\n\
+                                        <input type="number" class="remove form-control" id="idinput-'+idd+'" name="quantity[]" value="1" min="0" oninput="validity.valid||(value='+"'0'"+');">\n\
+                                        <input type="hidden" class="remove" id="categoryinput-'+ idd +'" name="category_id[]" value="'+idd+'">\n\
+                                    </div>\n\
+                                </div>');
                         }
 
 
-                        var input2 = $('<input>').attr({
-                            type: 'number',
-                            class: "remove",
-                            id: 'idinput-' + idd,
-                            name: 'quantity[]',
-                            value: '1',
-                            min: '0',
-                            oninput: "validity.valid||(value='');",
-                        }).appendTo('#editPaymentForm .qfloww');
+                        // var input2 = $('<input>').attr({
+                        //     type: 'number',
+                        //     class: "remove form-control w-10",
+                        //     id: 'idinput-' + idd,
+                        //     name: 'quantity[]',
+                        //     value: '1',
+                        //     min: '0',
+                        //     oninput: "validity.valid||(value='');",
+                        // }).appendTo('#editPaymentForm .qfloww');
 
-                        $('<input>').attr({
-                            type: 'hidden',
-                            class: "remove",
-                            id: 'categoryinput-' + idd,
-                            name: 'category_id[]',
-                            value: idd,
-                        }).appendTo('#editPaymentForm .qfloww');
+                        // $('<input>').attr({
+                        //     type: 'hidden',
+                        //     class: "remove",
+                        //     id: 'categoryinput-' + idd,
+                        //     name: 'category_id[]',
+                        //     value: idd,
+                        // }).appendTo('#editPaymentForm .qfloww');
 
-                        $('<br>').attr({
-                            class: "br"+idd,
-                        }).appendTo('#editPaymentForm .qfloww');
+                        // $('<br>').attr({
+                        //     class: "br"+idd,
+                        // }).appendTo('#editPaymentForm .qfloww');
+
+                        // $('<div>').attr({
+                        //     class: "mt-5",
+                        // }).appendTo('#editPaymentForm .qfloww');
                     }
 
 
