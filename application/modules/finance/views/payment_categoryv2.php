@@ -15,7 +15,7 @@
                                         </div>
                                         <div class="card-options">
                                             <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) { ?>
-                                                <a href="finance/addPaymentCategory">
+                                                <a href="finance/addPaymentCategoryView">
                                                     <button id="" class="btn btn-primary btn-xs">
                                                         <i class="fa fa-plus"></i> <?php echo lang('add').' '.lang('charge'); ?>
                                                     </button>
@@ -51,7 +51,7 @@
                                                                     <td class="no-print">
                                                                         <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editPaymentCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"> </i></a>
                                                                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
-                                                                            <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deletePaymentCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                            <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deleteCharge?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
                                                                         <?php } ?>
                                                                     </td>
                                                                 <?php } ?>

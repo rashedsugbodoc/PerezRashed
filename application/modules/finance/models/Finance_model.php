@@ -716,8 +716,17 @@ class Finance_model extends CI_model {
     }
 
     function getPaymentCategory() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('charge');
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $this->db->where('deleted', null);
+        // $query = $this->db->get('charge');
+        $query = $this->db->select('*')
+                ->from('charge')
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('deleted', null)
+                    ->or_where('deleted', 0)
+                ->group_end()
+                ->get();
         return $query->result();
     }
 
@@ -731,9 +740,19 @@ class Finance_model extends CI_model {
         }
         $valid_group = implode(',', $group_id);
 
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where("FIND_IN_SET(service_category_group_id, '".$valid_group."')");
-        $query = $this->db->get('charge');
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $this->db->where("FIND_IN_SET(service_category_group_id, '".$valid_group."')");
+        // $query = $this->db->get('charge');
+
+        $query = $this->db->select('*')
+                ->from('charge')
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("FIND_IN_SET(service_category_group_id, '".$valid_group."')")
+                    ->where('deleted', null)
+                    ->or_where('deleted', 0)
+                ->group_end()
+                ->get();
         return $query->result();
     }
 
@@ -765,6 +784,12 @@ class Finance_model extends CI_model {
     function deletePaymentCategory($id) {
         $this->db->where('id', $id);
         $this->db->delete('charge');
+    }
+
+    function deleteCharge($id, $data) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('id', $id);
+        $this->db->update('charge', $data);
     }
 
     function insertExpense($data) {

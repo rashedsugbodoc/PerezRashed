@@ -1221,6 +1221,21 @@ class Finance extends MX_Controller {
         redirect('finance/paymentCategory');
     }
 
+    function deleteCharge() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
+        $id = $this->input->get('id');
+        $data = array();
+        $data = array(
+            'deleted' => 1,
+        );
+        $this->finance_model->deleteCharge($id, $data);
+        $this->session->set_flashdata('success', lang('record_deleted'));
+        redirect('finance/paymentCategory');
+    }
+
     public function expense() {
         if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
             redirect('home/permission');
