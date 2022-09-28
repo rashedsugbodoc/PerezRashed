@@ -1072,6 +1072,7 @@ class Finance extends MX_Controller {
         $staff = $this->input->post('staffs');
         $company = $this->input->post('company');
         $type = $this->input->post('price_type');
+        $tax = $this->input->post('tax');
 
         if (empty($d_commission)) {
             $d_commission = 0;
@@ -1139,6 +1140,7 @@ class Finance extends MX_Controller {
                 'service_category_group_id' => $service_type,
                 'applicable_staff_id' => $staff,
                 'type' => $type,
+                'tax_id' => $tax,
             );
 
             if ($group == "Doctor") {
@@ -2936,6 +2938,16 @@ class Finance extends MX_Controller {
 
 // Get users
         $response = $this->finance_model->getServiceCategoryGroupByEntityType($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getTaxByApplicableCountryId() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->finance_model->getTaxByApplicableCountryId($searchTerm);
 
         echo json_encode($response);
     }

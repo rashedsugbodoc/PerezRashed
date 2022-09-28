@@ -938,6 +938,57 @@ class Finance_model extends CI_model {
         return $data;
     }
 
+    function getTaxByApplicableCountryId($searchTerm) {
+        $country = $this->settings_model->getSettings()->country_id;
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('tax')
+                    ->group_start()
+                        ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                        ->where('applicable_country_id', $country)
+                        ->or_where('applicable_country_id', null)
+                    ->group_end()
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
+                    ->get();
+            $taxes = $query->result_array();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('tax')
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
+                    ->group_start()
+                        ->where('applicable_country_id', $country)
+                        ->or_where('applicable_country_id', null)
+                    ->group_end()
+                    ->get();
+            $taxes = $query->result_array();
+        }
+
+
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('*');
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get('doctor');
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        $data[] = array("id" => "0", "text" => "None");
+        foreach ($taxes as $tax) {
+            $data[] = array("id" => $tax['id'], "text" => $tax['name']);
+        }
+        return $data;
+    }
+
     function getStaffInfo($searchTerm) {
         // $settings = $this->settings_model->getSettings()->entity_type_id;
         // if (!empty($searchTerm)) {

@@ -172,6 +172,34 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('tax'); ?></label>
+                                                        <select id="tax" name="tax" class="form-control w-25" data-placeholder="<?php echo lang('select_tax'); ?>">
+                                                            <option label="<?php echo lang('select_tax'); ?>"></option>
+                                                            <option value="0">None</option>
+                                                            <!-- <option value="1">Vat</option>
+                                                            <option value="2">County</option> -->
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12 tax-choice" hidden>
+                                                    <div class="form-group">
+                                                        <ul class="nav nav-pills nav-pills-circle" id="tabs_3" role="tablist">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link border py-3 px-5" id="tab3" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="false" onclick="include();">
+                                                                    <span class="nav-link-icon d-block"><?php echo lang('price_includes_tax') ?></span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link border py-3 px-5" id="tab4" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="false" onclick="exclude();">
+                                                                    <span class="nav-link-icon d-block"><?php echo lang('price_excludes_tax') ?></span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                        <input type="hidden" name="is_taxable" value="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
                                                         <label class="form-label"><?php echo lang('payer_account'); ?> <span class="text-red">*</span></label>
                                                         <div class="row">
                                                             <select name="company[]" id="company" multiple="multiple">
@@ -352,6 +380,24 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#tax").change(function() {
+                // alert($(this).val());
+                var tax = $(this).val();
+                if (tax === "0") {
+                    $(".tax-choice").attr('hidden', true);
+                    $("#tab3").removeClass('active');
+                    $("#tab3").attr('aria-selected', false);
+                    $("#tab4").removeClass('active');
+                    $("#tab4").attr('aria-selected', false);
+                } else {
+                    $(".tax-choice").attr('hidden', false);
+                }
+            })
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             // $("#company").select2({
             //     placeholder: '<?php echo lang('select_payer'); ?>',
             //     allowClear: true,
@@ -374,6 +420,28 @@
             //     }
 
             // });
+
+            $("#tax").select2({
+                placeholder: '<?php echo lang('select_tax'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'finance/getTaxByApplicableCountryId',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+            });
 
             // $('#company').multipleSelect({
             //     placeholder: '<?php echo lang('select_payer'); ?>',
@@ -412,6 +480,14 @@
             $('#c_price').attr('hidden', true);
             $('#paymentCategoryForm').find('[name=c_price]').val('');
             $('#paymentCategoryForm').find('[name=price_type]').val('variable');
+        }
+
+        function include() {
+            $('#paymentCategoryForm').find('[name=is_taxable]').val('1');
+        }
+
+        function exclude() {
+            $('#paymentCategoryForm').find('[name=is_taxable]').val('0');
         }
     </script>
 
