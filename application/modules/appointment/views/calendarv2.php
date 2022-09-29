@@ -15,7 +15,7 @@
                             </div>
                         </div>
 
-                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Nurse', 'Clerk', 'Midwife'))) { ?>
                         <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <div class="modal fade" tabindex="-1" role="dialog" id="cmodal">

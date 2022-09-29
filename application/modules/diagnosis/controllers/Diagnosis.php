@@ -20,6 +20,15 @@ class Diagnosis extends MX_Controller {
         }
     }
 
+    function index() {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+            redirect('home/permission');
+        }
+
+        $this->load->view('home/dashboardv2');
+        $this->load->view('index', $data);
+    }
+
     function addDiagnosisView() {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
             redirect('home/permission');
@@ -41,6 +50,7 @@ class Diagnosis extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['root'] = $this->input->get('root');
         $data['method'] = $this->input->get('method');
+        $data['redirect'] = $this->input->get('redirect');
         if (!empty($data['root']) && !empty($data['method'])) {
             if(!empty($data['encounter'])) {
                 $data['redirect'] = $data['root'].'/'.$data['method'].'?encounter_id='.$data['encounter']->id;
@@ -283,33 +293,67 @@ class Diagnosis extends MX_Controller {
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
         $encounter_id = $this->input->get('encounter_id');
+        $current_user = $this->ion_auth->get_user_id();
+        $doctor_id = $this->doctor_model->getDoctorByIonUserId($current_user)->id;
 
         if(!empty($patient_id)) {
-            if ($limit == -1) {
-                if (!empty($search)) {
-                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisBySearch($search, $patient_id);
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisBySearch($search, $patient_id, $doctor_id);
+                    } else {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($patient_id, $doctor_id);
+                    }
                 } else {
-                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($patient_id);
+                    if (!empty($search)) {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimitBySearch($limit, $start, $search, $patient_id, $doctor_id);
+                    } else {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimit($limit, $start, $patient_id, $doctor_id);
+                    }
                 }
             } else {
-                if (!empty($search)) {
-                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimitBySearch($limit, $start, $search, $patient_id);
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisBySearch($search, $patient_id);
+                    } else {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByPatient($patient_id);
+                    }
                 } else {
-                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimit($limit, $start, $patient_id);
+                    if (!empty($search)) {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimitBySearch($limit, $start, $search, $patient_id);
+                    } else {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimit($limit, $start, $patient_id);
+                    }
                 }
             }
         } else {
-            if ($limit == -1) {
-                if (!empty($search)) {
-                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisBySearch($search);
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisBySearch($search, null, $doctor_id);
+                    } else {
+                        $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosis(null, $doctor_id);
+                    }
                 } else {
-                    $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosis();
+                    if (!empty($search)) {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimitBySearch($limit, $start, $search, null, $doctor_id);
+                    } else {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimit($limit, $start, null, $doctor_id);
+                    }
                 }
             } else {
-                if (!empty($search)) {
-                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimitBySearch($limit, $start, $search);
+                if ($limit == -1) {
+                    if (!empty($search)) {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisBySearch($search);
+                    } else {
+                        $data['diagnosis'] = $this->diagnosis_model->getPatientDiagnosis();
+                    }
                 } else {
-                    $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimit($limit, $start);
+                    if (!empty($search)) {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimitBySearch($limit, $start, $search);
+                    } else {
+                        $data['diagnosis'] = $this->diagnosis_model->getDiagnosisByLimit($limit, $start);
+                    }
                 }
             }
         }
@@ -344,6 +388,8 @@ class Diagnosis extends MX_Controller {
 
             if(!empty($patient_id)) {
                 $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+            } else {
+                $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&redirect=diagnosis" class="btn btn-info"><i class="fe fe-edit"></i></a>';
             }
 
             $info[] = array(

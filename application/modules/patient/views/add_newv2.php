@@ -319,12 +319,11 @@
                                                                     <option value="0" disabled selected><?php echo lang('country_placeholder'); ?></option>
                                                                     <?php foreach ($countries as $country) { ?>
                                                                         <option value="<?php echo $country->id; ?>" <?php
-                                                                        // if (!empty($setval)) {
-                                                                        //     if ($country->id == set_value('country_id')) {
-                                                                        //         echo 'selected';
-                                                                        //     }
-                                                                        // }
-                                                                        if (!empty($patient->country_id)) {
+                                                                        if (!empty($setval)) {
+                                                                            if ($country->id == set_value('country_id')) {
+                                                                                echo 'selected';
+                                                                            }
+                                                                        } elseif (!empty($patient->country_id)) {
                                                                             if ($country->id == $patient->country_id) {
                                                                                 echo 'selected';
                                                                             }
@@ -700,6 +699,97 @@
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var setval = "<?php echo $setval ?>";
+            var country = "<?php echo set_value('country_id') ?>";
+            var state = "<?php echo set_value('state_id') ?>";
+            var city = "<?php echo set_value('city_id') ?>";
+            var barangay = "<?php echo set_value('barangay_id') ?>";
+            
+            if (setval != "") {
+                $.ajax({
+                    url: 'patient/getStateByCountryIdByJason?country=' + country,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var result_state = response.state;
+                        if (country != null) {
+                            $("#state").attr("disabled", false);
+                        } else {
+                            $("#state").attr("disabled", true);
+                        }
+
+                        $.each(result_state, function (key, value) {
+                            $('#state').append($('<option>').text(value.name).val(value.id)).end();
+                        });
+
+                        if (state == null) {
+                            $('#state').val("0");
+                        } else {
+                            $('#state').val(state);
+                            $('#state').attr("disabled", false);
+                        }
+
+
+                        $.ajax({
+                            url: 'patient/getCityByStateIdByJason?state=' + state,
+                            method: 'GET',
+                            data: '',
+                            dataType: 'json',
+                            success: function (response) {
+                                var result_city = response.city;
+                                if (state != null) {
+                                    $("#city").attr("disabled", false);
+                                } else {
+                                    $("#city").attr("disabled", true);
+                                }
+
+                                $.each(result_city, function (key, value) {
+                                    $('#city').append($('<option>').text(value.name).val(value.id)).end();
+                                });
+
+                                if (city == null) {
+                                    $('#city').val("0");
+                                } else {
+                                    $('#city').val(city);
+                                    $('#city').attr("disabled", false);
+                                }
+
+                                $.ajax({
+                                    url: 'patient/getBarangayByCityIdByJason?city=' + city,
+                                    method: 'GET',
+                                    data: '',
+                                    dataType: 'json',
+                                    success: function (response) {
+                                        var result_barangay = response.barangay;
+                                        if (city != null) {
+                                            $("#barangay").attr("disabled", false);
+                                        } else {
+                                            $("#barangay").attr("disabled", true);
+                                        }
+
+                                        $.each(result_barangay, function (key, value) {
+                                            $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
+                                        });
+
+                                        if (barangay == null) {
+                                            $('#barangay').val("0");
+                                        } else {
+                                            $('#barangay').val(barangay);
+                                            $('#barangay').attr("disabled", false);
+                                        }
+                                    }
+                                })
+                            }
+                        })
+                    }
+                });
+            }
+        })
+    </script>
 
     <script type="text/javascript">
         function active(item) {

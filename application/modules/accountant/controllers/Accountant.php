@@ -91,6 +91,7 @@ class Accountant extends MX_Controller {
                 // $this->load->view('home/footer'); // just the footer file
             } else {
                 $this->session->set_flashdata('error', lang('validation_error'));
+                $data['countries'] = $this->location_model->getCountry();
                 $data['setval'] = 'setval';
                 $this->load->view('home/dashboardv2'); // just the header file
                 $this->load->view('add_newv2', $data);

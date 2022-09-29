@@ -3496,7 +3496,7 @@
                 // "serverSide": true,
                 "searchable": true,
                 "ajax": {
-                    url: "patient/getCaseList?patient_id="+patient_id,
+                    url: "casenote/getCaseList?patient_id="+patient_id,
                     type: 'POST',
                 },
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +

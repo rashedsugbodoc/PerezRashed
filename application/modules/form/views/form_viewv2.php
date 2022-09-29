@@ -225,7 +225,7 @@
                                         <?php } ?>
                                         
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) { ?>
-                                        <a href="form?id=<?php echo $form->id; ?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> <?php echo lang('edit_report'); ?></span></a>
+                                        <a href="form?id=<?php echo $form->form_number; ?>" class="btn btn-info"><i class="fe fe-edit"></i><span class="button-text"> <?php echo lang('edit_report'); ?></span></a>
                                         <?php } ?>
                                         
                                     </div>

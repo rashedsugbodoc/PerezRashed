@@ -75,7 +75,10 @@ class Diagnosis_model extends CI_model {
         return $query->row();
     }
 
-    function getDiagnosisByPatient($patient) {
+    function getDiagnosisByPatient($patient, $doctor_id = null) {
+        if (!empty($doctor_id)) {
+            $this->db->where('doctor_id', $doctor_id);
+        }
         $this->db->where('patient_id', $patient);
         $query = $this->db->get('patient_diagnosis');
         return $query->result();
@@ -88,23 +91,44 @@ class Diagnosis_model extends CI_model {
         return $query->result();
     }
 
-    function getDiagnosisBySearch($search, $patient_id = null) {       
+    function getDiagnosisBySearch($search, $patient_id = null, $doctor_id = null) {       
         $this->db->order_by('id', 'desc');
         if (!empty($patient_id)) {
-            $query = $this->db->select('*')
-                    ->from('patient_diagnosis')
-                    ->where('patient_id', $patient_id)
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
-                    ->get();
-            ;
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('patient_diagnosis')
+                        ->where('doctor_id', $doctor_id)
+                        ->where('patient_id', $patient_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+                ;
+            } else {
+                $query = $this->db->select('*')
+                        ->from('patient_diagnosis')
+                        ->where('patient_id', $patient_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+                ;
+            }
         } else {
-            $query = $this->db->select('*')
-                    ->from('patient_diagnosis')
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
-                    ->get();
-            ;
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('patient_diagnosis')
+                        ->where('doctor_id', $doctor_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+                ;
+            } else {
+                $query = $this->db->select('*')
+                        ->from('patient_diagnosis')
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+                ;
+            }
         }
         return $query->result();            
     }
@@ -116,32 +140,56 @@ class Diagnosis_model extends CI_model {
         return $query->result();
     }
 
-    function getDiagnosisByLimitBySearch($limit, $start, $search, $patient_id) {               
+    function getDiagnosisByLimitBySearch($limit, $start, $search, $patient_id = null, $doctor_id = null) {               
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         if (!empty($patient_id)) {
-            $query = $this->db->select('*')
-                    ->from('patient_diagnosis')
-                    ->where('patient_id', $patient_id)
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
-                    ->get();
-            ;
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('patient_diagnosis')
+                        ->where('patient_id', $patient_id)
+                        ->where('doctor_id', $doctor_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+                ;
+            } else {
+                $query = $this->db->select('*')
+                        ->from('patient_diagnosis')
+                        ->where('patient_id', $patient_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+                ;
+            }
         } else {
-            $query = $this->db->select('*')
-                    ->from('patient_diagnosis')
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
-                    ->get();
-            ;
+            if (!empty($doctor_id)) {
+                $query = $this->db->select('*')
+                        ->from('patient_diagnosis')
+                        ->where('doctor_id', $doctor_id)
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+                ;
+            } else {
+                $query = $this->db->select('*')
+                        ->from('patient_diagnosis')
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->where("(id LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%' OR diagnosis_long_description LIKE '%" . $search . "%' OR diagnosis_code LIKE '%" . $search . "%')", NULL, FALSE)
+                        ->get();
+                ;
+            }
         }
         return $query->result();       
     }
 
-    function getDiagnosisByLimit($limit, $start, $patient_id = null) {
+    function getDiagnosisByLimit($limit, $start, $patient_id = null, $doctor_id = null) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         if (!empty($patient_id)) {
             $this->db->where('patient_id', $patient_id);
+        }
+        if (!empty($doctor_id)) {
+            $this->db->where('doctor_id', $doctor_id);
         }
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);

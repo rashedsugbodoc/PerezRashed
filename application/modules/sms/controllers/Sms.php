@@ -33,9 +33,9 @@ class Sms extends MX_Controller {
         $type = 'sms';
         $data['templates'] = $this->sms_model->getManualSMSTemplate($type);
         $data['shortcode'] = $this->sms_model->getManualSMSShortcodeTag($type);
-        $this->load->view('home/dashboard'); // just the header file
-        $this->load->view('sendview', $data);
-        $this->load->view('home/footer'); // just the footer file
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('sendviewv2', $data);
+        // $this->load->view('home/footer'); // just the footer file
     }
 
     public function settings() {
@@ -461,9 +461,9 @@ class Sms extends MX_Controller {
             $data['sents'] = $this->sms_model->getSmsByUser($current_user_id);
         }
 
-        $this->load->view('home/dashboard');
-        $this->load->view('sms', $data);
-        $this->load->view('home/footer');
+        $this->load->view('home/dashboardv2');
+        $this->load->view('smsv2', $data);
+        // $this->load->view('home/footer');
     }
 
     function delete() {
@@ -476,9 +476,9 @@ class Sms extends MX_Controller {
     public function autoSMSTemplate() {
         $data['settings'] = $this->settings_model->getSettings();
         $data['shortcode'] = $this->sms_model->getAutoSMSTemplate();
-        $this->load->view('home/dashboard', $data);
-        $this->load->view('autosmstemplate', $data);
-        $this->load->view('home/footer', $data);
+        $this->load->view('home/dashboardv2', $data);
+        $this->load->view('autosmstemplatev2', $data);
+        // $this->load->view('home/footer', $data);
     }
 
     function getAutoSMSTemplateList() {

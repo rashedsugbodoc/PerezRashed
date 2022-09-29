@@ -382,9 +382,9 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist'))) { ?>
                                             <li><a href="patient/patientPayments" class="slide-item"><?php echo lang('payments'); ?></a></li>
                                         <?php } ?>
-                                        <?php if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist', 'Clerk'))) { ?>
-                                        <li><a href="patient/caseList" class="slide-item"><?php echo lang('case_notes'); ?></a></li>
-                                        <?php } ?>
+                                        <?php /*if (!$this->ion_auth->in_group(array('Accountant', 'Laboratorist', 'Clerk'))) {*/ ?>
+                                        <!-- <li><a href="patient/caseList" class="slide-item"><?php echo lang('case_notes'); ?></a></li> -->
+                                        <?php /*}*/ ?>
                                         <?php if ($this->ion_auth->in_group(array('DoctorAdmin', 'Doctor', 'admin', 'Clerk', 'Midwife'))) { ?>
                                             <li><a href="patient/documents" class="slide-item"><?php echo lang('documents'); ?></a></li>
                                         <?php } ?>
@@ -417,6 +417,19 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                             <li><a href="schedule/timeSchedule" class="slide-item"><?php echo lang('all'); ?> <?php echo lang('schedule'); ?></a></li>
                                             <li><a href="schedule/holidays" class="slide-item"><?php echo lang('holidays'); ?></a></li>
                                         <?php } ?>
+                                    </ul>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>
+
+                        <?php if ($this->ion_auth->in_group(array('Doctor', 'Nurse', 'Midwife'))) { ?>
+                            <?php if (in_array('casenote', $this->modules)) { ?>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><path d="M0,0h24v24H0V0z" fill="none"/></g><g fill="currentColor"><path d="M15,5H5v14h14V9h-4V5z M7,7h5v2H7V7z M17,17H7v-2h10V17z M17,11v2H7v-2H17z" opacity=".3"/><path d="M7,13h10v-2H7V13z M7,17h10v-2H7V17z M16,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V8L16,3z M19,19H5V5 h10v4h4V19z M12,7H7v2h5V7z"/></g></svg>
+                                    <span class="side-menu__label"><?php echo lang('case_notes'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <ul class="slide-menu">
+                                        <li><a href="casenote" class="slide-item"><?php echo lang('case'); ?> <?php echo lang('list'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -589,6 +602,20 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <li><a href="lab" class="slide-item"><?php echo lang('lab_reports'); ?></a></li>
                                         <li><a href="lab/addLabView" class="slide-item"><?php echo lang('add_lab_report'); ?></a></li>
                                         <li><a href="lab/template" class="slide-item"><?php echo lang('template'); ?></a></li>
+                                    </ul>
+                                </li>
+                            <?php } ?>
+                        <?php } ?>
+
+                        <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                            <?php if (in_array('diagnosis', $this->modules)) { ?>
+                                <li class="slide">
+                                    <a class="side-menu__item" data-toggle="slide" href="javascript:;">
+                                    <svg class="side-menu__icon" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><g><path d="M0,0h24v24H0V0z" fill="none"/></g><g fill="currentColor"><path d="M15,5H5v14h14V9h-4V5z M7,7h5v2H7V7z M17,17H7v-2h10V17z M17,11v2H7v-2H17z" opacity=".3"/><path d="M7,13h10v-2H7V13z M7,17h10v-2H7V17z M16,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V8L16,3z M19,19H5V5 h10v4h4V19z M12,7H7v2h5V7z"/></g></svg>
+                                    <span class="side-menu__label"><?php echo lang('diagnosis'); ?></span><i class="angle fa fa-angle-right"></i></a>
+                                    <ul class="slide-menu">
+                                        <li><a href="diagnosis" class="slide-item"><?php echo lang('diagnosis').' '.lang('list'); ?></a></li>
+                                        <li><a href="diagnosis/addDiagnosisView?redirect=diagnosis" class="slide-item"><?php echo lang('add').' '.lang('diagnosis'); ?></a></li>
                                     </ul>
                                 </li>
                             <?php } ?>
@@ -781,7 +808,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         <li><a href="sms/sendView" class="slide-item"><?php echo lang('write_message'); ?></a></li>
                                         <li><a href="sms/sent" class="slide-item"><?php echo lang('sent_messages'); ?></a></li>
                                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>                                        
-                                            <li><a href="email/settings" class="slide-item"><?php echo lang('sms_settings'); ?></a></li>
+                                            <li><a href="sms" class="slide-item"><?php echo lang('sms_settings'); ?></a></li>
                                         <?php } ?>
                                     </ul>
                                 </li>

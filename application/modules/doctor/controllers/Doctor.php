@@ -28,7 +28,7 @@ class Doctor extends MX_Controller {
 
     public function index() {
 
-        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
+        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
 
@@ -75,7 +75,7 @@ class Doctor extends MX_Controller {
     }
 
     public function addNewDoctor() {
-        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist'))) {
+        if ($this->ion_auth->in_group(array('Patient', 'Doctor', 'Receptionist', 'Accountant', 'Nurse', 'Laboratorist', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
         
@@ -185,8 +185,8 @@ class Doctor extends MX_Controller {
         $this->form_validation->set_rules('tin', 'TIN Number', 'trim|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('ptr', 'PTR Number', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('s2', 'S2 Number', 'trim|min_length[1]|max_length[50]|xss_clean');
-        $this->form_validation->set_rules('virtual_consultation_fee', 'Virtual Consultation Fee', 'trim|required|numeric|max_length[15]|xss_clean');
-        $this->form_validation->set_rules('in_person_consultation_fee', 'In-Person Consultation Fee', 'trim|numeric|required|max_length[15]|xss_clean');
+        $this->form_validation->set_rules('virtual_consultation_fee', 'Virtual Consultation Fee', 'trim|required|is_natural_no_zero|max_length[15]|xss_clean');
+        $this->form_validation->set_rules('in_person_consultation_fee', 'In-Person Consultation Fee', 'trim|is_natural_no_zero|required|max_length[15]|xss_clean');
 
 
         if ($this->form_validation->run() == FALSE) {

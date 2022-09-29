@@ -430,6 +430,27 @@
     <!-- INTERNAL JS INDEX END -->
 
     <script type="text/javascript">
+        $(document).ready(function() {
+            var btnFinish = $('<button></button>').text('Submit')
+                .addClass('btn btn-primary finish')
+                .on('click', function(){ alert('Finish Clicked'); });
+            var btnCancel = $('<button></button>').text('Cancel')
+                .addClass('btn btn-secondary')
+                .on('click', function(){ $('#smartwizard').smartWizard("reset"); });
+            
+            $('#smartwizard-30').smartWizard({
+                    selected: 0,
+                    theme: 'dots',
+                    transitionEffect:'fade',
+                    showStepURLhash: false,
+                    toolbarSettings: {
+                                      toolbarExtraButtons: [btnFinish, btnCancel]
+                                    }
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
         // var stepIndex = $('#smartwizard-3').smartWizard("getStepIndex");
         // console.log(stepIndex);
         $(document).ready(function () {

@@ -267,6 +267,9 @@ class Finance extends MX_Controller {
 
         $this->form_validation->set_rules('category_name[]', 'Charge', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
+        $this->form_validation->set_rules('quantity[]', 'Quantity', 'trim|required|is_natural_no_zero|xss_clean');
+
+
         if ($this->form_validation->run() == FALSE) {
             $this->session->set_flashdata('error', lang('validation_error'));
             $data = array();
@@ -1044,7 +1047,11 @@ class Finance extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
             redirect('home/permission');
         }
+        $hospital_id = $this->session->userdata('hospital_id');
+        $provider_country = $this->settings_model->getSettingsByHospitalId($hospital_id)->country_id;
+        $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getServiceCategory();
+        $data['payer_accounts'] = $this->company_model->getCompanyWithoutAddNewOption(null, $provider_country);
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_payment_categoryv2', $data);
         // $this->load->view('home/footer'); // just the header file
@@ -1063,6 +1070,17 @@ class Finance extends MX_Controller {
         $d_commission = $this->input->post('d_commission');
         $s_commission = $this->input->post('s_commission');
         $staff = $this->input->post('staffs');
+        $company = $this->input->post('company');
+        $type = $this->input->post('price_type');
+        $tax = $this->input->post('tax');
+
+        if (empty($d_commission)) {
+            $d_commission = 0;
+        }
+
+        if (empty($s_commission)) {
+            $s_commission = 0;
+        }
 
         if ($staff == "") {
             $staff = null;
@@ -1121,6 +1139,8 @@ class Finance extends MX_Controller {
                 'staff_commission' => $s_commission,
                 'service_category_group_id' => $service_type,
                 'applicable_staff_id' => $staff,
+                'type' => $type,
+                'tax_id' => $tax,
             );
 
             if ($group == "Doctor") {
@@ -1145,7 +1165,18 @@ class Finance extends MX_Controller {
                     }
                 }
 
-                $this->finance_model->insertPaymentCategory($data);
+                $data2 = array();
+                $data1 = array();
+
+                foreach($company as $key => $value) {
+                    $data1[$value] = array(
+                        'payer_account_id' => $value,
+                    );
+                    $data2 = array_merge($data, $data1[$value]);
+
+                    $this->finance_model->insertPaymentCategory($data2);
+                }
+
                 $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 if ($group == "Doctor") {
@@ -1170,6 +1201,9 @@ class Finance extends MX_Controller {
         }
         $data = array();
         $id = $this->input->get('id');
+        $hospital_id = $this->session->userdata('hospital_id');
+        $provider_country = $this->settings_model->getSettingsByHospitalId($hospital_id)->country_id;
+        $data['payer_accounts'] = $this->company_model->getCompanyWithoutAddNewOption(null, $provider_country);
         $data['service'] = $this->finance_model->getPaymentCategoryById($id);
         $data['categories'] = $this->finance_model->getServiceCategory();
         $data['settings'] = $this->settings_model->getSettings();
@@ -1185,6 +1219,21 @@ class Finance extends MX_Controller {
 
         $id = $this->input->get('id');
         $this->finance_model->deletePaymentCategory($id);
+        $this->session->set_flashdata('success', lang('record_deleted'));
+        redirect('finance/paymentCategory');
+    }
+
+    function deleteCharge() {
+        if (!$this->ion_auth->in_group(array('admin'))) {
+            redirect('home/permission');
+        }
+
+        $id = $this->input->get('id');
+        $data = array();
+        $data = array(
+            'deleted' => 1,
+        );
+        $this->finance_model->deleteCharge($id, $data);
         $this->session->set_flashdata('success', lang('record_deleted'));
         redirect('finance/paymentCategory');
     }
@@ -2889,6 +2938,16 @@ class Finance extends MX_Controller {
 
 // Get users
         $response = $this->finance_model->getServiceCategoryGroupByEntityType($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getTaxByApplicableCountryId() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->finance_model->getTaxByApplicableCountryId($searchTerm);
 
         echo json_encode($response);
     }

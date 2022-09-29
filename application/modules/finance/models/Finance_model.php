@@ -716,8 +716,17 @@ class Finance_model extends CI_model {
     }
 
     function getPaymentCategory() {
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $query = $this->db->get('charge');
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $this->db->where('deleted', null);
+        // $query = $this->db->get('charge');
+        $query = $this->db->select('*')
+                ->from('charge')
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('deleted', null)
+                    ->or_where('deleted', 0)
+                ->group_end()
+                ->get();
         return $query->result();
     }
 
@@ -731,9 +740,19 @@ class Finance_model extends CI_model {
         }
         $valid_group = implode(',', $group_id);
 
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where("FIND_IN_SET(service_category_group_id, '".$valid_group."')");
-        $query = $this->db->get('charge');
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $this->db->where("FIND_IN_SET(service_category_group_id, '".$valid_group."')");
+        // $query = $this->db->get('charge');
+
+        $query = $this->db->select('*')
+                ->from('charge')
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("FIND_IN_SET(service_category_group_id, '".$valid_group."')")
+                    ->where('deleted', null)
+                    ->or_where('deleted', 0)
+                ->group_end()
+                ->get();
         return $query->result();
     }
 
@@ -765,6 +784,12 @@ class Finance_model extends CI_model {
     function deletePaymentCategory($id) {
         $this->db->where('id', $id);
         $this->db->delete('charge');
+    }
+
+    function deleteCharge($id, $data) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('id', $id);
+        $this->db->update('charge', $data);
     }
 
     function insertExpense($data) {
@@ -909,6 +934,57 @@ class Finance_model extends CI_model {
         $data = array();
         foreach ($users as $user) {
             $data[] = array("id" => $user['id'], "text" => $user['display_name']);
+        }
+        return $data;
+    }
+
+    function getTaxByApplicableCountryId($searchTerm) {
+        $country = $this->settings_model->getSettings()->country_id;
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('tax')
+                    ->group_start()
+                        ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                        ->where('applicable_country_id', $country)
+                        ->or_where('applicable_country_id', null)
+                    ->group_end()
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
+                    ->get();
+            $taxes = $query->result_array();
+        } else {
+            $query = $this->db->select('*')
+                    ->from('tax')
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
+                    ->group_start()
+                        ->where('applicable_country_id', $country)
+                        ->or_where('applicable_country_id', null)
+                    ->group_end()
+                    ->get();
+            $taxes = $query->result_array();
+        }
+
+
+        // if ($this->ion_auth->in_group(array('Doctor'))) {
+        //     $doctor_ion_id = $this->ion_auth->get_user_id();
+        //     $this->db->select('*');
+        //     $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        //     $this->db->where('ion_user_id', $doctor_ion_id);
+        //     $fetched_records = $this->db->get('doctor');
+        //     $users = $fetched_records->result_array();
+        // }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        $data[] = array("id" => "0", "text" => "None");
+        foreach ($taxes as $tax) {
+            $data[] = array("id" => $tax['id'], "text" => $tax['name']);
         }
         return $data;
     }
