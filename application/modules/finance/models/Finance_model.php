@@ -139,6 +139,8 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+
+
     function getPaymentByPatientIdByDate($id, $date_from, $date_to) {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
@@ -756,6 +758,12 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getChargeCount() {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $query = $this->db->get('charge');
+        return $query->result();
+    }
+    
     function getPaymentCategoryById($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
