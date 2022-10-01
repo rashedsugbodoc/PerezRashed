@@ -93,7 +93,8 @@ class Doctor extends MX_Controller {
         // }
 
         $id = $this->input->post('id');
-        $user = $this->ion_auth->get_user_id();
+        $doctor_details = $this->doctor_model->getDoctorById($id);
+        $user = $doctor_details->ion_user_id;
         
         if (empty($id)) {
             $limit = $this->doctor_model->getLimit();
