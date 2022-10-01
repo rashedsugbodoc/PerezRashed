@@ -29,6 +29,7 @@
                                                 <table class="table table-bordered w-100" id="editable-sample">
                                                     <thead>
                                                         <tr>
+                                                            <th><?php echo lang('charge'); ?> <?php echo lang('code'); ?></th>
                                                             <th><?php echo lang('charge'); ?> <?php echo lang('name'); ?></th>
                                                             <th><?php echo lang('description'); ?></th>
                                                             <th><?php echo lang('price'); ?> ( <?php echo $settings->currency; ?> )</th>
@@ -42,6 +43,7 @@
                                                     <tbody>
                                                         <?php foreach ($categories as $category) { ?>
                                                             <tr class="">
+                                                                <td><?php echo $category->charge_code; ?></td> 
                                                                 <td><?php echo $category->category; ?></td>   
                                                                 <td> <?php echo $category->description; ?></td>
                                                                 <td> <?php echo $category->c_price; ?></td>

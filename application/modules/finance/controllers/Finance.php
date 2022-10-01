@@ -1096,7 +1096,12 @@ class Finance extends MX_Controller {
             $c_price = 0;
         }
 
-
+        $category_name = $this->finance_model->getServiceCategoryById($category_id)->category;
+        $category_f_letter = $category_name[0];
+        $charge_code = count($this->finance_model->getChargeCount());
+        $charge_increment = $charge_code+=1;
+        $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
+        
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 // Validating Category Name Field
@@ -1131,6 +1136,7 @@ class Finance extends MX_Controller {
             }
         } else {
             $data = array();
+            $data2 = array();
             $data = array('category' => $name,
                 'description' => $description,
                 'category_id' => $category_id,
@@ -1141,6 +1147,8 @@ class Finance extends MX_Controller {
                 'applicable_staff_id' => $staff,
                 'type' => $type,
                 'tax_id' => $tax,
+                'charge_code' => $charge_code_final
+    
             );
 
             if ($group == "Doctor") {
@@ -1180,7 +1188,7 @@ class Finance extends MX_Controller {
                 $this->session->set_flashdata('success', lang('record_added'));
             } else {
                 if ($group == "Doctor") {
-                    // $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
+                    $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
                     if ($service_type == 9) {
                         $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
                     } elseif ($service_type == 10) {
@@ -1188,7 +1196,7 @@ class Finance extends MX_Controller {
                     }
                 }
 
-                $this->finance_model->updatePaymentCategory($id, $data);
+                $this->finance_model->updatePaymentCategory($id, $data2);
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('finance/paymentCategory');
