@@ -195,11 +195,13 @@ class Doctor extends MX_Controller {
                 $this->session->set_flashdata('error', lang('validation_error'));
                 if (empty($redirect)) {
                     $data = array();
+                    $data['setval'] = 'setval';
                     $data['specialties'] = $this->specialty_model->getSpecialty();
                     $data['departments'] = $this->department_model->getDepartment();
                     $data['doctor'] = $this->doctor_model->getDoctorById($id);
                     $data['doctors'] = $this->doctor_model->getDoctor();
                     $data['countries'] = $this->location_model->getCountry();
+                    $data['signature'] = $this->doctor_model->getUserSignatureByUserId($data['doctor']->ion_user_id);
                     $this->load->view('home/dashboardv2'); // just the header file
                     $this->load->view('add_newv2', $data);
                     // $this->load->view('home/footer'); // just the footer file
@@ -850,6 +852,7 @@ class Doctor extends MX_Controller {
         $data['doctor'] = $this->doctor_model->getDoctorById($id);
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['countries'] = $this->location_model->getCountry();
+        $data['signature'] = $this->doctor_model->getUserSignatureByUserId($data['doctor']->ion_user_id);
         // $data['states'] = $this->location_model->getState();
         // $data['cities'] = $this->location_model->getCity();
         // $data['barangays'] = $this->location_model->getBarangay();

@@ -1550,6 +1550,18 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                 </div>
                             </div>
                         </div>
+                        <script>
+                            function deleDataFromLocalStorage(){
+                                var addNewPagePath = '/sugbodoc/doctor/addNew'; //path-url from addNew page -> ( /sugbodoc/doctor/addNew )
+                                var currUrl = window.location.href; // get the current url
+                                var currUrlPath = new URL(currUrl).pathname; // converting the url to a simple pathname
+                                
+
+                                if(currUrlPath != addNewPagePath){ //comparing the current pathname to addNew pathname
+                                    window.localStorage.removeItem('b64'); // if not equal
+                                }
+                            }deleDataFromLocalStorage();
+                        </script>
 
 
 

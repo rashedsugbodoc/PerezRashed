@@ -346,7 +346,13 @@
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                 <button id="clear" class="btn btn-sm btn-secondary">Clear</button>
-                                                                <button id="save" class="btn btn-sm btn-success">Save</button>
+                                                                <?php if(!empty($signature->signature)){ ?>
+                                                                    <button id="confirm" class="btn btn-sm btn-success">Confirm</button>
+                                                                    <button id="save" class="btn btn-sm btn-success d-none" hidden>Save</button>
+                                                                <?php } else { ?>
+                                                                    <button id="confirm" class="btn btn-sm btn-success d-none" hidden>Confirm</button>
+                                                                    <button id="save" class="btn btn-sm btn-success">Save</button>
+                                                                <?php }?>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -604,7 +610,6 @@
             }
         })
     </script>
-
     <script>
     $(function() {
         // init signaturepad
@@ -614,7 +619,7 @@
         });
 
         // get image data and put to hidden input field
-        function getSignaturePad() {
+        function getSignaturePad() { 
             var imageData = signaturePad.toDataURL('image/png');
             // var output = document.getElementById("signature-result");
             // output.value = "";
@@ -622,12 +627,38 @@
             //     output.value += imageData[i].charCodeAt(0).toString(2) + " ";
             // }
             $('#signature-result').val(imageData)
+            const data = {
+                encoded: imageData,
+            }
+            window.localStorage.setItem('b64', JSON.stringify(data));
         }
 
+        function fromSignaturePad() {
+            var imageData = signaturePad.fromDataURL('<?php echo $signature->signature; ?>');
+            $('#signature-result').val(imageData)
+        }
+        
+        function isSetVal(){
+            var setvalue = '<?php echo $setval ?>' //contains tha setval from the controller
+
+            if(setvalue.length == 0){ // identify if the $setval is present
+                console.log(setvalue,"setval is not present");
+                if(signaturePad.isEmpty()){
+                    fromSignaturePad();
+                }
+            }
+        } isSetVal(); //callback
+        
         // form action
         $('#save').click(function() {
             getSignaturePad();
             return false; // set true to submits the form.
+            
+        });
+
+        $('#confirm').click(function() {
+            getSignaturePad();
+            return false;
         });
 
         // action on click button clea
@@ -635,7 +666,16 @@
             e.preventDefault();
             $("#signature-result").val('');
             signaturePad.clear();
+            window.localStorage.removeItem('b64');
         })
+
+        function saveSigState(){
+            var b64data = JSON.parse(window.localStorage.getItem('b64'));
+            const imageData = signaturePad.fromDataURL(b64data.encoded);
+            $('#signature-result').val(imageData)
+        }saveSigState();
+
+        
     });
     </script>
     <script type="text/javascript">
