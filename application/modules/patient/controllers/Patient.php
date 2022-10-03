@@ -180,13 +180,13 @@ class Patient extends MX_Controller {
         $doctor = $this->input->post('doctor');
         $address = $this->input->post('address');
         $country = $this->input->post('country_id');
+        $nationality = $this->input->post('nationality_id');
         $state = $this->input->post('state_id');
         $city = $this->input->post('city_id');
         $barangay = $this->input->post('barangay_id');
         $postal = $this->input->post('postal');
         $civil_status = $this->input->post('civil_status');
         $allergies = $this->input->post('allergies');
-
         $phone = $this->input->post('phone');
         $sex = $this->input->post('sex');
         $birthdate = $this->input->post('birthdate');
@@ -268,6 +268,7 @@ class Patient extends MX_Controller {
                     $data = array();
 
                     // $id = $this->input->get('id');
+                    $data['setval'] = 'setval';
                     $data['patient'] = $this->patient_model->getPatientById($id);
                     $data['doctors'] = $this->doctor_model->getDoctor();
                     $data['groups'] = $this->patient_model->getBloodGroup();
@@ -345,6 +346,7 @@ class Patient extends MX_Controller {
                     'civil_status' => $civil_status,
                     'address' => $address,
                     'country_id' => $country,
+                    'nationality' => $nationality,
                     'state_id' => $state,
                     'city_id' => $city,
                     'barangay_id' => $barangay,
@@ -374,6 +376,7 @@ class Patient extends MX_Controller {
                     'civil_status' => $civil_status,
                     'address' => $address,
                     'country_id' => $country,
+                    'nationality' => $nationality,
                     'state_id' => $state,
                     'city_id' => $city,
                     'barangay_id' => $barangay,
@@ -485,7 +488,9 @@ class Patient extends MX_Controller {
                             $this->session->set_flashdata('fileError', $fileError);
                             $this->session->set_flashdata('error', lang('validation_error'));
                             $data = array();
-                            $data['setval'] = 'setval';
+
+                            
+                            
                             $data['patient'] = $this->patient_model->getPatientById($id);
                             $data['doctors'] = $this->doctor_model->getDoctor();
                             $data['groups'] = $this->patient_model->getBloodGroup();
@@ -1588,6 +1593,7 @@ class Patient extends MX_Controller {
         $state_id = $data['patient']->state_id;
         $city_id = $data['patient']->city_id;
         $barangay_id = $data['patient']->barangay_id;
+        $data['nationality_id'] = $this->location_model->getCountryById($data['patient']->nationality);
 
         $data['country']= $this->location_model->getCountryById($country_id);
         $data['state']= $this->location_model->getStateById($state_id);

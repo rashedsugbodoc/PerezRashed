@@ -389,6 +389,27 @@
                                                                 </select>
                                                             </div>
                                                         </div>
+                                                        <div class="col-sm-12 col-md-6">        <!--this is the nationality column-->
+                                                            <div class="form-group"> 
+                                                                <label class="form-label"><?php echo lang('nationality') ?><span class="text-red"> *</span></label>
+                                                                <select class="form-control select2-show-search" name="nationality_id" id="nationality" required>
+                                                                    <option value="" disabled selected><?php echo lang('select_nationality'); ?></option>
+                                                                    <?php foreach ($countries as $country) { ?>
+                                                                        <option value="<?php echo $country->id; ?>" <?php
+                                                                        if (!empty($setval)) {
+                                                                            if ($country->id == set_value('nationality_id')) {
+                                                                                echo 'selected';
+                                                                            }
+                                                                        } elseif (!empty($patient->nationality)) {
+                                                                            if ($country->id == $patient->nationality) {
+                                                                                echo 'selected';
+                                                                            }
+                                                                        }
+                                                                        ?> > <?php echo $country->nationality; ?> </option>
+                                                                            <?php } ?>
+                                                                </select>                          <!--this is the nationality column-->
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-sm-6 col-md-6">
@@ -459,7 +480,7 @@
                                                                                 <option value="<?php echo $group->name; ?>" <?php
                                                                                 if (!empty($setval)) {
                                                                                     if ($group->name == set_value('bloodgroup')) {
-                                                                                        echo 'selected';
+                                                                                         echo 'selected';
                                                                                     }
                                                                                 }
                                                                                 elseif (!empty($patient->bloodgroup)) {

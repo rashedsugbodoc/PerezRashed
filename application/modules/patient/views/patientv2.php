@@ -575,6 +575,14 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label class="form-label font-weight-bold"><?php echo lang('nationality'); ?>: </label>
+                                                                <label class="form-label nationalityClass"></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12 col-lg-4">
                                                     <div class="row">
@@ -1081,6 +1089,7 @@
             $('.emailClass').html("").end()
             $('.addressClass').html("").end()
             $('.countryClass').html("").end()
+            $('.nationalityClass').html("").end()
             $('.stateClass').html("").end()
             $('.cityClass').html("").end()
             $('.barangayClass').html("").end()
@@ -1111,6 +1120,7 @@
                     $('.ageClass').append(response.age).end()
                     $('.bloodgroupClass').append(response.patient.bloodgroup).end()
                     $('.patientidClass').append(response.patient.patient_id).end()
+                    $('.nationalityClass').append(response.nationality_id.nationality).end() // nationality class
 
                     if (response.patient.country_id !== null){
                         $('.countryClass').append(response.country.name).end()
