@@ -26,6 +26,25 @@ function getDoctorInfo() {
         
     }
 
+    function colorBasedOnAppointmentStatus($status) {
+
+        if($status == 'Pending Confirmation') {
+            $color = "<span class='badge badge-pill badge-primary'>".$status."</span>";
+        } elseif ($status == 'Confirmed') {
+            $color = "<span class='badge badge-pill badge-success'>".$status."</span>";
+        } elseif ($status == 'Consulted') {
+            $color = "<span class='badge badge-pill badge-warning'>".$status."</span>";
+        } elseif ($status == 'Cancelled') {
+            $color = "<span class='badge badge-pill badge-danger'>".$status."</span>";
+        } elseif ($status == 'Requested') {
+            $color = "<span class='badge badge-pill badge-info'>".$status."</span>";
+        } else {
+            $color = "";
+        }
+
+        return $color;
+    }
+
     function colorBasedOnEncounterStatus($status) {
 
         if($status == 'Ready to Serve') {
