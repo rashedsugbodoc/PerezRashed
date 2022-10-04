@@ -464,7 +464,7 @@ class Encounter extends MX_Controller {
                     $encounter->encounter_number,
                     $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name,
                     $encounter_facility,
-                    $encounter_status,
+                    colorBasedOnEncounterStatus($encounter_status),
                         //  $options2
                 );
             } else {
@@ -473,9 +473,9 @@ class Encounter extends MX_Controller {
                     $encounter->encounter_number,
                     $patient->name,
                     $doctor,
-                    $due,
+                    '<div class="text-right">'.$due.'</div>',
                     $payment_status,
-                    $encounter_status,
+                    '<div class="text-center">'.colorBasedOnEncounterStatus($encounter_status).'</div>',
                     $option6
                         //  $options2
                 );

@@ -26,6 +26,27 @@ function getDoctorInfo() {
         
     }
 
+    function colorBasedOnEncounterStatus($status) {
+
+        if($status == 'Ready to Serve') {
+            $color = "<span class='badge badge-pill badge-primary'>".$status."</span>";
+        } elseif ($status == 'Waiting') {
+            $color = "<span class='badge badge-pill badge-warning'>".$status."</span>";
+        } elseif ($status == 'Started') {
+            $color = "<span class='badge badge-pill badge-success'>".$status."</span>";
+        } elseif ($status == 'Ended') {
+            $color = "<span class='badge badge-pill badge-danger'>".$status."</span>";
+        } elseif ($status == 'Cancelled') {
+            $color = "<span class='badge badge-pill badge-info'>".$status."</span>";
+        } elseif ($status == 'Rescheduled') {
+            $color = "<span class='badge badge-pill badge-default'>".$status."</span>";
+        } else {
+            $color = "";
+        }
+
+        return $color;
+    }
+
     function convertkgTolbs($weightKg) {
         $weightLbs = $weightKg * 2.20462;
 
