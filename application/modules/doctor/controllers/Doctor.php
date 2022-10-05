@@ -1116,6 +1116,9 @@ class Doctor extends MX_Controller {
         $is_virtual = $this->finance_model->getServiceCategoryGroupById($service_category)->is_virtual;
         $data['branches'] = $this->branch_model->getBranchByHospitalId($data['doctor']->hospital_id);
 
+        $default_image = 'public/assets/images/users/placeholder.jpg';
+        $data['doctor_image'] = file_exists($data['doctor']->img_url)?$data['doctor']->img_url:$default_image;
+
         if (!empty($is_virtual)) {
             $data['consultation_fee'] = $data['doctor']->virtual_consultation_fee;
         } else {

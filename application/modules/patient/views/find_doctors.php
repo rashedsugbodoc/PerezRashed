@@ -96,18 +96,27 @@
                 </div><!-- end app-content-->
             </div>
 
-            <div class="modal" id="modaldemo3">
-                <div class="modal-dialog modal-lg" role="document">
+            <div class="modal fade" id="modaldemo3">
+                <div class="modal-dialog modal-md" role="document">
                     <div class="modal-content modal-content-demo">
                         <div class="modal-header">
-                            <h6 class="modal-title">Details</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                            <h6 class="modal-title">Doctor Details</h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body">
                             <div class="col-lg-12 col-xl-12">
                                 <div class="">
                                     <div class="main-content-body main-content-body-contacts">
-                                        <div class="main-contact-info-header">
-                                            <div class="media">
+                                        <div class="main-contact-info-header text-center d-flex flex-column justify-content-center align-items-center pl-0">
+                                            <div class="main-img-user brround">
+                                                <div id="img1"></div>
+                                            </div>
+                                            <div class="mt-2 text-white">
+                                                <h4 class="text-dark">Dr. <span class="doctor_name"></span></h4>
+                                                <p id="specialty"></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- <div class="mt-2 text-white">
                                                 <div class="main-img-user brround">
                                                     <div id="img1">
                                                         
@@ -120,15 +129,15 @@
                                                         
                                                     </nav>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <!-- main-contact-action -->
-                                        </div>
+                                        <!-- </div> -->
                                         <div class="main-contact-info-body">
                                             <div class="media-list pt-0">
                                                 <div class="media pt-4 pb-0 mt-0">
                                                     <div class="media-body">
                                                         <div class="d-flex">
-                                                            <h3>Clinics</h3>
+                                                            <h3 class="font-weight-normal text-dark">Clinics</h3>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -164,6 +173,9 @@
                                     </div>
                                 </div>
                             </div>
+                                <div class="modal-footer d-flex justify-content-center align-center bookBtn">
+                                            
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -259,7 +271,7 @@
                 $(".doctorInfo").click(function () {
                     var iid = $(this).attr('data-id');
                     $('.doctor_name').html("").end()
-                    $('.specialty').html("").end()
+                    $('#specialty').html("").end()
                     $('#branches').html("").end()
                     $('.img1-value').remove()
                     $('.bookBtn').html("").end()
@@ -270,10 +282,14 @@
                         dataType: 'json',
                         success: function(response) {
                             $('.doctor_name').append(response.doctor.name).end()
-                            $("#img1").append('<img alt="" src="'+response.doctor.img_url+'" class="h-100 w-100 brround img1-value" max-width="120" max-height="120">');
+                            $("#img1").append('<img alt="" src="'+response.doctor_image+'" class="h-100 w-100 brround img1-value" max-width="120" max-height="120">');
                             // $('.specialty').append(response.specialties.display_name).end()
                             $.each(response.specialties, function(key, value) {
-                                $('.specialty').append(value.display_name_ph+", ").end();
+                                // $('.specialty').append(value.display_name_ph+(1)).end();
+                                $('#specialty').append('<p class="badge badge-pill badge-info mt-2">\n\
+                                <span>'+ value.display_name_ph +'</span>\n\
+                                </p>\n\
+                                ')
                             });
 
                             $.each(response.branches, function(key, value) {
@@ -283,15 +299,18 @@
                                             <div class="media-icon bg-light text-primary mr-3 mt-1">\n\
                                                 <i class="fa fa-hospital-o"></i>\n\
                                             </div>\n\
-                                            <div>\n\
-                                                <label>'+ value.display_name +'</label> <span class="font-weight-semibold fs-14"><i class="fa fa-phone"></i> '+response.doctor.phone+'</span><span class="font-weight-semibold fs-14"><i class="fa fa-home"></i> '+value.street_address+'</span>\n\
+                                            <div class="mt-1">\n\
+                                                <label class="font-weight-bold text-primary fs-15">'+ value.display_name 
+                                                +'</label> <span class=" fs-14 text-muted"><i class="fa fa-phone mr-2"></i></i> '
+                                                +response.doctor.phone+'</span><span class="font-weight-normal fs-14 text-muted"><i class="fa fa-map-marker mr-2"></i>'
+                                                + value.street_address+'</span>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\
                                 </div>\n\
                                 ');
                             });
-                            $('.bookBtn').append('<a href="appointment/bookConsultation?doctor_id='+iid+'" class="btn btn-primary btn-pill btn-sm d-xl-inline">Book</a>')
+                            $('.bookBtn').append('<a href="appointment/bookConsultation?doctor_id='+iid+'" class="btn btn-primary btn-md">Book</a>')
                             console.log(response.branches);
                             $('#modaldemo3').modal('show');
                         }
