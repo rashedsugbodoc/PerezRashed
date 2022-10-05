@@ -349,9 +349,11 @@
                                                                 <?php if(!empty($signature->signature)){ ?>
                                                                     <button id="confirm" class="btn btn-sm btn-success">Confirm</button>
                                                                     <button id="save" class="btn btn-sm btn-success d-none" hidden>Save</button>
+                                                                    <p id="message" class="mt-1"></p>
                                                                 <?php } else { ?>
                                                                     <button id="confirm" class="btn btn-sm btn-success d-none" hidden>Confirm</button>
                                                                     <button id="save" class="btn btn-sm btn-success">Save</button>
+                                                                    <p id="message" class="mt-1"></p>
                                                                 <?php }?>
                                                             </div>
                                                         </div>
@@ -613,6 +615,7 @@
     <script>
     $(function() {
         // init signaturepad
+        const defaultValueOfEmptyDataEncoded = 'EJAAAMAsH';
         var signaturePad = new SignaturePad(document.getElementById('signature-pad'), {
                 backgroundColor: 'rgba(255, 255, 255, 0)',
         penColor: 'rgb(0, 0, 0)'
@@ -627,10 +630,21 @@
             //     output.value += imageData[i].charCodeAt(0).toString(2) + " ";
             // }
             $('#signature-result').val(imageData)
+            var showMessageSaved =  document.getElementById('message');
             const data = {
                 encoded: imageData,
             }
             window.localStorage.setItem('b64', JSON.stringify(data));
+            var getTheData = data.encoded;
+            var valueOfEncodedImageData = getTheData.split(1)[1];
+            var getTheCertainValueOfTheImageData = valueOfEncodedImageData.slice(1,10);  
+            if(signaturePad.isEmpty() || getTheCertainValueOfTheImageData === defaultValueOfEmptyDataEncoded){
+                showMessageSaved.innerText = 'Please add a Signature';
+                showMessageSaved.style.color = '#df4759';
+            } else {
+                showMessageSaved.innerText = 'Signature was Saved';
+                showMessageSaved.style.color ='#42ba96';
+            }
         }
 
         function fromSignaturePad() {
@@ -648,10 +662,12 @@
                 }
             }
         } isSetVal(); //callback
-        
+
+
         // form action
         $('#save').click(function() {
             getSignaturePad();
+
             return false; // set true to submits the form.
             
         });
@@ -665,6 +681,8 @@
         $('#clear').click(function(e) {
             e.preventDefault();
             $("#signature-result").val('');
+            var signatureMessage = document.getElementById('message');
+            signatureMessage.innerText = ' ';
             signaturePad.clear();
             window.localStorage.removeItem('b64');
         })
