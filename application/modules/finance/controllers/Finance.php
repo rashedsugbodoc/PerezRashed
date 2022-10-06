@@ -2903,10 +2903,10 @@ class Finance extends MX_Controller {
 
 
             $info[] = array(
-                $expense->category,
                 date('d/m/y', $expense->date),
+                $expense->category,
                 $expense->note,
-                $settings->currency . '' . $expense->amount,
+                '<div class="text-right">' .$settings->currency . '' .number_format($expense->amount,'2','.',',').'</div>',
                 $options1 . ' ' . $options2 . ' ' . $options3,
                     //  $options2
             );

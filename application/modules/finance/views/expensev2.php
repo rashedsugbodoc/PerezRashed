@@ -28,9 +28,9 @@
                                             <table class="table table-bordered text-nowrap key-buttons w-100 editable-sample" id="editable-sample">
                                                 <thead>
                                                     <tr>
-                                                        <th><?php echo lang('expense'); ?> <?php echo lang('name'); ?></th>
                                                         <th><?php echo lang('date'); ?></th>
-                                                        <th><?php echo lang('note'); ?></th>
+                                                        <th><?php echo lang('category'); ?> <?php echo lang('name'); ?></th>
+                                                        <th><?php echo lang('description'); ?></th> 
                                                         <th><?php echo lang('amount'); ?></th>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                     </tr>
