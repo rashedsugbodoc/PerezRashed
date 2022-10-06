@@ -623,7 +623,8 @@
 
         // get image data and put to hidden input field
         function getSignaturePad() { 
-            var imageData = signaturePad.toDataURL('image/png');
+            var imageData = signaturePad.toDataURL('image/png',
+            { ratio: 1, width: 400, height: 200, xOffset: 100, yOffset: 50 }); // fixed size on signature view
             // var output = document.getElementById("signature-result");
             // output.value = "";
             // for (i=0; i < imageData.length; i++) {
@@ -634,7 +635,7 @@
             const data = {
                 encoded: imageData,
             }
-            window.localStorage.setItem('b64', JSON.stringify(data));
+            window.sessionStorage.setItem('b64', JSON.stringify(data));
             var getTheData = data.encoded;
             var valueOfEncodedImageData = getTheData.split(1)[1];
             var getTheCertainValueOfTheImageData = valueOfEncodedImageData.slice(1,10);  
@@ -648,26 +649,24 @@
         }
 
         function fromSignaturePad() {
-            var imageData = signaturePad.fromDataURL('<?php echo $signature->signature; ?>');
+            var imageData = signaturePad.fromDataURL('<?php echo $signature->signature; ?>',
+            { ratio: 0, width: 300, height: 200, xOffset: 100, yOffset: 50 }); // fixed size on signature view
             $('#signature-result').val(imageData)
         }
         
         function isSetVal(){
             var setvalue = '<?php echo $setval ?>' //contains tha setval from the controller
 
-            if(setvalue.length == 0){ // identify if the $setval is present
-                console.log(setvalue,"setval is not present");
+            if(setvalue.length == 0){ // if the setval is not present
                 if(signaturePad.isEmpty()){
                     fromSignaturePad();
                 }
             }
         } isSetVal(); //callback
 
-
         // form action
         $('#save').click(function() {
             getSignaturePad();
-
             return false; // set true to submits the form.
             
         });
@@ -677,21 +676,22 @@
             return false;
         });
 
-        // action on click button clea
+        // action on click button clear
         $('#clear').click(function(e) {
             e.preventDefault();
             $("#signature-result").val('');
             var signatureMessage = document.getElementById('message');
             signatureMessage.innerText = ' ';
             signaturePad.clear();
-            window.localStorage.removeItem('b64');
+            window.sessionStorage.removeItem('b64');
         })
 
         function saveSigState(){
-            var b64data = JSON.parse(window.localStorage.getItem('b64'));
-            const imageData = signaturePad.fromDataURL(b64data.encoded);
+            var b64data = JSON.parse(window.sessionStorage.getItem('b64'));
+            const imageData = signaturePad.fromDataURL(`${b64data.encoded}`,
+            { ratio: 0, width: 300, height: 200, xOffset: 100, yOffset: 50 }); // fixed size on signature view
             $('#signature-result').val(imageData)
-        }saveSigState();
+        } saveSigState();
 
         
     });
