@@ -111,7 +111,7 @@
                                                                         $location_name = $this->branch_model->getBranchById($todays_appointment->location_id);
                                                                         $todays_appointment_service_type = $this->appointment_model->getServiceCategoryById($todays_appointment->service_category_group_id)->display_name;
                                                                         $todays_appointment_service = $this->appointment_model->getServicesByServiceId($todays_appointment->service_id)->category;
-                                                                        if(empty($location_name->display_name)) {
+                                                                        if(empty($location_name->display_name)) {   
                                                                             $location_name = 'Online';
                                                                         } else {
                                                                             $location_name = $location_name->display_name;
@@ -122,7 +122,7 @@
                                                                                 <td><?php echo date('Y-m-d', $todays_appointment->date).'<br>'.$todays_appointment->s_time.' to '.$todays_appointment->e_time; ?></td>
                                                                                 <td><?php echo $patient_details->patient_id; ?></td>
                                                                                 <td><?php echo $patient_details->name; ?></td>
-                                                                                <td><?php echo $todays_appointment->status; ?></td>
+                                                                                <td class="text-center"><?php echo colorBasedOnAppointmentStatus($todays_appointment->status); ?></td>
                                                                                 <td><?php echo '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$todays_appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$todays_appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$todays_appointment_service; ?></td>
                                                                                 <td>
                                                                                     <div class="btn-group mb-0">
@@ -254,7 +254,7 @@
                                                                                 <td><?php echo date('Y-m-d', $upcoming_appointment->date).'<br>'.$upcoming_appointment->s_time.' to '.$upcoming_appointment->e_time; ?></td>
                                                                                 <td><?php echo $appointed_patient->patient_id; ?></td>
                                                                                 <td><?php echo $appointed_patient->name; ?></td>
-                                                                                <td><?php echo $upcoming_appointment->status; ?></td>
+                                                                                <td class="text-center"><?php echo colorBasedOnAppointmentStatus($upcoming_appointment->status); ?></td>
                                                                                 <td><?php echo '<strong>'.lang('location').': </strong>'.$upcoming_appointment_location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$upcoming_appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$upcoming_appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$upcoming_appointment_service; ?></td>
                                                                                 <td>
                                                                                     <div class="btn-group mb-0">
