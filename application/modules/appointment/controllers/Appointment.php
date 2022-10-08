@@ -1455,7 +1455,7 @@ class Appointment extends MX_Controller {
                     date('Y-m-d', strtotime($appointment->appointment_date.' UTC')),
                     $appointment->time_slot,
                     $appointment_doctor,
-                    $status,
+                    colorBasedOnAppointmentStatus($status),
                     $appointment_facility,
                     $this->appointment_model->getServiceCategoryById($appointment->service_category_group_id)->display_name,
                     $options6 . ' ' . $options7,
