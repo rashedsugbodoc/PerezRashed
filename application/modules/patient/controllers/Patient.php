@@ -3764,8 +3764,10 @@ class Patient extends MX_Controller {
         }
 
 
-        if (empty($redirect)) {
+        if (empty($redirect) && !$this->ion_auth->in_group(array('Patient'))) {
             $redirect = "patient/documents";
+        } elseif(empty($redirect) && $this->ion_auth->in_group(array('Patient'))) {
+            $redirect = "patient/medicalHistory";
         }
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger" role="alert"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>', '</div>');
