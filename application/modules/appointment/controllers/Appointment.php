@@ -2364,7 +2364,7 @@ class Appointment extends MX_Controller {
                     $patientdetails->patient_id,
                     $patientname,
                     $doctorname,
-                    $appointment->status,
+                    '<div class="text-center">'.colorBasedOnAppointmentStatus($appointment->status).'</div>',
                     '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                     $option1 . ' ' . $option2 . ' ' . $options7 . ' ' . $options8
                 );
@@ -2481,7 +2481,7 @@ class Appointment extends MX_Controller {
                     $patientdetails->patient_id,
                     $patientname,
                     $doctorname,
-                    $appointment->status,
+                    '<div class="text-center">'.colorBasedOnAppointmentStatus($appointment->status).'</div>',
                     '<strong>'.lang('location').': </strong>'.$location_name.'<br>'.'<strong>'.lang('reason_for_visit').': </strong>'.$appointment->remarks.'<br>'.'<strong>'.lang('service_type').': </strong>'.$appointment_service_type.'<br>'.'<strong>'.lang('service').': </strong>'.$appointment_service,
                     $option1 . ' ' . $option2 . ' ' . $options7
                 );
