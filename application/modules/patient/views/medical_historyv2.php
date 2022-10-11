@@ -1569,7 +1569,7 @@
                                                     <div class="col-md-12 col-sm-12">
                                                         <div class="form-group">
                                                             <label class="form-label"><?php echo lang('file'); ?> <span class="text-red">*</span></label>
-                                                            <span class="text-muted">(<?php echo lang('upload_less_than_xMB_image_or_pdf');?> and maximum dimensions of 10,000 by 10,000.</span>
+                                                            <span class="text-muted">(<?php echo lang('upload_less_than_xMB_image_or_pdf');?> and 10K by 10K Max Dimension)</span>
                                                             <input type="file" name="img_url" id="document" class="dropify" required />
                                                         </div>
                                                     </div>
@@ -3996,8 +3996,8 @@
         var uploadField = document.getElementById("document");
 
         uploadField.onchange = function() {
-            if(this.files[0].size > 2e+6){
-               not2();
+            if(this.files[0].size > 5e+6){
+               not7();
                this.value = "";
             }else{
 

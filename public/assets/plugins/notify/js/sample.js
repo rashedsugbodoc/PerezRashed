@@ -77,3 +77,10 @@
 				opacity: 0.8
 			});
 		}
+    function not7(){
+			notif({
+				type: "error",
+				msg: "File Too Large",
+				position: "center",
+			});
+		}

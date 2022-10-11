@@ -35,10 +35,11 @@
                                                                     <th><?php echo lang('name'); ?></th>
                                                                     <th><?php echo lang('display_name'); ?></th>                                
                                                                     <th><?php echo lang('email'); ?></th>
+                                                                    <th><?php echo lang('company_address'); ?></th>
                                                                     <th><?php echo lang('phone'); ?></th>
                                                                     <th><?php echo lang('type'); ?></th>
                                                                     <th><?php echo lang('classification'); ?></th>
-                                                                    <th><?php echo lang('profile'); ?></th>                                
+                                                                    <th><?php echo lang('profile'); ?></th>
                                                                     <th><?php echo lang('options'); ?></th>
                                                                 </tr>
                                                             </thead>

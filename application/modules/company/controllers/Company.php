@@ -17,6 +17,7 @@ class Company extends MX_Controller {
         $this->load->model('schedule/schedule_model');
         $this->load->model('location/location_model');
         $this->load->model('companyuser/companyuser_model');
+        $this->load->model('settings/settings_model');
         $this->load->module('patient');
         $this->load->module('sms');
         $this->load->helper('string');
@@ -54,6 +55,7 @@ class Company extends MX_Controller {
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the header file
     }
+
 
     public function addNew() {
         if (!$this->ion_auth->in_group(array('admin'))) {
@@ -488,6 +490,7 @@ class Company extends MX_Controller {
                 $company->name,
                 $company->display_name,                
                 $company->email,
+                $company->address,
                 $company->phone,
                 $typename,
                 $classificationname,
