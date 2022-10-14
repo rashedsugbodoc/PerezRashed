@@ -123,6 +123,7 @@ class Doctor extends MX_Controller {
         $tin = $this->input->post('tin');
         $ptr = $this->input->post('ptr');
         $s2 = $this->input->post('s2');
+        $accreditation = $this->input->post('accreditation_number');
         $country = $this->input->post('country_id');
         $state = $this->input->post('state_id');
         $city = $this->input->post('city_id');
@@ -186,6 +187,7 @@ class Doctor extends MX_Controller {
         $this->form_validation->set_rules('tin', 'TIN Number', 'trim|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('ptr', 'PTR Number', 'trim|required|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('s2', 'S2 Number', 'trim|min_length[1]|max_length[50]|xss_clean');
+        $this->form_validation->set_rules('accreditation_number', 'Accreditation Number', 'trim|min_length[1]|max_length[50]|xss_clean');
         $this->form_validation->set_rules('virtual_consultation_fee', 'Virtual Consultation Fee', 'trim|required|is_natural_no_zero|max_length[15]|xss_clean');
         $this->form_validation->set_rules('in_person_consultation_fee', 'In-Person Consultation Fee', 'trim|is_natural_no_zero|required|max_length[15]|xss_clean');
 
@@ -282,6 +284,7 @@ class Doctor extends MX_Controller {
                     'license' => $license,
                     'tax_number' => $tin,
                     'tax_receipt_number' => $ptr,
+                    'accreditation_number'=> $accreditation,
                     'secondary_license_number' => $s2,
                     'virtual_consultation_fee' => $virtual_consultation_fee,
                     'physical_consultation_fee' => $in_person_consultation_fee
@@ -308,6 +311,7 @@ class Doctor extends MX_Controller {
                     'license' => $license,
                     'tax_number' => $tin,
                     'tax_receipt_number' => $ptr,
+                    'accreditation_number'=> $accreditation,
                     'secondary_license_number' => $s2,
                     'virtual_consultation_fee' => $virtual_consultation_fee,
                     'physical_consultation_fee' => $in_person_consultation_fee

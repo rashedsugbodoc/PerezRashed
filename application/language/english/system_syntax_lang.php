@@ -1207,3 +1207,4 @@ $lang['tax'] = 'Tax';
 $lang['select_tax'] = 'Select Tax';
 $lang['price_includes_tax'] = 'Price Includes Tax';
 $lang['price_excludes_tax'] = 'Price Excludes Tax';
+$lang['accreditation_number'] = 'Accreditation Number';

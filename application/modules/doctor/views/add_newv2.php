@@ -304,6 +304,32 @@
                                                 </div>
                                             </div>
                                             <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+													<div class="form-label">PhilHealth</div>
+													<div class="custom-controls-stacked">
+														<label class="custom-control custom-checkbox">
+															<input type="checkbox" class="custom-control-input" name="is_philhealth_accredited" id="is_philhealth_accredited" value="option1" <?php echo $doctor->accreditation_number ? "checked" : ""; ?>>
+															<span class="custom-control-label">PhilHealth Accredited?</span>
+														</label>
+													</div>
+												</div>          
+                                            </div>
+                                            <div class="row" id="philhealth_accredited">
+                                                <!-- <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('accreditation_number'); ?></label>
+                                                        <input type="text" name="accreditation_number" class="form-control" value="<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('accreditation_number');
+                                                        }
+                                                        elseif (!empty($doctor->accreditation_number)) {
+                                                            echo $doctor->accreditation_number;
+                                                        }
+                                                        ?>">
+                                                    </div>
+                                                </div> -->
+                                            </div>
+                                            <div class="row">
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('virtual_consultation_fee');?><span class="text-danger"> *</span></label>
@@ -1066,6 +1092,52 @@
             input.addEventListener('change', reset);
             input.addEventListener('keyup', reset);
         });
+    </script>
+
+    <script>
+        function accreNumberSetVal(){
+            if('<?php echo $setval ?>'){
+                var setval = '<?php echo set_value('accreditation_number'); ?>';
+            } else if('<?php echo $doctor->accreditation_number ?>'){
+                var setval = '<?php echo $doctor->accreditation_number; ?>';
+            } else {
+                var setval = '';
+            }
+            return setval; //return the value of setval
+        }
+        function isPhilHealtAccredited() {
+            document.getElementById("philhealth_accredited").innerHTML += 
+              '<div class="col-md-12 col-sm-12">\n\
+                    <div class="form-group">\n\
+                        <label class="form-label"><?php echo lang('accreditation_number'); ?></label>\n\
+                        <input type="text" name="accreditation_number" class="form-control" value="'+ accreNumberSetVal() +'">\n\
+                    </div>\n\
+                </div>';
+        }
+        function isNotPhilHealtAccredited() {
+            document.getElementById("philhealth_accredited").innerHTML =
+              ""; // return empty value
+        }
+
+        function validate() {
+            if (document.getElementById('is_philhealth_accredited').checked) {
+                isPhilHealtAccredited();
+            } else {
+                isNotPhilHealtAccredited();
+            }
+        } 
+        document.getElementById('is_philhealth_accredited').addEventListener('change', validate);
+        $(document).ready(function(){
+            $('.card input[type="checkbox"]:checked').each(function(){
+                $("#philhealth_accredited").append("<div class=\"col-md-12 col-sm-12\">\n\
+                    <div class=\"form-group\">\n\
+                        <label class=\"form-label\"><?php echo lang('accreditation_number'); ?></label>\n\
+                        <input type=\"text\" name=\"accreditation_number\" class=\"form-control\" value=\""+ accreNumberSetVal() +"\">\n\
+                    </div>\n\
+                </div>");
+            });
+        });
+        
     </script>
 
     </body>
