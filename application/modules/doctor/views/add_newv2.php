@@ -315,19 +315,6 @@
 												</div>          
                                             </div>
                                             <div class="row" id="philhealth_accredited">
-                                                <!-- <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('accreditation_number'); ?></label>
-                                                        <input type="text" name="accreditation_number" class="form-control" value="<?php
-                                                        if (!empty($setval)) {
-                                                            echo set_value('accreditation_number');
-                                                        }
-                                                        elseif (!empty($doctor->accreditation_number)) {
-                                                            echo $doctor->accreditation_number;
-                                                        }
-                                                        ?>">
-                                                    </div>
-                                                </div> -->
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
