@@ -26,6 +26,7 @@ class Patient extends MX_Controller {
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->model('medicine/medicine_model');
         $this->load->model('doctor/doctor_model');
+        $this->load->model('nurse/nurse_model');
         $this->load->model('department/department_model');
         $this->load->module('paypal');
         $this->load->model('location/location_model');
@@ -3756,8 +3757,11 @@ class Patient extends MX_Controller {
 
         if ($this->ion_auth->in_group(array('Patient'))) {
             if (empty($patient_id)) {
-                $current_patient = $this->ion_auth->get_user_id();
-                $patient_id = $this->patient_model->getPatientByIonUserId($current_patient)->id;
+                $current_user = $this->ion_auth->get_user_id();
+                $patient_id = $this->patient_model->getPatientByIonUserId($current_user)->id;
+            } else {
+                $current_user = $this->ion_auth->get_user_id();
+                $patient_id = $this->patient_model->getPatientByIonUserId($current_user)->id;
             }
         } else {
             $current_user = $this->ion_auth->get_user_id();
@@ -4012,7 +4016,9 @@ class Patient extends MX_Controller {
         $this->session->set_flashdata('success', lang('record_deleted'));
         if ($redirect == 'documents') {
             redirect('patient/documents');
-        } else {
+        }elseif ($encounter_details == null) {
+            redirect("patient/medicalHistory?id=". $patient->patient_id);
+        }else {
             redirect("patient/MedicalHistory?encounter_id=" . $encounter_details->id);
         }
     }
@@ -6085,7 +6091,7 @@ class Patient extends MX_Controller {
                 $image = '
                         <div class="panel-body text-center">
                             <a class="example-image-link" href="' . $patient_material->url . '" target="_blank">
-                                <img class="example-image" src="' . $patient_material->url . '?m=' . $patient_material_last_modified . '" alt="image-1" max-width="120" max-height="120"/>
+                                <img class="example-image" src="' . $patient_material->url . '?m=' . $patient_material->last_modified . '" alt="image-1" max-width="120" max-height="120"/>
                             </a>
                         </div>';
             }
@@ -6116,7 +6122,7 @@ class Patient extends MX_Controller {
                                         });
                                     </script>';
 
-            if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) {
+            if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor', 'Midwife', 'Nurse', 'Clerk'))) {
                 $patient_material = '<div class="col-lg-4 col-md-6 items">
                                         <div class="card">
                                             <div class="card-body p-0">
