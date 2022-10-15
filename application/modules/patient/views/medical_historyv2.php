@@ -830,7 +830,11 @@
                                                                     <div class="card-body p-0">
                                                                         <div class="todo-widget-header d-flex pb-2 p-4">
                                                                             <div class="">
-                                                                                <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->patient_document_number; ?>" target="_blank"><i class="fa fa-paint-brush"></i></a>
+                                                                                <?php if ($patient_material->created_user_id == $current_user) { ?>
+                                                                                    <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->patient_document_number; ?>" target="_blank"><i class="fa fa-paint-brush"></i></a>
+                                                                                <?php } else { ?>
+                                                                                   <div></div>
+                                                                                <?php } ?>
                                                                                 <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
                                                                                 <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
