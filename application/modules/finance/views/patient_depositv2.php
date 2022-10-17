@@ -523,7 +523,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('deposit_amount'); ?></label>
-                                                        <input type="number" name="deposited_amount" class="form-control" value="">
+                                                        <input type="number" name="deposited_amount" class="form-control" value="" oninput="validity.valid||(value='');">
                                                     </div>
                                                 </div>
                                             </div>
