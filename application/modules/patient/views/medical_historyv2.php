@@ -3259,7 +3259,7 @@
         $(document).ready(function () {
             var encounter_id = '<?php echo $encounter_id; ?>';
             var patient_id = '<?php echo $patient->id; ?>';
-            var table = $('#editable-sample').DataTable({
+            $('#editable-sample').DataTable({
                 responsive: true,
                 //   dom: 'lfrBtip',
 
@@ -3334,7 +3334,7 @@
                     "url": "common/assets/DataTables/languages/<?php echo $this->language; ?>.json"
                 },
             });
-            table.buttons().container().appendTo('.custom_buttons');
+            
         });
 
         $(document).ready(function () {
