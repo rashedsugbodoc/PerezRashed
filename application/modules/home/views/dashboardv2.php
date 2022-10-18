@@ -216,6 +216,12 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
             .hidden {
                 display: none;
             }
+            .animated {
+                -webkit-animation-duration: 0.1s;
+                animation-duration: 0.1s;
+                -webkit-animation-fill-mode: both;
+                animation-fill-mode: both
+                        }
         </style>
 
         <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
@@ -1489,8 +1495,21 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <!-- report notification end -->
                                     <?php } ?>
                                     <!-- All Notification end -->            
-                                    <div class="d-flex order-lg-2 ml-auto">
-                                        
+                                    <div class="d-flex order-lg-2 ml-auto defaultheader d-none d-lg-flex ">
+                                    <div class="text-right mt-1">
+                                                    <span class="text-right user pb-0 font-weight-bold fs-16">
+                                                        <?php
+                                                        $username = $this->session->userdata('name');
+                                                        $user_id = $this->ion_auth->get_user_id('name');
+                                                        if (!empty($username)) {
+                                                            echo ucwords ($username);
+
+                                                        }
+                                                        ?>         
+                                                    </span>
+                                                    <br>
+                                                    <span class="text-right user-title"><?php echo ucwords($this->ion_auth->get_users_groups()->row()->name); ?></span>
+                                    </div>
                                         <div class="dropdown profile-dropdown">
                                             <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                                                 <span>
@@ -1507,11 +1526,11 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                         <?php
                                                         $username = $this->session->userdata('name');
                                                         if (!empty($username)) {
-                                                            echo $username;
+                                                            echo ucwords ($username);
                                                         }
                                                         ?>         
                                                     </a>
-                                                    <span class="text-center user-semi-title"><?php echo $this->ion_auth->get_users_groups()->row()->name ?></span>
+                                                    <span class="text-center user-semi-title"></span>
                                                     <div class="dropdown-divider"></div>
                                                 </div>
                                                 <?php if (!$this->ion_auth->in_group('admin')) { ?> 
