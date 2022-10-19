@@ -34,18 +34,23 @@
                             </div>
                         </div>
 
-                        <div class="row">
+                        <div class="row myDocuments">
                             <?php foreach ($files as $file) { ?>
                                 <div class="col-xl-3 col-lg-4 col-md-6">
                                     <div class="card">
                                         <div class="card-body p-0">
                                             <div class="todo-widget-header d-flex pb-2 p-4">
                                                 <div class="">
-                                                    <a class="btn btn-info" href="patient/editUpload?id=<?php echo $file->patient_document_number; ?>" target="_blank"><i class="fe fe-edit"></i></a>
+                                                    <?php if ($file->created_user_id === $current_user){ ?>
+                                                        <a class="btn btn-info" href="patient/editUpload?id=<?php echo $file->patient_document_number; ?>" target="_blank"><i class="fa fa-paint-brush"></i></a>
+                                                        <a data-target="#myModal2" data-toggle="modal" class="editbutton btn btn-info btn-xs btn_width"  data-id="<?php echo $file->id ?>" target="_blank"><i class="fa fa-edit"> </i></a>
+                                                    <?php } else { ?>
+                                                        <div></div>
+                                                    <?php } ?>
                                                     <a class="btn btn-info" href="<?php echo $file->url; ?>" download><i class="fe fe-download"></i></a>
                                                     <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
-                                                        <a class="btn btn-danger ml-5" href="patient/deletePatientMaterial?id=<?php echo $file->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
+                                                        <a class="btn btn-danger" href="patient/deletePatientMaterial?id=<?php echo $file->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
                                                     <?php } ?>
                                                 </div>
                                             </div>
@@ -160,6 +165,84 @@
 
                         <!-- //Documents Modal End -->
 
+
+                        <!-- // Edit Modal Start -->
+                            <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content modal-content-demo">
+                                        <div class="modal-header">
+                                            <h6 class="modal-title"><?php echo lang('edit'); ?> <?php echo lang('document'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <form role="form" id="editDocumentForm" action="patient/addPatientMaterial" class="clearfix" method="post" enctype="multipart/form-data" onsubmit="btnLoading('editDocumentForm');">
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('patient'); ?> <span class="text-red">*</span></label>
+                                                            <select class="form-control select2-show-search" id="editpatientchoose" name="patient" data-placeholder="<?=lang('select').' '.lang('patient');?>" required>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-sm-6">
+                                                        <div class="form-group">
+                                                            <label class="form-label">Associate with Encounter?</label>
+                                                            <div class="row">
+                                                                <div class="col-md-6 col-sm-12">
+                                                                    <label class="custom-control custom-radio">
+                                                                        <input type="radio" class="custom-control-input" id="yes" name="edit_encounter_check" value="1">
+                                                                        <span class="custom-control-label">Yes</span>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-md-6 col-sm-12">
+                                                                    <label class="custom-control custom-radio">
+                                                                        <input type="radio" class="custom-control-input" id="no" name="edit_encounter_check" value="0">
+                                                                        <span class="custom-control-label">No</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12" id="edit_encounter_div">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('encounter'); ?></label>
+                                                            <select class="form-control select2-show-search" name="encounter_id" id="editencounter" data-placeholder="Choose One">
+                                                            <option value="0" label="choose one">Choose One</option>
+                                                        </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
+                                                            <select class="form-control select2-show-search" name="category" id="editcategory" data-placeholder="<?=lang('select').' '.lang('category');?>" required>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('title'); ?> <span class="text-red">*</span></label>
+                                                            <input type="text" class="form-control" name="title" id="edittitle" placeholder="<?=lang('title');?>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="form-label"><?php echo lang('description'); ?></label>
+                                                            <input type="text" class="form-control" name="description" id="editdescription" required placeholder="<?=lang('description');?>">
+                                                        </div>
+                                                    </div>
+                                                    <input type="hidden" name="redirect" value='patient/myDocuments'>
+                                                    <input type="hidden" name="id" value=''>
+                                                    <div class="col-md-12 col-sm-12">
+                                                        <button class="btn btn-primary pull-right" name="submit" id="submit" type="submit"><?php echo lang('submit'); ?></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- // Edit Modal End -->
+
+
                     </div>
                 </div>
             </div>
@@ -248,6 +331,13 @@
         <script src="<?php echo base_url('public/assets/plugins/fileupload/js/dropify.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/js/filupload.js'); ?>"></script>
 
+        <!-- Notifications js -->
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/rainbow.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
+        <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
 
@@ -287,6 +377,105 @@
               $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
           });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[type=radio][name=edit_encounter_check]').change(function() {
+                var encounter = this.value;
+                if (encounter == 1) {
+                    $("#edit_encounter_div").attr("hidden", false);
+                } else {
+                    $("#editencounter").val(0).change();
+                    $("#edit_encounter_div").attr("hidden", true);
+                }
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(".myDocuments").on("click", ".editbutton", function () {
+            $('#editDocumentForm').trigger("reset");
+            $('#editencounter').empty();
+            var iid = $(this).attr('data-id');
+            console.log(iid);
+            $.ajax({
+                url: 'patient/editPatientMaterialByJason?id='+iid,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var patients = response.patients;
+                    var categories = response.categories;
+                    var encounters = response.encounters;
+                    $('#editDocumentForm').find('[name="id"]').val(response.documents.id).end()
+                    $.each(patients, function (key, value) {
+                        $('#editpatientchoose').append($('<option>').text(value.name).val(value.id)).end();
+                    });
+                    $.each(categories, function (key, value) {
+                        $('#editcategory').append($('<option>').text(value.display_name).val(value.id)).end();
+                    });
+                    $.each(encounters, function (key, value) {
+                        $('#editencounter').append($('<option>').text(response.encounter_details[key]).val(value.id)).end();
+                    });
+                    $('#editDocumentForm').find('[name="patient"]').val(response.documents.patient).change()
+                    $('#editDocumentForm').find('[name="category"]').val(response.documents.category_id).change()
+                    $('#editDocumentForm').find('[name="title"]').val(response.documents.title).end()
+                    $('#editDocumentForm').find('[name="description"]').val(response.documents.description).end()
+                    $('#editDocumentForm').find('[name="encounter_id"]').val(response.documents.encounter_id).change()
+
+
+                    if (response.documents.encounter_id) {
+                        $("#yes").attr("checked", true);
+                    } else {
+                        $("#no").attr("checked", true);
+                        $("#editDocumentForm").find('[id=edit_encounter_div]').attr("hidden", true);
+                    }
+
+                    console.log(response.documents.encounter_id);
+
+                    $('#myModal2').modal('show');
+                }
+            })
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            var error = "<?php echo $_SESSION['error'] ?>";
+            var success = "<?php echo $_SESSION['success'] ?>";
+            var notice = "<?php echo $_SESSION['notice'] ?>";
+            var warning = "<?php echo $_SESSION['warning'] ?>";
+
+            if (success) {
+                return $.growl.success({
+                    message: success
+                });
+            }
+            if (error) {
+                return $.growl.error({
+                    message: error
+                });
+            }
+            if (warning) {
+                return $.growl.warning({
+                    message: warning
+                });
+            }
+            if (notice) {
+                return $.growl.notice({
+                    message: notice
+                });
+            }
+
+            var error = "<?php unset($_SESSION['error']); ?>";
+            var success = "<?php unset($_SESSION['success']); ?>";
+            var warning = "<?php unset($_SESSION['warning']); ?>";
+            var notice = "<?php unset($_SESSION['notice']); ?>";
+
         });
     </script>
 

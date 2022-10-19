@@ -1762,6 +1762,7 @@ class Patient extends MX_Controller {
             $patient_id = $this->patient_model->getPatientByIonUserId($patient_ion_id)->id;
             $data['files'] = $this->patient_model->getPatientMaterialByPatientId($patient_id);
             $data['settings'] = $this->settings_model->getSettings();
+            $data['current_user'] = $this->ion_auth->get_user_id();
             // $this->load->library('pagination');
 
             // $config['base_url'] = 'patient/myDocuments/page/';
@@ -7212,8 +7213,15 @@ class Patient extends MX_Controller {
         $data['documents'] = $this->patient_model->getPatientMaterialById($id);
         $data['patients'] = $this->patient_model->getPatient();
         $data['categories'] = $this->patient_model->getDocumentCategories();
-        $data['encounters'] = $this->encounter_model->getPatientByEncounter();
+        $data['encounters'] = $this->encounter_model->getEncounterByPatientId($data['documents']->patient);
+        $encounter_details = [];
 
+        foreach($data['encounters'] as $encounter){
+            $encounter_type_name = $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id);
+            $encounter_details[] = lang('encounter') . ' ' . lang('no') . ': ' . $encounter->encounter_number . ' - ' . $encounter_type_name->display_name . ' - ' . date("M j, Y g:i a", strtotime($encounter->created_at.' UTC'));
+        }
+
+        $data['encounter_details'] = $encounter_details;
         echo json_encode($data);
     }
 
