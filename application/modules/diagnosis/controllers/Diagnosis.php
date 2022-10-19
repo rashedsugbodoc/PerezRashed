@@ -386,38 +386,29 @@ class Diagnosis extends MX_Controller {
                 $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
             }
 
-            if(!empty($patient_id)) {
-                $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+            if ($this->ion_auth->in_group(array('Doctor'))) {
+                if(!empty($patient_id)) {
+                    $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                } else {
+                    $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&redirect=diagnosis" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                }
             } else {
-                $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&redirect=diagnosis" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                $options1 = '';
             }
 
-            if ($this->ion_auth->in_group(array('Doctor'))) {
-                $info[] = array(
-                    date('Y-m-d h:i A', strtotime($diag->diagnosis_date.' UTC')),
-                    date('Y-m-d h:i A', strtotime($diag->onset_date.' UTC')),
-                    $this->diagnosis_model->getDiagnosisById($diag->diagnosis_id)->long_description,
-                    $diag_code,
-                    $is_primary,
-                    $diag->diagnosis_notes,
-                    $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number,
-                    $appointment_facility,
-                    $options1,
-                        // $options4
-                );
-            } else {
-                $info[] = array(
-                    date('Y-m-d h:i A', strtotime($diag->diagnosis_date.' UTC')),
-                    date('Y-m-d h:i A', strtotime($diag->onset_date.' UTC')),
-                    $this->diagnosis_model->getDiagnosisById($diag->diagnosis_id)->long_description,
-                    $diag_code,
-                    $is_primary,
-                    $diag->diagnosis_notes,
-                    $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number,
-                    $appointment_facility,
-                        // $options4
-                );
-            }
+            $info[] = array(
+                date('Y-m-d h:i A', strtotime($diag->diagnosis_date.' UTC')),
+                date('Y-m-d h:i A', strtotime($diag->onset_date.' UTC')),
+                $this->diagnosis_model->getDiagnosisById($diag->diagnosis_id)->long_description,
+                $diag_code,
+                $is_primary,
+                $diag->diagnosis_notes,
+                $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number,
+                $appointment_facility,
+                $options1,
+                    // $options4
+            );
+            
             
         }
 
