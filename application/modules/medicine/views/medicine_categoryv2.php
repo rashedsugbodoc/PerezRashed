@@ -315,36 +315,27 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1],
-                        }
-                    },
-                ],
-                buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export Options',
+                        text: 'Export',
                         buttons: [
                             {
                                 extend: 'excelHtml5',
+                                title: '<?php echo lang('medicine_categories'); ?>',
                                 exportOptions: {
                                     columns: [0, 1],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
+                                title: '<?php echo lang('medicine_categories'); ?>',
                                 exportOptions: {
                                     columns: [0, 1],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
+                                title: '<?php echo lang('medicine_categories'); ?>',
                                 exportOptions: {
                                     columns: [0, 1],
                                 },

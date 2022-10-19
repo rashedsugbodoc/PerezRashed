@@ -267,16 +267,49 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('autosmstemplate'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('autosmstemplate'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('autosmstemplate'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('autosmstemplate'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('autosmstemplate'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            }
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [1, 2, 50, 100, -1],

@@ -58,8 +58,8 @@
                                                                     <td><?php echo $admin->phone; ?></td>
                                                                     <td class="no-print">
                                                                         <!-- <button type="button" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-toggle="modal" data-id="<?php echo $nurse->id; ?>"><i class="fa fa-edit"> </i></button>   --> 
-                                                                        <a href="admin/editAdmin?id=<?php echo $admin->id ?>" class="btn btn-info"><i class="fa fa-edit"> </i></a>
-                                                                        <a class="btn btn-danger btn-xs delete_button" title="<?php echo lang('delete'); ?>" href="nurse/delete?id=<?php echo $admin->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                        <a href="admin/editAdmin?id=<?php echo $admin->id ?>" class="btn btn-info"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a>
+                                                                        <a class="btn btn-danger btn-xs delete_button" title="<?php echo lang('delete'); ?>" href="nurse/delete?id=<?php echo $admin->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
                                                                     </td>
                                                                 </tr>
                                                             <?php } ?>
@@ -216,16 +216,49 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [1, 2, 3, 4],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('administrator'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('administrator');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('administrator');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('administrator');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('administrator');?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            }
+                        ]
+                    }
                 ],
 
                 aLengthMenu: [

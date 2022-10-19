@@ -77,7 +77,7 @@
                                                                         }
                                                                         ?>
                                                                     </td>
-                                                                     <td> <a class="btn btn-info btn-xs" style="width: 100px;" href="appointment/getAppointmentByDoctorId?id=<?php echo $doctor->id; ?>"><i class="fa fa-money"></i>  <?php  echo lang('details'); ?></a></td>
+                                                                     <td> <a class="btn btn-info btn-xs" style="width: 100px;" href="appointment/getAppointmentByDoctorId?id=<?php echo $doctor->id; ?>"><i class="fa fa-file-text-o"></i>  <?php  echo lang('details'); ?></a></td>
                                                                 </tr>
                                                                 <?php $appointment_number = NULL; ?>
                                                                 <?php $appointment_total = NULL; ?>
@@ -279,15 +279,42 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('treatment_history'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('treatment_history'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('treatment_history'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('treatment_history'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            }
+                        ]
+                    }
                 ],
 
                 aLengthMenu: [

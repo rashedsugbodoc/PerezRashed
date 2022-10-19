@@ -221,7 +221,7 @@ class Casenote extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
                 //   $options1 = '<a type="button" class="btn editbutton" title="Edit" data-toggle="modal" data-id="463"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = ' <a href="casenote?id='.$case->case_note_number.'" class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '"><i class="fa fa-edit"> </i> </a>';
+                $options1 = ' <a href="casenote?id='.$case->case_note_number.'" class="btn btn-info btn-xs btn_width" title="' . lang('') . '"><i class="fa fa-edit"> </i>'.' '.lang('edit'). '</a>';
             }
 
             if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'Nurse'))) {
@@ -229,7 +229,7 @@ class Casenote extends MX_Controller {
             }
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor', 'Midwife'))) {
-                $options3 = ' <a type="button" class="btn btn-info btn-xs case" title="' . lang('case') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-file"> </i> </a>';
+                $options3 = ' <a type="button" class="btn btn-info btn-xs case" title="' . lang('') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-file"></i>'.' '. lang('details').'</a>';
             }
 
             if (!empty($patient_id)) {

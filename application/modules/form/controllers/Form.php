@@ -903,15 +903,15 @@ class Form extends MX_Controller {
         foreach ($data['forms'] as $form) {
             $date = date('d-m-y', $form->date);
             if ($this->ion_auth->in_group(array('admin', 'Laboratorist', 'Doctor', 'Midwife'))) {
-                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="form?id=' . $form->form_number . '"><i class="fa fa-edit"> </i> ' . lang('') . '</a>';
+                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="form?id=' . $form->form_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             } else {
                 $options1 = '';
             }
 
-            $options2 = '<a class="btn btn-xs btn-info" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->form_number . '"><i class="fa fa-file"></i> ' . lang('') . '</a>';
+            $options2 = '<a class="btn btn-xs btn-info" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->form_number . '"><i class="fa fa-file-text-o"></i> ' . lang('details') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Midwife'))) {
-                $options3 = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="form/delete?id=' . $form->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>' . lang('') . '</a>';
+                $options3 = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="form/delete?id=' . $form->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>'.' '.lang('delete').'</a>';
             } else {
                 $options3 = '';
             }

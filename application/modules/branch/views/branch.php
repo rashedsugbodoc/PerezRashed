@@ -138,17 +138,49 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        title: '<?php echo lang('list_of') ?> <?php echo lang('locations') ?>',
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0,1],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('locations'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('locations'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('locations'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('locations'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('locations'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            }
+                        ]
+                    }
                 ],
 
                 aLengthMenu: [

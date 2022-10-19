@@ -45,8 +45,8 @@
                                                                 <td class="center"><?php echo date('F j, Y h:i A', strtotime($report->report_date.' UTC')); ?></td>
                                                                 <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                     <td class="no-print">
-                                                                        <a href="report/editReport?id=<?php echo $report->id; ?>" class="btn btn-info"><i class="fa fa-edit"></i></a>
-                                                                        <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="report/delete?id=<?php echo $report->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                        <a href="report/editReport?id=<?php echo $report->id; ?>" class="btn btn-info"><i class="fa fa-edit"></i><?php echo lang('edit'); ?></a>
+                                                                        <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang(''); ?>" href="report/delete?id=<?php echo $report->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
                                                                     </td>
                                                                 <?php } ?>
                                                             </tr>
@@ -467,16 +467,49 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('operation_report'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('operation_report'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('operation_report'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('operation_report'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('operation_report'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            }
+                        ]
+                    }
                 ],
 
                 aLengthMenu: [

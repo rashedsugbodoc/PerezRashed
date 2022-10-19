@@ -555,39 +555,39 @@
                         buttons: [
                             {
                                 extend: 'copyHtml5',
-                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
+                                title: '<?php echo lang('patient'); ?>  <?php echo lang('documents'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 }
                             },
                             {
                                 extend: 'excelHtml5',
-                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
+                                title: '<?php echo lang('patient'); ?>  <?php echo lang('documents'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
-                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
+                                title: '<?php echo lang('patient'); ?>  <?php echo lang('documents'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
-                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
+                                title: '<?php echo lang('patient'); ?>  <?php echo lang('documents'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 },
                                 orientation: 'landscape',
                                 pageSize: 'LEGAL'
                             },
                             {
                                 extend: 'print',
-                                title: '<?php echo lang('patient') . ' ' . lang('documents');?>',
+                                title: '<?php echo lang('patient'); ?>  <?php echo lang('documents'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 }
                             }
                         ]

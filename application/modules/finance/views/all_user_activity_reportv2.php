@@ -80,7 +80,7 @@
                                                                     <?php echo $bill_total - $deposit_total; ?>
                                                                 </td>
                                                                 <td class="no-print">
-                                                                    <a class="btn btn-info btn-xs" style="width: 100px;" href="finance/allUserActivityReport?user=<?php echo $accountant_ion_user_id; ?>"><i class="fa fa-info"></i> Details</a>
+                                                                    <a class="btn btn-info btn-xs" style="width: 100px;" href="finance/allUserActivityReport?user=<?php echo $accountant_ion_user_id; ?>"><i class="fa fa-file-text-o"></i> <?php echo lang('details'); ?></a>
                                                                 </td>
                                                             </tr>
                                                         <?php } ?>
@@ -135,7 +135,7 @@
                                                                     <?php echo $bill_total_receptionist - $deposit_total_receptionist; ?>
                                                                 </td>
                                                                 <td class="no-print">
-                                                                    <a class="btn btn-info btn-xs" style="width: 100px;" href="finance/allUserActivityReport?user=<?php echo $receptionist_ion_user_id; ?>"><i class="fa fa-info"></i> Details</a>
+                                                                    <a class="btn btn-info btn-xs" style="width: 100px;" href="finance/allUserActivityReport?user=<?php echo $receptionist_ion_user_id; ?>"><i class="fa fa-file-text-o"></i> <?php echo lang('details'); ?></a>
                                                                 </td>
                                                             </tr>
                                                         <?php } ?>
@@ -233,21 +233,50 @@
                 dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
+                 buttons: [
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [1, 2, 3, 4],
-                        }
-                    },
-                ],
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('activities_by'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('activities_by'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('activities_by'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('activities_by'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('activities_by'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                }
+                            }
+                        ]
+                    }
                 ],
                 iDisplayLength: 100,
                 "order": [[0, "desc"]],

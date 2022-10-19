@@ -41,10 +41,10 @@
                                                             <?php if ($this->ion_auth->in_group('admin')) { ?>
                                                                 <td class="no-print">
                                                                     <?php if(!empty($category->hospital_id)) { ?>
-                                                                        <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editServiceCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"></i> </a>
+                                                                        <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editServiceCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>
                                                                     <?php } ?>
                                                                     <?php if(!empty($category->hospital_id)) { ?>
-                                                                        <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deleteServiceCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                        <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deleteServiceCategory?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
                                                                     <?php } ?>
                                                                 </td>
                                                             <?php } ?>

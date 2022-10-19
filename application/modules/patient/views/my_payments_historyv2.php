@@ -928,17 +928,44 @@
                 dom: "<'row'<'col-sm-2'l><'col-sm-6 text-center'B><'col-sm-4'f>>" +
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4],
+                        buttons: [
+                        {
+                            extend: 'collection',
+                            text: 'Export',
+                            buttons: [
+                                {
+                                    extend: 'excelHtml5',
+                                    title: '<?php echo lang('bills_and_payments'); ?>',
+                                    exportOptions: {
+                                        columns: [0, 1, 2, 3, 4],
+                                    }
+                                },
+                                {
+                                    extend: 'csvHtml5',
+                                    title: '<?php echo lang('bills_and_payments'); ?>',
+                                    exportOptions: {
+                                        columns: [0, 1, 2, 3, 4],
+                                    }
+                                },
+                                {
+                                    extend: 'pdfHtml5',
+                                    title: '<?php echo lang('bills_and_payments'); ?>',
+                                    exportOptions: {
+                                        columns: [0, 1, 2, 3, 4],
+                                    },
+                                    orientation: 'portrait',
+                                    pageSize: 'LEGAL'
+                                },
+                                {
+                                    extend: 'print',
+                                    title: '<?php echo lang('bills_and_payments'); ?>',
+                                    exportOptions: {
+                                        columns: [0, 1, 2, 3, 4],
+                                    }
+                                }
+                            ]
                         }
-                    },
-                ],
+                    ],
 
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],

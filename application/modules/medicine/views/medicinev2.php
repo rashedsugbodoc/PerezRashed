@@ -571,28 +571,28 @@
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
-                                title: '<?php echo lang('medicine_list'); ?>'
+                                title: '<?php echo lang('medicine'); ?>'
                             },
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
-                                title: '<?php echo lang('medicine_list'); ?>'
+                                title: '<?php echo lang('medicine'); ?>'
                             },
                             {
                                 extend: 'csvHtml5',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
-                                title: '<?php echo lang('medicine_list'); ?>'
+                                title: '<?php echo lang('medicine'); ?>'
                             },
                             {
                                 extend: 'pdfHtml5',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
-                                title: '<?php echo lang('medicine_list'); ?>',
+                                title: '<?php echo lang('medicine'); ?>',
                                 orientation: 'landscape',
                                 pageSize: 'LEGAL'
                             },
@@ -601,7 +601,7 @@
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
-                                title: '<?php echo lang('medicine_list'); ?>'
+                                title: '<?php echo lang('medicine'); ?>'
                             },
                         ],
                     }

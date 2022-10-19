@@ -1196,28 +1196,28 @@
                         buttons: [
                             {
                                 extend: 'copyHtml5',
-                                title: '<?php echo lang('doctors');?>',
+                                title: '<?php echo lang('list_of').' '.lang('doctors');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5],
                                 }
                             },
                             {
                                 extend: 'excelHtml5',
-                                title: '<?php echo lang('doctors');?>',
+                                title: '<?php echo lang('list_of').' '.lang('doctors');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
-                                title: '<?php echo lang('doctors');?>',
+                                title: '<?php echo lang('list_of').' '.lang('doctors');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
-                                title: '<?php echo lang('doctors');?>',
+                                title: '<?php echo lang('list_of').' '.lang('doctors');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5],
                                 },
@@ -1226,7 +1226,7 @@
                             },
                             {
                                 extend: 'print',
-                                title: '<?php echo lang('doctors');?>',
+                                title: '<?php echo lang('list_of').' '.lang('doctors');?>',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5],
                                 }

@@ -51,9 +51,9 @@
                                                                 <td> <?php echo $this->finance_model->getServiceCategoryById($category->category_id)->category;?></td>
                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Clerk'))) { ?>
                                                                     <td class="no-print">
-                                                                        <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editPaymentCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"> </i></a>
+                                                                        <a class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" href="finance/editPaymentCategory?id=<?php echo $category->id; ?>"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a>
                                                                         <?php if ($this->ion_auth->in_group(array('admin'))) { ?>
-                                                                            <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deleteCharge?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                            <a class="btn btn-danger btn-xs" title="<?php echo lang('delete'); ?>" href="finance/deleteCharge?id=<?php echo $category->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
                                                                         <?php } ?>
                                                                     </td>
                                                                 <?php } ?>
@@ -164,28 +164,28 @@
                                 extend: 'copyHtml5',
                                 title: '<?php echo lang('list_of_charges');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 }
                             },
                             {
                                 extend: 'excelHtml5',
                                 title: '<?php echo lang('list_of_charges');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
                                 title: '<?php echo lang('list_of_charges');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
                                 title: '<?php echo lang('list_of_charges');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 },
                                 orientation: 'portrait',
                                 pageSize: 'LEGAL'
@@ -194,7 +194,7 @@
                                 extend: 'print',
                                 title: '<?php echo lang('list_of_charges');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 }
                             }
                         ]

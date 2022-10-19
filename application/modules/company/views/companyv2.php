@@ -571,18 +571,50 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3, 4, 5, 6],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                                }
+                            }
+                        ],
+                    }
                 ],
-
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]

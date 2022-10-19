@@ -598,34 +598,34 @@
                     buttons: [
                         {
                             extend: 'collection',
-                            text: 'Export <i class="fe fe-chevron-down"><i>',
+                            text:  'Export',
                             buttons: [
                                 {
                                     extend: 'copyHtml5',
                                     title: '<?php echo lang('schedule') . ' ' . lang('list');?>',
                                     exportOptions: {
-                                        columns: [0, 1, 2, 3, 4, 5, 6],
+                                        columns: [0, 1, 2, 3, 4, 5],
                                     }
                                 },
                                 {
                                     extend: 'excelHtml5',
                                     title: '<?php echo lang('schedule') . ' ' . lang('list');?>',
                                     exportOptions: {
-                                        columns: [0, 1, 2, 3, 4, 5, 6],
+                                        columns: [0, 1, 2, 3, 4, 5],
                                     }
                                 },
                                 {
                                     extend: 'csvHtml5',
                                     title: '<?php echo lang('schedule') . ' ' . lang('list');?>',
                                     exportOptions: {
-                                        columns: [0, 1, 2, 3, 4, 5, 6],
+                                        columns: [0, 1, 2, 3, 4, 5],
                                     }
                                 },
                                 {
                                     extend: 'pdfHtml5',
                                     title: '<?php echo lang('schedule') . ' ' . lang('list');?>',
                                     exportOptions: {
-                                        columns: [0, 1, 2, 3, 4, 5, 6],
+                                        columns: [0, 1, 2, 3, 4, 5],
                                     },
                                     orientation: 'portrait',
                                     pageSize: 'LEGAL'
@@ -634,7 +634,7 @@
                                     extend: 'print',
                                     title: '<?php echo lang('schedule') . ' ' . lang('list');?>',
                                     exportOptions: {
-                                        columns: [0, 1, 2, 3, 4, 5, 6],
+                                        columns: [0, 1, 2, 3, 4, 5],
                                     }
                                 }
                             ]

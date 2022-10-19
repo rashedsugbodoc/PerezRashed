@@ -192,16 +192,49 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [0, 1, 2, 3],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
+                                exportOptions: {
+                                    columns: [0,],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
+                                exportOptions: {
+                                    columns: [0,],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
+                                exportOptions: {
+                                    columns: [0,],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
+                                exportOptions: {
+                                    columns: [0,],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
+                                exportOptions: {
+                                    columns: [0,],
+                                }
+                            }
+                        ]
+                    }
                 ],
 
                 aLengthMenu: [

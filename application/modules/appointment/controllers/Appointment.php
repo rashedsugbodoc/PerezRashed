@@ -1545,7 +1545,7 @@ class Appointment extends MX_Controller {
             }
 
             if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             }
             
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
@@ -1688,7 +1688,7 @@ class Appointment extends MX_Controller {
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             }
 
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
@@ -1795,7 +1795,7 @@ class Appointment extends MX_Controller {
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> '.' ' . lang('delete'). '</a>';
             }
 
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
@@ -1903,7 +1903,7 @@ class Appointment extends MX_Controller {
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete'). '</a>';
             }
 
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
@@ -2072,7 +2072,7 @@ class Appointment extends MX_Controller {
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> '. lang('delete'). '</a>';
             }
 
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
@@ -2188,7 +2188,7 @@ class Appointment extends MX_Controller {
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> '. lang('delete'). '</a>';
             }
 
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
@@ -2296,7 +2296,7 @@ class Appointment extends MX_Controller {
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'&root=appointment&method=todays" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             }
 
             $patientdetails = $this->patient_model->getPatientById($appointment->patient);
@@ -2452,7 +2452,7 @@ class Appointment extends MX_Controller {
             $option1 = '<a class="btn btn-info btn-xs" href="appointment/editAppointment?id='. $appointment->id .'&root=appointment&method=upcoming" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Clerk', 'Midwife'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
             }
 
             if ($appointment->date > strtotime(date('Y-m-d'))) {
@@ -2576,7 +2576,7 @@ class Appointment extends MX_Controller {
             $patient_id = $patient_details->id;
             if ($patient_id == $appointment->patient) {
                 $option1 = '<button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="' . $appointment->id . '"><i class="fa fa-edit"></i> ' . lang('edit') . '</button>';
-                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="appointment/delete?id=' . $appointment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i> ' . lang('delete') . '</a>';
                 $patientdetails = $this->patient_model->getPatientById($appointment->patient);
                 if (!empty($patientdetails)) {
                     $patientname = ' <a type="button" class="" data-toggle = "modal" data-id="' . $appointment->patient . '"> ' . $patientdetails->name . '</a>';

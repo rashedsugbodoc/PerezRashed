@@ -4109,7 +4109,7 @@ class Patient extends MX_Controller {
                 $options3 = '<a class="btn btn-secondary" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->patient_id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
             }
 
-            $options4 = '<a class="btn btn-success" title="' . lang('payment') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->patient_id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . '</a>';
+            $options4 = '<a class="btn btn-success" title="' . lang('payment') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->patient_id . '"><i class="fa fa-dollar"></i>'.' '. lang('payment') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor', 'Clerk', 'Midwife'))) {
                 $options5 = '<a class="btn btn-danger" title="' . lang('delete') . '" href="patient/delete?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
@@ -4377,7 +4377,7 @@ class Patient extends MX_Controller {
 
             $options3 = '<a class="btn btn-secondary" title="' . lang('history') . '" style="color: #fff;" href="patient/medicalHistory?id=' . $patient->id . '"><i class="fa fa-stethoscope"></i> ' . lang('history') . '</a>';
 
-            $options4 = '<a class="btn btn-xs btn-success" title="' . lang('payment') . ' ' . lang('history') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->patient_id . '"><i class="fa fa-money-bill-alt"></i> ' . lang('payment') . ' ' . lang('history') . '</a>';
+            $options4 = '<a class="btn btn-xs btn-success" title="' . lang('payment') . ' ' . lang('history') . '" style="color: #fff;" href="finance/patientPaymentHistory?patient=' . $patient->patient_id . '"><i class="fa fa-money"></i>'.' '. lang('payment') . ' ' . lang('history') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
                 $options5 = '<a class="btn btn-danger" title="' . lang('delete') . '" href="patient/delete?id=' . $patient->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
@@ -4575,10 +4575,10 @@ class Patient extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
                 $options4 = '<a type="button" class="btn btn-info editbutton" title="Edit" data-toggle="modal" data-id="'.$document->id.'"><i class="fa fa-edit"> </i> Edit</a>';
-                $options1 = '<a class="btn btn-info btn-xs" href="' . $document->url . '?m='. $document->last_modified .'" download="'. $document->title .'"> ' . lang('download') . ' </a>';
+                $options1 = '<a class="btn btn-info btn-xs" href="' . $document->url . '?m='. $document->last_modified .'" download="'. $document->title .'"><i class=" fa fa-cloud-download"> </i>'.' '.lang('download').' </a>';
             }
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor'))) {
-                $options2 = '<a class="btn btn-danger btn-xs delete_button" href="patient/deletePatientMaterial?id=' . $document->patient_document_number . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> <i class="fa fa-trash"></i> </a>';
+                $options2 = '<a class="btn btn-danger btn-xs delete_button" href="patient/deletePatientMaterial?id=' . $document->patient_document_number . '&redirect=documents"onclick="return confirm(\'You want to delete the item??\');"> <i class="fa fa-trash"></i> ' . lang('delete') . ' </a>';
             }
             if ($document->created_user_id === $current_user) {
                 $option3 = '<a class="btn btn-info" href="patient/editUpload?id='. $document->patient_document_number .'" target="_blank"><i class="fa fa-paint-brush"></i></a>';

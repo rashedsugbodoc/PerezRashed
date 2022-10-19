@@ -709,9 +709,9 @@ class Pharmacy extends MX_Controller {
             $settings = $this->settings_model->getSettings();
             $option1 = '<a class="btn btn-info btn-xs editbutton" href="finance/pharmacy/editPayment?id=' . $payment->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             if ($this->ion_auth->in_group(array('admin', 'Accountant'))) {
-                $option2 = '<a class="btn btn-danger btn-xs" href="finance/pharmacy/delete?id=' . $payment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i></a>';
+                $option2 = '<a class="btn btn-danger btn-xs" href="finance/pharmacy/delete?id=' . $payment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"> </i>'.' '.lang('delete').'</a>';
             }
-            $option3 = '<a class="btn btn-xs green" style="color: #fff;" href="finance/pharmacy/invoice?id=' . $payment->id . '"><i class="fa fa-file-invoice"></i> ' . lang('invoice') . '</a>';
+            $option3 = '<a class="btn btn-info" href="finance/pharmacy/invoice?id=' . $payment->id . '"><i class="fa fa-file-invoice"></i> ' . lang('details') . '</a>';
             $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" href="finance/pharmacy/printInvoice?id=' . $payment->id . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
             if (!empty($payment->flat_discount)) {
                 $discount = number_format($payment->flat_discount, 2, '.', ',');

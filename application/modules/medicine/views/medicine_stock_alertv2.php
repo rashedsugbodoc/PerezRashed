@@ -277,20 +277,49 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
                     {
-                        extend: 'pdfHtml5',
-                        orientation: 'landscape',
-                        pageSize: 'LEGAL'
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('medicine'); ?>  <?php echo lang('alert_stock_list'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('medicine'); ?>  <?php echo lang('alert_stock_list'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('medicine'); ?>  <?php echo lang('alert_stock_list'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('medicine'); ?>  <?php echo lang('alert_stock_list'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('medicine'); ?>  <?php echo lang('alert_stock_list'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                }
+                            }
+                        ]
+                    }
                 ],
                 aLengthMenu: [
                     [10, 25, 50, 100, -1],

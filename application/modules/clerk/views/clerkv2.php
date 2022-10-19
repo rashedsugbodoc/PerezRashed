@@ -57,8 +57,8 @@
                                                                     <td class="center"><?php echo $clerk->address; ?></td>
                                                                     <td><?php echo $clerk->phone; ?></td>
                                                                     <td class="no-print">
-                                                                        <a href="clerk/editClerk?id=<?php echo $clerk->id ?>" class="btn btn-info"><i class="fa fa-edit"> </i></a>
-                                                                        <a class="btn btn-danger btn-xs delete_button" title="<?php echo lang('delete'); ?>" href="clerk/delete?id=<?php echo $clerk->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> </a>
+                                                                        <a href="clerk/editClerk?id=<?php echo $clerk->id ?>" class="btn btn-info"><i class="fa fa-edit"> </i> <?php echo lang('edit'); ?></a>
+                                                                        <a class="btn btn-danger btn-xs delete_button" title="<?php echo lang('delete'); ?>" href="clerk/delete?id=<?php echo $clerk->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
                                                                     </td>
                                                                 </tr>
                                                             <?php } ?>
@@ -291,16 +291,49 @@
                         "<'row'<'col-sm-12'tr>>" +
                         "<'row'<'col-sm-5'i><'col-sm-7'p>>",
                 buttons: [
-                    'copyHtml5',
-                    'excelHtml5',
-                    'csvHtml5',
-                    'pdfHtml5',
                     {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: [1, 2, 3, 4],
-                        }
-                    },
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php echo lang('clerk'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('clerk'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('clerk'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('clerk'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php echo lang('clerk'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4],
+                                }
+                            }
+                        ]
+                    }
                 ],
 
                 aLengthMenu: [
