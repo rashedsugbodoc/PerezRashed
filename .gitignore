@@ -3,3 +3,4 @@ application/config/database.php
 .idea/
 .vscode/
 db/
+uploads/
