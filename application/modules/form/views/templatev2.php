@@ -40,9 +40,9 @@
                                                     <td> <?php echo $template->name; ?></td>
                                                     <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Receptionist', 'Midwife'))) { ?>
                                                         <td class="no-print">
-                                                            <a href="form/editTemplate?id=<?php echo $template->id;?>" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-id="<?php echo $template->id; ?>"><i class="fa fa-edit"> </i></a>   
+                                                            <a href="form/editTemplate?id=<?php echo $template->id;?>" class="btn btn-info btn-xs editbutton" title="<?php echo lang('edit'); ?>" data-id="<?php echo $template->id; ?>"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?> </a>
                                                             <?php if ($this->ion_auth->in_group(array('admin', 'Midwife'))) { ?>
-                                                                <a class="btn btn-danger btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="form/deleteTemplate?id=<?php echo $template->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i></a>
+                                                                <a class="btn btn-danger btn-xs btn_width" title="<?php echo lang('delete'); ?>" href="form/deleteTemplate?id=<?php echo $template->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"> </i> <?php echo lang('delete'); ?></a>
                                                             <?php } ?>
                                                         </td>
                                                     <?php } ?>
@@ -200,28 +200,28 @@
                                 extend: 'copyHtml5',
                                 title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
                                 exportOptions: {
-                                    columns: [0,],
+                                    columns: [0],
                                 }
                             },
                             {
                                 extend: 'excelHtml5',
                                 title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
                                 exportOptions: {
-                                    columns: [0,],
+                                    columns: [0],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
                                 title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
                                 exportOptions: {
-                                    columns: [0,],
+                                    columns: [0],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
                                 title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
                                 exportOptions: {
-                                    columns: [0,],
+                                    columns: [0],
                                 },
                                 orientation: 'portrait',
                                 pageSize: 'LEGAL'
@@ -230,7 +230,7 @@
                                 extend: 'print',
                                 title: '<?php echo lang('form_report'); ?> <?php echo lang('template'); ?>',
                                 exportOptions: {
-                                    columns: [0,],
+                                    columns: [0],
                                 }
                             }
                         ]

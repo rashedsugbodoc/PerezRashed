@@ -287,21 +287,21 @@
                                 extend: 'excelHtml5',
                                 title: '<?php echo lang('treatment_history'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
                                 title: '<?php echo lang('treatment_history'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
                                 title: '<?php echo lang('treatment_history'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2],
                                 },
                                 orientation: 'portrait',
                                 pageSize: 'LEGAL'
@@ -310,7 +310,7 @@
                                 extend: 'print',
                                 title: '<?php echo lang('treatment_history'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2],
                                 }
                             }
                         ]

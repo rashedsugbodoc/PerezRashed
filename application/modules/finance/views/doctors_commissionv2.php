@@ -90,7 +90,7 @@
                                                                 }
                                                                 ?>
                                                             </td>
-                                                             <td> <a class="btn btn-info btn-xs no-print" href="finance/docComDetails?id=<?php echo $doctor->id; ?>"><i class="fa fa-file-text"></i> <?php echo lang('details'); ?> </a></td>
+                                                             <td> <a class="btn btn-info btn-xs no-print" href="finance/docComDetails?id=<?php echo $doctor->id; ?>"><i class="fa fa-file-text-o"></i> <?php echo lang('details'); ?> </a></td>
                                                         </tr>
                                                         <?php $doctor_amount = NULL; ?>
                                                         <?php $doctor_gross = NULL; ?>

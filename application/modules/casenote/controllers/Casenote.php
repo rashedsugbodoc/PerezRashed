@@ -225,11 +225,11 @@ class Casenote extends MX_Controller {
             }
 
             if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'Nurse'))) {
-                $options2 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="' . lang('delete') . '" href="casenote/delete?id=' . $case->id . '&redirect=case" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i></a>';
+                $options2 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="' . lang('delete') . '" href="casenote/delete?id=' . $case->id . '&redirect=case" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>'.' '. lang('delete').'</a>';
             }
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Laboratorist', 'Nurse', 'Doctor', 'Midwife'))) {
-                $options3 = ' <a type="button" class="btn btn-info btn-xs case" title="' . lang('') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-file"></i>'.' '. lang('details').'</a>';
+                $options3 = ' <a type="button" class="btn btn-info btn-xs case" title="' . lang('') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-file-text-o"></i>'.' '. lang('details').'</a>';
             }
 
             if (!empty($patient_id)) {

@@ -580,7 +580,7 @@
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4],
                                 },
-                                orientation: 'landscape',
+                                orientation: 'portrait',
                                 pageSize: 'LEGAL'
                             },
                             {

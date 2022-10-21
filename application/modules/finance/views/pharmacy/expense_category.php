@@ -64,43 +64,76 @@
 <!--footer start-->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script>
-                                    $(document).ready(function () {
-                                        var table = $('#editable-sample').DataTable({
-                                            responsive: true,
+            $(document).ready(function () {
+                var table = $('#editable-sample').DataTable({
+                    responsive: true,
 
-                                            dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
-                                                    "<'row'<'col-sm-12'tr>>" +
-                                                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                                            buttons: [
-                                                'copyHtml5',
-                                                'excelHtml5',
-                                                'csvHtml5',
-                                                'pdfHtml5',
-                                                {
-                                                    extend: 'print',
-                                                    exportOptions: {
-                                                        columns: [0, 1],
-                                                    }
-                                                },
-                                            ],
+                    dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                            "<'row'<'col-sm-12'tr>>" +
+                            "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                        buttons: [
+                            {
+                                extend: 'collection',
+                                text: 'Export',
+                                buttons: [
+                                    {
+                                        extend: 'copyHtml5',
+                                        title: '<?php echo lang('pharmacy'); ?> <?php echo lang('expense_categories'); ?>',
+                                        exportOptions: {
+                                            columns: [0, 1],
+                                        }
+                                    },
+                                    {
+                                        extend: 'excelHtml5',
+                                        title: '<?php echo lang('pharmacy'); ?> <?php echo lang('expense_categories'); ?>',
+                                        exportOptions: {
+                                            columns: [0, 1],
+                                        }
+                                    },
+                                    {
+                                        extend: 'csvHtml5',
+                                        title: '<?php echo lang('pharmacy'); ?> <?php echo lang('expense_categories'); ?>',
+                                        exportOptions: {
+                                            columns: [0, 1],
+                                        }
+                                    },
+                                    {
+                                        extend: 'pdfHtml5',
+                                        title: '<?php echo lang('pharmacy'); ?> <?php echo lang('expense_categories'); ?>',
+                                        exportOptions: {
+                                            columns: [0, 1],
+                                        },
+                                        orientation: 'portrait',
+                                        pageSize: 'LEGAL'
+                                    },
+                                    {
+                                        extend: 'print',
+                                        title: '<?php echo lang('pharmacy'); ?> <?php echo lang('expense_categories'); ?>',
+                                        exportOptions: {
+                                            columns: [0, 1],
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
 
-                                            aLengthMenu: [
-                                                [10, 25, 50, 100, -1],
-                                                [10, 25, 50, 100, "All"]
-                                            ],
-                                            iDisplayLength: -1,
-                                            "order": [[0, "desc"]],
+                    aLengthMenu: [
+                        [10, 25, 50, 100, -1],
+                        [10, 25, 50, 100, "All"]
+                    ],
+                    iDisplayLength: -1,
+                    "order": [[0, "desc"]],
 
-                                            "language": {
-                                                "lengthMenu": "_MENU_",
-                                                search: "_INPUT_",
-                                                "url": "common/assets/DataTables/languages/<?php echo $this->language; ?>.json"
-                                            },
+                    "language": {
+                        "lengthMenu": "_MENU_",
+                        search: "_INPUT_",
+                        "url": "common/assets/DataTables/languages/<?php echo $this->language; ?>.json"
+                    },
 
-                                        });
+                });
 
-                                        table.buttons().container()
-                                                .appendTo('.custom_buttons');
-                                    });
+                table.buttons().container()
+                        .appendTo('.custom_buttons');
+            });
 </script>
 

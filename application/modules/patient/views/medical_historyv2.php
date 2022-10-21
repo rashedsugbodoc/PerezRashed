@@ -3504,28 +3504,28 @@
                             {
                                 extend: 'copyHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
                                 title: '<?php echo lang('vital_signs') ?>'
                             },
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
                                 title: '<?php echo lang('vital_signs') ?>'
                             },
                             {
                                 extend: 'csvHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
                                 title: '<?php echo lang('vital_signs') ?>'
                             },
                             {
                                 extend: 'pdfHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
                                 title: '<?php echo lang('vital_signs') ?>',
                                 orientation: 'landscape',
@@ -3534,7 +3534,7 @@
                             {
                                 extend: 'print',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
                                 },
                                 title: '<?php echo lang('vital_signs') ?>'
                             },
@@ -3800,28 +3800,28 @@
                             {
                                 extend: 'copyHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 },
                                 title: '<?php echo lang('lab').' '.lang('request')?>'
                             },
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 },
                                 title: '<?php echo lang('lab').' '.lang('request')?>'
                             },
                             {
                                 extend: 'csvHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 },
                                 title: '<?php echo lang('lab').' '.lang('request')?>'
                             },
                             {
                                 extend: 'pdfHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 },
                                 title: '<?php echo lang('lab').' '.lang('request')?>',
                                 orientation: 'portrait',
@@ -3830,7 +3830,7 @@
                             {
                                 extend: 'print',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6],
+                                    columns: [0, 1, 2, 3, 4, 5],
                                 },
                                 title: '<?php echo lang('lab').' '.lang('request')?>'
                             },
@@ -3873,28 +3873,28 @@
                             {
                                 extend: 'copyHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 },
                                 title: '<?php echo lang('encounters'); ?>'
                             },
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 },
                                 title: '<?php echo lang('encounters'); ?>'
                             },
                             {
                                 extend: 'csvHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 },
                                 title: '<?php echo lang('encounters'); ?>'
                             },
                             {
                                 extend: 'pdfHtml5',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 },
                                 title: '<?php echo lang('encounters'); ?>',
                                 orientation: 'portrait',
@@ -3903,7 +3903,7 @@
                             {
                                 extend: 'print',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4],
+                                    columns: [0, 1, 2, 3],
                                 },
                                 title: '<?php echo lang('encounters'); ?>'
                             },

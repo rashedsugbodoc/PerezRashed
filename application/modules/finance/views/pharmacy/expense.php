@@ -79,18 +79,51 @@
             dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
                     "<'row'<'col-sm-12'tr>>" +
                     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-            buttons: [
-                'copyHtml5',
-                'excelHtml5',
-                'csvHtml5',
-                'pdfHtml5',
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: [0,1,2],
+                buttons: [
+                    {
+                        extend: 'collection',
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                title: '<?php  echo lang('pharmacy'); ?> <?php  echo lang('expenses'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                }
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php  echo lang('pharmacy'); ?> <?php  echo lang('expenses'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php  echo lang('pharmacy'); ?> <?php  echo lang('expenses'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php  echo lang('pharmacy'); ?> <?php  echo lang('expenses'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                title: '<?php  echo lang('pharmacy'); ?> <?php  echo lang('expenses'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2],
+                                }
+                            }
+                        ]
                     }
-                },
-            ],
+                ],
 
             aLengthMenu: [
                 [10, 25, 50, 100, -1],

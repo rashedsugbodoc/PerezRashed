@@ -579,38 +579,38 @@
                                 extend: 'copyHtml5',
                                 title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                                 }
                             },
                             {
                                 extend: 'excelHtml5',
                                 title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
                                 title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
                                 title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                                 },
-                                orientation: 'portrait',
+                                orientation: 'landscape',
                                 pageSize: 'LEGAL'
                             },
                             {
                                 extend: 'print',
                                 title: '<?php echo lang('list_of'); ?> <?php echo lang('payer_accounts'); ?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7],
-                                }
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                                },
                             }
                         ],
                     }

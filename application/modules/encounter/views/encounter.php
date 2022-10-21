@@ -1800,7 +1800,7 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export',
+                        text: 'Export ',
                         buttons: [
                             {
                                 extend: 'copyHtml5',

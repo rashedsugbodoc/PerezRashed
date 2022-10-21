@@ -316,7 +316,7 @@
                                                                                     </td>
                                                                                     <td>
                                                                                         <div class="btn-group mb-0">
-                                                                                            <a href="prescription/viewPrescription?id=<?php echo $prescription->prescription_number; ?>" class="btn btn-info" aria-expanded="false"><i class="fe fe-eye"></i> <?php echo lang('view'); ?></a>
+                                                                                            <a href="prescription/viewPrescription?id=<?php echo $prescription->prescription_number; ?>" class="btn btn-info" aria-expanded="false"><i class="fa fa-file-text-o"></i> <?php echo lang('details'); ?></a>
                                                                                         </div>
                                                                                         <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                                             <div class="btn-group mb-0">
@@ -2289,28 +2289,28 @@
                                 extend: 'copyHtml5',
                                 title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 }
                             },
                             {
                                 extend: 'excelHtml5',
                                 title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 }
                             },
                             {
                                 extend: 'csvHtml5',
                                 title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 }
                             },
                             {
                                 extend: 'pdfHtml5',
                                 title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 },
                                 orientation: 'portrait',
                                 pageSize: 'LEGAL'
@@ -2319,7 +2319,7 @@
                                 extend: 'print',
                                 title: '<?php echo lang('encounter') . ' ' . lang('today');?>',
                                 exportOptions: {
-                                    columns: [0, 1, 2, 3],
+                                    columns: [0, 1, 2, 3, 4],
                                 }
                             }
                         ]

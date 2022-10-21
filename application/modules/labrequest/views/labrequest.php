@@ -163,7 +163,7 @@
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4],
                                 },
-                                orientation: 'portrait',
+                                orientation: 'landscape',
                                 pageSize: 'LEGAL'
                             },
                             {

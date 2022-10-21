@@ -234,40 +234,73 @@
 
 <script src="common/js/coderygel.min.js"></script>
 <script>
-                                    $(document).ready(function () {
-                                        var table = $('#editable-sample').DataTable({
-                                            responsive: true,
-                                            dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
-                                                    "<'row'<'col-sm-12'tr>>" +
-                                                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                                            buttons: [
-                                                'copyHtml5',
-                                                'excelHtml5',
-                                                'csvHtml5',
-                                                'pdfHtml5',
-                                                {
-                                                    extend: 'print',
-                                                    exportOptions: {
-                                                        columns: [1, 2, 3, 4],
+                    $(document).ready(function () {
+                        var table = $('#editable-sample').DataTable({
+                            responsive: true,
+                            dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                                    "<'row'<'col-sm-12'tr>>" +
+                                    "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                                    buttons: [
+                                            {
+                                                extend: 'collection',
+                                                text: 'Export',
+                                                buttons: [
+                                                    {
+                                                        extend: 'copyHtml5',
+                                                        title: '<?php echo lang('notice'); ?>',
+                                                        exportOptions: {
+                                                            columns: [0, 1, 2, 3],
+                                                        }
+                                                    },
+                                                    {
+                                                        extend: 'excelHtml5',
+                                                        title: '<?php echo lang('notice'); ?>',
+                                                        exportOptions: {
+                                                            columns: [0, 1, 2, 3],
+                                                        }
+                                                    },
+                                                    {
+                                                        extend: 'csvHtml5',
+                                                        title: '<?php echo lang('notice'); ?>',
+                                                        exportOptions: {
+                                                            columns: [0, 1, 2, 3],
+                                                        }
+                                                    },
+                                                    {
+                                                        extend: 'pdfHtml5',
+                                                        title: '<?php echo lang('notice'); ?>',
+                                                        exportOptions: {
+                                                            columns: [0, 1, 2, 3],
+                                                        },
+                                                        orientation: 'portrait',
+                                                        pageSize: 'LEGAL'
+                                                    },
+                                                    {
+                                                        extend: 'print',
+                                                        title: '<?php echo lang('notice'); ?>',
+                                                        exportOptions: {
+                                                            columns: [0, 1, 2, 3],
+                                                        }
                                                     }
-                                                },
-                                            ],
-                                            aLengthMenu: [
-                                                [10, 25, 50, 100, -1],
-                                                [10, 25, 50, 100, "All"]
-                                            ],
-                                            iDisplayLength: -1,
-                                            "order": [[3, "desc"]],
-                                            "language": {
-                                                "lengthMenu": "_MENU_",
-                                                search: "_INPUT_",
-                                                "url": "common/assets/DataTables/languages/<?php echo $this->language; ?>.json"
-                                            },
+                                                ]
+                                            }
+                                        ],
+                                    aLengthMenu: [
+                                        [10, 25, 50, 100, -1],
+                                        [10, 25, 50, 100, "All"]
+                                    ],
+                                    iDisplayLength: -1,
+                                    "order": [[3, "desc"]],
+                                    "language": {
+                                        "lengthMenu": "_MENU_",
+                                        search: "_INPUT_",
+                                        "url": "common/assets/DataTables/languages/<?php echo $this->language; ?>.json"
+                                    },
 
-                                        });
+                                });
 
-                                        table.buttons().container()
-                                                .appendTo('.custom_buttons');
+                                table.buttons().container()
+                                        .appendTo('.custom_buttons');
                                     });</script>
 <script type="text/javascript">
     $(document).ready(function () {

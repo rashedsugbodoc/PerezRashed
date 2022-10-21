@@ -548,8 +548,32 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export Option',
-                        buttons: ['csv', 'excel', 'pdf']
+                        text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'excelHtml5',
+                                title: '<?php echo lang('time_schedule'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5],
+                                }
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                title: '<?php echo lang('time_schedule'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5],
+                                }
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                title: '<?php echo lang('time_schedule'); ?>',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3, 4, 5],
+                                },
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                        ]
                     }
                 ],
                 aLengthMenu: [

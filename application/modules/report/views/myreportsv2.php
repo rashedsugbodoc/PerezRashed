@@ -150,7 +150,7 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export Options',
+                        text: 'Export',
                         buttons: [
                             {
                                 extend: 'excelHtml5',

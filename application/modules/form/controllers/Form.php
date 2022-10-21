@@ -908,7 +908,7 @@ class Form extends MX_Controller {
                 $options1 = '';
             }
 
-            $options2 = '<a class="btn btn-xs btn-info" title="' . lang('form') . '" style="color: #fff;" href="form/formView?id=' . $form->form_number . '"><i class="fa fa-file-text-o"></i> ' . lang('details') . '</a>';
+            $options2 = '<a class="btn btn-xs btn-info" title="' . lang('details') . '" style="color: #fff;" href="form/formView?id=' . $form->form_number . '"><i class="fa fa-file-text-o"></i>'.' ' . lang('details') . '</a>';
 
             if ($this->ion_auth->in_group(array('admin', 'Midwife'))) {
                 $options3 = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="form/delete?id=' . $form->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>'.' '.lang('delete').'</a>';
