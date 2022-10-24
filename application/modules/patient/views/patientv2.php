@@ -1120,12 +1120,17 @@
                     $('.ageClass').append(response.age).end()
                     $('.bloodgroupClass').append(response.patient.bloodgroup).end()
                     $('.patientidClass').append(response.patient.patient_id).end()
-                    $('.nationalityClass').append(response.nationality_id.nationality).end() // nationality class
 
                     if (response.patient.country_id !== null){
                         $('.countryClass').append(response.country.name).end()
                     } else {
                         $('.countryClass').html("").end()
+                    }
+
+                    if(response.patient.nationality !== null) {
+                        $('.nationalityClass').append(response.nationality_id.nationality).end() // nationality class
+                    }else {
+                        $('.nationalityClass').html("").end()
                     }
 
                     if (response.patient.state_id !== null){
