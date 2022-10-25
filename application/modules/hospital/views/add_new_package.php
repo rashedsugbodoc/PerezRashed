@@ -130,7 +130,6 @@
                                     <label for="exampleInputEmail1"> <?php echo lang('module_permission'); ?></label>
                                     <br>
                                     <input type='checkbox' value = "accountant" name="module[]"
-
                                            <?php
                                            if (!empty($package->id)) {
                                                $modules = $this->package_model->getPackageById($package->id)->module;
@@ -143,6 +142,20 @@
                                            }
                                            ?>
                                            > <?php echo lang('accountant'); ?>
+                                    <br>
+                                    <input type='checkbox' value = "admin" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('admin', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('admin'); ?>
 
                                     <br>
                                     <input type='checkbox' value = "admission" name="module[]"  <?php
@@ -188,7 +201,49 @@
                                     }
                                     ?>> <?php echo lang('branch'); ?>
 
-                                    <br>                                    
+                                    <br>
+                                    <input type='checkbox' value = "clerk" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('clerk', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('clerk'); ?>
+                                    <br>
+                                    <input type='checkbox' value = "casenote" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('casenote', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('case_note'); ?>
+                                    <br>
+                                    <input type='checkbox' value = "claim" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('claim', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('claim'); ?>
+                                    <br>
                                     <input type='checkbox' value = "company" name="module[]"  <?php
                                     if (!empty($package->id)) {
                                         if (in_array('company', $modules1)) {
@@ -210,7 +265,21 @@
                                     }
                                     ?>> <?php echo lang('company_user'); ?>
                                     
-                                    <br>                                                                          
+                                    <br>
+                                    <input type='checkbox' value = "customform" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('customform', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('custom').' '.lang('form'); ?>
+                                    <br>                                                                                                              
                                     <input type='checkbox' value = "department" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('department', $modules1)) {
@@ -222,6 +291,20 @@
                                     ?>> <?php echo lang('department'); ?>
 
                                     <br>
+                                    <input type='checkbox' value = "diagnosis" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('diagnosis', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('diagnosis'); ?>
+                                    <br>
                                     <input type='checkbox' value = "doctor" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('doctor', $modules1)) {
@@ -230,7 +313,7 @@
                                     } else {
                                         echo 'checked';
                                     }
-                                    ?> required=""> <?php echo lang('doctor'); ?>
+                                    ?>> <?php echo lang('doctor'); ?>
 
                                     <br>
                                     <input type='checkbox' value = "donor" name="module[]" <?php
@@ -245,16 +328,14 @@
 
                                     <br>
                                     <input type='checkbox' value = "email" name="module[]" <?php
-                                    if (!empty($package->id)) {
-                                        if (in_array('email', $modules1)) {
-                                            echo 'checked';
-                                        }
-                                    } else {
-                                        echo 'checked';
-                                    }
-                                    ?>> <?php echo lang('email'); ?>
-
-
+                                            if (!empty($package->id)) {
+                                                if (in_array('email', $modules1)) {
+                                                    echo 'checked';
+                                                }
+                                            } else {
+                                                echo 'checked';
+                                            }
+                                            ?>> <?php echo lang('email'); ?>
                                     <br>                                    
                                     <input type='checkbox' value = "encounter" name="module[]" <?php
                                     if (!empty($package->id)) {
@@ -264,7 +345,7 @@
                                     } else {
                                         echo 'checked';
                                     }
-                                    ?> required=""> <?php echo lang('encounter'); ?>
+                                    ?>> <?php echo lang('encounter'); ?>
 
                                     <br>                                    
                                     <input type='checkbox' value = "finance" name="module[]" <?php
@@ -289,7 +370,20 @@
                                     ?>> <?php echo lang('forms_reports'); ?>
 
                                     <br>
-
+                                    <input type='checkbox' value = "goal" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('goal', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('goal'); ?>
+                                    <br>
                                     <input type='checkbox' value = "lab" name="module[]"  <?php
                                     if (!empty($package->id)) {
                                         if (in_array('lab', $modules1)) {
@@ -311,6 +405,20 @@
                                     ?>> <?php echo lang('laboratorist'); ?>
 
                                     <br>
+                                    <input type='checkbox' value = "labrequest" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('labrequest', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('lab_request'); ?>
+                                    <br>                                    
                                     <input type='checkbox' value = "medicine" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('medicine', $modules1)) {
@@ -319,9 +427,23 @@
                                     } else {
                                         echo 'checked';
                                     }
-                                    ?> required=""> <?php echo lang('medicine'); ?>
+                                    ?>> <?php echo lang('medicine'); ?>
 
                                     <br>
+                                    <input type='checkbox' value = "midwife" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('midwife', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('midwife'); ?>
+                                    <br>                                    
                                     <input type='checkbox' value = "notice" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('notice', $modules1)) {
@@ -353,7 +475,7 @@
                                     } else {
                                         echo 'checked';
                                     }
-                                    ?> required=""> <?php echo lang('patient'); ?>
+                                    ?>> <?php echo lang('patient'); ?>
 
                                     <br>
                                     <input type='checkbox' value = "pharmacist" name="module[]" <?php
@@ -364,7 +486,7 @@
                                     } else {
                                         echo 'checked';
                                     }
-                                    ?> required=""> <?php echo lang('pharmacist'); ?>
+                                    ?>> <?php echo lang('pharmacist'); ?>
 
                                     <br>
 
@@ -389,7 +511,21 @@
                                     }
                                     ?>> <?php echo lang('prescription'); ?>
 
-                                    <br>                                                                        
+                                    <br>
+                                    <input type='checkbox' value = "procedure" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('procedure', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('procedure'); ?>
+                                    <br>                                                                                                            
                                     <input type='checkbox' value = "receptionist" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('receptionist', $modules1)) {
@@ -413,7 +549,34 @@
 
 
                                     <br>
-
+                                    <input type='checkbox' value = "servicerequest" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('servicerequest', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('service_request'); ?>
+                                    <br>
+                                    <input type='checkbox' value = "signature" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('signature', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('signature'); ?>
+                                    <br>                                    
                                     <input type='checkbox' value = "sms" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('sms', $modules1)) {
@@ -424,6 +587,20 @@
                                     }
                                     ?>> <?php echo lang('sms'); ?>
                                     <br>
+                                    <input type='checkbox' value = "treatmentplan" name="module[]"
+                                           <?php
+                                           if (!empty($package->id)) {
+                                               $modules = $this->package_model->getPackageById($package->id)->module;
+                                               $modules1 = explode(',', $modules);
+                                               if (in_array('treatmentplan', $modules1)) {
+                                                   echo 'checked';
+                                               }
+                                           } else {
+                                               echo 'checked';
+                                           }
+                                           ?>
+                                           > <?php echo lang('treatment').' '.lang('plan'); ?>
+                                    <br>                                    
                                     <input type='checkbox' value = "vital" name="module[]" <?php
                                     if (!empty($package->id)) {
                                         if (in_array('vital', $modules1)) {
