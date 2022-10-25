@@ -80,7 +80,7 @@
                                     ?></td>
                                 <td class="center" style="text-transform: capitalize;">
                                     <?php
-                                    $all_modules = array('accountant', 'admission', 'appointment', 'bed', 'branch', 'company', 'companyuser', 'department', 'doctor', 'donor', 'email', 'encounter', 'finance', 'form', 'lab', 'laboratorist', 'medicine', 'notice', 'nurse', 'patient', 'pharmacist', 'pharmacy', 'prescription', 'receptionist', 'report', 'sms', 'vital');
+                                    $all_modules = array('accountant', 'admin', 'admission', 'appointment', 'bed', 'branch', 'clerk', 'casenote', 'claim', 'company', 'companyuser', 'customform', 'department', 'diagnosis', 'doctor' ,'donor', 'email' , 'encounter' , 'finance' , 'form' , 'goal', 'lab', 'laboratorist', 'labrequest', 'medicine', 'midwife', 'notice', 'nurse', 'patient', 'pharmacist', 'pharmacy', 'prescription', 'procedure', 'receptionist', 'report', 'servicerequest', 'signature', 'sms', 'treatmentplan', 'vital');
                                     $restricted_modules = array_diff($all_modules, $modules);
                                     foreach ($restricted_modules as $key1 => $value1) {
                                         echo $value1 . '<br>';
