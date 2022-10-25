@@ -18,6 +18,7 @@ class Company extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('companyuser/companyuser_model');
         $this->load->model('settings/settings_model');
+        $this->load->model('finance/finance_model');
         $this->load->module('patient');
         $this->load->module('sms');
         $this->load->helper('string');
@@ -535,9 +536,11 @@ class Company extends MX_Controller {
         $searchTerm = $this->input->post('searchTerm');
         $hospital_id = $this->session->userdata('hospital_id');
         $provider_country = $this->settings_model->getSettingsByHospitalId($hospital_id)->country_id;
+        $selected_payer = explode(",", $this->input->get('selected_payer'));
+        $position = $this->input->get('position');
 
 // Get users
-        $response = $this->company_model->getCompanyWithoutAddNewOption($searchTerm, $provider_country);
+        $response = $this->company_model->getCompanyWithoutAddNewOption($searchTerm, $provider_country, $selected_payer);
 
         echo json_encode($response);
     }
@@ -567,6 +570,20 @@ class Company extends MX_Controller {
         $data['barangay'] = $this->location_model->getBarangayByCityId($city_id);
 
         echo json_encode($data);        
+    }
+
+    public function getCompanyByIdByJason() {
+        $data = array();
+        $id = $this->input->get('id');
+        $group = $this->input->get('group');
+
+        $services = $this->finance_model->getPaymentCategoryByGroupIdByPayerId($group, $id);
+        $data['tax'] = $this->finance_model->getTaxById($services->tax_id);
+
+        $data['company'] = $this->company_model->getCompanyById($id);
+        $data['service'] = $services;
+
+        echo json_encode($data);
     }
 
 }

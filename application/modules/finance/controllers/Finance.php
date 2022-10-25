@@ -1073,6 +1073,12 @@ class Finance extends MX_Controller {
         $company = $this->input->post('company');
         $type = $this->input->post('price_type');
         $tax = $this->input->post('tax');
+        $price_includes_tax = $this->input->post('is_taxable');
+        $co_payer_limit_amount = $this->input->post('co_payer_limit_amount');
+        $co_payer_payment_limit_type = $this->input->post('co_payer_payment_limit_type');
+        $deleted_company = $this->input->post('deleted_company');
+
+        $non_duplicate_deleted_company = implode(',', array_keys(array_flip(explode(',', $deleted_company))));
 
         if (empty($d_commission)) {
             $d_commission = 0;
@@ -1095,12 +1101,6 @@ class Finance extends MX_Controller {
         if (empty($c_price)) {
             $c_price = 0;
         }
-
-        $category_name = $this->finance_model->getServiceCategoryById($category_id)->category;
-        $category_f_letter = $category_name[0];
-        $charge_code = count($this->finance_model->getChargeCount());
-        $charge_increment = $charge_code+=1;
-        $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
         
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -1109,7 +1109,7 @@ class Finance extends MX_Controller {
 // Validating Description Field
         $this->form_validation->set_rules('description', 'Description', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 // Validating Description Field
-        $this->form_validation->set_rules('c_price', 'Price', 'trim|min_length[1]|required|numeric|max_length[100]|xss_clean');
+        // $this->form_validation->set_rules('c_price', 'Price', 'trim|min_length[1]|required|numeric|max_length[100]|xss_clean');
 // Validating Doctor Commission Rate Field
         $this->form_validation->set_rules('d_commission', 'Doctor Commission rate', 'trim|numeric|min_length[1]|max_length[100]|xss_clean');
 // Validating Service Category Name Field
@@ -1140,15 +1140,11 @@ class Finance extends MX_Controller {
             $data = array('category' => $name,
                 'description' => $description,
                 'category_id' => $category_id,
-                'c_price' => $c_price,
                 'd_commission' => $d_commission,
                 'staff_commission' => $s_commission,
                 'service_category_group_id' => $service_type,
                 'applicable_staff_id' => $staff,
-                'type' => $type,
-                'tax_id' => $tax,
-                'charge_code' => $charge_code_final
-    
+                'deleted' => null
             );
 
             if ($group == "Doctor") {
@@ -1175,18 +1171,111 @@ class Finance extends MX_Controller {
 
                 $data2 = array();
                 $data1 = array();
+                $data3 = array();
+                $co_payer_data = array();
 
                 foreach($company as $key => $value) {
+
+                    $category_name = $this->finance_model->getServiceCategoryById($category_id)->category;
+                    $category_f_letter = $category_name[0];
+                    $charge_code = count($this->finance_model->getChargeCount());
+                    $charge_increment = $charge_code+=1;
+                    $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
+
+                    if (!empty($c_price[$key])) {
+                        $tax_details = $this->finance_model->getTaxById($tax[$key]);
+                        $tax_amount = ($c_price[$key]*($tax_details->rate/100));
+
+                        if ($price_includes_tax[$key] == 1) {
+                            $c_price_without_tax = $c_price[$key]-$tax_amount;
+                            $c_price_result = $c_price[$key];
+                        } else {
+                            $c_price_without_tax = $c_price[$key];
+                            $c_price_result = $c_price_without_tax + $tax_amount;
+                        }
+                    } else {
+                        $c_price_without_tax = null;
+                        $tax_amount = null;
+                        $c_price_result = null;
+                    }
+
+                    if ($type[$key] == "fixed") {
+                        $co_payer_limit_amount[$key] = $c_price_result;
+                        if ($co_payer_payment_limit_type[$key] == "percentage") {
+                            $co_payer_data[$value] = array(
+                                'copay_share_fixed' => $co_payer_limit_amount[$key],
+                                'c_price' => $c_price_result,
+                                'c_price_without_tax' => $c_price_without_tax,
+                                'tax_amount' => $tax_amount,
+                                'type' => $type[$key],
+                                'tax_id' => $tax[$key],
+                                'is_price_includes_tax' => $price_includes_tax[$key],
+                            );
+                        } elseif ($co_payer_payment_limit_type[$key] == "fixed") {
+                            $co_payer_data[$value] = array(
+                                'copay_share_fixed' => $co_payer_limit_amount[$key],
+                                'c_price' => $c_price_result,
+                                'c_price_without_tax' => $c_price_without_tax,
+                                'tax_amount' => $tax_amount,
+                                'type' => $type[$key],
+                                'tax_id' => $tax[$key],
+                                'is_price_includes_tax' => $price_includes_tax[$key],
+                            );
+                        }
+                    } elseif ($type[$key] == "variable") {
+                        if ($co_payer_payment_limit_type[$key] == "percentage") {
+                            $co_payer_data[$value] = array(
+                                'copay_share_percentage' => $co_payer_limit_amount[$key],
+                                'copay_share_fixed' => null,
+                                'c_price' => $c_price_result,
+                                'c_price_without_tax' => $c_price_without_tax,
+                                'tax_amount' => $tax_amount,
+                                'type' => $type[$key],
+                                'tax_id' => $tax[$key],
+                                'is_price_includes_tax' => $price_includes_tax[$key],
+                            );
+                        } elseif ($co_payer_payment_limit_type[$key] == "fixed") {
+                            $co_payer_data[$value] = array(
+                                'copay_share_fixed' => $co_payer_limit_amount[$key],
+                                'copay_share_percentage' => null,
+                                'c_price' => $c_price_result,
+                                'c_price_without_tax' => $c_price_without_tax,
+                                'tax_amount' => $tax_amount,
+                                'type' => $type[$key],
+                                'tax_id' => $tax[$key],
+                                'is_price_includes_tax' => $price_includes_tax[$key],
+                            );
+                        }
+                    }
+
                     $data1[$value] = array(
                         'payer_account_id' => $value,
+                        'charge_code' => $charge_code_final,
                     );
+
                     $data2 = array_merge($data, $data1[$value]);
 
-                    $this->finance_model->insertPaymentCategory($data2);
+                    $data3 = array_merge($data2, $co_payer_data[$value]);
+
+                    $this->finance_model->insertPaymentCategory($data3);
+
+                    if (empty($inserted_id)) {
+                        $inserted_id = $this->db->insert_id();
+                        $group_id_data = array('group_id'=>$inserted_id);
+                        $this->finance_model->updatePaymentCategory($inserted_id, $group_id_data);
+                    } else {
+                        $added_id = $this->db->insert_id();
+                        $group_id_data = array('group_id'=>$inserted_id);
+                        $this->finance_model->updatePaymentCategory($added_id, $group_id_data);
+                    }
+
                 }
 
                 $this->session->set_flashdata('success', lang('record_added'));
             } else {
+                $service_details = $this->finance_model->getPaymentCategoryByGroupId($id);
+                $service_payer_account = [];
+
                 if ($group == "Doctor") {
                     $this->doctor_model->updateDoctor($doctor_details->id, $doctor_data);
                     if ($service_type == 9) {
@@ -1196,7 +1285,135 @@ class Finance extends MX_Controller {
                     }
                 }
 
-                $this->finance_model->updatePaymentCategory($id, $data2);
+                foreach($service_details as $service_detail) {
+                    $service_payer_account[] = $service_detail->payer_account_id;
+                }
+
+                $deleted_items = explode(',', $non_duplicate_deleted_company);
+
+                foreach($deleted_items as $deleted_item) {
+                    $deleted_item_details = $this->finance_model->getPaymentCategoryByGroupIdByPayerId($id, $deleted_item);
+                    $delete_data = array(
+                        'deleted' => 1,
+                    );
+                    $this->finance_model->updatePaymentCategory($deleted_item_details->id, $delete_data);
+                }
+
+                // if ($service_payer_account > $company) {
+                //     $deleted = array_diff($service_payer_account, $company);
+                // } elseif ($service_payer_account < $company) {
+                //     $deleted = array_diff($company, $service_payer_account);
+                // }
+
+                // foreach($deleted as $deleted_item) {
+                //     $deleted_item_details = $this->finance_model->getPaymentCategoryByGroupIdByPayerId($id, $deleted_item);
+                //     if (!empty($deleted_item_details)) {
+                //         if ($deleted_item_details->deleted == 1) {
+                //             $delete_data = array(
+                //                 'deleted' => null,
+                //             );
+                //             // $this->finance_model->updatePaymentCategory($deleted_item_details->id, $delete_data);
+                //         } else {
+                //             $delete_data = array(
+                //                 'deleted' => 1,
+                //             );
+                //             // $this->finance_model->updatePaymentCategory($deleted_item_details->id, $delete_data);
+                //         }
+                //     }
+                // }
+
+                foreach($company as $key => $value) {
+                    $category_name = $this->finance_model->getServiceCategoryById($category_id)->category;
+                    $category_f_letter = $category_name[0];
+                    $charge_code = count($this->finance_model->getChargeCount());
+                    $charge_increment = $charge_code+=1;
+                    $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
+
+                    if (!empty($c_price[$key])) {
+                        $tax_details = $this->finance_model->getTaxById($tax[$key]);
+                        $tax_amount = ($c_price[$key]*($tax_details->rate/100));
+
+                        if ($price_includes_tax[$key] == 1) {
+                            $c_price_without_tax = $c_price[$key]-$tax_amount;
+                            $c_price_result = $c_price[$key];
+                        } else {
+                            $c_price_without_tax = $c_price[$key];
+                            $c_price_result = $c_price_without_tax + $tax_amount;
+                        }
+                    } else {
+                        $c_price_without_tax = null;
+                        $tax_amount = null;
+                        $c_price_result = null;
+                    }
+
+                    if ($type[$key] == "fixed") {
+                        $co_payer_limit_amount[$key] = $c_price_result;
+                        if ($co_payer_payment_limit_type[$key] == "percentage") {
+                            $co_payer_data[$value] = array(
+                                'copay_share_fixed' => $co_payer_limit_amount[$key],
+                                'c_price' => $c_price_result,
+                                'c_price_without_tax' => $c_price_without_tax,
+                                'tax_amount' => $tax_amount,
+                                'type' => $type[$key],
+                                'tax_id' => $tax[$key],
+                                'is_price_includes_tax' => $price_includes_tax[$key],
+                            );
+                        } elseif ($co_payer_payment_limit_type[$key] == "fixed") {
+                            $co_payer_data[$value] = array(
+                                'copay_share_fixed' => $co_payer_limit_amount[$key],
+                                'c_price' => $c_price_result,
+                                'c_price_without_tax' => $c_price_without_tax,
+                                'tax_amount' => $tax_amount,
+                                'type' => $type[$key],
+                                'tax_id' => $tax[$key],
+                                'is_price_includes_tax' => $price_includes_tax[$key],
+                            );
+                        }
+                    } elseif ($type[$key] == "variable") {
+                        if ($co_payer_payment_limit_type[$key] == "percentage") {
+                            $co_payer_data[$value] = array(
+                                'copay_share_percentage' => $co_payer_limit_amount[$key],
+                                'copay_share_fixed' => null,
+                                'c_price' => $c_price_result,
+                                'c_price_without_tax' => $c_price_without_tax,
+                                'tax_amount' => $tax_amount,
+                                'type' => $type[$key],
+                                'tax_id' => $tax[$key],
+                                'is_price_includes_tax' => $price_includes_tax[$key],
+                            );
+                        } elseif ($co_payer_payment_limit_type[$key] == "fixed") {
+                            $co_payer_data[$value] = array(
+                                'copay_share_fixed' => $co_payer_limit_amount[$key],
+                                'copay_share_percentage' => null,
+                                'c_price' => $c_price_result,
+                                'c_price_without_tax' => $c_price_without_tax,
+                                'tax_amount' => $tax_amount,
+                                'type' => $type[$key],
+                                'tax_id' => $tax[$key],
+                                'is_price_includes_tax' => $price_includes_tax[$key],
+                            );
+                        }
+                    }
+
+                    $data2 = array_merge($data, $co_payer_data[$value]);
+
+                    $payer_id = $this->finance_model->getPaymentCategoryByGroupIdByPayerId($id, $company[$key]);
+
+                    if(!empty($payer_id)) {
+                        $this->finance_model->updatePaymentCategory($payer_id->id, $data2);
+                    } else {
+                        $group_id_data = array(
+                            'group_id'=>$id,
+                            'payer_account_id'=>$company[$key],
+                            'charge_code' => $charge_code_final,
+                        );
+                        $data3 = array_merge($data2, $group_id_data);
+                        $this->finance_model->insertPaymentCategory($data3);
+                    }
+                    
+                }
+
+                // $this->finance_model->updatePaymentCategory($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
             redirect('finance/paymentCategory');
@@ -1212,12 +1429,34 @@ class Finance extends MX_Controller {
         $hospital_id = $this->session->userdata('hospital_id');
         $provider_country = $this->settings_model->getSettingsByHospitalId($hospital_id)->country_id;
         $data['payer_accounts'] = $this->company_model->getCompanyWithoutAddNewOption(null, $provider_country);
-        $data['service'] = $this->finance_model->getPaymentCategoryById($id);
+        $data['service'] = $this->finance_model->getPaymentCategoryByGroupId($id);
         $data['categories'] = $this->finance_model->getServiceCategory();
         $data['settings'] = $this->settings_model->getSettings();
+        $data['taxes'] = $this->finance_model->getTax();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_payment_categoryv2', $data);
         // $this->load->view('home/footer'); // just the footer file
+    }
+
+    function editPaymentCategoryByJson() {
+        $group = $this->input->get('group');
+
+        $services = $this->finance_model->getPaymentCategoryByGroupId($group);
+        $company = [];
+        $tax = [];
+        // $data['tax'] = $this->finance_model->getTax();
+        foreach($services as $service) {
+            $company[] = $this->company_model->getCompanyById($service->payer_account_id);
+            $tax[] = $this->finance_model->getTaxById($service->tax_id);
+        }
+
+        $data['tax'] = $tax;
+        $data['company'] = $company;
+        $data['service'] = $services;
+
+        // $data['company'] = $this->company_model->getCompanyById($id);
+
+        echo json_encode($data);
     }
 
     function deletePaymentCategory() {
@@ -2982,6 +3221,68 @@ class Finance extends MX_Controller {
         
 
         echo json_encode($data);        
+    }
+
+    public function getChargesByCompanyId() {
+        $id = $this->input->get('id');
+
+        $data['charge'] = $this->finance_model->getChargesByCompanyId($id);
+
+        echo json_encode($data);
+    }
+
+    public function getChargesByCopay() {
+        $copay = $this->input->get('copay');
+
+        $charges = $this->finance_model->getChargesWithCopay();
+
+        $charges_copay = [];
+
+        if (!empty($copay)) {
+            foreach($charges as $charge) {
+                if ($charge->total >= 2) {
+                    $charges_copay_lists = $this->finance_model->getPaymentCategoryByGroupId($charge->group_id);
+                    // foreach($charges_copay_lists as $charges_copay_list) {
+                    //     $charges_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_list->id);
+                    // }
+                    $charges_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_lists[0]->id);
+                }
+            }
+        } else {
+            foreach($charges as $charge) {
+                if ($charge->total <= 1) {
+                    $charges_copay_lists = $this->finance_model->getPaymentCategoryByGroupId($charge->group_id);
+                    foreach($charges_copay_lists as $charges_copay_list) {
+                        $charges_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_list->id);
+                    }
+                }
+            }
+        }
+
+        $data['charges'] = $charges_copay;
+
+        echo json_encode($data);
+    }
+
+    public function getPayersByChargePayerGroup() {
+        $group = $this->input->get('group');
+        $group_array = explode(',', $group);
+
+        $charges = [];
+        $payer_accounts = [];
+
+        foreach ($group_array as $group_arr) {
+            $payer_groups = $this->finance_model->getPaymentCategoryByGroupId($group_arr);
+            foreach ($payer_groups as $payer_group) {
+                $charges[] = $payer_group;
+                $payer_accounts[] = $this->company_model->getCompanyById($payer_group->payer_account_id);
+            }
+        }
+
+        $data['charges'] = $charges;
+        $data['payer_accounts'] = $payer_accounts;
+
+        echo json_encode($data);
     }
 
 }

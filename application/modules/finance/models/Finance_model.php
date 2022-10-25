@@ -728,6 +728,23 @@ class Finance_model extends CI_model {
                     ->where('deleted', null)
                     ->or_where('deleted', 0)
                 ->group_end()
+                ->group_by('group_id')
+                ->get();
+        return $query->result();
+    }
+
+    function getChargesByCompanyId($payer_accounts) {
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $this->db->where('deleted', null);
+        // $query = $this->db->get('charge');
+        $query = $this->db->select('*')
+                ->from('charge')
+                ->group_start()
+                    ->where('payer_account_id', $payer_accounts)
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('deleted', null)
+                    ->or_where('deleted', 0)
+                ->group_end()
                 ->get();
         return $query->result();
     }
@@ -771,11 +788,38 @@ class Finance_model extends CI_model {
         return $query->row();
     }
 
+    function getPaymentCategoryByGroupId($id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->group_start();
+            $this->db->where('deleted', null);
+            $this->db->or_where('deleted', 0);
+        $this->db->group_end();
+        $this->db->where('group_id', $id);
+        $query = $this->db->get('charge');
+        return $query->result();
+    }
+
+    function getPaymentCategoryByGroupIdByPayerId($id, $payer) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('group_id', $id);
+        $this->db->where('payer_account_id', $payer);
+        $query = $this->db->get('charge');
+        return $query->row();
+    }
+
     function getDoctorCommissionByCategory($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('id', $id);
         $query = $this->db->get('charge');
         return $query->row();
+    }
+
+    function getChargesWithCopay() {
+        $this->db->select('group_id, COUNT(group_id) as total');
+        $this->db->group_by('group_id'); 
+        $this->db->order_by('total', 'desc'); 
+        $query = $this->db->get('charge');
+        return $query->result();
     }
 
     function updatePaymentCategory($id, $data) {
@@ -944,6 +988,33 @@ class Finance_model extends CI_model {
             $data[] = array("id" => $user['id'], "text" => $user['display_name']);
         }
         return $data;
+    }
+
+    function getTaxById($id) {
+        $this->db->group_start();
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->or_where('hospital_id', null);
+        $this->db->group_end();
+        $this->db->where('id', $id);
+        $query = $this->db->get('tax');
+        return $query->row();
+    }
+
+    function getTax() {
+        $country = $this->settings_model->getSettings()->country_id;
+        $query = $this->db->select('*')
+                ->from('tax')
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->or_where('hospital_id', null)
+                ->group_end()
+                ->group_start()
+                    ->where('applicable_country_id', $country)
+                    ->or_where('applicable_country_id', null)
+                ->group_end()
+                ->get();
+
+        return $query->result();
     }
 
     function getTaxByApplicableCountryId($searchTerm) {
