@@ -487,16 +487,16 @@
                                                                 <?php $single_medicine = explode('***', $value); ?>
                                                                 <div class="region">
                                                                     <div class="d-flex">
-                                                                        <div class="pr-3 w-10">
+                                                                        <div class="pr-3">
                                                                             <h4><?php echo $i += 1; ?>.</h4>
                                                                         </div>
-                                                                        <div class="flex-grow-1 pr-2 w-75">
+                                                                        <div class="flex-grow-1 pr-5">
                                                                             <h4>
                                                                             <p class="mb-2"><strong><?php echo $this->medicine_model->getMedicineById($single_medicine[0])->generic ?></strong> ( <?php echo $this->medicine_model->getMedicineById($single_medicine[0])->name; ?> ) <?php echo $single_medicine[1]; ?></p>
                                                                             <p class="mb-2">Sig: <?php echo $single_medicine[3] ?></p>
                                                                             <p class="mb-2">(<?php echo $single_medicine[4] ?>)</p></h4>
                                                                         </div>
-                                                                        <div class="w-15">
+                                                                        <div class="">
                                                                             <h4><p>#<?php echo $single_medicine[2] ?></p></h4>
                                                                         </div>
                                                                     </div>
