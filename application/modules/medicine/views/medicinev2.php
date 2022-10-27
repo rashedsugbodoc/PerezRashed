@@ -32,8 +32,8 @@
                                                         <th> <?php echo lang('form'); ?></th>
                                                         <th> <?php echo lang('category'); ?></th>
                                                         <th> <?php echo lang('store_box'); ?></th>
-                                                        <th> <?php echo lang('p_price'); ?></th>
-                                                        <th> <?php echo lang('s_price'); ?></th>
+                                                        <th> <?php echo lang('p_price').' ('.$settings->currency.') '; ?></th>
+                                                        <th> <?php echo lang('s_price').' ('.$settings->currency.') '; ?></th>
                                                         <th> <?php echo lang('quantity'); ?></th>
                                                         <th> <?php echo lang('company'); ?></th>
                                                         <th> <?php echo lang('uses'); ?></th>

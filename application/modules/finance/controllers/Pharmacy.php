@@ -721,9 +721,9 @@ class Pharmacy extends MX_Controller {
             $info[] = array(
                 $payment->id,
                 date('d/m/y', $payment->date + 11 * 60 * 60),
-                $settings->currency . '' . number_format($payment->amount, 2, '.', ','),
-                $settings->currency . '' . $discount,
-                $settings->currency . '' . number_format($payment->gross_total, 2, '.', ','),
+                number_format($payment->amount, 2, '.', ','),
+                number_format($discount,2),
+                number_format($payment->gross_total, 2, '.', ','),
                 $option1 . ' ' . $option3 . ' ' . $options4 . ' ' . $option2
             );
             $i = $i + 1;

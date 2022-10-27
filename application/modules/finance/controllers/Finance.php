@@ -2850,11 +2850,11 @@ class Finance extends MX_Controller {
                 $payment->invoice_number,
                 $patient_details,
                 $doctor,
-                $settings->currency . '' . number_format($payment->amount,2),
-                $settings->currency . '' . number_format($flat_discount,2),
-                $settings->currency . '' . number_format($payment->gross_total,2),
-                $settings->currency . '' . number_format(($this->finance_model->getDepositAmountByPaymentId($payment->id)),2),
-                $settings->currency . '' . number_format(($payment->gross_total - $this->finance_model->getDepositAmountByPaymentId($payment->id)),2),
+                '<div class="text-right">'.number_format($payment->amount,2).'</div>',
+                '<div class="text-right">'.number_format($flat_discount,2).'</div>',
+                '<div class="text-right">'.number_format($payment->gross_total,2).'</div>',
+                '<div class="text-right">'.number_format(($this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
+                '<div class="text-right">'.number_format(($payment->gross_total - $this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
                 $payment->remarks,
                 $options1 . ' ' . $options2 . ' ' . $options4 . ' ' . $options3,
                     //  $options2
@@ -3142,10 +3142,10 @@ class Finance extends MX_Controller {
 
 
             $info[] = array(
-                date('d/m/y', $expense->date),
+                date('Y-m-d', $expense->date),
                 $expense->category,
                 $expense->note,
-                '<div class="text-right">' .$settings->currency . '' .number_format($expense->amount,'2','.',',').'</div>',
+                '<div class="text-right">'.number_format($expense->amount,'2','.',',').'</div>',
                 $options1 . ' ' . $options2 . ' ' . $options3,
                     //  $options2
             );

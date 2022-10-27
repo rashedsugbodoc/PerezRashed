@@ -16,6 +16,7 @@ class Encounter extends MX_Controller {
         $this->load->model('form/form_model');
         $this->load->model('appointment/appointment_model');
         $this->load->model('finance/finance_model');
+        $this->load->model('settings/settings_model');
 
         if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Nurse', 'Patient', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
@@ -33,6 +34,7 @@ class Encounter extends MX_Controller {
         $data['providers'] = $this->hospital_model->getHospital();
         $data['templates'] = $this->form_model->getTemplate();
         $data['categories'] = $this->form_model->getFormCategory();
+        $data['settings'] = $this->settings_model->getSettings();
 
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('encounter', $data);
@@ -345,7 +347,7 @@ class Encounter extends MX_Controller {
             $patient = $this->patient_model->getPatientById($encounter->patient_id);
             // $user = $this->profile_model->getProfileById($encounter->rendering_staff_id)->username;
             $doctor = $this->doctor_model->getDoctorById($encounter->doctor)->name;
-            $due = $this->settings_model->getSettings()->currency .' '. number_format($this->encounter_model->getDueBalanceByPatientIdByEncounterId($encounter->patient_id, $encounter->id),2);
+            $due = number_format($this->encounter_model->getDueBalanceByPatientIdByEncounterId($encounter->patient_id, $encounter->id),2);
             $payment_status = $this->finance_model->getInvoicePaymentStatusById($encounter->payment_status)->display_name;
             if (empty($doctor)) {
                 if (!empty($encounter->rendering_staff_name)) {

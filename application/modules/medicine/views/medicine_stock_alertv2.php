@@ -31,8 +31,8 @@
                                                     <th> <?php echo lang('name'); ?></th>
                                                     <th> <?php echo lang('category'); ?></th>
                                                     <th> <?php echo lang('store_box'); ?></th>
-                                                    <th> <?php echo lang('p_price'); ?></th>
-                                                    <th> <?php echo lang('s_price'); ?></th>
+                                                    <th> <?php echo lang('p_price').' ('.$settings->currency.') '; ?></th>
+                                                    <th> <?php echo lang('s_price').' ('.$settings->currency.') '; ?></th>
                                                     <th> <?php echo lang('quantity'); ?></th>
                                                     <th> <?php echo lang('generic_name'); ?></th>
                                                     <th> <?php echo lang('company'); ?></th>
@@ -56,8 +56,8 @@
                                                         <td><?php echo $medicine->name; ?></td>
                                                         <td> <?php echo $medicine->category; ?></td>
                                                         <td> <?php echo $medicine->box; ?></td>
-                                                        <td><?php echo $settings->currency; ?> <?php echo $medicine->price; ?></td>
-                                                        <td><?php echo $settings->currency; ?> <?php echo $medicine->s_price; ?></td>
+                                                        <td class="text-right"><?php echo $medicine->price; ?></td>
+                                                        <td class="text-right"><?php echo $medicine->s_price; ?></td>
                                                         <td> <?php
                                                             if ($medicine->quantity <= 0) {
                                                                 echo '<p class="os">'.lang('out_of_stock').'</p>';

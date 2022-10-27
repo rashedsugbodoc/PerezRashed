@@ -135,7 +135,7 @@
                                                     <thead>
                                                         <tr>
                                                             <th> <?php echo lang('date'); ?> </th>
-                                                            <th> <?php echo lang('grand_total'); ?> </th>
+                                                            <th class="text-center"> <?php echo lang('grand_total').' ('.$settings->currency.') '; ?> </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -146,8 +146,8 @@
                                                             ?>
                                                             <?php $patient_info = $this->db->get_where('patient', array('id' => $payment->patient))->row(); ?>
                                                             <tr class="">
-                                                                <td><?php echo date('d/m/y', $payment->date); ?></td>
-                                                                <td><?php echo $settings->currency; ?> <?php echo number_format($payment->gross_total, 2, '.', ','); ?></td>
+                                                                <td><?php echo date('Y-m-d', $payment->date); ?></td>
+                                                                <td class="text-right"><?php echo number_format($payment->gross_total, 2, '.', ','); ?></td>
                                                             </tr>
                                                             <?php
                                                             if ($i == 10)
@@ -174,7 +174,7 @@
                                                         <tr>
                                                             <th> <?php echo lang('category'); ?> </th>
                                                             <th> <?php echo lang('date'); ?> </th>
-                                                            <th> <?php echo lang('amount'); ?> </th>
+                                                            <th class="text-center"> <?php echo lang('amount').' ('.$settings->currency.')'; ?> </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -185,8 +185,8 @@
                                                         ?>
                                                         <tr class="">
                                                             <td><?php echo $expense->category; ?></td>
-                                                            <td> <?php echo date('d/m/y', $expense->date); ?></td>
-                                                            <td><?php echo $settings->currency; ?> <?php echo number_format($expense->amount, 2, '.', ','); ?></td>             
+                                                            <td> <?php echo date('Y-m-d', $expense->date); ?></td>
+                                                            <td class="text-right"><?php echo number_format($expense->amount, 2, '.', ','); ?></td>
                                                         </tr>
                                                         <?php
                                                         if ($i == 10)
@@ -417,7 +417,7 @@
                                                                     <tr>
                                                                         <th> <?php echo lang('name'); ?></th>
                                                                         <th> <?php echo lang('category'); ?></th>
-                                                                        <th> <?php echo lang('price'); ?></th>
+                                                                        <th> <?php echo lang('price').' ('.$settings->currency.') '; ?></th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -429,7 +429,7 @@
                                                                     <tr>
                                                                         <td><?php echo $latest_medicine->name; ?></td>
                                                                         <td> <?php echo $latest_medicine->category; ?></td>
-                                                                        <td><?php echo $settings->currency; ?> <?php echo number_format($latest_medicine->s_price, 2, '.', ','); ?></td>
+                                                                        <td class="text-right"><?php echo number_format($latest_medicine->s_price, 2, '.', ','); ?></td>
                                                                     </tr>
                                                                     <?php
                                                                     if ($i == 10)

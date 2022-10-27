@@ -30,7 +30,7 @@
                                                         <tr>
                                                             <td><?php echo $form->form_number; ?></td>
                                                             <td><?php echo $this->patient_model->getPatientById($form->patient)->name; ?></td>
-                                                            <td><?php echo date('Y-m-d H:i', strtotime($form->form_date.' UTC')); ?></td>
+                                                            <td><?php echo date('Y-m-d h:i A', strtotime($form->form_date.' UTC')); ?></td>
                                                             <td><a class="btn btn-xs btn-info" href="form/formView?id=<?php echo $form->form_number ?>"><i class="fa fa-file-text-o"></i> <?php echo lang('details'); ?></a></td>
                                                         </tr>
                                                     <?php } ?>

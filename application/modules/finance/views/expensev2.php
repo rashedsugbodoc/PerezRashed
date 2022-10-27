@@ -31,7 +31,7 @@
                                                         <th><?php echo lang('date'); ?></th>
                                                         <th><?php echo lang('category'); ?> <?php echo lang('name'); ?></th>
                                                         <th><?php echo lang('description'); ?></th> 
-                                                        <th><?php echo lang('amount'); ?></th>
+                                                        <th class="text-center"><?php echo lang('amount').' ('.$settings->currency.') '; ?></th>
                                                         <th class="no-print"><?php echo lang('options'); ?></th>
                                                     </tr>
                                                 </thead>

@@ -38,7 +38,7 @@
                                                                 <th class="border-bottom-0"><?php echo lang('phone'); ?></th>
                                                                 <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
                                                                 <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Clerk', 'Midwife'))) { ?>
-                                                                    <th class="border-bottom-0"><?php echo lang('due_balance'); ?></th>
+                                                                    <th class="border-bottom-0 text-center"><?php echo lang('due_balance').' ('.$settings->currency.')'; ?></th>
                                                                 <?php } ?>
                                                                 <th class="border-bottom-0"><?php echo lang('options'); ?></th>
                                                             </tr>

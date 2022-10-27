@@ -42,7 +42,7 @@
                                                             <th><?php echo lang('encounter'); ?> <?php echo lang('number'); ?></th>
                                                             <th><?php echo lang('patient'); ?></th>
                                                             <th><?php echo lang('doctor'); ?></th>
-                                                            <th><?php echo lang('balance'); ?></th>
+                                                            <th class="text-center"><?php echo lang('balance').' ('.$settings->currency.')'; ?></th>
                                                             <th><?php echo lang('payment').' '.lang('status'); ?></th>
                                                             <th><?php echo lang('status'); ?></th>
                                                             <th><?php echo lang('actions'); ?></th>
@@ -1800,7 +1800,7 @@
                 buttons: [
                     {
                         extend: 'collection',
-                        text: 'Export ',
+                        text: 'Export',
                         buttons: [
                             {
                                 extend: 'copyHtml5',

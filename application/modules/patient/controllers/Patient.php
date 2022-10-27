@@ -4151,7 +4151,7 @@ class Patient extends MX_Controller {
                     $patient->name,
                     $patient->phone,
                     $doctorNames,
-                    $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
+                    '<div class="text-right">'.number_format($this->settings_model->getSettings() . $this->patient_model->getDueBalanceByPatientId($patient->id),2).'</div>',
                     $options1 . ' ' . $options6 . ' ' . $options4 . ' ' . $options5 . ' ' . $options8 . ' ' . $options9 . ' ' . $options10,
                         //  $options2
                 );
@@ -4164,7 +4164,7 @@ class Patient extends MX_Controller {
                     $patient->name,
                     $patient->phone,
                     $doctorNames,
-                    $this->settings_model->getSettings()->currency . $this->patient_model->getDueBalanceByPatientId($patient->id),
+                    '<div class="text-right">'.number_format($this->patient_model->getDueBalanceByPatientId($patient->id),2).'</div>',
                     $options1 . ' ' . $options6 . ' ' . $options4,
                         //  $options2
                 );
@@ -4386,14 +4386,14 @@ class Patient extends MX_Controller {
 
             $provider = $patient->hospital_id;
 
-            $due = $this->settings_model->getSettings()->currency .' '. $this->patient_model->getDueBalanceByPatientIdByDoctorIdByProviderId($patient->id, $doctor, $provider);
+            $due = number_format($this->patient_model->getDueBalanceByPatientIdByDoctorIdByProviderId($patient->id, $doctor, $provider),2);
 
             if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Accountant', 'Receptionist'))) {
                 $info[] = array(
                     $patient->patient_id,
                     $patient->name,
                     $patient->phone,
-                    $due,
+                    '<div class="text-right">'.$due.'</div>',
                     //  $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options4 . ' ' . $options5,
                     $options4
                 );
