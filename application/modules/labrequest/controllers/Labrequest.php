@@ -121,6 +121,7 @@ class Labrequest extends MX_Controller {
                         'loinc_num' => $loinc_num[$key],
                         'instructions' => $instruction[$key],
                         'encounter_id' => $encounter_id,
+                        'request_date' => $request_date,
                         'last_modified' => $date,
                     );
                     $request_id[$value] = $lab_request[$key];
@@ -468,7 +469,7 @@ class Labrequest extends MX_Controller {
 
             if(!empty($patient_id)) {
                 $info[] = array(
-                    date('Y-m-d h:i A', strtotime($labrequest->created_at.' UTC')),
+                    date('Y-m-d h:i A', strtotime($labrequest->request_date.' UTC')),
                     $labrequest->lab_request_number,
                     $alltest,
                     $labrequest->patientname,
@@ -478,7 +479,7 @@ class Labrequest extends MX_Controller {
                 );
             } else {
                 $info[] = array(
-                    date('Y-m-d h:i A', strtotime($labrequest->created_at.' UTC')),
+                    date('Y-m-d h:i A', strtotime($labrequest->request_date.' UTC')),
                     $labrequest->lab_request_number,
                     $alltest,
                     $labrequest->patientname,
