@@ -4151,7 +4151,7 @@ class Patient extends MX_Controller {
                     $patient->name,
                     $patient->phone,
                     $doctorNames,
-                    '<div class="text-right">'.number_format($this->settings_model->getSettings() . $this->patient_model->getDueBalanceByPatientId($patient->id),2).'</div>',
+                    '<div class="text-right">'.number_format($this->patient_model->getDueBalanceByPatientId($patient->id),2).'</div>',
                     $options1 . ' ' . $options6 . ' ' . $options4 . ' ' . $options5 . ' ' . $options8 . ' ' . $options9 . ' ' . $options10,
                         //  $options2
                 );
