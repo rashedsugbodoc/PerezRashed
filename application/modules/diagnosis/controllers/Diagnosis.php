@@ -26,7 +26,7 @@ class Diagnosis extends MX_Controller {
         }
 
         $this->load->view('home/dashboardv2');
-        $this->load->view('index', $data);
+        $this->load->view('diagnosis', $data);
     }
 
     function addDiagnosisView() {
