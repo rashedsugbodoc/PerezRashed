@@ -42,7 +42,7 @@
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
                                                                 <input class="form-control flatpickr" name="date" id="date" placeholder="MM/DD/YYYY" type="text" required readonly value="<?php
-                                                                if (!empty($form_single->date)) {
+                                                                if (!empty($form_single->form_date)) {
                                                                     echo date('m/d/Y', $form_single->form_date.' UTC');
                                                                 } else {
                                                                     echo date('m/d/Y');
@@ -577,10 +577,11 @@
             var form_id = "<?php echo $form_single->id ?>";
             var form_date = "<?php echo date("F j, Y H:i A", strtotime($form_single->form_date.' UTC')); ?>";
             var timenow = "<?php echo date('Y-m-d H:i'); ?>";
-            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86399); ?>";
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             console.log(form_date);
             if (form_id === "") {
                 flatpickr(".flatpickr", {
+                    disable: [maxdate],
                     altInput: true,
                     altFormat: "F j, Y h:i K",
                     maxDate: maxdate,
@@ -590,6 +591,8 @@
                 });
             } else {
                 flatpickr(".flatpickr", {
+                    disable: [maxdate],
+                    maxDate: maxdate,
                     altInput: true,
                     altFormat: "F j, Y h:i K",
                     dateFormat: "F j, Y h:i K",

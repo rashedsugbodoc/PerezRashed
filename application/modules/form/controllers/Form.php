@@ -420,6 +420,7 @@ class Form extends MX_Controller {
                     'category_id' => $category,
                     'patient' => $patient,
                     'form_date' => $date,
+                    'created_at' => gmdate('Y-m-d H:i:s'),
                     'doctor' => $doctor,
                     'user' => $user,
                     'patient_name' => $patient_name,
@@ -460,6 +461,8 @@ class Form extends MX_Controller {
                     'patient_address' => $patient_details->address,
                     'doctor_name' => $doctor_details->name,
                     'form_template_id' => $template,
+                    'form_date' => $date,
+                    'last_modified' => gmdate('Y-m-d H:i:s'),
                 );
                 $this->form_model->updateForm($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
