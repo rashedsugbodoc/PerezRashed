@@ -37,7 +37,7 @@
                                                     <tr class="">
                                                         <td> <?php echo $i; ?></td>
                                                         <td> <?php echo $this->doctor_model->getDoctorById($holiday->doctor)->name; ?></td>
-                                                        <td> <?php echo date('Y-m-d', $holiday->date); ?></td>
+                                                        <td> <?php echo date($settings->date_format_long ? $settings->date_format_long : 'F j, Y', $holiday->date); ?></td>
                                                         <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                             <td>
                                                                 <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $holiday->id; ?>" aria-haspopup="true" aria-expanded="false"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
@@ -75,7 +75,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"> <?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly required>
+                                                        <input class="form-control flatpickr datetime" name="date" placeholder="MM/DD/YYYY" type="text" readonly required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -116,7 +116,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"> <?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" readonly required>
+                                                        <input class="form-control flatpickr datetime" name="date" placeholder="MM/DD/YYYY" type="text" readonly required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -270,6 +270,9 @@
 
         <!-- parlsey js -->
         <script src="<?php echo base_url('public/assets/plugins/parsleyjs/parsley.min.js');?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
@@ -282,6 +285,14 @@
             $('#editHolidayForm').parsley();
         </script>
 
+        <script>
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            $(document).ready(function () {
+                $(".datetime").flatpickr({
+                    dateFormat: "F j, Y",
+                });
+            })
+        </script>
         <script type="text/javascript">
             $(document).ready(function () {
                 $(".table").on("click", ".editbutton", function () {
@@ -298,9 +309,15 @@
                         success: function (response) {
                             // Populate the form fields with the data returned from server
                             var date = new Date(response.holiday.date * 1000);
+                            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+                            $('.datetime').flatpickr({
+                                dateFormat: "F j, Y",
+                                defaultDate: response.datetime,
+
+                            });
                             $('#editHolidayForm').find('[name="id"]').val(response.holiday.id).end()
                             $('.js-example-basic-single.doctor').val(response.holiday.doctor).trigger('change');
-                            $('#editHolidayForm').find('[name="date"]').val(date.getMonth() + 1 + '/' + (date.getDate()) + '/' + date.getFullYear()).end()
+                            //$('#editHolidayForm').find('[name="date"]').val(date.getMonth() + 1 + '/' + (date.getDate()) + '/' + date.getFullYear()).end()
 
 
                             var option1 = new Option(response.doctor.name + '-' + response.doctor.id, response.doctor.id, true, true);
