@@ -37,7 +37,7 @@
                                                     <tr class="">
                                                         <td> <?php echo $i; ?></td>
                                                         <td> <?php echo $this->doctor_model->getDoctorById($holiday->doctor)->name; ?></td>
-                                                        <td> <?php echo date($settings->date_format_long ? $settings->date_format_long : 'F j, Y', $holiday->date); ?></td>
+                                                        <td> <?php echo date($settings->date_format_long ? $settings->date_format_long.' - l' : 'F j, Y - l', $holiday->date); ?></td>
                                                         <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
                                                             <td>
                                                                 <button type="button" class="btn btn-info btn-xs editbutton" data-toggle="modal" data-id="<?php echo $holiday->id; ?>" aria-haspopup="true" aria-expanded="false"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></button>   
