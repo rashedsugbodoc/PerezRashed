@@ -413,7 +413,7 @@
                                                                         ?>
                                                                         <tr>
                                                                             
-                                                                            <td><?php echo date('j M Y, l', $holiday->date); ?></td>
+                                                                            <td><?php echo date($settings->date_format_long ? $settings->date_format_long.' - l' : 'F j, Y - l', $holiday->date); ?></td>
                                                                             <td>
                                                                                 <div class="btn-group mb-0">
                                                                                     <a class="btn btn-info pull-right editHoliday" data-toggle="modal" data-id="<?php echo $holiday->id; ?>" href=""><i class="fe fe-edit"></i> <?php echo lang('edit'); ?></a>

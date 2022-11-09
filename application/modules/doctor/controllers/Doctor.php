@@ -897,6 +897,7 @@ class Doctor extends MX_Controller {
 
 
         $data['doctor'] = $this->doctor_model->getDoctorById($id);
+        $data['settings'] = $this->settings_model->getSettings();
         $data['todays_appointments'] = $this->appointment_model->getAppointmentByDoctorByToday($id);
         $data['appointments'] = $this->appointment_model->getAppointmentByDoctor($id);
         $data['patients'] = $this->patient_model->getPatient();
