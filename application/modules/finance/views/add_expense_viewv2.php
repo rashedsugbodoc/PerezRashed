@@ -24,18 +24,46 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('date'); ?></label>
+                                                        <input type="text" class="form-control flatpickr" name="expense_date" value="<?php
+                                                            if(!empty($expense->expense_date)) {
+                                                                echo date('m/d/Y', $expense->expense_date.' UTC');
+                                                            }
+                                                        ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('description'); ?></label>
+                                                        <input type="text" class="form-control" name="note" value='<?php
+                                                        if (!empty($setval)) {
+                                                            echo set_value('note');
+                                                        }
+                                                        if (!empty($expense->note)) {
+                                                            echo $expense->note;
+                                                        }
+                                                        ?>' placeholder="">
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="id" value='<?php
+                                                if (!empty($expense->id)) {
+                                                    echo $expense->id;
+                                                }
+                                                ?>'>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
                                                         <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search" name="category" required>
                                                             <option value=""><?php echo lang('select_category');?></option>
                                                             <?php foreach ($categories as $category) { ?>
-                                                            <option value="<?php echo $category->category; ?>" <?php
+                                                            <option value="<?php echo $category->id; ?>" <?php
                                                             if (!empty($setval)) {
-                                                                if ($category->category == set_value('category')) {
+                                                                if ($category->id == set_value('category')) {
                                                                     echo 'selected';
                                                                 }
                                                             }
-                                                            if (!empty($expense->category)) {
-                                                                if ($category->category == $expense->category) {
+                                                            if (!empty($expense->category_id)) {
+                                                                if ($category->id == $expense->category_id) {
                                                                     echo 'selected';
                                                                 }
                                                             }
@@ -57,24 +85,7 @@
                                                         ?>' placeholder="<?php echo $settings->currency; ?>" required>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="form-label"><?php echo lang('note'); ?></label>
-                                                        <input type="text" class="form-control" name="note" value='<?php
-                                                        if (!empty($setval)) {
-                                                            echo set_value('note');
-                                                        }
-                                                        if (!empty($expense->note)) {
-                                                            echo $expense->note;
-                                                        }
-                                                        ?>' placeholder="">
-                                                    </div>
-                                                </div>
-                                                <input type="hidden" name="id" value='<?php
-                                                if (!empty($expense->id)) {
-                                                    echo $expense->id;
-                                                }
-                                                ?>'>
+                                                
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <button class="btn btn-primary pull-right" value="" id="submit" type="submit" name="submit"><?php echo lang('submit'); ?></button>
@@ -152,8 +163,42 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var expense_id = "<?php echo $expense->id ?>";
+            var expense_date = "<?php echo date("F j, Y H:i A", strtotime($expense->expense_date.' UTC')); ?>";
+            var timenow = "<?php echo date('Y-m-d H:i'); ?>";
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            if (expense_id === "") {
+                flatpickr(".flatpickr", {
+                    disable: [maxdate],
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    maxDate: maxdate,
+                    disableMobile: true,
+                    enableTime: false,
+                    defaultDate: timenow,
+                });
+            } else {
+                flatpickr(".flatpickr", {
+                    disable: [maxdate],
+                    maxDate: maxdate,
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    dateFormat: "F j, Y",
+                    disableMobile: true,
+                    enableTime: false,
+                    defaultDate: expense_date,
+                });
+            }
+        });
+    </script>
 
     <script type="text/javascript">
         $('#expenseForm').parsley();

@@ -1493,7 +1493,7 @@ class Finance extends MX_Controller {
             redirect('auth/login', 'refresh');
         }
         $data['settings'] = $this->settings_model->getSettings();
-        $data['expenses'] = $this->finance_model->getExpense();
+        $data['expense'] = $this->finance_model->getExpense();
 
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('expensev2', $data);
@@ -1517,12 +1517,12 @@ class Finance extends MX_Controller {
             redirect('home/permission');
         }
         $id = $this->input->post('id');
+        $expense_date = gmdate('Y-m-d H:i:s', strtotime($this->input->post('expense_date')));
+        $date = gmdate('Y-m-d H:i:s');
         $category = $this->input->post('category');
-        $date = time();
         $amount = $this->input->post('amount');
         $user = $this->ion_auth->get_user_id();
         $note = $this->input->post('note');
-
 
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
@@ -1552,19 +1552,23 @@ class Finance extends MX_Controller {
             $data = array();
             if (empty($id)) {
                 $data = array(
-                    'category' => $category,
+                    'category_id' => $category,
                     'date' => $date,
                     'datestring' => date('d/m/y', $date),
                     'amount' => $amount,
                     'note' => $note,
-                    'user' => $user
+                    'user' => $user,
+                    'expense_date' => $expense_date,
+                    'created_at' => $date,
                 );
             } else {
                 $data = array(
-                    'category' => $category,
+                    'category_id' => $category,
                     'amount' => $amount,
                     'note' => $note,
                     'user' => $user,
+                    'expense_date' => $expense_date,
+                    'last_modified' => $date,
                 );
             }
             if (empty($id)) {
@@ -3103,7 +3107,7 @@ class Finance extends MX_Controller {
         $limit = $requestData['length'];
         $search = $this->input->post('search')['value'];
         $settings = $this->settings_model->getSettings();
-
+        
         if ($limit == -1) {
             if (!empty($search)) {
                 $data['expenses'] = $this->finance_model->getExpenseBysearch($search);
@@ -3120,7 +3124,7 @@ class Finance extends MX_Controller {
         //  $data['payments'] = $this->finance_model->getPayment();
 
         foreach ($data['expenses'] as $expense) {
-
+            $category_name = $this->finance_model->getExpenseCategoryById($expense->category_id);
 
             if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Clerk'))) {
                 $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('') . '" href="finance/editExpense?id=' . $expense->id . '"><i class="fa fa-edit"> </i>'.' '.lang('edit').'</a>';
@@ -3142,8 +3146,8 @@ class Finance extends MX_Controller {
 
 
             $info[] = array(
-                date('Y-m-d', $expense->date),
-                $expense->category,
+                date('Y-m-d', strtotime($expense->expense_date.' UTC')),
+                $this->finance_model->getExpenseCategoryById($expense->category_id)->category,
                 $expense->note,
                 '<div class="text-right">'.number_format($expense->amount,'2','.',',').'</div>',
                 $options1 . ' ' . $options2 . ' ' . $options3,
