@@ -1182,15 +1182,22 @@ class Finance extends MX_Controller {
                     $charge_increment = $charge_code+=1;
                     $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
 
+                    if ($tax[$key] == "0") {
+                        $tax[$key] = null;
+                    }
+
                     if (!empty($c_price[$key])) {
                         $tax_details = $this->finance_model->getTaxById($tax[$key]);
-                        $tax_amount = ($c_price[$key]*($tax_details->rate/100));
+                        // $tax_amount = ($c_price[$key]*($tax_details->rate/100));
+                        $tax_amount_rate = ($tax_details->rate+100)/100;
 
                         if ($price_includes_tax[$key] == 1) {
-                            $c_price_without_tax = $c_price[$key]-$tax_amount;
+                            $c_price_without_tax = $c_price[$key]/$tax_amount_rate;
+                            $tax_amount = $c_price_without_tax*($tax_details->rate/100);
                             $c_price_result = $c_price[$key];
                         } else {
                             $c_price_without_tax = $c_price[$key];
+                            $tax_amount = $c_price_without_tax*($tax_details->rate/100);
                             $c_price_result = $c_price_without_tax + $tax_amount;
                         }
                     } else {
@@ -1329,15 +1336,22 @@ class Finance extends MX_Controller {
                     $charge_increment = $charge_code+=1;
                     $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
 
+                    if ($tax[$key] == "0") {
+                        $tax[$key] = null;
+                    }
+
                     if (!empty($c_price[$key])) {
                         $tax_details = $this->finance_model->getTaxById($tax[$key]);
-                        $tax_amount = ($c_price[$key]*($tax_details->rate/100));
+                        // $tax_amount = ($c_price[$key]*($tax_details->rate/100));
+                        $tax_amount_rate = ($tax_details->rate+100)/100;
 
                         if ($price_includes_tax[$key] == 1) {
-                            $c_price_without_tax = $c_price[$key]-$tax_amount;
+                            $c_price_without_tax = $c_price[$key]/$tax_amount_rate;
+                            $tax_amount = $c_price_without_tax*($tax_details->rate/100);
                             $c_price_result = $c_price[$key];
                         } else {
                             $c_price_without_tax = $c_price[$key];
+                            $tax_amount = $c_price_without_tax*($tax_details->rate/100);
                             $c_price_result = $c_price_without_tax + $tax_amount;
                         }
                     } else {
