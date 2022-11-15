@@ -36,7 +36,7 @@ function required() {
                 $user = $CI->db->get_where('admin', array('ion_user_id' => $current_user_id))->row();
                 $CI->hospital_id = $user->hospital_id;
                 $CI->timezone = $CI->db->get_where('settings', array('hospital_id' => $CI->hospital_id))->row()->timezone;
-                if (empty($user->img_url)) {
+                if (empty($user->img_url) || !file_exists($user->img_url)) {
                     $profile_img_url = 'public/assets/images/users/placeholder.jpg';
                 } else {
                     $profile_img_url = $user->img_url;
@@ -62,7 +62,7 @@ function required() {
                 $user = $CI->db->get_where($group_name, array('ion_user_id' => $current_user_id))->row();
                 $CI->hospital_id = $user->hospital_id;
                 $CI->timezone = $CI->db->get_where('settings', array('hospital_id' => $CI->hospital_id))->row()->timezone;
-                if (empty($user->img_url)) {
+                if (empty($user->img_url) || !file_exists($user->img_url)) {
                     $profile_img_url = 'public/assets/images/users/placeholder.jpg';
                 } else {
                     $profile_img_url = $user->img_url;
@@ -131,7 +131,12 @@ function required() {
             if ($CI->ion_auth->in_group(array('admin'))) {
                 $current_user_id = $CI->ion_auth->user()->row()->id;
                 $hospital_id = $CI->db->get_where('admin', array('ion_user_id' => $current_user_id))->row()->hospital_id;
-                $modules = $CI->db->get_where('hospital', array('id' => $hospital_id))->row()->module;
+                $hospital = $CI->db->get_where('hospital', array('id' => $hospital_id))->row();
+                if (!empty($hospital->package)) {
+                    $modules = $CI->db->get_where('package', array('id' => $hospital->package))->row()->module;
+                } else {
+                    $modules = $hospital->module;
+                }
                 $CI->modules = explode(',', $modules);
             } else {
                 $current_user_id = $CI->ion_auth->user()->row()->id;
@@ -139,9 +144,18 @@ function required() {
                 $group_name = $CI->db->get_where('groups', array('id' => $group_id))->row()->name;
                 $group_name = strtolower($group_name);
                 $hospital_id = $CI->db->get_where($group_name, array('ion_user_id' => $current_user_id))->row()->hospital_id;
-                $modules = $CI->db->get_where('hospital', array('id' => $hospital_id))->row()->module;
+                $hospital = $CI->db->get_where('hospital', array('id' => $hospital_id))->row();
+                if (!empty($hospital->package)) {
+                    $modules = $CI->db->get_where('package', array('id' => $hospital->package))->row()->module;
+                } else {
+                    $modules = $hospital->module;
+                }
                 $CI->modules = explode(',', $modules);
             }
+        } else {
+            $current_user_id = $CI->ion_auth->user()->row()->id;
+            $modules = $CI->db->get_where('superadmin', array('ion_user_id' => $current_user_id))->row()->module;
+            $CI->modules = explode(',', $modules);
         }
     }
 
