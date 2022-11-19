@@ -16,6 +16,12 @@ class Finance_model extends CI_model {
         $this->db->insert('invoice', $data2);
     }
 
+    function insertInvoiceItem($data) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('invoice_item', $data2);
+    }
+
     function getPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->order_by('id', 'desc');
@@ -1559,5 +1565,56 @@ class Finance_model extends CI_model {
         $query = $this->db->get('charge');
         return $query->num_rows();
     }
+
+    function getDiscountById($id) {
+        $this->db->group_start();
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->or_where('hospital_id', null);
+        $this->db->group_end();
+        $this->db->where('id', $id);
+        $query = $this->db->get('discount');
+        return $query->row();
+    }
+
+    function getDiscountInfo($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('discount')
+                    // ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    // ->or_where('hospital_id', null)
+                    //->where('is_invoice_visible', 1)
+                    ->group_start()
+                        ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR description LIKE '%" . $searchTerm . "%')", NULL, TRUE)
+                    ->group_end()
+                    ->group_start()
+                        ->where('hospital_id', $this->session->userdata('hospital_id'))
+                        ->or_where('hospital_id', null)
+                    ->group_end()
+                    ->get();
+            $discounts = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->group_start();
+                $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+                $this->db->or_where('hospital_id', null);
+            $this->db->group_end();
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('discount');
+            $discounts = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($discounts as $discount) {
+            $rate = $discount['rate'];
+            $amount = $discount['amount'];
+            $discount_type_id = $discount['discount_type_id'];
+            // if (empty($rate)) {
+            //     $rate = $discount['amount'];
+            // }
+            $data[] = array("id" => $discount['id'], "text" => $discount['name'], "rate" => $rate, "amount" => $amount, "discount_type_id" => $discount_type_id);
+        }
+        return $data;
+    } 
 
 }

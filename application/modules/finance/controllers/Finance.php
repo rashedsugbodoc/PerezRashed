@@ -83,6 +83,34 @@ class Finance extends MX_Controller {
         $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
+
+        $charges = $this->finance_model->getChargesWithCopay();
+
+        $charges_with_copay = [];
+        $charges_without_copay = [];
+
+        foreach($charges as $charge) {
+            if ($charge->total >= 2) {
+                $charges_copay_lists = $this->finance_model->getPaymentCategoryByGroupId($charge->group_id);
+                // foreach($charges_copay_lists as $charges_copay_list) {
+                //     $charges_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_list->id);
+                // }
+                $charges_with_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_lists[0]->id);
+            }
+        }
+
+        foreach($charges as $charge) {
+            if ($charge->total <= 1) {
+                $charges_copay_lists = $this->finance_model->getPaymentCategoryByGroupId($charge->group_id);
+                foreach($charges_copay_lists as $charges_copay_list) {
+                    $charges_without_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_list->id);
+                }
+            }
+        }
+
+        $data['charges_with_copay'] = $charges_with_copay;
+        $data['charges_without_copay'] = $charges_without_copay;
+
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_payment_viewv2', $data);
         // $this->load->view('home/footer'); // just the header file
@@ -117,6 +145,144 @@ class Finance extends MX_Controller {
         $outstanding_balance = $total_invoices_amount - $deposit;
 
         return $outstanding_balance;
+    }
+
+    public function addPayment2() {
+        $charge_id = $this->input->post('charge_id');
+        $amount = $this->input->post('amount');
+        $quantity = $this->input->post('quantity');
+        // $subtotal = $this->input->post('subtotal');
+        $discount = $this->input->post('discount');
+        $gross = $this->input->post('grsss');
+        $remarks = $this->input->post('remarks');
+        $amount_received = $this->input->post('amount_received');
+        $deposit_type = $this->input->post('deposit_type');
+        $patient = $this->input->post('patient');
+        $doctor = $this->input->post('doctor');
+        $encounter_id = $this->input->post('encounter_id');
+        $current_user_group = $this->ion_auth->get_users_groups()->row()->name;
+        $tax = $this->input->post('tax');
+        $discount_total = $this->input->post('discount_total');
+        $discount_input = $this->input->post('discount_input');
+        $payer_item_total = $this->input->post('item_total');
+        $discount_type = $this->input->post('discount_type');
+        // $item_total_price = $this->input->post('amount_input');
+        $date = time();
+
+        $payer_details = [];
+        foreach($charge_id as $key => $value) {
+            $payer_id = $this->finance_model->getPaymentCategoryById($value)->payer_account_id;
+            $payer_details[] = $this->company_model->getCompanyById($payer_id);
+
+            /*Front-End to Back-End Data Validation Start*/
+                $charge_details = $this->finance_model->getPaymentCategoryById($value);
+            /*End*/
+
+        }
+
+        $payer_id = [];
+        foreach($payer_details as $payer_detail) {
+            $payer_id[] = $payer_detail->id;
+        }
+
+        $payer_id_unique = array_values(array_unique($payer_id));
+
+        // $payer_ids = $payer_id;
+
+        // $payer_details_unique = array_unique($payer_details);
+
+        // $this->finance_model->insertPayment($invoice_data);
+        // $inserted_id = $this->db->insert_id();
+
+        foreach($payer_id_unique as $key => $value) {
+
+        }
+
+        foreach($payer_id_unique as $key => $value) {
+            $payer_id_unique_single = $value;
+            $subtotal = $payer_item_total[$key];
+            $gross_total = $subtotal - $discount_total[$key];
+
+            do {
+                $raw_invoice_number = 'I'.random_string('alnum', 6);
+                $validate_number = $this->finance_model->validateInvoiceNumber($raw_invoice_number);
+            } while($validate_number != 0);
+
+            $invoice_number = strtoupper($raw_invoice_number);
+
+            $charge_detail = [];
+            $invoice_item_data = array();
+
+            $company_classification = $this->company_model->getClassificationByCompanyId($payer_id_unique_single);
+            $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
+            $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+
+            foreach ($payment_status_list as $status_list) {
+                if ($status_list->name === "paid") {
+                    $paid_status = $status_list->id;
+                } elseif ($status_list->name === "unpaid") {
+                    $unpaid_status = $status_list->id;
+                } elseif ($status_list->name === "overdue") {
+                    $overdue_status = $status_list->id;
+                }
+            }
+
+            if (empty($payment_status)) {
+                $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
+                $received_deposit_amount = $amount_received + $deposit_amount;
+
+                if ($received_deposit_amount >= $gross) {
+                    $payment_status = $paid_status;
+                } else {
+                    $payment_status = $unpaid_status;
+                }
+            }
+
+            $invoice_data = array();
+
+            $invoice_data = array(
+                'patient' => $patient,
+                'doctor' => $doctor,
+                'date' => $date,
+                'amount' => $subtotal,
+                'discount' => $discount_total[$key],
+                'gross_total' => $gross_total,
+                'remarks' => $remarks,
+                'amount_received' => $amount_received,
+                'deposit_type' => $deposit_type,
+                'payment_status' => $payment_status,
+                'company_id' => $payer_id_unique_single,
+                'encounter_id' => $encounter_id,
+                'invoice_number' => $invoice_number,
+                'discount_id' => $discount_type[$key],
+                'invoice_tax_amount' => $tax[$key],
+            );
+            // $this->finance_model->insertPayment($invoice_data);
+            $inserted_id = $this->db->insert_id();
+            foreach($charge_id as $key => $value) {
+                $charge_detail[] = $this->finance_model->getPaymentCategoryById($value);
+
+                if ($charge_detail[$key]->payer_account_id === $payer_id_unique_single) {
+                    $item_total_price = $amount[$key] * $quantity[$key];
+
+                    $invoice_item_data = array( 
+                        'charge_id' => $charge_detail[$key]->id,
+                        'description' => $charge_detail[$key]->category,
+                        'invoice_id' => $inserted_id,
+                        'price' => $amount[$key],
+                        'tax_id' => $charge_detail[$key]->tax_id,
+                        'charge_code' => $charge_detail[$key]->charge_code,
+                        'quantity' => $quantity[$key],
+                        'item_total_price' => $item_total_price,
+                    );
+                    // $this->finance_model->insertInvoiceItem($invoice_item_data);
+                }
+                // $this->finance_model->insertInvoiceItem($invoice_item_data);
+            }
+        }
+
+        redirect('finance/invoices');
+
     }
 
     public function addPayment() {
@@ -3302,6 +3468,114 @@ class Finance extends MX_Controller {
 
         echo json_encode($data);
     }
+
+    public function getPayersByChargePayerGroup2() {
+        $group = $this->input->get('group');
+        $charge_group = explode(',', $group);
+
+        $charges_c_price = [];
+        $charges_quantity = [];
+        $charges_payer_account = [];
+        $charges_sub_total = [];
+        $payer_details_result = [];
+
+        // foreach($charge_group as $group_member) {
+        //     $group_details = $this->finance_model->getPaymentCategoryByGroupId($group_member);
+        //     foreach($group_details as $key => $value) {
+        //         $charges_c_price[] = $value->c_price;
+        //         $charges_quantity[] = 1;
+        //         $charges_sub_total[] = $charges_c_price[$key] * $charges_quantity[$key];
+        //         $charges_payer_account[] = $value->payer_account_id;
+
+        //         $payer_details_data = array_merge($charges_c_price, $charges_quantity, $charges_sub_total, $charges_payer_account);
+        //         $payer_details_result[] = array($charges_payer_account[$key] => $payer_details_data);
+        //     }
+        // }
+
+        foreach($charge_group as $group_member) {
+            $charge_details = $this->finance_model->getPaymentCategoryByGroupId($group_member);
+            $payers = [];
+            foreach($charge_details as $k => $v) {
+                $payers[] = $v->payer_account_id;
+                // $invoice = [];
+            }
+
+            $subtotal = 0;
+            $total = 0;
+            foreach($payers as $k2 => $v2) {
+                $subtotal += ($charge_details[$k2]->c_price_without_tax * 1);
+                $total += ($charge_details[$k2]->c_price * 1);
+                $invoice_component = array(
+                    'charges' => array(
+                        'id' => $charge_details[$k2]->id,
+                        'price_wo_tax' => $charge_details[$k2]->c_price_without_tax,
+                        'price_with_tax' => $charge_details[$k2]->c_price,
+                        'quantity' => 1,
+                        'amount' => $charge_details[$k2]->c_price_without_tax * 1,
+                        'group_id' => $charge_details[$k2]->group_id,
+                        'category' => $charge_details[$k2]->category,
+                        'type' => $charge_details[$k2]->type,
+                    ),
+                    'company' => array(
+                        'id' => $v2,
+                        'display_name' => $this->company_model->getCompanyById($v2)->display_name,
+                    ),
+                    'tax' => array(
+                        'id' => $charge_details[$k2]->tax_id,
+                        'percentage' => $this->finance_model->getTaxById($charge_details[$k2]->tax_id)->rate,
+                        'amount' => $charge_details[$k2]->tax_amount,
+                    ),
+                    'total' => array(
+                        'subtotal' => $subtotal,
+                        'total' => $total,
+                    ),
+                );
+                $invoice[$v2] = $invoice_component;
+            }
+        }
+
+        $data['invoice'] = $invoice;
+
+        echo json_encode($data);
+    }
+
+    public function getDiscountInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->finance_model->getDiscountInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getExtrasByDiscountIdByChargeIdByJason() {
+        $discount = $this->input->get('discount');
+        $charge = $this->input->get('charge');
+
+        $charge_details = [];
+
+        $charges = explode(',', $charge);
+
+        foreach($charges as $key => $value) {
+            $charge_details[] = $this->finance_model->getPaymentCategoryById($value);
+        }
+
+        $taxes_details = [];
+        foreach($charge_details as $charge_detail) {
+            $taxes_details[] = $this->finance_model->getTaxById($charge_detail->tax_id);
+        }
+
+        $data['taxes'] = $taxes_details;
+
+        $data['charge_details'] = $charge_details;
+        $data['discount_details'] = $this->finance_model->getDiscountById($discount);
+
+
+        echo json_encode($data);
+    }
+
+
 
 }
 

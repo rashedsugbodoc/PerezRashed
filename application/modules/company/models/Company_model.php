@@ -273,7 +273,7 @@ class Company_model extends CI_model {
         return $data;
     }
 
-    function getCompanyWithoutAddNewOption($searchTerm, $provider_country) {
+    function getCompanyWithoutAddNewOption($searchTerm, $provider_country, $selected_payer = null) {
         if (!empty($searchTerm)) {
             $query = $this->db->select('*')
                     ->from('company')
@@ -281,6 +281,7 @@ class Company_model extends CI_model {
                     // ->or_where('hospital_id', null)
                     //->where('is_invoice_visible', 1)
                     ->group_start()
+                        ->where_not_in('id', $selected_payer)
                         ->where('is_invoice_visible', 1)
                         ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%')", NULL, TRUE)
                     ->group_end()
@@ -292,9 +293,10 @@ class Company_model extends CI_model {
             $companies = $query->result_array();
         } else {
             $this->db->select('*');
+            $this->db->where_not_in('id', $selected_payer);
             $this->db->group_start();
-            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-            $this->db->or_where('hospital_id', null);
+                $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+                $this->db->or_where('hospital_id', null);
             $this->db->group_end();
 
             $this->db->where('is_invoice_visible', 1);
