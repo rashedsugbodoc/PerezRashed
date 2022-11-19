@@ -80,17 +80,26 @@ function required() {
                 }
             }
         } else {
+            $current_user_id = $CI->ion_auth->user()->row()->id;
+            $user = $CI->db->get_where('superadmin', array('ion_user_id' => $current_user_id))->row();
+            if (empty($user->img_url) || !file_exists($user->img_url)) {
+                $profile_img_url = 'public/assets/images/users/placeholder.jpg';
+            } else {
+                $profile_img_url = $user->img_url;
+            }
             $CI->hospital_id = 'superadmin';
             $CI->timezone = 'Asia/Manila';
             if (!empty($CI->hospital_id)) {
                 $newdata = array(
                     'hospital_id' => $CI->hospital_id,
+                    'profile_img_url' => $profile_img_url,
+                    'name' => $user->name
                 );
                 $CI->session->set_userdata($newdata);
             }
             if (!empty($CI->timezone)) {
                 date_default_timezone_set($CI->timezone);
-            }            
+            }
         }
     }
 
