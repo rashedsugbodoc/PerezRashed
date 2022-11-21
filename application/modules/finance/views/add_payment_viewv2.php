@@ -1170,16 +1170,64 @@
     </script>
 
     <script type="text/javascript">
+        var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
         function computeSubtotal() {
 
         }
 
-        function computeDiscount() {
+        function computeDiscount(payer_account, invoice_item_amount, invoice_tax_amount) {
+            var data = $("#discount"+payer_account).select2('data')[0];
 
+            if (data != undefined) {
+                if (data.discount_type_id == 1) {
+                    var invoice_discount_amount = invoice_item_amount * (data.rate/100);
+                    var rate = data.rate;
+                    discount += invoice_discount_amount;
+                } else if (data.discount_type_id == 2) {
+                    var invoice_discount_amount = data.amount;
+                    var rate = data.amount;
+                    discount += invoice_discount_amount;
+                } else {
+                    var invoice_discount_amount = 0;
+                    var rate = 0;
+                    discount += invoice_discount_amount;
+                }
+
+                if (is_display_prices_with_tax_included() == "1") {
+                    var payer_account_total = (parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
+                } else {
+                    var payer_account_total = (parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
+                }
+            } else {
+                var invoice_discount_amount = 0;
+                var rate = 0;
+                discount += invoice_discount_amount;
+                var payer_account_total = invoice_item_amount;
+            }
+
+            return [payer_account_total, invoice_discount_amount, rate, discount]
+        }
+
+        function computeAllDiscount() {
+            var input = document.getElementsByName('discount_total[]');
+
+            var discount = 0;
+            for (var i = 0; i < input.length; i++) {
+                discount += Number(input[i].value);
+            }
+
+            $("#invoice_result_discount").empty().append('<label>'+currency+' '+discount.toFixed(2)+'</label>');
         }
 
         function computeTax() {
+            var input = document.getElementsByName('tax[]');
 
+            var tax = 0;
+            for (var i = 0; i < input.length; i++) {
+                tax += Number(input[i].value);
+            }
+
+            $("#invoice_result_tax").empty().append('<label>'+currency+' '+tax.toFixed(2)+'</label>');
         }
 
         function computePayerTotal() {
@@ -1242,6 +1290,7 @@
     </script>
 
     <script type="text/javascript">
+        // var tax2 = 0;
         var tax = 0;
         var discount = 0;
         function computeItem(invoice, selected) {
@@ -1461,6 +1510,8 @@
                         var tax_detail = tax_amount;
                     }
 
+                    console.log("tax_details: "+tax_detail);
+
                     if (tbody_count == 0) {
                         $("#charge_cards").append('<div class="col-md-6 col-sm-12">\n\
                             <div class="card h-90" id="payer_account-'+key+'">\n\
@@ -1661,14 +1712,12 @@
                 //     console.log("tax: "+tax);
                 // })
 
-                console.log("tax_amount: ")
-                console.log(tax_amount)
-                tax += Number(tax_amount);
-
-                console.log(tax_array);
+                // var tax = 0;  
+                // $(".tax_total").each(function() {
+                //     tax += Number(tax_detail[key]);
+                // })
 
                 $("#invoice_result_subtotal").empty().append('<label>'+currency+' '+((cnt*100)/100).toFixed(2)+'</label>');
-                $("#invoice_result_tax").empty().append('<label>'+currency+' '+(tax).toFixed(2)+'</label>');
 
                 // console.log(charge_items);
                 // console.log(amount_items);
@@ -1680,44 +1729,51 @@
                 // console.log(quantity_items);
                 // console.log(invoice_items);
 
-                var data = $("#discount"+key).select2('data')[0];
+                // var data = $("#discount"+key).select2('data')[0];
 
                 var invoice_item_extras = inv_items(key);
 
                 var invoice_item_amount = invoice_item_extras[1];
                 var invoice_tax_amount = invoice_item_extras[0];
 
-                if (data != undefined) {
-                    if (data.discount_type_id == 1) {
-                        var invoice_discount_amount = invoice_item_amount * (data.rate/100);
-                        var rate = data.rate;
-                        discount += invoice_discount_amount;
-                    } else if (data.discount_type_id == 2) {
-                        var invoice_discount_amount = data.amount;
-                        var rate = data.amount;
-                        discount += invoice_discount_amount;
-                    } else {
-                        var invoice_discount_amount = 0;
-                        var rate = 0;
-                        discount += invoice_discount_amount;
-                    }
+                var invoice_discount_extras = computeDiscount(key, invoice_item_amount, invoice_tax_amount);
 
-                    // if (is_display_prices_with_tax_included() == "1") {
-                    //     $('#payer_total-'+key).val((parseFloat(invoice_item_amount)).toFixed(2));
-                    // } else {
-                    //     $('#payer_total-'+key).val((parseFloat(invoice_item_amount+invoice_tax_amount)).toFixed(2));
-                    // }
+                var payer_account_total = invoice_discount_extras[0];
+                var invoice_discount_amount = invoice_discount_extras[1];
+                var rate = invoice_discount_extras[2];
+                discount = invoice_discount_extras[3];
 
-                    if (is_display_prices_with_tax_included() == "1") {
-                        var payer_account_total = (parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
-                    } else {
-                        var payer_account_total = (parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
-                    }
-                } else {
-                    var invoice_discount_amount = 0;
-                    var rate = 0;
-                    discount += invoice_discount_amount;
-                }
+                // if (data != undefined) {
+                //     if (data.discount_type_id == 1) {
+                //         var invoice_discount_amount = invoice_item_amount * (data.rate/100);
+                //         var rate = data.rate;
+                //         discount += invoice_discount_amount;
+                //     } else if (data.discount_type_id == 2) {
+                //         var invoice_discount_amount = data.amount;
+                //         var rate = data.amount;
+                //         discount += invoice_discount_amount;
+                //     } else {
+                //         var invoice_discount_amount = 0;
+                //         var rate = 0;
+                //         discount += invoice_discount_amount;
+                //     }
+
+                //     // if (is_display_prices_with_tax_included() == "1") {
+                //     //     $('#payer_total-'+key).val((parseFloat(invoice_item_amount)).toFixed(2));
+                //     // } else {
+                //     //     $('#payer_total-'+key).val((parseFloat(invoice_item_amount+invoice_tax_amount)).toFixed(2));
+                //     // }
+
+                //     if (is_display_prices_with_tax_included() == "1") {
+                //         var payer_account_total = (parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
+                //     } else {
+                //         var payer_account_total = (parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
+                //     }
+                // } else {
+                //     var invoice_discount_amount = 0;
+                //     var rate = 0;
+                //     discount += invoice_discount_amount;
+                // }
 
                 // $('#payer_total-'+key).val(payer_total_invoice);
                 $('#payer_total-'+key).val(payer_account_total);
@@ -1725,7 +1781,9 @@
                 $('#discount_total-'+key).val((invoice_discount_amount).toFixed(2));
                 $("#invoice_result_discount").empty().append('<label>'+currency+' '+(discount).toFixed(2)+'</label>');
                 $('#card_items_total-'+key).val((invoice_item_amount).toFixed(2));
-                $('#tax_total-'+key).val((invoice_tax_amount).toFixed(2));
+                $('#tax_total-'+key).val((invoice_tax_amount).toFixed(2)).end();
+
+                computeTax();
 
                 var summary = 
                     { invoice_total: invoice_item_amount, discount_amount: invoice_discount_amount, tax_amount: invoice_tax_amount }
@@ -2651,6 +2709,14 @@
 
             console.log("tax_amount: "+tax_amount);
 
+            if (tax_amount == 0) {
+                tax_amount = value;
+            }
+
+            console.log(tax_amount)
+
+            $("#invoice_result_subtotal").empty().append('<label>'+currency+' '+((cnt*100)/100).toFixed(2)+'</label>');
+
             window.sessionStorage.setItem('item_quantity-'+charge_id+payer_id, quantity);
 
             var item_total = c_price * window.sessionStorage.getItem('item_quantity-'+charge_id+payer_id);
@@ -2665,40 +2731,22 @@
             var invoice_item_amount = invoice_item_extras[1];
             var invoice_tax_amount = invoice_item_extras[0];
 
-            if (data != undefined) {
-                if (data.discount_type_id == 1) {
-                    var invoice_discount_amount = parseFloat(invoice_item_amount) * (data.rate/100);
-                    var rate = data.rate;
-                } else if (data.discount_type_id == 2) {
-                    var invoice_discount_amount = parseFloat(data.amount);
-                    var rate = data.amount;
-                } else if (data.discount_type_id == 3) {
-                    var invoice_discount_amount = 0;
-                    var rate = 0;
-                } else if (data.discount_type_id == 4) {
-                    var invoice_discount_amount = 0;
-                    var rate = 0;
-                } else {
-                    var invoice_discount_amount = 0;
-                    var rate = 0;
-                }
+            var invoice_discount_extras = computeDiscount(payer_id, invoice_item_amount, invoice_tax_amount);
 
-                if (is_display_prices_with_tax_included() == "1") {
-                    var payer_account_total = parseFloat(invoice_item_amount-invoice_discount_amount).toFixed(2)
-                } else {
-                    var payer_account_total = parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount).toFixed(2)
-                }
-            } else {
-                var invoice_discount_amount = 0;
-                var rate = 0;
-                var payer_account_total = invoice_item_amount;
-            }
+            var payer_account_total = invoice_discount_extras[0];
+            var invoice_discount_amount = invoice_discount_extras[1];
+            var rate = invoice_discount_extras[2];
+            discount = invoice_discount_extras[3];
 
             console.log("discount_amount: "+invoice_discount_amount);
+            // $("#invoice_result_discount").empty().append('<label>'+currency+' '+(discount).toFixed(2)+'</label>');
             $('#discount_total-'+payer_id).val((invoice_discount_amount).toFixed(2));
             $('#payer_total-'+payer_id).val(payer_account_total);
             $('#card_items_total-'+payer_id).val((invoice_item_amount).toFixed(2));
             $('#tax_total-'+payer_id).val((invoice_tax_amount).toFixed(2));
+
+            computeAllDiscount();
+            computeTax();
 
             // console.log("item_total : "+item_total);
             console.log(invoice_item_amount);
@@ -2824,45 +2872,21 @@
             var invoice_item_amount = invoice_item_extras[1];
             var invoice_tax_amount = invoice_item_extras[0];
 
-            if (data != undefined) {
-                if (data.discount_type_id == 1) {
-                    var invoice_discount_amount = invoice_item_amount * (data.rate/100);
-                    var rate = data.rate;
-                } else if (data.discount_type_id == 2) {
-                    var invoice_discount_amount = data.amount;
-                    var rate = data.amount;
-                } else if (data.discount_type_id == 3) {
-                    var invoice_discount_amount = 0;
-                    var rate = 0;
-                } else if (data.discount_type_id == 4) {
-                    var invoice_discount_amount = 0;
-                    var rate = 0;
-                } else {
-                    var invoice_discount_amount = 0;
-                    var rate = 0;
-                }
+            var invoice_discount_extras = computeDiscount(payer_id, invoice_item_amount, invoice_tax_amount);
 
-                if (is_display_prices_with_tax_included() == "1") {
-                    var payer_account_total = (parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
-                } else {
-                    var payer_account_total = (parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
-                }
-            } else {
-                var invoice_discount_amount = 0;
-                var rate = 0;
-                var payer_account_total = invoice_item_amount;
-            }
+            var payer_account_total = invoice_discount_extras[0];
+            var invoice_discount_amount = invoice_discount_extras[1];
+            var rate = invoice_discount_extras[2];
+            discount = invoice_discount_extras[3];
 
-            // if (is_display_prices_with_tax_included() == "1") {
-            //     $('#payer_total-'+payer_id).val((parseInt(invoice_item_amount)).toFixed(2));
-            // } else {
-            //     $('#payer_total-'+payer_id).val((parseInt(invoice_item_amount+invoice_tax_amount)).toFixed(2));
-            // }
-
+            // $("#invoice_result_discount").empty().append('<label>'+currency+' '+(discount).toFixed(2)+'</label>');
             $('#discount_total-'+payer_id).val((invoice_discount_amount).toFixed(2));
             $('#payer_total-'+payer_id).val(payer_account_total);
             $('#card_items_total-'+payer_id).val((invoice_item_amount).toFixed(2));
             $('#tax_total-'+payer_id).val((invoice_tax_amount).toFixed(2));
+
+            computeAllDiscount();
+            computeTax();
 
             console.log(invoice_item_amount);
 
@@ -2876,68 +2900,70 @@
                 window.sessionStorage.setItem('payer_subtotal-'+payer_id, item_total);
             }
 
-            // $("#subtotal").empty().val(sub_total+result);
-            // $("#unit_price_item"+payer_id+charge_id).append('<p>'+value+'</p>');
-            // $("#summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append('<p>'+value+'</p>')
-            // console.log(charge);
+            /**/
+                // $("#subtotal").empty().val(sub_total+result);
+                // $("#unit_price_item"+payer_id+charge_id).append('<p>'+value+'</p>');
+                // $("#summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append('<p>'+value+'</p>')
+                // console.log(charge);
 
-            // select_discount2(charge_id, payer_id, tax_id, tax_amount, c_price);
+                // select_discount2(charge_id, payer_id, tax_id, tax_amount, c_price);
 
-            // $(document).keyup(function() {
-            //     var quantity = $(".quantity"+charge_id+'-'+payer_id).val();
-            //     var value = $(".amount"+charge_id+'-'+payer_id).val();
-            //     var result = value * quantity;
-            //     var sub_total = $("#subtotal").val();
-            //     // alert(value);
-            //     // $(".summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append(value);
-            //     // $("#subtotal").empty();
-            //     $("#quantity_item"+payer_id+charge_id).empty().append('<p>'+quantity+'</p>');
-            //     $("#amount_item"+payer_id+charge_id).empty().append('<label class="main-content-label tx-13 font-weight-semibold">'+currency+(Math.round(result * 100) / 100).toFixed(2)+'</label>');
-            //     $("#amount_item_input"+payer_id+charge_id).empty().val((Math.round(result * 100) / 100).toFixed(2));
+                // $(document).keyup(function() {
+                //     var quantity = $(".quantity"+charge_id+'-'+payer_id).val();
+                //     var value = $(".amount"+charge_id+'-'+payer_id).val();
+                //     var result = value * quantity;
+                //     var sub_total = $("#subtotal").val();
+                //     // alert(value);
+                //     // $(".summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append(value);
+                //     // $("#subtotal").empty();
+                //     $("#quantity_item"+payer_id+charge_id).empty().append('<p>'+quantity+'</p>');
+                //     $("#amount_item"+payer_id+charge_id).empty().append('<label class="main-content-label tx-13 font-weight-semibold">'+currency+(Math.round(result * 100) / 100).toFixed(2)+'</label>');
+                //     $("#amount_item_input"+payer_id+charge_id).empty().val((Math.round(result * 100) / 100).toFixed(2));
 
-            //     var cnt = 0;  
-            //     var p_value = $("#amount_item"+payer_id+charge_id).find('p').text();
-            //     // console.log(p_value);
-            //     $("[name='amount_input']").each(function() {
-            //         cnt += Number(this.value);
-            //     });
-            //     $("#subtotal").val(cnt);
-            //     $("#invoice_result_subtotal").empty().append('<label>'+currency+' '+Math.round((cnt*100)/100).toFixed(2)+'</label>');
-            //     // $("#subtotal").empty().val(sub_total+result);
-            //     // $("#unit_price_item"+payer_id+charge_id).append('<p>'+value+'</p>');
-            //     // $("#summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append('<p>'+value+'</p>')
-            //     // console.log(charge);
+                //     var cnt = 0;  
+                //     var p_value = $("#amount_item"+payer_id+charge_id).find('p').text();
+                //     // console.log(p_value);
+                //     $("[name='amount_input']").each(function() {
+                //         cnt += Number(this.value);
+                //     });
+                //     $("#subtotal").val(cnt);
+                //     $("#invoice_result_subtotal").empty().append('<label>'+currency+' '+Math.round((cnt*100)/100).toFixed(2)+'</label>');
+                //     // $("#subtotal").empty().val(sub_total+result);
+                //     // $("#unit_price_item"+payer_id+charge_id).append('<p>'+value+'</p>');
+                //     // $("#summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append('<p>'+value+'</p>')
+                //     // console.log(charge);
 
-            //     select_discount2(charge_id, payer_id, c_price);
-            // })
+                //     select_discount2(charge_id, payer_id, c_price);
+                // })
 
-            // $(document).change(function() {
-            //     var quantity = $(".quantity"+charge_id+'-'+payer_id).val();
-            //     var value = $(".amount"+charge_id+'-'+payer_id).val();
-            //     var result = value * quantity;
-            //     var sub_total = $("#subtotal").val();
-            //     // alert(value);
-            //     // $(".summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append(value);
-            //     // $("#subtotal").empty();
-            //     $("#quantity_item"+payer_id+charge_id).empty().append('<p>'+quantity+'</p>');
-            //     $("#amount_item"+payer_id+charge_id).empty().append('<label class="main-content-label tx-13 font-weight-semibold">'+currency+(Math.round(result * 100) / 100).toFixed(2)+'</label>');
-            //     $("#amount_item_input"+payer_id+charge_id).empty().val((Math.round(result * 100) / 100).toFixed(2));
+                // $(document).change(function() {
+                //     var quantity = $(".quantity"+charge_id+'-'+payer_id).val();
+                //     var value = $(".amount"+charge_id+'-'+payer_id).val();
+                //     var result = value * quantity;
+                //     var sub_total = $("#subtotal").val();
+                //     // alert(value);
+                //     // $(".summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append(value);
+                //     // $("#subtotal").empty();
+                //     $("#quantity_item"+payer_id+charge_id).empty().append('<p>'+quantity+'</p>');
+                //     $("#amount_item"+payer_id+charge_id).empty().append('<label class="main-content-label tx-13 font-weight-semibold">'+currency+(Math.round(result * 100) / 100).toFixed(2)+'</label>');
+                //     $("#amount_item_input"+payer_id+charge_id).empty().val((Math.round(result * 100) / 100).toFixed(2));
 
-            //     var cnt = 0;  
-            //     var p_value = $("#amount_item"+payer_id+charge_id).find('p').text();
-            //     // console.log(p_value);
-            //     $("[name='amount_input']").each(function() {
-            //         cnt += Number(this.value);
-            //     });
-            //     $("#subtotal").val(cnt);
-            //     $("#invoice_result_subtotal").empty().append('<label>'+currency+' '+Math.round((cnt*100)/100).toFixed(2)+'</label>');
-            //     // $("#subtotal").empty().val(sub_total+result);
-            //     // $("#unit_price_item"+payer_id+charge_id).append('<p>'+value+'</p>');
-            //     // $("#summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append('<p>'+value+'</p>')
-            //     // console.log(charge);
+                //     var cnt = 0;  
+                //     var p_value = $("#amount_item"+payer_id+charge_id).find('p').text();
+                //     // console.log(p_value);
+                //     $("[name='amount_input']").each(function() {
+                //         cnt += Number(this.value);
+                //     });
+                //     $("#subtotal").val(cnt);
+                //     $("#invoice_result_subtotal").empty().append('<label>'+currency+' '+Math.round((cnt*100)/100).toFixed(2)+'</label>');
+                //     // $("#subtotal").empty().val(sub_total+result);
+                //     // $("#unit_price_item"+payer_id+charge_id).append('<p>'+value+'</p>');
+                //     // $("#summary_unit_price"+payer_id).find('[id="unit_price_item'+payer_id+'"]').append('<p>'+value+'</p>')
+                //     // console.log(charge);
 
-            //     select_discount2(charge_id, payer_id, c_price);
-            // })
+                //     select_discount2(charge_id, payer_id, c_price);
+                // })
+            /**/
         }
 
         function onBlur(charge_id, payer_id) {
