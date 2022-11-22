@@ -1293,6 +1293,7 @@
         // var tax2 = 0;
         var tax = 0;
         var discount = 0;
+        var company_id = [];
         function computeItem(invoice, selected) {
             var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
 
@@ -1454,6 +1455,10 @@
                     } else {
                         old_invoice = [];
                     }
+
+                    company_id.concat(key);
+
+                    console.log(company_id);
 
                     old_invoice.push(new_invoice)
                     window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(old_invoice));
@@ -1778,7 +1783,7 @@
                 // $('#payer_total-'+key).val(payer_total_invoice);
                 $('#payer_total-'+key).val(payer_account_total);
                 $('#discount_input-'+key).val(parseFloat(rate).toFixed(2));
-                $('#discount_total-'+key).val((invoice_discount_amount).toFixed(2));
+                $('#discount_total-'+key).val(parseFloat(invoice_discount_amount).toFixed(2));
                 $("#invoice_result_discount").empty().append('<label>'+currency+' '+(discount).toFixed(2)+'</label>');
                 $('#card_items_total-'+key).val((invoice_item_amount).toFixed(2));
                 $('#tax_total-'+key).val((invoice_tax_amount).toFixed(2)).end();
@@ -2553,14 +2558,16 @@
                 }
 
                 if (is_display_prices_with_tax_included() == "1") {
-                    var payer_account_total = (parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
+                    var payer_account_total = parseFloat(parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
                 } else {
-                    var payer_account_total = (parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
+                    var payer_account_total = parseFloat(parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
                 }
 
                 $('#discount_input-'+payer_id).val(rate);
-                $('#discount_total-'+payer_id).val(invoice_discount_amount);
+                $('#discount_total-'+payer_id).val(parseFloat(invoice_discount_amount).toFixed(2));
                 $('#payer_total-'+payer_id).val(payer_account_total);
+
+                computeAllDiscount();
             
             // var discount = $("#discount"+value+'-'+payer_id).val();
             // var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';

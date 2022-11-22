@@ -169,13 +169,14 @@ class Finance extends MX_Controller {
         // $item_total_price = $this->input->post('amount_input');
         $date = time();
 
+        $charge_details = [];
         $payer_details = [];
         foreach($charge_id as $key => $value) {
             $payer_id = $this->finance_model->getPaymentCategoryById($value)->payer_account_id;
             $payer_details[] = $this->company_model->getCompanyById($payer_id);
 
             /*Front-End to Back-End Data Validation Start*/
-                $charge_details = $this->finance_model->getPaymentCategoryById($value);
+                $charge_details[] = $this->finance_model->getPaymentCategoryById($value);
             /*End*/
 
         }
@@ -194,8 +195,41 @@ class Finance extends MX_Controller {
         // $this->finance_model->insertPayment($invoice_data);
         // $inserted_id = $this->db->insert_id();
 
+        $invoices = [];
         foreach($payer_id_unique as $key => $value) {
+            $charges = [];
+            $c_price = [];
+            foreach($charge_details as $charge_detail_key => $charge_detail) {
+                if ($charge_detail->type === "fixed") {
+                    $c_price[] = $charge_detail->c_price;
+                } elseif ($charge_detail->type === "variable") {
+                    $c_price[] = $amount[$charge_detail_key];
+                } else {
+                    $c_price[] = null;
+                }
 
+                $item_total = $quantity[$charge_detail_key] * $c_price[$charge_detail_key];
+
+                if ($value === $charge_detail->payer_account_id) {
+                    $charges[] = array(
+                        'id' => $charge_detail->id,
+                        'description' => $charge_detail->category,
+                        'invoice_id' => $inserted_id,
+                        'price' => $c_price[$charge_detail_key],
+                        'tax_id' => $charge_detail->tax_id,
+                        'charge_code' => $charge_detail->charge_code,
+                        'quantity' => $quantity[$charge_detail_key],
+                        'item_total_price' => $item_total,
+                    );
+                    $invoices[$value] = array(
+                        'charges' => array(
+                            $charges
+                        ),
+                    );
+                }
+
+                // $array_charge_id = $invoices[$value]['charges'][0];
+            }
         }
 
         foreach($payer_id_unique as $key => $value) {
