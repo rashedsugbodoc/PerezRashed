@@ -10,7 +10,7 @@ class Laboratorist extends MX_Controller {
         $this->load->model('laboratorist_model');
         $this->load->model('location/location_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group('admin')) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
             redirect('home/permission');
         }
     }
@@ -320,6 +320,14 @@ class Laboratorist extends MX_Controller {
 
         echo json_encode($data);        
     }
+
+    public function getAllLaboratoristsInfo() {
+        // Search term
+            $searchTerm = $this->input->post('searchTerm');
+        // Get users
+            $response = $this->laboratorist_model->getAllLaboratoristsInfo($searchTerm);
+            echo json_encode($response);
+        }
 
 }
 

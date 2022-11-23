@@ -10,7 +10,7 @@ class Nurse extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('nurse_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Nurse'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Nurse', 'Doctor'))) {
             redirect('home/permission');
         }
     }

@@ -10,7 +10,7 @@ class Midwife extends MX_Controller {
         $this->load->model('location/location_model');
         $this->load->model('midwife_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Midwife'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Midwife', 'Doctor'))) {
             redirect('home/permission');
         }
     }
@@ -432,7 +432,7 @@ class Midwife extends MX_Controller {
     // Search term
         $searchTerm = $this->input->post('searchTerm');
     // Get users
-        $response = $this->midwife_model->getAllMidwivesinfo($searchTerm);
+        $response = $this->midwife_model->getAllMidwivesInfo($searchTerm);
         echo json_encode($response);
     }
 
