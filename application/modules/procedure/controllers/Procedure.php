@@ -36,9 +36,7 @@ class Procedure extends MX_Controller {
         $this->load->view('procedure', $data);
     }
 
-
     public function getProcedures() {
-
         $requestData = $_REQUEST;
         $start = $requestData['start'];
         $limit = $requestData['length'];
@@ -47,21 +45,17 @@ class Procedure extends MX_Controller {
         $doctor_ion_id = $this->ion_auth->get_user_id();
         $doctor = $this->db->get_where('doctor', array('ion_user_id' => $doctor_ion_id))->row()->id;
 
-       
-
         if(!empty($patient_id)) {
             $data['procedures'] = $this->procedure_model->getProcedureByPatientId($patient_id);
         } else {
             $data['procedures'] = $this->procedure_model->getProcedure();
         }
 
-
         foreach ($data['procedures'] as $procedure) {
             $options1 = '<a type="button" class="btn btn-info btn-xs btn_width" title="' . lang('edit') . '" href="procedure/editProcedure?id=' . $procedure->procedure_number . '"data-id="' . $procedure->id .'"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             $options2 = '<a class="btn btn-danger" title="' . lang('delete') . '" href="procedure/delete?id=' . $procedure->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             $options3 = '<a type="button" class="btn btn-info btn-xs btn_width inffo" title="' . lang('info') . '" data-toggle="modal" data-id="' . $procedure->id . '"><i class="fa fa-info"> </i> ' . lang('info') . '</a>';
-        
-          
+                  
             $data['procedure_performers'] = $this->procedure_model->getProcedurePerformerByProcedureId( $procedure->id);
             $performer_details = [];
 
@@ -85,7 +79,6 @@ class Procedure extends MX_Controller {
                 
             }
 
-            
             $performer_names = implode('</br>', $performer_details);
             $hospital = $this->hospital_model->getHospitalById($procedure->hospital_id);
             $procedure_details = $this->encounter_model->getEncounterById($procedure->encounter_id);
@@ -100,7 +93,6 @@ class Procedure extends MX_Controller {
             } else {
                 $appointment_facility = $hospital->name.'<br>'. '('. lang('online') .')';
             }
-
 
             if(!empty($patient_id)) {
                 $info[] = array(
@@ -144,11 +136,8 @@ class Procedure extends MX_Controller {
                 "data" => []
             );
         }
-
         echo json_encode($output);
-
     }
-
 
     public function addNewView() {
         $data['doctors'] = json_encode($this->doctor_model->getAllDoctor());
@@ -156,17 +145,11 @@ class Procedure extends MX_Controller {
         $data['midwives'] = json_encode($this->midwife_model->getMidwife());
         $data['laboratorists'] = json_encode($this->laboratorist_model->getLaboratorist());
 
-
-    
-      
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
     }
 
-    
-
     public function editProcedure() {
-
         $data = array();
         $data['procedure_number'] = $this->input->get('id');
         $id = $this->procedure_model->getProcedureByProcedureNumber($data['procedure_number'])->id;
@@ -183,9 +166,6 @@ class Procedure extends MX_Controller {
         $data['midwife'] = $this->midwife_model->getMidwifeById($data['procedure']->performer_midwife_ids);
         $data['laboratorist'] = $this->laboratorist_model->getLaboratoristById($data['procedure']->performer_laboratorist_ids);
 
-
-
-        
         if(!empty($data['procedure']->encounter_id)) {
             $data['encounter'] = $this->encounter_model->getEncounterById($data['encounter_id']);
             $data['encounter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
@@ -208,13 +188,10 @@ class Procedure extends MX_Controller {
         } else {
             $this->load->view('home/permission');
         }
-
     }
-
 
     function editProcedureByJson() {
         $id = $this->input->get('id');
-
         $data['procedure'] = $this->procedure_model->getProcedureById($id);
         $data['procedures'] = $this->procedure_model->getProcedure();
         $data['patients'] = $this->patient_model->getPatientByVisitedProviderId();
@@ -225,19 +202,15 @@ class Procedure extends MX_Controller {
         $performer_details = [];
         $performer_roles = [];
         foreach($data['procedure_performers'] as $performer) {
-       
-
             if($performer->performer_table_name == 'Doctor') {
                 $performer_details[] = $this->doctor_model->getDoctorById( $performer->performer_table_id);
                 $performer_roles[] = $this->procedure_model->getProcedureByPerformerByRole($performer->role_id);
               
             }
 
-
             if($performer->performer_table_name == 'Nurse') {
                 $performer_details[] = $this->nurse_model->getNurseById( $performer->performer_table_id);
-                $performer_roles[] = $this->procedure_model->getProcedureByPerformerByRole($performer->role_id);
-              
+                $performer_roles[] = $this->procedure_model->getProcedureByPerformerByRole($performer->role_id); 
             }
 
             if($performer->performer_table_name == 'Midwife') {
@@ -253,24 +226,16 @@ class Procedure extends MX_Controller {
             
         }
 
-
-
-
         $data['performer_details'] = $performer_details;
         $data['performer_roles'] = $performer_roles;
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['nurses'] = $this->nurse_model->getNurse();
         $data['midwives'] = $this->midwife_model->getMidwife();
         $data['laboratorist'] = $this->laboratorist_model->getLaboratorist();
-        
-        
         $data['notes'] = $data['procedure']->note;
-                
-
         echo json_encode($data);
     }
   
-
     public function addNew() {
         $id = $this->input->post('id');
         $current_user = $this->ion_auth->get_user_id();
@@ -378,17 +343,12 @@ class Procedure extends MX_Controller {
                     'role_id' => intval($value['role']),   
                 ); 
 
-
-                
-             
                 $performer_exist = $this->procedure_model->getProcedurePerformerByProcedureIdByPerformerId($procedure_id, intval($value['performer']));
                 
                 $doctor_original_array[] = $this->procedure_model->getProcedurePerformerByDoctorByProcedureId($procedure_id);
                 $nurse_original_array[] = $this->procedure_model->getProcedurePerformerByNurseByProcedureId($procedure_id);
                 $midwife_original_array[] = $this->procedure_model->getProcedurePerformerByMidwifeByProcedureId($procedure_id);
 
-            
-    
                 if(!empty($doctor_original_array)) {
                     $this->procedure_model->updateProcedurePerformerByDoctor($procedure_id, $procedure_performers_details[$key]->performer_table_id, $data3);
                 }
@@ -408,14 +368,11 @@ class Procedure extends MX_Controller {
                
             }
 
-
             $this->procedure_model->updateProcedure($id, $data);
             $this->session->set_flashdata('success', lang('record_updated'));  
         }
         redirect('procedure');
     }
-    
-
 
     public function delete() {
         $id = $this->input->get('id');
@@ -434,7 +391,6 @@ class Procedure extends MX_Controller {
         $this->procedure_model->deleteProcedurePerformerById($id);
 
         echo 'Data deleted', $id ;
-
     }
 
 
@@ -446,7 +402,6 @@ class Procedure extends MX_Controller {
         echo json_encode($response);
     }
  
-    
     public function getCptCodeAndDescription() {
         //searchInTheInput
         $searchTerm = $this->input->post('searchTerm');
@@ -454,7 +409,6 @@ class Procedure extends MX_Controller {
         $response = $this->procedure_model->getCptCodeAndDescription($searchTerm);
 
         echo json_encode($response);
-
     }
 
     public function getAllProceduresDescription() {
@@ -465,49 +419,6 @@ class Procedure extends MX_Controller {
 
         echo json_encode($response);
     }
-
-    public function getAllDoctorWithoutAddNewOption() {
-        //searchInTheInput
-        $searchTerm = $this->input->post('searchTerm');
-
-        //Get Users
-        $response = $this->doctor_model->getDoctorWithoutAddNewOption($searchTerm);
-
-        echo json_encode($response);
-        
-    }
-
-    public function getAllNurseWithWithoutAddNewOption() {
-        //searchInput
-        $searchTerm = $this->input->post('searchTerm');
-
-        //Get Nurse
-        $response = $this->procedure_model->getRenderingNurseWithoutAddNewOption($searchTerm);
-
-        echo json_encode($response);
-    }
-
-    public function getAllMidwifeWithoutAddNewOption() {
-        //searchInput
-        $searchTerm = $this->input->post('searchTerm');
-
-        //Get Midwife
-        $response = $this->procedure_model->getRenderingMidwifeWithoutAddNewOption($searchTerm);
-
-        echo json_encode($response);
-    }
-
-    // public function getAllLaboratoristWithoutAddNewOption() {
-    //     //searchInput
-    //     $searchTerm = $this->input->post('searchTerm');
-
-    //     //Get Midwife
-    //     $response = $this->procedure_model->getRenderingLaboratoristWihoutAddNewOption($searchTerm);
-
-    //     echo json_encode($response);
-    // }
-
-    
 
     public function getUserWithoutAddNewOption() {
         //searchInTheInput
@@ -528,13 +439,7 @@ class Procedure extends MX_Controller {
 
         echo json_encode($response);
     }
-
-
-
-
-
-
-
+    
 }
 
 /* End of file procedure.php */

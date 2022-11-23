@@ -129,85 +129,6 @@ class Procedure_model extends CI_model {
         return $query->num_rows();
     }
 
-
-
-    function getProcedureBySearchByDoctor($doctor, $search, $patient_id = null) {
-        $this->db->order_by('id', 'desc');
-        if (!empty($patient_id)) {
-            $query = $this->db->select('*')
-                   ->from('procedure')
-                   ->where('patient', $patient_id)
-                   ->where('hospital_id', $this->session->userdata('hospital'))
-                   ->where('performer_doctor_ids', $doctor)
-                   ->where("(id LIKE '%".$search."%' OR procedure_code LIKE '%" .$search . "%' OR description LIKE '%". $search. "%')", NULL, FALSE)
-                   ->get();
-            ;
-        } else {
-            $query = $this->db->select('*')
-                    ->from('procedure')
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where('performer_doctor_ids', $doctor)
-                    ->where("(id LIKE '%" .$search ."%' OR procedure_code LIKE '%".$search ."%' OR description LIKE '%". $search ."%')", NULL, FALSE)
-                    ->get();
-            ;
-        }
-
-        return $query->result();
-    }
-
-
-    function getProcedureByDoctor($doctor_id, $patient_id = null) {
-        $this->db->order_by('id', 'desc');
-        if (!empty($patient_id)) {
-            $this->db->where('patient', $patient_id);
-        }
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where('performer_doctor_ids', $doctor_id);
-        $query = $this->db->get('procedure');
-        return $query->result();
-    }
-
-
-    function getProcedureByLimitBySearchByDoctor($doctor, $limit, $start, $search, $patient_id = null) {
-        $this->db->order_by('id', 'desc');
-        $this->db->limit($limit, $start);
-        if (!empty($patient_id)) {
-            $query = $this->db->select('*')
-                    ->from('procedure')
-                    ->where('patient', $patient_id)
-                    ->where('hospital_id', $this->session->userdata('hospital_id'))
-                    ->where('performer_doctor_ids', $doctor)
-                    ->where("(id LIKE '%".$search ."%' OR procedure_code LIKE '%". $search ."%' OR description LIKE '%". $search ."%' )", NULL, FALSE)
-                    ->get();
-            ;
-            }else {
-                $query = $this->db->select('*')
-                        ->from('procedure')
-                        ->where('hospital_id', $this->session->userdata('hospital_id'))
-                        ->where('performer_doctor_ids', $doctor)
-                        ->where("(id LIKE '%".$search ."%' OR procedure_code LIKE '%". $search ."%' OR description LIKE '%". $search ."%' )", NULL, FALSE)
-                        ->get();
-                ;
-            } 
-
-            return $query->result();
-
-    }
-
-
-    function getProcedureByLimitByDoctor($doctor, $limit, $start, $patient_id = null) {
-        $this->db->order_by('id', 'desc');
-        if (!empty($patient_id)) {
-            $this->db->where('patient', $patient_id);
-        }
-        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
-        $this->db->where('performer_doctor_ids', $doctor);
-        $this->db->limit($limit, $start);
-        $query = $this->db->get('procedure');
-        return $query->result();
-    }
-
-
     function getProcedureBySearch($search) {
         $this->db->order_by('id', 'desc');
         $query = $this->db->select('*')
@@ -219,7 +140,7 @@ class Procedure_model extends CI_model {
         return $query->result();
    
     }
-   
+
     function getProcedureByLimitBySearch($limit, $start, $search ) {
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
@@ -232,8 +153,6 @@ class Procedure_model extends CI_model {
         return $query->result();
 
     } 
-
-
  
     function validateProcedureNumber($procedure_number) {
         $this->db->where('procedure_number', $procedure_number);
@@ -248,13 +167,10 @@ class Procedure_model extends CI_model {
         return $query->row();
     }
 
-
     function updateProcedure($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('procedure', $data);
     }
-
-  
 
     function getProcedureRoleByDisplayName($searchTerm) {
         if(!empty($searchTerm)) {
@@ -277,19 +193,16 @@ class Procedure_model extends CI_model {
 
         return $fetched_display_role_name;
     }
-    
 
     function insertProcedurePerformer($data) {
         $this->db->insert('procedure_performer', $data);
     }
-
 
     function getProcedurePerformerRoleById($id) {
         $this->db->where('id', $id);
         $query = $this->db->get('procedure_performer_role');
         return $query->row();
     }
-
 
     function getProcedureByIdFromThePerformer($id) {
         $this->db->where('procedure_id', $id);
@@ -303,7 +216,6 @@ class Procedure_model extends CI_model {
         return $query->row();
     }
     
-
     function getProcedurePerformerByProcedureId($id) {
         $this->db->select('*');
         $this->db->where('procedure_id', $id);
@@ -311,27 +223,22 @@ class Procedure_model extends CI_model {
         return $query->result();
     }
 
-
     function getProcedureByPerformerByRole($id) {
         $this->db->where('id', $id);
         $query = $this->db->get('procedure_performer_role');
         return $query->row();
     }
 
-
     function getProcedurePerformer() {
         $this->db->select('*');
         $query = $this->db->get('procedure_performer');
         return $query->result();
     }
-    
 
     function updateProcedurePerformer($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('procedure_performer', $data);
     }
-
-
 
     function updateProcedurePerformerByDoctor($procedure_id, $performer, $data) {
         $this->db->group_start();
@@ -339,10 +246,8 @@ class Procedure_model extends CI_model {
             $this->db->where('performer_table_name', 'Doctor');
             $this->db->where('performer_table_id', $performer);
         $this->db->group_end();
-        $this->db->update('procedure_performer', $data);
-    
+        $this->db->update('procedure_performer', $data);   
     }
-
 
     function updateProcedurePerformerByNurse($procedure_id, $performer, $data) {
         $this->db->group_start();
@@ -351,9 +256,7 @@ class Procedure_model extends CI_model {
             $this->db->where('performer_table_id', $performer);
         $this->db->group_end();
         $this->db->update('procedure_performer', $data);
-    
     }
-
 
     function updateProcedurePerformerByMidwife($procedure_id, $performer, $data) {
         $this->db->group_start();
@@ -365,23 +268,21 @@ class Procedure_model extends CI_model {
 
     }
 
-
-    function insertProcedurePerformerByDoctor($id, $data) {
+    function insertProcedurePerformerByDoctor($data) {
         $this->db->where('performer_table_name', 'Doctor');
         $this->db->insert('procedure_performer', $data);
 
     }
 
-    function insertProcedurePerformerByNurse($id, $data) {
+    function insertProcedurePerformerByNurse($data) {
         $this->db->where('performer_table_name', 'Nurse');
         $this->db->insert('procedure_performer', $data);
     }
 
-    function insertProcedurePerformerByMidwife($id, $data) {
+    function insertProcedurePerformerByMidwife($data) {
         $this->db->where('performer_table_name', 'Midwife');
         $this->db->insert('procedure_performer', $data);
     }
-
 
     function getProcedurePerformerByProcedureIdByPerformerId($procedure_id, $performer) {
         $this->db->select('*');
@@ -425,32 +326,27 @@ class Procedure_model extends CI_model {
     //midwife
     function getProcedurePerformerByMidwifeByProcedureId($procedure_id) {
         $this->db->group_start();
-        $this->db->where('procedure_id', $procedure_id);
-        $this->db->where('performer_table_name', 'Midwife');
-    $this->db->group_end();
-    $query = $this->db->get('procedure_performer');
-    return $query->result();
+            $this->db->where('procedure_id', $procedure_id);
+            $this->db->where('performer_table_name', 'Midwife');
+        $this->db->group_end();
+        $query = $this->db->get('procedure_performer');
+        return $query->result();
     }
-
 
     function deleteProcedureByPerformer($id) {
         $this->db->where('id', $id);
         $this->db->delete('procedure_performer');
     }
 
-
     function deleteProcedureIdByPerformerId($id) {
         $this->db->where('procedure_id', $id);
         $this->db->delete('procedure_performer');
     }
 
-
     function deleteProcedurePerformerById($id) {
         $this->db->where('performer_table_id', $id);
         $this->db->delete('procedure_performer');
     }
-
-
 
     function deleteProcedureById($id) {
         $this->db->where('id', $id);
