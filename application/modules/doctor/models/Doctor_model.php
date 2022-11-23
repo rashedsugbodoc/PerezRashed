@@ -178,6 +178,31 @@ class Doctor_model extends CI_model {
         return $data;
     }
 
+    function getAllDoctorsInfo($searchTerm) {
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('doctor')
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where("(id LIKE '%" . $searchTerm . "%' OR name LIKE '%" . $searchTerm . "%')", NULL, FALSE)
+                    ->get();
+            $users = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('doctor');
+            $users = $fetched_records->result_array();
+        }
+
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($users as $user) {
+            $data[] = array("id" => $user['id'], "text" => $user['name']);
+        }
+        return $data;
+    }
+
     function getDoctorInfoByCountry($searchTerm, $country_id, $provider) {
         if (!empty($searchTerm)) {
             $this->db->select('*');

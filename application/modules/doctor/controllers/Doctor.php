@@ -1062,6 +1062,16 @@ class Doctor extends MX_Controller {
         echo json_encode($response);
     }
 
+    public function getAllDoctorsInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->doctor_model->getAllDoctorsInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
     public function getDoctorInfoByCountry() {
 // Search term
         $searchTerm = $this->input->post('searchTerm');

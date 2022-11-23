@@ -428,6 +428,14 @@ class Midwife extends MX_Controller {
         //$this->load->view('home/footer'); // just the footer file
     }
 
+    public function getAllMidwivesInfo() {
+    // Search term
+        $searchTerm = $this->input->post('searchTerm');
+    // Get users
+        $response = $this->midwife_model->getAllMidwivesinfo($searchTerm);
+        echo json_encode($response);
+    }
+
 }
 
 /* End of file nurse.php */

@@ -433,6 +433,15 @@ class Nurse extends MX_Controller {
         //$this->load->view('home/footer'); // just the footer file
     }
 
+
+    public function getAllNursesInfo() {
+    // Search term
+        $searchTerm = $this->input->post('searchTerm');
+    // Get users
+        $response = $this->nurse_model->getAllNursesInfo($searchTerm);
+        echo json_encode($response);
+    }
+        
 }
 
 /* End of file nurse.php */
