@@ -67,7 +67,11 @@ class Form extends MX_Controller {
         $method = $this->input->get('method');
         $data['redirect'] = $this->input->get('redirect');
         if (!empty($root) && !empty($method)) {
-            $data['redirect'] = $root.'/'.$method.'?encounter_id='.$data['encounter_id'];
+            if (!empty($data['encounter_id'])) {
+                $data['redirect'] = $root.'/'.$method.'?encounter_id='.$data['encounter_id'];
+            } elseif (!empty($data['patient_id'])) {
+                $data['redirect'] = $root.'/'.$method.'?id='.$data['patient_id'];
+            }
         }
 
         if (!empty($data['encounter_id'])) {
@@ -204,7 +208,7 @@ class Form extends MX_Controller {
     }
 
     public function addForm() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Nurse', 'Clerk'))) {
             redirect('home/permission');
         }
 
@@ -920,7 +924,7 @@ class Form extends MX_Controller {
             }
 
             if (!empty($patient_id)) {
-                if ($this->ion_auth->in_group(array('Doctor'))) {
+                if ($this->ion_auth->in_group(array('admin','Doctor', 'Midwife', 'Nurse'))) {
                     if (!empty($encounter_id)) {
                         $redirect = $form->form_number.'&encounter_id='.$encounter_id.'&root=patient&method=medicalHistory';
                     } else {

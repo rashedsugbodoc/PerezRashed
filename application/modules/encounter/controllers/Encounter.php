@@ -310,7 +310,7 @@ class Encounter extends MX_Controller {
                     }
                 }
             }
-        } elseif ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Midwife'))) {
+        } elseif ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Midwife','Nurse'))) {
             if (!empty($patient_id)) {
                 if ($limit == -1) {
                     if (!empty($search)) {

@@ -35,7 +35,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <input type="hidden" name="redirect" value="<?php
                                                     if (empty($redirect)) {
-                                                        echo "encounter";
+                                                        echo "diagnosis";
                                                     } elseif (!empty($redirect)) {
                                                         echo $redirect;
                                                     }

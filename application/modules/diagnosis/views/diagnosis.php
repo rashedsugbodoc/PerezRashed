@@ -14,6 +14,11 @@
                                             <div class="card">
                                                 <div class="card-header">
                                                     <div class="card-title"><?php echo lang('diagnosis'); ?></div>
+                                                    <div class="card-options">
+                                                        <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
+                                                            <a href="diagnosis/addDiagnosisView" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
+                                                        <?php } ?>
+                                                    </div>
                                                 </div>
                                                 <div class="card-body">
                                                     <div class="table-responsive">

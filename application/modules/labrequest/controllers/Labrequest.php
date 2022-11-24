@@ -30,7 +30,7 @@ class Labrequest extends MX_Controller {
     }
 
     function addLabRequestView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Receptionist', 'Nurse', 'Clerk'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -62,7 +62,7 @@ class Labrequest extends MX_Controller {
     }
 
     function addNew() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Nurse', 'Clerk'))) {
             redirect('home/permission');
         }
         $id = $this->input->post('labrequest_number');

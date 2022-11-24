@@ -15,7 +15,7 @@ class Diagnosis extends MX_Controller {
         $this->load->model('branch/branch_model');
         $this->load->model('hospital/hospital_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Patient', 'Clerk'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Nurse', 'Patient', 'Clerk', 'Midwife'))) {
             redirect('home/permission');
         }
     }
@@ -30,7 +30,7 @@ class Diagnosis extends MX_Controller {
     }
 
     function addDiagnosisView() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Nurse'))) {
             redirect('home/permission');
         }
         $data = array();
@@ -57,6 +57,10 @@ class Diagnosis extends MX_Controller {
             } else {
                 $data['redirect'] = $data['root'].'/'.$data['method'].'?id='.$data['patient'];
             }
+        } elseif (empty($data['root']) && empty($data['method'])) {
+            if (!empty($data['encounter_id'])) {
+                $data['redirect'] = 'encounter';
+            }
         }
 
         $this->load->view('home/dashboardv2');
@@ -64,7 +68,7 @@ class Diagnosis extends MX_Controller {
     }
 
     function addNew() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Nurse'))) {
             redirect('home/permission');
         }
         $encounter_id = $this->input->post('encounter_id');
@@ -247,7 +251,7 @@ class Diagnosis extends MX_Controller {
     }
 
     public function editDiagnosis() {
-        if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
+        if (!$this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife'))) {
             redirect('home/permission');
         }
         $diagnosis_number = $this->input->get('id');
@@ -386,14 +390,17 @@ class Diagnosis extends MX_Controller {
                 $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
             }
 
-            if ($this->ion_auth->in_group(array('Doctor'))) {
+            if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
                 if(!empty($patient_id)) {
                     $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&root=patient&method=medicalHistory" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                    $options2 = '<a href="" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fe fe-trash-2"></i></a>';
                 } else {
                     $options1 = '<a href="diagnosis/editDiagnosis?id='.$diag->patient_diagnosis_number.'&redirect=diagnosis" class="btn btn-info"><i class="fe fe-edit"></i></a>';
+                    $options2 = '<a href="" class="btn btn-danger" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fe fe-trash-2"></i></a>';
                 }
             } else {
                 $options1 = '';
+                $options2 = '';
             }
 
             $info[] = array(
@@ -405,7 +412,7 @@ class Diagnosis extends MX_Controller {
                 $diag->diagnosis_notes,
                 $this->encounter_model->getEncounterById($diag->encounter_id)->encounter_number,
                 $appointment_facility,
-                $options1,
+                $options1.' '.$options2,
                     // $options4
             );
             

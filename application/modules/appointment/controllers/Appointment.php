@@ -151,7 +151,11 @@ class Appointment extends MX_Controller {
         $root = $this->input->get('root');
         $method = $this->input->get('method');
         if (!empty($root) && !empty($method)) {
-            $redirect = $root.'/'.$method.'?id='.$patient.'&encounter_id='.$data['encounter'];
+            if(!empty($data['encounter'])) {
+                $redirect = $root.'/'.$method.'?encounter_id='.$data['encounter'];
+            }elseif(!empty($patient)) {
+                $redirect = $root.'/'.$method.'?id='.$patient;
+            }
         }
         $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($patient);
         $data['redirect'] = $redirect;
@@ -1282,10 +1286,14 @@ class Appointment extends MX_Controller {
         $patient = $this->input->get('patient_id');
         $data['encounter'] = $this->input->get('encounter_id');
         if (!empty($root) && !empty($method)) {
-            $data['redirect'] = $root.'/'.$method.'?id='.$patient.'&encounter_id='.$data['encounter'];
+            if(!empty($data['encounter'])) {
+                $redirect = $root.'/'.$method.'?encounter_id='.$data['encounter'];
+            }elseif(!empty($patient)) {
+                $redirect = $root.'/'.$method.'?id='.$patient;
+            }
         }
 
-
+        $data['redirect'] = $redirect;
         $data['settings'] = $this->settings_model->getSettings();
         $data['appointment'] = $this->appointment_model->getAppointmentById($id);
         $data['patients'] = $this->patient_model->getPatientById($data['appointment']->patient);
@@ -1415,7 +1423,7 @@ class Appointment extends MX_Controller {
             }
 
             if (!empty($patient_id)) {
-                if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor'))) {
+                if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Midwife'))) {
                     $options6 = '<a href="appointment/editAppointment?id='.$appointment->id.'&root=patient&method=medicalHistory&patient_id='.$patient_details->patient_id.'&encounter_id='.$encounter_id.'" class="btn btn-info btn-xs"><i class="fe fe-edit"></i></a>';
                     $options7 = '<a class="btn btn-danger btn-xs btn_width delete_button" title="'.lang("delete").'" href="appointment/delete?id='.$appointment->id.'" onclick="return confirm("Are you sure you want to delete this item?");"><i class="fa fa-trash"></i> </a>';
                 }

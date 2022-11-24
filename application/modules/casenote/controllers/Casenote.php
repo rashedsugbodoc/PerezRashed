@@ -15,7 +15,7 @@ class Casenote extends MX_Controller {
         $this->load->model('branch/branch_model');
         $this->load->model('hospital/hospital_model');
         $this->load->helper('string');
-        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife', 'Nurse'))) {
+        if (!$this->ion_auth->in_group(array('Doctor', 'Midwife', 'Nurse', 'admin'))) {
             redirect('home/permission');
         }
     }
@@ -233,7 +233,7 @@ class Casenote extends MX_Controller {
             }
 
             if (!empty($patient_id)) {
-                if ($this->ion_auth->in_group('Doctor')) {
+                if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) {
                     $options4 = '<button type="button" class="btn btn-info btn-xs btn_width editbutton" title="'.lang('edit').'" data-toggle="modal" data-id="'.$case->id.'"><i class="fa fa-edit"></i> </button>';
                 }
             }
