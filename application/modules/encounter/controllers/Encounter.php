@@ -255,6 +255,7 @@ class Encounter extends MX_Controller {
                     'encounter_status' => $status,
                     'location_id' => $location,
                     'reason' => $reason,
+                    'last_modified' => $date,
                 );
 
                 $data_encounter = array_merge($status_time, $data);
