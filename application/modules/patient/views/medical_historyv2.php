@@ -389,18 +389,34 @@
                                     <div class="tab-menu-heading p-0">
                                         <div class="tabs-menu1 px-3">
                                             <ul class="nav" id="mytab">
-                                                <li><a href="#tab-6" data-toggle="tab" class="active"><?php echo lang('diagnosis'); ?></a></li>
-                                                <li><a href="#tab-7" data-toggle="tab"><?php echo lang('vital_signs'); ?></a></li>
-                                                <li><a href="#tab-8" data-toggle="tab" class=""><?php echo lang('appointments'); ?></a></li>
-                                                <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                                <?php if ($this->ion_auth->in_group(array('Doctor','Midwife','Nurse','Patient'))) { ?>
+                                                    <li><a href="#tab-6" data-toggle="tab" class="active"><?php echo lang('diagnosis'); ?></a></li>
+                                                <?php } ?>
+                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                                    <li><a href="#tab-7" data-toggle="tab"><?php echo lang('vital_signs'); ?></a></li>
+                                                <?php } ?>
+                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                                    <li><a href="#tab-8" data-toggle="tab" class=""><?php echo lang('appointments'); ?></a></li>
+                                                <?php } ?>
+                                                <?php if ($this->ion_auth->in_group(array('Doctor','Midwife','Nurse'))) { ?>
                                                     <li><a href="#tab-9" data-toggle="tab" class=""><?php echo lang('case_notes'); ?></a></li>
                                                 <?php } ?>
-                                                <li><a href="#tab-10" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
-                                                <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('lab').' '.lang('request'); ?></a></li>
-                                                <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
+                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                                    <li><a href="#tab-10" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
+                                                <?php } ?>
+                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                                    <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('lab').' '.lang('request'); ?></a></li>
+                                                <?php } ?>
+                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                                    <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
+                                                <?php } ?>
                                                 <!-- <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li> -->
-                                                <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
-                                                <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('encounters'); ?></a></li>
+                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                                    <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
+                                                <?php } ?>
+                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse'))) { ?>
+                                                    <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('encounters'); ?></a></li>
+                                                <?php } ?>
                                                 <?php if (!$this->ion_auth->in_group('Patient')) { ?>
                                                     <li><a href="#tab-16" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
                                                 <?php } ?>
@@ -415,13 +431,14 @@
                             <div class="col-xl-12 col-lg-12 col-md-12">
                                 <div class="border-0">
                                     <div class="tab-content">
+                                    <?php if ($this->ion_auth->in_group(array('Doctor','Midwife','Nurse','Patient'))) { ?>
                                         <div class="tab-pane active" id="tab-6">
                                             <div class="mb-0">
                                                 <div class="card">
                                                     <div class="card-header">
                                                         <h3 class="card-title"><?php echo lang('diagnosis') ?></h3>
                                                         <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?> 
                                                                 <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&patient='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
                                                             <?php } ?>
                                                         </div>
@@ -440,7 +457,7 @@
                                                                             <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('encounter'); ?></th>
                                                                             <th class="text-center normal-caps"><?php echo lang('facility'); ?></th>
-                                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?> 
+                                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
                                                                                 <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
                                                                             <?php } ?>
                                                                         </tr>
@@ -464,6 +481,8 @@
                                                 </div> -->
                                             </div>
                                         </div>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse'))) { ?>
                                         <div class="tab-pane" id="tab-7">
                                             <div class="mb-0">
                                                 <div class="card">
@@ -480,7 +499,7 @@
                                                     <div class="card-body">
                                                         <div class="">
                                                             <div class="table-responsive">
-                                                                <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
+                                                                <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100 editable-sample1">
                                                                     <thead>
                                                                         <tr>
                                                                             <th class="text-center normal-caps"><?php echo lang('measured_at'); ?></th>
@@ -521,6 +540,8 @@
                                                 </div> -->
                                             </div>
                                         </div>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                         <div class="tab-pane" id="tab-8">
                                             <div class="mb-0">
                                                 <div class="card">
@@ -529,7 +550,7 @@
                                                             <?php echo lang('appointment'); ?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Nurse'))) { ?>
                                                                 <div class=" no-print">
                                                                     <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
@@ -540,10 +561,10 @@
                                                             <?php if ($this->ion_auth->in_group('Patient')) { ?>
                                                                 <div class=" no-print">
                                                                     <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?> 
+                                                                        <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?>
                                                                     </a> -->
                                                                     <a href="appointment/bookConsultation" class="btn btn-primary">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?> 
+                                                                        <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?>
                                                                     </a>
                                                                 </div>
                                                             <?php } ?>
@@ -562,7 +583,7 @@
                                                                             <th><?php echo lang('status'); ?></th>
                                                                             <th><?php echo lang('facility'); ?></th>
                                                                             <th><?php echo lang('service_type'); ?></th>
-                                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist'))) { ?>
+                                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Midwife'))) { ?>
                                                                                 <th class="no-print"><?php echo lang('options'); ?></th>
                                                                             <?php } ?>
                                                                         </tr>
@@ -577,7 +598,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php if (!$this->ion_auth->in_group('Patient')) { ?>
+                                    <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('Doctor','Midwife','Nurse'))) { ?>
                                         <div class="tab-pane" id="tab-9">
                                             <div class="mb-0">
                                                 <div class="card">
@@ -586,7 +608,7 @@
                                                             <?php echo lang('case_notes'); ?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'admin', 'Nurse'))) { ?>
                                                                 <div class=" no-print">
                                                                     <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
@@ -605,7 +627,7 @@
                                                                             <th class="w-15"><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></th>
                                                                             <th class="w-45"><?php echo lang('case'); ?> <?php echo lang('summary'); ?></th>
                                                                             <th class="w-20"><?php echo lang('facility'); ?></th>
-                                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor'))) { ?>
+                                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife','Nurse'))) { ?>
                                                                                 <th class="no-print w-5"><?php echo lang('options'); ?></th>
                                                                             <?php } ?>
                                                                         </tr>
@@ -621,6 +643,7 @@
                                             </div>
                                         </div>
                                         <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                         <div class="tab-pane" id="tab-10">
                                             <div class="mb-0">
                                                 <div class="card">
@@ -629,7 +652,7 @@
                                                             <?php echo lang('prescription'); ?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
                                                                 <div class=" no-print">
                                                                     <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?<?php echo 'encounter_id='.$encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
@@ -661,6 +684,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                         <div class="tab-pane" id="tab-11">
                                             <div class="mb-0 border">
                                                 <div class="card">
@@ -669,7 +694,7 @@
                                                             <?php echo lang('lab').' '.lang('request')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
                                                                 <a href="labrequest/addLabRequestView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                             <?php } ?>
                                                         </div>
@@ -699,6 +724,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                         <div class="tab-pane" id="tab-12">
                                             <div class="mb-0 border">
                                                 <div class="card">
@@ -707,7 +734,7 @@
                                                             <?php echo lang('forms')?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'admin'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'admin', 'Midwife', 'Nurse'))) { ?>
                                                                 <a href="form?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&addnew=true&patient_id='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
                                                             <?php } ?>
                                                         </div>
@@ -723,7 +750,7 @@
                                                                             <th><?php echo lang('name') ?></th>
                                                                             <th><?php echo lang('patient') ?></th>
                                                                             <th><?php echo lang('facility'); ?></th>
-                                                                            <?php if ($this->ion_auth->in_group('Doctor')) { ?>
+                                                                            <?php if ($this->ion_auth->in_group(array('admin','Doctor', 'Midwife','Nurse'))) { ?>
                                                                                 <th><?php echo lang('actions') ?></th>
                                                                             <?php } ?>
                                                                         </tr>
@@ -738,6 +765,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php } ?>
                                         <div class="tab-pane" id="tab-13">
                                             <div class="mb-0 border">
                                                 <div class="card">
@@ -797,6 +825,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                         <div class="tab-pane" id="tab-14">
                                             <div class="card p-5">
                                                 <div class="row">
@@ -912,6 +941,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php } ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse'))) { ?>
                                         <div class="tab-pane" id="tab-15">
                                             <div class="mb-0 border">
                                                 <div class="card">
@@ -920,7 +951,7 @@
                                                              <?php echo lang('encounters'); ?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'admin', 'Nurse'))) { ?>
                                                                 <div class=" no-print">
                                                                     <a class="btn btn-primary btn_width btn-xs" href="encounter/addNewView?patient_id=<?php echo $patient->patient_id.'&root=patient&method=medicalHistory&encounter_request=true' ?>">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
@@ -973,6 +1004,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <?php } ?>
                                         <?php if (!$this->ion_auth->in_group('Patient')) { ?>
                                         <div class="tab-pane" id="tab-16">
                                             <ul class="timelineleft pb-5">
@@ -1004,7 +1036,7 @@
                                     <form id="sEncounterForm" action="encounter/startEncounter" method="post">
                                     <div class="modal-body pd-20">
                                             <input type="hidden" name="encounter_id" value="" id="encounter">
-                                            <input type="hidden" name="redirect" value="patient/medicalHistory">
+                                            <input type="hidden" name="redirect" value="patient/medicalHistory?encounter_id=<?php echo $encounter_id ?>">
                                             <span>Are you sure you want to Start this Encounter</span>
                                     </div><!-- modal-body -->
                                     <div class="modal-footer">
@@ -1032,7 +1064,7 @@
                                     <form id="eEncounterForm" action="encounter/endEncounter" method="post">
                                     <div class="modal-body pd-20">
                                             <input type="hidden" name="encounter_id" value="" id="encounter">
-                                            <input type="hidden" name="redirect" value="patient/medicalHistory">
+                                            <input type="hidden" name="redirect" value="patient/medicalHistory?encounter_id=<?php echo $encounter_id ?>">
                                             <span>Are you sure you want to End this Encounter</span>
                                     </div><!-- modal-body -->
                                     <div class="modal-footer">
@@ -1301,7 +1333,7 @@
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
-                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->patient_id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?encounter_id=<?php echo $encounter_id ?>">
                                                         </div>
                                                     </div>
                                                 <?php } ?>
@@ -1583,7 +1615,13 @@
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
-                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->patient_id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?encounter_id=<?php echo $encounter_id ?>">
+                                                        </div>
+                                                    </div>
+                                                <?php } else { ?>
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory">
                                                         </div>
                                                     </div>
                                                 <?php } ?>
@@ -1669,7 +1707,7 @@
                                             <?php if (!empty($encounter_id)) { ?>
                                                 <div class="row">
                                                     <div class="col-md-12 col-sm-12">
-                                                        <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->patient_id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                        <input type="hidden" name="redirect" value="patient/medicalHistory?encounter_id=<?php echo $encounter_id ?>">
                                                     </div>
                                                 </div>
                                             <?php } ?>
@@ -1721,7 +1759,7 @@
                                                 <?php if (!empty($encounter_id)) { ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
-                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?id=<?php echo $patient->patient_id ?>&encounter_id=<?php echo $encounter_id ?>">
+                                                            <input type="hidden" name="redirect" value="patient/medicalHistory?encounter_id=<?php echo $encounter_id ?>">
                                                         </div>
                                                     </div>
                                                 <?php } ?>
@@ -2147,7 +2185,7 @@
                                                             <input type="text" class="form-control" name="description" id="editdescription" required placeholder="<?=lang('description');?>">
                                                         </div>
                                                     </div>
-                                                    <input type="hidden" name="redirect" value='patient/myDocuments'>
+                                                    <input type="hidden" name="redirect" value='patient/medicalHistory'>
                                                     <input type="hidden" name="id" value=''>
                                                     <div class="col-md-12 col-sm-12">
                                                         <button class="btn btn-primary pull-right" name="submit" id="submit" type="submit"><?php echo lang('submit'); ?></button>
@@ -2660,13 +2698,15 @@
                         // Populate the form fields with the data returned from server
                         // var date = new Date(response.medical_history.date * 1000);
                         // var de = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
-
+                        var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
                         var date = response.datetime;
                         console.log(date);
 
                         $('#medical_historyEditForm').find('[name="id"]').val(response.medical_history.id).end()
                         // $('#medical_historyEditForm').find('[name="date"]').val(date).end()
                         $('.datetime').flatpickr({
+                            disable: [maxdate],
+                            maxDate: maxdate,
                             dateFormat: "F j, Y h:i K",
                             defaultDate: date,
                             enableTime: true,
@@ -2736,12 +2776,16 @@
                         var vital = response.vital;
                         var weight_unit = document.getElementById("weight_unit").value;
                         var height_unit = document.getElementById("height_unit").value;
+                        var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
                         // var date = vital.measured_at.split(" ");
                         console.log(response.datetime);
                         $('#editVitalForm').find('[name="id"]').val(vital.id).end()
                         $('#editVitalForm').find('[name="datetime"]').val(response.datetime).end()
 
                         $('.datetime').flatpickr({
+                            disable: [maxdate],
+                            maxDate: maxdate,
+                            enableTime: true,
                             dateFormat: "F j, Y h:i K",
                             defaultDate: response.datetime,
                         });
