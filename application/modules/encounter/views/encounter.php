@@ -38,7 +38,7 @@
                                                 <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100">
                                                     <thead>
                                                         <tr>
-                                                            <th><?php echo lang('date'); ?></th>
+                                                            <th><?php echo lang('create'). '  ' .lang('date'); ?></th>
                                                             <th><?php echo lang('encounter'); ?> <?php echo lang('number'); ?></th>
                                                             <th><?php echo lang('patient'); ?></th>
                                                             <th><?php echo lang('doctor'); ?></th>
@@ -589,7 +589,7 @@
                                                 <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                        <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="date" type="text" readonly>
+                                                        <input class="form-control flatpickr datetime" placeholder="MM/DD/YYYY" name="date" type="text" readonly>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-sm-12">
@@ -1039,6 +1039,7 @@
             var timenow = "<?php echo date('Y-m-d H:i'); ?>";
             var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             flatpickr(".flatpickr", {
+                disable: [maxdate],
                 maxDate: maxdate,
                 altInput: true,
                 altFormat: "F j, Y h:i K",
@@ -1279,6 +1280,7 @@
             // Get the record's ID via attribute  
             var base_url = "<?php echo base_url() ?>";
             var iid = $(this).attr('data-id');
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             
             $('#editEncounterForm').trigger("reset");
             $('#date_status').html("").end()
@@ -1291,7 +1293,9 @@
                     console.log(response.encounter.encounter_type_id);
 
                     $('.datetime').flatpickr({
-                        dateFormat: "F j, Y h:i K",
+                        disable: [maxdate],
+                        maxDate: maxdate,
+                        dateFormat: "F j, Y",
                         defaultDate: response.datetime,
                     });
 
