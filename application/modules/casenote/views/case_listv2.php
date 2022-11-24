@@ -34,12 +34,12 @@
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                                                <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" id="date" required name="date" type="text" readonly value="<?php
+                                                                <input class="form-control flatpickr datetime" placeholder="MM/DD/YYYY" id="date" required name="date" type="text" readonly value="<?php
                                                                 if (!empty($setval)) {
                                                                     echo set_value('date');
                                                                 }
                                                                 elseif (!empty($case_lists->id)) {
-                                                                    echo date('m/d/y', strtotime($case_lists->case_date.' UTC'));
+                                                                    echo date('F j, Y', strtotime($case_lists->case_date.' UTC'));
                                                                 }
                                                                 ?>">
                                                             </div>
@@ -192,7 +192,7 @@
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
-                                            <input class="form-control fc-datepicker" placeholder="MM/DD/YYYY" name="date" type="text" readonly>
+                                            <input class="form-control flatpickr datetime" placeholder="MM/DD/YYYY" name="date" type="text" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
@@ -415,7 +415,22 @@
 
         <script type="text/javascript" src="common/assets/ckeditor/ckeditor.js"></script>
 
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
+
     <!-- INTERNAL JS INDEX END -->
+
+    <script>
+        $(document).ready(function () {
+            var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
+            $('.datetime').flatpickr({
+                disable: [maxdate],
+                maxDate: maxdate,
+                dateFormat: "F j, Y",
+            });
+        })
+    </script>
+
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -463,6 +478,9 @@
                     var encounter = response.encounter;
                     $.each(encounter, function (key, value) {
                         $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                    });
+                    $('.datetime').flatpickr({
+                        dateFormat: "F j, Y",
                     });
                 }
             })
@@ -603,6 +621,7 @@
                 //   $('#medical_historyEditForm').find('[name="patient"]').val(response.medical_history.patient_id).end()
                 $('#medical_historyEditForm').find('[name="title"]').val(response.medical_history.title).end()
                 var option = new Option(response.patient.name + '-' + response.patient.id, response.patient.id, true, true);
+                var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
                 // $('#medical_historyEditForm').find('[name="patient_id"]').append(option).trigger('change');
                 //   $('.js-example-basic-single.patient').val(response.medical_history.patient_id).trigger('change');
                 document.getElementById('quillEditor2').children[0].innerHTML = response.medical_history.description;
