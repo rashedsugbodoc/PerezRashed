@@ -123,3 +123,8 @@ define('CLAIM_PHILHEALTH_NAME', 'philhealth');
 
 /*Country*/
 define('COUNTRY_PHILIPPINES', 'Philippines');
+/*Discount Type*/
+define('FIXED_PERCENTAGE', 'fixed_percentage');
+define('FIXED_AMOUNT', 'fixed_amount');
+define('VARIABLE_PERCENTAGE', 'variable_percentage');
+define('VARIABLE_AMOUNT', 'variable_amount');

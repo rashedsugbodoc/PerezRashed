@@ -1617,4 +1617,10 @@ class Finance_model extends CI_model {
         return $data;
     } 
 
+    function getDiscountTypeById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('discount_type');
+        return $query->row();
+    }
+
 }

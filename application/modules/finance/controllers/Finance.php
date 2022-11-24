@@ -166,6 +166,8 @@ class Finance extends MX_Controller {
         $discount_input = $this->input->post('discount_input');
         $payer_item_total = $this->input->post('item_total');
         $discount_type = $this->input->post('discount_type');
+        $datetime = gmdate('Y-m-d H:i:s');
+        $data['settings'] = $this->settings_model->getSettings();
         // $item_total_price = $this->input->post('amount_input');
         $date = time();
 
@@ -198,6 +200,8 @@ class Finance extends MX_Controller {
         $invoices = [];
         foreach($payer_id_unique as $key => $value) {
             $charges = [];
+            $extras = [];
+            $discount = [];
             $c_price = [];
             foreach($charge_details as $charge_detail_key => $charge_detail) {
                 if ($charge_detail->type === "fixed") {
@@ -214,28 +218,59 @@ class Finance extends MX_Controller {
                     $charges[] = array(
                         'id' => $charge_detail->id,
                         'description' => $charge_detail->category,
-                        'invoice_id' => $inserted_id,
                         'price' => $c_price[$charge_detail_key],
-                        'tax_id' => $charge_detail->tax_id,
                         'charge_code' => $charge_detail->charge_code,
                         'quantity' => $quantity[$charge_detail_key],
                         'item_total_price' => $item_total,
                     );
+                    $extras[] = array(
+                        'tax_id' => $charge_detail->tax_id,
+                        'tax_amount' => $charge_detail->tax_amount,
+                    );
+                    $discount[] = array(
+                        'discount_id' => $discount_type[$key],
+                    );
+
                     $invoices[$value] = array(
-                        'charges' => array(
-                            $charges
+                        'charges' => $charges,
+                        'extras' => $extras,
+                        'discount' => array(
+                            'discount_id' => $discount_type[$key],
                         ),
                     );
                 }
 
-                // $array_charge_id = $invoices[$value]['charges'][0];
+                $array_charge_id = $invoices[$value]['charges'][0]['id'];
+                $array_charge_description = $invoices[$value]['charges'][0]['description'];
             }
+
+            // $invoice_data = array();
+
+            // $invoice_data = array(
+            //     'patient' => $patient,
+            //     'doctor' => $doctor,
+            //     'date' => $date,
+            //     'amount' => $subtotal,
+            //     'discount' => $discount_total[$key],
+            //     'gross_total' => $gross_total,
+            //     'remarks' => $remarks,
+            //     'amount_received' => $amount_received,
+            //     'deposit_type' => $deposit_type,
+            //     'payment_status' => $payment_status,
+            //     'company_id' => $payer_id_unique_single,
+            //     'encounter_id' => $encounter_id,
+            //     'invoice_number' => $invoice_number,
+            //     'discount_id' => $discount_type[$key],
+            //     'invoice_tax_amount' => $tax[$key],
+            // );
+
         }
 
-        foreach($payer_id_unique as $key => $value) {
-            $payer_id_unique_single = $value;
-            $subtotal = $payer_item_total[$key];
-            $gross_total = $subtotal - $discount_total[$key];
+        $invoice_unique = array_values($invoices);
+
+        foreach($invoice_unique as $key => $value) {
+            $invoice_payer_id = $payer_id_unique[$key];
+            $item_subtotal = [];
 
             do {
                 $raw_invoice_number = 'I'.random_string('alnum', 6);
@@ -244,10 +279,39 @@ class Finance extends MX_Controller {
 
             $invoice_number = strtoupper($raw_invoice_number);
 
-            $charge_detail = [];
-            $invoice_item_data = array();
+            foreach($value['charges'] as $charges_key => $charges) {
+                $item_subtotal[] = $charges['price'] * $charges['quantity'];
+            }
 
-            $company_classification = $this->company_model->getClassificationByCompanyId($payer_id_unique_single);
+            $item_tax = [];
+            foreach($value['extras'] as $extras_key => $extras) {
+                $tax_details = $this->finance_model->getTaxById($extras['tax_id']);
+                if (!empty($extras['tax_amount'])) {
+                    $item_tax[] = $extras['tax_amount'] * $value['charges'][$extras_key]['quantity'];
+                } else {
+                    $item_tax[] = ($value['charges'][$extras_key]['price'] * ($tax_details->rate/100)) * $value['charges'][$extras_key]['quantity'];
+                }
+            }
+
+            $discount_details = $this->finance_model->getDiscountById($value['discount']['discount_id']);
+            $discount_type_details = $this->finance_model->getDiscountTypeById($discount_details->discount_type_id);
+
+            $subtotal = array_sum($item_subtotal);
+            $total_tax = array_sum($item_tax);
+
+            if ($discount_type_details->name === FIXED_PERCENTAGE) {
+                $payer_discount_total = $subtotal*($discount_details->rate/100);
+            } elseif ($discount_type_details->name === FIXED_AMOUNT) {
+                $payer_discount_total = $discount_details->amount;
+            } elseif ($discount_type_details->name === VARIABLE_PERCENTAGE) {
+                $payer_discount_total = $subtotal*($discount_input[$key]/100);
+            } elseif ($discount_type_details->name === VARIABLE_AMOUNT) {
+                $payer_discount_total = $discount_input[$key];
+            }
+
+            $invoice_gross_total = $subtotal - $payer_discount_total;
+
+            $company_classification = $this->company_model->getClassificationByCompanyId($invoice_payer_id);
             $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
             $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
 
@@ -265,11 +329,15 @@ class Finance extends MX_Controller {
                 $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
                 $received_deposit_amount = $amount_received + $deposit_amount;
 
-                if ($received_deposit_amount >= $gross) {
+                if ($received_deposit_amount >= $invoice_gross_total) {
                     $payment_status = $paid_status;
                 } else {
                     $payment_status = $unpaid_status;
                 }
+            }
+
+            if ($invoice_payer_id !== '1') {
+                $amount_received = null;
             }
 
             $invoice_data = array();
@@ -279,41 +347,133 @@ class Finance extends MX_Controller {
                 'doctor' => $doctor,
                 'date' => $date,
                 'amount' => $subtotal,
-                'discount' => $discount_total[$key],
-                'gross_total' => $gross_total,
+                'discount' => $payer_discount_total,
+                'gross_total' => $invoice_gross_total,
                 'remarks' => $remarks,
                 'amount_received' => $amount_received,
                 'deposit_type' => $deposit_type,
                 'payment_status' => $payment_status,
-                'company_id' => $payer_id_unique_single,
+                'company_id' => $invoice_payer_id,
                 'encounter_id' => $encounter_id,
                 'invoice_number' => $invoice_number,
-                'discount_id' => $discount_type[$key],
-                'invoice_tax_amount' => $tax[$key],
+                'discount_id' => $value['discount']['discount_id'],
+                'invoice_tax_amount' => $total_tax,
             );
-            // $this->finance_model->insertPayment($invoice_data);
+
+            $this->finance_model->insertPayment($invoice_data);
             $inserted_id = $this->db->insert_id();
-            foreach($charge_id as $key => $value) {
-                $charge_detail[] = $this->finance_model->getPaymentCategoryById($value);
 
-                if ($charge_detail[$key]->payer_account_id === $payer_id_unique_single) {
-                    $item_total_price = $amount[$key] * $quantity[$key];
+            foreach($value['charges'] as $item_charges_key => $item_charges_value) {
 
-                    $invoice_item_data = array( 
-                        'charge_id' => $charge_detail[$key]->id,
-                        'description' => $charge_detail[$key]->category,
-                        'invoice_id' => $inserted_id,
-                        'price' => $amount[$key],
-                        'tax_id' => $charge_detail[$key]->tax_id,
-                        'charge_code' => $charge_detail[$key]->charge_code,
-                        'quantity' => $quantity[$key],
-                        'item_total_price' => $item_total_price,
-                    );
-                    // $this->finance_model->insertInvoiceItem($invoice_item_data);
+                $tax_details = $this->finance_model->getTaxById($value['extras'][$item_charges_key]['tax_id']);
+
+                if (!empty($value['extras'][$item_charges_key]['tax_amount'])) {
+                    $extras_tax_amount = $value['extras'][$item_charges_key]['tax_amount'];
+                } else {
+                    $extras_tax_amount = (($extras_tax_details->rate/100)*$item_charges_value['item_total_price'])*$item_charges_value['quantity'];
                 }
-                // $this->finance_model->insertInvoiceItem($invoice_item_data);
+
+                $invoice_item_data = array(
+                    'charge_id' => $item_charges_value['id'],
+                    'description' => $item_charges_value['description'],
+                    'invoice_id' => $inserted_id,
+                    'price' => $item_charges_value['price'],
+                    'tax_id' => $value['extras'][$item_charges_key]['tax_id'],
+                    'charge_code' => $item_charges_value['charge_code'],
+                    'created_at' => $datetime,
+                    'quantity' => $item_charges_value['quantity'],
+                    'item_total_price' => $item_charges_value['item_total_price'],
+                    'price_without_tax' => $item_charges_value['item_total_price'] - $extras_tax_amount,
+                );
+
+                $this->finance_model->insertInvoiceItem($invoice_item_data);
+
             }
+
         }
+
+        // foreach($payer_id_unique as $key => $value) {
+        //     $payer_id_unique_single = $value;
+        //     $subtotal = $payer_item_total[$key];
+        //     $gross_total = $subtotal - $discount_total[$key];
+
+        //     do {
+        //         $raw_invoice_number = 'I'.random_string('alnum', 6);
+        //         $validate_number = $this->finance_model->validateInvoiceNumber($raw_invoice_number);
+        //     } while($validate_number != 0);
+
+        //     $invoice_number = strtoupper($raw_invoice_number);
+
+        //     $charge_detail = [];
+        //     $invoice_item_data = array();
+
+        //     $company_classification = $this->company_model->getClassificationByCompanyId($payer_id_unique_single);
+        //     $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
+        //     $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+
+        //     foreach ($payment_status_list as $status_list) {
+        //         if ($status_list->name === "paid") {
+        //             $paid_status = $status_list->id;
+        //         } elseif ($status_list->name === "unpaid") {
+        //             $unpaid_status = $status_list->id;
+        //         } elseif ($status_list->name === "overdue") {
+        //             $overdue_status = $status_list->id;
+        //         }
+        //     }
+
+        //     if (empty($payment_status)) {
+        //         $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
+        //         $received_deposit_amount = $amount_received + $deposit_amount;
+
+        //         if ($received_deposit_amount >= $gross) {
+        //             $payment_status = $paid_status;
+        //         } else {
+        //             $payment_status = $unpaid_status;
+        //         }
+        //     }
+
+        //     $invoice_data = array();
+
+        //     $invoice_data = array(
+        //         'patient' => $patient,
+        //         'doctor' => $doctor,
+        //         'date' => $date,
+        //         'amount' => $subtotal,
+        //         'discount' => $discount_total[$key],
+        //         'gross_total' => $gross_total,
+        //         'remarks' => $remarks,
+        //         'amount_received' => $amount_received,
+        //         'deposit_type' => $deposit_type,
+        //         'payment_status' => $payment_status,
+        //         'company_id' => $payer_id_unique_single,
+        //         'encounter_id' => $encounter_id,
+        //         'invoice_number' => $invoice_number,
+        //         'discount_id' => $discount_type[$key],
+        //         'invoice_tax_amount' => $tax[$key],
+        //     );
+        //     // $this->finance_model->insertPayment($invoice_data);
+        //     $inserted_id = $this->db->insert_id();
+        //     foreach($charge_id as $key => $value) {
+        //         $charge_detail[] = $this->finance_model->getPaymentCategoryById($value);
+
+        //         if ($charge_detail[$key]->payer_account_id === $payer_id_unique_single) {
+        //             $item_total_price = $amount[$key] * $quantity[$key];
+
+        //             $invoice_item_data = array( 
+        //                 'charge_id' => $charge_detail[$key]->id,
+        //                 'description' => $charge_detail[$key]->category,
+        //                 'invoice_id' => $inserted_id,
+        //                 'price' => $amount[$key],
+        //                 'tax_id' => $charge_detail[$key]->tax_id,
+        //                 'charge_code' => $charge_detail[$key]->charge_code,
+        //                 'quantity' => $quantity[$key],
+        //                 'item_total_price' => $item_total_price,
+        //             );
+        //             // $this->finance_model->insertInvoiceItem($invoice_item_data);
+        //         }
+        //         // $this->finance_model->insertInvoiceItem($invoice_item_data);
+        //     }
+        // }
 
         redirect('finance/invoices');
 
