@@ -48,6 +48,21 @@ class Finance extends MX_Controller {
         // $this->load->view('home/footer'); // just the header file
     }
 
+    public function invoiceGroupList() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'CompanyUser', 'Clerk'))) {
+            redirect('home/permission');
+        }
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
+
+        $data['settings'] = $this->settings_model->getSettings();
+
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('paymentv2', $data);
+        // $this->load->view('home/footer'); // just the header file
+    }
+
     function amountDistribution() {
         if (!$this->ion_auth->logged_in()) {
             redirect('auth/login', 'refresh');
@@ -170,6 +185,13 @@ class Finance extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         // $item_total_price = $this->input->post('amount_input');
         $date = time();
+
+        do {
+            $raw_invoice_group_number = 'G'.random_string('alnum', 6);
+            $validate_number = $this->finance_model->validateInvoiceGroupNumber($raw_invoice_group_number);
+        } while($validate_number != 0);
+
+        $invoice_group_number = strtoupper($raw_invoice_group_number);
 
         $charge_details = [];
         $payer_details = [];
@@ -355,6 +377,7 @@ class Finance extends MX_Controller {
                 'payment_status' => $payment_status,
                 'company_id' => $invoice_payer_id,
                 'encounter_id' => $encounter_id,
+                'invoice_group_number' => $invoice_group_number,
                 'invoice_number' => $invoice_number,
                 'discount_id' => $value['discount']['discount_id'],
                 'invoice_tax_amount' => $total_tax,
@@ -1093,12 +1116,71 @@ class Finance extends MX_Controller {
             $data['doctors'] = $this->doctor_model->getDoctor();
             $data['companies'] = $this->company_model->getCompany();
             $data['company'] = $this->company_model->getCompanyById($data['payment']->company_id);
+
+            $charges = $this->finance_model->getChargesWithCopay();
+
+            $charges_with_copay = [];
+            $charges_without_copay = [];
+
+            foreach($charges as $charge) {
+                if ($charge->total >= 2) {
+                    $charges_copay_lists = $this->finance_model->getPaymentCategoryByGroupId($charge->group_id);
+                    // foreach($charges_copay_lists as $charges_copay_list) {
+                    //     $charges_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_list->id);
+                    // }
+                    $charges_with_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_lists[0]->id);
+                }
+            }
+
+            foreach($charges as $charge) {
+                if ($charge->total <= 1) {
+                    $charges_copay_lists = $this->finance_model->getPaymentCategoryByGroupId($charge->group_id);
+                    foreach($charges_copay_lists as $charges_copay_list) {
+                        $charges_without_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_list->id);
+                    }
+                }
+            }
+
+            $data['charges_with_copay'] = $charges_with_copay;
+            $data['charges_without_copay'] = $charges_without_copay;
+            $data['invoice_items'] = $this->finance_model->getInvoiceItemsByPaymentId($data['payment']->id);
+
             $this->load->view('home/dashboardv2'); // just the header file
             $this->load->view('add_payment_viewv2', $data);
             // $this->load->view('home/footer'); // just the footer file
         } else {
             redirect('home/permission');
         }
+    }
+
+    function editInvoiceGroup() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) {
+            redirect('home/permission');
+        }
+        $data = array();
+        $data['discount_type'] = $this->finance_model->getDiscountType();
+        $data['settings'] = $this->settings_model->getSettings();
+        $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
+        $invoice_group_id = $this->input->get('invoice_group_id');
+
+        $invoice_details = $this->finance_model->getInvoiceByGrouoNumber($invoice_group_id);
+
+        $data['encounters'] = $this->encounter_model->getEncounter();
+        $data['patients'] = $this->patient_model->getPatient();
+        $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['companies'] = $this->company_model->getCompany();
+
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('add_payment_viewv2', $data);
+    }
+
+    function editPaymentByJson() {
+        $id = $this->input->get('id');
+
+        $data['invoice_details'] = $this->finance_model->getPaymentById($id);
+        $data['invoice_item_list'] = $this->finance_model->getInvoiceItemsByPaymentId($data['invoice_details']->id);
+
+        echo json_encode($data);
     }
 
     function delete() {
@@ -3187,7 +3269,8 @@ class Finance extends MX_Controller {
             }
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist', 'Clerk'))) {
-                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?finance_id=' . $payment->invoice_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                // $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?finance_id=' . $payment->invoice_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editInvoiceGroup?invoice_group_id=' . $payment->invoice_group_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
             $options2 = '<a class="btn btn-info btn-xs" title="' . lang('details') . '" href="finance/invoice?id=' . $payment->invoice_number . '"><i class="fa fa-file-text-o"></i> ' . lang('details') . '</a>';
@@ -3225,7 +3308,7 @@ class Finance extends MX_Controller {
 
             $info[] = array(
                 $date,
-                $payment->invoice_number,
+                $payment->invoice_group_number,
                 $patient_details,
                 $doctor,
                 '<div class="text-right">'.number_format($payment->amount,2).'</div>',

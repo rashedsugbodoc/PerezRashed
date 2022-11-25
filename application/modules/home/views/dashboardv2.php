@@ -529,7 +529,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <span class="side-menu__label"><?php echo lang('bills_and_payments'); ?></span><i class="angle fa fa-angle-right"></i></a>
                                     <ul class="slide-menu">
 
-                                        <li><a href="finance/invoices" class="slide-item"><?php echo lang('invoices'); ?></a></li>
+                                        <li><a href="finance/invoiceGroupList" class="slide-item"><?php echo lang('invoices'); ?></a></li>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk'))) { ?>
                                             <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
                                         <?php } ?>

@@ -431,24 +431,28 @@
                                                         <div id="charge_div">
                                                             <div id="charge_with_copay" hidden>
                                                                 <select name="charge_name[]" class="charge" placeholder="Sample Placeholder" multiple="multiple">
-                                                                    <?php
-                                                                        foreach ($charges_with_copay as $charge_with_copay) {
-                                                                    ?>
+                                                                    <?php foreach ($charges_with_copay as $charge_with_copay) { ?>
                                                                         <option value="<?php echo $charge_with_copay->id; ?>"><?php echo $charge_with_copay->category ?></option>
-                                                                    <?php
-                                                                        }
-                                                                    ?>
+                                                                    <?php } ?>
+                                                                    <!-- <?php foreach ($charges_with_copay as $charge_with_copay) { ?>
+                                                                        <?php foreach($invoice_items as $invoice_item) { ?>
+                                                                            <?php
+                                                                                $group_id = $this->finance_model->getPaymentCategoryById($invoice_item->charge_id)->group_id;
+                                                                            ?>
+                                                                            <?php if ($charge_with_copay->id === $group_id) { ?>
+                                                                                <option value="<?php echo $charge_with_copay->id; ?>" selected><?php echo $charge_with_copay->category ?></option>
+                                                                            <?php } else { ?>
+                                                                                <option value="<?php echo $charge_with_copay->id; ?>"><?php echo $charge_with_copay->category ?></option>
+                                                                            <?php } ?>
+                                                                        <?php } ?>
+                                                                    <?php } ?> -->
                                                                 </select>
                                                             </div>
                                                             <div id="charge_without_copay" hidden>
                                                                 <select name="charge_name[]" class="charge" placeholder="Sample Placeholder" multiple="multiple">
-                                                                    <?php
-                                                                        foreach ($charges_without_copay as $charge_without_copay) {
-                                                                    ?>
+                                                                    <?php foreach ($charges_without_copay as $charge_without_copay) { ?>
                                                                         <option value="<?php echo $charge_without_copay->id; ?>"><?php echo $charge_without_copay->category ?></option>
-                                                                    <?php
-                                                                        }
-                                                                    ?>
+                                                                    <?php } ?>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -1056,6 +1060,21 @@
         <script src="<?php echo base_url('public/assets/plugins/bootstrap-multiselect/docs/js/prettify.min.js'); ?>"></script> -->
         <!-- <script src="<?php echo base_url('public/assets/plugins/bootstrap-multiselect/dist/js/bootstrap-multiselect.js'); ?>"></script> -->
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var id = '<?php echo $payment->id; ?>'
+            $.ajax({
+                url: 'finance/editPaymentByJson?id='+id,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response.invoice_item_list);
+                }
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {

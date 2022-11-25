@@ -22,9 +22,23 @@ class Finance_model extends CI_model {
         $this->db->insert('invoice_item', $data2);
     }
 
+    function getInvoiceItemsByPaymentId($id) {
+        $this->db->where('invoice_id', $id);
+        $query = $this->db->get('invoice_item');
+        return $query->result();
+    }
+
     function getPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->group_by('invoice_group_number');
         $this->db->order_by('id', 'desc');
+        $query = $this->db->get('invoice');
+        return $query->result();
+    }
+
+    function getInvoiceByGrouoNumber($group) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('invoice_group_number', $group);
         $query = $this->db->get('invoice');
         return $query->result();
     }
@@ -41,6 +55,7 @@ class Finance_model extends CI_model {
                 ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
+                ->group_by('invoice_group_number')
                 ->get();
 
         return $query->result();
@@ -53,6 +68,7 @@ class Finance_model extends CI_model {
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where('company_id', $company_id)
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
+                ->group_by('invoice_group_number')
                 ->get();
 
         return $query->result();
@@ -60,6 +76,7 @@ class Finance_model extends CI_model {
 
     function getPaymentByLimit($limit, $start) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->group_by('invoice_group_number');
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->get('invoice');
@@ -69,6 +86,7 @@ class Finance_model extends CI_model {
     function getPaymentByCompanyIdByLimit($company_id, $limit, $start) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('company_id', $company_id);
+        $this->db->group_by('invoice_group_number');
         $this->db->order_by('id', 'desc');
         $this->db->limit($limit, $start);
         $query = $this->db->get('invoice');
@@ -89,6 +107,7 @@ class Finance_model extends CI_model {
                 ->from('invoice')
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
+                ->group_by('invoice_group_number')
                 ->get();
 
         return $query->result();
@@ -102,6 +121,7 @@ class Finance_model extends CI_model {
                 ->where('hospital_id', $this->session->userdata('hospital_id'))
                 ->where('company_id', $company_id)
                 ->where("(id LIKE '%" . $search . "%' OR amount LIKE '%" . $search . "%' OR gross_total LIKE '%" . $search . "%' OR patient_name LIKE '%" . $search . "%'OR patient_phone LIKE '%" . $search . "%'OR patient_address LIKE '%" . $search . "%'OR remarks LIKE '%" . $search . "%'OR doctor_name LIKE '%" . $search . "%'OR flat_discount LIKE '%" . $search . "%'OR date_string LIKE '%" . $search . "%')", NULL, FALSE)
+                ->group_by('invoice_group_number')
                 ->get();
 
         return $query->result();
@@ -169,6 +189,7 @@ class Finance_model extends CI_model {
         $this->db->order_by('id', 'desc');
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('company_id', $id);
+        $this->db->group_by('invoice_group_number');
         $query = $this->db->get('invoice');
         return $query->result();
     }
@@ -1548,6 +1569,12 @@ class Finance_model extends CI_model {
 
     function validateInvoiceNumber($invoice_number) {
         $this->db->where('invoice_number', $invoice_number);
+        $query = $this->db->get('invoice');
+        return $query->row();
+    }
+
+    function validateInvoiceGroupNumber($invoice_group_number) {
+        $this->db->where('invoice_group_number', $invoice_group_number);
         $query = $this->db->get('invoice');
         return $query->row();
     }

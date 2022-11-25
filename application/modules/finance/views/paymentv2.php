@@ -10,7 +10,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <div class="card-title">
-                                        <?php echo lang('invoices'); ?>
+                                        <?php echo lang('invoice').' '.lang('group').' '.lang('list'); ?>
                                     </div>
                                     <div class="card-options">
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) { ?>
@@ -31,7 +31,7 @@
                                                     <th><?php echo lang('invoice').' '.lang('number'); ?></th>
                                                     <th><?php echo lang('patient'); ?></th>
                                                     <th><?php echo lang('doctor'); ?></th>
-                                                    <th><?php echo lang('sub_total'); ?></t>
+                                                    <th><?php echo lang('sub_total'); ?></th>
                                                     <th><?php echo lang('discount'); ?></th>
                                                     <th><?php echo lang('grand_total'); ?></th>
                                                     <th><?php echo lang('paid'); ?> <?php echo lang('amount'); ?></th>
