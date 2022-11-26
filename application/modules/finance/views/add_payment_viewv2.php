@@ -1063,14 +1063,14 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var id = '<?php echo $payment->id; ?>'
+            var group = '<?php echo $payment->invoice_group_number; ?>'
             $.ajax({
-                url: 'finance/editPaymentByJson?id='+id,
+                url: 'finance/editInvoicesByInvoiceGroupIdByJson?group='+group,
                 method: 'GET',
                 data: '',
                 dataType: 'json',
                 success: function (response) {
-                    console.log(response.invoice_item_list);
+                    console.log(response.invoices);
                 }
             });
         });
@@ -1809,13 +1809,13 @@
 
                 computeTax();
 
-                var summary = 
-                    { invoice_total: invoice_item_amount, discount_amount: invoice_discount_amount, tax_amount: invoice_tax_amount }
-                ;
+                // var summary = 
+                //     { invoice_total: invoice_item_amount, discount_amount: invoice_discount_amount, tax_amount: invoice_tax_amount }
+                // ;
 
                 // var summary = { invoice_total: invoice_item_amount, discount_amount: invoice_discount_amount, tax_amount: invoice_tax_amount }
 
-                window.sessionStorage.setItem('summary-'+key, JSON.stringify(summary))
+                // window.sessionStorage.setItem('summary-'+key, JSON.stringify(summary))
                 // console.log(summary);
 
                 /**/
@@ -1860,13 +1860,13 @@
                     // window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(old_invoice));
                 /**/
 
-                var invoice_save = new Object();
+                // var invoice_save = new Object();
 
-                var invoice_save = [{
-                                    charges: JSON.parse(window.sessionStorage.getItem('new_invoice-'+key)),
-                                    payer: key,
-                                    summary: JSON.parse(window.sessionStorage.getItem('summary-'+key)),
-                                }];
+                // var invoice_save = [{
+                //                     charges: JSON.parse(window.sessionStorage.getItem('new_invoice-'+key)),
+                //                     payer: key,
+                //                     summary: JSON.parse(window.sessionStorage.getItem('summary-'+key)),
+                //                 }];
 
                 /**/
                     // if (window.sessionStorage.getItem('invoice_save')) {
@@ -1897,116 +1897,116 @@
 
             })
 
-            $.each(invoice, function(key, value) {
-                var payer_invoice = new Object();
+            // $.each(invoice, function(key, value) {
+            //     var payer_invoice = new Object();
 
-                const kvArray = [
-                    { key: key, value: { charge: value['charges'], summary: JSON.parse(window.sessionStorage.getItem('summary-'+key)) } },
-                ];
+            //     const kvArray = [
+            //         { key: key, value: { charge: value['charges'], summary: JSON.parse(window.sessionStorage.getItem('summary-'+key)) } },
+            //     ];
 
-                if (window.sessionStorage.getItem('invoice_save')) {
-                    old_invoice_save = JSON.parse(window.sessionStorage.getItem('invoice_save'));
-                } else {
-                    old_invoice_save = [];
-                }
+            //     if (window.sessionStorage.getItem('invoice_save')) {
+            //         old_invoice_save = JSON.parse(window.sessionStorage.getItem('invoice_save'));
+            //     } else {
+            //         old_invoice_save = [];
+            //     }
 
-                // payer_invoice = [
-                //         {
-                //            charge: value['charges']['id'],
-                //         },
-                //     ];
+            //     // payer_invoice = [
+            //     //         {
+            //     //            charge: value['charges']['id'],
+            //     //         },
+            //     //     ];
 
-                const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
+            //     const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
 
-                Array.prototype.push.apply(reformattedArray, old_invoice_save);
-                window.sessionStorage.setItem('invoice_save', JSON.stringify(reformattedArray));
+            //     Array.prototype.push.apply(reformattedArray, old_invoice_save);
+            //     window.sessionStorage.setItem('invoice_save', JSON.stringify(reformattedArray));
 
-                // if (window.sessionStorage.getItem('payer_invoice')) {
-                //     new_payer_invoice = payer_invoice.concat(JSON.parse(window.sessionStorage.getItem('payer_invoice')));
-                //     console.log(new_payer_invoice);
-                //     window.sessionStorage.setItem('payer_invoice', JSON.stringify(new_payer_invoice));
-                // } else {
-                //     window.sessionStorage.setItem('payer_invoice', JSON.stringify(payer_invoice));
-                // }
+            //     // if (window.sessionStorage.getItem('payer_invoice')) {
+            //     //     new_payer_invoice = payer_invoice.concat(JSON.parse(window.sessionStorage.getItem('payer_invoice')));
+            //     //     console.log(new_payer_invoice);
+            //     //     window.sessionStorage.setItem('payer_invoice', JSON.stringify(new_payer_invoice));
+            //     // } else {
+            //     //     window.sessionStorage.setItem('payer_invoice', JSON.stringify(payer_invoice));
+            //     // }
 
-                // console.log(reformattedArray[0]);
-                // console.log(JSON.parse(window.sessionStorage.getItem('invoice_save')));
+            //     // console.log(reformattedArray[0]);
+            //     // console.log(JSON.parse(window.sessionStorage.getItem('invoice_save')));
 
-                // const arr3 = JSON.parse(window.sessionStorage.getItem('invoice_save')).map((item, i) => Object.assign({}, item, JSON.parse(window.sessionStorage.getItem('invoice_save'))[i]));
+            //     // const arr3 = JSON.parse(window.sessionStorage.getItem('invoice_save')).map((item, i) => Object.assign({}, item, JSON.parse(window.sessionStorage.getItem('invoice_save'))[i]));
 
-                // console.log(arr3);
+            //     // console.log(arr3);
 
-                // var output = [];
+            //     // var output = [];
 
-                // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(item) {
-                //     var existing = output.filter(function(v, i) {
-                //         return v.key == item.key;
-                //     });
+            //     // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(item) {
+            //     //     var existing = output.filter(function(v, i) {
+            //     //         return v.key == item.key;
+            //     //     });
 
-                //     if (existing.length) {
-                //         var existingIndex = output.indexOf(existing[0]);
-                //         output[existingIndex].charge = output[existingIndex].charge.push.apply(item.charge);
-                //     } else {
-                //         if (typeof item.charge == 'string')
-                //           item.charge = [item.charge];
-                //         output.push(item);
-                //     }
+            //     //     if (existing.length) {
+            //     //         var existingIndex = output.indexOf(existing[0]);
+            //     //         output[existingIndex].charge = output[existingIndex].charge.push.apply(item.charge);
+            //     //     } else {
+            //     //         if (typeof item.charge == 'string')
+            //     //           item.charge = [item.charge];
+            //     //         output.push(item);
+            //     //     }
 
-                // })
+            //     // })
 
-                const someArray = [];
-                // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(){
-                //     console.log(value);
-                //     if (window.sessionStorage.getItem('someArray')) {
-                //         // console.log(value);
-                //     } else {
-                //         // console.log(value);
-                //         window.sessionStorage.setItem('someArray', key);
-                //     }
-                // })
-            })
+            //     const someArray = [];
+            //     // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(){
+            //     //     console.log(value);
+            //     //     if (window.sessionStorage.getItem('someArray')) {
+            //     //         // console.log(value);
+            //     //     } else {
+            //     //         // console.log(value);
+            //     //         window.sessionStorage.setItem('someArray', key);
+            //     //     }
+            //     // })
+            // })
 
-            var keyHolder = [];
-            var invoice_save = JSON.parse(window.sessionStorage.getItem('invoice_save'));
-            console.log(invoice_save);
-            $.each(JSON.parse(window.sessionStorage.getItem('invoice_save')), function(key, value) {
-                $.each(value, function(k, v) {
-                    const kvArray = [
-                        { key: k, value: v },
-                    ];
-                    const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
-                    console.log(reformattedArray);
-                    console.log(v);
+            // var keyHolder = [];
+            // var invoice_save = JSON.parse(window.sessionStorage.getItem('invoice_save'));
+            // console.log(invoice_save);
+            // $.each(JSON.parse(window.sessionStorage.getItem('invoice_save')), function(key, value) {
+            //     $.each(value, function(k, v) {
+            //         const kvArray = [
+            //             { key: k, value: v },
+            //         ];
+            //         const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
+            //         console.log(reformattedArray);
+            //         console.log(v);
 
-                    // if (keyHolder == "") {
-                    //     keyHolder = k;
-                    // } else {
-                    //     if (keyHolder.includes(k)) {
-                    //         console.log('yes');
-                    //         console.log(invoice);
-                    //         console.log(invoice_save);
-                    //         // console.log(invoice_save[key].find(object => object.key === k));
-                    //         console.log(invoice_save[key]);
-                    //     } else {
-                    //         keyHolder = keyHolder + ',' + k;
-                    //         // keyHolder = keyHolder.push(key.k);
-                    //         console.log('no');
-                    //     }
-                    // }
-                    // keyHolder = keyHolder.push(reformattedArray);
-                    Array.prototype.push.apply(keyHolder, reformattedArray);
+            //         // if (keyHolder == "") {
+            //         //     keyHolder = k;
+            //         // } else {
+            //         //     if (keyHolder.includes(k)) {
+            //         //         console.log('yes');
+            //         //         console.log(invoice);
+            //         //         console.log(invoice_save);
+            //         //         // console.log(invoice_save[key].find(object => object.key === k));
+            //         //         console.log(invoice_save[key]);
+            //         //     } else {
+            //         //         keyHolder = keyHolder + ',' + k;
+            //         //         // keyHolder = keyHolder.push(key.k);
+            //         //         console.log('no');
+            //         //     }
+            //         // }
+            //         // keyHolder = keyHolder.push(reformattedArray);
+            //         Array.prototype.push.apply(keyHolder, reformattedArray);
 
 
-                    // if (window.sessionStorage.getItem('someArray')) {
-                    //     // console.log(value);
-                    // } else {
-                    //     // console.log(value);
-                    //     window.sessionStorage.setItem('someArray', k);
-                    // }
-                })
-                // console.log(keyHolder);
-            })
-            console.log(keyHolder);
+            //         // if (window.sessionStorage.getItem('someArray')) {
+            //         //     // console.log(value);
+            //         // } else {
+            //         //     // console.log(value);
+            //         //     window.sessionStorage.setItem('someArray', k);
+            //         // }
+            //     })
+            //     // console.log(keyHolder);
+            // })
+            // console.log(keyHolder);
 
             // var payers = [];
             // var datas = [];
@@ -2117,15 +2117,6 @@
             // })
 
             // console.log(invoice);
-
-            $.each(invoice, function(key, value) {
-                // var myArray = [{number: 100, name: "Me"}, 15, 187, 32];
-
-                // for (const [i, value] of myArray.entries()) {
-                //     console.log('%d: %s', key, value);
-                // }
-
-            })
 
             // const kvArray = [
             //   { key: 5, value: 10 },
@@ -2612,12 +2603,14 @@
             var discount_rate = $("#discount_input-"+payer_id).val();
             $('#payer_total-'+payer_id).val((subtotal-((parseInt(discount_rate)/100)*subtotal)).toFixed(2));
             $('#discount_total-'+payer_id).val(((parseInt(discount_rate)/100)*subtotal).toFixed(2));
+            computeAllDiscount()
             return true;
         }
         function computeDiscountAmount(subtotal, payer_id) {
             var discount_rate = $("#discount_input-"+payer_id).val();
             $('#payer_total-'+payer_id).val((parseInt(subtotal)-parseInt(discount_rate)).toFixed(2));
             $('#discount_total-'+payer_id).val(discount_rate);
+            computeAllDiscount()
             return true;
         }
     </script>
@@ -2743,9 +2736,9 @@
 
             $("#invoice_result_subtotal").empty().append('<label>'+currency+' '+((cnt*100)/100).toFixed(2)+'</label>');
 
-            window.sessionStorage.setItem('item_quantity-'+charge_id+payer_id, quantity);
+            // window.sessionStorage.setItem('item_quantity-'+charge_id+payer_id, quantity);
 
-            var item_total = c_price * window.sessionStorage.getItem('item_quantity-'+charge_id+payer_id);
+            // var item_total = c_price * window.sessionStorage.getItem('item_quantity-'+charge_id+payer_id);
 
             console.log(charge_items);
             console.log(amount_items);
@@ -2777,12 +2770,12 @@
             // console.log("item_total : "+item_total);
             console.log(invoice_item_amount);
 
-            if (window.sessionStorage.getItem('payer_subtotal-'+payer_id)) {
-                var payer_subtotal = parseInt(window.sessionStorage.getItem('payer_subtotal-'+payer_id)) + parseInt(item_total);
-                window.sessionStorage.setItem('payer_subtotal-'+payer_id, payer_subtotal);
-            } else {
-                window.sessionStorage.setItem('payer_subtotal-'+payer_id, item_total);
-            }
+            // if (window.sessionStorage.getItem('payer_subtotal-'+payer_id)) {
+            //     var payer_subtotal = parseInt(window.sessionStorage.getItem('payer_subtotal-'+payer_id)) + parseInt(item_total);
+            //     window.sessionStorage.setItem('payer_subtotal-'+payer_id, payer_subtotal);
+            // } else {
+            //     window.sessionStorage.setItem('payer_subtotal-'+payer_id, item_total);
+            // }
 
             /**/
                 // select_discount2(charge_id, payer_id, tax_id, tax_amount, c_price);
@@ -2883,10 +2876,10 @@
             $("#subtotal").val(cnt);
             $("#invoice_result_subtotal").empty().append('<label>'+currency+' '+((cnt*100)/100).toFixed(2)+'</label>');
 
-            window.sessionStorage.setItem('item_quantity-'+charge_id+payer_id, quantity);
-            window.sessionStorage.setItem('item_amount-'+charge_id+payer_id, c_price);
+            // window.sessionStorage.setItem('item_quantity-'+charge_id+payer_id, quantity);
+            // window.sessionStorage.setItem('item_amount-'+charge_id+payer_id, c_price);
 
-            var item_total = window.sessionStorage.getItem('item_amount-'+charge_id+payer_id) * window.sessionStorage.getItem('item_quantity-'+charge_id+payer_id);
+            // var item_total = window.sessionStorage.getItem('item_amount-'+charge_id+payer_id) * window.sessionStorage.getItem('item_quantity-'+charge_id+payer_id);
 
             console.log(charge_items);
             console.log(amount_items);
@@ -2919,12 +2912,12 @@
             // console.log(Object.keys(invoice_items['charges']));
 
             // .map(charge => charge.name)
-            if (window.sessionStorage.getItem('payer_subtotal-'+payer_id)) {
-                var payer_subtotal = parseInt(window.sessionStorage.getItem('payer_subtotal-'+payer_id)) + parseInt(item_total);
-                window.sessionStorage.setItem('payer_subtotal-'+payer_id, payer_subtotal);
-            } else {
-                window.sessionStorage.setItem('payer_subtotal-'+payer_id, item_total);
-            }
+            // if (window.sessionStorage.getItem('payer_subtotal-'+payer_id)) {
+            //     var payer_subtotal = parseInt(window.sessionStorage.getItem('payer_subtotal-'+payer_id)) + parseInt(item_total);
+            //     window.sessionStorage.setItem('payer_subtotal-'+payer_id, payer_subtotal);
+            // } else {
+            //     window.sessionStorage.setItem('payer_subtotal-'+payer_id, item_total);
+            // }
 
             /**/
                 // $("#subtotal").empty().val(sub_total+result);
