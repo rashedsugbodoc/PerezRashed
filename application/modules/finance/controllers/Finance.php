@@ -414,90 +414,90 @@ class Finance extends MX_Controller {
             }
 
         }
+        /**/
+            // foreach($payer_id_unique as $key => $value) {
+            //     $payer_id_unique_single = $value;
+            //     $subtotal = $payer_item_total[$key];
+            //     $gross_total = $subtotal - $discount_total[$key];
 
-        // foreach($payer_id_unique as $key => $value) {
-        //     $payer_id_unique_single = $value;
-        //     $subtotal = $payer_item_total[$key];
-        //     $gross_total = $subtotal - $discount_total[$key];
+            //     do {
+            //         $raw_invoice_number = 'I'.random_string('alnum', 6);
+            //         $validate_number = $this->finance_model->validateInvoiceNumber($raw_invoice_number);
+            //     } while($validate_number != 0);
 
-        //     do {
-        //         $raw_invoice_number = 'I'.random_string('alnum', 6);
-        //         $validate_number = $this->finance_model->validateInvoiceNumber($raw_invoice_number);
-        //     } while($validate_number != 0);
+            //     $invoice_number = strtoupper($raw_invoice_number);
 
-        //     $invoice_number = strtoupper($raw_invoice_number);
+            //     $charge_detail = [];
+            //     $invoice_item_data = array();
 
-        //     $charge_detail = [];
-        //     $invoice_item_data = array();
+            //     $company_classification = $this->company_model->getClassificationByCompanyId($payer_id_unique_single);
+            //     $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
+            //     $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
 
-        //     $company_classification = $this->company_model->getClassificationByCompanyId($payer_id_unique_single);
-        //     $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
-        //     $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+            //     foreach ($payment_status_list as $status_list) {
+            //         if ($status_list->name === "paid") {
+            //             $paid_status = $status_list->id;
+            //         } elseif ($status_list->name === "unpaid") {
+            //             $unpaid_status = $status_list->id;
+            //         } elseif ($status_list->name === "overdue") {
+            //             $overdue_status = $status_list->id;
+            //         }
+            //     }
 
-        //     foreach ($payment_status_list as $status_list) {
-        //         if ($status_list->name === "paid") {
-        //             $paid_status = $status_list->id;
-        //         } elseif ($status_list->name === "unpaid") {
-        //             $unpaid_status = $status_list->id;
-        //         } elseif ($status_list->name === "overdue") {
-        //             $overdue_status = $status_list->id;
-        //         }
-        //     }
+            //     if (empty($payment_status)) {
+            //         $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
+            //         $received_deposit_amount = $amount_received + $deposit_amount;
 
-        //     if (empty($payment_status)) {
-        //         $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
-        //         $received_deposit_amount = $amount_received + $deposit_amount;
+            //         if ($received_deposit_amount >= $gross) {
+            //             $payment_status = $paid_status;
+            //         } else {
+            //             $payment_status = $unpaid_status;
+            //         }
+            //     }
 
-        //         if ($received_deposit_amount >= $gross) {
-        //             $payment_status = $paid_status;
-        //         } else {
-        //             $payment_status = $unpaid_status;
-        //         }
-        //     }
+            //     $invoice_data = array();
 
-        //     $invoice_data = array();
+            //     $invoice_data = array(
+            //         'patient' => $patient,
+            //         'doctor' => $doctor,
+            //         'date' => $date,
+            //         'amount' => $subtotal,
+            //         'discount' => $discount_total[$key],
+            //         'gross_total' => $gross_total,
+            //         'remarks' => $remarks,
+            //         'amount_received' => $amount_received,
+            //         'deposit_type' => $deposit_type,
+            //         'payment_status' => $payment_status,
+            //         'company_id' => $payer_id_unique_single,
+            //         'encounter_id' => $encounter_id,
+            //         'invoice_number' => $invoice_number,
+            //         'discount_id' => $discount_type[$key],
+            //         'invoice_tax_amount' => $tax[$key],
+            //     );
+            //     // $this->finance_model->insertPayment($invoice_data);
+            //     $inserted_id = $this->db->insert_id();
+            //     foreach($charge_id as $key => $value) {
+            //         $charge_detail[] = $this->finance_model->getPaymentCategoryById($value);
 
-        //     $invoice_data = array(
-        //         'patient' => $patient,
-        //         'doctor' => $doctor,
-        //         'date' => $date,
-        //         'amount' => $subtotal,
-        //         'discount' => $discount_total[$key],
-        //         'gross_total' => $gross_total,
-        //         'remarks' => $remarks,
-        //         'amount_received' => $amount_received,
-        //         'deposit_type' => $deposit_type,
-        //         'payment_status' => $payment_status,
-        //         'company_id' => $payer_id_unique_single,
-        //         'encounter_id' => $encounter_id,
-        //         'invoice_number' => $invoice_number,
-        //         'discount_id' => $discount_type[$key],
-        //         'invoice_tax_amount' => $tax[$key],
-        //     );
-        //     // $this->finance_model->insertPayment($invoice_data);
-        //     $inserted_id = $this->db->insert_id();
-        //     foreach($charge_id as $key => $value) {
-        //         $charge_detail[] = $this->finance_model->getPaymentCategoryById($value);
+            //         if ($charge_detail[$key]->payer_account_id === $payer_id_unique_single) {
+            //             $item_total_price = $amount[$key] * $quantity[$key];
 
-        //         if ($charge_detail[$key]->payer_account_id === $payer_id_unique_single) {
-        //             $item_total_price = $amount[$key] * $quantity[$key];
-
-        //             $invoice_item_data = array( 
-        //                 'charge_id' => $charge_detail[$key]->id,
-        //                 'description' => $charge_detail[$key]->category,
-        //                 'invoice_id' => $inserted_id,
-        //                 'price' => $amount[$key],
-        //                 'tax_id' => $charge_detail[$key]->tax_id,
-        //                 'charge_code' => $charge_detail[$key]->charge_code,
-        //                 'quantity' => $quantity[$key],
-        //                 'item_total_price' => $item_total_price,
-        //             );
-        //             // $this->finance_model->insertInvoiceItem($invoice_item_data);
-        //         }
-        //         // $this->finance_model->insertInvoiceItem($invoice_item_data);
-        //     }
-        // }
-
+            //             $invoice_item_data = array( 
+            //                 'charge_id' => $charge_detail[$key]->id,
+            //                 'description' => $charge_detail[$key]->category,
+            //                 'invoice_id' => $inserted_id,
+            //                 'price' => $amount[$key],
+            //                 'tax_id' => $charge_detail[$key]->tax_id,
+            //                 'charge_code' => $charge_detail[$key]->charge_code,
+            //                 'quantity' => $quantity[$key],
+            //                 'item_total_price' => $item_total_price,
+            //             );
+            //             // $this->finance_model->insertInvoiceItem($invoice_item_data);
+            //         }
+            //         // $this->finance_model->insertInvoiceItem($invoice_item_data);
+            //     }
+            // }
+        /**/
         redirect('finance/invoices');
 
     }
@@ -641,11 +641,11 @@ class Finance extends MX_Controller {
         $this->load->library('form_validation');
         $this->form_validation->set_error_delimiters('<div class="alert alert-danger">', '</div>');
 
-// Validating Category Field
-// $this->form_validation->set_rules('category_amount[]', 'Category', 'min_length[1]|max_length[100]');
-// Validating Price Field
+        // Validating Category Field
+        // $this->form_validation->set_rules('category_amount[]', 'Category', 'min_length[1]|max_length[100]');
+        // Validating Price Field
         $this->form_validation->set_rules('patient', 'Patient', 'trim|required|min_length[1]|max_length[100]|xss_clean');
-// Validating Price Field
+        // Validating Price Field
         $this->form_validation->set_rules('company_id', 'Company', 'trim|required|min_length[1]|max_length[100]|xss_clean');
 
         $this->form_validation->set_rules('category_name[]', 'Charge', 'trim|required|min_length[1]|max_length[100]|xss_clean');
@@ -686,7 +686,7 @@ class Finance extends MX_Controller {
                     'how_added' => 'from_pos'
                 );
                 $username = $this->input->post('p_name');
-// Adding New Patient
+        // Adding New Patient
                 if ($this->ion_auth->email_check($p_email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
@@ -699,7 +699,7 @@ class Finance extends MX_Controller {
                     $this->patient_model->updatePatient($patient_user_id, $id_info);
                     $this->hospital_model->addHospitalIdToIonUser($ion_user_id, $this->hospital_id);
                 }
-//    }
+        //    }
             }
 
             if (!empty($d_name)) {
@@ -716,7 +716,7 @@ class Finance extends MX_Controller {
                     'phone' => $d_phone,
                 );
                 $username = $this->input->post('d_name');
-// Adding New Patient
+        // Adding New Patient
                 if ($this->ion_auth->email_check($d_email)) {
                     $this->session->set_flashdata('error', lang('this_email_address_is_already_registered'));
                 } else {
@@ -1162,9 +1162,16 @@ class Finance extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
         $invoice_group_id = $this->input->get('invoice_group_id');
+        $id = $this->input->get('id');
+        $invoice_details = $this->finance_model->getInvoiceByGroupNumber($invoice_group_id);
+        // $something = $invoice_details[0]->id;
+        $finance_id = $this->finance_model->getPaymentByFinanceNumber($invoice_details[0]->invoice_number)->id;
 
-        $invoice_details = $this->finance_model->getInvoiceByGrouoNumber($invoice_group_id);
 
+        $data['invoice_group_id'] = $invoice_group_id;
+        $data['encounter'] = $this->encounter_model->getEncounterById($id);
+        $data['staffs'] = $this->encounter_model->getUser();
+        $data['payment'] = $this->finance_model->getPaymentById($finance_id);
         $data['encounters'] = $this->encounter_model->getEncounter();
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
@@ -1172,6 +1179,57 @@ class Finance extends MX_Controller {
 
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_payment_viewv2', $data);
+    }
+
+    function editInvoicesByInvoiceGroupIdByJson() {
+        $group = $this->input->get('group');
+
+        $invoices = $this->finance_model->getInvoiceByGroupNumber($group);
+
+        $new_invoices = [];
+
+        foreach($invoices as $invoice) {
+            $invoice_items = $this->finance_model->getInvoiceItemsByPaymentId($invoice->id);
+            $company_details = $this->company_model->getCompanyById($invoice->company_id);
+            $items = [];
+            $total_tax_amount = [];
+            foreach($invoice_items as $invoice_item) {
+                $charge_details = $this->finance_model->getPaymentCategoryById($invoice_item->charge_id);
+                $tax_details = $this->finance_model->getTaxById($invoice_item->tax_id);
+                $tax_amount = (($tax_details->rate/100)*$invoice_item->price)*$invoice_item->quantity;
+                $total_tax_amount[] = $tax_amount;
+                $items[] = array(
+                    'charge_id' => $invoice_item->charge_id,
+                    'description' => $invoice_item->description,
+                    'price' => $invoice_item->price,
+                    'tax_id' => $invoice_item->tax_id,
+                    'tax_amount' => $tax_amount,
+                    'quantity' => $invoice_item->quantity,
+                    'discount_id' => $invoice->discount_id,
+                    'remarks' => $invoice->remarks,
+                    'charge_type' => $charge_details->type,
+                );
+            }
+
+            $total_tax_amount = array_sum($total_tax_amount);
+
+            $new_invoices[$invoice->company_id] = array(
+                'items' => $items,
+                'company' => array(
+                    'name' => $company_details->display_name,
+                ),
+                'total' => array(
+                    'subtotal' => $invoice->amount,
+                    'tax' => $total_tax_amount,
+                    'gross_total' => $invoice->gross_total,
+                ),
+            );
+        }
+
+        $data['invoices'] = $new_invoices;
+
+        echo json_encode($data);
+
     }
 
     function editPaymentByJson() {

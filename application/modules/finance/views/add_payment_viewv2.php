@@ -1070,7 +1070,113 @@
                 data: '',
                 dataType: 'json',
                 success: function (response) {
+                    var invoices = response.invoices;
                     console.log(response.invoices);
+
+                    $.each(invoices, function(key, value) {
+                        var items = value['items'];
+                        var total = value['total'];
+                        var company_name = value['company']['name'];
+                        var charge_id = "sample";
+                        var group_id = "sample";
+                        var category = "sample";
+                        var type = "variable";
+                        var charge_quantity = "sample";
+                        var tax_id = "sample";
+                        var tax_amount = "sample";
+                        var tax_percentage = "sample";
+                        var c_price = "sample";
+                        var tax_detail = "sample";
+                        var c_price_display = "sample";
+
+                        console.log(value['items']);
+
+                        $("#charge_cards").append('<div class="col-md-6 col-sm-12">\n\
+                            <div class="card h-90" id="payer_account-'+key+'">\n\
+                                <div class="card-header">\n\
+                                    <div class="card-title">'+company_name+'</div>\n\
+                                    <div class="card-options"><button type="button" class="btn btn-primary" data-target="#addCase'+charge_id+'" data-toggle="modal"><?php echo lang("add").' '.lang("extras"); ?></button></div>\n\
+                                </div>\n\
+                                <div class="card-body">\n\
+                                    <div class="table-responsive">\n\
+                                        <table class="table text-nowrap">\n\
+                                            <thead>\n\
+                                                <tr>\n\
+                                                    <th class="w-50"></th>\n\
+                                                    <th class="w-40"><?php echo lang("amount"); ?></th>\n\
+                                                    <th class="w-10"><?php echo lang("quantity"); ?></th>\n\
+                                                </tr>\n\
+                                            </thead>\n\
+                                            <tbody id="tbody'+key+'">\n\
+                                            </tbody>\n\
+                                        </table>\n\
+                                    </div>\n\
+                                    <div id="extras-'+key+'">\n\
+                                        <hr>\n\
+                                        <div class="table-responsive">\n\
+                                            <table class="table text-nowrap">\n\
+                                                <tbody>\n\
+                                                    <tr>\n\
+                                                        <td class="w-10"><?php echo lang('sub_total'); ?>: </td>\n\
+                                                        <td class="w-50"></td>\n\
+                                                        <td class="w-10"></td>\n\
+                                                        <td class="w-30"><input name="item_total[]" id="card_items_total-'+key+'" class="form-control" value="'+total['subtotal']+'"></td>\n\
+                                                    </tr>\n\
+                                                    <tr>\n\
+                                                        <td class="w-10"><?php echo lang('discount'); ?>: </td>\n\
+                                                        <td class="w-50"><select name="discount_type[]" id="discount'+key+'" class="form-control" onchange="select_discount3('+key+');"></select></td>\n\
+                                                        <td class="w-20" id="discount_type_input'+key+'">\n\
+                                                        </td>\n\
+                                                        <td class="w-80"><input name="discount_total[]" class="form-control discount_total" value="0.00" readonly id="discount_total-'+key+'"></td>\n\
+                                                        </div>\n\
+                                                    </tr>\n\
+                                                    <tr>\n\
+                                                        <td class="w-10"><?php echo lang('tax'); ?>: </td>\n\
+                                                        <td class="w-50"></td>\n\
+                                                        <td class="w-10"></td>\n\
+                                                        <td class="w-30"><input name="tax[]" id="tax_total-'+key+'" class="form-control tax_total" value="'+total['tax']+'"></td>\n\
+                                                    </tr>\n\
+                                                    <tr>\n\
+                                                        <td class="w-10"><?php echo lang('payer_account').' '.lang('total'); ?>: </td>\n\
+                                                        <td class="w-50"></td>\n\
+                                                        <td class="w-10"></td>\n\
+                                                        <td class="w-30"><input name="payer_total[]" id="payer_total-'+key+'" class="form-control payer_total" value="'+total['gross_total']+'"></td>\n\
+                                                    </tr>\n\
+                                                </tbody>\n\
+                                            </table>\n\
+                                        </div>\n\
+                                    </div>\n\
+                                </div>\n\
+                            </div>\n\
+                        </div>');
+
+                        discountSelect2(key);
+
+                        $.each(items, function(item_key, item_value) {
+                            var type = item_value['charge_type'];
+                            if (type == "variable") {
+                                var td_amount = '<td class="w-40"><input type="number" value="'+item_value['price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>';
+                                var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+'0.00</label>';
+                                var c_price = 0;
+                                var tax_detail = 0;
+                            } else {
+                                var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+item_value['price']+'" class="form-control amount'+charge_id+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"><label>'+item_value['price']+'</label></td>';
+                                var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+c_price+'</label>';
+                                var c_price = c_price;
+                                var tax_detail = tax_amount;
+                            }
+
+                            $("#tbody"+key).append('<tr class="charge-'+group_id+'">\n\
+                                <td class="w-50">'+item_value['description']+'<input type="text" name="charge_id[]" value="'+charge_id+'" hidden></td>\n\
+                                '+td_amount+'\n\
+                                <td class="w-10"><input type="number" class="form-control quantity'+charge_id+'-'+key+'" name="quantity[]" value="'+item_value['quantity']+'" onfocusout="charge_quantity('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>\n\
+                            </tr>');
+
+                            // $('#editPaymentForm').find('[name="discount_type"]').val(1).change();
+                        })
+
+
+                    })
                 }
             });
         });
@@ -1897,237 +2003,240 @@
 
             })
 
-            // $.each(invoice, function(key, value) {
-            //     var payer_invoice = new Object();
-
-            //     const kvArray = [
-            //         { key: key, value: { charge: value['charges'], summary: JSON.parse(window.sessionStorage.getItem('summary-'+key)) } },
-            //     ];
-
-            //     if (window.sessionStorage.getItem('invoice_save')) {
-            //         old_invoice_save = JSON.parse(window.sessionStorage.getItem('invoice_save'));
-            //     } else {
-            //         old_invoice_save = [];
-            //     }
-
-            //     // payer_invoice = [
-            //     //         {
-            //     //            charge: value['charges']['id'],
-            //     //         },
-            //     //     ];
-
-            //     const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
-
-            //     Array.prototype.push.apply(reformattedArray, old_invoice_save);
-            //     window.sessionStorage.setItem('invoice_save', JSON.stringify(reformattedArray));
-
-            //     // if (window.sessionStorage.getItem('payer_invoice')) {
-            //     //     new_payer_invoice = payer_invoice.concat(JSON.parse(window.sessionStorage.getItem('payer_invoice')));
-            //     //     console.log(new_payer_invoice);
-            //     //     window.sessionStorage.setItem('payer_invoice', JSON.stringify(new_payer_invoice));
-            //     // } else {
-            //     //     window.sessionStorage.setItem('payer_invoice', JSON.stringify(payer_invoice));
-            //     // }
-
-            //     // console.log(reformattedArray[0]);
-            //     // console.log(JSON.parse(window.sessionStorage.getItem('invoice_save')));
-
-            //     // const arr3 = JSON.parse(window.sessionStorage.getItem('invoice_save')).map((item, i) => Object.assign({}, item, JSON.parse(window.sessionStorage.getItem('invoice_save'))[i]));
-
-            //     // console.log(arr3);
-
-            //     // var output = [];
-
-            //     // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(item) {
-            //     //     var existing = output.filter(function(v, i) {
-            //     //         return v.key == item.key;
-            //     //     });
-
-            //     //     if (existing.length) {
-            //     //         var existingIndex = output.indexOf(existing[0]);
-            //     //         output[existingIndex].charge = output[existingIndex].charge.push.apply(item.charge);
-            //     //     } else {
-            //     //         if (typeof item.charge == 'string')
-            //     //           item.charge = [item.charge];
-            //     //         output.push(item);
-            //     //     }
-
-            //     // })
-
-            //     const someArray = [];
-            //     // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(){
-            //     //     console.log(value);
-            //     //     if (window.sessionStorage.getItem('someArray')) {
-            //     //         // console.log(value);
-            //     //     } else {
-            //     //         // console.log(value);
-            //     //         window.sessionStorage.setItem('someArray', key);
-            //     //     }
-            //     // })
-            // })
-
-            // var keyHolder = [];
-            // var invoice_save = JSON.parse(window.sessionStorage.getItem('invoice_save'));
-            // console.log(invoice_save);
-            // $.each(JSON.parse(window.sessionStorage.getItem('invoice_save')), function(key, value) {
-            //     $.each(value, function(k, v) {
-            //         const kvArray = [
-            //             { key: k, value: v },
-            //         ];
-            //         const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
-            //         console.log(reformattedArray);
-            //         console.log(v);
-
-            //         // if (keyHolder == "") {
-            //         //     keyHolder = k;
-            //         // } else {
-            //         //     if (keyHolder.includes(k)) {
-            //         //         console.log('yes');
-            //         //         console.log(invoice);
-            //         //         console.log(invoice_save);
-            //         //         // console.log(invoice_save[key].find(object => object.key === k));
-            //         //         console.log(invoice_save[key]);
-            //         //     } else {
-            //         //         keyHolder = keyHolder + ',' + k;
-            //         //         // keyHolder = keyHolder.push(key.k);
-            //         //         console.log('no');
-            //         //     }
-            //         // }
-            //         // keyHolder = keyHolder.push(reformattedArray);
-            //         Array.prototype.push.apply(keyHolder, reformattedArray);
-
-
-            //         // if (window.sessionStorage.getItem('someArray')) {
-            //         //     // console.log(value);
-            //         // } else {
-            //         //     // console.log(value);
-            //         //     window.sessionStorage.setItem('someArray', k);
-            //         // }
-            //     })
-            //     // console.log(keyHolder);
-            // })
-            // console.log(keyHolder);
-
-            // var payers = [];
-            // var datas = [];
-            // keyHolder.forEach(function(item, index) {
-            //     var payer_key = '';
-            //     var payer_datas = '';
-            //     Object.keys(item).forEach(function(item_value, index_value) {
-            //         payer_key = item_value;
-            //         console.log(payer_key);
-
-            //         if (payers.includes(payer_key)) {
-            //             console.log("have payer "+payer_key);
-            //         } else {
-            //             console.log("doenst have payer "+payer_key);
-            //         }
-
-            //     })
-            //     Object.values(item).forEach(function(item_value, index_value) {
-            //         payer_datas = item_value;
-            //         console.log(payer_datas);
-            //     })
-            //     const format_datas = [
-            //         { key: payer_key, value: payer_datas }
-            //     ]
-
-            //     // if (payers.includes(payer_key)) {
-            //     //     console.log("have payer "+payer_key);
-            //     // } else {
-            //     //     console.log("doenst have payer "+payer_key);
-            //     // }
-
-            //     payers.push(Object.keys(item)); /*List of Payer*/
-            //     datas.push(format_datas.map(({ key, value }) => ({ [payer_key]: payer_datas }) )); /*List of Charges and Summary Not Filtered*/
-            // })
-            // console.log('List of Payer');
-            // console.log(payers);
-            // console.log('List of Charges and Summary');
-            // console.log(datas);
-
-            /*November 15, 2022 Morning Function to be Fix*/
-                // console.log('-- output start --');
-                // console.log(invoice);
-                // var output = [];
-                // var payers = [];
-                // var payer_structure = [];
-
-                // keyHolder.forEach(function(item, index) {
-                //     console.log(item);
-                //     console.log(Object.keys(item));
-                //     // output = output.push(item);
-                //     Object.keys(item).forEach(function(payer, idx) {
-                //         // console.log("index: "+idx);
-                //         const kvArray2 = [
-                //             { key: payer, value: payer },
-                //         ];
-                //         const reformattedArray2 = kvArray2.map(({ key, value }) => ({ [payer]: item[payer] }));
-
-                //         console.log(kvArray2);
-                //         console.log(payer);
-                //         console.log(item[payer]);
-                //         if (payers.includes(payer)) {
-                //             payers;
-                //             // const reformattedArray2 = kvArray2.map(({ key, value }) => ({ [payer]: item[payer] }));
-                //             console.log("payer_structure");
-                //             console.log(payer_structure);
-                //             payer_structure.forEach(function(data, data_index) {
-                //                 // var charge_array = new Array(data[0][payer], item[payer]);
-                //                 // charge_array = data[0][payer], item[payer];
-                //                 console.log('data:');
-                //                 console.log(data[0][payer]);
-                //                 // payer_structure[0][payer].push.apply([item[payer]]);
-                //             })
-                //             // payer_structure[0][payer].push([item[payer]]);
-                //             // console.log(payer_structure[0][payer]);
-
-                //             console.log('Payer Invoice Charges and Summary');
-                //             // payer_structure[0].push(reformattedArray2);
-                //             console.log(invoice[payer]);
-                //         } else {
-                //             payers.push(payer);
-                //             payer_structure.push(reformattedArray2);
-                //         }
-                //         output.push(item[payer]);
-                //     })
-                // });
-                // console.log(payers);
-                // console.log(output);
-                // console.log(payer_structure);
-                // console.log('-- output end --');
             /**/
+                // $.each(invoice, function(key, value) {
+                //     var payer_invoice = new Object();
 
-            // var output = [];
+                //     const kvArray = [
+                //         { key: key, value: { charge: value['charges'], summary: JSON.parse(window.sessionStorage.getItem('summary-'+key)) } },
+                //     ];
 
-            // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(item) {
-            //     var existing = output.filter(function(v, i) {
-            //         return v.key == item.key;
-            //     });
+                //     if (window.sessionStorage.getItem('invoice_save')) {
+                //         old_invoice_save = JSON.parse(window.sessionStorage.getItem('invoice_save'));
+                //     } else {
+                //         old_invoice_save = [];
+                //     }
 
-            //     if (existing.length) {
-            //         var existingIndex = output.indexOf(existing[0]);
-            //         output[existingIndex].charge = output[existingIndex].charge.push.apply(item.charge);
-            //     } else {
-            //         if (typeof item.charge == 'string')
-            //           item.charge = [item.charge];
-            //         output.push(item);
-            //     }
+                //     // payer_invoice = [
+                //     //         {
+                //     //            charge: value['charges']['id'],
+                //     //         },
+                //     //     ];
 
-            // })
+                //     const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
 
-            // console.log(invoice);
+                //     Array.prototype.push.apply(reformattedArray, old_invoice_save);
+                //     window.sessionStorage.setItem('invoice_save', JSON.stringify(reformattedArray));
 
-            // const kvArray = [
-            //   { key: 5, value: 10 },
-            //   { key: 6, value: 20 },
-            //   { key: 7, value: 30 },
-            // ];
+                //     // if (window.sessionStorage.getItem('payer_invoice')) {
+                //     //     new_payer_invoice = payer_invoice.concat(JSON.parse(window.sessionStorage.getItem('payer_invoice')));
+                //     //     console.log(new_payer_invoice);
+                //     //     window.sessionStorage.setItem('payer_invoice', JSON.stringify(new_payer_invoice));
+                //     // } else {
+                //     //     window.sessionStorage.setItem('payer_invoice', JSON.stringify(payer_invoice));
+                //     // }
 
-            // const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
+                //     // console.log(reformattedArray[0]);
+                //     // console.log(JSON.parse(window.sessionStorage.getItem('invoice_save')));
 
-            // console.log(reformattedArray); // [{ 1: 10 }, { 2: 20 }, { 3: 30 }]
-            // console.log(kvArray);
+                //     // const arr3 = JSON.parse(window.sessionStorage.getItem('invoice_save')).map((item, i) => Object.assign({}, item, JSON.parse(window.sessionStorage.getItem('invoice_save'))[i]));
+
+                //     // console.log(arr3);
+
+                //     // var output = [];
+
+                //     // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(item) {
+                //     //     var existing = output.filter(function(v, i) {
+                //     //         return v.key == item.key;
+                //     //     });
+
+                //     //     if (existing.length) {
+                //     //         var existingIndex = output.indexOf(existing[0]);
+                //     //         output[existingIndex].charge = output[existingIndex].charge.push.apply(item.charge);
+                //     //     } else {
+                //     //         if (typeof item.charge == 'string')
+                //     //           item.charge = [item.charge];
+                //     //         output.push(item);
+                //     //     }
+
+                //     // })
+
+                //     const someArray = [];
+                //     // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(){
+                //     //     console.log(value);
+                //     //     if (window.sessionStorage.getItem('someArray')) {
+                //     //         // console.log(value);
+                //     //     } else {
+                //     //         // console.log(value);
+                //     //         window.sessionStorage.setItem('someArray', key);
+                //     //     }
+                //     // })
+                // })
+
+                // var keyHolder = [];
+                // var invoice_save = JSON.parse(window.sessionStorage.getItem('invoice_save'));
+                // console.log(invoice_save);
+                // $.each(JSON.parse(window.sessionStorage.getItem('invoice_save')), function(key, value) {
+                //     $.each(value, function(k, v) {
+                //         const kvArray = [
+                //             { key: k, value: v },
+                //         ];
+                //         const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
+                //         console.log(reformattedArray);
+                //         console.log(v);
+
+                //         // if (keyHolder == "") {
+                //         //     keyHolder = k;
+                //         // } else {
+                //         //     if (keyHolder.includes(k)) {
+                //         //         console.log('yes');
+                //         //         console.log(invoice);
+                //         //         console.log(invoice_save);
+                //         //         // console.log(invoice_save[key].find(object => object.key === k));
+                //         //         console.log(invoice_save[key]);
+                //         //     } else {
+                //         //         keyHolder = keyHolder + ',' + k;
+                //         //         // keyHolder = keyHolder.push(key.k);
+                //         //         console.log('no');
+                //         //     }
+                //         // }
+                //         // keyHolder = keyHolder.push(reformattedArray);
+                //         Array.prototype.push.apply(keyHolder, reformattedArray);
+
+
+                //         // if (window.sessionStorage.getItem('someArray')) {
+                //         //     // console.log(value);
+                //         // } else {
+                //         //     // console.log(value);
+                //         //     window.sessionStorage.setItem('someArray', k);
+                //         // }
+                //     })
+                //     // console.log(keyHolder);
+                // })
+                // console.log(keyHolder);
+
+                // var payers = [];
+                // var datas = [];
+                // keyHolder.forEach(function(item, index) {
+                //     var payer_key = '';
+                //     var payer_datas = '';
+                //     Object.keys(item).forEach(function(item_value, index_value) {
+                //         payer_key = item_value;
+                //         console.log(payer_key);
+
+                //         if (payers.includes(payer_key)) {
+                //             console.log("have payer "+payer_key);
+                //         } else {
+                //             console.log("doenst have payer "+payer_key);
+                //         }
+
+                //     })
+                //     Object.values(item).forEach(function(item_value, index_value) {
+                //         payer_datas = item_value;
+                //         console.log(payer_datas);
+                //     })
+                //     const format_datas = [
+                //         { key: payer_key, value: payer_datas }
+                //     ]
+
+                //     // if (payers.includes(payer_key)) {
+                //     //     console.log("have payer "+payer_key);
+                //     // } else {
+                //     //     console.log("doenst have payer "+payer_key);
+                //     // }
+
+                //     payers.push(Object.keys(item)); /*List of Payer*/
+                //     datas.push(format_datas.map(({ key, value }) => ({ [payer_key]: payer_datas }) )); /*List of Charges and Summary Not Filtered*/
+                // })
+                // console.log('List of Payer');
+                // console.log(payers);
+                // console.log('List of Charges and Summary');
+                // console.log(datas);
+
+                /*November 15, 2022 Morning Function to be Fix*/
+                    // console.log('-- output start --');
+                    // console.log(invoice);
+                    // var output = [];
+                    // var payers = [];
+                    // var payer_structure = [];
+
+                    // keyHolder.forEach(function(item, index) {
+                    //     console.log(item);
+                    //     console.log(Object.keys(item));
+                    //     // output = output.push(item);
+                    //     Object.keys(item).forEach(function(payer, idx) {
+                    //         // console.log("index: "+idx);
+                    //         const kvArray2 = [
+                    //             { key: payer, value: payer },
+                    //         ];
+                    //         const reformattedArray2 = kvArray2.map(({ key, value }) => ({ [payer]: item[payer] }));
+
+                    //         console.log(kvArray2);
+                    //         console.log(payer);
+                    //         console.log(item[payer]);
+                    //         if (payers.includes(payer)) {
+                    //             payers;
+                    //             // const reformattedArray2 = kvArray2.map(({ key, value }) => ({ [payer]: item[payer] }));
+                    //             console.log("payer_structure");
+                    //             console.log(payer_structure);
+                    //             payer_structure.forEach(function(data, data_index) {
+                    //                 // var charge_array = new Array(data[0][payer], item[payer]);
+                    //                 // charge_array = data[0][payer], item[payer];
+                    //                 console.log('data:');
+                    //                 console.log(data[0][payer]);
+                    //                 // payer_structure[0][payer].push.apply([item[payer]]);
+                    //             })
+                    //             // payer_structure[0][payer].push([item[payer]]);
+                    //             // console.log(payer_structure[0][payer]);
+
+                    //             console.log('Payer Invoice Charges and Summary');
+                    //             // payer_structure[0].push(reformattedArray2);
+                    //             console.log(invoice[payer]);
+                    //         } else {
+                    //             payers.push(payer);
+                    //             payer_structure.push(reformattedArray2);
+                    //         }
+                    //         output.push(item[payer]);
+                    //     })
+                    // });
+                    // console.log(payers);
+                    // console.log(output);
+                    // console.log(payer_structure);
+                    // console.log('-- output end --');
+                /**/
+
+                // var output = [];
+
+                // JSON.parse(window.sessionStorage.getItem('invoice_save')).forEach(function(item) {
+                //     var existing = output.filter(function(v, i) {
+                //         return v.key == item.key;
+                //     });
+
+                //     if (existing.length) {
+                //         var existingIndex = output.indexOf(existing[0]);
+                //         output[existingIndex].charge = output[existingIndex].charge.push.apply(item.charge);
+                //     } else {
+                //         if (typeof item.charge == 'string')
+                //           item.charge = [item.charge];
+                //         output.push(item);
+                //     }
+
+                // })
+
+                // console.log(invoice);
+
+                // const kvArray = [
+                //   { key: 5, value: 10 },
+                //   { key: 6, value: 20 },
+                //   { key: 7, value: 30 },
+                // ];
+
+                // const reformattedArray = kvArray.map(({ key, value }) => ({ [key]: value }));
+
+                // console.log(reformattedArray); // [{ 1: 10 }, { 2: 20 }, { 3: 30 }]
+                // console.log(kvArray);
+
+            /**/
 
         }
     </script>

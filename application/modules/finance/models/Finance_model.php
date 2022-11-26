@@ -36,7 +36,7 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
-    function getInvoiceByGrouoNumber($group) {
+    function getInvoiceByGroupNumber($group) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('invoice_group_number', $group);
         $query = $this->db->get('invoice');
