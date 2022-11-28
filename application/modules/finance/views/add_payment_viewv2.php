@@ -374,7 +374,7 @@
                                                     <div class="form-group">
                                                         <ul class="nav nav-pills nav-pills-circle" id="tabs_3" role="tablist">
                                                             <li class="nav-item">
-                                                                <a class="nav-link border py-3 px-5" id="tab3" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="false" onclick="withCopay();">
+                                                                <a class="nav-link border py-3 px-5 <?php echo $charges_with_copay?'active':''; ?>" id="tab3" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected=" <?php echo $charges_with_copay?'true':'false'; ?>" onclick="withCopay();">
                                                                     <span class="nav-link-icon d-block"><?php echo lang('with_copay') ?></span>
                                                                 </a>
                                                             </li>
@@ -429,29 +429,28 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <div id="charge_div">
-                                                            <div id="charge_with_copay" hidden>
+                                                            <div id="charge_with_copay" <?php echo $charges_with_copay?'':'hidden'; ?>>
                                                                 <select name="charge_name[]" class="charge" placeholder="Sample Placeholder" multiple="multiple">
+                                                                    
                                                                     <?php foreach ($charges_with_copay as $charge_with_copay) { ?>
-                                                                        <option value="<?php echo $charge_with_copay->id; ?>"><?php echo $charge_with_copay->category ?></option>
+                                                                        <option value="<?php echo $charge_with_copay->id; ?>" <?php
+                                                                        if (in_array($charge_with_copay->id, $invoice_item_group) === true) {
+                                                                            echo "selected";
+                                                                        } else {
+                                                                            echo "";
+                                                                        } ?>><?php echo $charge_with_copay->category ?></option>
                                                                     <?php } ?>
-                                                                    <!-- <?php foreach ($charges_with_copay as $charge_with_copay) { ?>
-                                                                        <?php foreach($invoice_items as $invoice_item) { ?>
-                                                                            <?php
-                                                                                $group_id = $this->finance_model->getPaymentCategoryById($invoice_item->charge_id)->group_id;
-                                                                            ?>
-                                                                            <?php if ($charge_with_copay->id === $group_id) { ?>
-                                                                                <option value="<?php echo $charge_with_copay->id; ?>" selected><?php echo $charge_with_copay->category ?></option>
-                                                                            <?php } else { ?>
-                                                                                <option value="<?php echo $charge_with_copay->id; ?>"><?php echo $charge_with_copay->category ?></option>
-                                                                            <?php } ?>
-                                                                        <?php } ?>
-                                                                    <?php } ?> -->
                                                                 </select>
                                                             </div>
                                                             <div id="charge_without_copay" hidden>
                                                                 <select name="charge_name[]" class="charge" placeholder="Sample Placeholder" multiple="multiple">
                                                                     <?php foreach ($charges_without_copay as $charge_without_copay) { ?>
-                                                                        <option value="<?php echo $charge_without_copay->id; ?>"><?php echo $charge_without_copay->category ?></option>
+                                                                        <option value="<?php echo $charge_without_copay->id; ?>" <?php
+                                                                        if (in_array($charge_without_copay->id, $invoice_item_group) === true) {
+                                                                            echo "selected";
+                                                                        } else {
+                                                                            echo "";
+                                                                        } ?>><?php echo $charge_without_copay->category ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
@@ -1076,11 +1075,14 @@
                     $.each(invoices, function(key, value) {
                         var items = value['items'];
                         var total = value['total'];
+                        var discount = value['discount'];
                         var company_name = value['company']['name'];
-                        var charge_id = "sample";
-                        var group_id = "sample";
+                        var charge_id = items['charge_id'];
+                        var group_id = items['charge_group_id'];
                         var category = "sample";
                         var type = "variable";
+                        var discount_id = discount['id'];
+                        var discount_amount = discount['amount'];
                         var charge_quantity = "sample";
                         var tax_id = "sample";
                         var tax_amount = "sample";
@@ -1088,6 +1090,9 @@
                         var c_price = "sample";
                         var tax_detail = "sample";
                         var c_price_display = "sample";
+                        var discount_list = response.discount;
+
+                        window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(value['items']));
 
                         console.log(value['items']);
 
@@ -1127,7 +1132,7 @@
                                                         <td class="w-50"><select name="discount_type[]" id="discount'+key+'" class="form-control" onchange="select_discount3('+key+');"></select></td>\n\
                                                         <td class="w-20" id="discount_type_input'+key+'">\n\
                                                         </td>\n\
-                                                        <td class="w-80"><input name="discount_total[]" class="form-control discount_total" value="0.00" readonly id="discount_total-'+key+'"></td>\n\
+                                                        <td class="w-80"><input name="discount_total[]" class="form-control discount_total" value="'+discount_amount+'" readonly id="discount_total-'+key+'"></td>\n\
                                                         </div>\n\
                                                     </tr>\n\
                                                     <tr>\n\
@@ -1150,17 +1155,34 @@
                             </div>\n\
                         </div>');
 
-                        discountSelect2(key);
+                        $('#discount'+key).append($('<option value="0" disabled>Select Discount</option>')).end();
+                        $.each(discount_list, function(discount_key, discount_value) {
+                            $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
+                        })
+
+                        // discountSelect2(key);
+
+                        console.log(discount_id);
+
+                        if (discount_id == null) {
+                            $('#discount'+key).val("0");
+                        } else {
+                            $('#discount'+key).val(discount_id);
+                        }
+
+                        $('#discount'+key).select2();
+
+                        // discountSelect2(key);
 
                         $.each(items, function(item_key, item_value) {
                             var type = item_value['charge_type'];
                             if (type == "variable") {
-                                var td_amount = '<td class="w-40"><input type="number" value="'+item_value['price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>';
+                                var td_amount = '<td class="w-40"><input type="number" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>';
                                 var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+'0.00</label>';
                                 var c_price = 0;
                                 var tax_detail = 0;
                             } else {
-                                var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+item_value['price']+'" class="form-control amount'+charge_id+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"><label>'+item_value['price']+'</label></td>';
+                                var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+item_value['c_price']+'" class="form-control amount'+charge_id+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"><label>'+item_value['c_price']+'</label></td>';
                                 var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+c_price+'</label>';
                                 var c_price = c_price;
                                 var tax_detail = tax_amount;
@@ -2619,26 +2641,28 @@
 
     <script type="text/javascript">
         function select_discount3(payer_id) {
-            $("#discount_type_input"+payer_id).empty();
-            var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
-            // console.log(value+' - '+payer_id);
-            var invoice_items = JSON.parse(window.sessionStorage.getItem('new_invoice-'+payer_id));
-            var amount_items = $("#payer_account-"+payer_id).find("input[name='amount[]']").map(function(){return $(this).val();}).get();
-            var quantity_items = $("#payer_account-"+payer_id).find("input[name='quantity[]']").map(function(){return $(this).val();}).get();
-            var data = $("#discount"+payer_id).select2('data')[0];
-            console.log(data.discount_type_id);
-            console.log(invoice_items);
+            if ('<?php echo $payment->invoice_group_number; ?>') {
+                $("#discount_type_input"+payer_id).empty();
+                var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
+                // console.log(value+' - '+payer_id);
+                var invoice_items = JSON.parse(window.sessionStorage.getItem('new_invoice-'+payer_id));
+                var amount_items = $("#payer_account-"+payer_id).find("input[name='amount[]']").map(function(){return $(this).val();}).get();
+                var quantity_items = $("#payer_account-"+payer_id).find("input[name='quantity[]']").map(function(){return $(this).val();}).get();
 
-            
+                var selected = $('#discount'+payer_id).find('option:selected');
+                var rate = selected.data('rate');
+                var amount = selected.data('amount');
+                var discount_type_id = selected.data('discount_type_id');
+                console.log(selected.data);
+
                 var invoice_item_extras = inv_items(payer_id);
 
                 var invoice_item_amount = invoice_item_extras[1];
                 var invoice_tax_amount = invoice_item_extras[0];
-                // var invoice_discount_amount = invoice_item_amount * (parseFloat(data.rate)/100);
 
-                if (data.discount_type_id == 1) {
-                    var invoice_discount_amount = parseFloat(invoice_item_amount * (data.rate/100));
-                    var rate = data.rate;
+                if (discount_type_id == 1) {
+                    var invoice_discount_amount = parseFloat(invoice_item_amount * (rate/100));
+                    var rate = rate;
                     $("#discount_type_input"+payer_id).append('<div class="input-group" id="selected_payer_price_content_two'+payer_id+'" hidden>\n\
                         <input type="text" class="form-control" id="discount_input-'+payer_id+'" name="discount_input[]" placeholder="Enter Percentage Amount">\n\
                         <span class="input-group-append">\n\
@@ -2646,16 +2670,16 @@
                         </span>\n\
                     </div><div><label class="mt-2">'+rate+' %'+'</label></div>\n\
                     ');
-                } else if (data.discount_type_id == 2) {
-                    var invoice_discount_amount = parseFloat(data.amount);
-                    var rate = data.amount;
+                } else if (discount_type_id == 2) {
+                    var invoice_discount_amount = parseFloat(amount);
+                    var rate = amount;
                     $("#discount_type_input"+payer_id).append('<div class="input-group" id="selected_payer_price_content_two'+payer_id+'" hidden>\n\
                         <span class="input-group-append">\n\
                             <span class="btn btn-primary" type="button">'+currency+'</span>\n\
                         </span>\n\
                         <input type="text" class="form-control" id="discount_input-'+payer_id+'" name="discount_input[]" placeholder="Enter Fixed Amount">\n\
                     </div><div><label class="mt-2">'+currency+' '+rate+'</label></div>');
-                } else if (data.discount_type_id == 3) {
+                } else if (discount_type_id == 3) {
                     var invoice_discount_amount = 0;
                     var rate = 0;
                     $("#discount_type_input"+payer_id).append('<div class="input-group" id="selected_payer_price_content_two'+payer_id+'">\n\
@@ -2665,7 +2689,7 @@
                         </span>\n\
                     </div>\n\
                     ');
-                } else if (data.discount_type_id == 4) {
+                } else if (discount_type_id == 4) {
                     var invoice_discount_amount = 0;
                     var rate = 0;
                     $("#discount_type_input"+payer_id).append('<div class="input-group" id="selected_payer_price_content_two'+payer_id+'">\n\
@@ -2687,23 +2711,92 @@
                 $('#payer_total-'+payer_id).val(payer_account_total);
 
                 computeAllDiscount();
-            
-            // var discount = $("#discount"+value+'-'+payer_id).val();
-            // var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
-            // var charge_items = $("#payer_account-"+payer_id).find("input[name='charge_id[]']").map(function(){return $(this).val();}).get();
-            // var quantity_items = $("#payer_account-"+payer_id).find("input[name='quantity[]']").map(function(){return $(this).val();}).get();
+            } else {
+                $("#discount_type_input"+payer_id).empty();
+                var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
+                // console.log(value+' - '+payer_id);
+                var invoice_items = JSON.parse(window.sessionStorage.getItem('new_invoice-'+payer_id));
+                var amount_items = $("#payer_account-"+payer_id).find("input[name='amount[]']").map(function(){return $(this).val();}).get();
+                var quantity_items = $("#payer_account-"+payer_id).find("input[name='quantity[]']").map(function(){return $(this).val();}).get();
+                var data = $("#discount"+payer_id).select2('data')[0];
+                console.log(data);
+                console.log(invoice_items);
+                
+                    var invoice_item_extras = inv_items(payer_id);
 
-            // $.ajax({
-            //     url: 'finance/getExtrasByDiscountIdByChargeIdByJason?charge='+charge_items+'&discount='+discount,
-            //     method: 'GET',
-            //     data: '',
-            //     dataType: 'json',
-            //     success: function(response) {
-            //         var discount_details = response.discount_details;
-            //         var charge_details = response.charge_details;
-            //         var taxes = response.taxes;
-            //     }
-            // })
+                    var invoice_item_amount = invoice_item_extras[1];
+                    var invoice_tax_amount = invoice_item_extras[0];
+                    // var invoice_discount_amount = invoice_item_amount * (parseFloat(data.rate)/100);
+
+                    if (data.discount_type_id == 1) {
+                        var invoice_discount_amount = parseFloat(invoice_item_amount * (data.rate/100));
+                        var rate = data.rate;
+                        $("#discount_type_input"+payer_id).append('<div class="input-group" id="selected_payer_price_content_two'+payer_id+'" hidden>\n\
+                            <input type="text" class="form-control" id="discount_input-'+payer_id+'" name="discount_input[]" placeholder="Enter Percentage Amount">\n\
+                            <span class="input-group-append">\n\
+                                <span class="btn btn-primary" type="button">%</span>\n\
+                            </span>\n\
+                        </div><div><label class="mt-2">'+rate+' %'+'</label></div>\n\
+                        ');
+                    } else if (data.discount_type_id == 2) {
+                        var invoice_discount_amount = parseFloat(data.amount);
+                        var rate = data.amount;
+                        $("#discount_type_input"+payer_id).append('<div class="input-group" id="selected_payer_price_content_two'+payer_id+'" hidden>\n\
+                            <span class="input-group-append">\n\
+                                <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                            </span>\n\
+                            <input type="text" class="form-control" id="discount_input-'+payer_id+'" name="discount_input[]" placeholder="Enter Fixed Amount">\n\
+                        </div><div><label class="mt-2">'+currency+' '+rate+'</label></div>');
+                    } else if (data.discount_type_id == 3) {
+                        var invoice_discount_amount = 0;
+                        var rate = 0;
+                        $("#discount_type_input"+payer_id).append('<div class="input-group" id="selected_payer_price_content_two'+payer_id+'">\n\
+                            <input type="text" class="form-control" id="discount_input-'+payer_id+'" name="discount_input[]" placeholder="Enter Percentage Amount" onkeyup="computeDiscountPercentage('+invoice_item_amount+','+payer_id+');">\n\
+                            <span class="input-group-append">\n\
+                                <span class="btn btn-primary" type="button">%</span>\n\
+                            </span>\n\
+                        </div>\n\
+                        ');
+                    } else if (data.discount_type_id == 4) {
+                        var invoice_discount_amount = 0;
+                        var rate = 0;
+                        $("#discount_type_input"+payer_id).append('<div class="input-group" id="selected_payer_price_content_two'+payer_id+'">\n\
+                            <span class="input-group-append">\n\
+                                <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                            </span>\n\
+                            <input type="text" class="form-control" id="discount_input-'+payer_id+'" name="discount_input[]" placeholder="Enter Fixed Amount" onkeyup="computeDiscountAmount('+invoice_item_amount+','+payer_id+')">\n\
+                        </div>');
+                    }
+
+                    if (is_display_prices_with_tax_included() == "1") {
+                        var payer_account_total = parseFloat(parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
+                    } else {
+                        var payer_account_total = parseFloat(parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
+                    }
+
+                    $('#discount_input-'+payer_id).val(rate);
+                    $('#discount_total-'+payer_id).val(parseFloat(invoice_discount_amount).toFixed(2));
+                    $('#payer_total-'+payer_id).val(payer_account_total);
+
+                    computeAllDiscount();
+                
+                // var discount = $("#discount"+value+'-'+payer_id).val();
+                // var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
+                // var charge_items = $("#payer_account-"+payer_id).find("input[name='charge_id[]']").map(function(){return $(this).val();}).get();
+                // var quantity_items = $("#payer_account-"+payer_id).find("input[name='quantity[]']").map(function(){return $(this).val();}).get();
+
+                // $.ajax({
+                //     url: 'finance/getExtrasByDiscountIdByChargeIdByJason?charge='+charge_items+'&discount='+discount,
+                //     method: 'GET',
+                //     data: '',
+                //     dataType: 'json',
+                //     success: function(response) {
+                //         var discount_details = response.discount_details;
+                //         var charge_details = response.charge_details;
+                //         var taxes = response.taxes;
+                //     }
+                // })
+            }
         }
     </script>
 

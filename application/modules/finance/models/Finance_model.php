@@ -1650,4 +1650,10 @@ class Finance_model extends CI_model {
         return $query->row();
     }
 
+    function getDiscount() {
+        $this->db->select('*');
+        $query = $this->db->get('discount');
+        return $query->result();
+    }
+
 }

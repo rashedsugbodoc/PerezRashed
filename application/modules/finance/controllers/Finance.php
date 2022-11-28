@@ -1163,9 +1163,9 @@ class Finance extends MX_Controller {
         $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
         $invoice_group_id = $this->input->get('invoice_group_id');
         $id = $this->input->get('id');
-        $invoice_details = $this->finance_model->getInvoiceByGroupNumber($invoice_group_id);
+        $data['invoice_details'] = $this->finance_model->getInvoiceByGroupNumber($invoice_group_id);
         // $something = $invoice_details[0]->id;
-        $finance_id = $this->finance_model->getPaymentByFinanceNumber($invoice_details[0]->invoice_number)->id;
+        $finance_id = $this->finance_model->getPaymentByFinanceNumber($data['invoice_details'][0]->invoice_number)->id;
 
 
         $data['invoice_group_id'] = $invoice_group_id;
@@ -1177,6 +1177,39 @@ class Finance extends MX_Controller {
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['companies'] = $this->company_model->getCompany();
 
+        $charges = $this->finance_model->getChargesWithCopay();
+
+        $charges_with_copay = [];
+        $charges_without_copay = [];
+
+        foreach($charges as $charge) {
+            if ($charge->total >= 2) {
+                $charges_copay_lists = $this->finance_model->getPaymentCategoryByGroupId($charge->group_id);
+                // foreach($charges_copay_lists as $charges_copay_list) {
+                //     $charges_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_list->id);
+                // }
+                $charges_with_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_lists[0]->id);
+            }
+        }
+
+        foreach($charges as $charge) {
+            if ($charge->total <= 1) {
+                $charges_copay_lists = $this->finance_model->getPaymentCategoryByGroupId($charge->group_id);
+                foreach($charges_copay_lists as $charges_copay_list) {
+                    $charges_without_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_list->id);
+                }
+            }
+        }
+
+        $data['charges_with_copay'] = $charges_with_copay;
+        $data['charges_without_copay'] = $charges_without_copay;
+        $data['invoice_items'] = $this->finance_model->getInvoiceItemsByPaymentId($data['payment']->id);
+        $invoice_item_group = [];
+        foreach($data['invoice_items'] as $invoice_items) {
+            $invoice_item_group[] = $this->finance_model->getPaymentCategoryById($invoice_items->charge_id)->group_id;
+        }
+        $data['invoice_item_group'] = $invoice_item_group;
+
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_payment_viewv2', $data);
     }
@@ -1185,6 +1218,8 @@ class Finance extends MX_Controller {
         $group = $this->input->get('group');
 
         $invoices = $this->finance_model->getInvoiceByGroupNumber($group);
+
+        $data['discount'] = $this->finance_model->getDiscount();
 
         $new_invoices = [];
 
@@ -1201,13 +1236,13 @@ class Finance extends MX_Controller {
                 $items[] = array(
                     'charge_id' => $invoice_item->charge_id,
                     'description' => $invoice_item->description,
-                    'price' => $invoice_item->price,
+                    'c_price' => $invoice_item->price,
                     'tax_id' => $invoice_item->tax_id,
                     'tax_amount' => $tax_amount,
                     'quantity' => $invoice_item->quantity,
-                    'discount_id' => $invoice->discount_id,
                     'remarks' => $invoice->remarks,
                     'charge_type' => $charge_details->type,
+                    'charge_group_id' => $charge_details->group_id,
                 );
             }
 
@@ -1217,6 +1252,10 @@ class Finance extends MX_Controller {
                 'items' => $items,
                 'company' => array(
                     'name' => $company_details->display_name,
+                ),
+                'discount' => array(
+                    'id' => $invoice->discount_id,
+                    'amount' => $invoice->discount,
                 ),
                 'total' => array(
                     'subtotal' => $invoice->amount,
