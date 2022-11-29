@@ -374,7 +374,7 @@
                                                     <div class="form-group">
                                                         <ul class="nav nav-pills nav-pills-circle" id="tabs_3" role="tablist">
                                                             <li class="nav-item">
-                                                                <a class="nav-link border py-3 px-5 <?php echo $charges_with_copay?'active':''; ?>" id="tab3" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected=" <?php echo $charges_with_copay?'true':'false'; ?>" onclick="withCopay();">
+                                                                <a class="nav-link border py-3 px-5 <?php echo $invoice_item_group?'active':''; ?>" id="tab3" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected=" <?php echo $invoice_item_group?'true':'false'; ?>" onclick="withCopay();">
                                                                     <span class="nav-link-icon d-block"><?php echo lang('with_copay') ?></span>
                                                                 </a>
                                                             </li>
@@ -429,7 +429,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <div id="charge_div">
-                                                            <div id="charge_with_copay" <?php echo $charges_with_copay?'':'hidden'; ?>>
+                                                            <div id="charge_with_copay" <?php echo $invoice_item_group?'':'hidden'; ?>>
                                                                 <select name="charge_name[]" class="charge" placeholder="Sample Placeholder" multiple="multiple">
                                                                     
                                                                     <?php foreach ($charges_with_copay as $charge_with_copay) { ?>
@@ -1071,7 +1071,7 @@
                 success: function (response) {
                     var invoices = response.invoices;
                     console.log(response.invoices);
-
+                    var summary_subtotal = 0;
                     $.each(invoices, function(key, value) {
                         var items = value['items'];
                         var total = value['total'];
@@ -1079,18 +1079,19 @@
                         var company_name = value['company']['name'];
                         var charge_id = items['charge_id'];
                         var group_id = items['charge_group_id'];
-                        var category = "sample";
+                        var category = items['description'];
                         var type = "variable";
                         var discount_id = discount['id'];
                         var discount_amount = discount['amount'];
-                        var charge_quantity = "sample";
-                        var tax_id = "sample";
-                        var tax_amount = "sample";
-                        var tax_percentage = "sample";
-                        var c_price = "sample";
+                        var charge_quantity = items['quantity'];
+                        var tax_id = items['tax_id'];
+                        var tax_amount = items['tax_amount'];
+                        var tax_percentage = items['tax_percentage'];
+                        var c_price = items['c_price'];
                         var tax_detail = "sample";
                         var c_price_display = "sample";
                         var discount_list = response.discount;
+                        var discount_data = discount['discount_data'];
 
                         window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(value['items']));
 
@@ -1123,28 +1124,28 @@
                                                 <tbody>\n\
                                                     <tr>\n\
                                                         <td class="w-10"><?php echo lang('sub_total'); ?>: </td>\n\
-                                                        <td class="w-50"></td>\n\
-                                                        <td class="w-10"></td>\n\
+                                                        <td class="w-35"></td>\n\
+                                                        <td class="w-25"></td>\n\
                                                         <td class="w-30"><input name="item_total[]" id="card_items_total-'+key+'" class="form-control" value="'+total['subtotal']+'"></td>\n\
                                                     </tr>\n\
                                                     <tr>\n\
                                                         <td class="w-10"><?php echo lang('discount'); ?>: </td>\n\
-                                                        <td class="w-50"><select name="discount_type[]" id="discount'+key+'" class="form-control" onchange="select_discount3('+key+');"></select></td>\n\
-                                                        <td class="w-20" id="discount_type_input'+key+'">\n\
+                                                        <td class="w-35"><select name="discount_type[]" id="discount'+key+'" class="form-control" onchange="select_discount3('+key+');"></select></td>\n\
+                                                        <td class="w-25" id="discount_type_input'+key+'">\n\
                                                         </td>\n\
-                                                        <td class="w-80"><input name="discount_total[]" class="form-control discount_total" value="'+discount_amount+'" readonly id="discount_total-'+key+'"></td>\n\
+                                                        <td class="w-30"><input name="discount_total[]" class="form-control discount_total" value="'+discount_amount+'" readonly id="discount_total-'+key+'"></td>\n\
                                                         </div>\n\
                                                     </tr>\n\
                                                     <tr>\n\
                                                         <td class="w-10"><?php echo lang('tax'); ?>: </td>\n\
-                                                        <td class="w-50"></td>\n\
-                                                        <td class="w-10"></td>\n\
+                                                        <td class="w-35"></td>\n\
+                                                        <td class="w-25"></td>\n\
                                                         <td class="w-30"><input name="tax[]" id="tax_total-'+key+'" class="form-control tax_total" value="'+total['tax']+'"></td>\n\
                                                     </tr>\n\
                                                     <tr>\n\
                                                         <td class="w-10"><?php echo lang('payer_account').' '.lang('total'); ?>: </td>\n\
-                                                        <td class="w-50"></td>\n\
-                                                        <td class="w-10"></td>\n\
+                                                        <td class="w-35"></td>\n\
+                                                        <td class="w-25"></td>\n\
                                                         <td class="w-30"><input name="payer_total[]" id="payer_total-'+key+'" class="form-control payer_total" value="'+total['gross_total']+'"></td>\n\
                                                     </tr>\n\
                                                 </tbody>\n\
@@ -1154,6 +1155,49 @@
                                 </div>\n\
                             </div>\n\
                         </div>');
+
+                        var invoice_item_extras = inv_items(key);
+
+                        var invoice_item_amount = invoice_item_extras[1];
+                        var invoice_tax_amount = invoice_item_extras[0];
+
+                        if (discount['discount_type'] == 1) {
+                            var rate = discount_data.rate;
+                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
+                                <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount">\n\
+                                <span class="input-group-append">\n\
+                                    <span class="btn btn-primary" type="button">%</span>\n\
+                                </span>\n\
+                            </div><div><label class="mt-2">'+rate+' %'+'</label></div>\n\
+                            ');
+                        } else if (discount['discount_type'] == 2) {
+                            var rate = discount_data.amount;
+                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
+                                <span class="input-group-append">\n\
+                                    <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                                </span>\n\
+                                <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Fixed Amount">\n\
+                            </div><div><label class="mt-2">'+currency+' '+rate+'</label></div>');
+                        } else if (discount['discount_type'] == 3) {
+                            var invoice_discount_amount = discount.amount;
+                            var rate = 0;
+                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
+                                <input type="text" class="form-control" value="'+invoice_discount_amount+'" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount" onkeyup="computeDiscountPercentage('+invoice_item_amount+','+key+');">\n\
+                                <span class="input-group-append">\n\
+                                    <span class="btn btn-primary" type="button">%</span>\n\
+                                </span>\n\
+                            </div>\n\
+                            ');
+                        } else if (discount['discount_type'] == 4) {
+                            var invoice_discount_amount = discount.amount;
+                            var rate = 0;
+                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
+                                <span class="input-group-append">\n\
+                                    <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                                </span>\n\
+                                <input type="text" class="form-control" id="discount_input-'+key+'" value="'+invoice_discount_amount+'" name="discount_input[]" placeholder="Enter Fixed Amount" onkeyup="computeDiscountAmount('+invoice_item_amount+','+key+')">\n\
+                            </div>');
+                        }
 
                         $('#discount'+key).append($('<option value="0" disabled>Select Discount</option>')).end();
                         $.each(discount_list, function(discount_key, discount_value) {
@@ -1174,25 +1218,121 @@
 
                         // discountSelect2(key);
 
+                        
+                        var summary_tax = 0;
+                        var discount = 0;
                         $.each(items, function(item_key, item_value) {
+                            window.sessionStorage.setItem('selected_charges'+item_value['charge_id'], item_value['charge_id']);
+                            // console.log('c_price'+item_value['c_price']);
+                            summary_subtotal += Number(parseInt(item_value['c_price']));
+                            console.log(summary_subtotal);
                             var type = item_value['charge_type'];
                             if (type == "variable") {
-                                var td_amount = '<td class="w-40"><input type="number" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>';
-                                var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+'0.00</label>';
+                                var td_amount = '<td class="w-40"><input type="number" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>';
+                                var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+item_value['c_price']+'</label>';
                                 var c_price = 0;
                                 var tax_detail = 0;
                             } else {
-                                var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+item_value['c_price']+'" class="form-control amount'+charge_id+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"><label>'+item_value['c_price']+'</label></td>';
-                                var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+c_price+'</label>';
-                                var c_price = c_price;
-                                var tax_detail = tax_amount;
+                                var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" oninput="validity.valid||(value='+"'0'"+');"><label>'+item_value['c_price']+'</label></td>';
+                                var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+item_value['c_price']+'</label>';
+                                var c_price = item_value['c_price'];
+                                var tax_detail = item_value['tax_amount'];
                             }
 
-                            $("#tbody"+key).append('<tr class="charge-'+group_id+'">\n\
-                                <td class="w-50">'+item_value['description']+'<input type="text" name="charge_id[]" value="'+charge_id+'" hidden></td>\n\
+                            var summary_item_count = $(".summary_charges"+key).length;
+                            var invoice_result = $(".invoice_result").length;
+
+                            $("#tbody"+key).append('<tr class="charge-'+item_value['charge_group_id']+'">\n\
+                                <td class="w-50">'+item_value['description']+'<input type="text" name="charge_id[]" value="'+item_value['charge_id']+'" hidden></td>\n\
                                 '+td_amount+'\n\
-                                <td class="w-10"><input type="number" class="form-control quantity'+charge_id+'-'+key+'" name="quantity[]" value="'+item_value['quantity']+'" onfocusout="charge_quantity('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>\n\
+                                <td class="w-10"><input type="number" class="form-control quantity'+item_value['charge_id']+'-'+key+'" name="quantity[]" value="'+item_value['quantity']+'" onfocusout="charge_quantity('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>\n\
                             </tr>');
+
+                            if (summary_item_count == 0) {
+                                $(".item_summary_tbody").append('<tr>\n\
+                                    <td class="valign-middle border w-60">\n\
+                                        <div class="invoice-notes summary_charges'+key+'">\n\
+                                            <label class="main-content-label tx-13 font-weight-semibold">'+company_name+'</label>\n\
+                                            <div id="charge_item'+key+item_value['charge_id']+'"><p>'+item_value['description']+'</p></div>\n\
+                                        </div>\n\
+                                    </td>\n\
+                                    <td class="tx-right border font-weight-semibold w-10">\n\
+                                        <div class="invoice-notes summary_quantity'+key+'">\n\
+                                            <label class="main-content-label tx-13 font-weight-semibold"></label>\n\
+                                            <div class="text-center" id="quantity_item'+key+item_value['charge_id']+'">'+item_value['quantity']+'</div>\n\
+                                        </div>\n\
+                                    </td>\n\
+                                    <td class="tx-right border font-weight-semibold w-15">\n\
+                                        <div class="invoice-notes summary_unit_price'+key+'">\n\
+                                            <label class="text-right main-content-label tx-13 font-weight-semibold"></label>\n\
+                                            <div class="text-right" id="unit_price_item'+key+item_value['charge_id']+'">'+td_amount_summary+'</div>\n\
+                                        </div>\n\
+                                    </td>\n\
+                                    <td class="tx-right border font-weight-semibold w-15">\n\
+                                        <div class="invoice-notes summary_amount'+key+'">\n\
+                                            <label class="main-content-label tx-13 font-weight-semibold"></label>\n\
+                                            <div class="text-right" id="amount_item'+key+item_value['charge_id']+'">'+currency+parseFloat(item_value['item_total']).toFixed(2)+'</div>\n\
+                                            <input type="hidden" name="amount_input" id="amount_item_input'+key+item_value['charge_id']+'" value="'+item_value['item_total']+'">\n\
+                                        </div>\n\
+                                    </td>\n\
+                                </tr>\n\
+                                ')
+
+                            } else {
+                                var charge_item_variable = 'charge_item'+key+item_value['charge_id'];
+                                var quantity_item_variable = 'quantity_item'+key+item_value['charge_id'];
+                                var unit_price_item_variable = 'unit_price_item'+key+item_value['charge_id'];
+                                var amount_item_variable = 'amount_item'+key+item_value['charge_id'];
+                                var amount_item_input = 'amount_item_input'+key+item_value['charge_id'];
+                                // alert(item_variable);
+                                $(".summary_charges"+key).append('<div id="'+charge_item_variable+'"><p>'+item_value['description']+'</p></div>');
+                                $(".summary_quantity"+key).append('<div class="text-center" id="'+quantity_item_variable+'">'+item_value['quantity']+'</div>');
+                                $(".summary_unit_price"+key).append('<div class="text-right" id="'+unit_price_item_variable+'">'+td_amount_summary+'</div>');
+                                $(".summary_amount"+key).append('<div class="text-right" id="'+amount_item_variable+'">'+currency+parseFloat(item_value['item_total']).toFixed(2)+'</div>');
+                                $(".summary_amount"+key).append('<input type="hidden" name="amount_input" id="'+amount_item_input+'" value="'+item_value['item_total']+'">');
+                            }
+
+                            if (invoice_result == 0) {
+                                $(".item_summary_tbody_result").append('<tr class="invoice_result">\n\
+                                    <td rowspan="5" class="td class="valign-top border w-60">\n\
+                                        <label><?php echo lang("note"); ?></label>\n\
+                                    </td>\n\
+                                    <td class="tx-right border font-weight-semibold w-10">\n\
+                                        <label><?php echo lang("sub_total"); ?></label>\n\
+                                    </td>\n\
+                                    <td colspan="2" class="tx-right border font-weight-semibold w-30 text-right" id="invoice_result_subtotal">\n\
+                                        '+summary_subtotal+'\n\
+                                    </td>\n\
+                                </tr>\n\
+                                <tr>\n\
+                                    <td class="tx-right border font-weight-semibold w-10">\n\
+                                        <label><?php echo lang("tax"); ?></label>\n\
+                                    </td>\n\
+                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_tax"></td>\n\
+                                </tr>\n\
+                                <tr>\n\
+                                    <td class="tx-right border font-weight-semibold w-10">\n\
+                                        <label><?php echo lang("discount"); ?></label>\n\
+                                    </td>\n\
+                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_discount"></td>\n\
+                                </tr>\n\
+                                <tr>\n\
+                                    <td class="tx-right border font-weight-semibold w-10">\n\
+                                        <label><?php echo lang("deposited_amount"); ?></label>\n\
+                                    </td>\n\
+                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_deposited"></td>\n\
+                                </tr>\n\
+                                <tr>\n\
+                                    <td class="tx-right border font-weight-semibold w-10">\n\
+                                        <label><?php echo lang("total")." ".lang("due"); ?></label>\n\
+                                    </td>\n\
+                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_due"></td>\n\
+                                </tr>\n\
+                                ');
+                            } else {
+                                $('#invoice_result_subtotal').text(summary_subtotal);
+                            }
+
 
                             // $('#editPaymentForm').find('[name="discount_type"]').val(1).change();
                         })
@@ -1413,7 +1553,6 @@
         $(document).ready(function() {
             $(".custom-control-input").click(function() {
                 var value = $(this).val();
-
                 $.ajax({
                     url: 'finance/getPayersByChargePayerGroup2?group='+value,
                     method: 'GET',

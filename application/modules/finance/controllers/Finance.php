@@ -1216,7 +1216,7 @@ class Finance extends MX_Controller {
 
     function editInvoicesByInvoiceGroupIdByJson() {
         $group = $this->input->get('group');
-
+        $settings = $this->settings_model->getSettings();
         $invoices = $this->finance_model->getInvoiceByGroupNumber($group);
 
         $data['discount'] = $this->finance_model->getDiscount();
@@ -1228,17 +1228,28 @@ class Finance extends MX_Controller {
             $company_details = $this->company_model->getCompanyById($invoice->company_id);
             $items = [];
             $total_tax_amount = [];
+            $discount_detail = $this->finance_model->getDiscountById($invoice->discount_id);
             foreach($invoice_items as $invoice_item) {
                 $charge_details = $this->finance_model->getPaymentCategoryById($invoice_item->charge_id);
                 $tax_details = $this->finance_model->getTaxById($invoice_item->tax_id);
-                $tax_amount = (($tax_details->rate/100)*$invoice_item->price)*$invoice_item->quantity;
+                // if ($settings->is_display_prices_with_tax_included == 1) {
+                //     $tax_amount = (($tax_details->rate/100)*$invoice_item->item_total_price)*$invoice_item->quantity;
+                // } elseif ($settings->is_display_prices_with_tax_included == 0) {
+                //     $tax_amount = (($tax_details->rate/100)*$invoice_item->price_without_tax)*$invoice_item->quantity;
+                // }
+                $tax_amount = (($tax_details->rate/100)*$invoice_item->price_without_tax)*$invoice_item->quantity;
+                
+                $item_total = $invoice_item->price * $invoice_item->quantity;
+
                 $total_tax_amount[] = $tax_amount;
                 $items[] = array(
                     'charge_id' => $invoice_item->charge_id,
                     'description' => $invoice_item->description,
                     'c_price' => $invoice_item->price,
+                    'item_total' => $item_total,
                     'tax_id' => $invoice_item->tax_id,
                     'tax_amount' => $tax_amount,
+                    'tax_percentage' => $tax_details->rate,
                     'quantity' => $invoice_item->quantity,
                     'remarks' => $invoice->remarks,
                     'charge_type' => $charge_details->type,
@@ -1256,6 +1267,8 @@ class Finance extends MX_Controller {
                 'discount' => array(
                     'id' => $invoice->discount_id,
                     'amount' => $invoice->discount,
+                    'discount_type' => $discount_detail->discount_type_id,
+                    'discount_data' => $discount_detail,
                 ),
                 'total' => array(
                     'subtotal' => $invoice->amount,
