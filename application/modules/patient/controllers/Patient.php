@@ -20,6 +20,7 @@ class Patient extends MX_Controller {
         $this->load->model('finance/pharmacy_model');
         $this->load->model('diagnosis/diagnosis_model');
         $this->load->model('sms/sms_model');
+        $this->load->model('claim/claim_model');
         $this->load->model('company/company_model');
         $this->load->module('sms');
         $this->load->model('prescription/prescription_model');
@@ -1588,6 +1589,10 @@ class Patient extends MX_Controller {
 
     function getPatientByJason() {
         $id = $this->input->get('id');
+        $claim_company = $this->input->get('company_id');
+        if (empty($claim_company)) {
+            $claim_company = null;
+        }
         $data['patient'] = $this->patient_model->getPatientById($id);
 
         $country_id = $data['patient']->country_id;
@@ -1620,6 +1625,10 @@ class Patient extends MX_Controller {
         } else {
             $data['birthdate'] = lang('not_provided');
         }
+        $data['encounter'] = $this->encounter_model->getEncounterByPatientId($id);
+        $data['claim_settings_details'] = $this->claim_model->getClaimSettingsByCompanyId($claim_company);
+        $applicable_encounter_type = explode(',', $data['claim_settings_details']->applicable_encounter_type);
+        $data['encounter_by_applicable_encounter_type'] = $this->encounter_model->getEncounterByPatientByApplicableEncounterType($applicable_encounter_type, $id);
 
 
 

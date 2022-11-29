@@ -123,6 +123,13 @@ class Encounter_model extends CI_model {
         return $query->result();
     }
 
+    function getEncounterByTypeIdByPatientId($id, $encounter_type) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('patient_id', $id);
+        $query = $this->db->get('encounter');
+        return $query->result();
+    }
+
     function getDueBalanceByPatientIdByEncounterId($patient, $encounter) {
         $query = $this->db->get_where('invoice', array(
             'encounter_id' => $encounter,
@@ -822,6 +829,13 @@ class Encounter_model extends CI_model {
             $data[] = array("id" => $user['id'], "text" => $user['name']);
         }
         return $data;
+    }
+
+    function getEncounterByPatientByApplicableEncounterType($applicable_encounter_id, $patient_id){
+        $this->db->where_in('encounter_type_id', $applicable_encounter_id);
+        $this->db->where('patient_id', $patient_id);
+        $query = $this->db->get('encounter');
+        return $query->result();
     }
 
 }

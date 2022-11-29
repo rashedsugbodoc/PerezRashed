@@ -26,6 +26,12 @@ class Location_model extends CI_model {
         return $query->row();
     }
 
+    public function getCountryByName($name) {
+        $this->db->where('name', $name);
+        $query = $this->db->get('countries');
+        return $query->row();
+    }
+
     function updateCountry($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('countries', $data);
