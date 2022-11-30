@@ -3920,6 +3920,7 @@ class Finance extends MX_Controller {
                 $invoice[$v2] = $invoice_component;
             }
         }
+        $data['discount'] = $this->finance_model->getDiscount();
 
         $data['invoice'] = $invoice;
 

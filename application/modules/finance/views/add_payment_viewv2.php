@@ -1072,6 +1072,7 @@
                     var invoices = response.invoices;
                     console.log(response.invoices);
                     var summary_subtotal = 0;
+                    var summary_tax = 0;
                     $.each(invoices, function(key, value) {
                         var items = value['items'];
                         var total = value['total'];
@@ -1095,6 +1096,7 @@
 
                         window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(value['items']));
 
+                        console.log(discount_data);
                         console.log(value['items']);
 
                         $("#charge_cards").append('<div class="col-md-6 col-sm-12">\n\
@@ -1219,12 +1221,12 @@
                         // discountSelect2(key);
 
                         
-                        var summary_tax = 0;
                         var discount = 0;
                         $.each(items, function(item_key, item_value) {
                             window.sessionStorage.setItem('selected_charges'+item_value['charge_id'], item_value['charge_id']);
                             // console.log('c_price'+item_value['c_price']);
-                            summary_subtotal += Number(parseInt(item_value['c_price']));
+                            summary_subtotal += Number(parseFloat(item_value['c_price']).toFixed(2));
+                            summary_tax += Number(parseFloat(item_value['tax_amount']).toFixed(2));
                             console.log(summary_subtotal);
                             var type = item_value['charge_type'];
                             if (type == "variable") {
@@ -1308,7 +1310,7 @@
                                     <td class="tx-right border font-weight-semibold w-10">\n\
                                         <label><?php echo lang("tax"); ?></label>\n\
                                     </td>\n\
-                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_tax"></td>\n\
+                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_tax">'+summary_tax+'</td>\n\
                                 </tr>\n\
                                 <tr>\n\
                                     <td class="tx-right border font-weight-semibold w-10">\n\
@@ -1331,6 +1333,7 @@
                                 ');
                             } else {
                                 $('#invoice_result_subtotal').text(summary_subtotal);
+                                $('#invoice_result_tax').text(summary_tax);
                             }
 
 
@@ -1463,36 +1466,90 @@
         }
 
         function computeDiscount(payer_account, invoice_item_amount, invoice_tax_amount) {
-            var data = $("#discount"+payer_account).select2('data')[0];
+            if ('<?php echo $payment->invoice_group_number; ?>') {
+                var data = $('#discount'+payer_account).find('option:selected');
+                // var rate = data.data('rate');
+                // var type = data.data('discount_type_id');
+                // var amount = data.data('amount');
+                console.log('rate: '+data.data('rate'))
+                console.log('type: '+data.data('discount_type_id'))
+                console.log('amount: '+data.data('amount'))
+                console.log('invoice_item_amount');
+                console.log(invoice_item_amount);
+                if (data != undefined) {
+                    if (data.data('discount_type_id') == 1) {
+                        var invoice_discount_amount = invoice_item_amount * (data.data('rate')/100);
+                        var rate = data.data('rate');
+                        discount += invoice_discount_amount;
+                    } else if (data.data('discount_type_id') == 2) {
+                        var invoice_discount_amount = data.data('amount');
+                        var rate = data.data('amount');
+                        discount += invoice_discount_amount;
+                    } else if (data.data('discount_type_id') == 3) {
+                        var invoice_discount_amount = invoice_item_amount * (data.data('rate')/100);
+                        var rate = data.data('rate');
+                        discount += invoice_discount_amount;
+                        // $("#discount_input-"+payer_account).val(invoice_discount_amount);    
+                    } else if (data.data('discount_type_id') == 4) {
+                        var invoice_discount_amount = data.data('amount');
+                        var rate = data.data('amount');
+                        discount += invoice_discount_amount;
+                        console.log(invoice_discount_amount);
+                        // $("#discount_input-"+payer_account).val(invoice_discount_amount);
+                    } else {
+                        var invoice_discount_amount = 0;
+                        var rate = 0;
+                        discount += invoice_discount_amount;
+                    }
 
-            if (data != undefined) {
-                if (data.discount_type_id == 1) {
-                    var invoice_discount_amount = invoice_item_amount * (data.rate/100);
-                    var rate = data.rate;
-                    discount += invoice_discount_amount;
-                } else if (data.discount_type_id == 2) {
-                    var invoice_discount_amount = data.amount;
-                    var rate = data.amount;
-                    discount += invoice_discount_amount;
+                    if (is_display_prices_with_tax_included() == "1") {
+                        var payer_account_total = (parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
+                    } else {
+                        var payer_account_total = (parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
+                    }
                 } else {
                     var invoice_discount_amount = 0;
                     var rate = 0;
                     discount += invoice_discount_amount;
+                    var payer_account_total = invoice_item_amount;
                 }
 
-                if (is_display_prices_with_tax_included() == "1") {
-                    var payer_account_total = (parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
-                } else {
-                    var payer_account_total = (parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
-                }
+                return [payer_account_total, invoice_discount_amount, rate, discount]
+
             } else {
-                var invoice_discount_amount = 0;
-                var rate = 0;
-                discount += invoice_discount_amount;
-                var payer_account_total = invoice_item_amount;
-            }
 
-            return [payer_account_total, invoice_discount_amount, rate, discount]
+                var data = $("#discount"+payer_account).select2('data')[0];
+
+                if (data != undefined) {
+                    if (data.discount_type_id == 1) {
+                        var invoice_discount_amount = invoice_item_amount * (data.rate/100);
+                        var rate = data.rate;
+                        discount += invoice_discount_amount;
+                    } else if (data.discount_type_id == 2) {
+                        var invoice_discount_amount = data.amount;
+                        var rate = data.amount;
+                        discount += invoice_discount_amount;
+                    } else {
+                        var invoice_discount_amount = 0;
+                        var rate = 0;
+                        discount += invoice_discount_amount;
+                    }
+
+                    if (is_display_prices_with_tax_included() == "1") {
+                        var payer_account_total = (parseFloat(invoice_item_amount-invoice_discount_amount)).toFixed(2)
+                    } else {
+                        var payer_account_total = (parseFloat((invoice_item_amount+invoice_tax_amount)-invoice_discount_amount)).toFixed(2)
+                    }
+                } else {
+                    var invoice_discount_amount = 0;
+                    var rate = 0;
+                    discount += invoice_discount_amount;
+                    var payer_account_total = invoice_item_amount;
+                }
+
+                return [payer_account_total, invoice_discount_amount, rate, discount]
+
+            }
         }
 
         function computeAllDiscount() {
@@ -1560,8 +1617,9 @@
                     dataType: 'json',
                     success: function (response) {
                         var invoice = response.invoice;
+                        var discount_list = response.discount;
 
-                        computeItem(invoice, value);
+                        computeItem(invoice, value, discount_list);
                     }
                 });
 
@@ -1580,10 +1638,10 @@
         var tax = 0;
         var discount = 0;
         var company_id = [];
-        function computeItem(invoice, selected) {
+        function computeItem(invoice, selected, discount_list) {
             var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
 
-            console.log(invoice);
+            console.log(discount_list);
             window.sessionStorage.setItem('selected_charges_group'+selected, JSON.stringify(invoice));
             // var new_invoice = [];
             $.each(invoice, function(key, value) {
@@ -1868,7 +1926,26 @@
                             </div>\n\
                         </div>');
 
-                        discountSelect2(key);
+                        if ('<?php echo $payment->invoice_group_number; ?>') {
+                            $('#discount'+key).append($('<option value="0" disabled>Select Discount</option>')).end();
+                            $.each(discount_list, function(discount_key, discount_value) {
+                                $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
+                            })
+
+                            // discountSelect2(key);
+
+                            // console.log(discount_id);
+
+                            // if (discount_id == null) {
+                            //     $('#discount'+key).val("0");
+                            // } else {
+                            //     $('#discount'+key).val(discount_id);
+                            // }
+
+                            $('#discount'+key).select2();
+                        } else {
+                            discountSelect2(key);
+                        }
                     } else {
                         $("#tbody"+key).append('<tr class="charge-'+group_id+'">\n\
                             <td>'+category+'<input type="text" name="charge_id[]" value="'+charge_id+'" hidden></td>\n\
@@ -2026,6 +2103,8 @@
 
                 var invoice_item_amount = invoice_item_extras[1];
                 var invoice_tax_amount = invoice_item_extras[0];
+                console.log('bruh Amount: '+invoice_item_amount);
+                console.log('bruh Tax: '+invoice_tax_amount);
 
                 var invoice_discount_extras = computeDiscount(key, invoice_item_amount, invoice_tax_amount);
 
@@ -2069,6 +2148,7 @@
                 // $('#payer_total-'+key).val(payer_total_invoice);
                 $('#payer_total-'+key).val(payer_account_total);
                 $('#discount_input-'+key).val(parseFloat(rate).toFixed(2));
+                console.log('bruh: '+invoice_discount_amount);
                 $('#discount_total-'+key).val(parseFloat(invoice_discount_amount).toFixed(2));
                 $("#invoice_result_discount").empty().append('<label>'+currency+' '+(discount).toFixed(2)+'</label>');
                 $('#card_items_total-'+key).val((invoice_item_amount).toFixed(2));
@@ -3100,7 +3180,7 @@
 
             console.log("discount_amount: "+invoice_discount_amount);
             // $("#invoice_result_discount").empty().append('<label>'+currency+' '+(discount).toFixed(2)+'</label>');
-            $('#discount_total-'+payer_id).val((invoice_discount_amount).toFixed(2));
+            $('#discount_total-'+payer_id).val(parseFloat(invoice_discount_amount).toFixed(2));
             $('#payer_total-'+payer_id).val(payer_account_total);
             $('#card_items_total-'+payer_id).val((invoice_item_amount).toFixed(2));
             $('#tax_total-'+payer_id).val((invoice_tax_amount).toFixed(2));
@@ -3325,24 +3405,6 @@
                 // })
             /**/
         }
-
-        function onBlur(charge_id, payer_id) {
-            // var quantity = $(".quantity"+charge_id+'-'+payer_id).val();
-            // var value = $(".amount"+charge_id+'-'+payer_id).val();
-            // var result = value * quantity;
-            // var sub_total = $("#subtotal").val();
-
-            // $("#subtotal").val();
-            // var cnt = 0;  
-            // var p_value = $("#amount_item"+payer_id+charge_id).find('p').text();
-            // console.log(p_value);
-            // $("[name='amount_input']").each(function() {
-            //     cnt += Number(this.value);
-            // });
-            // $("#subtotal").val(cnt);
-
-        }
-
 
     </script>
 
