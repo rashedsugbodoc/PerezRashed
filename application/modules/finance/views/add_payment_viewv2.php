@@ -1465,9 +1465,43 @@
 
         }
 
+        function editInvoiceData(url, callback) {
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: callback,
+                error: function (request, status, error) {
+                    alert(status);
+                }
+                // success: function (response) {
+                //     var invoices = response.invoices;
+
+                //     console.log('invoice_array');
+                //     console.log(invoices);
+                // }
+            });
+        }
+
         function computeDiscount(payer_account, invoice_item_amount, invoice_tax_amount) {
             if ('<?php echo $payment->invoice_group_number; ?>') {
                 var data = $('#discount'+payer_account).find('option:selected');
+                var group = '<?php echo $payment->invoice_group_number; ?>'
+                
+                // var edit_invoice = '';
+                var edit_invoice;
+                editInvoiceData('finance/editInvoicesByInvoiceGroupIdByJson?group='+group, function(response) {
+                    // console.log('invoice_array2');
+                    // console.log(response.invoices);
+                    return response.invoices;
+                });
+
+                // console.log('invoice_array2');
+                // console.log(editIn);
+                console.log('Edit Invoice: '+edit_invoice);
+                
+                // console.log(invoices);
                 // var rate = data.data('rate');
                 // var type = data.data('discount_type_id');
                 // var amount = data.data('amount');
@@ -1491,8 +1525,10 @@
                         discount += invoice_discount_amount;
                         // $("#discount_input-"+payer_account).val(invoice_discount_amount);    
                     } else if (data.data('discount_type_id') == 4) {
-                        var invoice_discount_amount = data.data('amount');
-                        var rate = data.data('amount');
+                        // var invoice_discount_amount = data.data('amount');
+                        // var rate = data.data('amount');
+                        var invoice_discount_amount = $("#discount_input-"+payer_account).val();
+                        var rate = $("#discount_input-"+payer_account).val();
                         discount += invoice_discount_amount;
                         console.log(invoice_discount_amount);
                         // $("#discount_input-"+payer_account).val(invoice_discount_amount);
@@ -2150,10 +2186,11 @@
                 $('#discount_input-'+key).val(parseFloat(rate).toFixed(2));
                 console.log('bruh: '+invoice_discount_amount);
                 $('#discount_total-'+key).val(parseFloat(invoice_discount_amount).toFixed(2));
-                $("#invoice_result_discount").empty().append('<label>'+currency+' '+(discount).toFixed(2)+'</label>');
+                $("#invoice_result_discount").empty().append('<label>'+currency+' '+parseFloat(discount).toFixed(2)+'</label>');
                 $('#card_items_total-'+key).val((invoice_item_amount).toFixed(2));
                 $('#tax_total-'+key).val((invoice_tax_amount).toFixed(2)).end();
 
+                computeAllDiscount();
                 computeTax();
 
                 // var summary = 
