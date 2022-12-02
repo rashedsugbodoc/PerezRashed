@@ -173,6 +173,7 @@ class Finance extends MX_Controller {
         $amount_received = $this->input->post('amount_received');
         $deposit_type = $this->input->post('deposit_type');
         $patient = $this->input->post('patient');
+        $patient_details = $this->patient_model->getPatientById($patient);
         $doctor = $this->input->post('doctor');
         $encounter_id = $this->input->post('encounter_id');
         $current_user_group = $this->ion_auth->get_users_groups()->row()->name;
@@ -183,6 +184,7 @@ class Finance extends MX_Controller {
         $discount_type = $this->input->post('discount_type');
         $datetime = gmdate('Y-m-d H:i:s');
         $data['settings'] = $this->settings_model->getSettings();
+        $user = $this->ion_auth->get_user_id();
         // $item_total_price = $this->input->post('amount_input');
         $date = time();
 
@@ -411,6 +413,21 @@ class Finance extends MX_Controller {
 
                 $this->finance_model->insertInvoiceItem($invoice_item_data);
 
+            }
+
+            if ($invoice_payer_id == '1') {
+                $data1 = array(
+                    'date' => $date,
+                    'patient' => $patient_details->id,
+                    'company_id' => $invoice_payer_id,
+                    'deposited_amount' => $amount_received,
+                    'payment_id' => $inserted_id,
+                    'amount_received_id' => $inserted_id . '.' . 'gp',
+                    'deposit_type' => $deposit_type,
+                    'user' => $user,
+                );
+
+                $this->finance_model->insertDeposit($data1);
             }
 
         }
@@ -1275,6 +1292,7 @@ class Finance extends MX_Controller {
                     'tax' => $total_tax_amount,
                     'gross_total' => $invoice->gross_total,
                 ),
+                'received' => $invoice->amount_received,
             );
         }
 

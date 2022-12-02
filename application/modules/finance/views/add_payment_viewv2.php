@@ -1073,10 +1073,13 @@
                     console.log(response.invoices);
                     var summary_subtotal = 0;
                     var summary_tax = 0;
+                    var summary_discount = 0;
+                    var summary_deposited_amount = 0;
                     $.each(invoices, function(key, value) {
                         var items = value['items'];
                         var total = value['total'];
                         var discount = value['discount'];
+                        var amount_received = value['received'];
                         var company_name = value['company']['name'];
                         var charge_id = items['charge_id'];
                         var group_id = items['charge_group_id'];
@@ -1220,8 +1223,13 @@
 
                         // discountSelect2(key);
 
+                        if (amount_received == null) {
+                            amount_received = 0;
+                        }
                         
                         var discount = 0;
+                        summary_discount += Number(parseFloat(discount_amount).toFixed(2));
+                        summary_deposited_amount += Number(parseFloat(amount_received).toFixed(2));
                         $.each(items, function(item_key, item_value) {
                             window.sessionStorage.setItem('selected_charges'+item_value['charge_id'], item_value['charge_id']);
                             // console.log('c_price'+item_value['c_price']);
@@ -1334,6 +1342,9 @@
                             } else {
                                 $('#invoice_result_subtotal').text(summary_subtotal);
                                 $('#invoice_result_tax').text(summary_tax);
+                                $('#invoice_result_discount').text(summary_discount);
+                                $('#invoice_result_deposited').text(summary_deposited_amount);
+
                             }
 
 
@@ -1342,6 +1353,7 @@
 
 
                     })
+                    $('#invoice_result_due').text(parseFloat(summary_subtotal-$('#amount_received').val()).toFixed(2));
                 }
             });
         });
@@ -1986,7 +1998,7 @@
                         $("#tbody"+key).append('<tr class="charge-'+group_id+'">\n\
                             <td>'+category+'<input type="text" name="charge_id[]" value="'+charge_id+'" hidden></td>\n\
                             '+td_amount+'\n\
-                            <td><input type="number" class="form-control quantity'+charge_id+'-'+key+'" name="quantity[]" onfocusout="charge_quantity('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');" value="1" onblur="onBlur('+charge_id+','+key+')"></td>\n\
+                            <td><input type="number" class="form-control quantity'+charge_id+'-'+key+'" name="quantity[]" onfocusout="charge_quantity('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');" value="1"></td>\n\
                         </tr>');
                     }
 
@@ -2691,7 +2703,7 @@
                                     $("#tbody"+value.payer_account_id).append('<tr class="charge-'+value.group_id+'">\n\
                                             <td>'+value.category+'<input type="text" name="charge_id[]" value="'+value.id+'"></td>\n\
                                             '+td_amount+'\n\
-                                            <td><input type="number" class="form-control quantity'+value.id+'-'+value.payer_account_id+'" name="quantity[]" onfocus="charge_quantity('+value.id+','+value.payer_account_id+');" min="0" oninput="validity.valid||(value='+"'0'"+');" value="1" onblur="onBlur('+value.id+','+value.payer_account_id+')"></td>\n\
+                                            <td><input type="number" class="form-control quantity'+value.id+'-'+value.payer_account_id+'" name="quantity[]" onfocus="charge_quantity('+value.id+','+value.payer_account_id+');" min="0" oninput="validity.valid||(value='+"'0'"+');" value="1"></td>\n\
                                         </tr>');
                                 }
 
@@ -3357,10 +3369,10 @@
             discount = invoice_discount_extras[3];
 
             // $("#invoice_result_discount").empty().append('<label>'+currency+' '+(discount).toFixed(2)+'</label>');
-            $('#discount_total-'+payer_id).val((invoice_discount_amount).toFixed(2));
+            $('#discount_total-'+payer_id).val(parseFloat(invoice_discount_amount).toFixed(2));
             $('#payer_total-'+payer_id).val(payer_account_total);
-            $('#card_items_total-'+payer_id).val((invoice_item_amount).toFixed(2));
-            $('#tax_total-'+payer_id).val((invoice_tax_amount).toFixed(2));
+            $('#card_items_total-'+payer_id).val(parseFloat(invoice_item_amount).toFixed(2));
+            $('#tax_total-'+payer_id).val(parseFloat(invoice_tax_amount).toFixed(2));
 
             computeAllDiscount();
             computeTax();
