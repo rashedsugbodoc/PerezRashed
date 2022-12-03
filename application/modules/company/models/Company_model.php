@@ -159,6 +159,24 @@ class Company_model extends CI_model {
         return $query->row();
     }
 
+    function getCompanyByName($name) {
+        $query = $this->db->select('*')
+                ->from('company')
+                ->where('name', $name)
+                ->get();
+        return $query->row();
+    }
+
+    function getCompanyByNameByHospitalIdByApplicableCountryId($name, $hospital_id, $applicable_country_id) {
+        $query_array = array('hospital_id' => $hospital_id, 'applicable_country_id' => $applicable_country_id, 'name' => $name);
+        $query = $this->db->select('*')
+                ->from('company')
+                ->where($query_array)
+                ->get();
+        return $query->row();
+    }
+
+
     function getCompanyByIonUserId($id) {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->where('ion_user_id', $id);
