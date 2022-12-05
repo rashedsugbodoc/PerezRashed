@@ -834,9 +834,14 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                    <input type="hidden" name="id" value='<?php
+                                    <!-- <input type="hidden" name="id" value='<?php
                                     if (!empty($payment->id)) {
                                         echo $payment->id;
+                                    }
+                                    ?>'> -->
+                                    <input type="hidden" name="id" value='<?php
+                                    if (!empty($payment->invoice_group_number)) {
+                                        echo $payment->invoice_group_number;
                                     }
                                     ?>'>
                                     <div class="card">
@@ -1081,6 +1086,7 @@
                         var discount = value['discount'];
                         var amount_received = value['received'];
                         var company_name = value['company']['name'];
+                        var item_id = items['id'];
                         var charge_id = items['charge_id'];
                         var group_id = items['charge_group_id'];
                         var category = items['description'];
@@ -1253,7 +1259,7 @@
                             var invoice_result = $(".invoice_result").length;
 
                             $("#tbody"+key).append('<tr class="charge-'+item_value['charge_group_id']+'">\n\
-                                <td class="w-50">'+item_value['description']+'<input type="text" name="charge_id[]" value="'+item_value['charge_id']+'" hidden></td>\n\
+                                <td class="w-50">'+item_value['description']+'<input type="text" name="charge_id[]" value="'+item_value['charge_id']+'" hidden><input type="text" name="item_id[]" value="'+item_value['id']+'"></td>\n\
                                 '+td_amount+'\n\
                                 <td class="w-10"><input type="number" class="form-control quantity'+item_value['charge_id']+'-'+key+'" name="quantity[]" value="'+item_value['quantity']+'" onfocusout="charge_quantity('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>\n\
                             </tr>');
@@ -1801,6 +1807,7 @@
                     $("#quantity_item"+key+charge_id).remove();
                     $("#unit_price_item"+key+charge_id).remove();
                     $("#amount_item"+key+charge_id).remove();
+                    $("#amount_item_input"+key+charge_id).remove();
                     var selected_payer = $(".charge").val();
                     window.sessionStorage.removeItem('selected_charges'+charge_id, charge_id);
                     var invoice_array = JSON.parse(window.sessionStorage.getItem('new_invoice-'+key));
