@@ -28,6 +28,11 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function deleteInvoiceItem($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('invoice_item', $data);
+    }
+
     function getPayment() {
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
         $this->db->group_by('invoice_group_number');
