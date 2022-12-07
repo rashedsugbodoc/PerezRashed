@@ -414,7 +414,7 @@
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                                     <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
                                                 <?php } ?>
-                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse'))) { ?>
+                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                                     <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('encounters'); ?></a></li>
                                                 <?php } ?>
                                                 <?php if (!$this->ion_auth->in_group('Patient')) { ?>
@@ -482,7 +482,7 @@
                                             </div>
                                         </div>
                                     <?php } ?>
-                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse'))) { ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                         <div class="tab-pane" id="tab-7">
                                             <div class="mb-0">
                                                 <div class="card">
@@ -942,7 +942,7 @@
                                             </div>
                                         </div>
                                         <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse'))) { ?>
+                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                         <div class="tab-pane" id="tab-15">
                                             <div class="mb-0 border">
                                                 <div class="card">
@@ -951,7 +951,7 @@
                                                              <?php echo lang('encounters'); ?>
                                                         </div>
                                                         <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'admin', 'Nurse'))) { ?>
+                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'admin', 'Nurse','Patient'))) { ?>
                                                                 <div class=" no-print">
                                                                     <a class="btn btn-primary btn_width btn-xs" href="encounter/addNewView?patient_id=<?php echo $patient->patient_id.'&root=patient&method=medicalHistory&encounter_request=true' ?>">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
