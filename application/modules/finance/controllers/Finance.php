@@ -191,112 +191,112 @@ class Finance extends MX_Controller {
         // $item_total_price = $this->input->post('amount_input');
         $date = time();
 
-        do {
-            $raw_invoice_group_number = 'G'.random_string('alnum', 6);
-            $validate_number = $this->finance_model->validateInvoiceGroupNumber($raw_invoice_group_number);
-        } while($validate_number != 0);
+        if (empty($id)) {
 
-        $invoice_group_number = strtoupper($raw_invoice_group_number);
+            do {
+                $raw_invoice_group_number = 'G'.random_string('alnum', 6);
+                $validate_number = $this->finance_model->validateInvoiceGroupNumber($raw_invoice_group_number);
+            } while($validate_number != 0);
 
-        $charge_details = [];
-        $payer_details = [];
-        foreach($charge_id as $key => $value) {
-            $payer_id = $this->finance_model->getPaymentCategoryById($value)->payer_account_id;
-            $payer_details[] = $this->company_model->getCompanyById($payer_id);
+            $invoice_group_number = strtoupper($raw_invoice_group_number);
 
-            /*Front-End to Back-End Data Validation Start*/
-                $charge_details[] = $this->finance_model->getPaymentCategoryById($value);
-            /*End*/
+            $charge_details = [];
+            $payer_details = [];
+            foreach($charge_id as $key => $value) {
+                $payer_id = $this->finance_model->getPaymentCategoryById($value)->payer_account_id;
+                $payer_details[] = $this->company_model->getCompanyById($payer_id);
 
-        }
+                /*Front-End to Back-End Data Validation Start*/
+                    $charge_details[] = $this->finance_model->getPaymentCategoryById($value);
+                /*End*/
 
-        $payer_id = [];
-        foreach($payer_details as $payer_detail) {
-            $payer_id[] = $payer_detail->id;
-        }
-
-        $payer_id_unique = array_values(array_unique($payer_id));
-
-        // $payer_ids = $payer_id;
-
-        // $payer_details_unique = array_unique($payer_details);
-
-        // $this->finance_model->insertPayment($invoice_data);
-        // $inserted_id = $this->db->insert_id();
-
-        $invoices = [];
-        foreach($payer_id_unique as $key => $value) {
-            $charges = [];
-            $extras = [];
-            $discount = [];
-            $c_price = [];
-            foreach($charge_details as $charge_detail_key => $charge_detail) {
-                if ($charge_detail->type === "fixed") {
-                    $c_price[] = $charge_detail->c_price;
-                } elseif ($charge_detail->type === "variable") {
-                    $c_price[] = $amount[$charge_detail_key];
-                } else {
-                    $c_price[] = null;
-                }
-
-                $item_total = $quantity[$charge_detail_key] * $c_price[$charge_detail_key];
-
-                if ($value === $charge_detail->payer_account_id) {
-                    $charges[] = array(
-                        'id' => $charge_detail->id,
-                        'description' => $charge_detail->category,
-                        'price' => $c_price[$charge_detail_key],
-                        'charge_code' => $charge_detail->charge_code,
-                        'quantity' => $quantity[$charge_detail_key],
-                        'item_total_price' => $item_total,
-                    );
-                    $extras[] = array(
-                        'tax_id' => $charge_detail->tax_id,
-                        'tax_amount' => $charge_detail->tax_amount,
-                    );
-                    $discount[] = array(
-                        'discount_id' => $discount_type[$key],
-                    );
-
-                    $invoices[$value] = array(
-                        'charges' => $charges,
-                        'extras' => $extras,
-                        'discount' => array(
-                            'discount_id' => $discount_type[$key],
-                        ),
-                    );
-                }
-
-                $array_charge_id = $invoices[$value]['charges'][0]['id'];
-                $array_charge_description = $invoices[$value]['charges'][0]['description'];
             }
 
-            // $invoice_data = array();
+            $payer_id = [];
+            foreach($payer_details as $payer_detail) {
+                $payer_id[] = $payer_detail->id;
+            }
 
-            // $invoice_data = array(
-            //     'patient' => $patient,
-            //     'doctor' => $doctor,
-            //     'date' => $date,
-            //     'amount' => $subtotal,
-            //     'discount' => $discount_total[$key],
-            //     'gross_total' => $gross_total,
-            //     'remarks' => $remarks,
-            //     'amount_received' => $amount_received,
-            //     'deposit_type' => $deposit_type,
-            //     'payment_status' => $payment_status,
-            //     'company_id' => $payer_id_unique_single,
-            //     'encounter_id' => $encounter_id,
-            //     'invoice_number' => $invoice_number,
-            //     'discount_id' => $discount_type[$key],
-            //     'invoice_tax_amount' => $tax[$key],
-            // );
+            $payer_id_unique = array_values(array_unique($payer_id));
 
-        }
+            // $payer_ids = $payer_id;
 
-        $invoice_unique = array_values($invoices);
+            // $payer_details_unique = array_unique($payer_details);
 
+            // $this->finance_model->insertPayment($invoice_data);
+            // $inserted_id = $this->db->insert_id();
 
-        if (empty($id)) {
+            $invoices = [];
+            foreach($payer_id_unique as $key => $value) {
+                $charges = [];
+                $extras = [];
+                $discount = [];
+                $c_price = [];
+                foreach($charge_details as $charge_detail_key => $charge_detail) {
+                    if ($charge_detail->type === "fixed") {
+                        $c_price[] = $charge_detail->c_price;
+                    } elseif ($charge_detail->type === "variable") {
+                        $c_price[] = $amount[$charge_detail_key];
+                    } else {
+                        $c_price[] = null;
+                    }
+
+                    $item_total = $quantity[$charge_detail_key] * $c_price[$charge_detail_key];
+
+                    if ($value === $charge_detail->payer_account_id) {
+                        $charges[] = array(
+                            'id' => $charge_detail->id,
+                            'description' => $charge_detail->category,
+                            'price' => $c_price[$charge_detail_key],
+                            'charge_code' => $charge_detail->charge_code,
+                            'quantity' => $quantity[$charge_detail_key],
+                            'item_total_price' => $item_total,
+                        );
+                        $extras[] = array(
+                            'tax_id' => $charge_detail->tax_id,
+                            'tax_amount' => $charge_detail->tax_amount,
+                        );
+                        $discount[] = array(
+                            'discount_id' => $discount_type[$key],
+                        );
+
+                        $invoices[$value] = array(
+                            'charges' => $charges,
+                            'extras' => $extras,
+                            'discount' => array(
+                                'discount_id' => $discount_type[$key],
+                            ),
+                        );
+                    }
+
+                    $array_charge_id = $invoices[$value]['charges'][0]['id'];
+                    $array_charge_description = $invoices[$value]['charges'][0]['description'];
+                }
+
+                // $invoice_data = array();
+
+                // $invoice_data = array(
+                //     'patient' => $patient,
+                //     'doctor' => $doctor,
+                //     'date' => $date,
+                //     'amount' => $subtotal,
+                //     'discount' => $discount_total[$key],
+                //     'gross_total' => $gross_total,
+                //     'remarks' => $remarks,
+                //     'amount_received' => $amount_received,
+                //     'deposit_type' => $deposit_type,
+                //     'payment_status' => $payment_status,
+                //     'company_id' => $payer_id_unique_single,
+                //     'encounter_id' => $encounter_id,
+                //     'invoice_number' => $invoice_number,
+                //     'discount_id' => $discount_type[$key],
+                //     'invoice_tax_amount' => $tax[$key],
+                // );
+
+            }
+
+            $invoice_unique = array_values($invoices);
+
             foreach($invoice_unique as $key => $value) {
                 $invoice_payer_id = $payer_id_unique[$key];
                 $item_subtotal = [];
@@ -437,54 +437,244 @@ class Finance extends MX_Controller {
 
             }
         } else {
-            $invoice_list_by_group_number = $this->finance_model->getInvoiceByGroupNumber($id);
+            /*New*/
+                // $invoice_list_by_group_number = $this->finance_model->getInvoiceByGroupNumber($id);
 
-            foreach($invoice_list_by_group_number as $invoice_single) {
-                $invoice_company_id = intval($invoice_single->company_id);
-                foreach($invoices as $key => $value) {
-                    $invoice_payer_id = $key;
-                    $item_subtotal = [];
+                // foreach($invoice_list_by_group_number as $invoice_single) {
+                //     $invoice_company_id = intval($invoice_single->company_id);
+                //     foreach($invoices as $key => $value) {
+                //         $invoice_payer_id = $key;
+                //         $item_subtotal = [];
 
-                    do {
-                        $raw_invoice_number = 'I'.random_string('alnum', 6);
-                        $validate_number = $this->finance_model->validateInvoiceNumber($raw_invoice_number);
-                    } while($validate_number != 0);
+                //         do {
+                //             $raw_invoice_number = 'I'.random_string('alnum', 6);
+                //             $validate_number = $this->finance_model->validateInvoiceNumber($raw_invoice_number);
+                //         } while($validate_number != 0);
 
-                    $invoice_number = strtoupper($raw_invoice_number);
+                //         $invoice_number = strtoupper($raw_invoice_number);
 
-                    foreach($value['charges'] as $charges_key => $charges) {
-                        $item_subtotal[] = $charges['price'] * $charges['quantity'];
-                    }
+                //         foreach($value['charges'] as $charges_key => $charges) {
+                //             $item_subtotal[] = $charges['price'] * $charges['quantity'];
+                //         }
 
-                    $item_tax = [];
-                    foreach($value['extras'] as $extras_key => $extras) {
-                        $tax_details = $this->finance_model->getTaxById($extras['tax_id']);
-                        if (!empty($extras['tax_amount'])) {
-                            $item_tax[] = $extras['tax_amount'] * $value['charges'][$extras_key]['quantity'];
-                        } else {
-                            $item_tax[] = ($value['charges'][$extras_key]['price'] * ($tax_details->rate/100)) * $value['charges'][$extras_key]['quantity'];
+                //         $item_tax = [];
+                //         foreach($value['extras'] as $extras_key => $extras) {
+                //             $tax_details = $this->finance_model->getTaxById($extras['tax_id']);
+                //             if (!empty($extras['tax_amount'])) {
+                //                 $item_tax[] = $extras['tax_amount'] * $value['charges'][$extras_key]['quantity'];
+                //             } else {
+                //                 $item_tax[] = ($value['charges'][$extras_key]['price'] * ($tax_details->rate/100)) * $value['charges'][$extras_key]['quantity'];
+                //             }
+                //         }
+
+                //         $discount_details = $this->finance_model->getDiscountById($value['discount']['discount_id']);
+                //         $discount_type_details = $this->finance_model->getDiscountTypeById($discount_details->discount_type_id);
+
+                //         $subtotal = array_sum($item_subtotal);
+                //         $total_tax = array_sum($item_tax);
+
+                //         if ($discount_type_details->name === FIXED_PERCENTAGE) {
+                //             $payer_discount_total = $subtotal*($discount_details->rate/100);
+                //         } elseif ($discount_type_details->name === FIXED_AMOUNT) {
+                //             $payer_discount_total = $discount_details->amount;
+                //         } elseif ($discount_type_details->name === VARIABLE_PERCENTAGE) {
+                //             $payer_discount_total = $subtotal*($discount_input[$key]/100);
+                //         } elseif ($discount_type_details->name === VARIABLE_AMOUNT) {
+                //             $payer_discount_total = $discount_input[$key];
+                //         }
+
+                //         $invoice_gross_total = $subtotal - $payer_discount_total;
+
+                //         $company_classification = $this->company_model->getClassificationByCompanyId($invoice_payer_id);
+                //         $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
+                //         $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+
+                //         foreach ($payment_status_list as $status_list) {
+                //             if ($status_list->name === "paid") {
+                //                 $paid_status = $status_list->id;
+                //             } elseif ($status_list->name === "unpaid") {
+                //                 $unpaid_status = $status_list->id;
+                //             } elseif ($status_list->name === "overdue") {
+                //                 $overdue_status = $status_list->id;
+                //             }
+                //         }
+
+                //         if (empty($payment_status)) {
+                //         $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
+                //             $received_deposit_amount = $amount_received + $deposit_amount;
+
+                //             if ($received_deposit_amount >= $invoice_gross_total) {
+                //                 $payment_status = $paid_status;
+                //             } else {
+                //                 $payment_status = $unpaid_status;
+                //             }
+                //         }
+
+                //         if ($invoice_payer_id != '1' || $invoice_payer_id != 1) {
+                //             $amount_received = null;
+                //             $deposit_amount = null;
+                //         }
+
+                //         if ($key === $invoice_company_id) { //Update
+                //             $invoice_update = array();
+                //             $invoice_update = array(
+                //                 'patient' => $patient,
+                //                 'doctor' => $doctor,
+                //                 'date' => $date,
+                //                 'amount' => $subtotal,
+                //                 'discount' => $payer_discount_total,
+                //                 'gross_total' => $invoice_gross_total,
+                //                 'remarks' => $remarks,
+                //                 'amount_received' => $deposit_amount,
+                //                 'deposit_type' => $deposit_type,
+                //                 'payment_status' => $payment_status,
+                //                 'company_id' => $invoice_payer_id,
+                //                 'encounter_id' => $encounter_id,
+                //                 'invoice_group_number' => $id,
+                //                 'invoice_number' => $invoice_number,
+                //                 'discount_id' => $value['discount']['discount_id'],
+                //                 'invoice_tax_amount' => $total_tax,
+                //             );
+                //             $this->finance_model->updatePayment($invoice_single->id, $invoice_update);
+                //         } else { //Delete
+
+                //         }
+                //     }
+                // }
+            /*New*/
+
+            /*Old*/
+                // $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
+                // $invoice_list_by_group_number = $this->finance_model->getInvoiceByGroupNumber($id);
+
+
+                // $items = [];
+                // $to_be_updated = [];
+                // $to_be_deleted = [];
+                // $group_invoices_id = [];
+                // foreach($invoice_list_by_group_number as $invoice) {
+                //     $invoice_items = $this->finance_model->getInvoiceItemsByPaymentId($invoice->id);
+                //     foreach($invoice_items as $invoice_item) {
+                //         $items[] = $invoice_item->charge_id;
+                //         if (in_array($invoice_item->id, $item_id) === TRUE) {
+                //             $to_be_updated[$invoice_item->id] = $invoice_item->charge_id;
+                //         } elseif (in_array($invoice_item->id, $item_id) === FALSE) {
+                //             $to_be_deleted[] = $invoice_item->id; /*Delete*/
+                //             $invoice_item_delete_data = array();
+                //             $invoice_item_delete_data = array(
+                //                 'deleted' => 1,
+                //             );
+                //             $this->finance_model->deleteInvoiceItem($invoice_item->id, $invoice_item_delete_data);
+                //         }
+                //     }
+                // }
+
+                // $to_be_added = [];
+                // foreach($charge_id as $charge) {
+                //     if (in_array($charge, $items) === FALSE) {
+                //         $to_be_added[] = $charge;
+                //     }
+                // }
+
+                // $data_added = [];
+                // $data_updated = [];
+                // $data_deleted = [];
+                // foreach($invoices as $key => $value) {
+                //     $invoice_payer_id = $payer_id_unique[$key];
+                //     foreach($value['charges'] as $charges_key => $charges) {
+                //         if (in_array($charges['id'], $to_be_added)) { /*Insert*/
+                //             $data_added[] = $charges['id'];
+                //         } elseif (in_array($charges['id'], $to_be_updated)) { /*Update*/
+                //             $data_updated[] = $charges['id'];
+                //         } elseif (in_array($charges['id'], $to_be_deleted)) { /*Delete*/
+                //             $data_deleted[] = $charges['id'];
+                //         }
+                //     }
+                // }
+            /*Old*/
+
+            $invoices_from_db = $this->finance_model->getInvoiceByGroupNumber($id);
+
+            do {
+                $raw_invoice_number = 'I'.random_string('alnum', 6);
+                $validate_number = $this->finance_model->validateInvoiceNumber($raw_invoice_number);
+            } while($validate_number != 0);
+
+            $invoice_number = strtoupper($raw_invoice_number);
+
+            $charge_details = [];
+            $payer_details = [];
+            foreach($charge_id as $key => $value) {
+                $payer_id = $this->finance_model->getPaymentCategoryById($value)->payer_account_id;
+                $payer_details[] = $this->company_model->getCompanyById($payer_id);
+
+                /*Front-End to Back-End Data Validation Start*/
+                    $charge_details[] = $this->finance_model->getPaymentCategoryById($value);
+                /*End*/
+
+            }
+
+            $payer_id = [];
+            foreach($payer_details as $payer_detail) {
+                $payer_id[] = $payer_detail->id;
+            }
+
+            $payer_id_unique = array_values(array_unique($payer_id));
+
+            $invoice_to_be_updated = [];
+            $invoice_to_be_added = [];
+            foreach($payer_id_unique as $payer_single_key => $payer_single_value) {
+                // foreach($invoices_from_db as $invoice_from_db_key => $invoice_from_db_value) {
+                //     if (in_array($payer_single_value, $invoice_from_db_value->company_id)) { /*Update*/
+                //         $invoice_details = $this->finance_model->getPaymentByInvoiceGroupNumberByCompanyId($id, $invoice_from_db_value->company_id);
+                //         $invoice_detail_id = $invoice_details->id;
+                //         $invoice_to_be_updated[] = array(
+                //             'id' => $invoice_detail_id,
+                //         );
+                //     } else { /*Insert*/
+                //         $invoice_to_be_added[] = $payer_single_value;
+                //     }
+                // }
+
+                $invoice_details = $this->finance_model->getPaymentByInvoiceGroupNumberByCompanyId($id, $payer_single_value);
+
+                if (!empty($invoice_details)) { /*Update*/
+                    $invoice_to_be_updated[] = $invoice_details->id.'-'.$invoice_details->company_id;
+
+                    $c_price = [];
+                    $invoice_items = [];
+                    foreach($charge_details as $charge_detail_key => $charge_detail_value) {
+
+                        if ($charge_detail_value->payer_account_id == $payer_single_value) {
+                            $invoice_items[] = $charge_detail_value;
+                            if ($charge_detail_value->type == "fixed") {
+                                $c_price[] = $charge_detail_value->c_price * $quantity[$charge_detail_key];
+                            } else {
+                                $c_price[] = $amount[$charge_detail_key] * $quantity[$charge_detail_key];
+                            }
+
                         }
+
                     }
 
-                    $discount_details = $this->finance_model->getDiscountById($value['discount']['discount_id']);
+                    $discount_details = $this->finance_model->getDiscountById($discount_type[$payer_single_key]);
                     $discount_type_details = $this->finance_model->getDiscountTypeById($discount_details->discount_type_id);
 
-                    $subtotal = array_sum($item_subtotal);
-                    $total_tax = array_sum($item_tax);
+                    $total_c_price = array_sum($c_price);
 
                     if ($discount_type_details->name === FIXED_PERCENTAGE) {
-                        $payer_discount_total = $subtotal*($discount_details->rate/100);
+                        $payer_discount_total = $total_c_price*($discount_details->rate/100);
                     } elseif ($discount_type_details->name === FIXED_AMOUNT) {
                         $payer_discount_total = $discount_details->amount;
                     } elseif ($discount_type_details->name === VARIABLE_PERCENTAGE) {
-                        $payer_discount_total = $subtotal*($discount_input[$key]/100);
+                        $payer_discount_total = $total_c_price*($discount_input[$payer_single_key]/100);
                     } elseif ($discount_type_details->name === VARIABLE_AMOUNT) {
-                        $payer_discount_total = $discount_input[$key];
+                        $payer_discount_total = $discount_input[$payer_single_key];
                     }
 
-                    $invoice_gross_total = $subtotal - $payer_discount_total;
+                    $invoice_gross_total = $total_c_price - $payer_discount_total;
 
-                    $company_classification = $this->company_model->getClassificationByCompanyId($invoice_payer_id);
+                    $company_classification = $this->company_model->getClassificationByCompanyId($payer_single_value);
                     $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
                     $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
 
@@ -499,7 +689,7 @@ class Finance extends MX_Controller {
                     }
 
                     if (empty($payment_status)) {
-                    $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
+                        $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
                         $received_deposit_amount = $amount_received + $deposit_amount;
 
                         if ($received_deposit_amount >= $invoice_gross_total) {
@@ -509,85 +699,85 @@ class Finance extends MX_Controller {
                         }
                     }
 
-                    if ($invoice_payer_id != '1' || $invoice_payer_id != 1) {
-                        $amount_received = null;
+                    if ($payer_single_value != '1' || $payer_single_value != 1) {
                         $deposit_amount = null;
                     }
 
-                    if ($key === $invoice_company_id) { //Update
-                        $invoice_update = array();
-                        $invoice_update = array(
-                            'patient' => $patient,
-                            'doctor' => $doctor,
-                            'date' => $date,
-                            'amount' => $subtotal,
-                            'discount' => $payer_discount_total,
-                            'gross_total' => $invoice_gross_total,
-                            'remarks' => $remarks,
-                            'amount_received' => $deposit_amount,
-                            'deposit_type' => $deposit_type,
-                            'payment_status' => $payment_status,
-                            'company_id' => $invoice_payer_id,
-                            'encounter_id' => $encounter_id,
-                            'invoice_group_number' => $id,
-                            'invoice_number' => $invoice_number,
-                            'discount_id' => $value['discount']['discount_id'],
-                            'invoice_tax_amount' => $total_tax,
-                        );
-                        $this->finance_model->updatePayment($invoice_single->id, $invoice_update);
-                    } else { //Delete
+                    $update_invoice_data = array();
+
+                    $update_invoice_data = array(
+                        'patient' => $patient,
+                        'doctor' => $doctor,
+                        'last_modified' => $datetime,
+                        'amount' => $total_c_price,
+                        'discount' => $payer_discount_total,
+                        'gross_total' => $invoice_gross_total,
+                        'remarks' => $remarks,
+                        'amount_received' => $deposit_amount,
+                        'payment_status' => $payment_status,
+                        'encounter_id' => $encounter_id,
+                        'invoice_group_number' => $id,
+                        'invoice_number' => $invoice_number,
+                        'discount_id' => $discount_type[$payer_single_key],
+                        'invoice_tax_amount' => $tax[$payer_single_key],
+                    );
+
+                    // $this->finance_model->updatePayment($invoice_details->id, $update_invoice_data);
+
+                    $invoice_items_details = $this->finance_model->getInvoiceItemsByPaymentId($invoice_details->id);
+
+                    $invoice_item_to_be_updated = [];
+                    $invoice_item_to_be_deleted = [];
+                    foreach($invoice_items_details as $invoice_item_detail_key => $invoice_item_detail_value) {
+                        foreach($invoice_items as $invoice_item_key => $invoice_item_value) {
+                            if ($invoice_item_detail_value->charge_id == $invoice_item_value->id) {
+                                $invoice_item_to_be_updated[] = $invoice_item_detail_value->id;
+                            }
+                            // } else {
+                            //     // $db_invoice_item_exist_check = $this->finance_model->getInvoiceItemsById($invoice_item_detail_value->id);
+                            //     // if (!empty($db_invoice_item_exist_check)) {
+                            //     //     $invoice_item_to_be_deleted[] = $invoice_item_detail_value->id;
+                            //     // } else {
+                            //     //     $invoice_item_to_be_added[] = $invoice_item_detail_value->id;
+                            //     // }
+                            //     $invoice_item_to_be_added[] = $invoice_item_value->id;
+                            // }
+                        }
+                    }
+
+                    $invoice_item_to_be_added = [];
+                    foreach($invoice_items_details as $invoice_item_detail_key => $invoice_item_detail_value) {
+                        foreach($invoice_items as $invoice_item_key => $invoice_item_value) {
+                            if ($invoice_item_detail_value->charge_id != $invoice_item_value->id) {
+                                $invoice_item_to_be_added[] = $invoice_item_value->id;
+                            }
+                        }
+                    }
+
+                } else { /*Add*/
+                    $invoice_to_be_added[] = $payer_single_value;
+
+                    $c_price = [];
+                    foreach($charge_details as $charge_detail_key => $charge_detail_value) {
+
+                        if ($charge_detail_value->payer_account_id == $payer_single_value) {
+                            
+                            if ($charge_detail_value->type == "fixed") {
+                                $c_price[] = $charge_detail_value->c_price;
+                            } else {
+                                $c_price[] = $amount[$charge_detail_key];
+                            }
+
+                        }
 
                     }
+
+                    $total_c_price = array_sum($c_price);
+
                 }
+
             }
 
-            // $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
-            // $invoice_list_by_group_number = $this->finance_model->getInvoiceByGroupNumber($id);
-
-
-            // $items = [];
-            // $to_be_updated = [];
-            // $to_be_deleted = [];
-            // $group_invoices_id = [];
-            // foreach($invoice_list_by_group_number as $invoice) {
-            //     $invoice_items = $this->finance_model->getInvoiceItemsByPaymentId($invoice->id);
-            //     foreach($invoice_items as $invoice_item) {
-            //         $items[] = $invoice_item->charge_id;
-            //         if (in_array($invoice_item->id, $item_id) === TRUE) {
-            //             $to_be_updated[$invoice_item->id] = $invoice_item->charge_id;
-            //         } elseif (in_array($invoice_item->id, $item_id) === FALSE) {
-            //             $to_be_deleted[] = $invoice_item->id; /*Delete*/
-            //             $invoice_item_delete_data = array();
-            //             $invoice_item_delete_data = array(
-            //                 'deleted' => 1,
-            //             );
-            //             $this->finance_model->deleteInvoiceItem($invoice_item->id, $invoice_item_delete_data);
-            //         }
-            //     }
-            // }
-
-            // $to_be_added = [];
-            // foreach($charge_id as $charge) {
-            //     if (in_array($charge, $items) === FALSE) {
-            //         $to_be_added[] = $charge;
-            //     }
-            // }
-
-            // $data_added = [];
-            // $data_updated = [];
-            // $data_deleted = [];
-            // foreach($invoices as $key => $value) {
-            //     $invoice_payer_id = $payer_id_unique[$key];
-            //     foreach($value['charges'] as $charges_key => $charges) {
-            //         if (in_array($charges['id'], $to_be_added)) { /*Insert*/
-            //             $data_added[] = $charges['id'];
-            //         } elseif (in_array($charges['id'], $to_be_updated)) { /*Update*/
-            //             $data_updated[] = $charges['id'];
-            //         } elseif (in_array($charges['id'], $to_be_deleted)) { /*Delete*/
-            //             $data_deleted[] = $charges['id'];
-            //         }
-            //     }
-            // }
         }
         /**/
             // foreach($payer_id_unique as $key => $value) {

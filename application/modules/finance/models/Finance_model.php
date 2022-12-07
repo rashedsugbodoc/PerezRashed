@@ -28,6 +28,12 @@ class Finance_model extends CI_model {
         return $query->result();
     }
 
+    function getInvoiceItemsById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('invoice_item');
+        return $query->row();
+    }
+
     function deleteInvoiceItem($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('invoice_item', $data);
@@ -1230,6 +1236,15 @@ class Finance_model extends CI_model {
         $this->db->where('doctor', $doctor);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    function getPaymentByInvoiceGroupNumberByCompanyId($group_number, $company_id) {
+        $this->db->select('*');
+        $this->db->from('invoice');
+        $this->db->where('invoice_group_number', $group_number);
+        $this->db->where('company_id', $company_id);
+        $query = $this->db->get();
+        return $query->row();
     }
 
     function getDepositAmountByPaymentId($payment_id) {
