@@ -1621,7 +1621,7 @@
                                                 <?php } else { ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
-                                                            <input type="hidden" name="redirect" value="patient/medicalHistory">
+                                                            <input type="hidden" name="redirect" value="<?php echo 'patient/medicalHistory?id=' .$patient_id ?>">
                                                         </div>
                                                     </div>
                                                 <?php } ?>
