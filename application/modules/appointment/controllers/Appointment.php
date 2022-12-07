@@ -155,6 +155,8 @@ class Appointment extends MX_Controller {
                 $redirect = $root.'/'.$method.'?encounter_id='.$data['encounter'];
             }elseif(!empty($patient)) {
                 $redirect = $root.'/'.$method.'?id='.$patient;
+            } else {
+                $redirect = $root.'/'.$method;
             }
         }
         $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($patient);
