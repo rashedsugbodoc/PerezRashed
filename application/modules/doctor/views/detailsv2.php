@@ -942,7 +942,7 @@
                                     <form role="form" action="schedule/addHoliday" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <label class="form-label"><?php echo lang('date'); ?><span class="text-red"> *</span></label>
-                                            <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" type="text" value="" required="" readonly="">
+                                            <input class="form-control flatpickr datetime" name="date" placeholder="MM/DD/YYYY" type="text" value="" required="" readonly="">
 
                                             <input type="hidden" name="doctor" value='<?php echo $doctor->id; ?>'>
                                             <input type="hidden" name="redirect" value='doctor/details'>
@@ -967,7 +967,7 @@
                                     <form role="form" id="editHolidayForm" action="schedule/addHoliday" method="post" enctype="multipart/form-data">
                                         <div class="modal-body">
                                             <label class="form-label"><?php echo lang('date'); ?><span class="text-red"> *</span></label>
-                                            <input class="form-control fc-datepicker" name="date" placeholder="MM/DD/YYYY" value="" type="text" readonly="" required="">
+                                            <input class="form-control flatpickr datetime" name="date" placeholder="MM/DD/YYYY" value="" type="text" readonly="" required="">
                                             <input type="hidden" name="doctor" value='<?php echo $doctor->id; ?>'>
                                             <input type="hidden" name="redirect" value='doctor/details'>
                                             <input type="hidden" name="id" value=''>
@@ -1437,7 +1437,11 @@
                         // Populate the form fields with the data returned from server
                         var date = new Date(response.holiday.date * 1000);
                         $('#editHolidayForm').find('[name="id"]').val(response.holiday.id).end()
-                        $('#editHolidayForm').find('[name="date"]').val(date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear()).end()
+                        $('.datetime').flatpickr({
+                            enableTime: true,
+                            dateFormat: "F j, Y h:i K",
+                            defaultDate: response.datetime,
+                        });
                     }
                 });
             });
@@ -1686,7 +1690,8 @@
         });
 
         $(document).ready(function () {
-            $('#date').datepicker({
+            $(".datetime").flatpickr({
+                dateFormat: 'F j, Y',
                 format: "dd-mm-yyyy",
                 autoclose: true,
             })
