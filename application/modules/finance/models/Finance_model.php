@@ -22,6 +22,11 @@ class Finance_model extends CI_model {
         $this->db->insert('invoice_item', $data2);
     }
 
+    function updateInvoiceItem($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('invoice_item', $data);
+    }
+
     function getInvoiceItemsByPaymentId($id) {
         $this->db->where('invoice_id', $id);
         $query = $this->db->get('invoice_item');
@@ -30,6 +35,14 @@ class Finance_model extends CI_model {
 
     function getInvoiceItemsById($id) {
         $this->db->where('id', $id);
+        $query = $this->db->get('invoice_item');
+        return $query->row();
+    }
+
+    function getInvoiceItemByChargeIdByInvoiceId($charge_id, $invoice_id) {
+        $this->db->select('*');
+        $this->db->where('charge_id', $charge_id);
+        $this->db->where('invoice_id', $invoice_id);
         $query = $this->db->get('invoice_item');
         return $query->row();
     }

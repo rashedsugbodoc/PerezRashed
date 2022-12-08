@@ -1259,7 +1259,7 @@
                             var invoice_result = $(".invoice_result").length;
 
                             $("#tbody"+key).append('<tr class="charge-'+item_value['charge_group_id']+'">\n\
-                                <td class="w-50">'+item_value['description']+'<input type="text" name="charge_id[]" value="'+item_value['charge_id']+'" hidden><input type="text" name="item_id[]" value="'+item_value['id']+'"></td>\n\
+                                <td class="w-50">'+item_value['description']+'<input type="text" name="charge_id[]" value="'+item_value['charge_id']+'" hidden></td>\n\
                                 '+td_amount+'\n\
                                 <td class="w-10"><input type="number" class="form-control quantity'+item_value['charge_id']+'-'+key+'" name="quantity[]" value="'+item_value['quantity']+'" onfocusout="charge_quantity('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>\n\
                             </tr>');

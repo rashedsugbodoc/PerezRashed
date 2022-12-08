@@ -646,13 +646,48 @@ class Finance extends MX_Controller {
                     foreach($charge_details as $charge_detail_key => $charge_detail_value) {
 
                         if ($charge_detail_value->payer_account_id == $payer_single_value) {
-                            $invoice_items[] = $charge_detail_value;
-                            if ($charge_detail_value->type == "fixed") {
-                                $c_price[] = $charge_detail_value->c_price * $quantity[$charge_detail_key];
-                            } else {
-                                $c_price[] = $amount[$charge_detail_key] * $quantity[$charge_detail_key];
+
+                            if ($data['settings']->is_display_prices_with_tax_included == 1) {
+                                // $price = $charge_detail_value->c_price;
+                                if ($charge_detail_value->type == "fixed") {
+                                    $price = $charge_detail_value->c_price;
+                                    $total_price = $price * $quantity[$charge_detail_key];
+                                } else {
+                                    $price = $amount[$charge_detail_key];
+                                    $total_price = $amount[$charge_detail_key] * $quantity[$charge_detail_key];
+                                }
+                            } elseif ($data['settings']->is_display_prices_with_tax_included == 0) {
+                                if ($charge_detail_value->type == "fixed") {
+                                    $price = $charge_detail_value->c_price_without_tax;
+                                    $total_price = $price * $quantity[$charge_detail_key];
+                                } else {
+                                    $price = $amount[$charge_detail_key];
+                                    $total_price = $amount[$charge_detail_key] * $quantity[$charge_detail_key];
+                                }
                             }
 
+                            // if ($charge_detail_value->type == "fixed") {
+                            //     $total_price = $price * $quantity[$charge_detail_key];
+                            // } else {
+                            //     $total_price = $amount[$charge_detail_key] * $quantity[$charge_detail_key];
+                            // }
+
+                            $invoice_items[] = array(
+                                'charge_details' => $charge_detail_value,
+                                'item_details' => array(
+                                    'charge_id' => $charge_detail_value->id,
+                                    'description' => $charge_detail_value->description,
+                                    'invoice_id' => $invoice_details->id,
+                                    'price' => $price,
+                                    'tax_id' => $charge_detail_value->tax_id,
+                                    'charge_code' => $charge_detail_value->charge_code,
+                                    'quantity' => $quantity[$charge_detail_key],
+                                    'item_total_price' => $total_price,
+                                    'price_without_tax' => $charge_detail_value->c_price_without_tax,
+                                ),
+                            );
+
+                            $c_price[] = $total_price;
                         }
 
                     }
@@ -722,34 +757,40 @@ class Finance extends MX_Controller {
                         'invoice_tax_amount' => $tax[$payer_single_key],
                     );
 
-                    // $this->finance_model->updatePayment($invoice_details->id, $update_invoice_data);
+                    $this->finance_model->updatePayment($invoice_details->id, $update_invoice_data);
 
                     $invoice_items_details = $this->finance_model->getInvoiceItemsByPaymentId($invoice_details->id);
 
-                    $invoice_item_to_be_updated = [];
-                    $invoice_item_to_be_deleted = [];
-                    foreach($invoice_items_details as $invoice_item_detail_key => $invoice_item_detail_value) {
-                        foreach($invoice_items as $invoice_item_key => $invoice_item_value) {
-                            if ($invoice_item_detail_value->charge_id == $invoice_item_value->id) {
-                                $invoice_item_to_be_updated[] = $invoice_item_detail_value->id;
-                            }
-                            // } else {
-                            //     // $db_invoice_item_exist_check = $this->finance_model->getInvoiceItemsById($invoice_item_detail_value->id);
-                            //     // if (!empty($db_invoice_item_exist_check)) {
-                            //     //     $invoice_item_to_be_deleted[] = $invoice_item_detail_value->id;
-                            //     // } else {
-                            //     //     $invoice_item_to_be_added[] = $invoice_item_detail_value->id;
-                            //     // }
-                            //     $invoice_item_to_be_added[] = $invoice_item_value->id;
-                            // }
+                    $company_items = [];
+                    foreach($charge_details as $charge_detail) {
+                        if ($payer_single_value == $charge_detail->payer_account_id) {
+                            $company_items[] = $charge_detail;
                         }
                     }
 
                     $invoice_item_to_be_added = [];
-                    foreach($invoice_items_details as $invoice_item_detail_key => $invoice_item_detail_value) {
-                        foreach($invoice_items as $invoice_item_key => $invoice_item_value) {
-                            if ($invoice_item_detail_value->charge_id != $invoice_item_value->id) {
-                                $invoice_item_to_be_added[] = $invoice_item_value->id;
+                    $invoice_item_to_be_updated = [];
+                    foreach($company_items as $company_item_key => $company_item_value) {
+
+                        $check_invoice_item_exist = $this->finance_model->getInvoiceItemByChargeIdByInvoiceId($company_item_value->id, $invoice_details->id);
+
+                        if (empty($check_invoice_item_exist)) {
+                            $invoice_item_to_be_added[] = $invoice_items[$company_item_key];
+                            $last_modified = array(
+                                'last_modified' => $datetime,
+                            );
+                            $insert_invoice_item_data = array_merge($invoice_item_to_be_added[0]['item_details'], $last_modified);
+                            $this->finance_model->insertInvoiceItem($insert_invoice_item_data);
+                        }
+
+                        foreach($invoice_items_details as $i_i_d_key => $i_i_d_value) {
+                            if ($company_item_value->id == $i_i_d_value->charge_id) {
+                                $invoice_item_to_be_updated[] = $invoice_items[$company_item_key];
+                                $created_at = array(
+                                    'created_at' => $datetime,
+                                );
+                                $update_invoice_item_data = array_merge($invoice_item_to_be_updated[$company_item_key]['item_details'], $created_at);
+                                $this->finance_model->updateInvoiceItem($i_i_d_value->id, $update_invoice_item_data);
                             }
                         }
                     }
