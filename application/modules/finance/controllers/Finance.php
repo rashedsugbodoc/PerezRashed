@@ -799,21 +799,127 @@ class Finance extends MX_Controller {
                     $invoice_to_be_added[] = $payer_single_value;
 
                     $c_price = [];
+                    $invoice_items = [];
                     foreach($charge_details as $charge_detail_key => $charge_detail_value) {
 
                         if ($charge_detail_value->payer_account_id == $payer_single_value) {
                             
-                            if ($charge_detail_value->type == "fixed") {
-                                $c_price[] = $charge_detail_value->c_price;
-                            } else {
-                                $c_price[] = $amount[$charge_detail_key];
+                            if ($data['settings']->is_display_prices_with_tax_included == 1) {
+                                // $price = $charge_detail_value->c_price;
+                                if ($charge_detail_value->type == "fixed") {
+                                    $price = $charge_detail_value->c_price;
+                                    $total_price = $price * $quantity[$charge_detail_key];
+                                } else {
+                                    $price = $amount[$charge_detail_key];
+                                    $total_price = $amount[$charge_detail_key] * $quantity[$charge_detail_key];
+                                }
+                            } elseif ($data['settings']->is_display_prices_with_tax_included == 0) {
+                                if ($charge_detail_value->type == "fixed") {
+                                    $price = $charge_detail_value->c_price_without_tax;
+                                    $total_price = $price * $quantity[$charge_detail_key];
+                                } else {
+                                    $price = $amount[$charge_detail_key];
+                                    $total_price = $amount[$charge_detail_key] * $quantity[$charge_detail_key];
+                                }
                             }
+
+                            $invoice_items[] = array(
+                                'charge_details' => $charge_detail_value,
+                                'item_details' => array(
+                                    'charge_id' => $charge_detail_value->id,
+                                    'description' => $charge_detail_value->description,
+                                    'price' => $price,
+                                    'tax_id' => $charge_detail_value->tax_id,
+                                    'charge_code' => $charge_detail_value->charge_code,
+                                    'quantity' => $quantity[$charge_detail_key],
+                                    'item_total_price' => $total_price,
+                                    'price_without_tax' => $charge_detail_value->c_price_without_tax,
+                                ),
+                            );
+
+                            $c_price[] = $total_price;
 
                         }
 
                     }
 
+                    $discount_details = $this->finance_model->getDiscountById($discount_type[$payer_single_key]);
+                    $discount_type_details = $this->finance_model->getDiscountTypeById($discount_details->discount_type_id);
+
                     $total_c_price = array_sum($c_price);
+
+                    if ($discount_type_details->name === FIXED_PERCENTAGE) {
+                        $payer_discount_total = $total_c_price*($discount_details->rate/100);
+                    } elseif ($discount_type_details->name === FIXED_AMOUNT) {
+                        $payer_discount_total = $discount_details->amount;
+                    } elseif ($discount_type_details->name === VARIABLE_PERCENTAGE) {
+                        $payer_discount_total = $total_c_price*($discount_input[$payer_single_key]/100);
+                    } elseif ($discount_type_details->name === VARIABLE_AMOUNT) {
+                        $payer_discount_total = $discount_input[$payer_single_key];
+                    }
+
+                    $invoice_gross_total = $total_c_price - $payer_discount_total;
+
+                    $company_classification = $this->company_model->getClassificationByCompanyId($payer_single_value);
+                    $classification = $this->company_model->getCompanyClassificationById($company_classification->classification_id);
+                    $payment_status_list = $this->finance_model->getInvoiceStatusByCompanyClassificationName($classification->name, $current_user_group);
+
+                    foreach ($payment_status_list as $status_list) {
+                        if ($status_list->name === "paid") {
+                            $paid_status = $status_list->id;
+                        } elseif ($status_list->name === "unpaid") {
+                            $unpaid_status = $status_list->id;
+                        } elseif ($status_list->name === "overdue") {
+                            $overdue_status = $status_list->id;
+                        }
+                    }
+
+                    if (empty($payment_status)) {
+                        $deposit_amount = array_sum($this->input->post('deposit_edit_amount'));
+                        $received_deposit_amount = $amount_received + $deposit_amount;
+
+                        if ($received_deposit_amount >= $invoice_gross_total) {
+                            $payment_status = $paid_status;
+                        } else {
+                            $payment_status = $unpaid_status;
+                        }
+                    }
+
+                    if ($invoice_payer_id != '1' || $invoice_payer_id != 1) {
+                        $amount_received = null;
+                    }
+
+                    $insert_invoice_data = array();
+
+                    $insert_invoice_data = array(
+                        'patient' => $patient,
+                        'doctor' => $doctor,
+                        'created_at' => $datetime,
+                        'company_id' => $payer_single_value,
+                        'amount' => $total_c_price,
+                        'discount' => $payer_discount_total,
+                        'gross_total' => $invoice_gross_total,
+                        'remarks' => $remarks,
+                        'amount_received' => $amount_received,
+                        'payment_status' => $payment_status,
+                        'encounter_id' => $encounter_id,
+                        'invoice_group_number' => $id,
+                        'invoice_number' => $invoice_number,
+                        'discount_id' => $discount_type[$payer_single_key],
+                        'invoice_tax_amount' => $tax[$payer_single_key],
+                        'deposit_type' => $invoices_from_db[0]->deposit_type,
+                    );
+
+                    $this->finance_model->insertPayment($insert_invoice_data);
+                    $inserted_id = $this->db->insert_id();
+
+                    foreach($invoice_items as $invoice_item) {
+                        $invoice_id = array(
+                            'invoice_id' => $inserted_id,
+                        );
+                        $insert_invoice_item_data = array_merge($invoice_item['item_details'], $invoice_id);
+                        $this->finance_model->insertInvoiceItem($insert_invoice_item_data);
+                    }
 
                 }
 

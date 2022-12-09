@@ -1172,6 +1172,9 @@
                         var invoice_item_amount = invoice_item_extras[1];
                         var invoice_tax_amount = invoice_item_extras[0];
 
+                        // console.log('invoice_item_amount Bruh: ');
+                        // console.log(amount_items);
+
                         if (discount['discount_type'] == 1) {
                             var rate = discount_data.rate;
                             $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
@@ -1233,7 +1236,7 @@
                             amount_received = 0;
                         }
                         
-                        var discount = 0;
+                        // var discount = 0;
                         summary_discount += Number(parseFloat(discount_amount).toFixed(2));
                         summary_deposited_amount += Number(parseFloat(amount_received).toFixed(2));
                         $.each(items, function(item_key, item_value) {
@@ -1356,7 +1359,6 @@
 
                             // $('#editPaymentForm').find('[name="discount_type"]').val(1).change();
                         })
-
 
                     })
                     $('#invoice_result_due').text(parseFloat(summary_subtotal-$('#amount_received').val()).toFixed(2));
@@ -1665,7 +1667,7 @@
             var invoice_tax_amount = 0;
 
             console.log('amount item Bruh:');
-            console.log(amount_items);
+            console.log(invoice_items);
 
             $.each(invoice_items, function(key, value) {
                 var invoice_value = value;
@@ -1677,8 +1679,10 @@
                 if (tax_amount == 0) {
                     tax_amount = parseFloat(c_price)*(parseFloat(value.tax_percentage)/100);
                 }
-                invoice_tax_amount = parseFloat(invoice_tax_amount) + (parseFloat(tax_amount)*parseFloat(quantity_items[key]));
-                invoice_item_amount = parseFloat(invoice_item_amount) + (parseFloat(c_price)*parseFloat(quantity_items[key]));
+                invoice_tax_amount = parseFloat(invoice_tax_amount) + (parseFloat(tax_amount)*quantity_items[key]);
+                invoice_item_amount = parseFloat(invoice_item_amount) + (parseFloat(c_price)*quantity_items[key]);
+
+                console.log(invoice_item_amount);
                 // payer_total_invoice = parseInt(payer_total_invoice) + (parseInt(c_price)*parseInt(quantity_items[key]));
             })
 
