@@ -1167,69 +1167,6 @@
                             </div>\n\
                         </div>');
 
-                        var invoice_item_extras = inv_items(key);
-
-                        var invoice_item_amount = invoice_item_extras[1];
-                        var invoice_tax_amount = invoice_item_extras[0];
-
-                        // console.log('invoice_item_amount Bruh: ');
-                        // console.log(amount_items);
-
-                        if (discount['discount_type'] == 1) {
-                            var rate = discount_data.rate;
-                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
-                                <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount">\n\
-                                <span class="input-group-append">\n\
-                                    <span class="btn btn-primary" type="button">%</span>\n\
-                                </span>\n\
-                            </div><div><label class="mt-2">'+rate+' %'+'</label></div>\n\
-                            ');
-                        } else if (discount['discount_type'] == 2) {
-                            var rate = discount_data.amount;
-                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
-                                <span class="input-group-append">\n\
-                                    <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                                </span>\n\
-                                <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Fixed Amount">\n\
-                            </div><div><label class="mt-2">'+currency+' '+rate+'</label></div>');
-                        } else if (discount['discount_type'] == 3) {
-                            var invoice_discount_amount = discount.amount;
-                            var rate = 0;
-                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
-                                <input type="text" class="form-control" value="'+invoice_discount_amount+'" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount" onkeyup="computeDiscountPercentage('+invoice_item_amount+','+key+');">\n\
-                                <span class="input-group-append">\n\
-                                    <span class="btn btn-primary" type="button">%</span>\n\
-                                </span>\n\
-                            </div>\n\
-                            ');
-                        } else if (discount['discount_type'] == 4) {
-                            var invoice_discount_amount = discount.amount;
-                            var rate = 0;
-                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
-                                <span class="input-group-append">\n\
-                                    <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                                </span>\n\
-                                <input type="text" class="form-control" id="discount_input-'+key+'" value="'+invoice_discount_amount+'" name="discount_input[]" placeholder="Enter Fixed Amount" onkeyup="computeDiscountAmount('+invoice_item_amount+','+key+')">\n\
-                            </div>');
-                        }
-
-                        $('#discount'+key).append($('<option value="0" disabled>Select Discount</option>')).end();
-                        $.each(discount_list, function(discount_key, discount_value) {
-                            $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
-                        })
-
-                        // discountSelect2(key);
-
-                        console.log(discount_id);
-
-                        if (discount_id == null) {
-                            $('#discount'+key).val("0");
-                        } else {
-                            $('#discount'+key).val(discount_id);
-                        }
-
-                        $('#discount'+key).select2();
-
                         // discountSelect2(key);
 
                         if (amount_received == null) {
@@ -1359,6 +1296,69 @@
 
                             // $('#editPaymentForm').find('[name="discount_type"]').val(1).change();
                         })
+
+                        var invoice_item_extras = inv_items(key);
+
+                        var invoice_item_amount = invoice_item_extras[1];
+                        var invoice_tax_amount = invoice_item_extras[0];
+
+                        console.log('invoice_item_amount Bruh: ');
+                        console.log(invoice_item_amount);
+
+                        if (discount['discount_type'] == 1) {
+                            var rate = discount_data.rate;
+                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
+                                <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount">\n\
+                                <span class="input-group-append">\n\
+                                    <span class="btn btn-primary" type="button">%</span>\n\
+                                </span>\n\
+                            </div><div><label class="mt-2">'+rate+' %'+'</label></div>\n\
+                            ');
+                        } else if (discount['discount_type'] == 2) {
+                            var rate = discount_data.amount;
+                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
+                                <span class="input-group-append">\n\
+                                    <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                                </span>\n\
+                                <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Fixed Amount">\n\
+                            </div><div><label class="mt-2">'+currency+' '+rate+'</label></div>');
+                        } else if (discount['discount_type'] == 3) {
+                            var invoice_discount_amount = discount.amount;
+                            var rate = 0;
+                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
+                                <input type="text" class="form-control" value="'+invoice_discount_amount+'" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount" onkeyup="computeDiscountPercentage('+invoice_item_amount+','+key+');">\n\
+                                <span class="input-group-append">\n\
+                                    <span class="btn btn-primary" type="button">%</span>\n\
+                                </span>\n\
+                            </div>\n\
+                            ');
+                        } else if (discount['discount_type'] == 4) {
+                            var invoice_discount_amount = discount.amount;
+                            var rate = 0;
+                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
+                                <span class="input-group-append">\n\
+                                    <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                                </span>\n\
+                                <input type="text" class="form-control" id="discount_input-'+key+'" value="'+invoice_discount_amount+'" name="discount_input[]" placeholder="Enter Fixed Amount" onkeyup="computeDiscountAmount('+invoice_item_amount+','+key+')">\n\
+                            </div>');
+                        }
+
+                        $('#discount'+key).append($('<option value="0" disabled>Select Discount</option>')).end();
+                        $.each(discount_list, function(discount_key, discount_value) {
+                            $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
+                        })
+
+                        // discountSelect2(key);
+
+                        console.log(discount_id);
+
+                        if (discount_id == null) {
+                            $('#discount'+key).val("0");
+                        } else {
+                            $('#discount'+key).val(discount_id);
+                        }
+
+                        $('#discount'+key).select2();
 
                     })
                     $('#invoice_result_due').text(parseFloat(summary_subtotal-$('#amount_received').val()).toFixed(2));
@@ -1655,6 +1655,10 @@
 
         function computePayerTotal() {
 
+        }
+
+        function setDiscountInputOnKeyUpParameter(payer_id, invoice_item_amount) {
+            $('#discount_input-'+payer_id).attr('onkeyup',  'computeDiscountAmount('+invoice_item_amount+','+payer_id+')')
         }
 
         function inv_items(payer_account) {
@@ -2248,6 +2252,8 @@
                 $("#invoice_result_discount").empty().append('<label>'+currency+' '+parseFloat(discount).toFixed(2)+'</label>');
                 $('#card_items_total-'+key).val((invoice_item_amount).toFixed(2));
                 $('#tax_total-'+key).val((invoice_tax_amount).toFixed(2)).end();
+
+                setDiscountInputOnKeyUpParameter(key, invoice_item_amount);
 
                 computeAllDiscount();
                 computeTax();
@@ -3284,6 +3290,8 @@
             $('#card_items_total-'+payer_id).val((invoice_item_amount).toFixed(2));
             $('#tax_total-'+payer_id).val((invoice_tax_amount).toFixed(2));
 
+            setDiscountInputOnKeyUpParameter(payer_id, invoice_item_amount);
+
             computeAllDiscount();
             computeTax();
 
@@ -3426,6 +3434,8 @@
             $('#payer_total-'+payer_id).val(payer_account_total);
             $('#card_items_total-'+payer_id).val(parseFloat(invoice_item_amount).toFixed(2));
             $('#tax_total-'+payer_id).val(parseFloat(invoice_tax_amount).toFixed(2));
+
+            setDiscountInputOnKeyUpParameter(payer_id, invoice_item_amount);
 
             computeAllDiscount();
             computeTax();
