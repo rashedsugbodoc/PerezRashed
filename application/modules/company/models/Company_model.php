@@ -300,8 +300,6 @@ class Company_model extends CI_model {
             $this->db->group_end();
 
             $this->db->where('is_invoice_visible', 1);
-
-            $this->db->limit(10);
             $fetched_records = $this->db->get('company');
             $companies = $fetched_records->result_array();
         }

@@ -2527,7 +2527,14 @@ class Finance extends MX_Controller {
         // $data['tax'] = $this->finance_model->getTax();
         foreach($services as $service) {
             $company[] = $this->company_model->getCompanyById($service->payer_account_id);
-            $tax[] = $this->finance_model->getTaxById($service->tax_id);
+            if (empty($service->tax_id)) {
+                $tax[] = array(
+                    'id' => '0',
+                    'name' => 'None',
+                );
+            } else {
+                $tax[] = $this->finance_model->getTaxById($service->tax_id);
+            }
         }
 
         $data['tax'] = $tax;
