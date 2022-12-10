@@ -768,18 +768,18 @@ class Finance extends MX_Controller {
                         }
                     }
 
-                    $invoice_item_to_be_added = [];
+                    // $invoice_item_to_be_added = [];
                     $invoice_item_to_be_updated = [];
                     foreach($company_items as $company_item_key => $company_item_value) {
 
                         $check_invoice_item_exist = $this->finance_model->getInvoiceItemByChargeIdByInvoiceId($company_item_value->id, $invoice_details->id);
 
                         if (empty($check_invoice_item_exist)) {
-                            $invoice_item_to_be_added[] = $invoice_items[$company_item_key];
+                            $invoice_item_to_be_added = $invoice_items[$company_item_key];
                             $last_modified = array(
                                 'last_modified' => $datetime,
                             );
-                            $insert_invoice_item_data = array_merge($invoice_item_to_be_added[0]['item_details'], $last_modified);
+                            $insert_invoice_item_data = array_merge($invoice_item_to_be_added['item_details'], $last_modified);
                             $this->finance_model->insertInvoiceItem($insert_invoice_item_data);
                         }
 
