@@ -134,7 +134,7 @@
                                                                     <div class="col-sm-12 col-md-6">
                                                                     <div class="form-group">
                                                                         <label class="form-label">Scheduled On : </label>
-                                                                        <input class="form-control fc-datepicker" id="date" placeholder="MM/DD/YYYY" name="date" type="text" readonly  required="">
+                                                                        <input class="form-control flatpickr datetime" id="date" placeholder="MM/DD/YYYY" name="date" type="text" readonly  required="">
                                                                     </div>
                                                                     </div>
                                                                     <div class="col-sm-12 col-md-6">
@@ -427,7 +427,22 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
         <!-- INTERNAL JS INDEX END -->
+
+        <!-- flatpickr js -->
+        <script src="<?php echo base_url('common/assets/flatpickr/dist/flatpickr.js'); ?>"></script>
     <!-- INTERNAL JS INDEX END -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            flatpickr(".datetime", {
+                    altInput: true,
+                    altFormat: "F j, Y",
+                    dateFormat: "F j, Y",
+                    disableMobile: true,
+                    minDate: "today",
+                });
+            })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
