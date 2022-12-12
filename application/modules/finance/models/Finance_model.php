@@ -47,7 +47,17 @@ class Finance_model extends CI_model {
         return $query->row();
     }
 
-    function deleteInvoiceItem($id, $data) {
+    function deleteInvoiceItem($id) {
+        $this->db->where('id', $id);
+        $this->db->delete('invoice_item');
+    }
+
+    function deleteInvoice($id, $data) {
+        $this->db->where('id', $id);
+        $this->db->update('invoice', $data);
+    }
+
+    function updateInvoiceItemDeleteStatus($id, $data) {
         $this->db->where('id', $id);
         $this->db->update('invoice_item', $data);
     }

@@ -604,12 +604,15 @@ class Finance extends MX_Controller {
 
             $charge_details = [];
             $payer_details = [];
+            // $invoice_item_to_be_deleted = [];
+            $current_charges_id = [];
             foreach($charge_id as $key => $value) {
                 $payer_id = $this->finance_model->getPaymentCategoryById($value)->payer_account_id;
                 $payer_details[] = $this->company_model->getCompanyById($payer_id);
 
                 /*Front-End to Back-End Data Validation Start*/
                     $charge_details[] = $this->finance_model->getPaymentCategoryById($value);
+                    $current_charges_id[] = $charge_id->id;
                 /*End*/
 
             }
@@ -924,6 +927,34 @@ class Finance extends MX_Controller {
                 }
 
             }
+
+            $invoice_item_list = [];
+            $invoice_item_list_id = [];
+            foreach($invoices_from_db as $invoice_from_db) {
+                $invoice_items = $this->finance_model->getInvoiceItemsByPaymentId($invoice_from_db->id);
+                foreach($invoice_items as $invoice_item) {
+                    $invoice_item_list[] = $invoice_item;
+                    $invoice_item_list_id[$invoice_item->id] = $invoice_item->charge_id;
+                }
+            }
+
+            $invoice_item_to_be_deleted = array_diff($invoice_item_list_id, $charge_id);
+
+            foreach($invoice_item_to_be_deleted as $to_be_deleted_key => $to_be_deleted_value) {
+                $this->finance_model->deleteInvoiceItem($to_be_deleted_key);
+            }
+
+            // $to_be_deleted = [];
+            // foreach($invoices_from_db as $invoice_from_db) {
+            //     $invoice_items_from_db_details = $this->finance_model->getInvoiceItemsByPaymentId($invoice_from_db->id);
+            //     foreach($invoice_items_from_db_details as $invoice_item_from_db_details) {
+            //         foreach($charge_details as $charge_detail) {
+            //             if ($invoice_item_from_db_details->charge_id != $charge_detail->id) {
+            //                 $to_be_deleted[] = $invoice_item_from_db_details;
+            //             }
+            //         }
+            //     }
+            // }
 
         }
         /**/
@@ -1820,6 +1851,44 @@ class Finance extends MX_Controller {
 
             $this->finance_model->deletePayment($id);
             $this->finance_model->deleteDepositByInvoiceId($id);
+            $this->session->set_flashdata('success', lang('record_deleted'));
+            redirect('finance/invoices');
+        } else {
+            redirect('home/permission');
+        }
+    }
+
+    function deleteInvoice() {
+        if ($this->ion_auth->in_group(array('admin'))) {
+            $id = $this->input->get('id');
+
+            if (!empty($id)) {
+                $payment_details = $this->finance_model->getInvoiceByGroupNumber($id);
+                foreach($payment_details as $payment_detail) {
+                    if ($payment_detail->hospital_id != $this->session->userdata('hospital_id')) {
+                        redirect('home/permission');
+                    }
+
+                    $invoice_data = array(
+                        'deleted' => 1,
+                    );
+
+                    $this->finance_model->deleteInvoice($payment_detail->id, $invoice_data);
+
+                    $invoice_items = $this->finance_model->getInvoiceItemsByPaymentId($payment_detail->id);
+
+                    foreach($invoice_items as $invoice_item) {
+                        $invoice_item_data = array(
+                            'deleted' => 1,
+                        );
+
+                        $this->finance_model->updateInvoiceItemDeleteStatus($invoice_item->id, $invoice_item_data);
+
+                    }
+
+                }
+            }
+
             $this->session->set_flashdata('success', lang('record_deleted'));
             redirect('finance/invoices');
         } else {
@@ -3907,7 +3976,7 @@ class Finance extends MX_Controller {
             $options2 = '<a class="btn btn-info btn-xs" title="' . lang('details') . '" href="finance/invoice?id=' . $payment->invoice_number . '"><i class="fa fa-file-text-o"></i> ' . lang('details') . '</a>';
             $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" href="finance/printInvoice?id=' . $payment->invoice_number . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
             if ($this->ion_auth->in_group(array('admin'))) {
-                $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/delete?id=' . $payment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+                $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/deleteInvoice?id=' . $payment->invoice_group_number . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
             }
 
             if (empty($options1)) {
