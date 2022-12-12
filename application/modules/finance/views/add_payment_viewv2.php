@@ -1528,6 +1528,7 @@
         }
 
         function computeDiscount(payer_account, invoice_item_amount, invoice_tax_amount) {
+            var discount_input = $('#discount_input-'+payer_account).val();
             if ('<?php echo $payment->invoice_group_number; ?>') {
                 var data = $('#discount'+payer_account).find('option:selected');
                 var group = '<?php echo $payment->invoice_group_number; ?>'
@@ -1608,6 +1609,14 @@
                         var invoice_discount_amount = data.amount;
                         var rate = data.amount;
                         discount += invoice_discount_amount;
+                    } else if(data.discount_type_id == 3) {
+                        var invoice_discount_amount = invoice_item_amount * (discount_input/100);
+                        var rate = discount_input;
+                        discount += invoice_discount_amount;
+                    } else if(data.discount_type_id == 4) {
+                        var invoice_discount_amount = discount_input;
+                        var rate = discount_input;
+                        discount += invoice_discount_amount;
                     } else {
                         var invoice_discount_amount = 0;
                         var rate = 0;
@@ -1677,16 +1686,26 @@
                 var invoice_value = value;
                 var c_price = value.c_price;
                 var tax_amount = value.tax_amount;
+
+                console.log('invoice_item');
+                console.log(value);
+
                 if (c_price != amount_items[key]) {
                     c_price = amount_items[key];
                 }
-                if (tax_amount == 0) {
-                    tax_amount = parseFloat(c_price)*(parseFloat(value.tax_percentage)/100);
+
+                if (value.tax_id == null) {
+                    tax_amount = 0;
+                } else {
+                    if (tax_amount == 0) {
+                        tax_amount = parseFloat(c_price)*(parseFloat(value.tax_percentage)/100);
+                    }
                 }
+
                 invoice_tax_amount = parseFloat(invoice_tax_amount) + (parseFloat(tax_amount)*quantity_items[key]);
                 invoice_item_amount = parseFloat(invoice_item_amount) + (parseFloat(c_price)*quantity_items[key]);
 
-                console.log(invoice_item_amount);
+                // console.log('bruh Tax: '+invoice_tax_amount);
                 // payer_total_invoice = parseInt(payer_total_invoice) + (parseInt(c_price)*parseInt(quantity_items[key]));
             })
 
@@ -1757,8 +1776,6 @@
                     var c_price_display = value['charges']['price_wo_tax'];
                     var c_price = value['charges']['price_wo_tax'];
                 }
-
-                // console.log(value);
 
                 // if (key == company_id) {
                 //     window.sessionStorage.setItem('zzinvoice-'+key, JSON.stringify(value));
@@ -1949,6 +1966,8 @@
                         var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+'0.00</label>';
                         var c_price = 0;
                         var tax_detail = 0;
+
+                        console.log('tax amount: '+ tax_amount);
                     } else {
                         var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+c_price+'" class="form-control amount'+charge_id+'-'+key+'" name="amount[]" onfocusout="charge_amount('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"><label>'+c_price_display+'</label></td>';
                         var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+c_price+'</label>';
@@ -2202,8 +2221,8 @@
 
                 var invoice_item_amount = invoice_item_extras[1];
                 var invoice_tax_amount = invoice_item_extras[0];
-                console.log('bruh Amount: '+invoice_item_amount);
-                console.log('bruh Tax: '+invoice_tax_amount);
+                // console.log('bruh Amount: '+invoice_item_amount);
+                // console.log('bruh Tax: '+invoice_tax_amount);
 
                 var invoice_discount_extras = computeDiscount(key, invoice_item_amount, invoice_tax_amount);
 
