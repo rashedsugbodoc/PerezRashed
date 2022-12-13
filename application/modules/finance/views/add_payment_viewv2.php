@@ -1251,7 +1251,8 @@
                             if (invoice_result == 0) {
                                 $(".item_summary_tbody_result").append('<tr class="invoice_result">\n\
                                     <td rowspan="5" class="td class="valign-top border w-60">\n\
-                                        <label><?php echo lang("note"); ?></label>\n\
+                                        <label class="form-label"><?php echo lang("note"); ?></label>\n\
+                                        <label id="invoice_result_note"></label>\n\
                                     </td>\n\
                                     <td class="tx-right border font-weight-semibold w-10">\n\
                                         <label><?php echo lang("sub_total"); ?></label>\n\
@@ -1286,6 +1287,7 @@
                                 </tr>\n\
                                 ');
                             } else {
+                                $('#invoice_result_note').text(item_value.remarks)
                                 $('#invoice_result_subtotal').text(summary_subtotal);
                                 $('#invoice_result_tax').text(parseFloat(summary_tax).toFixed(2));
                                 $('#invoice_result_discount').text(summary_discount);
@@ -1357,7 +1359,7 @@
                         } else {
                             $('#discount'+key).val(discount_id);
                         }
-
+                        $('#discount'+key).append($('<option label="Select Discount" value="0">Select Discount</option>')).end();
                         $('#discount'+key).select2();
 
                     })
@@ -2016,7 +2018,7 @@
                                                     </tr>\n\
                                                     <tr>\n\
                                                         <td class="w-10"><?php echo lang('discount'); ?>: </td>\n\
-                                                        <td class="w-50"><select name="discount_type[]" id="discount'+key+'" class="form-control" onchange="select_discount3('+key+');"></select></td>\n\
+                                                        <td class="w-50"><select name="discount_type[]" id="discount'+key+'" class="form-control" onchange="select_discount3('+key+');" placeholder="Select Discount"></select></td>\n\
                                                         <td class="w-20" id="discount_type_input'+key+'">\n\
                                                         </td>\n\
                                                         <td class="w-80"><input name="discount_total[]" class="form-control discount_total" value="0.00" readonly id="discount_total-'+key+'"></td>\n\
@@ -2043,7 +2045,7 @@
                         </div>');
 
                         if ('<?php echo $payment->invoice_group_number; ?>') {
-                            $('#discount'+key).append($('<option value="0" disabled selected>Select Discount</option>')).end();
+                            $('#discount'+key).append($('<option label="Select Discount" value="0">Select Discount</option>')).end();
                             $.each(discount_list, function(discount_key, discount_value) {
                                 $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
                             })
@@ -2060,6 +2062,7 @@
 
                             $('#discount'+key).select2();
                         } else {
+                            $('#discount'+key).append($('<option label="Select Discount" value="0">Select Discount</option>')).end();
                             discountSelect2(key);
                         }
                     } else {

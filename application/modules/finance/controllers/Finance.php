@@ -191,6 +191,17 @@ class Finance extends MX_Controller {
         // $item_total_price = $this->input->post('amount_input');
         $date = time();
 
+        $new_discount_type = [];
+        foreach($discount_type as $dis_type) {
+            if ($dis_type == '0' || $dis_type == 0) {
+                $new_discount_type[] = null;
+            } else {
+                $new_discount_type[] = $dis_type;
+            }
+        }
+
+        $discount_type = $new_discount_type;
+
         if (empty($id)) {
 
             do {
@@ -328,14 +339,18 @@ class Finance extends MX_Controller {
                 $subtotal = array_sum($item_subtotal);
                 $total_tax = array_sum($item_tax);
 
-                if ($discount_type_details->name === FIXED_PERCENTAGE) {
-                    $payer_discount_total = $subtotal*($discount_details->rate/100);
-                } elseif ($discount_type_details->name === FIXED_AMOUNT) {
-                    $payer_discount_total = $discount_details->amount;
-                } elseif ($discount_type_details->name === VARIABLE_PERCENTAGE) {
-                    $payer_discount_total = $subtotal*($discount_input[$key]/100);
-                } elseif ($discount_type_details->name === VARIABLE_AMOUNT) {
-                    $payer_discount_total = $discount_input[$key];
+                if (!empty($discount_type_details)) {
+                    if ($discount_type_details->name === FIXED_PERCENTAGE) {
+                        $payer_discount_total = $subtotal*($discount_details->rate/100);
+                    } elseif ($discount_type_details->name === FIXED_AMOUNT) {
+                        $payer_discount_total = $discount_details->amount;
+                    } elseif ($discount_type_details->name === VARIABLE_PERCENTAGE) {
+                        $payer_discount_total = $subtotal*($discount_input[$key]/100);
+                    } elseif ($discount_type_details->name === VARIABLE_AMOUNT) {
+                        $payer_discount_total = $discount_input[$key];
+                    }
+                } else {
+                    $payer_discount_total = 0;
                 }
 
                 $invoice_gross_total = $subtotal - $payer_discount_total;
