@@ -1345,7 +1345,7 @@
                             </div>');
                         }
 
-                        $('#discount'+key).append($('<option value="0" disabled>Select Discount</option>')).end();
+                        $('#discount'+key).append($('<option value="0" disabled>None</option>')).end();
                         $.each(discount_list, function(discount_key, discount_value) {
                             $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
                         })
@@ -2045,7 +2045,7 @@
                         </div>');
 
                         if ('<?php echo $payment->invoice_group_number; ?>') {
-                            $('#discount'+key).append($('<option label="Select Discount" value="0">Select Discount</option>')).end();
+                            $('#discount'+key).append($('<option label="Select Discount" value="0">None</option>')).end();
                             $.each(discount_list, function(discount_key, discount_value) {
                                 $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
                             })
@@ -2062,7 +2062,7 @@
 
                             $('#discount'+key).select2();
                         } else {
-                            $('#discount'+key).append($('<option label="Select Discount" value="0">Select Discount</option>')).end();
+                            $('#discount'+key).append($('<option label="Select Discount" value="0">None</option>')).end();
                             discountSelect2(key);
                         }
                     } else {
