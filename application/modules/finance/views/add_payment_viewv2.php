@@ -1264,7 +1264,7 @@
                                     <td class="tx-right border font-weight-semibold w-10">\n\
                                         <label><?php echo lang("tax"); ?></label>\n\
                                     </td>\n\
-                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_tax">'+summary_tax+'</td>\n\
+                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_tax">'+parseFloat(summary_tax).toFixed(2)+'</td>\n\
                                 </tr>\n\
                                 <tr>\n\
                                     <td class="tx-right border font-weight-semibold w-10">\n\
@@ -1287,7 +1287,7 @@
                                 ');
                             } else {
                                 $('#invoice_result_subtotal').text(summary_subtotal);
-                                $('#invoice_result_tax').text(summary_tax);
+                                $('#invoice_result_tax').text(parseFloat(summary_tax).toFixed(2));
                                 $('#invoice_result_discount').text(summary_discount);
                                 $('#invoice_result_deposited').text(summary_deposited_amount);
 
@@ -1698,7 +1698,7 @@
                     tax_amount = 0;
                 } else {
                     if (tax_amount == 0) {
-                        tax_amount = parseFloat(c_price)*(parseFloat(value.tax_percentage)/100);
+                        tax_amount = parseFloat(c_price)*((parseFloat(value.tax_percentage)/100)/((parseFloat(value.tax_percentage)/100)+1));
                     }
                 }
 

@@ -388,6 +388,7 @@ class Finance extends MX_Controller {
                     'invoice_number' => $invoice_number,
                     'discount_id' => $value['discount']['discount_id'],
                     'invoice_tax_amount' => $total_tax,
+                    'total_without_tax' => ($subtotal + $total_tax) - $payer_discount_total,
                 );
 
                 $this->finance_model->insertPayment($invoice_data);
@@ -655,17 +656,21 @@ class Finance extends MX_Controller {
                                 if ($charge_detail_value->type == "fixed") {
                                     $price = $charge_detail_value->c_price;
                                     $total_price = $price * $quantity[$charge_detail_key];
+                                    $price_without_tax = $charge_detail_value->c_price_without_tax;
                                 } else {
                                     $price = $amount[$charge_detail_key];
                                     $total_price = $amount[$charge_detail_key] * $quantity[$charge_detail_key];
+                                    $price_without_tax = $amount[$charge_detail_key];
                                 }
                             } elseif ($data['settings']->is_display_prices_with_tax_included == 0) {
                                 if ($charge_detail_value->type == "fixed") {
-                                    $price = $charge_detail_value->c_price_without_tax;
+                                    $price = $charge_detail_value->c_price;
                                     $total_price = $price * $quantity[$charge_detail_key];
+                                    $price_without_tax = $charge_detail_value->c_price_without_tax;
                                 } else {
                                     $price = $amount[$charge_detail_key];
                                     $total_price = $amount[$charge_detail_key] * $quantity[$charge_detail_key];
+                                    $price_without_tax = $amount[$charge_detail_key];
                                 }
                             }
 
@@ -686,7 +691,7 @@ class Finance extends MX_Controller {
                                     'charge_code' => $charge_detail_value->charge_code,
                                     'quantity' => $quantity[$charge_detail_key],
                                     'item_total_price' => $total_price,
-                                    'price_without_tax' => $charge_detail_value->c_price_without_tax,
+                                    'price_without_tax' => $price_without_tax,
                                 ),
                             );
 
@@ -758,6 +763,7 @@ class Finance extends MX_Controller {
                         'invoice_number' => $invoice_number,
                         'discount_id' => $discount_type[$payer_single_key],
                         'invoice_tax_amount' => $tax[$payer_single_key],
+                        'total_without_tax' => ($total_c_price + $tax[$payer_single_key]) - $payer_discount_total,
                     );
 
                     $this->finance_model->updatePayment($invoice_details->id, $update_invoice_data);
@@ -1772,6 +1778,13 @@ class Finance extends MX_Controller {
             $items = [];
             $total_tax_amount = [];
             $discount_detail = $this->finance_model->getDiscountById($invoice->discount_id);
+
+            if ($settings->is_display_prices_with_tax_included == "1") {
+                $gross_total = $invoice->gross_total;
+            } else {
+                $gross_total = $invoice->total_without_tax;
+            }
+
             foreach($invoice_items as $invoice_item) {
                 $charge_details = $this->finance_model->getPaymentCategoryById($invoice_item->charge_id);
                 $tax_details = $this->finance_model->getTaxById($invoice_item->tax_id);
@@ -1817,7 +1830,7 @@ class Finance extends MX_Controller {
                 'total' => array(
                     'subtotal' => $invoice->amount,
                     'tax' => $total_tax_amount,
-                    'gross_total' => $invoice->gross_total,
+                    'gross_total' => $gross_total,
                 ),
                 'received' => $invoice->amount_received,
             );
