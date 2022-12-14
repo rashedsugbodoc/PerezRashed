@@ -1067,6 +1067,12 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            sessionStorage.clear();
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
             var group = '<?php echo $payment->invoice_group_number; ?>'
             $.ajax({
                 url: 'finance/editInvoicesByInvoiceGroupIdByJson?group='+group,
@@ -1487,6 +1493,16 @@
 
         }
 
+        function removeInvoiceCard(payer_account) {
+            var charge_count = $("#payer_account-"+payer_account).find("input[name='charge_id[]']").map(function(){return $(this).length;}).get();
+
+            console.log('Charges Count: '+charge_count);
+
+            if (charge_count == "") {
+                $("#payer_account-"+payer_account).remove();
+            }
+        }
+
         function computeDue() {
             var totalsummarydiscount = 0;
             $('.discount_total').each(function() {
@@ -1855,6 +1871,7 @@
 
                     computeAllDiscount();
                     computeTax();
+                    // removeInvoiceCard(key);
 
                     var total_due = computeDue();
                     $("#invoice_result_due").text(currency+' '+parseFloat(total_due).toFixed(2));
@@ -2279,6 +2296,7 @@
 
                 computeAllDiscount();
                 computeTax();
+                removeInvoiceCard(key);
 
                 // var summary = 
                 //     { invoice_total: invoice_item_amount, discount_amount: invoice_discount_amount, tax_amount: invoice_tax_amount }
