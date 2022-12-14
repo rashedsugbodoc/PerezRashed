@@ -329,7 +329,7 @@ class Finance extends MX_Controller {
                     if (!empty($extras['tax_amount'])) {
                         $item_tax[] = $extras['tax_amount'] * $value['charges'][$extras_key]['quantity'];
                     } else {
-                        $item_tax[] = ($value['charges'][$extras_key]['price'] * ($tax_details->rate/100)) * $value['charges'][$extras_key]['quantity'];
+                        $item_tax[] = ($value['charges'][$extras_key]['price'] * (($tax_details->rate/100)/(($tax_details->rate/100)+1))) * $value['charges'][$extras_key]['quantity'];
                     }
                 }
 
@@ -416,7 +416,7 @@ class Finance extends MX_Controller {
                     if (!empty($value['extras'][$item_charges_key]['tax_amount'])) {
                         $extras_tax_amount = $value['extras'][$item_charges_key]['tax_amount'];
                     } else {
-                        $extras_tax_amount = (($extras_tax_details->rate/100)*$item_charges_value['item_total_price'])*$item_charges_value['quantity'];
+                        $extras_tax_amount = ((($extras_tax_details->rate/100)/(($extras_tax_details->rate/100)+1))*$item_charges_value['item_total_price'])*$item_charges_value['quantity'];
                     }
 
                     $invoice_item_data = array(
@@ -1808,7 +1808,7 @@ class Finance extends MX_Controller {
                 // } elseif ($settings->is_display_prices_with_tax_included == 0) {
                 //     $tax_amount = (($tax_details->rate/100)*$invoice_item->price_without_tax)*$invoice_item->quantity;
                 // }
-                $tax_amount = (($tax_details->rate/100)*$invoice_item->price_without_tax)*$invoice_item->quantity;
+                $tax_amount = ((($tax_details->rate/100)/(($tax_details->rate/100)+1))*$invoice_item->price_without_tax)*$invoice_item->quantity;
                 
                 $item_total = $invoice_item->price * $invoice_item->quantity;
 
