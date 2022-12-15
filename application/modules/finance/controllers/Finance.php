@@ -1808,7 +1808,11 @@ class Finance extends MX_Controller {
                 // } elseif ($settings->is_display_prices_with_tax_included == 0) {
                 //     $tax_amount = (($tax_details->rate/100)*$invoice_item->price_without_tax)*$invoice_item->quantity;
                 // }
-                $tax_amount = ((($tax_details->rate/100)/(($tax_details->rate/100)+1))*$invoice_item->price_without_tax)*$invoice_item->quantity;
+                if ($settings->is_display_prices_with_tax_included == "1") {
+                    $tax_amount = ((($tax_details->rate/100)/(($tax_details->rate/100)+1))*$invoice_item->price)*$invoice_item->quantity;
+                } else {
+                    $tax_amount = ((($tax_details->rate/100)/(($tax_details->rate/100)+1))*$invoice_item->price_without_tax)*$invoice_item->quantity;
+                }
                 
                 $item_total = $invoice_item->price * $invoice_item->quantity;
 

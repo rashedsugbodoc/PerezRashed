@@ -1157,7 +1157,7 @@
                                                         <td class="w-10"><?php echo lang('tax'); ?>: </td>\n\
                                                         <td class="w-35"></td>\n\
                                                         <td class="w-25"></td>\n\
-                                                        <td class="w-30"><input name="tax[]" id="tax_total-'+key+'" class="form-control tax_total" value="'+total['tax']+'"></td>\n\
+                                                        <td class="w-30"><input name="tax[]" id="tax_total-'+key+'" class="form-control tax_total" value="'+parseFloat(total['tax']).toFixed(2)+'"></td>\n\
                                                     </tr>\n\
                                                     <tr>\n\
                                                         <td class="w-10"><?php echo lang('payer_account').' '.lang('total'); ?>: </td>\n\
@@ -1705,27 +1705,32 @@
                 var c_price = value.c_price;
                 var tax_amount = value.tax_amount;
 
-                console.log('invoice_item');
-                console.log(value);
-
                 if (c_price != amount_items[key]) {
                     c_price = amount_items[key];
-                }
-
-                if (value.tax_id == null) {
-                    tax_amount = 0;
+                    tax_amount = parseFloat(c_price)*((parseFloat(value.tax_percentage)/100)/((parseFloat(value.tax_percentage)/100)+1));
                 } else {
-                    if (tax_amount == 0) {
+                    c_price = value.c_price;
+                    if (value.tax_id == null) {
+                        tax_amount = 0;
+                    } else {
                         tax_amount = parseFloat(c_price)*((parseFloat(value.tax_percentage)/100)/((parseFloat(value.tax_percentage)/100)+1));
                     }
                 }
 
+                console.log('tax_amount Bruh:');
+                console.log(tax_amount);
+
                 invoice_tax_amount = parseFloat(invoice_tax_amount) + (parseFloat(tax_amount)*quantity_items[key]);
                 invoice_item_amount = parseFloat(invoice_item_amount) + (parseFloat(c_price)*quantity_items[key]);
 
+                console.log('invoice_tax_amount Bruh:');
+                console.log(invoice_tax_amount);
                 // console.log('bruh Tax: '+invoice_tax_amount);
                 // payer_total_invoice = parseInt(payer_total_invoice) + (parseInt(c_price)*parseInt(quantity_items[key]));
             })
+
+            console.log('tax_amount Bruh Total:');
+            console.log(invoice_tax_amount);
 
             return [invoice_tax_amount, invoice_item_amount];
         }
@@ -3316,6 +3321,7 @@
             var invoice_item_amount = invoice_item_extras[1];
             var invoice_tax_amount = invoice_item_extras[0];
 
+            console.log("tax_amount: "+invoice_tax_amount);
             var invoice_discount_extras = computeDiscount(payer_id, invoice_item_amount, invoice_tax_amount);
 
             var payer_account_total = invoice_discount_extras[0];
