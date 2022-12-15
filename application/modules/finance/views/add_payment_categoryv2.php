@@ -573,7 +573,7 @@
                                 var price_input = '<div class="col-md-12 col-sm-12" id="c_price'+value.id+'">\n\
                                                     <div class="form-group">\n\
                                                         <label class="form-label"><?php echo lang('price'); ?> ('+currency+') <span class="text-red">*</span></label>\n\
-                                                        <input type="number" class="form-control" id="c_price_input'+value.id+'" name="c_price[]" id="c_price_input'+value.id+'" oninput="validity.valid||(value='+"'0'"+');" value="'+c_price+'" placeholder="" required>\n\
+                                                        <input type="number" class="form-control" id="c_price_input'+value.id+'" name="c_price[]" id="c_price_input'+value.id+'" oninput="validity.valid||(value='+"''"+');" value="'+c_price+'" placeholder="" required>\n\
                                                     </div>\n\
                                                 </div>';
                                 var price_limit = 'hidden';
@@ -586,7 +586,7 @@
                                 var price_input = '<div class="col-md-12 col-sm-12" id="c_price'+value.id+'" hidden>\n\
                                                     <div class="form-group">\n\
                                                         <label class="form-label"><?php echo lang('price'); ?> ('+currency+') <span class="text-red">*</span></label>\n\
-                                                        <input type="number" class="form-control" id="c_price_input'+value.id+'" name="c_price[]" id="c_price_input'+value.id+'" oninput="validity.valid||(value='+"'0'"+');" value="" placeholder="">\n\
+                                                        <input type="number" class="form-control" id="c_price_input'+value.id+'" name="c_price[]" id="c_price_input'+value.id+'" oninput="validity.valid||(value='+"''"+');" value="" placeholder="">\n\
                                                     </div>\n\
                                                 </div>';
                                 var price_limit = '';
@@ -781,7 +781,7 @@
                                                     <div class="col-md-12 col-sm-12" id="c_price'+value+'">\n\
                                                         <div class="form-group">\n\
                                                             <label class="form-label"><?php echo lang('price'); ?> ('+currency+') <span class="text-red">*</span></label>\n\
-                                                            <input type="number" class="form-control" name="c_price[]" id="c_price_input'+value+'" oninput="validity.valid||(value='+"'0'"+');" step=".01" value="" placeholder="" required>\n\
+                                                            <input type="number" class="form-control" name="c_price[]" id="c_price_input'+value+'" oninput="validity.valid||(value='+"''"+');" step=".01" value="" placeholder="" required>\n\
                                                         </div>\n\
                                                     </div>\n\
                                                     <div class="col-md-12 col-sm-12">\n\
