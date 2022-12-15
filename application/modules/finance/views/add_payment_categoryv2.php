@@ -659,7 +659,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
-                                                        <input type="hidden" id="is_taxable'+value.id+'" name="is_taxable[]" value="'+service[key].price_includes_tax+'">\n\
+                                                        <input type="hidden" id="is_taxable'+value.id+'" name="is_taxable[]" value="'+service[key].is_price_includes_tax+'">\n\
                                                     </div>\n\
                                                 </div>\n\
                                                 <div id="limits_'+value.id+'" '+price_limit+'>\n\
