@@ -11,7 +11,7 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-title">
-                                            <?php echo lang('list_of_charges'); ?>
+                                            <?php echo lang('list').' '.lang('of').' '.lang('charge').' '.lang('groups'); ?>
                                         </div>
                                         <div class="card-options">
                                             <?php if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Clerk'))) { ?>

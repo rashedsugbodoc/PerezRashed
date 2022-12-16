@@ -333,6 +333,7 @@ $lang['blood_bank'] = 'Blood Bank';
 $lang['update_blood_bank'] = 'Update Blood Bank';
 $lang['edit_blood_quantity'] = 'Edit Blood Quantity';
 $lang['group'] = 'Group';
+$lang['groups'] = 'Groups';
 $lang['others'] = 'Others';
 $lang['bed_list'] = 'Bed List';
 $lang['add_bed'] = 'Add Bed';

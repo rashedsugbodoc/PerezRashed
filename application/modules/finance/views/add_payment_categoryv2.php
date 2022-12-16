@@ -39,10 +39,11 @@
                                     <div class="card-header">
                                         <div class="card-title">
                                              <?php
-                                                if (!empty($service->id))
+                                                if (!empty($service[0]->id)) {
                                                     echo lang('edit').' '.lang('charge');  
-                                                else
+                                                } else {
                                                     echo lang('add').' '.lang('charge');
+                                                }
                                             ?>
                                         </div>
                                     </div>
@@ -236,6 +237,16 @@
                                                         ?>">
                                                     </div>
                                                 </div> -->
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <div class="custom-controls-stacked">
+                                                            <label class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input" name="charge_copayer" value="yes">
+                                                                <span class="custom-control-label">Check if selected payer accounts are copayers of this charge</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('payer_account'); ?> <span class="text-red">*</span></label>

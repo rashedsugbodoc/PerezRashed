@@ -2244,6 +2244,7 @@ class Finance extends MX_Controller {
         $co_payer_limit_amount = $this->input->post('co_payer_limit_amount');
         $co_payer_payment_limit_type = $this->input->post('co_payer_payment_limit_type');
         $deleted_company = $this->input->post('deleted_company');
+        $charge_copayer = $this->input->post('charge_copayer');
 
         $non_duplicate_deleted_company = implode(',', array_keys(array_flip(explode(',', $deleted_company))));
 
@@ -2433,14 +2434,20 @@ class Finance extends MX_Controller {
 
                     $this->finance_model->insertPaymentCategory($data3);
 
-                    if (empty($inserted_id)) {
+                    if ($charge_copayer == "yes") {
+                        if (empty($inserted_id)) {
+                            $inserted_id = $this->db->insert_id();
+                            $group_id_data = array('group_id'=>$inserted_id);
+                            $this->finance_model->updatePaymentCategory($inserted_id, $group_id_data);
+                        } else {
+                            $added_id = $this->db->insert_id();
+                            $group_id_data = array('group_id'=>$inserted_id);
+                            $this->finance_model->updatePaymentCategory($added_id, $group_id_data);
+                        }
+                    } else {
                         $inserted_id = $this->db->insert_id();
                         $group_id_data = array('group_id'=>$inserted_id);
                         $this->finance_model->updatePaymentCategory($inserted_id, $group_id_data);
-                    } else {
-                        $added_id = $this->db->insert_id();
-                        $group_id_data = array('group_id'=>$inserted_id);
-                        $this->finance_model->updatePaymentCategory($added_id, $group_id_data);
                     }
 
                 }
@@ -2580,16 +2587,32 @@ class Finance extends MX_Controller {
 
                     $payer_id = $this->finance_model->getPaymentCategoryByGroupIdByPayerId($id, $company[$key]);
 
-                    if(!empty($payer_id)) {
-                        $this->finance_model->updatePaymentCategory($payer_id->id, $data2);
+                    if ($charge_copayer == "yes") {
+                        if(!empty($payer_id)) {
+                            $this->finance_model->updatePaymentCategory($payer_id->id, $data2);
+                        } else {
+                            $group_id_data = array(
+                                'group_id'=>$id,
+                                'payer_account_id'=>$company[$key],
+                                'charge_code' => $charge_code_final,
+                            );
+                            $data3 = array_merge($data2, $group_id_data);
+                            $this->finance_model->insertPaymentCategory($data3);
+                        }
                     } else {
-                        $group_id_data = array(
-                            'group_id'=>$id,
-                            'payer_account_id'=>$company[$key],
-                            'charge_code' => $charge_code_final,
-                        );
-                        $data3 = array_merge($data2, $group_id_data);
-                        $this->finance_model->insertPaymentCategory($data3);
+                        if(!empty($payer_id)) {
+                            $this->finance_model->updatePaymentCategory($payer_id->id, $data2);
+                        } else {
+                            $group_id_data = array(
+                                'payer_account_id'=>$company[$key],
+                                'charge_code' => $charge_code_final,
+                            );
+                            $data3 = array_merge($data2, $group_id_data);
+                            $this->finance_model->insertPaymentCategory($data3);
+                            $inserted_id = $this->db->insert_id();
+                            $group_id_data = array('group_id'=>$inserted_id);
+                            $this->finance_model->updatePaymentCategory($inserted_id, $group_id_data);
+                        }
                     }
                     
                 }
