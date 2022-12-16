@@ -4038,16 +4038,36 @@ class Finance extends MX_Controller {
                 $patient_details = ' ';
             }
 
+            $invoice_details = $this->finance_model->getInvoiceByGroupNumber($payment->invoice_group_number);
+
+            $subtotal = [];
+            $discount = [];
+            $grand_total = [];
+            foreach($invoice_details as $invoice_detail) {
+                $discount[] = $invoice_detail->discount;
+                if ($settings->is_display_prices_with_tax_included == "1") {
+                    $subtotal[] = $invoice_detail->amount;
+                    $grand_total[] = $invoice_detail->gross_total;
+                } else {
+                    $subtotal[] = $invoice_detail->total_without_tax;
+                    $grand_total[] = $invoice_detail->total_without_tax;
+                }
+            }
+
+            $subtotal = array_sum($subtotal);
+            $discount = array_sum($discount);
+            $grand_total = array_sum($grand_total);
+
             $info[] = array(
                 $date,
                 $payment->invoice_group_number,
                 $patient_details,
                 $doctor,
-                '<div class="text-right">'.number_format($payment->amount,2).'</div>',
-                '<div class="text-right">'.number_format($flat_discount,2).'</div>',
-                '<div class="text-right">'.number_format($payment->gross_total,2).'</div>',
+                '<div class="text-right">'.number_format($subtotal,2).'</div>',
+                '<div class="text-right">'.number_format($discount,2).'</div>',
+                '<div class="text-right">'.number_format($grand_total,2).'</div>',
                 '<div class="text-right">'.number_format(($this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
-                '<div class="text-right">'.number_format(($payment->gross_total - $this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
+                '<div class="text-right">'.number_format(($grand_total - $this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
                 $payment->remarks,
                 $options1 . ' ' . $options2 . ' ' . $options4 . ' ' . $options3,
                     //  $options2
