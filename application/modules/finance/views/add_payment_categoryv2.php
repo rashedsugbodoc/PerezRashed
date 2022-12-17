@@ -541,6 +541,10 @@
                         // console.log(tax);
 
                         $.each(company, function (key, value) {
+                            var service_tax_id = service[key].tax_id;
+                            if (service_tax_id == null) {
+                                service_tax_id = 0;
+                            }
                             window.sessionStorage.setItem('company'+value.id, value.id);
                             if (service[key].copay_share_fixed == null) {
                                 var copay_share = service[key].copay_share_percentage;
@@ -652,7 +656,7 @@
                                                         <select id="tax'+value.id+'" name="tax[]" class="form-control w-25 tax'+value.id+'" data-placeholder="<?php echo lang('select_tax'); ?>">\n\
                                                             <option label="<?php echo lang('select_tax'); ?>"></option>\n\
                                                             <option value="0">None</option>\n\
-                                                            <option value="'+service[key].tax_id+'" selected>'+tax[key].name+'</option>\n\
+                                                            <option value="'+service_tax_id+'" selected>'+tax[key].name+'</option>\n\
                                                         </select>\n\
                                                     </div>\n\
                                                 </div>\n\
