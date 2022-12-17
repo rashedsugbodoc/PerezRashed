@@ -1121,10 +1121,10 @@
                                         var is_taxable = "hidden";
                                     }
 
-                                    if (service.price_includes_tax == 1) {
+                                    if (service.is_price_includes_tax == 1) {
                                         var include_tax = "active";
                                         var exclude_tax = "";
-                                    } else if (service.price_includes_tax == 0) {
+                                    } else if (service.is_price_includes_tax == 0) {
                                         var exclude_tax = "active";
                                         var include_tax = "";
                                     }
@@ -1164,7 +1164,7 @@
                                                             <select id="tax'+response.company.id+'" name="tax[]" class="form-control w-25 tax'+response.company.id+'" data-placeholder="<?php echo lang('select_tax'); ?>">\n\
                                                                 <option label="<?php echo lang('select_tax'); ?>"></option>\n\
                                                                 <option value="0">None</option>\n\
-                                                                <option value="'+service.tax_id+'" selected>'+response.tax.name+'</option>\n\
+                                                                <option value="'+response.tax.id+'" selected>'+response.tax.name+'</option>\n\
                                                             </select>\n\
                                                         </div>\n\
                                                     </div>\n\
@@ -1182,7 +1182,7 @@
                                                                     </a>\n\
                                                                 </li>\n\
                                                             </ul>\n\
-                                                            <input type="hidden" id="is_taxable'+response.company.id+'" name="is_taxable[]" value="'+service.price_includes_tax+'">\n\
+                                                            <input type="hidden" id="is_taxable'+response.company.id+'" name="is_taxable[]" value="'+service.is_price_includes_tax+'">\n\
                                                         </div>\n\
                                                     </div>\n\
                                                     <div id="limits_'+response.company.id+'" hidden>\n\

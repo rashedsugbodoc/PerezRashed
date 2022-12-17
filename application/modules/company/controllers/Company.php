@@ -580,6 +580,15 @@ class Company extends MX_Controller {
         $services = $this->finance_model->getPaymentCategoryByGroupIdByPayerId($group, $id);
         $data['tax'] = $this->finance_model->getTaxById($services->tax_id);
 
+        if (!empty($group)) {
+            if (empty($data['tax'])) {
+                $data['tax'] = array(
+                    'id' => '0',
+                    'name' => 'None',
+                );
+            }
+        }
+
         $data['company'] = $this->company_model->getCompanyById($id);
         $data['service'] = $services;
 
