@@ -1703,17 +1703,22 @@
             $.each(invoice_items, function(key, value) {
                 var invoice_value = value;
                 var c_price = value.c_price;
+                var tax_percentage = value.tax_percentage;
                 var tax_amount = value.tax_amount;
+
+                if (tax_percentage == null) {
+                    tax_percentage = 0;
+                }
 
                 if (c_price != amount_items[key]) {
                     c_price = amount_items[key];
-                    tax_amount = parseFloat(c_price)*((parseFloat(value.tax_percentage)/100)/((parseFloat(value.tax_percentage)/100)+1));
+                    tax_amount = parseFloat(c_price)*((parseFloat(tax_percentage)/100)/((parseFloat(tax_percentage)/100)+1));
                 } else {
                     c_price = value.c_price;
                     if (value.tax_id == null) {
                         tax_amount = 0;
                     } else {
-                        tax_amount = parseFloat(c_price)*((parseFloat(value.tax_percentage)/100)/((parseFloat(value.tax_percentage)/100)+1));
+                        tax_amount = parseFloat(c_price)*((parseFloat(tax_percentage)/100)/((parseFloat(tax_percentage)/100)+1));
                     }
                 }
 
