@@ -1096,6 +1096,7 @@
                         var charge_id = items['charge_id'];
                         var group_id = items['charge_group_id'];
                         var category = items['description'];
+                        var fix_limit = items['fixed_limit'];
                         var type = "variable";
                         var discount_id = discount['id'];
                         var discount_amount = discount['amount'];
@@ -1190,12 +1191,12 @@
                             console.log(summary_subtotal);
                             var type = item_value['charge_type'];
                             if (type == "variable") {
-                                var td_amount = '<td class="w-40"><input type="number" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>';
+                                var td_amount = '<td class="w-40"><input type="number" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" max="'+item_value['fixed_limit']+'" oninput="validity.valid||(value='+"'0'"+');"></td>';
                                 var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+item_value['c_price']+'</label>';
                                 var c_price = 0;
                                 var tax_detail = 0;
                             } else {
-                                var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" oninput="validity.valid||(value='+"'0'"+');"><label>'+item_value['c_price']+'</label></td>';
+                                var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" max="'+item_value['fixed_limit']+'" oninput="validity.valid||(value='+"'0'"+');"><label>'+item_value['c_price']+'</label></td>';
                                 var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+item_value['c_price']+'</label>';
                                 var c_price = item_value['c_price'];
                                 var tax_detail = item_value['tax_amount'];
@@ -1521,7 +1522,6 @@
 
             // var total_due = (cnt-totalsummarytax)-totalsummarydiscount;
             var total_due = cnt - $("#amount_received").val();
-
             return total_due;
         }
 
@@ -3153,6 +3153,9 @@
                     $('#payer_total-'+payer_id).val(payer_account_total);
 
                     computeAllDiscount();
+
+                    var total_due = computeDue();
+                    $("#invoice_result_due").text(currency+' '+parseFloat(total_due).toFixed(2));
                 
                 // var discount = $("#discount"+value+'-'+payer_id).val();
                 // var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';

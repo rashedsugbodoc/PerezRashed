@@ -1830,6 +1830,8 @@ class Finance extends MX_Controller {
                     'remarks' => $invoice->remarks,
                     'charge_type' => $charge_details->type,
                     'charge_group_id' => $charge_details->group_id,
+                    'fixed_limit' => $charge_details->copay_share_fixed,
+                    'percentage_limit' => $charge_details->copay_share_percentage,
                 );
             }
 
