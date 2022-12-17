@@ -4567,6 +4567,8 @@ class Finance extends MX_Controller {
                         'group_id' => $charge_details[$k2]->group_id,
                         'category' => $charge_details[$k2]->category,
                         'type' => $charge_details[$k2]->type,
+                        'fixed_limit' => $charge_details[$k2]->copay_share_fixed,
+                        'percentage_limit' => $charge_details[$k2]->copay_share_percentage,
                     ),
                     'company' => array(
                         'id' => $v2,

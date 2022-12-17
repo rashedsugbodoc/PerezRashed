@@ -1365,7 +1365,6 @@
                         } else {
                             $('#discount'+key).val(discount_id);
                         }
-                        $('#discount'+key).append($('<option label="Select Discount" value="0">Select Discount</option>')).end();
                         $('#discount'+key).select2();
 
                     })
@@ -1783,6 +1782,8 @@
                 var charge_id = value['charges']['id'];
                 var group_id = value['charges']['group_id'];
                 var category = value['charges']['category'];
+                var fix_limit = value['charges']['fixed_limit'];
+                var percentage_limit = value['charges']['percentage_limit'];
                 var type = value['charges']['type'];
                 
                 var tax_amount = value['tax']['amount'];
@@ -1991,14 +1992,14 @@
                     /**/
 
                     if (type == "variable") {
-                        var td_amount = '<td class="w-40"><input type="number" value="0" class="form-control amount'+charge_id+'-'+key+'" name="amount[]" onfocusout="charge_amount('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>';
+                        var td_amount = '<td class="w-40"><input type="number" value="0" class="form-control amount'+charge_id+'-'+key+'" name="amount[]" onfocusout="charge_amount('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" max="'+fix_limit+'" oninput="validity.valid||(value='+"'0'"+');"></td>';
                         var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+'0.00</label>';
                         var c_price = 0;
                         var tax_detail = 0;
 
                         console.log('tax amount: '+ tax_amount);
                     } else {
-                        var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+c_price+'" class="form-control amount'+charge_id+'-'+key+'" name="amount[]" onfocusout="charge_amount('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');"><label>'+c_price_display+'</label></td>';
+                        var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+c_price+'" class="form-control amount'+charge_id+'-'+key+'" name="amount[]" onfocusout="charge_amount('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" max="'+fix_limit+'" oninput="validity.valid||(value='+"'0'"+');"><label>'+c_price_display+'</label></td>';
                         var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+c_price+'</label>';
                         var c_price = c_price;
                         var tax_detail = tax_amount;
