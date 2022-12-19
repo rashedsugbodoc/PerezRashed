@@ -1265,7 +1265,7 @@
                                         <label><?php echo lang("sub_total"); ?></label>\n\
                                     </td>\n\
                                     <td colspan="2" class="tx-right border font-weight-semibold w-30 text-right" id="invoice_result_subtotal">\n\
-                                        '+summary_subtotal+'\n\
+                                        '+parseFloat(summary_subtotal).toFixed(2)+'\n\
                                     </td>\n\
                                 </tr>\n\
                                 <tr>\n\
@@ -1295,7 +1295,7 @@
                                 ');
                             } else {
                                 $('#invoice_result_note').text(item_value.remarks)
-                                $('#invoice_result_subtotal').text(summary_subtotal);
+                                $('#invoice_result_subtotal').text(parseFloat(summary_subtotal).toFixed(2));
                                 $('#invoice_result_tax').text(parseFloat(summary_tax).toFixed(2));
                                 $('#invoice_result_discount').text(summary_discount);
                                 $('#invoice_result_deposited').text(summary_deposited_amount);
