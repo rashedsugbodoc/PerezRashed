@@ -1516,7 +1516,7 @@
 
             var cnt = 0;  
             // console.log(p_value);
-            $("[name='amount[]']").each(function() {
+            $("[name='item_total[]']").each(function() {
                 cnt += Number(this.value);
             });
 
@@ -2919,7 +2919,14 @@
                     cnt += Number(this.value);
                 });
 
-                $("#invoice_result_due").empty().append('<label>'+currency+' '+(((cnt*100)/100)-value).toFixed(2)+'</label>');
+                var input = document.getElementsByName('discount_total[]');
+
+                var discount = 0;
+                for (var i = 0; i < input.length; i++) {
+                    discount += Number(input[i].value);
+                }
+
+                $("#invoice_result_due").empty().append('<label>'+currency+' '+((((cnt*100)/100)-discount)-value).toFixed(2)+'</label>');
 
             })
 
@@ -3084,7 +3091,7 @@
 
                 computeAllDiscount();
                 var total_due = computeDue();
-                $("#invoice_result_due").text(currency+' '+parseFloat(total_due).toFixed(2));
+                $("#invoice_result_due").text(currency+' '+parseFloat(total_due-invoice_discount_amount).toFixed(2));
             } else {
                 $("#discount_type_input"+payer_id).empty();
                 var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
@@ -3155,7 +3162,7 @@
                     computeAllDiscount();
 
                     var total_due = computeDue();
-                    $("#invoice_result_due").text(currency+' '+parseFloat(total_due).toFixed(2));
+                    $("#invoice_result_due").text(currency+' '+parseFloat(total_due-invoice_discount_amount).toFixed(2));
                 
                 // var discount = $("#discount"+value+'-'+payer_id).val();
                 // var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
@@ -3351,7 +3358,7 @@
             computeTax();
 
             var total_due = computeDue();
-            $("#invoice_result_due").text(currency+' '+parseFloat(total_due).toFixed(2));
+            $("#invoice_result_due").text(currency+' '+parseFloat(total_due-invoice_discount_amount).toFixed(2));
 
             // console.log("item_total : "+item_total);
             console.log(invoice_item_amount);
@@ -3496,7 +3503,7 @@
             computeTax();
 
             var total_due = computeDue();
-            $("#invoice_result_due").text(currency+' '+parseFloat(total_due).toFixed(2));
+            $("#invoice_result_due").text(currency+' '+parseFloat(total_due-invoice_discount_amount).toFixed(2));
 
             console.log(invoice_item_amount);
 
