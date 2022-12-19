@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="card-body">
                                         <?php echo validation_errors(); ?>
-                                        <form role="form" id="paymentCategoryForm" action="finance/addPaymentCategory" class="clearfix" method="post" enctype="multipart/form-data">
+                                        <form role="form" name="paymentCategoryForm" id="paymentCategoryForm" action="" class="clearfix" method="post" enctype="multipart/form-data">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -369,7 +369,7 @@
                                                 <input type="hidden" name="deleted_company" id="deleted_company">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <button class="btn btn-primary pull-right" type="submit" name="submit"><?php echo lang('submit'); ?></button>
+                                                        <button class="btn btn-primary pull-right" type="button" id="submitbtn" name="submit"><?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -826,30 +826,39 @@
                                                         </div>\n\
                                                     </div>\n\
                                                     <div id="limits_'+value+'" hidden>\n\
-                                                        <div class="col-sm-12 col-sm-12">\n\
-                                                            <div class="form-group">\n\
-                                                            <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
-                                                                <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 active" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value+');">\n\
-                                                                        <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
-                                                                    </a>\n\
-                                                                </li>\n\
-                                                                <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value+');">\n\
-                                                                        <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
-                                                                    </a>\n\
-                                                                </li>\n\
-                                                            </ul>\n\
+                                                        <div class="row">\n\
+                                                            <div class="col-sm-12 col-sm-12">\n\
+                                                                <div class="form-group">\n\
+                                                                <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
+                                                                    <li class="nav-item">\n\
+                                                                        <a class="nav-link border py-3 px-5 active" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value+');">\n\
+                                                                            <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
+                                                                        </a>\n\
+                                                                    </li>\n\
+                                                                    <li class="nav-item">\n\
+                                                                        <a class="nav-link border py-3 px-5" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value+');">\n\
+                                                                            <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
+                                                                        </a>\n\
+                                                                    </li>\n\
+                                                                </ul>\n\
+                                                                </div>\n\
+                                                                <input type="hidden" name="co_payer_payment_limit_type[]" id="co_payer_payment_limit'+value+'" value="fixed">\n\
                                                             </div>\n\
-                                                            <input type="hidden" name="co_payer_payment_limit_type[]" id="co_payer_payment_limit'+value+'" value="fixed">\n\
                                                         </div>\n\
-                                                        <div class="col-md-12 col-sm-12">\n\
-                                                            <div class="form-group" id="selected_payer_price_div_two'+value+'">\n\
-                                                                <div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
-                                                                    <span class="input-group-append">\n\
-                                                                        <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                                                                    </span>\n\
-                                                                    <input type="text" class="form-control" id="co_payer_limit_amount'+value+'" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
+                                                        <div class="row">\n\
+                                                            <div class="col-md-6 col-sm-6">\n\
+                                                                <div class="form-group" id="selected_payer_price_div_two'+value+'">\n\
+                                                                    <div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
+                                                                        <span class="input-group-append">\n\
+                                                                            <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                                                                        </span>\n\
+                                                                        <input type="text" class="form-control" id="co_payer_limit_amount'+value+'" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
+                                                                    </div>\n\
+                                                                </div>\n\
+                                                            </div>\n\
+                                                            <div class="col-md-6 col-sm-6">\n\
+                                                                <div class="form-group">\n\
+                                                                    <span class="remaining_limit"></span>\n\
                                                                 </div>\n\
                                                             </div>\n\
                                                         </div>\n\
@@ -994,7 +1003,7 @@
                                                             </div>\n\
                                                             <input type="hidden" name="co_payer_payment_limit_type[]" id="co_payer_payment_limit'+value+'" value="fixed">\n\
                                                         </div>\n\
-                                                        <div class="col-md-12 col-sm-12">\n\
+                                                        <div class="col-md-6 col-sm-6">\n\
                                                             <div class="form-group" id="selected_payer_price_div_two'+value+'">\n\
                                                                 <div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
                                                                     <span class="input-group-append">\n\
@@ -1003,6 +1012,9 @@
                                                                     <input type="text" class="form-control" id="co_payer_limit_amount'+value+'" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
                                                                 </div>\n\
                                                             </div>\n\
+                                                        </div>\n\
+                                                        <div class="col-md-6 col-sm-6">\n\
+                                                            <span class="remaining_limit"></span>\n\
                                                         </div>\n\
                                                     </div>\n\
                                                 </div>\n\
@@ -1390,12 +1402,105 @@
             $('#selected_payer_price_content_two'+value).remove();
             $('#selected_payer_price_div_two'+value).append(
                 '<div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
-                    <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount">\n\
+                    <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
                     <span class="input-group-append">\n\
                         <span class="btn btn-primary" type="button">%</span>\n\
                     </span>\n\
                 </div>');
         }
+    </script>
+
+    <script type="text/javascript">
+        function percentage_remain() {
+            var input = document.getElementsByName('co_payer_limit_amount[]');
+
+            var limit = 0;
+            for (var i = 0; i < input.length; i++) {
+                limit += Number(input[i].value);
+            }
+
+            var remaining = 100 - limit;
+
+            if (remaining < 0) {
+                // input.classList.add('border-danger');
+                $(".remaining_limit").text('Total percentage limit exceeds 100% by '+Math.abs(remaining)+' %');
+                $("input[name='co_payer_limit_amount[]']").removeClass('border-success');
+                $("input[name='co_payer_limit_amount[]']").addClass('border-danger');
+            } else if (remaining == 0) {
+                $(".remaining_limit").text('');
+                $("input[name='co_payer_limit_amount[]']").addClass('border-success');
+                $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
+            } else {
+                // input.classList.add('border-success');
+                $(".remaining_limit").text('Remaining percentage limit to allocate: '+remaining+' %');
+                $("input[name='co_payer_limit_amount[]']").addClass('border-success');
+                $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        function validate_percentage_limit() {
+            var input = document.getElementsByName('co_payer_limit_amount[]');
+
+            var limit = 0;
+            for (var i = 0; i < input.length; i++) {
+                limit += Number(input[i].value);
+            }
+
+            if (limit != 100) {
+                alert("Limit Should be Equal to 100 %");
+                // return false;
+            } else {
+                var data = $('#paymentCategoryForm').serialize();
+                var base_url='<?php echo base_url(); ?>'
+                $.ajax({
+                    url:base_url+'finance/addPaymentCategory',
+                    type:'POST',
+                    data:data,
+                    success:function(data){
+                        
+                    }
+                }); 
+                return false;
+            }
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#submitbtn').on('click',function() {
+                var input = document.getElementsByName('co_payer_limit_amount[]');
+
+                var limit = 0;
+                for (var i = 0; i < input.length; i++) {
+                    limit += Number(input[i].value);
+                }
+
+                if (limit != 100) {
+                    alert("Limit Should be Equal to 100 %");
+                    const element = document.getElementById("payer_fixed_percentage_section_two");
+                    element.scrollIntoView();
+                    element.scrollIntoView();
+                    element.scrollIntoView(false);
+                    element.scrollIntoView({block: "end"});
+                    element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                    // return false;
+                } else {
+                    var data = $('#paymentCategoryForm').serialize();
+                    var base_url='<?php echo base_url(); ?>'
+                    $.ajax({
+                        url:base_url+'finance/addPaymentCategory',
+                        type:'POST',
+                        data:data,
+                        success:function(data){
+                        }
+                    });
+                    window.location = base_url+"finance/paymentCategory";
+                }
+            })
+        })
     </script>
 
     <script>
