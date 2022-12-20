@@ -1285,3 +1285,4 @@ $lang['not_eligible'] = 'Not Eligible';
 $lang['with_insurance'] = 'With Insurance';
 $lang['without_insurance'] = 'Without Insurance';
 $lang['extras'] = 'Extras';
+$lang['changes'] = 'Changes';

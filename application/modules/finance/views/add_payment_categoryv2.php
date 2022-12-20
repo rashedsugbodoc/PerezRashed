@@ -369,6 +369,9 @@
                                                 <input type="hidden" name="deleted_company" id="deleted_company">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
+                                                        <?php if (!empty($service[0]->id)) { ?>
+                                                            <a href="finance/editPaymentCategory?id=<?php echo $service[0]->id; ?>" class="btn btn-danger"><?php echo lang('cancel').' '.lang('changes'); ?></a>
+                                                        <?php } ?>
                                                         <button class="btn btn-primary pull-right" type="button" id="submitbtn" name="submit"><?php echo lang('submit'); ?></button>
                                                     </div>
                                                 </div>
@@ -552,7 +555,7 @@
                                 $('#co_payer_payment_limit'+value.id).val('percentage');
                                 $('#selected_payer_price_content'+value.id).remove();
                                 var payer_price = '<div class="input-group" id="selected_payer_price_content_two'+value.id+'">\n\
-                                        <input type="text" class="form-control" id="co_payer_limit_amount'+value.id+'" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" value="'+copay_share+'">\n\
+                                        <input type="text" class="form-control" id="co_payer_limit_amount'+value.id+'" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" value="'+copay_share+'" onfocusout="percentage_remain();">\n\
                                         <span class="input-group-append">\n\
                                             <span class="btn btn-primary" type="button">%</span>\n\
                                         </span>\n\
@@ -678,26 +681,35 @@
                                                     </div>\n\
                                                 </div>\n\
                                                 <div id="limits_'+value.id+'" '+price_limit+'>\n\
-                                                    <div class="col-sm-12 col-sm-12">\n\
-                                                        <div class="form-group">\n\
-                                                        <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
-                                                            <li class="nav-item">\n\
-                                                                <a class="nav-link border py-3 px-5 '+fixed_limit_active+'" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value.id+');">\n\
-                                                                    <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
-                                                                </a>\n\
-                                                            </li>\n\
-                                                            <li class="nav-item">\n\
-                                                                <a class="nav-link border py-3 px-5 '+percentage_limit_active+'" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value.id+');">\n\
-                                                                    <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
-                                                                </a>\n\
-                                                            </li>\n\
-                                                        </ul>\n\
+                                                    <div class="row">\n\
+                                                        <div class="col-sm-12 col-sm-12">\n\
+                                                            <div class="form-group">\n\
+                                                            <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
+                                                                <li class="nav-item">\n\
+                                                                    <a class="nav-link border py-3 px-5 '+fixed_limit_active+' fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value.id+');">\n\
+                                                                        <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
+                                                                    </a>\n\
+                                                                </li>\n\
+                                                                <li class="nav-item">\n\
+                                                                    <a class="nav-link border py-3 px-5 '+percentage_limit_active+' percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value.id+');">\n\
+                                                                        <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
+                                                                    </a>\n\
+                                                                </li>\n\
+                                                            </ul>\n\
+                                                            </div>\n\
+                                                            <input type="hidden" name="co_payer_payment_limit_type[]" id="co_payer_payment_limit'+value.id+'" value="fixed">\n\
                                                         </div>\n\
-                                                        <input type="hidden" name="co_payer_payment_limit_type[]" id="co_payer_payment_limit'+value.id+'" value="fixed">\n\
                                                     </div>\n\
-                                                    <div class="col-md-12 col-sm-12">\n\
-                                                        <div class="form-group" id="selected_payer_price_div_two'+value.id+'">\n\
-                                                            '+payer_price+'\n\
+                                                    <div class="row">\n\
+                                                        <div class="col-md-6 col-sm-6">\n\
+                                                            <div class="form-group" id="selected_payer_price_div_two'+value.id+'">\n\
+                                                                '+payer_price+'\n\
+                                                            </div>\n\
+                                                        </div>\n\
+                                                        <div class="col-md-6 col-sm-6">\n\
+                                                            <div class="form-group">\n\
+                                                                <span class="remaining_limit"></span>\n\
+                                                            </div>\n\
                                                         </div>\n\
                                                     </div>\n\
                                                 </div>\n\
@@ -707,6 +719,8 @@
                                 </div>');
                             tax_select2(value.id);
                         });
+
+                        percentage_remain()
                     }
                 });
             }
@@ -831,12 +845,12 @@
                                                                 <div class="form-group">\n\
                                                                 <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
                                                                     <li class="nav-item">\n\
-                                                                        <a class="nav-link border py-3 px-5 active" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value+');">\n\
+                                                                        <a class="nav-link border py-3 px-5 active fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value+');">\n\
                                                                             <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
                                                                         </a>\n\
                                                                     </li>\n\
                                                                     <li class="nav-item">\n\
-                                                                        <a class="nav-link border py-3 px-5" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value+');">\n\
+                                                                        <a class="nav-link border py-3 px-5 percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value+');">\n\
                                                                             <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
                                                                         </a>\n\
                                                                     </li>\n\
@@ -986,35 +1000,39 @@
                                                         </div>\n\
                                                     </div>\n\
                                                     <div id="limits_'+value+'" hidden>\n\
-                                                        <div class="col-sm-12 col-sm-12">\n\
-                                                            <div class="form-group">\n\
-                                                            <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
-                                                                <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 active" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value+');">\n\
-                                                                        <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
-                                                                    </a>\n\
-                                                                </li>\n\
-                                                                <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value+');">\n\
-                                                                        <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
-                                                                    </a>\n\
-                                                                </li>\n\
-                                                            </ul>\n\
+                                                        <div class="row">\n\
+                                                            <div class="col-sm-12 col-sm-12">\n\
+                                                                <div class="form-group">\n\
+                                                                <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
+                                                                    <li class="nav-item">\n\
+                                                                        <a class="nav-link border py-3 px-5 active fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value+');">\n\
+                                                                            <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
+                                                                        </a>\n\
+                                                                    </li>\n\
+                                                                    <li class="nav-item">\n\
+                                                                        <a class="nav-link border py-3 px-5 percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value+');">\n\
+                                                                            <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
+                                                                        </a>\n\
+                                                                    </li>\n\
+                                                                </ul>\n\
+                                                                </div>\n\
+                                                                <input type="hidden" name="co_payer_payment_limit_type[]" id="co_payer_payment_limit'+value+'" value="fixed">\n\
                                                             </div>\n\
-                                                            <input type="hidden" name="co_payer_payment_limit_type[]" id="co_payer_payment_limit'+value+'" value="fixed">\n\
                                                         </div>\n\
-                                                        <div class="col-md-6 col-sm-6">\n\
-                                                            <div class="form-group" id="selected_payer_price_div_two'+value+'">\n\
-                                                                <div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
-                                                                    <span class="input-group-append">\n\
-                                                                        <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                                                                    </span>\n\
-                                                                    <input type="text" class="form-control" id="co_payer_limit_amount'+value+'" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
+                                                        <div class="row">\n\
+                                                            <div class="col-md-6 col-sm-6">\n\
+                                                                <div class="form-group" id="selected_payer_price_div_two'+value+'">\n\
+                                                                    <div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
+                                                                        <span class="input-group-append">\n\
+                                                                            <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                                                                        </span>\n\
+                                                                        <input type="text" class="form-control" id="co_payer_limit_amount'+value+'" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
+                                                                    </div>\n\
                                                                 </div>\n\
                                                             </div>\n\
-                                                        </div>\n\
-                                                        <div class="col-md-6 col-sm-6">\n\
-                                                            <span class="remaining_limit"></span>\n\
+                                                            <div class="col-md-6 col-sm-6">\n\
+                                                                <span class="remaining_limit"></span>\n\
+                                                            </div>\n\
                                                         </div>\n\
                                                     </div>\n\
                                                 </div>\n\
@@ -1202,26 +1220,33 @@
                                                         </div>\n\
                                                     </div>\n\
                                                     <div id="limits_'+response.company.id+'" hidden>\n\
-                                                        <div class="col-sm-12 col-sm-12" id="limits_'+response.company.id+'">\n\
-                                                            <div class="form-group">\n\
-                                                            <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
-                                                                <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 '+fixed_limit_active+'" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+response.company.id+');">\n\
-                                                                        <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
-                                                                    </a>\n\
-                                                                </li>\n\
-                                                                <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 '+percentage_limit_active+'" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+response.company.id+');">\n\
-                                                                        <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
-                                                                    </a>\n\
-                                                                </li>\n\
-                                                            </ul>\n\
+                                                        <div class="row">\n\
+                                                            <div class="col-sm-12 col-sm-12" id="limits_'+response.company.id+'">\n\
+                                                                <div class="form-group">\n\
+                                                                <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
+                                                                    <li class="nav-item">\n\
+                                                                        <a class="nav-link border py-3 px-5 '+fixed_limit_active+' fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+response.company.id+');">\n\
+                                                                            <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
+                                                                        </a>\n\
+                                                                    </li>\n\
+                                                                    <li class="nav-item">\n\
+                                                                        <a class="nav-link border py-3 px-5 '+percentage_limit_active+' percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+response.company.id+');">\n\
+                                                                            <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
+                                                                        </a>\n\
+                                                                    </li>\n\
+                                                                </ul>\n\
+                                                                </div>\n\
+                                                                <input type="hidden" name="co_payer_payment_limit_type[]" id="co_payer_payment_limit'+response.company.id+'" value="fixed">\n\
                                                             </div>\n\
-                                                            <input type="hidden" name="co_payer_payment_limit_type[]" id="co_payer_payment_limit'+response.company.id+'" value="fixed">\n\
                                                         </div>\n\
-                                                        <div class="col-md-12 col-sm-12">\n\
-                                                            <div class="form-group" id="selected_payer_price_div_two'+response.company.id+'">\n\
-                                                                '+payer_price+'\n\
+                                                        <div class="row">\n\
+                                                            <div class="col-md-6 col-sm-6">\n\
+                                                                <div class="form-group" id="selected_payer_price_div_two'+response.company.id+'">\n\
+                                                                    '+payer_price+'\n\
+                                                                </div>\n\
+                                                            </div>\n\
+                                                            <div class="col-md-6 col-sm-6">\n\
+                                                                <span class="remaining_limit"></span>\n\
                                                             </div>\n\
                                                         </div>\n\
                                                     </div>\n\
@@ -1386,27 +1411,50 @@
 
         function fixed(value) {
             var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
-            $('#co_payer_payment_limit'+value).val('fixed');
-            $('#selected_payer_price_content_two'+value).remove();
-            $('#selected_payer_price_div_two'+value).append(
-                '<div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
-                    <span class="input-group-append">\n\
-                        <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                    </span>\n\
-                    <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
-                </div>');
+            var company = $("#company").val();
+
+            $.each(company, function(key, val) {
+                $('#co_payer_payment_limit'+val).val('fixed');
+                $('#selected_payer_price_content_two'+val).remove();
+                $('#selected_payer_price_div_two'+val).append(
+                    '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
+                        <span class="input-group-append">\n\
+                            <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                        </span>\n\
+                        <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
+                    </div>');
+            });
+
+            $(".remaining_limit").text('');
+            $('.fixed_limit').addClass('active');
+            $('.fixed_limit').attr('aria-selected', true);
+            $('.percentage_limit').removeClass('active');
+            $('.percentage_limit').attr('aria-selected', false);
         }
 
         function percentage(value) {
-            $('#co_payer_payment_limit'+value).val('percentage');
-            $('#selected_payer_price_content_two'+value).remove();
-            $('#selected_payer_price_div_two'+value).append(
-                '<div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
+
+            var company = $("#company").val();
+
+            console.log(company);
+
+            $.each(company, function(key, val) {
+                $('#co_payer_payment_limit'+val).val('percentage');
+                $('#selected_payer_price_content_two'+val).remove();
+                $('#selected_payer_price_div_two'+val).append(
+                '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
                     <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
                     <span class="input-group-append">\n\
                         <span class="btn btn-primary" type="button">%</span>\n\
                     </span>\n\
                 </div>');
+            });
+
+            $(".remaining_limit").text('');
+            $('.percentage_limit').addClass('active');
+            $('.percentage_limit').attr('aria-selected', true);
+            $('.fixed_limit').removeClass('active');
+            $('.fixed_limit').attr('aria-selected', false);
         }
     </script>
 
