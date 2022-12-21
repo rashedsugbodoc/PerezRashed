@@ -241,7 +241,7 @@
                                                     <div class="form-group">
                                                         <div class="custom-controls-stacked">
                                                             <label class="custom-control custom-checkbox">
-                                                                <input type="checkbox" class="custom-control-input" name="charge_copayer" value="yes">
+                                                                <input type="checkbox" class="custom-control-input" name="charge_copayer" value="yes" checked>
                                                                 <span class="custom-control-label">Check if selected payer accounts are copayers of this charge</span>
                                                             </label>
                                                         </div>
@@ -639,12 +639,12 @@
                                                         <label class="form-label"><?php echo lang('price').' '.lang('type'); ?> <span class="text-red">*</span></label>\n\
                                                         <ul class="nav nav-pills nav-pills-circle" id="tabs_2'+value.id+'" role="tablist">\n\
                                                             <li class="nav-item">\n\
-                                                                <a class="nav-link border py-3 px-5 '+price_type_fixed+'" id="tab1'+value.id+'" data-toggle="tab" href="#tabs_2_1" role="tab" aria-selected="'+price_type_fixed_ariaselected+'" onclick="fix('+value.id+');">\n\
+                                                                <a class="nav-link border py-3 px-5 fixed_amount '+price_type_fixed+'" id="tab1'+value.id+'" data-toggle="tab" href="#tabs_2_1" role="tab" aria-selected="'+price_type_fixed_ariaselected+'" onclick="switchPriceTypeToFixedAmount('+value.id+');">\n\
                                                                     <span class="nav-link-icon d-block"><?php echo lang('fixed_amount') ?></span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li class="nav-item">\n\
-                                                                <a class="nav-link border py-3 px-5 '+price_type_percentage+'" id="tab2'+value.id+'" data-toggle="tab" href="#tabs_2_2" role="tab"  aria-selected="'+price_type_percentage_ariaselected+'" onclick="variable('+value.id+');">\n\
+                                                                <a class="nav-link border py-3 px-5 variable_amount '+price_type_percentage+'" id="tab2'+value.id+'" data-toggle="tab" href="#tabs_2_2" role="tab"  aria-selected="'+price_type_percentage_ariaselected+'" onclick="switchPriceTypeToVariableAmount('+value.id+');">\n\
                                                                     <span class="nav-link-icon d-block"><?php echo lang('variable_amount') ?></span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -667,12 +667,12 @@
                                                     <div class="form-group">\n\
                                                         <ul class="nav nav-pills nav-pills-circle" id="tabs_3'+value.id+'" role="tablist">\n\
                                                             <li class="nav-item">\n\
-                                                                <a class="nav-link border py-3 px-5 '+include_tax+'" id="tab3'+value.id+'" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="true" onclick="include('+value.id+');">\n\
+                                                                <a class="nav-link border py-3 px-5 '+include_tax+'" id="tab3'+value.id+'" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="true" onclick="setTaxInclude('+value.id+');">\n\
                                                                     <span class="nav-link-icon d-block"><?php echo lang('price_includes_tax') ?></span>\n\
                                                                 </a>\n\
                                                             </li>\n\
                                                             <li class="nav-item">\n\
-                                                                <a class="nav-link border py-3 px-5 '+exclude_tax+'" id="tab4'+value.id+'" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="false" onclick="exclude('+value.id+');">\n\
+                                                                <a class="nav-link border py-3 px-5 '+exclude_tax+'" id="tab4'+value.id+'" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="false" onclick="setTaxExclude('+value.id+');">\n\
                                                                     <span class="nav-link-icon d-block"><?php echo lang('price_excludes_tax') ?></span>\n\
                                                                 </a>\n\
                                                             </li>\n\
@@ -686,12 +686,12 @@
                                                             <div class="form-group">\n\
                                                             <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 '+fixed_limit_active+' fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value.id+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 '+fixed_limit_active+' fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="switchLimitTofixedLimit('+value.id+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 '+percentage_limit_active+' percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value.id+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 '+percentage_limit_active+' percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="switchLimitToPercentageLimit('+value.id+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
@@ -794,12 +794,12 @@
                                                             <label class="form-label"><?php echo lang('price').' '.lang('type'); ?> <span class="text-red">*</span></label>\n\
                                                             <ul class="nav nav-pills nav-pills-circle" id="tabs_2'+value+'" role="tablist">\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 active" id="tab1'+value+'" data-toggle="tab" href="#tabs_2_1" role="tab" aria-selected="true" onclick="fix('+value+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 fixed_amount active" id="tab1'+value+'" data-toggle="tab" href="#tabs_2_1" role="tab" aria-selected="true" onclick="switchPriceTypeToFixedAmount('+value+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('fixed_amount') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5" id="tab2'+value+'" data-toggle="tab" href="#tabs_2_2" role="tab"  aria-selected="false" onclick="variable('+value+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 variable_amount" id="tab2'+value+'" data-toggle="tab" href="#tabs_2_2" role="tab"  aria-selected="false" onclick="switchPriceTypeToVariableAmount('+value+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('variable_amount') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
@@ -826,12 +826,12 @@
                                                         <div class="form-group">\n\
                                                             <ul class="nav nav-pills nav-pills-circle" id="tabs_3'+value+'" role="tablist">\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 active" id="tab3'+value+'" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="true" onclick="include('+value+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 active" id="tab3'+value+'" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="true" onclick="setTaxInclude('+value+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('price_includes_tax') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5" id="tab4'+value+'" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="false" onclick="exclude('+value+');">\n\
+                                                                    <a class="nav-link border py-3 px-5" id="tab4'+value+'" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="false" onclick="setTaxExclude('+value+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('price_excludes_tax') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
@@ -845,12 +845,12 @@
                                                                 <div class="form-group">\n\
                                                                 <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
                                                                     <li class="nav-item">\n\
-                                                                        <a class="nav-link border py-3 px-5 active fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value+');">\n\
+                                                                        <a class="nav-link border py-3 px-5 active fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="switchLimitTofixedLimit('+value+');">\n\
                                                                             <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
                                                                         </a>\n\
                                                                     </li>\n\
                                                                     <li class="nav-item">\n\
-                                                                        <a class="nav-link border py-3 px-5 percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value+');">\n\
+                                                                        <a class="nav-link border py-3 px-5 percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="switchLimitToPercentageLimit('+value+');">\n\
                                                                             <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
                                                                         </a>\n\
                                                                     </li>\n\
@@ -954,12 +954,12 @@
                                                             <label class="form-label"><?php echo lang('price').' '.lang('type'); ?> <span class="text-red">*</span></label>\n\
                                                             <ul class="nav nav-pills nav-pills-circle" id="tabs_2'+value+'" role="tablist">\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 active" id="tab1'+value+'" data-toggle="tab" href="#tabs_2_1" role="tab" aria-selected="true" onclick="fix('+value+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 fixed_amount active" id="tab1'+value+'" data-toggle="tab" href="#tabs_2_1" role="tab" aria-selected="true" onclick="switchPriceTypeToFixedAmount('+value+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('fixed_amount') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5" id="tab2'+value+'" data-toggle="tab" href="#tabs_2_2" role="tab"  aria-selected="false" onclick="variable('+value+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 variable_amount" id="tab2'+value+'" data-toggle="tab" href="#tabs_2_2" role="tab"  aria-selected="false" onclick="switchPriceTypeToVariableAmount('+value+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('variable_amount') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
@@ -986,12 +986,12 @@
                                                         <div class="form-group">\n\
                                                             <ul class="nav nav-pills nav-pills-circle" id="tabs_3'+value+'" role="tablist">\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 active" id="tab3'+value+'" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="true" onclick="include('+value+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 active" id="tab3'+value+'" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="true" onclick="setTaxInclude('+value+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('price_includes_tax') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5" id="tab4'+value+'" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="false" onclick="exclude('+value+');">\n\
+                                                                    <a class="nav-link border py-3 px-5" id="tab4'+value+'" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="false" onclick="setTaxExclude('+value+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('price_excludes_tax') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
@@ -1005,12 +1005,12 @@
                                                                 <div class="form-group">\n\
                                                                 <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
                                                                     <li class="nav-item">\n\
-                                                                        <a class="nav-link border py-3 px-5 active fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+value+');">\n\
+                                                                        <a class="nav-link border py-3 px-5 active fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="switchLimitTofixedLimit('+value+');">\n\
                                                                             <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
                                                                         </a>\n\
                                                                     </li>\n\
                                                                     <li class="nav-item">\n\
-                                                                        <a class="nav-link border py-3 px-5 percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+value+');">\n\
+                                                                        <a class="nav-link border py-3 px-5 percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="switchLimitToPercentageLimit('+value+');">\n\
                                                                             <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
                                                                         </a>\n\
                                                                     </li>\n\
@@ -1178,12 +1178,12 @@
                                                             <label class="form-label"><?php echo lang('price').' '.lang('type'); ?> <span class="text-red">*</span></label>\n\
                                                             <ul class="nav nav-pills nav-pills-circle" id="tabs_2'+response.company.id+'" role="tablist">\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 '+price_type_fixed+'" id="tab1'+response.company.id+'" data-toggle="tab" href="#tabs_2_1" role="tab" aria-selected="'+price_type_fixed_ariaselected+'" onclick="fix('+response.company.id+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 fixed_amount '+price_type_fixed+'" id="tab1'+response.company.id+'" data-toggle="tab" href="#tabs_2_1" role="tab" aria-selected="'+price_type_fixed_ariaselected+'" onclick="switchPriceTypeToFixedAmount('+response.company.id+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('fixed_amount') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 '+price_type_percentage+'" id="tab2'+response.company.id+'" data-toggle="tab" href="#tabs_2_2" role="tab"  aria-selected="'+price_type_percentage_ariaselected+'" onclick="variable('+response.company.id+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 variable_amount '+price_type_percentage+'" id="tab2'+response.company.id+'" data-toggle="tab" href="#tabs_2_2" role="tab"  aria-selected="'+price_type_percentage_ariaselected+'" onclick="switchPriceTypeToVariableAmount('+response.company.id+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('variable_amount') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
@@ -1206,12 +1206,12 @@
                                                         <div class="form-group">\n\
                                                             <ul class="nav nav-pills nav-pills-circle" id="tabs_3'+response.company.id+'" role="tablist">\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 '+include_tax+'" id="tab3'+response.company.id+'" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="true" onclick="include('+response.company.id+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 '+include_tax+'" id="tab3'+response.company.id+'" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected="true" onclick="setTaxInclude('+response.company.id+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('price_includes_tax') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
                                                                 <li class="nav-item">\n\
-                                                                    <a class="nav-link border py-3 px-5 '+exclude_tax+'" id="tab4'+response.company.id+'" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="false" onclick="exclude('+response.company.id+');">\n\
+                                                                    <a class="nav-link border py-3 px-5 '+exclude_tax+'" id="tab4'+response.company.id+'" data-toggle="tab" href="#tabs_3_2" role="tab"  aria-selected="false" onclick="setTaxExclude('+response.company.id+');">\n\
                                                                         <span class="nav-link-icon d-block"><?php echo lang('price_excludes_tax') ?></span>\n\
                                                                     </a>\n\
                                                                 </li>\n\
@@ -1225,12 +1225,12 @@
                                                                 <div class="form-group">\n\
                                                                 <ul class="nav nav-pills nav-pills-circle" id="tabs_6" role="tablist">\n\
                                                                     <li class="nav-item">\n\
-                                                                        <a class="nav-link border py-3 px-5 '+fixed_limit_active+' fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="fixed('+response.company.id+');">\n\
+                                                                        <a class="nav-link border py-3 px-5 '+fixed_limit_active+' fixed_limit" id="tab6" data-toggle="tab" href="#tabs_6_1" role="tab" aria-selected="true" onclick="switchLimitTofixedLimit('+response.company.id+');">\n\
                                                                             <span class="nav-link-icon d-block"><?php echo lang('fixed_limit') ?></span>\n\
                                                                         </a>\n\
                                                                     </li>\n\
                                                                     <li class="nav-item">\n\
-                                                                        <a class="nav-link border py-3 px-5 '+percentage_limit_active+' percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="percentage('+response.company.id+');">\n\
+                                                                        <a class="nav-link border py-3 px-5 '+percentage_limit_active+' percentage_limit" id="tab7" data-toggle="tab" href="#tabs_6_2" role="tab"  aria-selected="false" onclick="switchLimitToPercentageLimit('+response.company.id+');">\n\
                                                                             <span class="nav-link-icon d-block"><?php echo lang('percentage_limit') ?></span>\n\
                                                                         </a>\n\
                                                                     </li>\n\
@@ -1362,18 +1362,67 @@
     </script>
 
     <script type="text/javascript">
-        function fix(value) {
-            // $('#c_price').attr('hidden', false);
-            // $('#payer_detail_section'+value).find('[id=c_price'+value+']').attr('hidden', false);
-            $('#c_price'+value).attr('hidden', false);
-            $('#price_type'+value).val('fixed');
-            $('#c_price_input'+value).attr("required", true);
-            $('#limits_'+value).attr('hidden', true);
-            $('#co_payer_payment_limit').val('');
-            $('#co_payer_limit_amount'+value).val('');
+        function checkIfVariablePriceIsFixedLimit(value) {
+            var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
+
+            $('#co_payer_payment_limit'+value).val('fixed');
+            $('#selected_payer_price_content_two'+value).remove();
+            $('#selected_payer_price_div_two'+value).append(
+                '<div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
+                    <span class="input-group-append">\n\
+                        <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                    </span>\n\
+                    <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
+                </div>');
         }
 
-        function variable(value) {
+        function switchPriceTypeToFixedAmount(value) {
+            // $('#c_price').attr('hidden', false);
+            // $('#payer_detail_section'+value).find('[id=c_price'+value+']').attr('hidden', false);
+            var company = $("#company").val();
+            var charge_copayer = $("input[name='charge_copayer']").prop('checked');
+
+            if (charge_copayer == true) {
+                $.each(company, function(key, val) {
+                    if (value == val) {
+                        $('#c_price'+value).attr('hidden', false);
+                        $('#price_type'+value).val('fixed');
+                        $('#c_price_input'+value).attr("required", true);
+                        $('#limits_'+value).attr('hidden', true);
+                        $('#co_payer_limit_amount'+value).val('');
+                        checkIfVariablePriceIsFixedLimit(val);
+                    } else {
+                        if ($('#price_type'+val).val() != 'fixed') {
+                            checkIfVariablePriceIsFixedLimit(val);
+                            // $('#co_payer_payment_limit'+val).val('fixed');
+                            // $('#selected_payer_price_content_two'+val).remove();
+                            // $('#selected_payer_price_div_two'+val).append(
+                            //     '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
+                            //         <span class="input-group-append">\n\
+                            //             <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                            //         </span>\n\
+                            //         <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
+                            //     </div>');
+                        }
+                    }
+                })
+
+                $(".remaining_limit").text('');
+                $('.fixed_limit').addClass('active');
+                $('.fixed_limit').attr('aria-selected', true);
+                $('.percentage_limit').removeClass('active');
+                $('.percentage_limit').attr('aria-selected', false);
+            } else {
+                $('#c_price'+value).attr('hidden', false);
+                $('#price_type'+value).val('fixed');
+                $('#c_price_input'+value).attr("required", true);
+                $('#limits_'+value).attr('hidden', true);
+                $('#co_payer_limit_amount'+value).val('');
+            }
+
+        }
+
+        function switchPriceTypeToVariableAmount(value) {
             // $('#c_price').attr('hidden', true);
             // $('#payer_detail_section'+value).find('[id=c_price'+value+']').attr('hidden', true);
             $('#c_price'+value).attr('hidden', true);
@@ -1382,15 +1431,14 @@
             $('#c_price_input'+value).attr("required", false);
             $('limits_'+value).append('');
             $('#limits_'+value).attr('hidden', false);
-            $('#co_payer_payment_limit').val('fixed');
         }
 
-        function include(value) {
+        function setTaxInclude(value) {
             // $('#paymentCategoryForm').find('[name=is_taxable]').val('1');
             $('#is_taxable'+value).val('1');
         }
 
-        function exclude(value) {
+        function setTaxExclude(value) {
             // $('#paymentCategoryForm').find('[name=is_taxable]').val('0');
             $('#is_taxable'+value).val('0');
         }
@@ -1409,52 +1457,101 @@
             }
         }
 
-        function fixed(value) {
+        function switchLimitTofixedLimit(value) {
             var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
             var company = $("#company").val();
+            var charge_copayer = $("input[name='charge_copayer']").prop('checked');
 
-            $.each(company, function(key, val) {
-                $('#co_payer_payment_limit'+val).val('fixed');
-                $('#selected_payer_price_content_two'+val).remove();
-                $('#selected_payer_price_div_two'+val).append(
-                    '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
-                        <span class="input-group-append">\n\
-                            <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                        </span>\n\
-                        <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
-                    </div>');
-            });
+            if (charge_copayer == true) {
 
-            $(".remaining_limit").text('');
-            $('.fixed_limit').addClass('active');
-            $('.fixed_limit').attr('aria-selected', true);
-            $('.percentage_limit').removeClass('active');
-            $('.percentage_limit').attr('aria-selected', false);
+                $.each(company, function(key, val) {
+                    // $('#co_payer_payment_limit'+val).val('fixed');
+                    // $('#selected_payer_price_content_two'+val).remove();
+                    // $('#selected_payer_price_div_two'+val).append(
+                    //     '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
+                    //         <span class="input-group-append">\n\
+                    //             <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                    //         </span>\n\
+                    //         <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
+                    //     </div>');
+                    checkIfVariablePriceIsFixedLimit(val);
+                });
+
+                $(".remaining_limit").text('');
+                $('.fixed_limit').addClass('active');
+                $('.fixed_limit').attr('aria-selected', true);
+                $('.percentage_limit').removeClass('active');
+                $('.percentage_limit').attr('aria-selected', false);
+
+            } else {
+
+                // $('#co_payer_payment_limit'+value).val('fixed');
+                // $('#selected_payer_price_content_two'+value).remove();
+                // $('#selected_payer_price_div_two'+value).append(
+                //     '<div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
+                //         <span class="input-group-append">\n\
+                //             <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                //         </span>\n\
+                //         <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
+                //     </div>');
+
+                checkIfVariablePriceIsFixedLimit(value);
+
+            }
         }
 
-        function percentage(value) {
+        function switchLimitToPercentageLimit(value) {
 
             var company = $("#company").val();
+            var charge_copayer = $("input[name='charge_copayer']").prop('checked');
 
-            console.log(company);
+            console.log(charge_copayer);
 
-            $.each(company, function(key, val) {
-                $('#co_payer_payment_limit'+val).val('percentage');
-                $('#selected_payer_price_content_two'+val).remove();
-                $('#selected_payer_price_div_two'+val).append(
-                '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
+            if (charge_copayer == true) {
+
+                $.each(company, function(key, val) {
+                    $('#c_price'+val).attr('hidden', true);
+                    $('#c_price_input'+val).val('');
+                    $('#price_type'+val).val('variable');
+                    $('.variable_amount').addClass('active');
+                    $('.variable_amount').attr('aria-selected', true);
+                    $('.fixed_amount').removeClass('active');
+                    $('.fixed_amount').attr('aria-selected', false);
+                    $('#c_price_input'+val).attr("required", false);
+                    $('limits_'+val).append('');
+                    $('#limits_'+val).attr('hidden', false);
+
+                    $('#co_payer_payment_limit'+val).val('percentage');
+                    $('#selected_payer_price_content_two'+val).remove();
+                    $('#selected_payer_price_div_two'+val).append(
+                    '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
+                        <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
+                        <span class="input-group-append">\n\
+                            <span class="btn btn-primary" type="button">%</span>\n\
+                        </span>\n\
+                    </div>');
+                });
+
+                $(".remaining_limit").text('');
+                $('.percentage_limit').addClass('active');
+                $('.percentage_limit').attr('aria-selected', true);
+                $('.fixed_limit').removeClass('active');
+                $('.fixed_limit').attr('aria-selected', false);
+
+            } else {
+
+                $('#co_payer_payment_limit'+value).val('percentage');
+                $('#selected_payer_price_content_two'+value).remove();
+                $('#selected_payer_price_div_two'+value).append(
+                '<div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
                     <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
                     <span class="input-group-append">\n\
                         <span class="btn btn-primary" type="button">%</span>\n\
                     </span>\n\
                 </div>');
-            });
 
-            $(".remaining_limit").text('');
-            $('.percentage_limit').addClass('active');
-            $('.percentage_limit').attr('aria-selected', true);
-            $('.fixed_limit').removeClass('active');
-            $('.fixed_limit').attr('aria-selected', false);
+            }
+
         }
     </script>
 
