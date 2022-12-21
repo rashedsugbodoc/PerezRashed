@@ -370,7 +370,7 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <?php if (!empty($service[0]->id)) { ?>
-                                                            <a href="finance/editPaymentCategory?id=<?php echo $service[0]->id; ?>" class="btn btn-danger"><?php echo lang('cancel').' '.lang('changes'); ?></a>
+                                                            <a href="finance/editPaymentCategory?id=<?php echo $service[0]->id; ?>" class="btn btn-outline-light"><?php echo lang('cancel').' '.lang('changes'); ?></a>
                                                         <?php } ?>
                                                         <button class="btn btn-primary pull-right" type="button" id="submitbtn" name="submit"><?php echo lang('submit'); ?></button>
                                                     </div>
