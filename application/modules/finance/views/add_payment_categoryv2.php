@@ -555,7 +555,7 @@
                                 $('#co_payer_payment_limit'+value.id).val('percentage');
                                 $('#selected_payer_price_content'+value.id).remove();
                                 var payer_price = '<div class="input-group" id="selected_payer_price_content_two'+value.id+'">\n\
-                                        <input type="text" class="form-control" id="co_payer_limit_amount'+value.id+'" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" value="'+copay_share+'" onfocusout="percentage_remain();">\n\
+                                        <input type="text" class="form-control percentage_limit_input" id="co_payer_limit_amount'+value.id+'" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" value="'+copay_share+'" onfocusout="percentage_remain();">\n\
                                         <span class="input-group-append">\n\
                                             <span class="btn btn-primary" type="button">%</span>\n\
                                         </span>\n\
@@ -1103,7 +1103,7 @@
                                         $('#co_payer_payment_limit'+response.company.id).val('percentage');
                                         $('#selected_payer_price_content'+response.company.id).remove();
                                         var payer_price = '<div class="input-group" id="selected_payer_price_content'+response.company.id+'">\n\
-                                                <input type="text" class="form-control" id="co_payer_limit_amount'+response.company.id+'" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" value="'+copay_share+'">\n\
+                                                <input type="text" class="form-control percentage_limit_input" id="co_payer_limit_amount'+response.company.id+'" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" value="'+copay_share+'">\n\
                                                 <span class="input-group-append">\n\
                                                     <span class="btn btn-primary" type="button">%</span>\n\
                                                 </span>\n\
@@ -1525,7 +1525,7 @@
                     $('#selected_payer_price_content_two'+val).remove();
                     $('#selected_payer_price_div_two'+val).append(
                     '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
-                        <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
+                        <input type="text" class="form-control percentage_limit_input" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
                         <span class="input-group-append">\n\
                             <span class="btn btn-primary" type="button">%</span>\n\
                         </span>\n\
@@ -1544,7 +1544,7 @@
                 $('#selected_payer_price_content_two'+value).remove();
                 $('#selected_payer_price_div_two'+value).append(
                 '<div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
-                    <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
+                    <input type="text" class="form-control percentage_limit_input" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
                     <span class="input-group-append">\n\
                         <span class="btn btn-primary" type="button">%</span>\n\
                     </span>\n\
@@ -1557,7 +1557,10 @@
 
     <script type="text/javascript">
         function percentage_remain() {
-            var input = document.getElementsByName('co_payer_limit_amount[]');
+            // var input = document.getElementsByName('co_payer_limit_amount[]');
+            var input = document.getElementsByClassName('percentage_limit_input');
+
+            console.log(input.length);
 
             var limit = 0;
             for (var i = 0; i < input.length; i++) {
@@ -1566,20 +1569,22 @@
 
             var remaining = 100 - limit;
 
-            if (remaining < 0) {
-                // input.classList.add('border-danger');
-                $(".remaining_limit").text('Total percentage limit exceeds 100% by '+Math.abs(remaining)+' %');
-                $("input[name='co_payer_limit_amount[]']").removeClass('border-success');
-                $("input[name='co_payer_limit_amount[]']").addClass('border-danger');
-            } else if (remaining == 0) {
-                $(".remaining_limit").text('');
-                $("input[name='co_payer_limit_amount[]']").addClass('border-success');
-                $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
-            } else {
-                // input.classList.add('border-success');
-                $(".remaining_limit").text('Remaining percentage limit to allocate: '+remaining+' %');
-                $("input[name='co_payer_limit_amount[]']").addClass('border-success');
-                $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
+            if (input.length >= 1) {
+                if (remaining < 0) {
+                    // input.classList.add('border-danger');
+                    $(".remaining_limit").text('Total percentage limit exceeds 100% by '+Math.abs(remaining)+' %');
+                    $("input[name='co_payer_limit_amount[]']").removeClass('border-success');
+                    $("input[name='co_payer_limit_amount[]']").addClass('border-danger');
+                } else if (remaining == 0) {
+                    $(".remaining_limit").text('');
+                    $("input[name='co_payer_limit_amount[]']").addClass('border-success');
+                    $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
+                } else {
+                    // input.classList.add('border-success');
+                    $(".remaining_limit").text('Remaining percentage limit to allocate: '+remaining+' %');
+                    $("input[name='co_payer_limit_amount[]']").addClass('border-success');
+                    $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
+                }
             }
         }
     </script>
@@ -1616,22 +1621,38 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#submitbtn').on('click',function() {
-                var input = document.getElementsByName('co_payer_limit_amount[]');
+                // var input = document.getElementsByName('co_payer_limit_amount[]');
+                var input = document.getElementsByClassName('percentage_limit_input');
+
+                console.log(input.length);
 
                 var limit = 0;
                 for (var i = 0; i < input.length; i++) {
                     limit += Number(input[i].value);
                 }
 
-                if (limit != 100) {
-                    alert("Limit Should be Equal to 100 %");
-                    const element = document.getElementById("payer_fixed_percentage_section_two");
-                    element.scrollIntoView();
-                    element.scrollIntoView();
-                    element.scrollIntoView(false);
-                    element.scrollIntoView({block: "end"});
-                    element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-                    // return false;
+                if (input.length >= 1) {
+                    if (limit != 100) {
+                        alert("Limit Should be Equal to 100 %");
+                        const element = document.getElementById("payer_fixed_percentage_section_two");
+                        element.scrollIntoView();
+                        element.scrollIntoView();
+                        element.scrollIntoView(false);
+                        element.scrollIntoView({block: "end"});
+                        element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                        // return false;
+                    } else {
+                        var data = $('#paymentCategoryForm').serialize();
+                        var base_url='<?php echo base_url(); ?>'
+                        $.ajax({
+                            url:base_url+'finance/addPaymentCategory',
+                            type:'POST',
+                            data:data,
+                            success:function(data){
+                            }
+                        });
+                        window.location = base_url+"finance/paymentCategory";
+                    }
                 } else {
                     var data = $('#paymentCategoryForm').serialize();
                     var base_url='<?php echo base_url(); ?>'
