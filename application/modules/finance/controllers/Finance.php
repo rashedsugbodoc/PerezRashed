@@ -110,7 +110,9 @@ class Finance extends MX_Controller {
                 // foreach($charges_copay_lists as $charges_copay_list) {
                 //     $charges_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_list->id);
                 // }
-                $charges_with_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_lists[0]->id);
+                if (!empty($charges_copay_lists)) {
+                    $charges_with_copay[] = $this->finance_model->getPaymentCategoryById($charges_copay_lists[0]->id);
+                }
             }
         }
 
