@@ -239,12 +239,13 @@
                                                 </div> -->
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <div class="custom-controls-stacked">
-                                                            <label class="custom-control custom-checkbox">
-                                                                <input type="checkbox" class="custom-control-input" name="charge_copayer" value="yes" checked>
-                                                                <span class="custom-control-label">Check if selected payer accounts are copayers of this charge</span>
+                                                        <div class="form-check">
+                                                            <input type="checkbox" class="form-check-input" name="charge_copayer" value="yes" checked>
+                                                            <label class="form-check-label" for="defaultCheck1">
+                                                                Check if selected payer accounts are copayers of this charge
                                                             </label>
                                                         </div>
+                                                        <!-- <span class="custom-control-label">Check if selected payer accounts are copayers of this charge</span> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -555,7 +556,7 @@
                                 $('#co_payer_payment_limit'+value.id).val('percentage');
                                 $('#selected_payer_price_content'+value.id).remove();
                                 var payer_price = '<div class="input-group" id="selected_payer_price_content_two'+value.id+'">\n\
-                                        <input type="text" class="form-control percentage_limit_input" id="co_payer_limit_amount'+value.id+'" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" value="'+copay_share+'" onfocusout="percentage_remain();">\n\
+                                        <input type="text" class="form-control percentage_limit_input" id="co_payer_limit_amount'+value.id+'" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" value="'+copay_share+'" onfocusout="percentage_remain('+value.id+');">\n\
                                         <span class="input-group-append">\n\
                                             <span class="btn btn-primary" type="button">%</span>\n\
                                         </span>\n\
@@ -718,9 +719,11 @@
                                     </div>\n\
                                 </div>');
                             tax_select2(value.id);
+
+                            percentage_remain(value.id);
                         });
 
-                        percentage_remain()
+                        // percentage_remain()
                     }
                 });
             }
@@ -1525,7 +1528,7 @@
                     $('#selected_payer_price_content_two'+val).remove();
                     $('#selected_payer_price_div_two'+val).append(
                     '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
-                        <input type="text" class="form-control percentage_limit_input" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
+                        <input type="text" class="form-control percentage_limit_input" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain('+val+');">\n\
                         <span class="input-group-append">\n\
                             <span class="btn btn-primary" type="button">%</span>\n\
                         </span>\n\
@@ -1544,7 +1547,7 @@
                 $('#selected_payer_price_content_two'+value).remove();
                 $('#selected_payer_price_div_two'+value).append(
                 '<div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
-                    <input type="text" class="form-control percentage_limit_input" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain();">\n\
+                    <input type="text" class="form-control percentage_limit_input" name="co_payer_limit_amount[]" placeholder="Enter Percentage Amount" onfocusout="percentage_remain('+value+');">\n\
                     <span class="input-group-append">\n\
                         <span class="btn btn-primary" type="button">%</span>\n\
                     </span>\n\
@@ -1556,9 +1559,11 @@
     </script>
 
     <script type="text/javascript">
-        function percentage_remain() {
+        function percentage_remain(value) {
             // var input = document.getElementsByName('co_payer_limit_amount[]');
             var input = document.getElementsByClassName('percentage_limit_input');
+            var charge_copayer = $("input[name='charge_copayer']").prop('checked');
+            var company = $("#company").val();
 
             console.log(input.length);
 
@@ -1569,22 +1574,53 @@
 
             var remaining = 100 - limit;
 
-            if (input.length >= 1) {
-                if (remaining < 0) {
-                    // input.classList.add('border-danger');
-                    $(".remaining_limit").text('Total percentage limit exceeds 100% by '+Math.abs(remaining)+' %');
-                    $("input[name='co_payer_limit_amount[]']").removeClass('border-success');
-                    $("input[name='co_payer_limit_amount[]']").addClass('border-danger');
-                } else if (remaining == 0) {
-                    $(".remaining_limit").text('');
-                    $("input[name='co_payer_limit_amount[]']").addClass('border-success');
-                    $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
-                } else {
-                    // input.classList.add('border-success');
-                    $(".remaining_limit").text('Remaining percentage limit to allocate: '+remaining+' %');
-                    $("input[name='co_payer_limit_amount[]']").addClass('border-success');
-                    $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
+            // console.log(str);
+
+            if (charge_copayer == true) {
+                if (input.length >= 1) {
+                    if (remaining < 0) {
+                        // input.classList.add('border-danger');
+                        $(".remaining_limit").text('Total percentage limit exceeds 100% by '+Math.abs(remaining)+' %');
+                        $("input[name='co_payer_limit_amount[]']").removeClass('border-success');
+                        $("input[name='co_payer_limit_amount[]']").addClass('border-danger');
+                    } else if (remaining == 0) {
+                        $(".remaining_limit").text('');
+                        $("input[name='co_payer_limit_amount[]']").addClass('border-success');
+                        $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
+                    } else {
+                        // input.classList.add('border-success');
+                        $(".remaining_limit").text('Remaining percentage limit to allocate: '+remaining+' %');
+                        $("input[name='co_payer_limit_amount[]']").addClass('border-success');
+                        $("input[name='co_payer_limit_amount[]']").removeClass('border-danger');
+                    }
                 }
+            } else {
+                $.each(company, function(key, val) {
+                    // var percentage_limit = $('#limits_'+val).find('[class="percentage_limit_input"]').val();
+                    var percentage_limit = $('#selected_payer_price_content_two'+val).find('input').val();
+
+                    console.log(percentage_limit);
+
+                    var new_remaining = 100 - percentage_limit;
+
+                    console.log(new_remaining);
+
+                    if (new_remaining < 0) {
+                        // input.classList.add('border-danger');
+                        $('#limits_'+val).find('[class="remaining_limit"]').text('Total percentage limit exceeds 100% by '+Math.abs(new_remaining)+' %');
+                        $('#selected_payer_price_content_two'+val).find('input').removeClass('border-success');
+                        $('#selected_payer_price_content_two'+val).find('input').addClass('border-danger');
+                    } else if (new_remaining == 0) {
+                        $('#limits_'+val).find('[class="remaining_limit"]').text('');
+                        $('#selected_payer_price_content_two'+val).find('input').addClass('border-success');
+                        $('#selected_payer_price_content_two'+val).find('input').removeClass('border-danger');
+                    } else {
+                        // input.classList.add('border-success');
+                        $('#limits_'+val).find('[class="remaining_limit"]').text('Remaining percentage limit to allocate: '+new_remaining+' %');
+                        $('#selected_payer_price_content_two'+val).find('input').addClass('border-success');
+                        $('#selected_payer_price_content_two'+val).find('input').removeClass('border-danger');
+                    }
+                })
             }
         }
     </script>
@@ -1623,6 +1659,8 @@
             $('#submitbtn').on('click',function() {
                 // var input = document.getElementsByName('co_payer_limit_amount[]');
                 var input = document.getElementsByClassName('percentage_limit_input');
+                var charge_copayer = $("input[name='charge_copayer']").prop('checked');
+                var company = $("#company").val();
 
                 console.log(input.length);
 
@@ -1631,16 +1669,29 @@
                     limit += Number(input[i].value);
                 }
 
-                if (input.length >= 1) {
-                    if (limit != 100) {
-                        alert("Limit Should be Equal to 100 %");
-                        const element = document.getElementById("payer_fixed_percentage_section_two");
-                        element.scrollIntoView();
-                        element.scrollIntoView();
-                        element.scrollIntoView(false);
-                        element.scrollIntoView({block: "end"});
-                        element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
-                        // return false;
+                if (charge_copayer == true) {
+                    if (input.length >= 1) {
+                        if (limit != 100) {
+                            alert("Limit Should be Equal to 100 %");
+                            const element = document.getElementById("payer_fixed_percentage_section_two");
+                            element.scrollIntoView();
+                            element.scrollIntoView();
+                            element.scrollIntoView(false);
+                            element.scrollIntoView({block: "end"});
+                            element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                            // return false;
+                        } else {
+                            var data = $('#paymentCategoryForm').serialize();
+                            var base_url='<?php echo base_url(); ?>'
+                            $.ajax({
+                                url:base_url+'finance/addPaymentCategory',
+                                type:'POST',
+                                data:data,
+                                success:function(data){
+                                }
+                            });
+                            window.location = base_url+"finance/paymentCategory";
+                        }
                     } else {
                         var data = $('#paymentCategoryForm').serialize();
                         var base_url='<?php echo base_url(); ?>'
@@ -1654,16 +1705,50 @@
                         window.location = base_url+"finance/paymentCategory";
                     }
                 } else {
-                    var data = $('#paymentCategoryForm').serialize();
-                    var base_url='<?php echo base_url(); ?>'
-                    $.ajax({
-                        url:base_url+'finance/addPaymentCategory',
-                        type:'POST',
-                        data:data,
-                        success:function(data){
-                        }
-                    });
-                    window.location = base_url+"finance/paymentCategory";
+                    var check_remaining = 0;
+                    $.each(company, function(key, val) {
+                        var percentage_limit = $('#selected_payer_price_content_two'+val).find('input').val();
+
+                        console.log(percentage_limit);
+
+                        var new_remaining = 100 - percentage_limit;
+                        check_remaining += new_remaining;
+
+                        console.log(new_remaining);
+
+                        // if (percentage_limit != 100) {
+                        //     alert("Limit Should be Equal to 100 %");
+                        //     const element = document.getElementById("payer_fixed_percentage_section_two");
+                        //     element.scrollIntoView();
+                        //     element.scrollIntoView();
+                        //     element.scrollIntoView(false);
+                        //     element.scrollIntoView({block: "end"});
+                        //     element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                        // }
+                    })
+
+                    console.log('check remaining: '+check_remaining);
+
+                    if (check_remaining == 0) {
+                        var data = $('#paymentCategoryForm').serialize();
+                        var base_url='<?php echo base_url(); ?>'
+                        $.ajax({
+                            url:base_url+'finance/addPaymentCategory',
+                            type:'POST',
+                            data:data,
+                            success:function(data){
+                            }
+                        });
+                        window.location = base_url+"finance/paymentCategory";
+                    } else {
+                        alert("Limit Should be Equal to 100 %");
+                        const element = document.getElementById("payer_fixed_percentage_section_two");
+                        element.scrollIntoView();
+                        element.scrollIntoView();
+                        element.scrollIntoView(false);
+                        element.scrollIntoView({block: "end"});
+                        element.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"});
+                    }
                 }
             })
         })
