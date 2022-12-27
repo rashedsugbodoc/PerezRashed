@@ -1665,7 +1665,7 @@
                 discount += Number(input[i].value);
             }
 
-            $("#invoice_result_discount").empty().append('<label>'+currency+' '+discount.toFixed(2)+'</label>');
+            return discount;
         }
 
         function computeTax() {
@@ -1880,7 +1880,10 @@
 
                     window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(invoice_array));
 
-                    computeAllDiscount();
+                    var all_discount = computeAllDiscount();
+
+                    $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+
                     computeTax();
                     // removeInvoiceCard(key);
 
@@ -2305,7 +2308,10 @@
 
                 setDiscountInputOnKeyUpParameter(key, invoice_item_amount);
 
-                computeAllDiscount();
+                var all_discount = computeAllDiscount();
+
+                $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+
                 computeTax();
                 removeInvoiceCard(key);
 
@@ -3089,9 +3095,12 @@
                 $('#discount_total-'+payer_id).val(parseFloat(invoice_discount_amount).toFixed(2));
                 $('#payer_total-'+payer_id).val(payer_account_total);
 
-                computeAllDiscount();
+                var all_discount = computeAllDiscount();
+
+                $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+
                 var total_due = computeDue();
-                $("#invoice_result_due").text(currency+' '+parseFloat(total_due-invoice_discount_amount).toFixed(2));
+                $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
             } else {
                 $("#discount_type_input"+payer_id).empty();
                 var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
@@ -3100,8 +3109,8 @@
                 var amount_items = $("#payer_account-"+payer_id).find("input[name='amount[]']").map(function(){return $(this).val();}).get();
                 var quantity_items = $("#payer_account-"+payer_id).find("input[name='quantity[]']").map(function(){return $(this).val();}).get();
                 var data = $("#discount"+payer_id).select2('data')[0];
-                console.log(data);
-                console.log(invoice_items);
+                // console.log(data);
+                // console.log(invoice_items);
                 
                     var invoice_item_extras = inv_items(payer_id);
 
@@ -3159,10 +3168,12 @@
                     $('#discount_total-'+payer_id).val(parseFloat(invoice_discount_amount).toFixed(2));
                     $('#payer_total-'+payer_id).val(payer_account_total);
 
-                    computeAllDiscount();
+                    var all_discount = computeAllDiscount();
+
+                    $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
 
                     var total_due = computeDue();
-                    $("#invoice_result_due").text(currency+' '+parseFloat(total_due-invoice_discount_amount).toFixed(2));
+                    $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
                 
                 // var discount = $("#discount"+value+'-'+payer_id).val();
                 // var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
@@ -3189,14 +3200,18 @@
             var discount_rate = $("#discount_input-"+payer_id).val();
             $('#payer_total-'+payer_id).val((subtotal-((parseInt(discount_rate)/100)*subtotal)).toFixed(2));
             $('#discount_total-'+payer_id).val(((parseInt(discount_rate)/100)*subtotal).toFixed(2));
-            computeAllDiscount()
+            var all_discount = computeAllDiscount();
+            $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+
             return true;
         }
         function computeDiscountAmount(subtotal, payer_id) {
             var discount_rate = $("#discount_input-"+payer_id).val();
             $('#payer_total-'+payer_id).val((parseInt(subtotal)-parseInt(discount_rate)).toFixed(2));
             $('#discount_total-'+payer_id).val(discount_rate);
-            computeAllDiscount()
+            var all_discount = computeAllDiscount();
+            $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+
             return true;
         }
     </script>
@@ -3354,11 +3369,13 @@
 
             setDiscountInputOnKeyUpParameter(payer_id, invoice_item_amount);
 
-            computeAllDiscount();
+            var all_discount = computeAllDiscount();
+            $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+
             computeTax();
 
             var total_due = computeDue();
-            $("#invoice_result_due").text(currency+' '+parseFloat(total_due-invoice_discount_amount).toFixed(2));
+            $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
 
             // console.log("item_total : "+item_total);
             console.log(invoice_item_amount);
@@ -3499,11 +3516,13 @@
 
             setDiscountInputOnKeyUpParameter(payer_id, invoice_item_amount);
 
-            computeAllDiscount();
+            var all_discount = computeAllDiscount();
+            $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+
             computeTax();
 
             var total_due = computeDue();
-            $("#invoice_result_due").text(currency+' '+parseFloat(total_due-invoice_discount_amount).toFixed(2));
+            $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
 
             console.log(invoice_item_amount);
 
