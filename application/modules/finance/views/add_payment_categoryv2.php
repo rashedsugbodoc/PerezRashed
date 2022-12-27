@@ -240,7 +240,22 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <div class="form-check">
-                                                            <input type="checkbox" class="form-check-input" name="charge_copayer" value="yes" checked>
+                                                            <?php
+                                                                $count = count($service);
+                                                            ?>
+                                                            <input type="checkbox" class="form-check-input" name="charge_copayer" value="<?php  
+                                                                if ($count > 1) {
+                                                                    echo 'yes';
+                                                                } else {
+                                                                    echo 'no';
+                                                                }
+                                                            ?>" <?php
+                                                                if ($count > 1) {
+                                                                    echo 'checked';
+                                                                } else {
+                                                                    echo '';
+                                                                }
+                                                            ?>>
                                                             <label class="form-check-label" for="defaultCheck1">
                                                                 Check if selected payer accounts are copayers of this charge
                                                             </label>
@@ -1711,7 +1726,11 @@
 
                         console.log(percentage_limit);
 
-                        var new_remaining = 100 - percentage_limit;
+                        if (input.length >= 1) {
+                            var new_remaining = 100 - percentage_limit;
+                        } else {
+                            var new_remaining = 0;
+                        }
                         check_remaining += new_remaining;
 
                         console.log(new_remaining);
