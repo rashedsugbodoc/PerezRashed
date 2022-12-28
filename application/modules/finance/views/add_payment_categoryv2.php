@@ -1444,15 +1444,6 @@
                     } else {
                         if ($('#price_type'+val).val() != 'fixed') {
                             checkIfVariablePriceIsFixedLimit(val);
-                            // $('#co_payer_payment_limit'+val).val('fixed');
-                            // $('#selected_payer_price_content_two'+val).remove();
-                            // $('#selected_payer_price_div_two'+val).append(
-                            //     '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
-                            //         <span class="input-group-append">\n\
-                            //             <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                            //         </span>\n\
-                            //         <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
-                            //     </div>');
                         }
                     }
                 })
@@ -1515,15 +1506,6 @@
             if (charge_copayer == true) {
 
                 $.each(company, function(key, val) {
-                    // $('#co_payer_payment_limit'+val).val('fixed');
-                    // $('#selected_payer_price_content_two'+val).remove();
-                    // $('#selected_payer_price_div_two'+val).append(
-                    //     '<div class="input-group" id="selected_payer_price_content_two'+val+'">\n\
-                    //         <span class="input-group-append">\n\
-                    //             <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                    //         </span>\n\
-                    //         <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
-                    //     </div>');
                     checkIfVariablePriceIsFixedLimit(val);
                 });
 
@@ -1535,17 +1517,8 @@
 
             } else {
 
-                // $('#co_payer_payment_limit'+value).val('fixed');
-                // $('#selected_payer_price_content_two'+value).remove();
-                // $('#selected_payer_price_div_two'+value).append(
-                //     '<div class="input-group" id="selected_payer_price_content_two'+value+'">\n\
-                //         <span class="input-group-append">\n\
-                //             <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                //         </span>\n\
-                //         <input type="text" class="form-control" name="co_payer_limit_amount[]" placeholder="Enter Fixed Amount">\n\
-                //     </div>');
-
                 checkIfVariablePriceIsFixedLimit(value);
+                $(".remaining_limit").text('');
 
             }
         }
@@ -1642,32 +1615,44 @@
                     }
                 }
             } else {
+                var check_remaining = 0;
                 $.each(company, function(key, val) {
                     // var percentage_limit = $('#limits_'+val).find('[class="percentage_limit_input"]').val();
                     var percentage_limit = $('#selected_payer_price_content_two'+val).find('input').val();
 
                     console.log(percentage_limit);
 
-                    var new_remaining = 100 - percentage_limit;
+                    if (input.length >= 1) {
+                        var new_remaining = 100 - percentage_limit;
+                    } else {
+                        var new_remaining = 0;
+                    }
+                    check_remaining += new_remaining;
 
                     console.log(new_remaining);
 
-                    if (new_remaining < 0) {
-                        // input.classList.add('border-danger');
-                        $('#limits_'+val).find('[class="remaining_limit"]').text('Total percentage limit exceeds 100% by '+Math.abs(new_remaining)+' %');
-                        $('#selected_payer_price_content_two'+val).find('input').removeClass('border-success');
-                        $('#selected_payer_price_content_two'+val).find('input').addClass('border-danger');
-                    } else if (new_remaining == 0) {
-                        $('#limits_'+val).find('[class="remaining_limit"]').text('');
-                        $('#selected_payer_price_content_two'+val).find('input').addClass('border-success');
-                        $('#selected_payer_price_content_two'+val).find('input').removeClass('border-danger');
-                    } else {
-                        // input.classList.add('border-success');
-                        $('#limits_'+val).find('[class="remaining_limit"]').text('Remaining percentage limit to allocate: '+new_remaining+' %');
-                        $('#selected_payer_price_content_two'+val).find('input').addClass('border-success');
-                        $('#selected_payer_price_content_two'+val).find('input').removeClass('border-danger');
+                    if (input.length >= 1) {
+                        if (new_remaining < 0) {
+                            // input.classList.add('border-danger');
+                            $('#limits_'+val).find('[class="remaining_limit"]').text('Total percentage limit exceeds 100% by '+Math.abs(new_remaining)+' %');
+                            $('#selected_payer_price_content_two'+val).find('input').removeClass('border-success');
+                            $('#selected_payer_price_content_two'+val).find('input').addClass('border-danger');
+                        } else if (new_remaining == 0) {
+                            $('#limits_'+val).find('[class="remaining_limit"]').text('');
+                            $('#selected_payer_price_content_two'+val).find('input').addClass('border-success');
+                            $('#selected_payer_price_content_two'+val).find('input').removeClass('border-danger');
+                        } else {
+                            // input.classList.add('border-success');
+                            $('#limits_'+val).find('[class="remaining_limit"]').text('Remaining percentage limit to allocate: '+new_remaining+' %');
+                            $('#selected_payer_price_content_two'+val).find('input').addClass('border-success');
+                            $('#selected_payer_price_content_two'+val).find('input').removeClass('border-danger');
+                        }
                     }
                 })
+
+                // if (check_remaining > 0) {
+
+                // }
             }
         }
     </script>
