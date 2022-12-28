@@ -1749,6 +1749,12 @@ class Finance extends MX_Controller {
         $data['categories'] = $this->finance_model->getPaymentCategoryByServiceGroup();
         $invoice_group_id = $this->input->get('invoice_group_id');
         $id = $this->input->get('id');
+        $invoice_id = $this->input->get('invoice_id');
+
+        if (!empty($invoice_id)) {
+            $data['redirect'] = 'finance/invoiceList';
+        }
+
         $data['invoice_details'] = $this->finance_model->getInvoiceByGroupNumber($invoice_group_id);
         // $something = $invoice_details[0]->id;
         $finance_id = $this->finance_model->getPaymentByFinanceNumber($data['invoice_details'][0]->invoice_number)->id;
@@ -4022,6 +4028,163 @@ class Finance extends MX_Controller {
             // $this->load->view('home/footer'); // just the header file
         }
     }
+
+    function getInvoiceGroupList() {
+        $requestData = $_REQUEST;
+        $start = $requestData['start'];
+        $limit = $requestData['length'];
+        $search = $this->input->post('search')['value'];
+        $settings = $this->settings_model->getSettings();
+        $user_id = $this->ion_auth->get_user_id();
+        //First Check if Company Administrator is logged in and only show their company's invoices
+        if ($this->ion_auth->in_group(array('CompanyUser'))) {
+            $company_user = $this->companyuser_model->getCompanyUserByIonUserId($user_id);
+            $company_id = $company_user->company_id;
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['payments'] = $this->finance_model->getPaymentGroupByInvoiceGroupNumberByCompanyIdBySearch($company_id, $search);
+                } else {
+                    $data['payments'] = $this->finance_model->getPaymentGroupByInvoiceGroupNumberByCompanyId($company_id);
+                }
+            } else {
+                if (!empty($search)) {
+                    $data['payments'] = $this->finance_model->getPaymentGroupByInvoiceGroupNumberByCompanyIdByLimitBySearch($company_id, $limit, $start, $search);
+                } else {
+                    $data['payments'] = $this->finance_model->getPaymentGroupByInvoiceGroupNumberByCompanyIdByLimit($company_id, $limit, $start);
+                }
+            }
+
+        } else {
+            if ($limit == -1) {
+                if (!empty($search)) {
+                    $data['payments'] = $this->finance_model->getPaymentGroupByInvoiceGroupNumberBySearch($search);
+                } else {
+                    $data['payments'] = $this->finance_model->getPaymentGroupByInvoiceGroupNumber();/*New*/
+                }
+            } else {
+                if (!empty($search)) {
+                    $data['payments'] = $this->finance_model->getPaymentGroupByInvoiceGroupNumberByLimitBySearch($limit, $start, $search);
+                } else {
+                    $data['payments'] = $this->finance_model->getPaymentGroupByInvoiceGroupNumberByLimit($limit, $start);/*New*/
+                }
+            }
+
+        }
+
+
+
+        //  $data['payments'] = $this->finance_model->getPayment();
+
+        foreach ($data['payments'] as $payment) {
+            $date = date('Y-m-d', $payment->date);
+
+            $flat_discount = $payment->flat_discount;
+            if (empty($flat_discount)) {
+                $flat_discount = 0;
+            }
+
+            if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist', 'Clerk'))) {
+                // $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?finance_id=' . $payment->invoice_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editInvoiceGroup?invoice_group_id=' . $payment->invoice_group_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+            }
+
+            $options2 = '<a class="btn btn-info btn-xs" title="' . lang('details') . '" href="finance/invoice?id=' . $payment->invoice_number . '"><i class="fa fa-file-text-o"></i> ' . lang('details') . '</a>';
+            $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" href="finance/printInvoice?id=' . $payment->invoice_number . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
+            if ($this->ion_auth->in_group(array('admin'))) {
+                $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/deleteInvoice?id=' . $payment->invoice_group_number . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+            }
+
+            if (empty($options1)) {
+                $options1 = '';
+            }
+
+            if (empty($options3)) {
+                $options3 = '';
+            }
+
+            $doctor_details = $this->doctor_model->getDoctorById($payment->doctor);
+
+            if (!empty($doctor_details)) {
+                $doctor = $doctor_details->name;
+            } else {
+                if (!empty($payment->doctor_name)) {
+                    $doctor = $payment->doctor_name;
+                } else {
+                    $doctor = $payment->doctor_name;
+                }
+            }
+
+            $patient_info = $this->db->get_where('patient', array('id' => $payment->patient))->row();
+            if (!empty($patient_info)) {
+                $patient_details = $patient_info->name . '</br>' . $patient_info->address . '</br>' . $patient_info->phone . '</br>';
+            } else {
+                $patient_details = ' ';
+            }
+
+            $invoice_details = $this->finance_model->getInvoiceByGroupNumber($payment->invoice_group_number);
+
+            $subtotal = [];
+            $discount = [];
+            $grand_total = [];
+            foreach($invoice_details as $invoice_detail) {
+                $discount[] = $invoice_detail->discount;
+                if ($settings->is_display_prices_with_tax_included == "1") {
+                    $subtotal[] = $invoice_detail->amount;
+                    $grand_total[] = $invoice_detail->gross_total;
+                } else {
+                    $subtotal[] = $invoice_detail->total_without_tax;
+                    $grand_total[] = $invoice_detail->total_without_tax;
+                }
+            }
+
+            $subtotal = array_sum($subtotal);
+            $discount = array_sum($discount);
+            $grand_total = array_sum($grand_total);
+
+            $info[] = array(
+                $date,
+                $payment->invoice_group_number,
+                $patient_details,
+                $doctor,
+                '<div class="text-right">'.number_format($subtotal,2).'</div>',
+                '<div class="text-right">'.number_format($discount,2).'</div>',
+                '<div class="text-right">'.number_format($grand_total,2).'</div>',
+                '<div class="text-right">'.number_format(($this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
+                '<div class="text-right">'.number_format(($grand_total - $this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
+                $payment->remarks,
+                $options1 . ' ' . $options2 . ' ' . $options4 . ' ' . $options3,
+                    //  $options2
+            );
+        }
+
+
+
+
+
+
+
+        if (!empty($data['payments'])) {
+            $output = array(
+                "draw" => intval($requestData['draw']),
+                "recordsTotal" => $this->finance_model->getPaymentCount(), 
+                "recordsFiltered" => count($data['payments']),
+                "data" => $info
+            );
+        } else {
+            $output = array(
+                // "draw" => 1,
+                "recordsTotal" => 0,
+                "recordsFiltered" => 0,
+                "data" => []
+            );
+        }
+
+
+
+
+        echo json_encode($output);
+    }
+
     function getPayment() {
         $requestData = $_REQUEST;
         $start = $requestData['start'];
