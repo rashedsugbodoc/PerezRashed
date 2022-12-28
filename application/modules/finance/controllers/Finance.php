@@ -59,8 +59,22 @@ class Finance extends MX_Controller {
         $data['settings'] = $this->settings_model->getSettings();
 
         $this->load->view('home/dashboardv2'); // just the header file
-        $this->load->view('paymentv2', $data);
+        $this->load->view('invoice_group', $data);
         // $this->load->view('home/footer'); // just the header file
+    }
+
+    public function invoiceList() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'CompanyUser', 'Clerk'))) {
+            redirect('home/permission');
+        }
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
+
+        $data['settings'] = $this->settings_model->getSettings();
+
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('paymentv2', $data);
     }
 
     function amountDistribution() {
@@ -189,6 +203,7 @@ class Finance extends MX_Controller {
         $user = $this->ion_auth->get_user_id();
         $id = $this->input->post('id');
         $item_id = $this->input->post('item_id');
+        $redirect = $this->input->post('redirect');
         // $deposit_edit_amount = $this->input->post('deposit_edit_amount');
         // $item_total_price = $this->input->post('amount_input');
         $date = time();
@@ -1064,7 +1079,12 @@ class Finance extends MX_Controller {
             //     }
             // }
         /**/
-        redirect('finance/invoices');
+
+        if (!empty($redirect)) {
+            redirect($redirect);
+        } else {
+            redirect('finance/invoiceGroupList');
+        }
 
     }
 
@@ -4045,7 +4065,7 @@ class Finance extends MX_Controller {
 
             if ($this->ion_auth->in_group(array('admin', 'Accountant', 'Doctor', 'Receptionist', 'Clerk'))) {
                 // $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editPayment?finance_id=' . $payment->invoice_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
-                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editInvoiceGroup?invoice_group_id=' . $payment->invoice_group_number . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
+                $options1 = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="finance/editInvoiceGroup?invoice_group_id=' . $payment->invoice_group_number . '&invoice_id=' . $payment->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
 
             $options2 = '<a class="btn btn-info btn-xs" title="' . lang('details') . '" href="finance/invoice?id=' . $payment->invoice_number . '"><i class="fa fa-file-text-o"></i> ' . lang('details') . '</a>';
@@ -4103,14 +4123,12 @@ class Finance extends MX_Controller {
 
             $info[] = array(
                 $date,
-                $payment->invoice_group_number,
+                $payment->invoice_number,
                 $patient_details,
                 $doctor,
-                '<div class="text-right">'.number_format($subtotal,2).'</div>',
-                '<div class="text-right">'.number_format($discount,2).'</div>',
-                '<div class="text-right">'.number_format($grand_total,2).'</div>',
-                '<div class="text-right">'.number_format(($this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
-                '<div class="text-right">'.number_format(($grand_total - $this->finance_model->getDepositAmountByPaymentId($payment->id)),2).'</div>',
+                '<div class="text-right">'.number_format($payment->amount,2).'</div>',
+                '<div class="text-right">'.number_format($payment->discount,2).'</div>',
+                '<div class="text-right">'.number_format($payment->gross_total,2).'</div>',
                 $payment->remarks,
                 $options1 . ' ' . $options2 . ' ' . $options4 . ' ' . $options3,
                     //  $options2

@@ -62,6 +62,9 @@
                                             <?php echo validation_errors(); ?>
                                             <div class="row">
                                                 <div class="col-md-6 col-sm-12">
+                                                    <?php if (!empty($redirect)) { ?>
+                                                        <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
+                                                    <?php } ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
                                                             <div class="form-group">
