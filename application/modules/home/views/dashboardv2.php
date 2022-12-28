@@ -530,12 +530,12 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                     <ul class="slide-menu">
 
                                         <li><a href="finance/invoiceGroupList" class="slide-item"><?php echo lang('list').' '.lang('of').' '.lang('invoice').' '.lang('groups'); ?></a></li>
-                                        <li><a href="finance/invoiceGroupList" class="slide-item"><?php echo lang('list').' '.lang('of').' '.lang('invoices'); ?></a></li>
+                                        <li><a href="finance/invoiceList" class="slide-item"><?php echo lang('list').' '.lang('of').' '.lang('invoices'); ?></a></li>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Clerk'))) { ?>
                                             <li><a href="finance/addPaymentView" class="slide-item"><?php echo lang('add_invoice'); ?></a></li>
                                         <?php } ?>
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Receptionist', 'Accountant', 'Doctor', 'Laboratorist', 'Clerk'))) { ?>
-                                            <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('list').' '.lang('of').' '.lang('charge').' '.lang('groups'); ?></a></li>
+                                            <li><a href="finance/chargeGroupList" class="slide-item"><?php echo lang('list').' '.lang('of').' '.lang('charge').' '.lang('groups'); ?></a></li>
                                             <li><a href="finance/paymentCategory" class="slide-item"><?php echo lang('list').' '.lang('of').' '.lang('charges'); ?></a></li>
                                             <li><a href="finance/serviceCategory" class="slide-item"><?php echo lang('charge').' '.lang('categories'); ?> </a></li>
                                             <li><a href="finance/expense" class="slide-item"><?php echo lang('expense'); ?></a></li>
