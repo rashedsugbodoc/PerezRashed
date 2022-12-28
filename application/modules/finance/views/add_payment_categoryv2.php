@@ -561,9 +561,16 @@
 
                         $.each(company, function (key, value) {
                             var service_tax_id = service[key].tax_id;
+                            var is_taxable = "";
                             if (service_tax_id == null) {
                                 service_tax_id = 0;
+                                is_taxable = "hidden";
+                                var is_taxable_value = ''
+                            } else {
+                                is_taxable = "";
+                                var is_taxable_value = service[key].is_price_includes_tax;
                             }
+
                             window.sessionStorage.setItem('company'+value.id, value.id);
                             if (service[key].copay_share_fixed == null) {
                                 var copay_share = service[key].copay_share_percentage;
@@ -597,6 +604,8 @@
                                 var c_price = service[key].c_price;
                             } else if (service[key].is_price_includes_tax == 0) {
                                 var c_price = service[key].c_price-service[key].tax_amount;
+                            } else {
+                                var c_price = service[key].c_price;
                             }
 
                             if (service[key].type == "fixed") {
@@ -626,17 +635,20 @@
                                 var price_limit = '';
                             }
 
-                            if (tax[key]) {
-                                var is_taxable = "";
-                            } else {
-                                var is_taxable = "hidden";
-                            }
+                            // if (tax[key]) {
+                            //     var is_taxable = "";
+                            // } else {
+                            //     var is_taxable = "hidden";
+                            // }
 
                             if (service[key].is_price_includes_tax == 1) {
                                 var include_tax = "active";
                                 var exclude_tax = "";
                             } else if (service[key].is_price_includes_tax == 0) {
                                 var exclude_tax = "active";
+                                var include_tax = "";
+                            } else {
+                                var exclude_tax = "";
                                 var include_tax = "";
                             }
 
@@ -672,7 +684,7 @@
                                                 <div class="col-md-12 col-sm-12">\n\
                                                     <div class="form-group">\n\
                                                         <label class="form-label"><?php echo lang('tax'); ?></label>\n\
-                                                        <select id="tax'+value.id+'" name="tax[]" class="form-control w-25 tax'+value.id+'" data-placeholder="<?php echo lang('select_tax'); ?>">\n\
+                                                        <select id="tax'+value.id+'" name="tax[]" class="form-control w-25 tax'+value.id+'" onchange="selectTax('+value.id+')" data-placeholder="<?php echo lang('select_tax'); ?>">\n\
                                                             <option label="<?php echo lang('select_tax'); ?>"></option>\n\
                                                             <option value="0">None</option>\n\
                                                             <option value="'+service_tax_id+'" selected>'+tax[key].name+'</option>\n\
@@ -693,7 +705,7 @@
                                                                 </a>\n\
                                                             </li>\n\
                                                         </ul>\n\
-                                                        <input type="hidden" id="is_taxable'+value.id+'" name="is_taxable[]" value="'+service[key].is_price_includes_tax+'">\n\
+                                                        <input type="hidden" id="is_taxable'+value.id+'" name="is_taxable[]" value="'+is_taxable_value+'">\n\
                                                     </div>\n\
                                                 </div>\n\
                                                 <div id="limits_'+value.id+'" '+price_limit+'>\n\
@@ -736,6 +748,8 @@
                             tax_select2(value.id);
 
                             percentage_remain(value.id);
+
+                            selectTax(value.id)
                         });
 
                         // percentage_remain()
@@ -834,7 +848,7 @@
                                                     <div class="col-md-12 col-sm-12">\n\
                                                         <div class="form-group">\n\
                                                             <label class="form-label"><?php echo lang('tax'); ?></label>\n\
-                                                            <select id="tax'+value+'" name="tax[]" class="form-control w-25 tax'+value+'" data-placeholder="<?php echo lang('select_tax'); ?>">\n\
+                                                            <select id="tax'+value+'" name="tax[]" class="form-control w-25 tax'+value+'" onchange="selectTax('+value+')" data-placeholder="<?php echo lang('select_tax'); ?>">\n\
                                                                 <option label="<?php echo lang('select_tax'); ?>"></option>\n\
                                                                 <option value="0">None</option>\n\
                                                             </select>\n\
@@ -854,7 +868,7 @@
                                                                     </a>\n\
                                                                 </li>\n\
                                                             </ul>\n\
-                                                            <input type="hidden" id="is_taxable'+value+'" name="is_taxable[]" value="1">\n\
+                                                            <input type="hidden" id="is_taxable'+value+'" name="is_taxable[]">\n\
                                                         </div>\n\
                                                     </div>\n\
                                                     <div id="limits_'+value+'" hidden>\n\
@@ -925,7 +939,7 @@
                                 $("#tax"+value).change(function() {
                                     // alert($(this).val());
                                     var tax = $(this).val();
-                                    if (tax === "0") {
+                                    if (tax == "0") {
                                         $(".tax-choice"+value).attr('hidden', true);
                                         $("#tab3"+value).removeClass('active');
                                         $("#tab3"+value).attr('aria-selected', false);
@@ -994,7 +1008,7 @@
                                                     <div class="col-md-12 col-sm-12">\n\
                                                         <div class="form-group">\n\
                                                             <label class="form-label"><?php echo lang('tax'); ?></label>\n\
-                                                            <select id="tax'+value+'" name="tax[]" class="form-control w-25 tax'+value+'" data-placeholder="<?php echo lang('select_tax'); ?>">\n\
+                                                            <select id="tax'+value+'" name="tax[]" class="form-control w-25 tax'+value+'" onchange="selectTax('+value+')" data-placeholder="<?php echo lang('select_tax'); ?>">\n\
                                                                 <option label="<?php echo lang('select_tax'); ?>"></option>\n\
                                                                 <option value="0">None</option>\n\
                                                             </select>\n\
@@ -1319,21 +1333,36 @@
     </script>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#tax").change(function() {
+        function selectTax(company) {
+            $("#tax"+company).on('change', function() {
                 // alert($(this).val());
-                var tax = $(this).val();
-                if (tax === "0") {
-                    $(".tax-choice").attr('hidden', true);
-                    $("#tab3").removeClass('active');
-                    $("#tab3").attr('aria-selected', false);
-                    $("#tab4").removeClass('active');
-                    $("#tab4").attr('aria-selected', false);
+                var tax = $("#tax"+company).val();
+                console.log(tax);
+                if (tax == 0) {
+                    $("#is_taxable"+company).val('');
+                    $(".tax-choice"+company).attr('hidden', true);
+                    $("#tab3"+company).removeClass('active');
+                    $("#tab3"+company).attr('aria-selected', false);
+                    $("#tab4"+company).removeClass('active');
+                    $("#tab4"+company).attr('aria-selected', false);
                 } else {
-                    $(".tax-choice").attr('hidden', false);
+                    $("#is_taxable"+company).val('1');
+                    $(".tax-choice"+company).attr('hidden', false);
+                    $("#tab3"+company).addClass('active');
+                    $("#tab3"+company).attr('aria-selected', true);
+                    $("#tab4"+company).removeClass('active');
+                    $("#tab4"+company).attr('aria-selected', false);
                 }
             })
-        })
+            // var tax = $(this).val();
+            // if (tax == "0") {
+            //     $(".tax-choice").attr('hidden', true);
+            //     $("#tab4"+company).removeClass('active');
+            //     $("#tab4"+company).attr('aria-selected', false);
+            // } else {
+            //     $(".tax-choice"+company).attr('hidden', false);
+            // }
+        }
     </script>
 
     <script type="text/javascript">

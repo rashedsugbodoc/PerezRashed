@@ -2358,6 +2358,7 @@ class Finance extends MX_Controller {
 
                     if ($tax[$key] == "0") {
                         $tax[$key] = null;
+                        $price_includes_tax[$key] = null;
                     }
 
                     if (!empty($c_price[$key])) {
