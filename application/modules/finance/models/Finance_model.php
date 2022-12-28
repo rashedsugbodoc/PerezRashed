@@ -789,6 +789,21 @@ class Finance_model extends CI_model {
                     ->where('deleted', null)
                     ->or_where('deleted', 0)
                 ->group_end()
+                ->get();
+        return $query->result();
+    }
+
+    function getPaymentCategoryGroupByGroupId() {
+        // $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        // $this->db->where('deleted', null);
+        // $query = $this->db->get('charge');
+        $query = $this->db->select('*')
+                ->from('charge')
+                ->group_start()
+                    ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    ->where('deleted', null)
+                    ->or_where('deleted', 0)
+                ->group_end()
                 ->group_by('group_id')
                 ->get();
         return $query->result();

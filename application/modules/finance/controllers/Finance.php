@@ -2251,6 +2251,7 @@ class Finance extends MX_Controller {
         $co_payer_payment_limit_type = $this->input->post('co_payer_payment_limit_type');
         $deleted_company = $this->input->post('deleted_company');
         $charge_copayer = $this->input->post('charge_copayer');
+        $redirect = $this->input->post('redirect');
 
         $non_duplicate_deleted_company = implode(',', array_keys(array_flip(explode(',', $deleted_company))));
 
@@ -2627,7 +2628,13 @@ class Finance extends MX_Controller {
                 // $this->finance_model->updatePaymentCategory($id, $data);
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
-            redirect('finance/paymentCategory');
+
+            if (!empty($redirect)) {
+                redirect($redirect);
+            } else {
+                redirect('finance/chargeGroupList');
+            }
+
         }
     }
 
@@ -2636,11 +2643,17 @@ class Finance extends MX_Controller {
             redirect('home/permission');
         }
         $data = array();
-        $id = $this->input->get('id');
+        $group_id = $this->input->get('group_id');
+        $charge_id = $this->input->get('charge_id');
+
+        if (!empty($charge_id)) {
+            $data['redirect'] = 'finance/paymentCategory';
+        }
+
         $hospital_id = $this->session->userdata('hospital_id');
         $provider_country = $this->settings_model->getSettingsByHospitalId($hospital_id)->country_id;
         $data['payer_accounts'] = $this->company_model->getCompanyWithoutAddNewOption(null, $provider_country);
-        $data['service'] = $this->finance_model->getPaymentCategoryByGroupId($id);
+        $data['service'] = $this->finance_model->getPaymentCategoryByGroupId($group_id);
         $data['categories'] = $this->finance_model->getServiceCategory();
         $data['settings'] = $this->settings_model->getSettings();
         $data['taxes'] = $this->finance_model->getTax();

@@ -385,6 +385,9 @@
                                                     echo $service[0]->id;
                                                 }
                                                 ?>'>
+                                                <?php if (!empty($redirect)) { ?>
+                                                    <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
+                                                <?php } ?>
                                                 <input type="hidden" name="deleted_company" id="deleted_company">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
