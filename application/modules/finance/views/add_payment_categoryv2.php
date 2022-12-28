@@ -240,22 +240,25 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <div class="form-check">
-                                                            <?php
+                                                            <?php if (!empty($service)) { 
                                                                 $count = count($service);
                                                             ?>
-                                                            <input type="checkbox" class="form-check-input" name="charge_copayer" value="<?php  
-                                                                if ($count > 1) {
-                                                                    echo 'yes';
-                                                                } else {
-                                                                    echo 'no';
-                                                                }
-                                                            ?>" <?php
-                                                                if ($count > 1) {
-                                                                    echo 'checked';
-                                                                } else {
-                                                                    echo '';
-                                                                }
-                                                            ?>>
+                                                                <input type="checkbox" class="form-check-input" name="charge_copayer" value="<?php  
+                                                                    if ($count > 1) {
+                                                                        echo 'yes';
+                                                                    } else {
+                                                                        echo 'no';
+                                                                    }
+                                                                ?>" <?php
+                                                                    if ($count > 1) {
+                                                                        echo 'checked';
+                                                                    } else {
+                                                                        echo '';
+                                                                    }
+                                                                ?>>
+                                                            <?php } else { ?>
+                                                                <input type="checkbox" class="form-check-input" name="charge_copayer" value="yes" checked>
+                                                            <?php } ?>
                                                             <label class="form-check-label" for="defaultCheck1">
                                                                 Check if selected payer accounts are copayers of this charge
                                                             </label>
