@@ -2222,6 +2222,19 @@ class Finance extends MX_Controller {
         }
     }
 
+    public function chargeGroupList() {
+        if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
+            redirect('home/permission');
+        }
+        if (!$this->ion_auth->logged_in()) {
+            redirect('auth/login', 'refresh');
+        }
+        $data['categories'] = $this->finance_model->getPaymentCategoryGroupByGroupId();
+        $data['settings'] = $this->settings_model->getSettings();
+        $this->load->view('home/dashboardv2'); // just the header file
+        $this->load->view('charge_group', $data);
+    }
+
     public function paymentCategory() {
         if (!$this->ion_auth->in_group(array('admin', 'Accountant', 'Receptionist', 'Doctor', 'Laboratorist', 'Clerk'))) {
             redirect('home/permission');
