@@ -410,6 +410,11 @@
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                                     <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
                                                 <?php } ?>
+
+                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Laboratorist'))) { ?>
+                                                    <li><a href="#tab-17" data-toggle="tab" class=""><?php echo lang('procedure'); ?></a></li>
+                                                <?php } ?>
+
                                                 <!-- <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li> -->
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
                                                     <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
@@ -1018,6 +1023,53 @@
                                                 ?>
                                             </ul>
                                         </div>
+                                        <?php } ?>
+
+                                        <!-- procedure -->
+                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse', 'Laboratorist'))) { ?>
+                                            <div class="tab-pane" id="tab-17">
+                                            <div class="mb-0 border">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="card-title">
+                                                            <?php echo lang('procedure'); ?>
+                                                        </div>
+                                                        <div class="card-options">
+                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Nurse'))) { ?>
+                                                                <div class="no-print">
+                                                                    <a class="btn btn-primary btn_width btn-xs" href="procedure/addNewView?patient_id=<?php echo $patient->patient_id.'&root=patient&method=medicalHistory&procedure_request=true' ?>">
+                                                                        <?php echo lang('add_new'); ?>
+                                                                    </a>
+                                                                </div>
+                                                            <?php } ?>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="">
+                                                            <div class="table-responsive">
+                                                                <table id="editable-sample8" class="table table-bordered text-nowrap key-buttons w-100 editable-sample8">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th><?php echo lang('date'); ?></th>
+                                                                            <th><?php echo lang('procedure'); ?></th>
+                                                                            <th><?php echo lang('performed_by') ?></th>
+                                                                            <th><?php echo lang('note'); ?></th>
+                                                                            <th><?php echo lang('facility'); ?></th>
+                                                                            <th><?php echo lang('status'); ?></th>
+                                                                            <th class="no-print"><?php echo lang('options'); ?></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            </div>
                                         <?php } ?>
                                     </div>
                                 </div>
@@ -2833,7 +2885,6 @@
                 // Get the record's ID via attribute  
                 var iid = $(this).attr('data-id');
                 var id = $(this).attr('data-id');
-
                 $('#editAppointmentForm').trigger("reset");
                 $('#editAppointmentModal').modal('show');
                 $.ajax({
@@ -4040,6 +4091,76 @@
 
 
             });
+        });
+
+        $(document).ready(function () {
+            var patient_id = '<?php echo $patient->id; ?>';
+            $('.editable-sample8').DataTable({
+                responsive: true,
+                "processing": true,
+                "searchable": true,
+                "ajax": {
+                    url: "procedure/getProcedures?patient_id="+patient_id,
+                    type: 'POST',
+                },
+                dom : "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
+                        "<'row'<'col-sm-12'tr>>" +
+                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+                buttons: [
+                    {
+                    extend: 'collection',
+                    text: 'Export',
+                        buttons: [
+                            {
+                                extend: 'copyHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('procedure'); ?>'
+                            },
+                            {
+                                extend: 'excelHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('procedure'); ?>'
+                            },
+                            {
+                                extend: 'csvHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('procedure'); ?>'
+                            },
+                            {
+                                extend: 'pdfHtml5',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('procedure'); ?>',
+                                orientation: 'portrait',
+                                pageSize: 'LEGAL'
+                            },
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: [0, 1, 2, 3],
+                                },
+                                title: '<?php echo lang('procedure'); ?>'
+                            },
+                        ],
+                    }
+                ],
+                aLengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, "All"]
+                ],
+                iDisplayLength: 10,
+                "order": [[0, "desc"]],
+                "language": {
+                    "lengthMenu": "_MENU_",
+                }
+            })
         });
     </script>
 

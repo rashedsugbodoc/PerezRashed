@@ -1,5 +1,7 @@
 <?php
 
+use function Clue\StreamFilter\append;
+
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
@@ -31,7 +33,6 @@ class Procedure extends MX_Controller {
 
     public function index() {
         $data['procedures'] = $this->procedure_model->getProcedure();
-        $data['hello'] = 'hello world';
         $this->load->view('home/dashboardv2'); 
         $this->load->view('procedure', $data);
     }
@@ -61,19 +62,19 @@ class Procedure extends MX_Controller {
 
             foreach($data['procedure_performers'] as $performer) {
 
-                if ($performer->performer_table_name == 'Doctor') {
+                if ($performer->performer_table_name == 'doctor') {
                     $performer_details[] = $this->doctor_model->getDoctorById( $performer->performer_table_id)->name;  
                 }
 
-                if ($performer->performer_table_name == 'Nurse') {
+                if ($performer->performer_table_name == 'nurse') {
                     $performer_details[] = $this->nurse_model->getNurseById( $performer->performer_table_id)->name;
                 }
 
-                if ($performer->performer_table_name == 'Midwife') {
+                if ($performer->performer_table_name == 'midwife') {
                     $performer_details[] = $this->midwife_model->getMidwifeById( $performer->performer_table_id)->name;
                 }
 
-                if ($performer->performer_table_name == 'Laboratorist') {
+                if ($performer->performer_table_name == 'laboratorist') {
                     $performer_details[] = $this->laboratorist_model->getLaboratoristById( $performer->performer_table_id)->name;
                 }
                 
@@ -202,23 +203,23 @@ class Procedure extends MX_Controller {
         $performer_details = [];
         $performer_roles = [];
         foreach($data['procedure_performers'] as $performer) {
-            if($performer->performer_table_name == 'Doctor') {
+            if($performer->performer_table_name == 'doctor') {
                 $performer_details[] = $this->doctor_model->getDoctorById( $performer->performer_table_id);
                 $performer_roles[] = $this->procedure_model->getProcedureByPerformerByRole($performer->role_id);
               
             }
 
-            if($performer->performer_table_name == 'Nurse') {
+            if($performer->performer_table_name == 'nurse') {
                 $performer_details[] = $this->nurse_model->getNurseById( $performer->performer_table_id);
                 $performer_roles[] = $this->procedure_model->getProcedureByPerformerByRole($performer->role_id); 
             }
 
-            if($performer->performer_table_name == 'Midwife') {
+            if($performer->performer_table_name == 'midwife') {
                 $performer_details[] = $this->midwife_model->getMidwifeById( $performer->performer_table_id);
                 $performer_roles[] = $this->procedure_model->getProcedureByPerformerByRole($performer->role_id);
             }
 
-            if($performer->performer_table_name == 'Laboratorist') {
+            if($performer->performer_table_name == 'laboratorist') {
                 $performer_details[] = $this->laboratorist_model->getLaboratoristById( $performer->performer_table_id);
                 $performer_roles[] = $this->procedure_model->getProcedureByPerformerByRole($performer->role_id);
               
@@ -280,99 +281,158 @@ class Procedure extends MX_Controller {
         'procedure_number' => $procedure_number
         );
 
-        $performers = [];
+        // $performers = [];
+
+        $performers_doctors = [];
+        $performers_nurse = [];
+        $performers_midwife = [];
+        $performers_laboratorist = [];
+
 
         foreach($performedByDoctor as $key => $value) {
-            $performers[] = array(
+            $performers_doctors[] = array(
                 'performer' => $value,
-                'group' => 'Doctor',
+                'group' => 'doctor',
                 'role' => $performer_doctor_roles[$key]
             );
         }
 
         foreach($performedByNurse as $key => $value) {
-            $performers[] = array(
+            $performers_nurse[] = array(
                 'performer' => $value,
-                'group' => 'Nurse',
+                'group' => 'nurse',
                 'role' => $performer_nurse_roles[$key]
             );
         }
         
 
         foreach($performedByMidwife as $key => $value) {
-            $performers[] = array(
+            $performers_midwife[] = array(
                 'performer' => $value,
-                'group' => 'Midwife',
+                'group' => 'midwife',
                 'role' => $performer_midwife_roles[$key]
             );
         }
 
         foreach($performedByLaboratorist as $key => $value) {
-            $performers[] = array(
+            $performers_laboratorist[] = array(
                 'performer' => $value,
-                'group' => 'Laboratorist',
+                'group' => 'laboratorist',
                 'role' => $performer_laboratorist_role[$key]
             );
         }
+
+        $all_performers = array_merge($performers_doctors, $performers_nurse, $performers_midwife, $performers_laboratorist);
 
         if(empty($id)) {
 
             $this->procedure_model->insertProcedure($data);
             $inserted_id = $this->db->insert_id();
-            foreach($performers as $key=>$value) {
+
+            foreach($all_performers as $key => $value) {
                 $data2 = array(
                     'procedure_id' => $inserted_id,
                     'performer_table_name' => $value['group'],
                     'performer_table_id' => intval($value['performer']),
                     'role_id' => intval($value['role']),
                 );
-                $this->procedure_model->insertProcedurePerformer($data2);          
-            } 
+                $this->procedure_model->insertProcedurePerformer($data2);
+            }
             $this->session->set_flashdata('success', lang('record_added'));
-       
+
         } else {
             $procedure_id = $procedure_details->id;
-            $procedure_performers_details = $this->procedure_model->getProcedurePerformerByProcedureId($procedure_id);
         
-            
-            foreach($performers as $key=>$value) {
-                $data3 = array(
+
+            //doctor
+            foreach($performers_doctors as $key => $value) {
+                $data_doctor = array(
                     'procedure_id' => $procedure_id,
                     'performer_table_name' => $value['group'],
                     'performer_table_id' => intval($value['performer']),
-                    'role_id' => intval($value['role']),   
-                ); 
+                    'role_id' => intval($value['role']),
+                );
 
-                $performer_exist = $this->procedure_model->getProcedurePerformerByProcedureIdByPerformerId($procedure_id, intval($value['performer']));
-                
-                $doctor_original_array[] = $this->procedure_model->getProcedurePerformerByDoctorByProcedureId($procedure_id);
-                $nurse_original_array[] = $this->procedure_model->getProcedurePerformerByNurseByProcedureId($procedure_id);
-                $midwife_original_array[] = $this->procedure_model->getProcedurePerformerByMidwifeByProcedureId($procedure_id);
+                $doctor_array_exist = $this->procedure_model->getProcedurePerformerByDoctorByProcedureId($procedure_id);
 
-                if(!empty($doctor_original_array)) {
-                    $this->procedure_model->updateProcedurePerformerByDoctor($procedure_id, $procedure_performers_details[$key]->performer_table_id, $data3);
+                $this->procedure_model->updateProcedurePerformer($doctor_array_exist[$key]->id, $data_doctor);
+
+                if(empty($doctor_array_exist[$key]->id)) {
+                    $this->procedure_model->insertProcedurePerformerByDoctor($data_doctor);
                 }
 
-                if(!empty($nurse_original_array)) {
-                    $this->procedure_model->updateProcedurePerformerByNurse($procedure_id, $procedure_performers_details[$key]->performer_table_id, $data3);
-                }
-
-                if(!empty($midwife_original_array)) {
-                    $this->procedure_model->updateProcedurePerformerByMidwife($procedure_id, $procedure_performers_details[$key]->performer_table_id, $data3);
-                }
-                
-                if (empty($performer_exist)) {
-                    $this->procedure_model->insertProcedurePerformer($data3); 
-            
-                } 
-               
             }
+
+            //nurse
+            foreach($performers_nurse as $key => $value) {
+                $data_nurse = array(
+                    'procedure_id' => $procedure_id,
+                    'performer_table_name' => $value['group'],
+                    'performer_table_id' => intval($value['performer']),
+                    'role_id' => intval($value['role']),
+                );
+
+                $nurse_array_exist = $this->procedure_model->getProcedurePerformerByNurseByProcedureId($procedure_id);
+
+                $this->procedure_model->updateProcedurePerformer($nurse_array_exist[$key]->id, $data_nurse);
+
+                $test =  $nurse_array_exist[$key]->performer_table_id;
+
+                if(empty($nurse_array_exist[$key]->id)) {
+                    $this->procedure_model->insertProcedurePerformerByNurse($data_nurse);
+                }
+
+
+            }
+
+            //midwife
+            foreach($performers_midwife as $key => $value) {
+                $data_midwife = array(
+                    'procedure_id' => $procedure_id,
+                    'performer_table_name' => $value['group'],
+                    'performer_table_id' => intval($value['performer']),
+                    'role_id' => intval($value['role']),
+                );
+
+                $midwife_array_exist = $this->procedure_model->getProcedurePerformerByMidwifeByProcedureId($procedure_id);
+
+                $this->procedure_model->updateProcedurePerformer($midwife_array_exist[$key]->id, $data_midwife);
+
+                $test = $midwife_array_exist[$key]->performer_table_id;
+
+                if(empty($midwife_array_exist[$key]->id)) {
+                    $this->procedure_model->insertProcedurePerformerByMidwife($data_midwife);
+                }
+            }
+
+            //laboratorist
+            foreach($performers_laboratorist as $key => $value) {
+                $data_laboratorist = array(
+                    'procedure_id' => $procedure_id,
+                    'performer_table_name' => $value['group'],
+                    'performer_table_id' => intval($value['performer']),
+                    'role_id' => intval($value['role']),
+                );
+
+                $laboratorist_array_exist = $this->procedure_model->getProcedurePerformerByLaboratoristByProcedureId($procedure_id);
+
+                $this->procedure_model->updateProcedurePerformer($laboratorist_array_exist[$key]->id, $data_laboratorist);
+
+                $test = $laboratorist_array_exist[$key]->performer_table_id;
+
+                if(empty($laboratorist_array_exist[$key]->id)) {
+                    $this->procedure_model->insertProcedurePerformerByLaboratorist($data_laboratorist);
+                }
+            }
+
+        }
 
             $this->procedure_model->updateProcedure($id, $data);
             $this->session->set_flashdata('success', lang('record_updated'));  
+            redirect('procedure');
         }
-        redirect('procedure');
-    }
+
+
 
     public function delete() {
         $id = $this->input->get('id');
@@ -390,7 +450,6 @@ class Procedure extends MX_Controller {
 
         $this->procedure_model->deleteProcedurePerformerById($id);
 
-        echo 'Data deleted', $id ;
     }
 
 

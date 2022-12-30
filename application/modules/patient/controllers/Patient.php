@@ -34,6 +34,9 @@ class Patient extends MX_Controller {
         $this->load->model('branch/branch_model');
         $this->load->model('encounter/encounter_model');
         $this->load->model('hospital/hospital_model');
+        $this->load->model('midwife/midwife_model');
+        $this->load->model('laboratorist/laboratorist_model');
+        $this->load->model('procedure/procedure_model');
         $this->load->helper('string');
         
         $this->load->config('ion_auth', TRUE);
@@ -2673,6 +2676,7 @@ class Patient extends MX_Controller {
         $data['forms'] = $this->form_model->getFormByPatientId($id);
         $data['patient_materials'] = $this->patient_model->getPatientMaterialByPatientId($id);
         $data['encounters'] = $this->encounter_model->getEncounterByPatientId($id);
+        $data['procedures'] = $this->procedure_model->getProcedureByPatientId($id);
 
         foreach ($data['appointments'] as $appointment) {
             $doctor_details = $this->doctor_model->getDoctorById($appointment->doctor);
@@ -2697,7 +2701,6 @@ class Patient extends MX_Controller {
                 $doctor_name = '';
             }
             
-
             $timeline[strtotime($appointment->appointment_registration_time.' UTC') + 1] = '<li class="timeleft-label"><span class="bg-danger">' . date($data['settings']->date_format_long?$data['settings']->date_format_long:'F j, Y', $appointment->date) . '</span></li>
                                                 <li>
                                                     <i class="fa fa-download bg-success"></i>
@@ -3615,6 +3618,236 @@ class Patient extends MX_Controller {
             }
         }
 
+        foreach ($data['procedures'] as $procedure) {
+            $data['procedure_performers_doctors'] = $this->procedure_model->getProcedurePerformerByDoctorByProcedureId($procedure->id, 'doctor');
+            $data['procedure_performers_nurses'] = $this->procedure_model->getProcedurePerformerByNurseByProcedureId($procedure->id, 'nurse');
+            $data['procedure_performers_midwives'] = $this->procedure_model->getProcedurePerformerByMidwifeByProcedureId($procedure->id, 'midwife');
+            $data['procedure_performers_laboratorist'] = $this->procedure_model->getProcedurePerformerByLaboratoristByProcedureId($procedure->id, 'laboratorist');
+
+            $doctor_names = [];
+            $nurse_names = [];
+            $midwife_names = [];
+            $laboratorist_names = [];
+
+            foreach( $data['procedure_performers_doctors'] as $doctor) {
+                $procedure_doctor_details = $this->doctor_model->getDoctorById($doctor->performer_table_id)->name;
+                $doctor_names[] = $procedure_doctor_details;
+            }
+
+            foreach($data['procedure_performers_nurses'] as $nurse) {
+                $procedure_nurse_details = $this->nurse_model->getNurseById($nurse->performer_table_id)->name;
+                $nurse_names[]  = $procedure_nurse_details;
+            }
+
+            foreach($data['procedure_performers_midwives'] as $midwife) {
+                $procedure_midwife_details  = $this->midwife_model->getMidwifeById($midwife->performer_table_id)->name;
+                $midwife_names[] = $procedure_midwife_details;
+            }
+
+            foreach($data['procedure_performers_laboratorist'] as $laboratorist) {
+                $procedure_laboratorist_details  = $this->laboratorist_model->getLaboratoristById($laboratorist->performer_table_id)->name;
+                $laboratorist_names[] = $procedure_laboratorist_details;
+            }
+
+            $hospital_details = $this->hospital_model->getHospitalById($procedure->hospital_id);
+            $branch_name = $this->branch_model->getBranchById($procedure->location)->display_name;
+
+            if(empty($branch_name)) {
+                $branch_name = 'Online';
+            }
+
+            $procedure_user_group = $this->profile_model->getUsersGroupsById($procedure->recorder_user_id);
+            $procedure_user_recorder = $this->profile_model->getGroupsById($procedure_user_group->group_id)->name;
+
+            $procedure_recorder = $procedure->recorder_user_id;
+
+            if($procedure_recorder == $procedure_doctor_details->ion_user_id) {
+                $image_user = $procedure_doctor_details->img_url;
+            }
+
+            if($procedure_recorder == $procedure_midwife_details->ion_user_id) {
+                $image_user = $procedure_midwife_details->img_url;
+            }
+
+            if($procedure_recorder == $procedure_laboratorist_details->ion_user_id) {
+                $image_user = $procedure_laboratorist_details->img_url;
+            }
+
+            if($procedure_recorder == $procedure_nurse_details->ion_user_id) {
+                $image_user = $procedure_nurse_details->img_url;
+            }
+
+           if($procedure_user_recorder === 'Doctor') {
+                $doctor_specialty = [];
+                $procedure_recorder_doctor = $this->doctor_model->getDoctorByIonUserId($procedure_recorder);
+                $procedure_recorder_doctor_specialty_explode = explode(',', $procedure_recorder_doctor->specialties);
+                foreach($procedure_recorder_doctor_specialty_explode as $procedure_recorder_doctor_specialty) {
+                    $procedure_specialties = $this->specialty_model->getSpecialtyById($procedure_recorder_doctor_specialty)->display_name_ph;
+                    $doctor_specialty[] = '<span class="badge badge-light badge-pill">'. $procedure_specialties .'</span>';
+
+                }
+
+                if(!empty($doctor_specialty)) {
+                    $user_spec = implode(' ', $doctor_specialty);
+                } else {
+                    $user_spec = 'N/A';
+                }
+           } else {
+            $user_spec = $procedure_user_recorder;
+           }
+
+           //procedure_recorder_user
+            if(!empty($procedure_recorder_doctor)) {
+                $doctor_recorder_name = $procedure_recorder_doctor->name;
+            } else {
+                $doctor_recorder_name= '';
+            }
+
+            //all_procedure_performer_list_by_procedureID
+            if(!empty($doctor_names)) {
+                $doctor_procedure_performer = implode(', ', $doctor_names);
+            } else {
+                $doctor_procedure_performer = 'N/A';
+            }
+
+            if(!empty($nurse_names)) {
+                $nurse_procedure_performer = implode(', ', $nurse_names);
+            } else {
+                $nurse_procedure_performer = 'N/A';
+            }
+
+           if(!empty($midwife_names)) {
+                $midwife_procedure_performer = implode(', ', $midwife_names);
+           } else {
+                $midwife_procedure_performer = 'N/A';
+           }
+
+           if(!empty($laboratorist_names)) {
+                $laboratorist_procedure_performer = implode(', ', $laboratorist_names);
+           } else {
+                $laboratorist_procedure_performer = 'N/A';
+           }
+
+           $procedure_status = $this->procedure_model->getStatusById($procedure->status_id)->display_name;
+
+           $arr_start_time = explode(' ', trim($procedure->performed_start_time));
+           $performed_start_time = $arr_start_time[1];
+
+           $arr_end_time = explode(' ', trim($procedure->performed_end_time));
+           $performed_end_time = $arr_end_time[1];
+
+           if(!empty($procedure->performed_start_time)) {
+            $timeline[strtotime($procedure->performed_start_time. 'UTC') + 5] = '<li class="timeleft-label"><span class="bg-danger">'. date($data['settings']->date_format_long ? $data['settings']->date_format_long: 'F j, Y', strtotime($procedure->performed_start_time.' UTC')) . '</span></li>
+                                                        <li>
+                                                            <i class="fa fa-download bg-secondary"></i>
+                                                            <div class="timelineleft-item">
+                                                                <span class="time"><i class="fa fa-clock-o text-danger"></i> ' . time_elapsed_string(date('d-m-Y H:i:s', strtotime($procedure->performed_start_time.' UTC')), 5) . '</span>
+                                                                <h3 class="timelineleft-header"><span>' . lang('procedure')  .'</span></h3>
+                                                                <div class="timelineleft-body">
+                                                                    <div class"form-group">
+                                                                        <div class="media mr-4 mb-4">
+                                                                            <div class="mr-3 mt-1 ml-3">
+                                                                                <i class="fa fa-calendar fa-2x text-primary"></i>
+                                                                            </div>
+                                                                            <div class="media-body">
+                                                                                <strong>'. date($data['settings']->date_format_long ? $data['settings']->date_format_long: 'F j, Y', strtotime($procedure->performed_start_time))  .'</strong>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-10 mb-3">
+                                                                                        <small class="text-muted">'. date($performed_start_time) .' -'. date($performed_end_time) .'</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="ml-auto mt-1 mr-3">
+                                                                                <span class="badge badge-pill badge-primary">'. $procedure_status .'</span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="media mr-4 mb-4">
+                                                                            <div class="mr-3 mt-1 ml-3">
+                                                                                <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                            </div>
+                                                                            <div class="media-body">
+                                                                                <strong>'. $procedure->procedure_code  .'</strong>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-10 mb-3">
+                                                                                        <small class="text-muted">'. $procedure->description .'</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="media mr-4 mb-4">
+                                                                            <div class="mr-3 mt-1 ml-3">
+                                                                                <i class="fa fa-user-circle-o fa-2x text-primary"></i>
+                                                                            </div>
+                                                                            <div class="media-body">
+                                                                                <strong>'. lang('performed_by') . ' </strong>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-10 mb-3 mt-1">
+                                                                                        <strong>'. lang('doctor') . '</strong>
+                                                                                        <small class="text-muted ml-2">'.  $doctor_procedure_performer .'</small>
+                                                                                        </br>
+                                                                                        <strong>'. lang('nurse') .'</strong>
+                                                                                        <small class="text-muted ml-2">'. $nurse_procedure_performer .'</small>
+                                                                                        </br>
+                                                                                        <strong>'. lang('midwife') .'</strong>
+                                                                                        <small class="text-muted ml-2">'. $midwife_procedure_performer .'</small>
+                                                                                        </br>
+                                                                                        <strong>'. lang('laboratorist') .'</strong>
+                                                                                        <small class="text-muted ml-2">'. $laboratorist_procedure_performer .'</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="media mr-4 mb-4">
+                                                                            <div class="mr-3 mt-1 ml-3">
+                                                                                <i class="fa fa-file-text-o fa-2x text-primary"></i>
+                                                                            </div>
+                                                                            <div class="media-body">
+                                                                                <strong>'. lang('note') .'</strong>
+                                                                                <div class="row">
+                                                                                    <div class="col-md-10 mb-3">
+                                                                                        <small class="text-muted">'. $procedure->note .'</small>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="timelineleft-footer border-top bg-light">
+                                                                    <div class="d-flex align-items-center mt-auto">
+                                                                        <div class="avatar brround avatar-md mr-3" style="background-image: url:('. $image_user  .')"></div>
+                                                                        <div>
+                                                                            <p class="font-weight-semibold mb-1">'. $doctor_recorder_name .'</p>
+                                                                            <small class="d-block text-muted">'. $user_spec  .'</small>
+                                                                        </div>
+                                                                        <div class="ml-auto mr-3 text-right">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12 col-sm-12">
+                                                                                    <strong>'. $hospital_details->name .'</strong>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12 col-sm-12">
+                                                                                    <small>'. $branch_name  .'</small>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div>
+                                                                            <div>
+                                                                                <i class="fa fa-hospital-o fa-2x text-primary"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>';
+           }
+        }
         if (!empty($timeline)) {
             $data['timeline'] = $timeline;
         }

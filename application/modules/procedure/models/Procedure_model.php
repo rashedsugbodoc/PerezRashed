@@ -240,11 +240,15 @@ class Procedure_model extends CI_model {
         $this->db->update('procedure_performer', $data);
     }
 
-    function updateProcedurePerformerByDoctor($procedure_id, $performer, $data) {
+    function updateProcedurePerformerByProcedureId($procedure_id, $data) {
+        $this->db->where('procedure_id', $procedure_id);
+        $this->db->update('procedure_performer', $data);
+    }
+
+    function updateProcedurePerformerByDoctor( $procedure_id, $data) {
         $this->db->group_start();
             $this->db->where('procedure_id', $procedure_id);
-            $this->db->where('performer_table_name', 'Doctor');
-            $this->db->where('performer_table_id', $performer);
+            $this->db->where('performer_table_name', 'doctor');
         $this->db->group_end();
         $this->db->update('procedure_performer', $data);   
     }
@@ -252,7 +256,7 @@ class Procedure_model extends CI_model {
     function updateProcedurePerformerByNurse($procedure_id, $performer, $data) {
         $this->db->group_start();
             $this->db->where('procedure_id', $procedure_id);
-            $this->db->where('performer_table_name', 'Nurse');
+            $this->db->where('performer_table_name', 'nurse');
             $this->db->where('performer_table_id', $performer);
         $this->db->group_end();
         $this->db->update('procedure_performer', $data);
@@ -261,7 +265,7 @@ class Procedure_model extends CI_model {
     function updateProcedurePerformerByMidwife($procedure_id, $performer, $data) {
         $this->db->group_start();
             $this->db->where('procedure_id', $procedure_id);
-            $this->db->where('performer_table_name', 'Midwife');
+            $this->db->where('performer_table_name', 'midwife');
             $this->db->where('performer_table_id', $performer);
         $this->db->group_end();
         $this->db->update('procedure_performer', $data);
@@ -269,26 +273,31 @@ class Procedure_model extends CI_model {
     }
 
     function insertProcedurePerformerByDoctor($data) {
-        $this->db->where('performer_table_name', 'Doctor');
+        $this->db->where('performer_table_name', 'doctor');
         $this->db->insert('procedure_performer', $data);
 
     }
 
     function insertProcedurePerformerByNurse($data) {
-        $this->db->where('performer_table_name', 'Nurse');
+        $this->db->where('performer_table_name', 'nurse');
         $this->db->insert('procedure_performer', $data);
     }
 
     function insertProcedurePerformerByMidwife($data) {
-        $this->db->where('performer_table_name', 'Midwife');
+        $this->db->where('performer_table_name', 'midwife');
         $this->db->insert('procedure_performer', $data);
     }
 
-    function getProcedurePerformerByProcedureIdByPerformerId($procedure_id, $performer) {
+    function insertProcedurePerformerByLaboratorist($data) {
+        $this->db->where('performer_table_name', 'laboratorist');
+        $this->db->insert('procedure_performer', $data);
+    }
+
+    function getProcedurePerformerByProcedureIdByPerformerId($procedure_id, $performer_id) {
         $this->db->select('*');
         $this->db->group_start();
             $this->db->where('procedure_id', $procedure_id);
-            $this->db->where('performer_table_id', $performer);
+            $this->db->where('performer_table_id', $performer_id);
         $this->db->group_end();
         $query = $this->db->get('procedure_performer');
         return $query->row();
@@ -307,7 +316,7 @@ class Procedure_model extends CI_model {
     function getProcedurePerformerByDoctorByProcedureId($procedure_id) {
         $this->db->group_start();
             $this->db->where('procedure_id', $procedure_id);
-            $this->db->where('performer_table_name', 'Doctor');
+            $this->db->where('performer_table_name', 'doctor');
         $this->db->group_end();
         $query = $this->db->get('procedure_performer');
         return $query->result();
@@ -317,7 +326,7 @@ class Procedure_model extends CI_model {
     function getProcedurePerformerByNurseByProcedureId($procedure_id) {
         $this->db->group_start();
             $this->db->where('procedure_id', $procedure_id);
-            $this->db->where('performer_table_name', 'Nurse');
+            $this->db->where('performer_table_name', 'nurse');
         $this->db->group_end();
         $query = $this->db->get('procedure_performer');
         return $query->result();
@@ -327,7 +336,17 @@ class Procedure_model extends CI_model {
     function getProcedurePerformerByMidwifeByProcedureId($procedure_id) {
         $this->db->group_start();
             $this->db->where('procedure_id', $procedure_id);
-            $this->db->where('performer_table_name', 'Midwife');
+            $this->db->where('performer_table_name', 'midwife');
+        $this->db->group_end();
+        $query = $this->db->get('procedure_performer');
+        return $query->result();
+    }
+
+    //laboratorist
+    function getProcedurePerformerByLaboratoristByProcedureId($procedure_id) {
+        $this->db->group_start();
+            $this->db->where('procedure_id', $procedure_id);
+            $this->db->where('performer_table_name', 'laboratorist');
         $this->db->group_end();
         $query = $this->db->get('procedure_performer');
         return $query->result();
@@ -344,7 +363,7 @@ class Procedure_model extends CI_model {
     }
 
     function deleteProcedurePerformerById($id) {
-        $this->db->where('performer_table_id', $id);
+        $this->db->where('id', $id);
         $this->db->delete('procedure_performer');
     }
 

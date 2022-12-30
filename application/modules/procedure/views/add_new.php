@@ -85,13 +85,9 @@
                                                         <div class="col-md-12 form-group">
                                                             <label  class="form-label"> <?php echo lang('status'); ?><span class="text-red"> *</span></label>
                                                             <select class="form-control select2-show-search" id="status" name="status">
-                                                                
-
-                                                                                                                                              
                                                             </select>
                                                         </div>
                                                     </div>
-
                                                     <!-- PERFORMED BY -->
                                                     <span class="font-weight-bold mt-5 "><?php echo lang('performed_by') ?></span>
                                                     <!-- DOCTOR -->
@@ -111,22 +107,6 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody id="Doctor">
-                                                                                    <?php foreach($doctors as $doctor) { ?>
-                                                                                        <tr id="past_doctor_list<?php echo $doctor->count; ?>">
-                                                                                            <td>
-                                                                                                <button class="btn btn-danger" type="button" id="removeDoctor<?php echo $doctor->count; ?>" onclick="removeDoctor(<?php echo $doctor->count; ?>)"><i class="fe fe-trash"></i></button>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <select class="form-control select2-show-search w-100" id="pos_rendering_user_doctor" name="pos_rendering_user_doctor[]" data-placeholder="Choose one" required>
-                                                                                                </select>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                 <!-- <input type="text" name="doctor_role[]" class="form-control" value="" id="performer_role"> -->
-                                                                                                 <select class="form-control select2-show-search w-100" id="performer_role" name="performer_role_doctors[]" data-placeholder="Select Role" required>
-                                                                                                </select>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    <?php } ?>
                                                                                 </tbody>
                                                                                 <tfoot>
                                                                                     <tr>
@@ -141,7 +121,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
                                                     </div>
 
                                                     <!-- Nurse -->
@@ -161,22 +140,6 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody id="Nurse">
-                                                                                    <?php foreach($nurses as $nurse) { ?>
-                                                                                        <tr id="past_nurse_list<?php echo $nurse->count; ?>">
-                                                                                            <td>
-                                                                                                <button class="btn btn-danger" type="button" id="removeNurse<?php echo $nurse->count; ?>" onclick="removeNurse(<?php echo $nurse->count; ?>)"><i class="fe fe-trash"></i></button>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <select class="form-control select2-show-search w-100 nurse" id="pos_rendering_user_nurse" name="pos_rendering_user_nurse[]" data-placeholder="Choose one" required>
-                                                                                                </select>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <!-- <input type="text" name="nurse_role[]" class="form-control" value="" id="performer_role"> -->
-                                                                                                <select class="form-control select2-show-search w-100" id="performer_role" name="performer_role_nurse[]" data-placeholder="Select Role" required>
-                                                                                                </select>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    <?php } ?>
                                                                                 </tbody>
                                                                                 <tfoot>
                                                                                     <tr>
@@ -210,22 +173,6 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody id="Midwife">
-                                                                                    <?php foreach($midwives as $midwife) { ?>
-                                                                                        <tr id="past_midwife_list<?php echo $midwife->count; ?>">
-                                                                                            <td>
-                                                                                                <button class="btn btn-danger" type="button" id="remove<?php echo $midwife->count; ?>" onclick="removeMidwife(<?php echo $midwife->count; ?>)"><i class="fe fe-trash"></i></button>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <select class="form-control select2-show-search w-100" id="pos_rendering_user_midwife" name="pos_rendering_user_midwife[]" data-placeholder="Choose one" required>
-                                                                                                </select>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <!-- <input type="text" name="midwife_role[]" class="form-control" value="" id="performer_role"> -->
-                                                                                                <select class="form-control select2-show-search w-100" id="performer_role" name="performer_role_midwife[]" data-placeholder="Select Role" required>
-                                                                                                </select>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    <?php } ?>
                                                                                 </tbody>
                                                                                 <tfoot>
                                                                                     <tr>
@@ -259,22 +206,6 @@
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody id="Laboratorist">
-                                                                                    <?php foreach($laboratorists as $laboratorist) { ?>
-                                                                                        <tr id="past_laboratorist_list<?php echo $laboratorist->count; ?>">
-                                                                                            <td>
-                                                                                                <button class="btn btn-danger" type="button" id="remove<?php echo $laboratorist->count; ?>" onclick="removeLaboratorist(<?php echo $laboratorist->count; ?>)"><i class="fe fe-trash"></i></button>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <select class="form-control select2-show-search w-100" id="pos_rendering_user_laboratorist" name="pos_rendering_user_laboratorist[]" data-placeholder="Choose one" required>
-                                                                                                </select>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                                <!-- <input type="text" name="laboratorist_role[]" class="form-control" value="" id="performer_role"> -->
-                                                                                                <select class="form-control select2-show-search w-100" id="performer_role" name="performer_role_laboratorist[]" data-placeholder="Select Role" required>
-                                                                                                </select>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    <?php } ?>
                                                                                 </tbody>
                                                                                 <tfoot>
                                                                                     <tr>
@@ -323,28 +254,30 @@
                                         </div>
                                 </div>
                             </div>
-                            <!-- modal for each view -->
-                            <!-- <div class="modal-here">
-                                    
-                            </div> -->
-                            <!-- <div id="myModal" class="modal fade" role="dialog">
-                                <div class="modal-dialog ">
-                                  
+
+                            <!-- modal for delete -->
+                            <div class="modal fade" tabindex="-1" role="dialog" id="my-modal-delete">
+                                <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <p>Some text in the modal.</p>
-                                        </div>
-                                        <div class="modal-footer">
-						                    <button class="btn btn-indigo" type="button" data-dismiss="modal">Save changes</button> <button class="btn btn-light" type="button" data-dismiss="modal">Close</button>
-					                    </div>
+                                        <form role="form" id="deleteForm" action="" class="clearfix" method="post" enctype="multipart/form-data">
+                                            <div class="modal-body d-flex justify-content-center align-items-center">
+                                                <p>Are you sure you want to delete this Performer?</p>
+                                                <input hidden type="text" id="performerId" name="performerId">
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-danger" id="submitbtn"><i class="fe fe-trash"></i></button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            </div> -->
-                            <!-- <button type="button" class="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Open Modal</button> -->
-                            <!-- modal end view -->
+                            </div>
+                            <!-- modal end for delete -->
+
+
                         </div>
                     </div>
                 </div><!-- end app-content-->
@@ -504,37 +437,29 @@
                    
                     var performer_details = response.performer_details;
                     var notes = response.notes;
-                    var doctors = response.doctors;
-                    var nurses  = response.nurses;
-                    var midwives = response.midwives;
-                    var laboratorist = response.laboratorist;
+                    // var doctors = response.doctors;
+                    // var nurses  = response.nurses;
+                    // var midwives = response.midwives;
+                    // var laboratorist = response.laboratorist;
 
                     var procedure_performers = response.procedure_performers;
 
                     var roles =  response.performer_roles;
 
-                    console.log(roles);
-                    
-            
-
-
-
                     $.each(procedure_performers, function(key, value) {
-                   
-                        if(value.performer_table_name === 'Doctor') {
+
+                        if(value.performer_table_name === 'doctor') {
 
                             var doctor_info = '<option value="'+value.performer_table_id+'" selected>'+performer_details[key].name+'</option>'
                             var doctor_role = '<option value="'+value.role_id+'" selected>'+roles[key].display_name+'</option>'
-                            console.log(value.performer_table_id);
                             
                             $("#Doctor").append('\n\
-                                <tr id="past_doctor_list'+value.performer_table_id+'">\n\
+                                <tr id="past_doctor_list'+value.id+'">\n\
                                     <td class="w-2">\n\
-                                        <button class="btn btn-danger deleteDoctor" type="button" id="'+value.performer_table_id+'" onClick="removeDoctor('+value.performer_table_id+');"><i class="fe fe-trash"></i></button>\n\
-                                        <input type="text" name="id[]" value="'+value.id+'">\n\
+                                        <button class="btn btn-danger deleteDoctor" type="button" id="'+value.performer_table_id+'" onClick="removeDoctorPerformer('+value.id+')"><i class="fe fe-trash"></i></button>\n\
                                     </td>\n\
                                     <td class="w-8">\n\
-                                        <select class="form-control select2-show-search doctor w-100" id="pos_rendering_user_doctor'+value.performer_table_id+'" name="pos_rendering_user_doctor[]" data-placeholder="Choose one">\n\
+                                        <select class="form-control select2-show-search doctor doctor'+value.performer_table_id+' w-100" id="pos_rendering_user_doctor'+value.performer_table_id+'" name="pos_rendering_user_doctor[]" data-placeholder="Choose one">\n\
                                         '+doctor_info+'\n\
                                         </select>\n\
                                     </td>\n\
@@ -544,7 +469,7 @@
                                         </select>\n\
                                     </td>\n\
                                 </tr>\n\
-                            ')
+                               ')
 
 
                             $(".doctor").select2({
@@ -573,18 +498,16 @@
                      
                         }
 
-
-                        if(value.performer_table_name === 'Nurse') {
+                        if(value.performer_table_name === 'nurse') {
 
                             var nurse_info = '<option value="'+value.performer_table_id+'" selected>'+performer_details[key].name+'</option>'
                             var nurse_role = '<option value="'+value.role_id+'" selected>'+roles[key].display_name+'</option>'
                          
                             
                             $("#Nurse").append('\n\
-                                <tr id="past_nurse_list'+value.performer_table_id+'">\n\
+                                <tr id="past_nurse_list'+value.id+'">\n\
                                     <td class="w-2">\n\
-                                        <button class="btn btn-danger deleteNurse" type="button" id="'+value.performer_table_id+'" onClick="removeNurse('+value.performer_table_id+');"><i class="fe fe-trash"></i></button>\n\
-                                        <input type="text" name="id[]" value="'+value.id+'">\n\
+                                        <button class="btn btn-danger deleteNurse" type="button" id="'+value.performer_table_id+'" onClick="removeNursePerformer('+value.id+');"><i class="fe fe-trash"></i></button>\n\
                                     </td>\n\
                                     <td class="w-8">\n\
                                         <select class="form-control select2-show-search nurse w-100" id="pos_rendering_user_nurse'+value.performer_table_id+'" name="pos_rendering_user_nurse[]" data-placeholder="Choose one">\n\
@@ -625,15 +548,14 @@
 
                         }
 
-                        if(value.performer_table_name === 'Midwife') {
+                        if(value.performer_table_name === 'midwife') {
                             var midwife_info = '<option value="'+value.performer_table_id+'" selected>'+performer_details[key].name+'</option>'
                             var midwife_role = '<option value="'+value.role_id+'" selected>'+roles[key].display_name+'</option>'
                    
                             $("#Midwife").append('\n\
-                                <tr id="past_midwife_list'+value.performer_table_id+'">\n\
+                                <tr id="past_midwife_list'+value.id+'">\n\
                                     <td class="w-2">\n\
-                                        <button class="btn btn-danger deleteMidwife" type="button" id="'+value.performer_table_id+'" onClick="removeMidwife('+value.performer_table_id+');"><i class="fe fe-trash"></i></button>\n\
-                                        <input type="text" name="id[]" value="'+value.id+'">\n\
+                                        <button class="btn btn-danger deleteMidwife" type="button" id="'+value.performer_table_id+'" onClick="removeMidwifePerformer('+value.id+');"><i class="fe fe-trash"></i></button>\n\
                                         </td>\n\
                                     <td class="w-8">\n\
                                         <select class="form-control select2-show-search midwife w-100" id="pos_rendering_user_midwife'+value.performer_table_id+'" name="pos_rendering_user_midwife[]" data-placeholder="Choose One" required>\n\
@@ -674,14 +596,14 @@
                       
                         }
 
-                        if(value.performer_table_name === 'Laboratorist') {
+                        if(value.performer_table_name === 'laboratorist') {
                             var laboratorist_info = '<option value="'+value.performer_table_id+'" selected>'+performer_details[key].name+'</option>'
                             var laboratorist_role = '<option value="'+value.role_id+'" selected>'+roles[key].display_name+'</option>'
                     
                             $('#Laboratorist').append('\n\
-                                <tr id="past_laboratorist_list'+value.performer_table_id+'">\n\
+                                <tr id="past_laboratorist_list'+value.id+'">\n\
                                     <td class="w-2">\n\
-                                    <button class="btn btn-danger deleteLaboratorist" type="button" id="'+value.performer_table_id+'" onClick="removeLaboratorist('+value.performer_table_id+');"><i class="fe fe-trash"></i></button>\n\
+                                    <button class="btn btn-danger deleteLaboratorist" type="button" id="'+value.performer_table_id+'" onClick="removeLaboratoristPerformer('+value.id+');"><i class="fe fe-trash"></i></button>\n\
                                     </td>\n\
                                     <td class="w-8">\n\
                                         <select class="form-control select2-show-search  laboratorist w-100" id="pos_rendering_user_laboratorist'+value.id+'" name="pos_rendering_user_laboratorist[]" data-placeholder="Choose One">\n\
@@ -787,85 +709,90 @@
         })
     </script>
 
+
+    <!-- Remove Doctor Performer from the database -->
     <script>
-        $(document).on('click', '.deleteDoctor ', function() {
-            var id = $(this).attr('id');
+        $(document).on('click', '.deleteDoctor', function() {
+            $('#my-modal-delete').modal('show');
+
+        });
+            function removeDoctorPerformer(id) {
+            $('#performerId').val(id);
             console.log(id);
-            $.ajax({
-                url: 'procedure/deleteProcedurePerformer?id='+id,
-                method: 'POST',
-                data: {id: id},
-                success: function(data) {
-                    alert(data);
-                }
-            })
-          
-        })
+        }
     </script>
 
+    <!-- Remove Nurse Performer from the database -->
     <script>
         $(document).on('click', '.deleteNurse', function() {
-            var id = $(this).attr('id');
-            console.log(id);
+            $('#my-modal-delete').modal('show');
 
-            if(confirm("Are you sure you want to delete this?")) {
-                $.ajax({
-                    url: 'procedure/deleteProcedurePerformer?id='+id,
-                    method: 'POST',
-                    data: {id: id},
-                    success: function(data) {
-                        alert(data);
-                    }
-                })
-            }else {
-                return false
+        });
+            function removeNursePerformer(id) {
+                $('#performerId').val(id);
+                console.log(id);
             }
-        })
     </script>
 
+
+    <!-- Remove Midwife Performer from the database -->
     <script>
-        $(document).on('click', '.deleteMidwife', function() {
-            var id = $(this).attr('id');
-            console.log(id);
+         $(document).on('click', '.deleteMidwife', function() {
+            $('#my-modal-delete').modal('show');
 
-            if(confirm("Are you sure you want to delete this?")) {
-                $.ajax({
-                    url: 'procedure/deleteProcedurePerformer?id='+id,
-                    method: 'POST',
-                    data: {id: id},
-                    success: function(data) {
-                        alert(data);
-                    }
-                })
-            }else {
-                return false
+        });
+            function removeMidwifePerformer(id) {
+                $('#performerId').val(id);
+                console.log(id);
             }
-        })
     </script>
 
+    <!-- Remove Laboratorist Performer from the database -->
     <script>
-        $(document).on('click', '.deleteLaboratorist', function() {
-            var id = $(this).attr('id');
-            console.log(id);
+         $(document).on('click', '.deleteLaboratorist', function() {
+            $('#my-modal-delete').modal('show');
 
-            if(confirm("Are you sure you want to delete this?")) {
-                $.ajax({
-                    url: 'procedure/deleteProcedurePerformer?id='+id,
-                    method: 'POST',
-                    data: {id: id},
-                    success: function(data) {
-                        alert(data);
-                    }
-                })
-            }else {
-                return false
+        });
+            function removeLaboratoristPerformer(id) {
+                $('#performerId').val(id);
+                console.log(id);
             }
-        })
     </script>
 
 
-    
-    
+    <script type="text/javascript">
+        $('#submitbtn').on('click',function(e){
+        e.preventDefault();
+            var data = $('#deleteForm').serialize();
+            var getProcedurePerformerId = data.split("=")[1];
+            console.log(getProcedurePerformerId);
+            var base_url='<?php echo base_url(); ?>'
+            $.ajax({
+                url:'procedure/deleteProcedurePerformer?id='+getProcedurePerformerId,
+                type:'GET',
+                data:getProcedurePerformerId,
+                success:function(data){
+                    $('#my-modal-delete').modal('hide');
+                    $('#past_doctor_list'+ getProcedurePerformerId).hide(2000);
+                    $('#past_nurse_list'+ getProcedurePerformerId).hide(2000);
+                    $('#past_midwife_list'+ getProcedurePerformerId).hide(2000);
+                    $('#past_laboratorist_list'+ getProcedurePerformerId).hide(2000);
+
+                    $.growl.success({
+                        message: "<?php echo lang('record_deleted'); ?>"
+                    });
+
+                }
+            })
+
+            return false;
+
+
+            });
+    </script>
+
+
+
     <script type="text/javascript">
         $(document).ready(function() {
             var patient_id = '<?php echo $patient_details->id ?>';
@@ -890,22 +817,6 @@
     </script>
 
     <script type="text/javascript">
-        // $("#encounter").change(function() {
-        //     var encounter = $("#encounter").val();
-        //     $("#pos_select").find('option').remove();
-
-        //     $.ajax({
-        //         url: 'patient/getPatientByEncounterIdByJason?id='+encounter,
-        //         method: 'GET',
-        //         data: '',
-        //         dataType: 'json',
-        //         success: function (response) {
-        //             var patient = response.patient;
-        //             $('#pos_select').append($('<option>').text(patient.name).val(patient.id)).end();
-        //         }
-        //     })
-        // });
-
         $("#pos_select").change(function() {
             var patient = $("#pos_select").val();
             $("#encounter").find('option').remove();
@@ -957,94 +868,10 @@
 
     <script>
         $(document).ready(function () {
-            var table = $('#editable-sample').DataTable({
-                responsive: true,
-
-                "processing": true,
-                "serverSide": true,
-                "searchable": true,
-                "ajax": {
-                    url: "form/getForm",
-                    type: 'POST',
-                },
-                scroller: {
-                    loadingIndicator: true
-                },
-
-                dom: "<'row'<'col-sm-3'l><'col-sm-5 text-center'B><'col-sm-4'f>>" +
-                        "<'row'<'col-sm-12'tr>>" +
-                        "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-                buttons: [
-                    {
-                    extend: 'collection',
-                    text: 'Export',        
-                        buttons: [
-                            {
-                                extend: 'copyHtml5',
-                                exportOptions: {
-                                    columns: [0, 1, 2, 3],
-                                },
-                                title: '<?php echo lang('forms'); ?>'
-                            },
-                            {
-                                extend: 'excelHtml5',
-                                exportOptions: {
-                                    columns: [0, 1, 2, 3],
-                                },
-                                title: '<?php echo lang('forms'); ?>'
-                            },
-                            {
-                                extend: 'csvHtml5',
-                                exportOptions: {
-                                    columns: [0, 1, 2, 3],
-                                },
-                                title: '<?php echo lang('forms'); ?>'
-                            },
-                            {
-                                extend: 'pdfHtml5',
-                                exportOptions: {
-                                    columns: [0, 1, 2, 3],
-                                },
-                                title: '<?php echo lang('forms'); ?>'
-                            },
-                            {
-                                extend: 'print',
-                                exportOptions: {
-                                    columns: [0, 1, 2, 3],
-                                },
-                                title: '<?php echo lang('forms'); ?>'
-                            },
-                        ],
-                    }
-                ],
-
-                aLengthMenu: [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "All"]
-                ],
-                iDisplayLength: 100,
-                "order": [[0, "desc"]],
-
-                "language": {
-                    "lengthMenu": "_MENU_",
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search..."
-                }
-            });
-            table.buttons().container().appendTo('.custom_buttons');
-        });
-    </script>
-
-
-
-
-    <script>
-        $(document).ready(function () {
             $(".pos_select").select2({
                 placeholder: '<?php echo lang('select_patient'); ?>',
                 allowClear: true,
                 ajax: {
-
                     url: 'patient/getPatientInfoByVisitedProviderId',
                     type: "post",
                     dataType: 'json',
@@ -1061,12 +888,7 @@
                     },
                     cache: true
                 }
-
             });
-           
-            
-            
-         
         });
     </script>
 
@@ -1093,10 +915,10 @@
 
     <!--Delete Doctor, Midwife, Nurse, Laboratorist-->
     <script type="text/javascript">
-        
-        function removeDoctor(doctor_count)  {  
+
+        function removeDoctor(doctor_count)  {
             $("#past_doctor_list"+doctor_count).remove();
-           
+
         }
 
         function removeNurse(nurse_count) {
@@ -1114,7 +936,6 @@
             $("#past_laboratorist_list"+laboratorist_count).remove();
         }
 
-
     </script>
 
 
@@ -1122,8 +943,7 @@
     <script type="text/javascript">
         $(document).ready(function (){
             $('#formForm').on("click", "#newRecord_doctor", function (){
-                var doctor_count = $(".doctor").length
-                console.log(doctor_count);
+                var doctor_count = $(".doctor").length;
                 $("#Doctor").append('\n\
                     <tr id="past_doctor_list'+doctor_count+'">\n\
                         <td class="w-2">\n\
@@ -1189,17 +1009,9 @@
                     })
                 });
 
-
-
-                
-
-
             })
 
         })
-
-
-       
     </script>
 
     <!-- Add Nurse-->
@@ -1272,7 +1084,7 @@
                     })
                 });
             })
-           
+
         })
     </script>
 
