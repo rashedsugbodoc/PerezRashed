@@ -20,6 +20,7 @@ class Finance extends MX_Controller {
         $this->load->model('companyuser/companyuser_model');
         $this->load->model('branch/branch_model');
         $this->load->model('location/location_model');
+        $this->load->model('procedure/procedure_model');
         $this->load->module('sms');
         require APPPATH . 'third_party/stripe/stripe-php/init.php';
         $this->load->module('paypal');
@@ -2290,7 +2291,9 @@ class Finance extends MX_Controller {
         $co_payer_payment_limit_type = $this->input->post('co_payer_payment_limit_type');
         $deleted_company = $this->input->post('deleted_company');
         $charge_copayer = $this->input->post('charge_copayer');
-        $redirect = $this->input->post('redirect');
+        $procedures_array = $this->input->post('procedures');
+
+        $procedures = implode(',', $procedures_array);
 
         $non_duplicate_deleted_company = implode(',', array_keys(array_flip(explode(',', $deleted_company))));
 
@@ -2358,7 +2361,8 @@ class Finance extends MX_Controller {
                 'staff_commission' => $s_commission,
                 'service_category_group_id' => $service_type,
                 'applicable_staff_id' => $staff,
-                'deleted' => null
+                'deleted' => null,
+                'procedure_id' => $procedures,
             );
 
             if ($group == "Doctor") {
@@ -2668,11 +2672,7 @@ class Finance extends MX_Controller {
                 $this->session->set_flashdata('success', lang('record_updated'));
             }
 
-            if (!empty($redirect)) {
-                redirect($redirect);
-            } else {
-                redirect('finance/chargeGroupList');
-            }
+            // redirect('finance/chargeGroupList');
 
         }
     }
@@ -2707,6 +2707,7 @@ class Finance extends MX_Controller {
         $services = $this->finance_model->getPaymentCategoryByGroupId($group);
         $company = [];
         $tax = [];
+        $procedures = [];
         // $data['tax'] = $this->finance_model->getTax();
         foreach($services as $service) {
             $company[] = $this->company_model->getCompanyById($service->payer_account_id);
@@ -2720,6 +2721,17 @@ class Finance extends MX_Controller {
             }
         }
 
+        $service_procedures = explode(',', $services[0]->procedure_id);
+        foreach($service_procedures as $service_procedure) {
+            $procedure_details = $this->procedure_model->getProcedureCodeById($service_procedure);
+            $procedures[] = array(
+                'id' => $procedure_details->id,
+                'cpt_code' => $procedure_details->cpt_code,
+                'name' => $procedure_details->description,
+            );
+        }
+
+        $data['procedures'] = $procedures;
         $data['tax'] = $tax;
         $data['company'] = $company;
         $data['service'] = $services;

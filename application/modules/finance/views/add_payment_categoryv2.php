@@ -326,6 +326,13 @@
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('procedures'); ?></label>
+                                                        <select class="form-control select2-show-search" id="procedures" name="procedures[]" multiple="multiple">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
                                                         <label class="form-label"><?php echo lang('category'); ?> <span class="text-red">*</span></label>
                                                         <select class="form-control select2-show-search" name="category_id" required>
                                                             <option value=""><?php echo lang('select_category');?></option>
@@ -385,9 +392,6 @@
                                                     echo $service[0]->id;
                                                 }
                                                 ?>'>
-                                                <?php if (!empty($redirect)) { ?>
-                                                    <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
-                                                <?php } ?>
                                                 <input type="hidden" name="deleted_company" id="deleted_company">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
@@ -560,10 +564,15 @@
                     success: function (response) {
                         var company = response.company;
                         var service = response.service;
+                        var procedures = response.procedures;
                         var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
                         var tax = response.tax;
 
-                        // console.log(tax);
+                        console.log(procedures);
+
+                        $.each(procedures, function (key, value) {
+                            $('#procedures').append($('<option selected>').text(value.cpt_code+' - '+value.name).val(value.id)).end();
+                        })
 
                         $.each(company, function (key, value) {
                             var service_tax_id = service[key].tax_id;
@@ -1373,6 +1382,33 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#procedures").select2({
+                placeholder: '<?php echo lang('select').' '.lang('procedures') ?>',
+                multiple: true,
+                allowClear: true,
+                ajax: {
+                    url: 'procedure/getCptCodeAndDescription',
+                    type: 'post',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+            })
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             $("#tax").select2({
                 placeholder: '<?php echo lang('select_tax'); ?>',
                 allowClear: true,
@@ -1725,7 +1761,12 @@
                                 success:function(data){
                                 }
                             });
-                            window.location = base_url+"finance/paymentCategory";
+
+                            if ('<?php echo $redirect; ?>' == '') {
+                                window.location = base_url+"finance/chargeGroupList";
+                            } else {
+                                window.location = base_url+"finance/paymentCategory";
+                            }
                         }
                     } else {
                         var data = $('#paymentCategoryForm').serialize();
@@ -1737,7 +1778,11 @@
                             success:function(data){
                             }
                         });
-                        window.location = base_url+"finance/paymentCategory";
+                        if ('<?php echo $redirect; ?>' == '') {
+                            window.location = base_url+"finance/chargeGroupList";
+                        } else {
+                            window.location = base_url+"finance/paymentCategory";
+                        }
                     }
                 } else {
                     var check_remaining = 0;
@@ -1778,7 +1823,11 @@
                             success:function(data){
                             }
                         });
-                        window.location = base_url+"finance/paymentCategory";
+                        if ('<?php echo $redirect; ?>' == '') {
+                            window.location = base_url+"finance/chargeGroupList";
+                        } else {
+                            window.location = base_url+"finance/paymentCategory";
+                        }
                     } else {
                         alert("Limit Should be Equal to 100 %");
                         const element = document.getElementById("payer_fixed_percentage_section_two");
