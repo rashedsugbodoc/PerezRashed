@@ -3136,7 +3136,7 @@ class Finance extends MX_Controller {
         $data['discount_type'] = $this->finance_model->getDiscountType();
         $data['payment'] = $this->finance_model->getPaymentById($id);
         $this->load->view('home/dashboardv2');
-        $this->load->view('invoicev2', $data);
+        $this->load->view('invoicev3', $data);
         //$this->load->view('home/footer'); // just the footer fi
     }
 
@@ -4285,8 +4285,10 @@ class Finance extends MX_Controller {
             $patient_info = $this->db->get_where('patient', array('id' => $payment->patient))->row();
             if (!empty($patient_info)) {
                 $patient_details = $patient_info->name . '</br>' . $patient_info->address . '</br>' . $patient_info->phone . '</br>';
+                $options5 = '<a class="btn btn-success" href="finance/patientPaymentHistory?patient='. $patient_info->patient_id .'"><i class="fa fa-money"></i> '. lang('payment') .'</a>';
             } else {
                 $patient_details = ' ';
+                $options5 = '';
             }
 
             $invoice_details = $this->finance_model->getInvoiceByGroupNumber($payment->invoice_group_number);
@@ -4318,7 +4320,7 @@ class Finance extends MX_Controller {
                 '<div class="text-right">'.number_format($payment->discount,2).'</div>',
                 '<div class="text-right">'.number_format($payment->gross_total,2).'</div>',
                 $payment->remarks,
-                $options1 . ' ' . $options2 . ' ' . $options4 . ' ' . $options3,
+                $options1 . ' ' . $options2 . ' ' . $options3 . ' ' . $options5,
                     //  $options2
             );
         }
@@ -4856,7 +4858,28 @@ class Finance extends MX_Controller {
         echo json_encode($data);
     }
 
+    public function getInvoiceDetailsByInvoiceId() {
+        $id = $this->input->get('id');
 
+        $invoice_items = $this->finance_model->getInvoiceItemsByPaymentId($id);
+
+        $settings = $this->settings_model->getSettings();
+
+        $item_list = [];
+        foreach($invoice_items as $invoice_item) {
+            $item_list[] = array(
+                'date' => date('Y-m-d', strtotime($invoice_item->created_at.' UTC')),
+                'description' => $invoice_item->description,
+                'rate' => $invoice_item->price,
+                'qty' => $invoice_item->quantity,
+                'linetotal' => $invoice_item->item_total_price,
+            );
+        }
+
+        $data['item_list'] = $item_list;
+
+        echo json_encode($data);
+    }
 
 }
 

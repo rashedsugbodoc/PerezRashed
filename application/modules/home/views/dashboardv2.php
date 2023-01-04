@@ -1539,7 +1539,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                                         $user = $this->session->userdata('user_id');
                                                         $user_image = $this->session->userdata('profile_img_url');
                                                     ?>
-                                                    <img src="<?php echo base_url($user_image); ?>" alt="img" class="avatar avatar-md brround">
+                                                    <img src="<?php echo base_url($user_image); ?>" alt="img" class="avatar avatar-md brround" id="profile_image">
                                                 </span>
                                             </a>
                                             <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow animated">
