@@ -4869,7 +4869,7 @@ class Finance extends MX_Controller {
         foreach($invoice_items as $invoice_item) {
             $item_list[] = array(
                 'date' => date('Y-m-d', strtotime($invoice_item->created_at.' UTC')),
-                'description' => $invoice_item->description,
+                'description' => 'Surgery'."\n".$invoice_item->description,
                 'rate' => $invoice_item->price,
                 'qty' => $invoice_item->quantity,
                 'linetotal' => $invoice_item->item_total_price,

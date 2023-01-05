@@ -288,6 +288,7 @@
 
         <script src="https://code.jquery.com/jquery-1.12.4.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.min.js"></script>
+        <script src="https://unpkg.com/jspdf-autotable@3.5.22/dist/jspdf.plugin.autotable.js"></script>
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
         <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js" integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/" crossorigin="anonymous"></script> -->
         <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
@@ -312,6 +313,8 @@
                             // console.log(document.getElementById("profile_image"))
 
                             // var d = String("");
+
+                            console.log(JSON.stringify(item_list));
 
                             var img = document.getElementById("company_logo");
 
@@ -419,87 +422,218 @@
                                                         doc.text('Amount Due (PHP)', 158, 73);
                                                         doc.setFontSize(18);
                                                         doc.text(doc.splitTextToSize('33,124.50', 41), 158, 81);
+
+                                                        doc.setFontSize(10);
+                                                        doc.text('Amount Due (PHP)', 158, 72);
+                                                        doc.setFontSize(18);
+                                                        doc.text(doc.splitTextToSize('33,124.50', 41), 158, 80);
                                                     /*Bill Info End*/
 
                                                 /*Header*/
 
                                                 /*Table*/
-                                                    $.each(item_list, function (i, row)
-                                                    {
+                                                    // $.each(item_list, function (i, row)
+                                                    // {
 
-                                                        rowCount++;
+                                                    //     rowCount++;
 
-                                                        $.each(row, function (j, cellContent) {
+                                                    //     $.each(row, function (j, cellContent) {
 
-                                                            console.log(j);
+                                                    //         if (j == "date") {
+                                                    //             cellWidth = dateCellWidth;
+                                                    //         } else if (j == "description") {
+                                                    //             cellWidth = descriptionCellWidth;
+                                                    //         } else if (j == "rate") {
+                                                    //             cellWidth = rateCellWidth;
+                                                    //         } else if (j == "qty") {
+                                                    //             cellWidth = qtyCellWidth;
+                                                    //         } else if (j == "linetotal") {
+                                                    //             cellWidth = lineTotalCellWidth;
+                                                    //         }
 
-                                                            if (j == "date") {
-                                                                cellWidth = dateCellWidth;
-                                                            } else if (j == "description") {
-                                                                cellWidth = descriptionCellWidth;
-                                                            } else if (j == "rate") {
-                                                                cellWidth = rateCellWidth;
-                                                            } else if (j == "qty") {
-                                                                cellWidth = qtyCellWidth;
-                                                            } else if (j == "linetotal") {
-                                                                cellWidth = lineTotalCellWidth;
-                                                            }
+                                                    //         if (rowCount == 1) {
+                                                    //             doc.margins = 1;
+                                                    //             doc.setFontSize(8);                    
+                                                    //             doc.setFont("courier ");
+                                                    //             doc.setFontType("bolditalic ");
 
-                                                            if (rowCount == 1) {
-                                                                doc.margins = 1;
-                                                                doc.setFontSize(8);                    
-                                                                doc.setFont("courier ");
-                                                                doc.setFontType("bolditalic ");
+                                                    //             doc.cell(leftMargin, topMargin, cellWidth, headerRowHeight, cellContent, i)
+                                                    //         }
+                                                    //         else if (rowCount == 2) {
+                                                    //             doc.margins = 1;
+                                                    //             doc.setFontSize(8);                    
+                                                    //             doc.setFont("courier ");
+                                                    //             doc.setFontType("bolditalic ");                  
 
-                                                                doc.cell(leftMargin, topMargin, cellWidth, headerRowHeight, cellContent, i)
-                                                            }
-                                                            else if (rowCount == 2) {
-                                                                doc.margins = 1;
-                                                                doc.setFontSize(8);                    
-                                                                doc.setFont("courier ");
-                                                                doc.setFontType("bolditalic ");                  
+                                                    //             doc.cell(leftMargin, topMargin, cellWidth, rowHeight, cellContent, i); 
+                                                    //         }
+                                                    //         else {
 
-                                                                doc.cell(leftMargin, topMargin, cellWidth, rowHeight, cellContent, i); 
-                                                            }
-                                                            else {
+                                                    //             doc.margins = 1;
+                                                    //             doc.setFontSize(8);                    
+                                                    //             doc.setFont("courier ");
+                                                    //             doc.setFontType("bolditalic ");
+                                                    //             doc.cell(leftMargin, topMargin, cellWidth, rowHeight, cellContent, i);  // 1st=left margin    2nd parameter=top margin,     3rd=row cell width      4th=Row height
+                                                    //         }
+                                                    //     })
+                                                    // })
 
-                                                                doc.margins = 1;
-                                                                doc.setFontSize(8);                    
-                                                                doc.setFont("courier ");
-                                                                doc.setFontType("bolditalic ");
-                                                                doc.cell(leftMargin, topMargin, cellWidth, rowHeight, cellContent, i);  // 1st=left margin    2nd parameter=top margin,     3rd=row cell width      4th=Row height
-                                                            }
-                                                        })
-                                                    })
                                                 /*Table*/
-
-
-                                                // doc.text('Cebu Demo Clinic R1', 158, 17, {
-                                                //     align: 'justify',
-                                                //     maxWidth: 20,
-                                                // });
 
                             // doc.text('Hi How are you', 105, 15, 'center');
 
-                                                // doc.table(tableToJson($('#editable-sample').get(0)), 13, 198, {
-                                                //    autoSize: true,
-                                                //    printHeaders: true,
-                                                //    margins: {
-                                                //        top: 50
-                                                //    }
-                                                // });
+                                                // let header = ["date","description","rate","qty","linetotal"];
 
-                                                let header = ["date","description","rate","qty","linetotal"];
+                                                // let headerConfig = header.map(key=>({ 
+                                                //   'name': key,
+                                                //   'prompt': key,
+                                                //   'width':50,
+                                                //   'align':'center',
+                                                //   'padding':0
+                                                // }));
 
-                                                let headerConfig = header.map(key=>({ 
-                                                  'name': key,
-                                                  'prompt': key,
-                                                  'width':50,
-                                                  'align':'center',
-                                                  'padding':0
-                                                }));
+                                                // doc.table(13, 198, item_list, headerConfig)
 
-                                                doc.table(13, 198, item_list, headerConfig)
+                                            /*AutoTable JSPDF Theme*/
+
+                                                console.log(item_list);
+
+                                                var output = item_list.map(function(obj) {
+                                                  return Object.keys(obj).sort().map(function(key) { 
+                                                    return obj[key];
+                                                  });
+                                                });
+
+                                                console.log(output);
+
+                                                doc.autoTable({
+                                                    theme: 'grid',//striped Default
+                                                    headStyles: { 
+                                                        // lineWidth: 1, lineColor: [255, 0, 0],
+                                                        lineWidth: 0.3,
+                                                        lineColor: [226, 226, 226],
+                                                        halign: 'center',
+                                                        fillColor: [255, 255, 255],
+                                                        textColor: '#000000',
+                                                    },
+                                                    // alternateRowStyles: {
+                                                    //     fontStyle: 'bold',
+                                                    // },
+                                                    columnStyles: {
+                                                        0: { valign: 'middle', halign: 'center', cellWidth: 25 },
+                                                        1: { valign: 'middle', halign: 'left', cellWidth: 94 },
+                                                        2: { valign: 'middle', halign: 'right', cellWidth: 26 },
+                                                        3: { valign: 'middle', halign: 'center', cellWidth: 13 },
+                                                        4: { valign: 'middle', halign: 'right', cellWidth: 26 }
+                                                    },
+                                                    margin: { left: 13, right: 13 },
+                                                    head: [["Date","Description","Rate","Qty","Line Total"]],
+                                                    body: output,
+                                                    // body: [
+                                                    //     ['David', 'david@example.com', 'Sweden'],
+                                                    //     ['Castille', 'castille@example.com', 'Spain'],
+                                                    // ],
+                                                    startY: 98,
+                                                    showHead: 'everyPage',
+                                                    showFoot: 'everyPage',
+                                                    pageBreak: 'auto',
+                                                    didParseCell: function (Data) {
+                                                        // if (HookData.cell == undefined) {
+                                                        //     return;
+                                                        // }
+
+                                                        let startX = Data.cell.x;
+                                                        let startY = Data.cell.y;
+                                                        console.log(Data);
+                                                        
+                                                        if (Data.section === 'body' && Data.column.index === 1) {
+                                                        }
+                                                    }
+                                                })
+
+                                                doc.autoTable({
+                                                    theme: 'grid',//striped Default
+                                                    headStyles: { 
+                                                        // lineWidth: 1, lineColor: [255, 0, 0],
+                                                        lineWidth: 0.3,
+                                                        lineColor: [226, 226, 226],
+                                                        halign: 'center',
+                                                        fillColor: [255, 255, 255],
+                                                        textColor: '#000000',
+                                                    },
+                                                    // alternateRowStyles: {
+                                                    //     fontStyle: 'bold',
+                                                    // },
+                                                    columnStyles: {
+                                                        0: { valign: 'middle', halign: 'center', cellWidth: 25 },
+                                                        1: { valign: 'middle', halign: 'left', cellWidth: 94 },
+                                                        2: { valign: 'middle', halign: 'right', cellWidth: 26 },
+                                                        3: { valign: 'middle', halign: 'center', cellWidth: 13 },
+                                                        4: { valign: 'middle', halign: 'right', cellWidth: 26 }
+                                                    },
+                                                    margin: { left: 13, right: 13 },
+                                                    head: [["Date","Description","Rate","Qty","Line Total"]],
+                                                    body: [
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['David', 'david@example.com', 'Sweden'],
+                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                    ],
+                                                    startY: 280,
+                                                    showHead: 'everyPage',
+                                                    showFoot: 'everyPage',
+                                                    pageBreak: 'avoid',
+                                                    didParseCell: function (Data) {
+                                                        // if (HookData.cell == undefined) {
+                                                        //     return;
+                                                        // }
+
+                                                        let startX = Data.cell.x;
+                                                        let startY = Data.cell.y;
+                                                        console.log(Data);
+                                                        
+                                                        if (Data.section === 'body' && Data.column.index === 1) {
+                                                        }
+                                                    }
+                                                })
+            
+                                                doc.addPage('a4', 'p');
+
+                                            /*AutoTable JSPDF Theme*/
 
                                                 doc.save('my-pdf.pdf');
 
