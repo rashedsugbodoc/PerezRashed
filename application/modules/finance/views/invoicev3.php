@@ -306,7 +306,7 @@
                         data: '',
                         dataType: 'json',
                         success: function (response) {
-
+                            var settings = response.settings;
                             var item_list = response.item_list;
                             // var imgData = 'data:image/jpeg;base64,'+ btoa('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRjC5MfUm-lXtmuwDmHDoUCK9WKrYXHt-e33-ozzTrbA&s');
                             // console.log(document.getElementsByClassName("profile_image"));
@@ -422,11 +422,6 @@
                                                         doc.text('Amount Due (PHP)', 158, 73);
                                                         doc.setFontSize(18);
                                                         doc.text(doc.splitTextToSize('33,124.50', 41), 158, 81);
-
-                                                        doc.setFontSize(10);
-                                                        doc.text('Amount Due (PHP)', 158, 72);
-                                                        doc.setFontSize(18);
-                                                        doc.text(doc.splitTextToSize('33,124.50', 41), 158, 80);
                                                     /*Bill Info End*/
 
                                                 /*Header*/
@@ -496,7 +491,7 @@
 
                                             /*AutoTable JSPDF Theme*/
 
-                                                console.log(item_list);
+                                                // console.log(item_list);
 
                                                 var output = item_list.map(function(obj) {
                                                   return Object.keys(obj).sort().map(function(key) { 
@@ -504,7 +499,7 @@
                                                   });
                                                 });
 
-                                                console.log(output);
+                                                // console.log(output);
 
                                                 doc.autoTable({
                                                     theme: 'grid',//striped Default
@@ -526,110 +521,191 @@
                                                         3: { valign: 'middle', halign: 'center', cellWidth: 13 },
                                                         4: { valign: 'middle', halign: 'right', cellWidth: 26 }
                                                     },
-                                                    margin: { left: 13, right: 13 },
+                                                    margin: { left: 13, right: 13, top: 13, bottom: 37 },
                                                     head: [["Date","Description","Rate","Qty","Line Total"]],
                                                     body: output,
                                                     // body: [
-                                                    //     ['David', 'david@example.com', 'Sweden'],
-                                                    //     ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David11', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
+                                                        // ['David', 'david@example.com', 'Sweden'],
+                                                        // ['Castille', 'castille@example.com', 'Spain'],
                                                     // ],
                                                     startY: 98,
-                                                    showHead: 'everyPage',
-                                                    showFoot: 'everyPage',
+                                                    // showHead: 'everyPage',
+                                                    // showFoot: 'everyPage',
                                                     pageBreak: 'auto',
                                                     didParseCell: function (Data) {
                                                         // if (HookData.cell == undefined) {
                                                         //     return;
                                                         // }
-
-                                                        let startX = Data.cell.x;
-                                                        let startY = Data.cell.y;
-                                                        console.log(Data);
+                                                        // console.log(Data);
                                                         
                                                         if (Data.section === 'body' && Data.column.index === 1) {
                                                         }
                                                     }
                                                 })
 
+                                                doc.setFontSize(12);
+                                                doc.text('Insurance', 14, doc.lastAutoTable.finalY + 10)
+
                                                 doc.autoTable({
-                                                    theme: 'grid',//striped Default
+                                                    theme: 'plain',//striped Default
                                                     headStyles: { 
                                                         // lineWidth: 1, lineColor: [255, 0, 0],
-                                                        lineWidth: 0.3,
-                                                        lineColor: [226, 226, 226],
-                                                        halign: 'center',
-                                                        fillColor: [255, 255, 255],
-                                                        textColor: '#000000',
+                                                        // lineWidth: 0.3,
+                                                        // lineColor: [226, 226, 226],
+                                                        // halign: 'center',
+                                                        // fillColor: [255, 255, 255],
+                                                        // textColor: '#000000',
                                                     },
                                                     // alternateRowStyles: {
                                                     //     fontStyle: 'bold',
                                                     // },
                                                     columnStyles: {
-                                                        0: { valign: 'middle', halign: 'center', cellWidth: 25 },
-                                                        1: { valign: 'middle', halign: 'left', cellWidth: 94 },
+                                                        0: { valign: 'middle', halign: 'left', cellWidth: 80 },
+                                                        1: { valign: 'middle', halign: 'right', cellWidth: 26 },
                                                         2: { valign: 'middle', halign: 'right', cellWidth: 26 },
-                                                        3: { valign: 'middle', halign: 'center', cellWidth: 13 },
+                                                        3: { valign: 'middle', halign: 'right', cellWidth: 26 },
                                                         4: { valign: 'middle', halign: 'right', cellWidth: 26 }
                                                     },
-                                                    margin: { left: 13, right: 13 },
-                                                    head: [["Date","Description","Rate","Qty","Line Total"]],
+                                                    margin: { left: 13, right: 13, bottom: 37 },
+                                                    head: [["Philhealth Claims","Deductions","Denied","Payment","Under (Over) Payment"]],
                                                     body: [
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
-                                                        ['David', 'david@example.com', 'Sweden'],
-                                                        ['Castille', 'castille@example.com', 'Spain'],
+                                                        ['A. First Case Rate (HB)', '6,500.00', '0.00', '0.00', '6,500.00'],
+                                                        ['B. Total PF Portion', '1,500.00', '0.00', '0.00', '1,500.00'],
+                                                        ['TOTAL PHIC BENEFITS', '8,000.00', '0.00', '0.00', '8,000.00'],
                                                     ],
-                                                    startY: 280,
-                                                    showHead: 'everyPage',
-                                                    showFoot: 'everyPage',
-                                                    pageBreak: 'avoid',
+                                                    startY: doc.lastAutoTable.finalY + 14,
+                                                    // showHead: 'everyPage',
+                                                    // showFoot: 'everyPage',
+                                                    // pageBreak: 'avoid',
                                                     didParseCell: function (Data) {
+                                                        var rows = Data.table.body;
                                                         // if (HookData.cell == undefined) {
                                                         //     return;
                                                         // }
-
-                                                        let startX = Data.cell.x;
-                                                        let startY = Data.cell.y;
-                                                        console.log(Data);
+                                                        // console.log(Data);
                                                         
-                                                        if (Data.section === 'body' && Data.column.index === 1) {
+                                                        if (Data.section === 'head' && Data.column.index != 0) {
+                                                            Data.cell.styles.halign = 'right';
+                                                        }
+                                                        if (Data.section === 'body') {
+                                                            if (Data.row.index === rows.length - 1) {
+                                                                Data.cell.styles.fontStyle = 'bold';
+                                                                if (Data.column.index === 0) {
+                                                                    Data.cell.styles.halign = 'left';
+                                                                }
+                                                            }
                                                         }
                                                     }
                                                 })
+
+                                                doc.autoTable({
+                                                    theme: 'plain',
+                                                    columnStyles: {
+                                                        0: { cellWidth: 46 },
+                                                        1: { halign: 'left', cellWidth: 112 },
+                                                        2: { halign: 'right', cellWidth: 26 }
+                                                    },
+                                                    margin: { left: 13, right: 13, bottom: 37 },
+                                                    head: [["", "", ""]],
+                                                    body: [
+                                                        ['', 'Subtotal', '56,818.50'],
+                                                        ['', 'VAT 13%', '8,807.12'],
+                                                    ],
+                                                    startY: doc.lastAutoTable.finalY,
+                                                    didParseCell: function (Data) {
+                                                        var rows = Data.table.body;
+
+                                                        console.log(Data);
+                                                    }
+                                                })
+
+                                                doc.setDrawColor(0, 0, 0);
+                                                doc.line(60, doc.lastAutoTable.finalY + 3, 197, doc.lastAutoTable.finalY + 3);
+
+                                                doc.autoTable({
+                                                    theme: 'plain',
+                                                    styles: {
+                                                        font: 'arial'|'times'
+                                                    },
+                                                    columnStyles: {
+                                                        0: { cellWidth: 46 },
+                                                        1: { halign: 'left', cellWidth: 112 },
+                                                        2: { halign: 'right', cellWidth: 26 }
+                                                    },
+                                                    margin: { left: 13, right: 13, bottom: 37 },
+                                                    head: [["", "", ""]],
+                                                    body: [
+                                                        ['', 'Total', '72,248.50'],
+                                                        ['', 'Adjustment', '0.00'],
+                                                        ['', 'Inssurance', '8,000.00'],
+                                                        ['', 'Discount', '500.00'],
+                                                        ['', 'Amount Paid', '0.00'],
+                                                    ],
+                                                    startY: doc.lastAutoTable.finalY - 3,
+                                                })
+
+                                                doc.setDrawColor(0, 0, 0);
+                                                doc.line(60, doc.lastAutoTable.finalY + 3, 197, doc.lastAutoTable.finalY + 3);
+
+                                                doc.autoTable({
+                                                    theme: 'plain',
+                                                    styles: {
+                                                        font: 'arial'|'times'
+                                                    },
+                                                    columnStyles: {
+                                                        0: { cellWidth: 46 },
+                                                        1: { halign: 'left', cellWidth: 112 },
+                                                        2: { halign: 'right', cellWidth: 26 }
+                                                    },
+                                                    margin: { left: 13, right: 13, bottom: 37 },
+                                                    head: [["", "", ""]],
+                                                    body: [
+                                                        ['', 'Amount Due (PHP)', '64,248.50'],
+                                                    ],
+                                                    startY: doc.lastAutoTable.finalY - 3,
+                                                })
+
+                                                console.log(doc.lastAutoTable);
             
                                                 doc.addPage('a4', 'p');
 

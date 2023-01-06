@@ -4863,7 +4863,7 @@ class Finance extends MX_Controller {
 
         $invoice_items = $this->finance_model->getInvoiceItemsByPaymentId($id);
 
-        $settings = $this->settings_model->getSettings();
+        $data['settings'] = $this->settings_model->getSettings();
 
         $item_list = [];
         foreach($invoice_items as $invoice_item) {
