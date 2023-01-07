@@ -68,6 +68,7 @@
                         <?php $dr = dir(getcwd()); ?>
                         <?php echo $dr->path; ?>
                         <button id="download">Download PDF</button>
+                        <button id="sample">Download PDF Sample</button>
                         <div class="row" id="template_invoice">
                             <div class="col-md-12 col-sm-12">
                                 <div class="card">
@@ -294,7 +295,13 @@
         <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 
         <script src="<?php echo base_url('public/assets/plugins/signature/signature_plugin.min.js'); ?>"></script>
-        <!-- <script src="<?php echo base_url('public/assets/plugins/jspdf/jspdf.plugin.generategrid.js'); ?>"></script> -->
+        <script src="<?php echo base_url('public/assets/plugins/jspdf/faker.min.js'); ?>"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                console.log(window.faker);
+            })
+        </script>
 
         <script type="text/javascript">
             $(document).ready(function() {
@@ -355,7 +362,7 @@
                                                         printHeaders: true
                                                     };
 
-                                                console.log(tableToJson($('#editable-sample').get(0)));
+                                                // console.log(tableToJson($('#editable-sample').get(0)));
 
                                                 doc.cellInitialize();
 
@@ -635,77 +642,174 @@
                                                                 }
                                                             }
                                                         }
-                                                    }
+                                                    },
                                                 })
 
                                                 doc.autoTable({
                                                     theme: 'plain',
                                                     columnStyles: {
-                                                        0: { cellWidth: 46 },
-                                                        1: { halign: 'left', cellWidth: 112 },
-                                                        2: { halign: 'right', cellWidth: 26 }
+                                                        0: { cellWidth: 52 },
+                                                        1: { halign: 'left', cellWidth: 100 },
+                                                        2: { halign: 'right', cellWidth: 32 }
                                                     },
                                                     margin: { left: 13, right: 13, bottom: 37 },
                                                     head: [["", "", ""]],
                                                     body: [
                                                         ['', 'Subtotal', '56,818.50'],
                                                         ['', 'VAT 13%', '8,807.12'],
-                                                    ],
-                                                    startY: doc.lastAutoTable.finalY,
-                                                    didParseCell: function (Data) {
-                                                        var rows = Data.table.body;
-
-                                                        console.log(Data);
-                                                    }
-                                                })
-
-                                                doc.setDrawColor(0, 0, 0);
-                                                doc.line(60, doc.lastAutoTable.finalY + 3, 197, doc.lastAutoTable.finalY + 3);
-
-                                                doc.autoTable({
-                                                    theme: 'plain',
-                                                    styles: {
-                                                        font: 'arial'|'times'
-                                                    },
-                                                    columnStyles: {
-                                                        0: { cellWidth: 46 },
-                                                        1: { halign: 'left', cellWidth: 112 },
-                                                        2: { halign: 'right', cellWidth: 26 }
-                                                    },
-                                                    margin: { left: 13, right: 13, bottom: 37 },
-                                                    head: [["", "", ""]],
-                                                    body: [
                                                         ['', 'Total', '72,248.50'],
                                                         ['', 'Adjustment', '0.00'],
                                                         ['', 'Inssurance', '8,000.00'],
                                                         ['', 'Discount', '500.00'],
                                                         ['', 'Amount Paid', '0.00'],
-                                                    ],
-                                                    startY: doc.lastAutoTable.finalY - 3,
-                                                })
-
-                                                doc.setDrawColor(0, 0, 0);
-                                                doc.line(60, doc.lastAutoTable.finalY + 3, 197, doc.lastAutoTable.finalY + 3);
-
-                                                doc.autoTable({
-                                                    theme: 'plain',
-                                                    styles: {
-                                                        font: 'arial'|'times'
-                                                    },
-                                                    columnStyles: {
-                                                        0: { cellWidth: 46 },
-                                                        1: { halign: 'left', cellWidth: 112 },
-                                                        2: { halign: 'right', cellWidth: 26 }
-                                                    },
-                                                    margin: { left: 13, right: 13, bottom: 37 },
-                                                    head: [["", "", ""]],
-                                                    body: [
                                                         ['', 'Amount Due (PHP)', '64,248.50'],
+                                                        ['Signature over Printed Name of Member / Patient / Autorized Person', '', 'Signature over Printed Name of Billing Clerk'],
                                                     ],
-                                                    startY: doc.lastAutoTable.finalY - 3,
+                                                    pageBreak: 'avoid',
+                                                    startY: doc.lastAutoTable.finalY,
+                                                    didParseCell: function (Data) {
+                                                        var rows = Data.table.body;
+
+                                                        if (Data.section === 'body') {
+                                                            Data.cell.styles.cellPadding = 1;
+                                                        }
+
+                                                        if (Data.row.index === rows.length - 2) {
+                                                            Data.cell.styles.fontStyle = 'bold';
+                                                            Data.cell.styles.fontSize = 13;
+                                                            if (Data.column.index === 3) {
+                                                                Data.cell.styles.halign = 'right';
+                                                            }
+                                                        }
+
+                                                        if (Data.row.index === rows.length - 1) {
+                                                            Data.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: Data.cell.y + 70 };
+                                                            // if (Data.column.index === 0) {
+                                                            //     Data.cell.styles.cellWidth = 66;
+                                                            // } else if (Data.column.index === 1) {
+                                                            //     Data.cell.styles.cellWidth = 58;
+                                                            // } else if (Data.column.index === 2) {
+                                                            //     Data.cell.styles.cellWidth = 60;
+                                                            // }
+                                                            if (Data.column.index === 2) {
+                                                                Data.cell.styles.halign = 'center';
+                                                            }
+                                                        }
+
+                                                        console.log(Data);
+                                                    },
+                                                    didDrawCell: function (Data) {
+                                                        var rows = Data.table.body;
+
+                                                        if (Data.row.index === 1 || Data.row.index === rows.length - 3) {
+                                                            console.log(Number(Data.cell.y + Data.cell.height));
+
+                                                            Data.cell.styles.cellPadding = { bottom: 5, left: 1, right: 1, top: 1 };
+                                                            doc.setDrawColor(0, 0, 0);
+                                                            doc.line(60, Data.cell.y + Data.cell.height, 197, Data.cell.y + Data.cell.height);
+                                                        }
+
+                                                        if (Data.row.index === rows.length - 1) {
+                                                            doc.setDrawColor(0, 0, 0);
+                                                            if (Data.column.index === 0) {
+                                                                doc.line(14, Data.cell.y + 68, 64, Data.cell.y + 68);
+                                                            } else if (Data.column.index === 2) {
+                                                                doc.line(160, Data.cell.y + 68, 197, Data.cell.y + 68);
+                                                            }
+                                                        }
+                                                    }
+                                                    // willDrawCell: function (Data) {
+                                                        
+                                                    // }
                                                 })
 
-                                                console.log(doc.lastAutoTable);
+                                                // doc.autoTable({
+                                                //     theme: 'plain',
+                                                //     columnStyles: {
+                                                //         0: { halign: 'left', cellWidth: 66 },
+                                                //         1: { cellWidth: 58 },
+                                                //         2: { halign: 'center', cellWidth: 60 }
+                                                //     },
+                                                //     margin: { left: 13, right: 13, bottom: 37 },
+                                                //     head: [["", "", ""]],
+                                                //     body: [
+                                                //         ['', '', ''],
+                                                //         ['Signature over Printed Name of Member / Patient / Autorized Person', '', 'Signature over Printed Name of Billing Clerk'],
+                                                //     ],
+                                                //     pageBreak: 'avoid',
+                                                //     startY: doc.lastAutoTable.finalY + 20,
+                                                // })
+
+                                                /*Samples*/
+                                                    // doc.autoTable({
+                                                    //     theme: 'plain',
+                                                    //     columnStyles: {
+                                                    //         0: { cellWidth: 46 },
+                                                    //         1: { halign: 'left', cellWidth: 112 },
+                                                    //         2: { halign: 'right', cellWidth: 26 }
+                                                    //     },
+                                                    //     margin: { left: 13, right: 13, bottom: 37 },
+                                                    //     head: [["", "", ""]],
+                                                    //     body: [
+                                                    //         ['', 'Subtotal', '56,818.50'],
+                                                    //         ['', 'VAT 13%', '8,807.12'],
+                                                    //     ],
+                                                    //     startY: doc.lastAutoTable.finalY,
+                                                    //     didParseCell: function (Data) {
+                                                    //         var rows = Data.table.body;
+
+                                                    //         console.log(Data);
+                                                    //     }
+                                                    // })
+
+                                                    // doc.setDrawColor(0, 0, 0);
+                                                    // doc.line(60, doc.lastAutoTable.finalY + 3, 197, doc.lastAutoTable.finalY + 3);
+
+                                                    // doc.autoTable({
+                                                    //     theme: 'plain',
+                                                    //     styles: {
+                                                    //         font: 'arial'|'times'
+                                                    //     },
+                                                    //     columnStyles: {
+                                                    //         0: { cellWidth: 46 },
+                                                    //         1: { halign: 'left', cellWidth: 112 },
+                                                    //         2: { halign: 'right', cellWidth: 26 }
+                                                    //     },
+                                                    //     margin: { left: 13, right: 13, bottom: 37 },
+                                                    //     head: [["", "", ""]],
+                                                    //     body: [
+                                                    //         ['', 'Total', '72,248.50'],
+                                                    //         ['', 'Adjustment', '0.00'],
+                                                    //         ['', 'Inssurance', '8,000.00'],
+                                                    //         ['', 'Discount', '500.00'],
+                                                    //         ['', 'Amount Paid', '0.00'],
+                                                    //     ],
+                                                    //     startY: doc.lastAutoTable.finalY - 3,
+                                                    // })
+
+                                                    // doc.setDrawColor(0, 0, 0);
+                                                    // doc.line(60, doc.lastAutoTable.finalY + 3, 197, doc.lastAutoTable.finalY + 3);
+
+                                                    // doc.autoTable({
+                                                    //     theme: 'plain',
+                                                    //     styles: {
+                                                    //         font: 'arial'|'times'
+                                                    //     },
+                                                    //     columnStyles: {
+                                                    //         0: { cellWidth: 46 },
+                                                    //         1: { halign: 'left', cellWidth: 112 },
+                                                    //         2: { halign: 'right', cellWidth: 26 }
+                                                    //     },
+                                                    //     margin: { left: 13, right: 13, bottom: 37 },
+                                                    //     head: [["", "", ""]],
+                                                    //     body: [
+                                                    //         ['', 'Amount Due (PHP)', '64,248.50'],
+                                                    //     ],
+                                                    //     startY: doc.lastAutoTable.finalY - 3,
+                                                    // })
+                                                /*Samples*/
+
+                                                // console.log(doc.lastAutoTable);
             
                                                 doc.addPage('a4', 'p');
 
@@ -776,6 +880,102 @@
                     })
                 });
             });
+        </script>
+
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#sample").click(function() {
+                    var doc = new jsPDF()
+                      var totalPagesExp = '{total_pages_count_string}'
+
+                      doc.autoTable({
+                        head: headRows(),
+                        body: bodyRows(80),
+                        didDrawPage: function (data) {
+                          // Header
+                          doc.setFontSize(20)
+                          doc.setTextColor(40)
+                          doc.addImage('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAApgAAAKYB3X3/OAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAANCSURBVEiJtZZPbBtFFMZ/M7ubXdtdb1xSFyeilBapySVU8h8OoFaooFSqiihIVIpQBKci6KEg9Q6H9kovIHoCIVQJJCKE1ENFjnAgcaSGC6rEnxBwA04Tx43t2FnvDAfjkNibxgHxnWb2e/u992bee7tCa00YFsffekFY+nUzFtjW0LrvjRXrCDIAaPLlW0nHL0SsZtVoaF98mLrx3pdhOqLtYPHChahZcYYO7KvPFxvRl5XPp1sN3adWiD1ZAqD6XYK1b/dvE5IWryTt2udLFedwc1+9kLp+vbbpoDh+6TklxBeAi9TL0taeWpdmZzQDry0AcO+jQ12RyohqqoYoo8RDwJrU+qXkjWtfi8Xxt58BdQuwQs9qC/afLwCw8tnQbqYAPsgxE1S6F3EAIXux2oQFKm0ihMsOF71dHYx+f3NND68ghCu1YIoePPQN1pGRABkJ6Bus96CutRZMydTl+TvuiRW1m3n0eDl0vRPcEysqdXn+jsQPsrHMquGeXEaY4Yk4wxWcY5V/9scqOMOVUFthatyTy8QyqwZ+kDURKoMWxNKr2EeqVKcTNOajqKoBgOE28U4tdQl5p5bwCw7BWquaZSzAPlwjlithJtp3pTImSqQRrb2Z8PHGigD4RZuNX6JYj6wj7O4TFLbCO/Mn/m8R+h6rYSUb3ekokRY6f/YukArN979jcW+V/S8g0eT/N3VN3kTqWbQ428m9/8k0P/1aIhF36PccEl6EhOcAUCrXKZXXWS3XKd2vc/TRBG9O5ELC17MmWubD2nKhUKZa26Ba2+D3P+4/MNCFwg59oWVeYhkzgN/JDR8deKBoD7Y+ljEjGZ0sosXVTvbc6RHirr2reNy1OXd6pJsQ+gqjk8VWFYmHrwBzW/n+uMPFiRwHB2I7ih8ciHFxIkd/3Omk5tCDV1t+2nNu5sxxpDFNx+huNhVT3/zMDz8usXC3ddaHBj1GHj/As08fwTS7Kt1HBTmyN29vdwAw+/wbwLVOJ3uAD1wi/dUH7Qei66PfyuRj4Ik9is+hglfbkbfR3cnZm7chlUWLdwmprtCohX4HUtlOcQjLYCu+fzGJH2QRKvP3UNz8bWk1qMxjGTOMThZ3kvgLI5AzFfo379UAAAAASUVORK5CYII=', 'JPEG', data.settings.margin.left, 15, 10, 10)
+                          doc.text('Report', data.settings.margin.left + 15, 22)
+
+                          // Footer
+                          var str = 'Page ' + doc.internal.getNumberOfPages()
+                          // Total page number plugin only available in jspdf v1.0+
+                          if (typeof doc.putTotalPages === 'function') {
+                            str = str + ' of ' + totalPagesExp
+                          }
+                          doc.setFontSize(10)
+
+                          // jsPDF 1.4+ uses getWidth, <1.4 uses .width
+                          var pageSize = doc.internal.pageSize
+                          var pageHeight = pageSize.height ? pageSize.height : pageSize.getHeight()
+                          doc.text(str, data.settings.margin.left, pageHeight - 10)
+                        },
+                        margin: { top: 30 },
+                      })
+
+                      // Total page number plugin only available in jspdf v1.0+
+                      if (typeof doc.putTotalPages === 'function') {
+                        doc.putTotalPages(totalPagesExp)
+                      }
+
+                      doc.save('my-pdf.pdf');
+                })
+            })
+        </script>
+
+        <script type="text/javascript">
+            function headRows() {
+              return [
+                { id: 'ID', name: 'Name', email: 'Email', city: 'City', expenses: 'Sum' },
+              ]
+            }
+
+            function footRows() {
+              return [
+                { id: 'ID', name: 'Name', email: 'Email', city: 'City', expenses: 'Sum' },
+              ]
+            }
+
+            function columns() {
+              return [
+                { header: 'ID', dataKey: 'id' },
+                { header: 'Name', dataKey: 'name' },
+                { header: 'Email', dataKey: 'email' },
+                { header: 'City', dataKey: 'city' },
+                { header: 'Exp', dataKey: 'expenses' },
+              ]
+            }
+
+            function data(rowCount) {
+              rowCount = rowCount || 10
+              var body = []
+              for (var j = 1; j <= rowCount; j++) {
+                body.push({
+                  id: j,
+                  name: faker.name.findName(),
+                  email: faker.internet.email(),
+                  city: faker.address.city(),
+                  expenses: faker.finance.amount(),
+                })
+              }
+              return body
+            }
+
+            function bodyRows(rowCount) {
+              rowCount = rowCount || 10
+              var body = []
+              for (var j = 1; j <= rowCount; j++) {
+                body.push({
+                  id: j,
+                  name: faker.name.findName(),
+                  email: faker.internet.email(),
+                  city: faker.address.city(),
+                  expenses: faker.finance.amount(),
+                })
+              }
+              return body
+            }
         </script>
 
     </body>
