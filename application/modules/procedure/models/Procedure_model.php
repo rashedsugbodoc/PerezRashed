@@ -54,7 +54,7 @@ class Procedure_model extends CI_model {
         return $query->row();
     }
 
-    function getCptCodeAndDescription($searchTerm) {
+    function getProcedureCptCodeAndDescription($searchTerm) {
         if(!empty($searchTerm)) {   
             $query = $this->db->select('*')
                    ->from('procedure_cpt_code')

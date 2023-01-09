@@ -80,33 +80,33 @@
                                                                 </div>
                                                                 <div class="expanel-body">
                                                                     <div class="row">
-                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
-                                                                            <label class="w-9 font-weight-bold">Started At</label>
-                                                                            <input type="text" disabled class="form-control" id="encounter_started_at" name="encounter_started_at">
+                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center ">
+                                                                            <label class="w-150 font-weight-bold h-25">Started At</label>
+                                                                            <span id="encounter_started_at" name="encounter_started_at"></span>
                                                                         </div>
                                                                         <div class="col-md-6 col-sm-12 d-flex align-items-center">
-                                                                            <label class="w-9 font-weight-bold">Ended At</label>
-                                                                            <input type="text" disabled class="form-control" id="encounter_ended_at" name="encounter_ended_at">
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="row mt-5">
-                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
-                                                                            <label class="w-150 font-weight-bold">Encounter Type</label>
-                                                                            <input type="text" disabled class="form-control" id="encounter_type" name="encounter_type">
-                                                                        </div>
-                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
-                                                                            <label class="w-9 font-weight-bold">Location</label>
-                                                                            <input type="text" disabled class="form-control" id="encounter_location" name="encounter_location">
+                                                                            <label class="w-150 font-weight-bold h-25">Ended At</label>
+                                                                            <span id="encounter_ended_at" name="encounter_ended_at"></span>
                                                                         </div>
                                                                     </div>
                                                                     <div class="row mt-5">
                                                                         <div class="col-md-6 col-sm-12 d-flex align-items-center">
-                                                                            <label class="w-150 font-weight-bold">Reason for Visit</label>
-                                                                            <input type="text" disabled class="form-control" id="encounter_reason" name="encounter_reason">
+                                                                            <label class="w-150 font-weight-bold h-25">Encounter Type</label>
+                                                                            <span id="encounter_type" name="encounter_type"></span>
                                                                         </div>
                                                                         <div class="col-md-6 col-sm-12 d-flex align-items-center">
-                                                                            <label class="w-9 font-weight-bold">Status</label>
-                                                                            <input type="text" disabled class="form-control" id="encounter_status" name="encounter_status">
+                                                                            <label class="w-150 font-weight-bold h-25">Location</label>
+                                                                            <span class="pt-0" id="encounter_location" name="encounter_location"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mt-5">
+                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
+                                                                            <label class="w-150 font-weight-bold h-25">Reason for Visit</label>
+                                                                            <span id="encounter_reason" name="encounter_reason"></span>
+                                                                        </div>
+                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
+                                                                            <label class="w-150 font-weight-bold h-25">Status</label>
+                                                                            <span id="encounter_status" name="encounter_status"></span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -497,7 +497,7 @@
                             $("#Doctor").append('\n\
                                 <tr id="past_doctor_list'+value.id+'">\n\
                                     <td class="w-2">\n\
-                                        <button class="btn btn-danger deleteDoctor" type="button" id="'+value.performer_table_id+'" onClick="removeDoctorPerformer('+value.id+')"><i class="fe fe-trash"></i></button>\n\
+                                        <button class="btn btn-danger deleteDoctor" data-id="'+value.id+'" type="button" id="'+value.performer_table_id+'" onClick="removeDoctorPerformer('+value.id+')"><i class="fe fe-trash"></i></button>\n\
                                     </td>\n\
                                     <td class="w-8">\n\
                                         <select class="form-control select2-show-search doctor doctor'+value.performer_table_id+' w-100" id="pos_rendering_user_doctor'+value.performer_table_id+'" name="pos_rendering_user_doctor[]" data-placeholder="Choose one">\n\
@@ -765,12 +765,12 @@
                         var encounter_type = response.encounter_type;
 
 
-                        $('#encounter_reason').val(encounter_reason);
-                        $('#encounter_status').val(encounter_status.display_name);
-                        $('#encounter_location').val(branch_details.display_name);
-                        $('#encounter_started_at').val(encounter_started_at);
-                        $('#encounter_ended_at').val(encounter_ended_at);
-                        $('#encounter_type').val(encounter_type.display_name)
+                        $('#encounter_reason').text(encounter_reason);
+                        $('#encounter_status').text(encounter_status.display_name);
+                        $('#encounter_location').text(branch_details.display_name);
+                        $('#encounter_started_at').text(encounter_started_at);
+                        $('#encounter_ended_at').text(encounter_ended_at);
+                        $('#encounter_type').text(encounter_type.display_name)
 
                     }
                 })
@@ -842,10 +842,10 @@
                 data:getProcedurePerformerId,
                 success:function(data){
                     $('#my-modal-delete').modal('hide');
-                    $('#past_doctor_list'+ getProcedurePerformerId).hide(2000);
-                    $('#past_nurse_list'+ getProcedurePerformerId).hide(2000);
-                    $('#past_midwife_list'+ getProcedurePerformerId).hide(2000);
-                    $('#past_laboratorist_list'+ getProcedurePerformerId).hide(2000);
+                    $('#past_doctor_list'+ getProcedurePerformerId).remove();
+                    $('#past_nurse_list'+ getProcedurePerformerId).remove();
+                    $('#past_midwife_list'+ getProcedurePerformerId).remove();
+                    $('#past_laboratorist_list'+ getProcedurePerformerId).remove();
 
                     $.growl.success({
                         message: "<?php echo lang('record_deleted'); ?>"
@@ -1017,7 +1017,6 @@
                     <tr id="past_doctor_list'+doctor_count+'">\n\
                         <td class="w-2">\n\
                             <button class="btn btn-danger" type="button" id="removeDoctor'+doctor_count+'" onClick="removeDoctor('+doctor_count+');"><i class="fe fe-trash"></i></button>\n\
-                            <input type="text" name="id[]" value="'+doctor_count+'">\n\
                         </td>\n\
                         <td class="w-8 ">\n\
                             <select class="form-control select2-show-search doctor w-100" id="pos_rendering_user_doctor'+doctor_count+'" name="pos_rendering_user_doctor[]" data-placeholder="Choose one" required>\n\
@@ -1092,7 +1091,6 @@
                 <tr id="past_nurse_list'+nurse_count+'">\n\
                     <td class="w-2">\n\
                         <button class="btn btn-danger" type="button" id="removeNurse'+nurse_count+'" onClick="removeNurse('+nurse_count+');"><i class="fe fe-trash"></i></button>\n\
-                        <input type="text" name="id[]" value="'+nurse_count+'">\n\
                     </td>\n\
                     <td class="w-8">\n\
                         <select class="form-control select2-show-search nurse w-100" id="pos_rendering_user_nurse'+nurse_count+'" name="pos_rendering_user_nurse[]" data-placeholder="Choose one">\n\
@@ -1166,7 +1164,6 @@
                     <tr id="past_midwife_list'+midwife_count+'">\n\
                         <td class="w-2">\n\
                             <button class="btn btn-danger" type="button" id="removeMidwife'+midwife_count+'" onClick="removeMidwife('+midwife_count+');"><i class="fe fe-trash"></i></button>\n\
-                            <input type="text" name="id[]" value="'+midwife_count+'">\n\
                         </td>\n\
                         <td class="w-8">\n\
                             <select class="form-control select2-show-search midwife w-100" id="pos_rendering_user_midwife'+midwife_count+'" name="pos_rendering_user_midwife[]" data-placeholder="Choose One" required>\n\
@@ -1238,7 +1235,6 @@
                     <tr id="past_laboratorist_list'+laboratorist_count+'">\n\
                         <td class="w-2">\n\
                             <button class="btn btn-danger" type="button" id="removeLaboratorist'+laboratorist_count+'" onClick="removeLaboratorist('+laboratorist_count+');"><i class="fe fe-trash"></i></button>\n\
-                            <input type="text" name="id[]" value="'+laboratorist_count+'">\n\
                         </td>\n\
                         <td class="w-8">\n\
                             <select class="form-control select2-show-search  laboratorist w-100" id="pos_rendering_user_laboratorist'+laboratorist_count+'" name="pos_rendering_user_laboratorist[]" data-placeholder="Choose One">\n\
@@ -1310,7 +1306,7 @@
                 placeholder: '<?php echo lang('select') ?> <?php echo lang('procedure') ?>',
                 allowClear: true,
                 ajax: {
-                    url: 'procedure/getCptCodeAndDescription',
+                    url: 'procedure/getProcedureCptCodeAndDescription',
                     type: "post",
                     dataType: "json",
                     delay: "250",

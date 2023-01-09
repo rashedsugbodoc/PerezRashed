@@ -244,31 +244,40 @@ class Procedure extends MX_Controller {
         $data['encounter_status'] = $this->encounter_model->getEncounterStatusById($encounter_detail->encounter_status);
         $data['encounter_reason'] =$encounter_detail->reason;
         $data['encounter_type'] = $this->encounter_model->getEncounterTypeById($encounter_detail->encounter_type_id);
+        $data['settings'] = $this->settings_model->getSettings();
+
+        $get_date_format_long = $data['settings']->date_format_long;
+        $get_time_format = $data['settings']->time_format;
+
+        $date_format = $get_date_format_long ? $get_date_format_long : 'F j, Y ';
+        $time_format =  $get_time_format ? $get_time_format : 'h:i A';
+
+        // $test = $date_format_long.' '.' '.$time_format;
 
         if(!empty($encounter_detail)) {
 
             if(empty($data['branch_details'])) {
                 $data['branch_details'] = array(
-                    'display_name' => 'Online'
+                    'display_name' => lang('online')
                 );
             }
 
             if(empty($data['encounter_status'])) {
                 $data['encounter_status'] = array(
-                    'display_name' => 'Status Not Set'
+                    'display_name' => lang('status_not_set')
                 );
             }
 
             if(empty(($encounter_detail->started_at))) {
-                $data['encounter_started_at'] = 'Not Started';
+                $data['encounter_started_at'] = lang('not_started');
             } else {
-                $data['encounter_started_at'] = date('F j, Y h:i A', strtotime($encounter_detail->started_at));
+                $data['encounter_started_at'] = date($date_format.' '.' '.$time_format, strtotime($encounter_detail->started_at));
             }
 
             if(empty($encounter_detail->ended_at)) {
-                $data['encounter_ended_at'] = 'Not Ended';
+                $data['encounter_ended_at'] = lang('not_ended');
             } else {
-                $data['encounter_ended_at'] =  date('F j, Y h:i A', strtotime($encounter_detail->ended_at));
+                $data['encounter_ended_at'] =  date($date_format.' '.' '.$time_format, strtotime($encounter_detail->ended_at));
             }
         }
 
@@ -499,23 +508,15 @@ class Procedure extends MX_Controller {
         echo json_encode($response);
     }
  
-    public function getCptCodeAndDescription() {
+    public function getProcedureCptCodeAndDescription() {
         //searchInTheInput
         $searchTerm = $this->input->post('searchTerm');
 
-        $response = $this->procedure_model->getCptCodeAndDescription($searchTerm);
+        $response = $this->procedure_model->getProcedureCptCodeAndDescription($searchTerm);
 
         echo json_encode($response);
     }
 
-    public function getAllProceduresDescription() {
-        //searchInTheInput
-        $searchTerm = $this->input->post('searchTerm');
-
-        $response = $this->procedure_model->getAllProcedureDescription($searchTerm);
-
-        echo json_encode($response);
-    }
 
     public function getUserWithoutAddNewOption() {
         //searchInTheInput
