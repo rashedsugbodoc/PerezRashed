@@ -236,6 +236,44 @@ class Procedure extends MX_Controller {
         $data['notes'] = $data['procedure']->note;
         echo json_encode($data);
     }
+
+    public function getEncounterDetailsById() {
+        $id = $this->input->get('id');
+        $encounter_detail = $this->encounter_model->getEncounterById($id);
+        $data['branch_details'] = $this->branch_model->getBranchById($encounter_detail->location_id);
+        $data['encounter_status'] = $this->encounter_model->getEncounterStatusById($encounter_detail->encounter_status);
+        $data['encounter_reason'] =$encounter_detail->reason;
+        $data['encounter_type'] = $this->encounter_model->getEncounterTypeById($encounter_detail->encounter_type_id);
+
+        if(!empty($encounter_detail)) {
+
+            if(empty($data['branch_details'])) {
+                $data['branch_details'] = array(
+                    'display_name' => 'Online'
+                );
+            }
+
+            if(empty($data['encounter_status'])) {
+                $data['encounter_status'] = array(
+                    'display_name' => 'Status Not Set'
+                );
+            }
+
+            if(empty(($encounter_detail->started_at))) {
+                $data['encounter_started_at'] = 'Not Started';
+            } else {
+                $data['encounter_started_at'] = date('F j, Y h:i A', strtotime($encounter_detail->started_at));
+            }
+
+            if(empty($encounter_detail->ended_at)) {
+                $data['encounter_ended_at'] = 'Not Ended';
+            } else {
+                $data['encounter_ended_at'] =  date('F j, Y h:i A', strtotime($encounter_detail->ended_at));
+            }
+        }
+
+        echo json_encode($data);
+    }
   
     public function addNew() {
         $id = $this->input->post('id');

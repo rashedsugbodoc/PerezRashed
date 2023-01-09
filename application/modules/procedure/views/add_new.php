@@ -58,7 +58,7 @@
                                                         </div>
                                                         <div class="col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
+                                                                <label class="form-label"><?php echo lang('select'); ?> <?php echo lang('encounter'); ?> <span class="text-red"> *</span></label>
                                                                 <select class="form-control select2-show-search" id="encounter" name="encounter">
                                                                     <!-- <?php if(!empty($procedure->encounter_id)) { ?> -->
                                                                         <!-- <?php foreach ($patient_encounter as $p_encounter) { ?> -->
@@ -71,12 +71,53 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                     <!-- procedure name -->
-                                                     <div class="row">
+                                                    <div class="row">
+                                                       <!-- encounter details -->
+                                                       <div class="col-md-12">
+                                                           <div class="expanel expanel-primary">
+                                                                <div class="expanel-heading">
+                                                                    <h3 class="expanel-title">Encounter Details</h3>
+                                                                </div>
+                                                                <div class="expanel-body">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
+                                                                            <label class="w-9 font-weight-bold">Started At</label>
+                                                                            <input type="text" disabled class="form-control" id="encounter_started_at" name="encounter_started_at">
+                                                                        </div>
+                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
+                                                                            <label class="w-9 font-weight-bold">Ended At</label>
+                                                                            <input type="text" disabled class="form-control" id="encounter_ended_at" name="encounter_ended_at">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mt-5">
+                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
+                                                                            <label class="w-150 font-weight-bold">Encounter Type</label>
+                                                                            <input type="text" disabled class="form-control" id="encounter_type" name="encounter_type">
+                                                                        </div>
+                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
+                                                                            <label class="w-9 font-weight-bold">Location</label>
+                                                                            <input type="text" disabled class="form-control" id="encounter_location" name="encounter_location">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row mt-5">
+                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
+                                                                            <label class="w-150 font-weight-bold">Reason for Visit</label>
+                                                                            <input type="text" disabled class="form-control" id="encounter_reason" name="encounter_reason">
+                                                                        </div>
+                                                                        <div class="col-md-6 col-sm-12 d-flex align-items-center">
+                                                                            <label class="w-9 font-weight-bold">Status</label>
+                                                                            <input type="text" disabled class="form-control" id="encounter_status" name="encounter_status">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                       </div>
+                                                    </div>
+                                                    <!-- procedure name -->
+                                                    <div class="row">
                                                         <div class="col-md-12 form-group">
                                                             <label  class="form-label"> <?php echo lang('procedure'); ?><span class="text-red"> *</span></label>
                                                             <select class="form-control select2-show-search" id="procedure" name="procedure">
-                                                                
                                                             </select>
                                                         </div>
                                                     </div>
@@ -452,7 +493,7 @@
 
                             var doctor_info = '<option value="'+value.performer_table_id+'" selected>'+performer_details[key].name+'</option>'
                             var doctor_role = '<option value="'+value.role_id+'" selected>'+roles[key].display_name+'</option>'
-                            
+
                             $("#Doctor").append('\n\
                                 <tr id="past_doctor_list'+value.id+'">\n\
                                     <td class="w-2">\n\
@@ -676,15 +717,12 @@
                             $('#pos_select').append($('<option>').val(value.id).text(value.name)).end();
                         }
                     });
-      
-                    $.each(encounter, function(key, value) {
-                        if(value.id == procedure.encounter_id) {
-                            $('#encounter').append($('<option selected>').text(value.encounter_number+' - '+value.encounter_type_id+' - '+value.created_at).val(value.id)).end();
 
-                        }else {
-                            $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.encounter_type_id+' - '+value.created_at).val(value.id)).end();
-                        }
-                    });
+                    $.each(encounter, function(key, value) {
+                        $("#encounter").append($('<option>').text(value.encounter_number+' - '+value.encounter_type_id+' - '+value.created_at).val(value.id));
+                    })
+
+                    $("#encounter").val(procedure.encounter_id);
 
                     $.each(procedures, function(key, value){
                         if(value.id == procedure.id) {
@@ -705,6 +743,37 @@
                     $('#editor').html(procedure.notes);
             
                 }
+            })
+        })
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#encounter').change(function() {
+                var encounter = $('#encounter').val();
+                $.ajax({
+                    url: 'procedure/getEncounterDetailsById?id='+encounter,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function(response) {
+                        var branch_details = response.branch_details;
+                        var encounter_status = response.encounter_status;
+                        var encounter_reason = response.encounter_reason;
+                        var encounter_started_at = response.encounter_started_at;
+                        var encounter_ended_at = response.encounter_ended_at;
+                        var encounter_type = response.encounter_type;
+
+
+                        $('#encounter_reason').val(encounter_reason);
+                        $('#encounter_status').val(encounter_status.display_name);
+                        $('#encounter_location').val(branch_details.display_name);
+                        $('#encounter_started_at').val(encounter_started_at);
+                        $('#encounter_ended_at').val(encounter_ended_at);
+                        $('#encounter_type').val(encounter_type.display_name)
+
+                    }
+                })
             })
         })
     </script>
