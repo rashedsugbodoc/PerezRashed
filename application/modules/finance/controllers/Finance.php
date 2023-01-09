@@ -1923,7 +1923,33 @@ class Finance extends MX_Controller {
             $this->finance_model->deletePayment($id);
             $this->finance_model->deleteDepositByInvoiceId($id);
             $this->session->set_flashdata('success', lang('record_deleted'));
-            redirect('finance/invoices');
+            redirect('finance/invoiceList');
+        } else {
+            redirect('home/permission');
+        }
+    }
+
+    function deleteInvoiceGroup() {
+        if ($this->ion_auth->in_group(array('admin'))) {
+            $group_number = $this->input->get('group_number');
+
+            if (!empty($id)) {
+                $payment_details = $this->finance_model->getPaymentById($id);
+                if ($payment_details->hospital_id != $this->session->userdata('hospital_id')) {
+                    redirect('home/permission');
+                }
+            }
+
+            $invoices = $this->finance_model->getInvoiceByGroupNumber($group_number);
+
+            foreach($invoices as $invoice) {
+                $id = $invoice->id;
+
+                $this->finance_model->deletePayment($id);
+                $this->finance_model->deleteDepositByInvoiceId($id);
+                $this->session->set_flashdata('success', lang('record_deleted'));
+            }
+            redirect('finance/invoiceGroupList');
         } else {
             redirect('home/permission');
         }
@@ -4109,7 +4135,18 @@ class Finance extends MX_Controller {
             $options2 = '<a class="btn btn-info btn-xs" title="' . lang('details') . '" href="finance/invoice?id=' . $payment->invoice_number . '"><i class="fa fa-file-text-o"></i> ' . lang('details') . '</a>';
             $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" href="finance/printInvoice?id=' . $payment->invoice_number . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
             if ($this->ion_auth->in_group(array('admin'))) {
-                $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/deleteInvoice?id=' . $payment->invoice_group_number . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+                $invoices = $this->finance_model->getInvoiceByGroupNumber($payment->invoice_group_number);
+                foreach($invoices as $invoice) {
+                    $deposits = $this->finance_model->getDepositsByInvoiceId($invoice->id);
+
+                    if (empty($deposits)) {
+                        $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/deleteInvoiceGroup?group_number=' . $payment->invoice_group_number . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+                    } else {
+                        $options3 = '';
+                        break;
+                    }
+
+                }
             }
 
             if (empty($options1)) {
