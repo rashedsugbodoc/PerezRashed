@@ -454,19 +454,25 @@ class Finance extends MX_Controller {
 
                 }
 
-                if ($invoice_payer_id == '1') {
-                    $data1 = array(
-                        'date' => $date,
-                        'patient' => $patient_details->id,
-                        'company_id' => $invoice_payer_id,
-                        'deposited_amount' => $amount_received,
-                        'payment_id' => $inserted_id,
-                        'amount_received_id' => $inserted_id . '.' . 'gp',
-                        'deposit_type' => $deposit_type,
-                        'user' => $user,
-                    );
+                if ($amount_received == 0) {
+                    $amount_received = null;
+                }
 
-                    $this->finance_model->insertDeposit($data1);
+                if (!empty($amount_received)) {
+                    if ($invoice_payer_id == '1') {
+                        $data1 = array(
+                            'date' => $date,
+                            'patient' => $patient_details->id,
+                            'company_id' => $invoice_payer_id,
+                            'deposited_amount' => $amount_received,
+                            'payment_id' => $inserted_id,
+                            'amount_received_id' => $inserted_id . '.' . 'gp',
+                            'deposit_type' => $deposit_type,
+                            'user' => $user,
+                        );
+
+                        $this->finance_model->insertDeposit($data1);
+                    }
                 }
 
             }
@@ -4259,7 +4265,13 @@ class Finance extends MX_Controller {
             $options2 = '<a class="btn btn-info btn-xs" title="' . lang('details') . '" href="finance/invoice?id=' . $payment->invoice_number . '"><i class="fa fa-file-text-o"></i> ' . lang('details') . '</a>';
             $options4 = '<a class="btn btn-info btn-xs" title="' . lang('print') . '" href="finance/printInvoice?id=' . $payment->invoice_number . '"target="_blank"> <i class="fa fa-print"></i> ' . lang('print') . '</a>';
             if ($this->ion_auth->in_group(array('admin'))) {
-                $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/deleteInvoice?id=' . $payment->invoice_group_number . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+                $deposit_details = $this->finance_model->getDepositsByInvoiceId($payment->id);
+                // $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/deleteInvoice?id=' . $payment->invoice_group_number . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+                if (empty($deposit_details)) {
+                    $options3 = '<a class="btn btn-danger btn-xs" title="' . lang('delete') . '" href="finance/delete?id=' . $payment->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i> ' . lang('delete') . '</a>';
+                } else {
+                    $options3 = '';
+                }
             }
 
             if (empty($options1)) {

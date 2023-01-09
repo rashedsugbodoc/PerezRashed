@@ -792,6 +792,13 @@ class Finance_model extends CI_model {
         return $query->result();
     }    
 
+    function getDepositsByInvoiceId($invoice_id) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('payment_id', $invoice_id);
+        $query = $this->db->get('patient_deposit');
+        return $query->result();
+    }
+
     function deleteDeposit($id) {
         $this->db->where('id', $id);
         $this->db->delete('patient_deposit');
