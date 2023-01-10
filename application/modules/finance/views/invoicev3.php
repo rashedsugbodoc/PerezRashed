@@ -404,7 +404,7 @@
                                                     /*Invoice Information*/
                                                     doc.text('HOSPITAL INVOICE', 116, 17, {align: 'center'});
                                                     doc.setFontSize(10);
-                                                    doc.text('Invoice # 203949', 116, 20, {align: 'center'});
+                                                    doc.text('Invoice # 203949', 116, 21, {align: 'center'});
 
                                                     doc.addImage(img, 'jpg', 176, 13, 18, 18);
                                                     doc.setFontSize(8);
@@ -425,7 +425,7 @@
                                                         doc.text('Date Issue : 11-04-2022', 89, 76);
                                                         doc.text('Due Date : 12-04-2022', 89, 81);
 
-                                                        doc.setFontSize(10);
+                                                        doc.setFontSize(12);
                                                         doc.text('Amount Due (PHP)', 158, 73);
                                                         doc.setFontSize(18);
                                                         doc.text(doc.splitTextToSize('33,124.50', 41), 158, 81);
@@ -532,7 +532,6 @@
                                                     head: [["Date","Description","Rate","Qty","Line Total"]],
                                                     body: output,
                                                     // body: [
-                                                        // ['David11', 'david@example.com', 'Sweden'],
                                                         // ['Castille', 'castille@example.com', 'Spain'],
                                                         // ['David', 'david@example.com', 'Sweden'],
                                                         // ['Castille', 'castille@example.com', 'Spain'],
@@ -590,9 +589,6 @@
                                                     }
                                                 })
 
-                                                doc.setFontSize(12);
-                                                doc.text('Insurance', 14, doc.lastAutoTable.finalY + 10)
-
                                                 doc.autoTable({
                                                     theme: 'plain',//striped Default
                                                     headStyles: { 
@@ -614,7 +610,7 @@
                                                         4: { valign: 'middle', halign: 'right', cellWidth: 26 }
                                                     },
                                                     margin: { left: 13, right: 13, bottom: 37 },
-                                                    head: [["Philhealth Claims","Deductions","Denied","Payment","Under (Over) Payment"]],
+                                                    head: [[ { content: "Insurance", styles: { fontSize: 12 } } ,"","","",""],["Philhealth Claims","Deductions","Denied","Payment","Under (Over) Payment"]],
                                                     body: [
                                                         ['A. First Case Rate (HB)', '6,500.00', '0.00', '0.00', '6,500.00'],
                                                         ['B. Total PF Portion', '1,500.00', '0.00', '0.00', '1,500.00'],
@@ -623,7 +619,7 @@
                                                     startY: doc.lastAutoTable.finalY + 14,
                                                     // showHead: 'everyPage',
                                                     // showFoot: 'everyPage',
-                                                    // pageBreak: 'avoid',
+                                                    pageBreak: 'avoid',
                                                     didParseCell: function (Data) {
                                                         var rows = Data.table.body;
                                                         // if (HookData.cell == undefined) {
@@ -645,6 +641,8 @@
                                                     },
                                                 })
 
+                                                doc.addPage('a4', 'p');
+
                                                 doc.autoTable({
                                                     theme: 'plain',
                                                     columnStyles: {
@@ -663,11 +661,13 @@
                                                         ['', 'Discount', '500.00'],
                                                         ['', 'Amount Paid', '0.00'],
                                                         ['', 'Amount Due (PHP)', '64,248.50'],
+                                                        ['', '', ''],
                                                         [ { content: '', colSpan: 3 } ]
                                                         // ['Signature over Printed Name of Member / Patient / Autorized Person', '', 'Signature over Printed Name of Billing Clerk'],
                                                     ],
                                                     pageBreak: 'avoid',
-                                                    startY: doc.lastAutoTable.finalY,
+                                                    // startY: doc.lastAutoTable.finalY,
+                                                    startY: 13,
                                                     didParseCell: function (Data) {
                                                         var rows = Data.table.body;
 
@@ -675,7 +675,7 @@
                                                             Data.cell.styles.cellPadding = 1;
                                                         }
 
-                                                        if (Data.row.index === rows.length - 2) {
+                                                        if (Data.row.index === rows.length - 3) {
                                                             Data.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: Data.cell.y };
                                                             Data.cell.styles.fontStyle = 'bold';
                                                             Data.cell.styles.fontSize = 13;
@@ -689,18 +689,23 @@
                                                         // }
 
                                                         if (Data.row.index === rows.length - 1) {
-                                                            Data.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: Data.cell.y + 80 };
+                                                            Data.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: Data.cell.y };
                                                             if (Data.column.index === 2) {
                                                                 Data.cell.styles.halign = 'center';
                                                             }
                                                         }
 
+                                                        if (Data.row.index === rows.length - 2) {
+                                                            Data.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: Data.cell.y + 60 };
+                                                        }
+
                                                         console.log(Data);
+                                                        console.log(Data.table);
                                                     },
                                                     didDrawCell: function (Data) {
                                                         var rows = Data.table.body;
 
-                                                        if (Data.row.index === 1 || Data.row.index === rows.length - 3) {
+                                                        if (Data.row.index === 1 || Data.row.index === rows.length - 4) {
                                                             console.log(Number(Data.cell.y + Data.cell.height));
 
                                                             Data.cell.styles.cellPadding = { bottom: 5, left: 1, right: 1, top: 1 };
@@ -720,15 +725,30 @@
                                                                     head: [["", ""]],
                                                                     body: [
                                                                         ['Signature over Printed Name of Member / Patient / Autorized Person', 'Signature over Printed Name of Billing Clerk'],
+                                                                        [ { content: 'Notes', styles: { fontSize: 12, textColor: '#6c757d' } }, '' ],
+                                                                        [ { content: '*Enter notes or Bank ID for the transaction.', styles: { fontSize: 12, textColor: '#000000' } } ],
+                                                                        [ { content: 'Terms', styles: { fontSize: 12, textColor: '#6c757d' } } ],
+                                                                        [ { content: '*Payment is expected to be done within 30 days', styles: { fontSize: 12, textColor: '#000000' } } ],
                                                                     ],
-                                                                    startY: Data.cell.y + 80,
+                                                                    startY: Data.cell.y,
+                                                                    rowPageBreak: 'avoid',
+                                                                    didParseCell: function (innerData) {
+                                                                        var rows = innerData.table.body;
+                                                                        if (innerData.row.index === rows.length - 4) {
+                                                                            innerData.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: innerData.cell.y + 40 };
+                                                                        }
+
+                                                                        if (innerData.row.index === rows.length - 3 || innerData.row.index === rows.length - 2 || innerData.row.index === rows.length - 1) {
+                                                                            innerData.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: 1 };
+                                                                        }
+                                                                    },
                                                                     didDrawCell: function (innerData) {
                                                                         var rows = innerData.table.body;
 
                                                                         console.log(Data.cell.y + 80)
                                                                         console.log(rows)
-                                                                        console.log(rows.length - 1)
-                                                                        if (innerData.row.index === rows.length - 1 && innerData.row.section === 'body') {
+                                                                        console.log(rows.length - 2)
+                                                                        if (innerData.row.index === rows.length - 5 && innerData.row.section === 'body') {
                                                                             doc.setDrawColor(0, 0, 0);
                                                                             doc.line(14, innerData.cell.y, 94, innerData.cell.y);
                                                                             doc.line(125, innerData.cell.y, 197, innerData.cell.y);
