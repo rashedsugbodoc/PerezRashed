@@ -663,7 +663,8 @@
                                                         ['', 'Discount', '500.00'],
                                                         ['', 'Amount Paid', '0.00'],
                                                         ['', 'Amount Due (PHP)', '64,248.50'],
-                                                        ['Signature over Printed Name of Member / Patient / Autorized Person', '', 'Signature over Printed Name of Billing Clerk'],
+                                                        [ { content: '', colSpan: 3 } ]
+                                                        // ['Signature over Printed Name of Member / Patient / Autorized Person', '', 'Signature over Printed Name of Billing Clerk'],
                                                     ],
                                                     pageBreak: 'avoid',
                                                     startY: doc.lastAutoTable.finalY,
@@ -675,22 +676,20 @@
                                                         }
 
                                                         if (Data.row.index === rows.length - 2) {
+                                                            Data.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: Data.cell.y };
                                                             Data.cell.styles.fontStyle = 'bold';
                                                             Data.cell.styles.fontSize = 13;
-                                                            if (Data.column.index === 3) {
+                                                            if (Data.column.index === 2) {
                                                                 Data.cell.styles.halign = 'right';
                                                             }
                                                         }
 
+                                                        // if (Data.row.index === rows.length - 1) {
+                                                        //     Data.cell.styles.
+                                                        // }
+
                                                         if (Data.row.index === rows.length - 1) {
-                                                            Data.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: Data.cell.y + 70 };
-                                                            // if (Data.column.index === 0) {
-                                                            //     Data.cell.styles.cellWidth = 66;
-                                                            // } else if (Data.column.index === 1) {
-                                                            //     Data.cell.styles.cellWidth = 58;
-                                                            // } else if (Data.column.index === 2) {
-                                                            //     Data.cell.styles.cellWidth = 60;
-                                                            // }
+                                                            Data.cell.styles.cellPadding = { bottom: 1, left: 1, right: 1, top: Data.cell.y + 80 };
                                                             if (Data.column.index === 2) {
                                                                 Data.cell.styles.halign = 'center';
                                                             }
@@ -710,35 +709,37 @@
                                                         }
 
                                                         if (Data.row.index === rows.length - 1) {
-                                                            doc.setDrawColor(0, 0, 0);
                                                             if (Data.column.index === 0) {
-                                                                doc.line(14, Data.cell.y + 68, 64, Data.cell.y + 68);
-                                                            } else if (Data.column.index === 2) {
-                                                                doc.line(160, Data.cell.y + 68, 197, Data.cell.y + 68);
+                                                                doc.autoTable({
+                                                                    theme: 'plain',
+                                                                    columnStyles: {
+                                                                        0: { halign: 'left', cellWidth: 92 },
+                                                                        1: { halign: 'right', cellWidth: 92, },
+                                                                    },
+                                                                    margin: { left: 13, right: 13, bottom: 37},
+                                                                    head: [["", ""]],
+                                                                    body: [
+                                                                        ['Signature over Printed Name of Member / Patient / Autorized Person', 'Signature over Printed Name of Billing Clerk'],
+                                                                    ],
+                                                                    startY: Data.cell.y + 80,
+                                                                    didDrawCell: function (innerData) {
+                                                                        var rows = innerData.table.body;
+
+                                                                        console.log(Data.cell.y + 80)
+                                                                        console.log(rows)
+                                                                        console.log(rows.length - 1)
+                                                                        if (innerData.row.index === rows.length - 1 && innerData.row.section === 'body') {
+                                                                            doc.setDrawColor(0, 0, 0);
+                                                                            doc.line(14, innerData.cell.y, 94, innerData.cell.y);
+                                                                            doc.line(125, innerData.cell.y, 197, innerData.cell.y);
+                                                                        }
+                                                                    }
+                                                                })
                                                             }
                                                         }
-                                                    }
-                                                    // willDrawCell: function (Data) {
-                                                        
-                                                    // }
-                                                })
 
-                                                // doc.autoTable({
-                                                //     theme: 'plain',
-                                                //     columnStyles: {
-                                                //         0: { halign: 'left', cellWidth: 66 },
-                                                //         1: { cellWidth: 58 },
-                                                //         2: { halign: 'center', cellWidth: 60 }
-                                                //     },
-                                                //     margin: { left: 13, right: 13, bottom: 37 },
-                                                //     head: [["", "", ""]],
-                                                //     body: [
-                                                //         ['', '', ''],
-                                                //         ['Signature over Printed Name of Member / Patient / Autorized Person', '', 'Signature over Printed Name of Billing Clerk'],
-                                                //     ],
-                                                //     pageBreak: 'avoid',
-                                                //     startY: doc.lastAutoTable.finalY + 20,
-                                                // })
+                                                    }
+                                                })
 
                                                 /*Samples*/
                                                     // doc.autoTable({
