@@ -364,7 +364,7 @@
 
                                                 // console.log(tableToJson($('#editable-sample').get(0)));
 
-                                                doc.cellInitialize();
+                                                // doc.cellInitialize();
 
                                                 // var doc = new jsPDF({
                                                 //   orientation: 'portrait',
@@ -412,22 +412,61 @@
 
                                                     /*Bill Info Start*/
                                                         doc.setFontSize(10);
+                                                        doc.setFontStyle('bold');
+                                                        doc.setTextColor('#6c757d');
                                                         doc.text('Billed To', 13, 56);
-                                                        doc.text('Patient Name : Shin Chan', 13, 61);
-                                                        doc.text('Patient ID : 23', 13, 66);
-                                                        doc.text('Age : 29', 13, 71);
-                                                        doc.text('Address : HVG IT Park Mandaue City Cebu', 13, 76);
-                                                        doc.text('Contact : +639332494320', 13, 81);
+                                                        doc.setTextColor('#000000');
+                                                        doc.setFontStyle('normal');
 
-                                                        doc.text('Facility ID : 9', 89, 61);
-                                                        doc.text('Doctor : Dr.Rey Balondoy', 89, 66);
-                                                        doc.text('Payer Account : 23-Personal', 89, 71);
-                                                        doc.text('Date Issue : 11-04-2022', 89, 76);
-                                                        doc.text('Due Date : 12-04-2022', 89, 81);
+                                                        var texts1 = [
+                                                            'Patient Name :','Shin Chan',
+                                                            'Patient ID :','23',
+                                                            'Age :','29',
+                                                            'Address :','HVG IT Park Mandaue City Cebu',
+                                                            'Contact :','+639332494320',
+
+                                                            'Facility ID :','9',
+                                                            'Doctor :','Dr.Rey Balondoy',
+                                                            'Payer Account :','23-Personal',
+                                                            'Date Issue :','11-04-2022',
+                                                            'Due Date :','12-04-2022',
+                                                        ];
+                                                        var coordinates1 = [
+                                                            [13,61],[39,61],
+                                                            [13,66],[32,66],
+                                                            [13,71],[23,71],
+                                                            [13,76],[30,76],
+                                                            [13,81],[29,81],
+
+                                                            [89,61],[109,61],
+                                                            [89,66],[104,66],
+                                                            [89,71],[117,71],
+                                                            [89,76],[110,76],
+                                                            [89,81],[108,81],
+                                                        ];
+                                                        var style = [
+                                                            ['bold'],['normal'],
+                                                            ['bold'],['normal'],
+                                                            ['bold'],['normal'],
+                                                            ['bold'],['normal'],
+                                                            ['bold'],['normal'],
+
+                                                            ['bold'],['normal'],
+                                                            ['bold'],['normal'],
+                                                            ['bold'],['normal'],
+                                                            ['bold'],['normal'],
+                                                            ['bold'],['normal'],
+                                                        ];
+
+                                                        texts1.forEach(function(text, index) {
+                                                            doc.setFontStyle(style[index]);
+                                                            doc.text(text, coordinates1[index][0], coordinates1[index][1]);
+                                                        })
 
                                                         doc.setFontSize(12);
                                                         doc.text('Amount Due (PHP)', 158, 73);
                                                         doc.setFontSize(18);
+                                                        console.log(doc.getFontList())
                                                         doc.text(doc.splitTextToSize('33,124.50', 41), 158, 81);
                                                     /*Bill Info End*/
 
