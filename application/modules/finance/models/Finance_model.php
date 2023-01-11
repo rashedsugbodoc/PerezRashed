@@ -1726,6 +1726,12 @@ class Finance_model extends CI_model {
         return $query->row();
     }
 
+    function validateChargeCode($charge_code) {
+        $this->db->where('charge_code', $charge_code);
+        $query = $this->db->get('charge');
+        return $query->row();
+    }
+
     function checkPhysicalChargesListByApplicableStaffId($id) {
         $this->db->where('service_category_group_id', 9);
         $this->db->where('applicable_staff_id', $id);

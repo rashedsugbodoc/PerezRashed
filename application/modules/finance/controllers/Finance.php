@@ -2428,9 +2428,16 @@ class Finance extends MX_Controller {
 
                     $category_name = $this->finance_model->getServiceCategoryById($category_id)->category;
                     $category_f_letter = $category_name[0];
-                    $charge_code = count($this->finance_model->getChargeCount());
-                    $charge_increment = $charge_code+=1;
-                    $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
+                    // $charge_code = count($this->finance_model->getChargeCount());
+                    // $charge_increment = $charge_code+=1;
+                    // $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
+
+                    do {
+                        $charge_code2 = $this->finance_model->getPaymentCategory();
+                        $latest_charge_code = substr(end($charge_code2), 1) + 1;
+                        $charge_code_final = $category_f_letter . format_number_with_digits($latest_charge_code, 4);
+                        $validate_number = $this->finance_model->validateChargeCode($charge_code_final);
+                    } while($validate_number != 0);
 
                     if ($tax[$key] == "0") {
                         $tax[$key] = null;
@@ -2589,9 +2596,16 @@ class Finance extends MX_Controller {
                 foreach($company as $key => $value) {
                     $category_name = $this->finance_model->getServiceCategoryById($category_id)->category;
                     $category_f_letter = $category_name[0];
-                    $charge_code = count($this->finance_model->getChargeCount());
-                    $charge_increment = $charge_code+=1;
-                    $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
+                    // $charge_code = count($this->finance_model->getChargeCount());
+                    // $charge_increment = $charge_code+=1;
+                    // $charge_code_final = $category_f_letter . format_number_with_digits($charge_increment, 4);
+
+                    do {
+                        $charge_code2 = $this->finance_model->getPaymentCategory();
+                        $latest_charge_code = substr(end($charge_code2), 1) + 1;
+                        $charge_code_final = $category_f_letter . format_number_with_digits($latest_charge_code, 4);
+                        $validate_number = $this->finance_model->validateChargeCode($charge_code_final);
+                    } while($validate_number != 0);
 
                     if ($tax[$key] == "0") {
                         $tax[$key] = null;
