@@ -883,7 +883,7 @@
                                                                     </a>\n\
                                                                 </li>\n\
                                                             </ul>\n\
-                                                            <input type="hidden" id="is_taxable'+value+'" name="is_taxable[]">\n\
+                                                            <input type="hidden" id="is_taxable'+value+'" name="is_taxable[]" value="1">\n\
                                                         </div>\n\
                                                     </div>\n\
                                                     <div id="limits_'+value+'" hidden>\n\
