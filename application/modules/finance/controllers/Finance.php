@@ -205,6 +205,10 @@ class Finance extends MX_Controller {
         $id = $this->input->post('id');
         $item_id = $this->input->post('item_id');
         $redirect = $this->input->post('redirect');
+        $due_type = $this->input->post('due_type');
+        $due_type_details = $this->finance_model->getInvoiceDueTypeById($due_type);
+
+        // $due_date = computeInvoiceDueDateByDueType($datetime, $due_type_details->name);
         // $deposit_edit_amount = $this->input->post('deposit_edit_amount');
         // $item_total_price = $this->input->post('amount_input');
         $date = time();
@@ -360,13 +364,13 @@ class Finance extends MX_Controller {
                 $total_tax = array_sum($item_tax);
 
                 if (!empty($discount_type_details)) {
-                    if ($discount_type_details->name === FIXED_PERCENTAGE) {
+                    if ($discount_type_details->name === DISCOUNT_TYPE_FIXED_PERCENTAGE) {
                         $payer_discount_total = $subtotal*($discount_details->rate/100);
-                    } elseif ($discount_type_details->name === FIXED_AMOUNT) {
+                    } elseif ($discount_type_details->name === DISCOUNT_TYPE_FIXED_AMOUNT) {
                         $payer_discount_total = $discount_details->amount;
-                    } elseif ($discount_type_details->name === VARIABLE_PERCENTAGE) {
+                    } elseif ($discount_type_details->name === DISCOUNT_TYPE_VARIABLE_PERCENTAGE) {
                         $payer_discount_total = $subtotal*($discount_input[$key]/100);
-                    } elseif ($discount_type_details->name === VARIABLE_AMOUNT) {
+                    } elseif ($discount_type_details->name === DISCOUNT_TYPE_VARIABLE_AMOUNT) {
                         $payer_discount_total = $discount_input[$key];
                     }
                 } else {
@@ -401,7 +405,7 @@ class Finance extends MX_Controller {
                 }
 
                 if ($invoice_payer_id != '1' || $invoice_payer_id != 1) {
-                    $amount_received = null;
+                    $amount_received = 0;
                 }
 
                 $invoice_data = array();
@@ -4890,6 +4894,16 @@ class Finance extends MX_Controller {
 
 // Get users
         $response = $this->finance_model->getDiscountInfo($searchTerm);
+
+        echo json_encode($response);
+    }
+
+    public function getInvoiceDueTypeInfo() {
+// Search term
+        $searchTerm = $this->input->post('searchTerm');
+
+// Get users
+        $response = $this->finance_model->getInvoiceDueTypeInfoByCountryIdByApplicableEntityType($searchTerm);
 
         echo json_encode($response);
     }

@@ -207,4 +207,22 @@ function getDoctorInfo() {
         return $diff;
     }
 
+    function computeInvoiceDueDateByDueType($created_at, $due_type_name) {
+        if ($due_type_name === INVOICE_DUE_TYPE_DUE_ON_DISCHARGE) {
+
+        } else if ($due_type_name === INVOICE_DUE_TYPE_NET30) {
+            
+        } else if ($due_type_name === INVOICE_DUE_TYPE_NET60) {
+            
+        } else if ($due_type_name === INVOICE_DUE_TYPE_DUE_ON_RECEIPT) {
+            
+        } else if ($due_type_name === INVOICE_DUE_TYPE_SPECIFIC_DATE) {
+            
+        } else if ($due_type_name === INVOICE_DUE_TYPE_DUE_ON_END_OF_MONTH) {
+            
+        } else if ($due_type_name === INVOICE_DUE_TYPE_CUSTOM) {
+            
+        }
+    }
+
 ?>

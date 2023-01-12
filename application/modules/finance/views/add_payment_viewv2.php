@@ -229,7 +229,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12 col-sm-12">
+                                                <div class="col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('encounter'); ?></label>
                                                         <select class="form-control select2-show-search" name="encounter_id" id="encounter" data-placeholder="Select Patient to Produce Encounter Records" <?php if(!empty($encounter_id)) { echo "disabled"; } ?> required>
@@ -248,6 +248,14 @@
                                                         <?php if (!empty($encounter_id)) { ?>
                                                             <input type="hidden" name="encounter_id" value="<?php echo $encounter_id ?>">
                                                         <?php } ?>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"><?php echo lang('invoice').' '.lang('due') ?></label>
+                                                        <select class="form-control" id="due_type" name="due_type">
+                                                            
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1372,7 +1380,13 @@
                         $('#discount'+key).select2();
 
                     })
-                    $('#invoice_result_due').text(parseFloat(summary_subtotal-$('#amount_received').val()).toFixed(2));
+    
+                    var total_due = computeDue();
+
+                    /*Old Total Due Formula*/
+                    //summary_subtotal-$('#amount_received').val()
+
+                    $('#invoice_result_due').text(parseFloat(total_due).toFixed(2));
                 }
             });
         });
@@ -1491,6 +1505,33 @@
     </script>
 
     <script type="text/javascript">
+        $(document).ready(function() {
+            $("#due_type").select2({
+                placeholder: '<?php echo lang('select').' '.lang('due').' '.lang('type'); ?>',
+                allowClear: true,
+                ajax: {
+                    url: 'finance/getInvoiceDueTypeInfo',
+                    type: "post",
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            searchTerm: params.term // search term
+                        };
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+
+            });
+        })
+    </script>
+
+    <script type="text/javascript">
         var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
         function computeSubtotal() {
 
@@ -1508,6 +1549,13 @@
 
         function computeDue() {
             var totalsummarydiscount = 0;
+            var amount_received = $("#amount_received").val();
+
+            console.log('AMOUNT RECEIVED'+'amount_received');
+
+            if (amount_received == null) {
+                amount_received = 0
+            }
             $('.discount_total').each(function() {
                 totalsummarydiscount += Number(this.value);
             });
@@ -1524,7 +1572,7 @@
             });
 
             // var total_due = (cnt-totalsummarytax)-totalsummarydiscount;
-            var total_due = cnt - $("#amount_received").val();
+            var total_due = cnt - amount_received;
             return total_due;
         }
 

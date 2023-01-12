@@ -1797,6 +1797,53 @@ class Finance_model extends CI_model {
         return $data;
     } 
 
+    function getInvoiceDueTypeInfoByCountryIdByApplicableEntityType($searchTerm) {
+        $settings = $this->settings_model->getSettings();
+        if (!empty($searchTerm)) {
+            $query = $this->db->select('*')
+                    ->from('invoice_due_type')
+                    // ->where('hospital_id', $this->session->userdata('hospital_id'))
+                    // ->or_where('hospital_id', null)
+                    //->where('is_invoice_visible', 1)
+                    ->group_start()
+                        ->where("(id LIKE '%" . $searchTerm . "%' OR display_name LIKE '%" . $searchTerm . "%' OR description LIKE '%" . $searchTerm . "%')", NULL, TRUE)
+                    ->group_end()
+                    ->group_start()
+                        ->where('applicable_country_ids', $settings->country_id)
+                        ->or_where('applicable_country_ids', null)
+                    ->group_end()
+                    ->group_start()
+                        ->where('applicable_entity_types', $settings->entity_type_id)
+                        ->or_where('applicable_entity_types', null)
+                    ->group_end()
+                    ->get();
+            $due_types = $query->result_array();
+        } else {
+            $this->db->select('*');
+            $this->db->group_start();
+                $this->db->where('applicable_country_ids', $settings->country_id);
+                $this->db->or_where('applicable_country_ids', null);
+            $this->db->group_end();
+            $this->db->group_start();
+                $this->db->where('applicable_entity_types', $settings->entity_type_id);
+                $this->db->or_where('applicable_entity_types', null);
+            $this->db->group_end();
+            $this->db->limit(10);
+            $fetched_records = $this->db->get('invoice_due_type');
+            $due_types = $fetched_records->result_array();
+        }
+
+        // Initialize Array with fetched data
+        $data = array();
+        foreach ($due_types as $due_type) {
+            // if (empty($rate)) {
+            //     $rate = $discount['amount'];
+            // }
+            $data[] = array("id" => $due_type['id'], "text" => $due_type['display_name']);
+        }
+        return $data;
+    } 
+
     function getDiscountTypeById($id) {
         $this->db->where('id', $id);
         $query = $this->db->get('discount_type');
@@ -1807,6 +1854,12 @@ class Finance_model extends CI_model {
         $this->db->select('*');
         $query = $this->db->get('discount');
         return $query->result();
+    }
+
+    function getInvoiceDueTypeById($id) {
+        $this->db->where('id', $id);
+        $query = $this->db->get('invoice_due_type');
+        return $query->row();
     }
 
 }

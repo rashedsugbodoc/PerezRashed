@@ -124,7 +124,16 @@ define('CLAIM_PHILHEALTH_NAME', 'philhealth');
 /*Country*/
 define('COUNTRY_PHILIPPINES', 'Philippines');
 /*Discount Type*/
-define('FIXED_PERCENTAGE', 'fixed_percentage');
-define('FIXED_AMOUNT', 'fixed_amount');
-define('VARIABLE_PERCENTAGE', 'variable_percentage');
-define('VARIABLE_AMOUNT', 'variable_amount');
+define('DISCOUNT_TYPE_FIXED_PERCENTAGE', 'fixed_percentage');
+define('DISCOUNT_TYPE_FIXED_AMOUNT', 'fixed_amount');
+define('DISCOUNT_TYPE_VARIABLE_PERCENTAGE', 'variable_percentage');
+define('DISCOUNT_TYPE_VARIABLE_AMOUNT', 'variable_amount');
+
+/*Invocie Due Type*/
+define('INVOICE_DUE_TYPE_DUE_ON_DISCHARGE', 'due_on_discharge');
+define('INVOICE_DUE_TYPE_NET30', 'net30');
+define('INVOICE_DUE_TYPE_NET60', 'net60');
+define('INVOICE_DUE_TYPE_DUE_ON_RECEIPT', 'due_on_receipt');
+define('INVOICE_DUE_TYPE_SPECIFIC_DATE', 'specific_date');
+define('INVOICE_DUE_TYPE_DUE_ON_END_OF_MONTH', 'due_on_end_of_month');
+define('INVOICE_DUE_TYPE_CUSTOM', 'custom');
