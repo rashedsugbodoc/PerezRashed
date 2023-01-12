@@ -220,7 +220,9 @@ class Finance extends MX_Controller {
 
         $discount_type = $new_discount_type;
 
-        if (empty($id)) {
+
+        /*If Adding New Invoice*/
+        if (empty($id)) { 
 
             do {
                 $raw_invoice_group_number = 'G'.random_string('alnum', 6);
@@ -422,6 +424,7 @@ class Finance extends MX_Controller {
                     'discount_id' => $value['discount']['discount_id'],
                     'invoice_tax_amount' => $total_tax,
                     'total_without_tax' => ($subtotal + $total_tax) - $payer_discount_total,
+                    'created_at' => $datetime
                 );
 
                 $this->finance_model->insertPayment($invoice_data);
@@ -477,6 +480,8 @@ class Finance extends MX_Controller {
 
             }
         } else {
+        /*Else We're Editing an Existing Invoice Group*/
+
             /*New*/
                 // $invoice_list_by_group_number = $this->finance_model->getInvoiceByGroupNumber($id);
 
@@ -4919,6 +4924,20 @@ class Finance extends MX_Controller {
         $id = $this->input->get('id');
 
         $invoice_items = $this->finance_model->getInvoiceItemsByPaymentId($id);
+        $data['invoice_details'] = $this->finance_model->getPaymentById($id);
+        $data['patient_details'] = $this->patient_model->getPatientById($data['invoice_details']->patient);
+        $data['doctor_details'] = $this->doctor_model->getDoctorById($data['invoice_details']->doctor);
+        $data['company_details'] = $this->company_model->getCompanyById($data['invoice_details']->company_id);
+        $data['created_at'] = strval(date('m-d-Y', strtotime($data['invoice_details']->created_at.' UTC')));
+        // $data['due_date'] = 
+
+        if (!empty($data['patient_details']->birthdate)) {
+            $birthDate = strtotime($data['patient_details']->birthdate);
+            $birthDate = date('m/d/Y', $birthDate);
+            $birthDate = explode("/", $birthDate);
+            $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
+            $data['age'] = strval($age);
+        }
 
         $data['settings'] = $this->settings_model->getSettings();
 

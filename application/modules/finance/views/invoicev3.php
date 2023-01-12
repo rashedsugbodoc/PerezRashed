@@ -315,6 +315,10 @@
                         success: function (response) {
                             var settings = response.settings;
                             var item_list = response.item_list;
+                            var invoice = response.invoice_details;
+                            var patient = response.patient_details;
+                            var doctor = response.doctor_details;
+                            var company = response.company_details;
                             // var imgData = 'data:image/jpeg;base64,'+ btoa('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRjC5MfUm-lXtmuwDmHDoUCK9WKrYXHt-e33-ozzTrbA&s');
                             // console.log(document.getElementsByClassName("profile_image"));
                             // console.log(document.getElementById("profile_image"))
@@ -419,16 +423,16 @@
                                                         doc.setFontStyle('normal');
 
                                                         var texts1 = [
-                                                            'Patient Name :','Shin Chan',
-                                                            'Patient ID :','23',
-                                                            'Age :','29',
-                                                            'Address :','HVG IT Park Mandaue City Cebu',
-                                                            'Contact :','+639332494320',
+                                                            'Patient Name :',patient.firstname+' '+patient.lastname,
+                                                            'Patient ID :',patient.patient_id,
+                                                            'Age :',response.age,
+                                                            'Address :',patient.address,
+                                                            'Contact :',patient.phone,
 
-                                                            'Facility ID :','9',
-                                                            'Doctor :','Dr.Rey Balondoy',
-                                                            'Payer Account :','23-Personal',
-                                                            'Date Issue :','11-04-2022',
+                                                            'Facility ID :',invoice.hospital_id,
+                                                            'Doctor :',doctor.professional_display_name,
+                                                            'Payer Account :',company.id+'-'+company.display_name,
+                                                            'Date Issue :',response.created_at,
                                                             'Due Date :','12-04-2022',
                                                         ];
                                                         var coordinates1 = [
@@ -464,10 +468,11 @@
                                                         })
 
                                                         doc.setFontSize(12);
-                                                        doc.text('Amount Due (PHP)', 158, 73);
+                                                        doc.text('Amount Due (PHP)', 158, 73, {align: 'left'});
+                                                        doc.setFontStyle('bold');
                                                         doc.setFontSize(18);
                                                         console.log(doc.getFontList())
-                                                        doc.text(doc.splitTextToSize('33,124.50', 41), 158, 81);
+                                                        doc.text(doc.splitTextToSize('33,124,000.50', 41), 158, 81, {align: 'left'});
                                                     /*Bill Info End*/
 
                                                 /*Header*/
