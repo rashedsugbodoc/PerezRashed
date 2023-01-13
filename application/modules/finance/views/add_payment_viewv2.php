@@ -1085,310 +1085,312 @@
     <script type="text/javascript">
         $(document).ready(function() {
             var group = '<?php echo $payment->invoice_group_number; ?>'
-            $.ajax({
-                url: 'finance/editInvoicesByInvoiceGroupIdByJson?group='+group,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var invoices = response.invoices;
-                    console.log(response.invoices);
-                    var summary_subtotal = 0;
-                    var summary_tax = 0;
-                    var summary_discount = 0;
-                    var summary_deposited_amount = 0;
-                    $.each(invoices, function(key, value) {
-                        var items = value['items'];
-                        var total = value['total'];
-                        var discount = value['discount'];
-                        var amount_received = value['received'];
-                        var company_name = value['company']['name'];
-                        var item_id = items['id'];
-                        var charge_id = items['charge_id'];
-                        var group_id = items['charge_group_id'];
-                        var category = items['description'];
-                        var fix_limit = items['fixed_limit'];
-                        var type = "variable";
-                        var discount_id = discount['id'];
-                        var discount_amount = discount['amount'];
-                        var charge_quantity = items['quantity'];
-                        var tax_id = items['tax_id'];
-                        var tax_amount = items['tax_amount'];
-                        var tax_percentage = items['tax_percentage'];
-                        var c_price = items['c_price'];
-                        var tax_detail = "sample";
-                        var c_price_display = "sample";
-                        var discount_list = response.discount;
-                        var discount_data = discount['discount_data'];
+            if (group) {
+                $.ajax({
+                    url: 'finance/editInvoicesByInvoiceGroupIdByJson?group='+group,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var invoices = response.invoices;
+                        console.log(response.invoices);
+                        var summary_subtotal = 0;
+                        var summary_tax = 0;
+                        var summary_discount = 0;
+                        var summary_deposited_amount = 0;
+                        $.each(invoices, function(key, value) {
+                            var items = value['items'];
+                            var total = value['total'];
+                            var discount = value['discount'];
+                            var amount_received = value['received'];
+                            var company_name = value['company']['name'];
+                            var item_id = items['id'];
+                            var charge_id = items['charge_id'];
+                            var group_id = items['charge_group_id'];
+                            var category = items['description'];
+                            var fix_limit = items['fixed_limit'];
+                            var type = "variable";
+                            var discount_id = discount['id'];
+                            var discount_amount = discount['amount'];
+                            var charge_quantity = items['quantity'];
+                            var tax_id = items['tax_id'];
+                            var tax_amount = items['tax_amount'];
+                            var tax_percentage = items['tax_percentage'];
+                            var c_price = items['c_price'];
+                            var tax_detail = "sample";
+                            var c_price_display = "sample";
+                            var discount_list = response.discount;
+                            var discount_data = discount['discount_data'];
 
-                        window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(value['items']));
+                            window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(value['items']));
 
-                        console.log(discount_data);
-                        console.log(value['items']);
+                            console.log(discount_data);
+                            console.log(value['items']);
 
-                        $("#charge_cards").append('<div class="col-md-6 col-sm-12">\n\
-                            <div class="card h-90" id="payer_account-'+key+'">\n\
-                                <div class="card-header">\n\
-                                    <div class="card-title">'+company_name+'</div>\n\
-                                    <div class="card-options"><button type="button" class="btn btn-primary" data-target="#addCase'+charge_id+'" data-toggle="modal"><?php echo lang("add").' '.lang("extras"); ?></button></div>\n\
-                                </div>\n\
-                                <div class="card-body">\n\
-                                    <div class="table-responsive">\n\
-                                        <table class="table text-nowrap">\n\
-                                            <thead>\n\
-                                                <tr>\n\
-                                                    <th class="w-50"></th>\n\
-                                                    <th class="w-40"><?php echo lang("amount"); ?></th>\n\
-                                                    <th class="w-10"><?php echo lang("quantity"); ?></th>\n\
-                                                </tr>\n\
-                                            </thead>\n\
-                                            <tbody id="tbody'+key+'">\n\
-                                            </tbody>\n\
-                                        </table>\n\
+                            $("#charge_cards").append('<div class="col-md-6 col-sm-12">\n\
+                                <div class="card h-90" id="payer_account-'+key+'">\n\
+                                    <div class="card-header">\n\
+                                        <div class="card-title">'+company_name+'</div>\n\
+                                        <div class="card-options"><button type="button" class="btn btn-primary" data-target="#addCase'+charge_id+'" data-toggle="modal"><?php echo lang("add").' '.lang("extras"); ?></button></div>\n\
                                     </div>\n\
-                                    <div id="extras-'+key+'">\n\
-                                        <hr>\n\
+                                    <div class="card-body">\n\
                                         <div class="table-responsive">\n\
                                             <table class="table text-nowrap">\n\
-                                                <tbody>\n\
+                                                <thead>\n\
                                                     <tr>\n\
-                                                        <td class="w-10"><?php echo lang('sub_total'); ?>: </td>\n\
-                                                        <td class="w-35"></td>\n\
-                                                        <td class="w-25"></td>\n\
-                                                        <td class="w-30"><input name="item_total[]" id="card_items_total-'+key+'" class="form-control" value="'+total['subtotal']+'"></td>\n\
+                                                        <th class="w-50"></th>\n\
+                                                        <th class="w-40"><?php echo lang("amount"); ?></th>\n\
+                                                        <th class="w-10"><?php echo lang("quantity"); ?></th>\n\
                                                     </tr>\n\
-                                                    <tr>\n\
-                                                        <td class="w-10"><?php echo lang('discount'); ?>: </td>\n\
-                                                        <td class="w-35"><select name="discount_type[]" id="discount'+key+'" class="form-control" onchange="select_discount3('+key+');"></select></td>\n\
-                                                        <td class="w-25" id="discount_type_input'+key+'">\n\
-                                                        </td>\n\
-                                                        <td class="w-30"><input name="discount_total[]" class="form-control discount_total" value="'+discount_amount+'" readonly id="discount_total-'+key+'"></td>\n\
-                                                        </div>\n\
-                                                    </tr>\n\
-                                                    <tr>\n\
-                                                        <td class="w-10"><?php echo lang('tax'); ?>: </td>\n\
-                                                        <td class="w-35"></td>\n\
-                                                        <td class="w-25"></td>\n\
-                                                        <td class="w-30"><input name="tax[]" id="tax_total-'+key+'" class="form-control tax_total" value="'+parseFloat(total['tax']).toFixed(2)+'"></td>\n\
-                                                    </tr>\n\
-                                                    <tr>\n\
-                                                        <td class="w-10"><?php echo lang('payer_account').' '.lang('total'); ?>: </td>\n\
-                                                        <td class="w-35"></td>\n\
-                                                        <td class="w-25"></td>\n\
-                                                        <td class="w-30"><input name="payer_total[]" id="payer_total-'+key+'" class="form-control payer_total" value="'+total['gross_total']+'"></td>\n\
-                                                    </tr>\n\
+                                                </thead>\n\
+                                                <tbody id="tbody'+key+'">\n\
                                                 </tbody>\n\
                                             </table>\n\
                                         </div>\n\
+                                        <div id="extras-'+key+'">\n\
+                                            <hr>\n\
+                                            <div class="table-responsive">\n\
+                                                <table class="table text-nowrap">\n\
+                                                    <tbody>\n\
+                                                        <tr>\n\
+                                                            <td class="w-10"><?php echo lang('sub_total'); ?>: </td>\n\
+                                                            <td class="w-35"></td>\n\
+                                                            <td class="w-25"></td>\n\
+                                                            <td class="w-30"><input name="item_total[]" id="card_items_total-'+key+'" class="form-control" value="'+total['subtotal']+'"></td>\n\
+                                                        </tr>\n\
+                                                        <tr>\n\
+                                                            <td class="w-10"><?php echo lang('discount'); ?>: </td>\n\
+                                                            <td class="w-35"><select name="discount_type[]" id="discount'+key+'" class="form-control" onchange="select_discount3('+key+');"></select></td>\n\
+                                                            <td class="w-25" id="discount_type_input'+key+'">\n\
+                                                            </td>\n\
+                                                            <td class="w-30"><input name="discount_total[]" class="form-control discount_total" value="'+discount_amount+'" readonly id="discount_total-'+key+'"></td>\n\
+                                                            </div>\n\
+                                                        </tr>\n\
+                                                        <tr>\n\
+                                                            <td class="w-10"><?php echo lang('tax'); ?>: </td>\n\
+                                                            <td class="w-35"></td>\n\
+                                                            <td class="w-25"></td>\n\
+                                                            <td class="w-30"><input name="tax[]" id="tax_total-'+key+'" class="form-control tax_total" value="'+parseFloat(total['tax']).toFixed(2)+'"></td>\n\
+                                                        </tr>\n\
+                                                        <tr>\n\
+                                                            <td class="w-10"><?php echo lang('payer_account').' '.lang('total'); ?>: </td>\n\
+                                                            <td class="w-35"></td>\n\
+                                                            <td class="w-25"></td>\n\
+                                                            <td class="w-30"><input name="payer_total[]" id="payer_total-'+key+'" class="form-control payer_total" value="'+total['gross_total']+'"></td>\n\
+                                                        </tr>\n\
+                                                    </tbody>\n\
+                                                </table>\n\
+                                            </div>\n\
+                                        </div>\n\
                                     </div>\n\
                                 </div>\n\
-                            </div>\n\
-                        </div>');
-
-                        // discountSelect2(key);
-
-                        if (amount_received == null) {
-                            amount_received = 0;
-                        }
-                        
-                        // var discount = 0;
-                        summary_discount += Number(parseFloat(discount_amount).toFixed(2));
-                        summary_deposited_amount += Number(parseFloat(amount_received).toFixed(2));
-                        $.each(items, function(item_key, item_value) {
-                            window.sessionStorage.setItem('selected_charges'+item_value['charge_id'], item_value['charge_id']);
-                            // console.log('c_price'+item_value['c_price']);
-                            summary_subtotal += Number(parseFloat(item_value['c_price']).toFixed(2));
-                            summary_tax += Number(parseFloat(item_value['tax_amount']).toFixed(2));
-                            console.log(summary_subtotal);
-                            var type = item_value['charge_type'];
-                            if (type == "variable") {
-                                var td_amount = '<td class="w-40"><input type="number" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" max="'+item_value['fixed_limit']+'" oninput="validity.valid||(value='+"'0'"+');"></td>';
-                                var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+item_value['c_price']+'</label>';
-                                var c_price = 0;
-                                var tax_detail = 0;
-                            } else {
-                                var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" max="'+item_value['fixed_limit']+'" oninput="validity.valid||(value='+"'0'"+');"><label>'+item_value['c_price']+'</label></td>';
-                                var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+item_value['c_price']+'</label>';
-                                var c_price = item_value['c_price'];
-                                var tax_detail = item_value['tax_amount'];
-                            }
-
-                            var summary_item_count = $(".summary_charges"+key).length;
-                            var invoice_result = $(".invoice_result").length;
-
-                            $("#tbody"+key).append('<tr class="charge-'+item_value['charge_group_id']+'">\n\
-                                <td class="w-50">'+item_value['description']+'<input type="text" name="charge_id[]" value="'+item_value['charge_id']+'" hidden></td>\n\
-                                '+td_amount+'\n\
-                                <td class="w-10"><input type="number" class="form-control quantity'+item_value['charge_id']+'-'+key+'" name="quantity[]" value="'+item_value['quantity']+'" onfocusout="charge_quantity('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>\n\
-                            </tr>');
-
-                            if (summary_item_count == 0) {
-                                $(".item_summary_tbody").append('<tr>\n\
-                                    <td class="valign-middle border w-60">\n\
-                                        <div class="invoice-notes summary_charges'+key+'">\n\
-                                            <label class="main-content-label tx-13 font-weight-semibold">'+company_name+'</label>\n\
-                                            <div id="charge_item'+key+item_value['charge_id']+'"><p>'+item_value['description']+'</p></div>\n\
-                                        </div>\n\
-                                    </td>\n\
-                                    <td class="tx-right border font-weight-semibold w-10">\n\
-                                        <div class="invoice-notes summary_quantity'+key+'">\n\
-                                            <label class="main-content-label tx-13 font-weight-semibold"></label>\n\
-                                            <div class="text-center" id="quantity_item'+key+item_value['charge_id']+'">'+item_value['quantity']+'</div>\n\
-                                        </div>\n\
-                                    </td>\n\
-                                    <td class="tx-right border font-weight-semibold w-15">\n\
-                                        <div class="invoice-notes summary_unit_price'+key+'">\n\
-                                            <label class="text-right main-content-label tx-13 font-weight-semibold"></label>\n\
-                                            <div class="text-right" id="unit_price_item'+key+item_value['charge_id']+'">'+td_amount_summary+'</div>\n\
-                                        </div>\n\
-                                    </td>\n\
-                                    <td class="tx-right border font-weight-semibold w-15">\n\
-                                        <div class="invoice-notes summary_amount'+key+'">\n\
-                                            <label class="main-content-label tx-13 font-weight-semibold"></label>\n\
-                                            <div class="text-right" id="amount_item'+key+item_value['charge_id']+'">'+currency+parseFloat(item_value['item_total']).toFixed(2)+'</div>\n\
-                                            <input type="hidden" name="amount_input" id="amount_item_input'+key+item_value['charge_id']+'" value="'+item_value['item_total']+'">\n\
-                                        </div>\n\
-                                    </td>\n\
-                                </tr>\n\
-                                ')
-
-                            } else {
-                                var charge_item_variable = 'charge_item'+key+item_value['charge_id'];
-                                var quantity_item_variable = 'quantity_item'+key+item_value['charge_id'];
-                                var unit_price_item_variable = 'unit_price_item'+key+item_value['charge_id'];
-                                var amount_item_variable = 'amount_item'+key+item_value['charge_id'];
-                                var amount_item_input = 'amount_item_input'+key+item_value['charge_id'];
-                                // alert(item_variable);
-                                $(".summary_charges"+key).append('<div id="'+charge_item_variable+'"><p>'+item_value['description']+'</p></div>');
-                                $(".summary_quantity"+key).append('<div class="text-center" id="'+quantity_item_variable+'">'+item_value['quantity']+'</div>');
-                                $(".summary_unit_price"+key).append('<div class="text-right" id="'+unit_price_item_variable+'">'+td_amount_summary+'</div>');
-                                $(".summary_amount"+key).append('<div class="text-right" id="'+amount_item_variable+'">'+currency+parseFloat(item_value['item_total']).toFixed(2)+'</div>');
-                                $(".summary_amount"+key).append('<input type="hidden" name="amount_input" id="'+amount_item_input+'" value="'+item_value['item_total']+'">');
-                            }
-
-                            if (invoice_result == 0) {
-                                $(".item_summary_tbody_result").append('<tr class="invoice_result">\n\
-                                    <td rowspan="5" class="td class="valign-top border w-60">\n\
-                                        <label class="form-label"><?php echo lang("note"); ?></label>\n\
-                                        <label id="invoice_result_note"></label>\n\
-                                    </td>\n\
-                                    <td class="tx-right border font-weight-semibold w-10">\n\
-                                        <label><?php echo lang("sub_total"); ?></label>\n\
-                                    </td>\n\
-                                    <td colspan="2" class="tx-right border font-weight-semibold w-30 text-right" id="invoice_result_subtotal">\n\
-                                        '+parseFloat(summary_subtotal).toFixed(2)+'\n\
-                                    </td>\n\
-                                </tr>\n\
-                                <tr>\n\
-                                    <td class="tx-right border font-weight-semibold w-10">\n\
-                                        <label><?php echo lang("tax"); ?></label>\n\
-                                    </td>\n\
-                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_tax">'+parseFloat(summary_tax).toFixed(2)+'</td>\n\
-                                </tr>\n\
-                                <tr>\n\
-                                    <td class="tx-right border font-weight-semibold w-10">\n\
-                                        <label><?php echo lang("discount"); ?></label>\n\
-                                    </td>\n\
-                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_discount"></td>\n\
-                                </tr>\n\
-                                <tr>\n\
-                                    <td class="tx-right border font-weight-semibold w-10">\n\
-                                        <label><?php echo lang("deposited_amount"); ?></label>\n\
-                                    </td>\n\
-                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_deposited"></td>\n\
-                                </tr>\n\
-                                <tr>\n\
-                                    <td class="tx-right border font-weight-semibold w-10">\n\
-                                        <label><?php echo lang("total")." ".lang("due"); ?></label>\n\
-                                    </td>\n\
-                                    <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_due"></td>\n\
-                                </tr>\n\
-                                ');
-                            } else {
-                                $('#invoice_result_note').text(item_value.remarks)
-                                $('#invoice_result_subtotal').text(parseFloat(summary_subtotal).toFixed(2));
-                                $('#invoice_result_tax').text(parseFloat(summary_tax).toFixed(2));
-                                $('#invoice_result_discount').text(summary_discount);
-                                $('#invoice_result_deposited').text(summary_deposited_amount);
-
-                            }
-
-
-                            // $('#editPaymentForm').find('[name="discount_type"]').val(1).change();
-                        })
-
-                        var invoice_item_extras = inv_items(key);
-
-                        var invoice_item_amount = invoice_item_extras[1];
-                        var invoice_tax_amount = invoice_item_extras[0];
-
-                        console.log('invoice_item_amount Bruh: ');
-                        console.log(invoice_item_amount);
-
-                        if (discount['discount_type'] == 1) {
-                            var rate = discount_data.rate;
-                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
-                                <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount">\n\
-                                <span class="input-group-append">\n\
-                                    <span class="btn btn-primary" type="button">%</span>\n\
-                                </span>\n\
-                            </div><div><label class="mt-2">'+rate+' %'+'</label></div>\n\
-                            ');
-                        } else if (discount['discount_type'] == 2) {
-                            var rate = discount_data.amount;
-                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
-                                <span class="input-group-append">\n\
-                                    <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                                </span>\n\
-                                <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Fixed Amount">\n\
-                            </div><div><label class="mt-2">'+currency+' '+rate+'</label></div>');
-                        } else if (discount['discount_type'] == 3) {
-                            var invoice_discount_amount = discount.amount;
-                            var rate = 0;
-                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
-                                <input type="text" class="form-control" value="'+invoice_discount_amount+'" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount" onkeyup="computeDiscountPercentage('+invoice_item_amount+','+key+');">\n\
-                                <span class="input-group-append">\n\
-                                    <span class="btn btn-primary" type="button">%</span>\n\
-                                </span>\n\
-                            </div>\n\
-                            ');
-                        } else if (discount['discount_type'] == 4) {
-                            var invoice_discount_amount = discount.amount;
-                            var rate = 0;
-                            $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
-                                <span class="input-group-append">\n\
-                                    <span class="btn btn-primary" type="button">'+currency+'</span>\n\
-                                </span>\n\
-                                <input type="text" class="form-control" id="discount_input-'+key+'" value="'+invoice_discount_amount+'" name="discount_input[]" placeholder="Enter Fixed Amount" onkeyup="computeDiscountAmount('+invoice_item_amount+','+key+')">\n\
                             </div>');
-                        }
 
-                        $('#discount'+key).append($('<option value="0" disabled>None</option>')).end();
-                        $.each(discount_list, function(discount_key, discount_value) {
-                            $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
+                            // discountSelect2(key);
+
+                            if (amount_received == null) {
+                                amount_received = 0;
+                            }
+                            
+                            // var discount = 0;
+                            summary_discount += Number(parseFloat(discount_amount).toFixed(2));
+                            summary_deposited_amount += Number(parseFloat(amount_received).toFixed(2));
+                            $.each(items, function(item_key, item_value) {
+                                window.sessionStorage.setItem('selected_charges'+item_value['charge_id'], item_value['charge_id']);
+                                // console.log('c_price'+item_value['c_price']);
+                                summary_subtotal += Number(parseFloat(item_value['c_price']).toFixed(2));
+                                summary_tax += Number(parseFloat(item_value['tax_amount']).toFixed(2));
+                                console.log(summary_subtotal);
+                                var type = item_value['charge_type'];
+                                if (type == "variable") {
+                                    var td_amount = '<td class="w-40"><input type="number" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" max="'+item_value['fixed_limit']+'" oninput="validity.valid||(value='+"'0'"+');"></td>';
+                                    var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+item_value['c_price']+'</label>';
+                                    var c_price = 0;
+                                    var tax_detail = 0;
+                                } else {
+                                    var td_amount = '<td class="w-40"><input type="hidden" step=".01" value="'+item_value['c_price']+'" class="form-control amount'+item_value['charge_id']+'-'+key+'" name="amount[]" onfocusout="charge_amount('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" max="'+item_value['fixed_limit']+'" oninput="validity.valid||(value='+"'0'"+');"><label>'+item_value['c_price']+'</label></td>';
+                                    var td_amount_summary = '<label class="text-right main-content-label tx-13 font-weight-semibold mb-0">'+currency+item_value['c_price']+'</label>';
+                                    var c_price = item_value['c_price'];
+                                    var tax_detail = item_value['tax_amount'];
+                                }
+
+                                var summary_item_count = $(".summary_charges"+key).length;
+                                var invoice_result = $(".invoice_result").length;
+
+                                $("#tbody"+key).append('<tr class="charge-'+item_value['charge_group_id']+'">\n\
+                                    <td class="w-50">'+item_value['description']+'<input type="text" name="charge_id[]" value="'+item_value['charge_id']+'" hidden></td>\n\
+                                    '+td_amount+'\n\
+                                    <td class="w-10"><input type="number" class="form-control quantity'+item_value['charge_id']+'-'+key+'" name="quantity[]" value="'+item_value['quantity']+'" onfocusout="charge_quantity('+item_value['charge_id']+','+key+','+item_value['tax_id']+','+item_value['tax_amount']+','+item_value['tax_percentage']+','+item_value['c_price']+');" min="0" oninput="validity.valid||(value='+"'0'"+');"></td>\n\
+                                </tr>');
+
+                                if (summary_item_count == 0) {
+                                    $(".item_summary_tbody").append('<tr>\n\
+                                        <td class="valign-middle border w-60">\n\
+                                            <div class="invoice-notes summary_charges'+key+'">\n\
+                                                <label class="main-content-label tx-13 font-weight-semibold">'+company_name+'</label>\n\
+                                                <div id="charge_item'+key+item_value['charge_id']+'"><p>'+item_value['description']+'</p></div>\n\
+                                            </div>\n\
+                                        </td>\n\
+                                        <td class="tx-right border font-weight-semibold w-10">\n\
+                                            <div class="invoice-notes summary_quantity'+key+'">\n\
+                                                <label class="main-content-label tx-13 font-weight-semibold"></label>\n\
+                                                <div class="text-center" id="quantity_item'+key+item_value['charge_id']+'">'+item_value['quantity']+'</div>\n\
+                                            </div>\n\
+                                        </td>\n\
+                                        <td class="tx-right border font-weight-semibold w-15">\n\
+                                            <div class="invoice-notes summary_unit_price'+key+'">\n\
+                                                <label class="text-right main-content-label tx-13 font-weight-semibold"></label>\n\
+                                                <div class="text-right" id="unit_price_item'+key+item_value['charge_id']+'">'+td_amount_summary+'</div>\n\
+                                            </div>\n\
+                                        </td>\n\
+                                        <td class="tx-right border font-weight-semibold w-15">\n\
+                                            <div class="invoice-notes summary_amount'+key+'">\n\
+                                                <label class="main-content-label tx-13 font-weight-semibold"></label>\n\
+                                                <div class="text-right" id="amount_item'+key+item_value['charge_id']+'">'+currency+parseFloat(item_value['item_total']).toFixed(2)+'</div>\n\
+                                                <input type="hidden" name="amount_input" id="amount_item_input'+key+item_value['charge_id']+'" value="'+item_value['item_total']+'">\n\
+                                            </div>\n\
+                                        </td>\n\
+                                    </tr>\n\
+                                    ')
+
+                                } else {
+                                    var charge_item_variable = 'charge_item'+key+item_value['charge_id'];
+                                    var quantity_item_variable = 'quantity_item'+key+item_value['charge_id'];
+                                    var unit_price_item_variable = 'unit_price_item'+key+item_value['charge_id'];
+                                    var amount_item_variable = 'amount_item'+key+item_value['charge_id'];
+                                    var amount_item_input = 'amount_item_input'+key+item_value['charge_id'];
+                                    // alert(item_variable);
+                                    $(".summary_charges"+key).append('<div id="'+charge_item_variable+'"><p>'+item_value['description']+'</p></div>');
+                                    $(".summary_quantity"+key).append('<div class="text-center" id="'+quantity_item_variable+'">'+item_value['quantity']+'</div>');
+                                    $(".summary_unit_price"+key).append('<div class="text-right" id="'+unit_price_item_variable+'">'+td_amount_summary+'</div>');
+                                    $(".summary_amount"+key).append('<div class="text-right" id="'+amount_item_variable+'">'+currency+parseFloat(item_value['item_total']).toFixed(2)+'</div>');
+                                    $(".summary_amount"+key).append('<input type="hidden" name="amount_input" id="'+amount_item_input+'" value="'+item_value['item_total']+'">');
+                                }
+
+                                if (invoice_result == 0) {
+                                    $(".item_summary_tbody_result").append('<tr class="invoice_result">\n\
+                                        <td rowspan="5" class="td class="valign-top border w-60">\n\
+                                            <label class="form-label"><?php echo lang("note"); ?></label>\n\
+                                            <label id="invoice_result_note"></label>\n\
+                                        </td>\n\
+                                        <td class="tx-right border font-weight-semibold w-10">\n\
+                                            <label><?php echo lang("sub_total"); ?></label>\n\
+                                        </td>\n\
+                                        <td colspan="2" class="tx-right border font-weight-semibold w-30 text-right" id="invoice_result_subtotal">\n\
+                                            '+parseFloat(summary_subtotal).toFixed(2)+'\n\
+                                        </td>\n\
+                                    </tr>\n\
+                                    <tr>\n\
+                                        <td class="tx-right border font-weight-semibold w-10">\n\
+                                            <label><?php echo lang("tax"); ?></label>\n\
+                                        </td>\n\
+                                        <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_tax">'+parseFloat(summary_tax).toFixed(2)+'</td>\n\
+                                    </tr>\n\
+                                    <tr>\n\
+                                        <td class="tx-right border font-weight-semibold w-10">\n\
+                                            <label><?php echo lang("discount"); ?></label>\n\
+                                        </td>\n\
+                                        <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_discount"></td>\n\
+                                    </tr>\n\
+                                    <tr>\n\
+                                        <td class="tx-right border font-weight-semibold w-10">\n\
+                                            <label><?php echo lang("deposited_amount"); ?></label>\n\
+                                        </td>\n\
+                                        <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_deposited"></td>\n\
+                                    </tr>\n\
+                                    <tr>\n\
+                                        <td class="tx-right border font-weight-semibold w-10">\n\
+                                            <label><?php echo lang("total")." ".lang("due"); ?></label>\n\
+                                        </td>\n\
+                                        <td colspan="2" class="font-weight-semibold text-right" id="invoice_result_due"></td>\n\
+                                    </tr>\n\
+                                    ');
+                                } else {
+                                    $('#invoice_result_note').text(item_value.remarks)
+                                    $('#invoice_result_subtotal').text(parseFloat(summary_subtotal).toFixed(2));
+                                    $('#invoice_result_tax').text(parseFloat(summary_tax).toFixed(2));
+                                    $('#invoice_result_discount').text(summary_discount);
+                                    $('#invoice_result_deposited').text(summary_deposited_amount);
+
+                                }
+
+
+                                // $('#editPaymentForm').find('[name="discount_type"]').val(1).change();
+                            })
+
+                            var invoice_item_extras = inv_items(key);
+
+                            var invoice_item_amount = invoice_item_extras[1];
+                            var invoice_tax_amount = invoice_item_extras[0];
+
+                            console.log('invoice_item_amount Bruh: ');
+                            console.log(invoice_item_amount);
+
+                            if (discount['discount_type'] == 1) {
+                                var rate = discount_data.rate;
+                                $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
+                                    <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount">\n\
+                                    <span class="input-group-append">\n\
+                                        <span class="btn btn-primary" type="button">%</span>\n\
+                                    </span>\n\
+                                </div><div><label class="mt-2">'+rate+' %'+'</label></div>\n\
+                                ');
+                            } else if (discount['discount_type'] == 2) {
+                                var rate = discount_data.amount;
+                                $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'" hidden>\n\
+                                    <span class="input-group-append">\n\
+                                        <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                                    </span>\n\
+                                    <input type="text" class="form-control" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Fixed Amount">\n\
+                                </div><div><label class="mt-2">'+currency+' '+rate+'</label></div>');
+                            } else if (discount['discount_type'] == 3) {
+                                var invoice_discount_amount = discount.amount;
+                                var rate = 0;
+                                $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
+                                    <input type="text" class="form-control" value="'+invoice_discount_amount+'" id="discount_input-'+key+'" name="discount_input[]" placeholder="Enter Percentage Amount" onkeyup="computeDiscountPercentage('+invoice_item_amount+','+key+');">\n\
+                                    <span class="input-group-append">\n\
+                                        <span class="btn btn-primary" type="button">%</span>\n\
+                                    </span>\n\
+                                </div>\n\
+                                ');
+                            } else if (discount['discount_type'] == 4) {
+                                var invoice_discount_amount = discount.amount;
+                                var rate = 0;
+                                $("#discount_type_input"+key).append('<div class="input-group" id="selected_payer_price_content_two'+key+'">\n\
+                                    <span class="input-group-append">\n\
+                                        <span class="btn btn-primary" type="button">'+currency+'</span>\n\
+                                    </span>\n\
+                                    <input type="text" class="form-control" id="discount_input-'+key+'" value="'+invoice_discount_amount+'" name="discount_input[]" placeholder="Enter Fixed Amount" onkeyup="computeDiscountAmount('+invoice_item_amount+','+key+')">\n\
+                                </div>');
+                            }
+
+                            $('#discount'+key).append($('<option value="0" disabled>None</option>')).end();
+                            $.each(discount_list, function(discount_key, discount_value) {
+                                $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
+                            })
+
+                            // discountSelect2(key);
+
+                            console.log(discount_id);
+
+                            if (discount_id == null) {
+                                $('#discount'+key).val("0");
+                            } else {
+                                $('#discount'+key).val(discount_id);
+                            }
+                            $('#discount'+key).select2();
+
                         })
+        
+                        var total_due = computeDue();
 
-                        // discountSelect2(key);
+                        /*Old Total Due Formula*/
+                        //summary_subtotal-$('#amount_received').val()
 
-                        console.log(discount_id);
-
-                        if (discount_id == null) {
-                            $('#discount'+key).val("0");
-                        } else {
-                            $('#discount'+key).val(discount_id);
-                        }
-                        $('#discount'+key).select2();
-
-                    })
-    
-                    var total_due = computeDue();
-
-                    /*Old Total Due Formula*/
-                    //summary_subtotal-$('#amount_received').val()
-
-                    $('#invoice_result_due').text(parseFloat(total_due).toFixed(2));
-                }
-            });
+                        $('#invoice_result_due').text(parseFloat(total_due).toFixed(2));
+                    }
+                });
+            }
         });
     </script>
 
@@ -1597,6 +1599,7 @@
 
         function computeDiscount(payer_account, invoice_item_amount, invoice_tax_amount) {
             var discount_input = $('#discount_input-'+payer_account).val();
+            var discount = 0;
             if ('<?php echo $payment->invoice_group_number; ?>') {
                 var data = $('#discount'+payer_account).find('option:selected');
                 var group = '<?php echo $payment->invoice_group_number; ?>'
@@ -1617,11 +1620,11 @@
                 // var rate = data.data('rate');
                 // var type = data.data('discount_type_id');
                 // var amount = data.data('amount');
-                console.log('rate: '+data.data('rate'))
-                console.log('type: '+data.data('discount_type_id'))
-                console.log('amount: '+data.data('amount'))
-                console.log('invoice_item_amount');
-                console.log(invoice_item_amount);
+                // console.log('rate: '+data.data('rate'))
+                // console.log('type: '+data.data('discount_type_id'))
+                // console.log('amount: '+data.data('amount'))
+                // console.log('invoice_item_amount');
+                // console.log(invoice_item_amount);
                 if (data != undefined) {
                     if (data.data('discount_type_id') == 1) {
                         var invoice_discount_amount = invoice_item_amount * (data.data('rate')/100);
@@ -1708,11 +1711,17 @@
             }
         }
 
-        function computeAllDiscount() {
+        function computeAllDiscount(payer_account = 0) {
             var input = document.getElementsByName('discount_total[]');
+
+            var discount_count = $("#payer_account-"+payer_account).find("input[name='discount_total[]']").map(function(){return $(this).length;}).get();
+
+            console.log('input length = '+discount_count);
 
             var discount = 0;
             for (var i = 0; i < input.length; i++) {
+                console.log('discount-'+i);
+                console.log(input[i].value)
                 discount += Number(input[i].value);
             }
 
@@ -1724,6 +1733,8 @@
 
             var tax = 0;
             for (var i = 0; i < input.length; i++) {
+                // console.log('tax-'+i);
+                // console.log(input[i].value)
                 tax += Number(input[i].value);
             }
 
@@ -1747,8 +1758,8 @@
             var invoice_item_amount = 0;
             var invoice_tax_amount = 0;
 
-            console.log('amount item Bruh:');
-            console.log(invoice_items);
+            // console.log('amount item Bruh:');
+            // console.log(invoice_items);
 
             $.each(invoice_items, function(key, value) {
                 var invoice_value = value;
@@ -1756,15 +1767,31 @@
                 var tax_percentage = value.tax_percentage;
                 var tax_amount = value.tax_amount;
 
+                if (quantity_items[key]) {
+                    var quantity = quantity_items[key];
+                } else {
+                    var quantity = 0;
+                }
+
                 if (tax_percentage == null) {
                     tax_percentage = 0;
                 }
 
                 if (c_price != amount_items[key]) {
                     c_price = amount_items[key];
+
+                    if (c_price == null) {
+                        c_price = 0;
+                    }
+
                     tax_amount = parseFloat(c_price)*((parseFloat(tax_percentage)/100)/((parseFloat(tax_percentage)/100)+1));
                 } else {
                     c_price = value.c_price;
+
+                    if (c_price == null) {
+                        c_price = 0;
+                    }
+
                     if (value.tax_id == null) {
                         tax_amount = 0;
                     } else {
@@ -1772,20 +1799,21 @@
                     }
                 }
 
-                console.log('tax_amount Bruh:');
-                console.log(tax_amount);
+                // console.log('tax_amount Bruh:');
+                // console.log(c_price);
+                // console.log(tax_amount);
 
-                invoice_tax_amount = parseFloat(invoice_tax_amount) + (parseFloat(tax_amount)*quantity_items[key]);
-                invoice_item_amount = parseFloat(invoice_item_amount) + (parseFloat(c_price)*quantity_items[key]);
+                invoice_tax_amount = parseFloat(invoice_tax_amount) + (parseFloat(tax_amount)*quantity);
+                invoice_item_amount = parseFloat(invoice_item_amount) + (parseFloat(c_price)*quantity);
 
-                console.log('invoice_tax_amount Bruh:');
-                console.log(invoice_tax_amount);
+                // console.log('invoice_tax_amount Bruh:');
+                // console.log(invoice_tax_amount);
                 // console.log('bruh Tax: '+invoice_tax_amount);
                 // payer_total_invoice = parseInt(payer_total_invoice) + (parseInt(c_price)*parseInt(quantity_items[key]));
             })
 
-            console.log('tax_amount Bruh Total:');
-            console.log(invoice_tax_amount);
+            // console.log('tax_amount Bruh Total:');
+            // console.log(invoice_tax_amount);
 
             return [invoice_tax_amount, invoice_item_amount];
         }
@@ -1821,7 +1849,7 @@
     <script type="text/javascript">
         // var tax2 = 0;
         var tax = 0;
-        var discount = 0;
+        // var discount = 0;
         var company_id = [];
         function computeItem(invoice, selected, discount_list) {
             var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
@@ -1906,6 +1934,7 @@
                 //     // window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(new_invoice));
                 // }
 
+                /*Removing Charges from the MultiSelect for With Copay Option and Without Copay Option*/
                 if (window.sessionStorage.getItem('selected_charges'+charge_id)) {
                     $(".charge-"+charge_id).remove();
                     $("#charge_item"+key+charge_id).remove();
@@ -1918,16 +1947,12 @@
                     var invoice_array = JSON.parse(window.sessionStorage.getItem('new_invoice-'+key));
                     // var invoice_remove_index = invoice_array.indexOf(charge_id);
                     var selected_charge_group = JSON.parse(window.sessionStorage.getItem('selected_charges_group'+group_id));
-                    console.log(selected_charge_group);
-                    console.log(selected_payer);
-                    console.log(selected_charge_group[key]['charges']['group_id']);
-                    console.log(invoice_array);
 
                     // $.each(invoice_array, function(k, v) {
 
                     // })
 
-                    console.log(invoice_array.splice(invoice_array.findIndex(v => v.group_id === selected_charge_group[key]['charges']['group_id']), 1));
+                    // console.log(invoice_array.splice(invoice_array.findIndex(v => v.group_id === selected_charge_group[key]['charges']['group_id']), 1));
 
                     window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(invoice_array));
 
@@ -1939,9 +1964,7 @@
                     // removeInvoiceCard(key);
 
                     var total_due = computeDue();
-                    $("#invoice_result_due").text(currency+' '+parseFloat(total_due).toFixed(2));
-                    console.log('total due TTTTTTTTTTTTTT');
-                    console.log(total_due);
+                    $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
 
                     /**/
                          // $.each(selected_payer, function(k, v) {
@@ -2000,8 +2023,6 @@
 
                     company_id.concat(key);
 
-                    console.log(company_id);
-
                     old_invoice.push(new_invoice)
                     window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(old_invoice));
 
@@ -2058,8 +2079,6 @@
                         var c_price = c_price;
                         var tax_detail = tax_amount;
                     }
-
-                    console.log("tax_details: "+tax_detail);
 
                     if (tbody_count == 0) {
                         $("#charge_cards").append('<div class="col-md-6 col-sm-12">\n\
@@ -2154,29 +2173,6 @@
                             <td><input type="number" class="form-control quantity'+charge_id+'-'+key+'" name="quantity[]" onfocusout="charge_quantity('+charge_id+','+key+','+tax_id+','+tax_amount+','+tax_percentage+','+c_price+');" min="0" oninput="validity.valid||(value='+"'0'"+');" value="1"></td>\n\
                         </tr>');
                     }
-
-                    /*$("#discount"+key).select2({
-                        placeholder: '<?php echo lang('select_payer'); ?>',
-                        allowClear: true,
-                        ajax: {
-                            url: 'finance/getDiscountInfo',
-                            type: "post",
-                            dataType: 'json',
-                            delay: 250,
-                            data: function (params) {
-                                return {
-                                    searchTerm: params.term // search term
-                                };
-                            },
-                            processResults: function (response) {
-                                return {
-                                    results: response
-                                };
-                            },
-                            cache: true
-                        }
-
-                    });*/
 
                     if (summary_item_count == 0) {
                         $(".item_summary_tbody").append('<tr>\n\
@@ -2276,19 +2272,18 @@
                     cnt += Number(this.value);
                 });
 
-                // $("[name='tax[]']").each(function() {
-                //     tax += Number(this.value);
-                //     console.log("tax: "+tax);
-                // })
-
-                // var tax = 0;  
-                // $(".tax_total").each(function() {
-                //     tax += Number(tax_detail[key]);
-                // })
-
                 $("#invoice_result_subtotal").empty().append('<label>'+currency+' '+((cnt*100)/100).toFixed(2)+'</label>');
 
-                $("#invoice_result_due").empty().append('<label>'+currency+' '+(((cnt*100)/100)-$("#amount_received").val()).toFixed(2)+'</label>');
+                // $("#invoice_result_due").empty().append('<label>'+currency+' '+(((cnt*100)/100)-$("#amount_received").val()).toFixed(2)+'</label>');
+
+                // var all_discount = computeAllDiscount();
+
+                // $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+
+                // computeTax();
+
+                // var total_due = computeDue();
+                // $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
 
                 // console.log(charge_items);
                 // console.log(amount_items);
@@ -2314,7 +2309,7 @@
                 var payer_account_total = invoice_discount_extras[0];
                 var invoice_discount_amount = invoice_discount_extras[1];
                 var rate = invoice_discount_extras[2];
-                discount = invoice_discount_extras[3];
+                var discount = invoice_discount_extras[3];
 
                 // if (data != undefined) {
                 //     if (data.discount_type_id == 1) {
@@ -2351,7 +2346,6 @@
                 // $('#payer_total-'+key).val(payer_total_invoice);
                 $('#payer_total-'+key).val(payer_account_total);
                 $('#discount_input-'+key).val(parseFloat(rate).toFixed(2));
-                console.log('bruh: '+invoice_discount_amount);
                 $('#discount_total-'+key).val(parseFloat(invoice_discount_amount).toFixed(2));
                 $("#invoice_result_discount").empty().append('<label>'+currency+' '+parseFloat(discount).toFixed(2)+'</label>');
                 $('#card_items_total-'+key).val((invoice_item_amount).toFixed(2));
@@ -2359,12 +2353,19 @@
 
                 setDiscountInputOnKeyUpParameter(key, invoice_item_amount);
 
-                var all_discount = computeAllDiscount();
+                var all_discount = computeAllDiscount(key);
 
-                $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+                $("#invoice_result_discount").empty().append('<label>z'+currency+' '+all_discount.toFixed(2)+'</label>');
 
                 computeTax();
+
+                var total_due = computeDue();
+                $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
+
                 removeInvoiceCard(key);
+
+                console.log('count card');
+                console.log($("#payer_account-"+key).val());
 
                 // var summary = 
                 //     { invoice_total: invoice_item_amount, discount_amount: invoice_discount_amount, tax_amount: invoice_tax_amount }
