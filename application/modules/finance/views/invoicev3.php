@@ -544,6 +544,28 @@
 
                                                 // console.log(item_list);
 
+                                                // doc.autoTable({
+                                                //     theme: 'grid',
+                                                //     headStyles: {
+
+                                                //     },
+                                                //     columnStyles: {
+                                                //         0: { valign: 'middle', halign: 'left', cellWidth: 72 },
+                                                //         1: { valign: 'middle', halign: 'left', cellWidth: 72 },
+                                                //         2: { valign: 'bottom', halign: 'left', cellWidth: 40 },
+                                                //     },
+                                                //     margin: { left: 13, right: 13, top: 13, bottom: 37 },
+                                                //     body: [
+                                                //         [ { content: "Billed To", styles: { fontSize: 12 }, colSpan: 3 }],
+                                                //         [ { content: "Patient Name :", styles: { fontSize: 10 } } , { content: "Facility ID :", styles: { fontSize: 10 } }, { content: 'Amount Due (PHP)\n33,124.50', rowSpan: 5 }],
+                                                //         [ { content: "Patient ID :", styles: { fontSize: 10 } } , { content: "Doctor :", styles: { fontSize: 10 } }, ''],
+                                                //         [ { content: "Age :", styles: { fontSize: 10 } } , { content: "Payer Account :", styles: { fontSize: 10 } }, ''],
+                                                //         [ { content: "Address :", styles: { fontSize: 10 } } , { content: "Date Issue :", styles: { fontSize: 10 } }, ''],
+                                                //         [ { content: "Contact :", styles: { fontSize: 10 } } , { content: "Due Date :", styles: { fontSize: 10 } }, ''],
+                                                //     ],
+                                                //     startY: 56
+                                                // })
+
                                                 var output = item_list.map(function(obj) {
                                                   return Object.keys(obj).sort().map(function(key) { 
                                                     return obj[key];
@@ -618,7 +640,7 @@
                                                         // ['David', 'david@example.com', 'Sweden'],
                                                         // ['Castille', 'castille@example.com', 'Spain'],
                                                     // ],
-                                                    startY: 98,
+                                                    startY: doc.lastAutoTable.finalY + 14,
                                                     // showHead: 'everyPage',
                                                     // showFoot: 'everyPage',
                                                     pageBreak: 'auto',
