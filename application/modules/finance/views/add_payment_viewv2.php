@@ -1542,10 +1542,12 @@
         function removeInvoiceCard(payer_account) {
             var charge_count = $("#payer_account-"+payer_account).find("input[name='charge_id[]']").map(function(){return $(this).length;}).get();
 
-            console.log('Charges Count: '+charge_count);
+            // console.log('Charges Count: '+charge_count);
+            // console.log('Card Count: '+$(".payer_cards").length);
 
             if (charge_count == "") {
                 $("#payer_account-"+payer_account).remove();
+                $("#discount_total-"+payer_account).remove();
             }
         }
 
@@ -1553,7 +1555,7 @@
             var totalsummarydiscount = 0;
             var amount_received = $("#amount_received").val();
 
-            console.log('AMOUNT RECEIVED'+'amount_received');
+            // console.log('AMOUNT RECEIVED'+'amount_received');
 
             if (amount_received == null) {
                 amount_received = 0
@@ -1714,16 +1716,23 @@
         function computeAllDiscount(payer_account = 0) {
             var input = document.getElementsByName('discount_total[]');
 
-            var discount_count = $("#payer_account-"+payer_account).find("input[name='discount_total[]']").map(function(){return $(this).length;}).get();
+            var discount_count = $("#payer_account-"+payer_account).find("input[name='discount_total[]']").map(function(){return $(this).val();}).get();
 
-            console.log('input length = '+discount_count);
+            // console.log('input length = '+discount_count);
 
-            var discount = 0;
-            for (var i = 0; i < input.length; i++) {
-                console.log('discount-'+i);
-                console.log(input[i].value)
-                discount += Number(input[i].value);
-            }
+            // var discount = 0;
+            // for (var i = 0; i < input.length; i++) {
+            //     console.log('discount-'+i);
+            //     console.log(input[i].value)
+            //     discount += Number(input[i].value);
+            // }
+
+            var discount = 0;  
+            console.log('Discount Count'+input.length);
+            $("[name='discount_total[]']").each(function() {
+                console.log(this.value);
+                discount += Number(this.value);
+            });
 
             return discount;
         }
@@ -1835,7 +1844,6 @@
                         computeItem(invoice, value, discount_list);
                     }
                 });
-
             })
         })
     </script>
@@ -1849,7 +1857,7 @@
     <script type="text/javascript">
         // var tax2 = 0;
         var tax = 0;
-        // var discount = 0;
+        var discount = 0;
         var company_id = [];
         function computeItem(invoice, selected, discount_list) {
             var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
@@ -1942,8 +1950,10 @@
                     $("#unit_price_item"+key+charge_id).remove();
                     $("#amount_item"+key+charge_id).remove();
                     $("#amount_item_input"+key+charge_id).remove();
+                    // $("#discount_total-"+key).val();
+                    // $("#discount_total-"+key).remove();
                     var selected_payer = $(".charge").val();
-                    window.sessionStorage.removeItem('selected_charges'+charge_id, charge_id);
+                    window.sessionStorage.removeItem('selected_charges'+charge_id);
                     var invoice_array = JSON.parse(window.sessionStorage.getItem('new_invoice-'+key));
                     // var invoice_remove_index = invoice_array.indexOf(charge_id);
                     var selected_charge_group = JSON.parse(window.sessionStorage.getItem('selected_charges_group'+group_id));
@@ -1956,15 +1966,17 @@
 
                     window.sessionStorage.setItem('new_invoice-'+key, JSON.stringify(invoice_array));
 
-                    var all_discount = computeAllDiscount();
+                    // var all_discount = 0;
 
-                    $("#invoice_result_discount").empty().append('<label>'+currency+' '+all_discount.toFixed(2)+'</label>');
+                    // all_discount = computeAllDiscount();
 
-                    computeTax();
-                    // removeInvoiceCard(key);
+                    // $("#invoice_result_discount").empty().append('<label>'+currency+' '+parseFloat(all_discount).toFixed(2)+'</label>');
 
-                    var total_due = computeDue();
-                    $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
+                    // computeTax();
+                    // // removeInvoiceCard(key);
+
+                    // var total_due = computeDue();
+                    // $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
 
                     /**/
                          // $.each(selected_payer, function(k, v) {
@@ -2082,7 +2094,7 @@
 
                     if (tbody_count == 0) {
                         $("#charge_cards").append('<div class="col-md-6 col-sm-12">\n\
-                            <div class="card h-90" id="payer_account-'+key+'">\n\
+                            <div class="card h-90 payer_cards" id="payer_account-'+key+'">\n\
                                 <div class="card-header">\n\
                                     <div class="card-title">'+company_name+'</div>\n\
                                     <div class="card-options"><button type="button" class="btn btn-primary" data-target="#addCase'+charge_id+'" data-toggle="modal"><?php echo lang("add").' '.lang("extras"); ?></button></div>\n\
@@ -2260,11 +2272,11 @@
                     }
                 }
 
-                var invoice_items = JSON.parse(window.sessionStorage.getItem('new_invoice-'+key));
-                var charge_items = $("#payer_account-"+key).find("input[name='charge_id[]']").map(function(){return $(this).val();}).get();
-                var amount_items = $("#payer_account-"+key).find("input[name='amount[]']").map(function(){return $(this).val();}).get();
-                var quantity_items = $("#payer_account-"+key).find("input[name='quantity[]']").map(function(){return $(this).val();}).get();
-                var tax_array = $("#payer_account-"+key).find("input[name='tax[]']").map(function(){return $(this).val();}).get();
+                // var invoice_items = JSON.parse(window.sessionStorage.getItem('new_invoice-'+key));
+                // var charge_items = $("#payer_account-"+key).find("input[name='charge_id[]']").map(function(){return $(this).val();}).get();
+                // var amount_items = $("#payer_account-"+key).find("input[name='amount[]']").map(function(){return $(this).val();}).get();
+                // var quantity_items = $("#payer_account-"+key).find("input[name='quantity[]']").map(function(){return $(this).val();}).get();
+                // var tax_array = $("#payer_account-"+key).find("input[name='tax[]']").map(function(){return $(this).val();}).get();
 
                 var cnt = 0;  
                 // console.log(p_value);
@@ -2309,7 +2321,7 @@
                 var payer_account_total = invoice_discount_extras[0];
                 var invoice_discount_amount = invoice_discount_extras[1];
                 var rate = invoice_discount_extras[2];
-                var discount = invoice_discount_extras[3];
+                discount = invoice_discount_extras[3];
 
                 // if (data != undefined) {
                 //     if (data.discount_type_id == 1) {
@@ -2353,9 +2365,11 @@
 
                 setDiscountInputOnKeyUpParameter(key, invoice_item_amount);
 
-                var all_discount = computeAllDiscount(key);
-
-                $("#invoice_result_discount").empty().append('<label>z'+currency+' '+all_discount.toFixed(2)+'</label>');
+                var all_discount = 0;
+                console.log('discount before: '+all_discount);
+                all_discount = computeAllDiscount(key);
+                console.log('discount after: '+all_discount);
+                $("#invoice_result_discount").empty().append('<label>z'+currency+' '+parseFloat(all_discount).toFixed(2)+'</label>');
 
                 computeTax();
 
@@ -2363,9 +2377,6 @@
                 $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
 
                 removeInvoiceCard(key);
-
-                console.log('count card');
-                console.log($("#payer_account-"+key).val());
 
                 // var summary = 
                 //     { invoice_total: invoice_item_amount, discount_amount: invoice_discount_amount, tax_amount: invoice_tax_amount }
@@ -2454,6 +2465,18 @@
                 /**/
 
             })
+
+            var all_discount = 0;
+
+            all_discount = computeAllDiscount();
+
+            $("#invoice_result_discount").empty().append('<label>'+currency+' '+parseFloat(all_discount).toFixed(2)+'</label>');
+
+            computeTax();
+            // removeInvoiceCard(key);
+
+            var total_due = computeDue();
+            $("#invoice_result_due").text(currency+' '+parseFloat(total_due-all_discount).toFixed(2));
 
             /**/
                 // $.each(invoice, function(key, value) {
