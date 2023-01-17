@@ -264,11 +264,11 @@
                                                     <div class="form-group">
                                                         <label class="form-label"><?php echo lang('payer_account'); ?></label>
                                                         <select class="select2-show-search form-control add_payer company" id="company" name="company_id" value='' required>
-                                                            <?php foreach ($companies as $comp) { ?>
-                                                                <?php if ($comp->id == $payment->company_id) { ?>
-                                                                    <option value="<?php echo $comp->id; ?>" selected><?php echo format_number_with_digits($comp->id, COMPANY_ID_LENGTH). ' - '. $comp->display_name; ?></option>  
-                                                                <?php } ?>
-                                                            <?php } ?>
+                                                            <?php //foreach ($companies as $comp) { ?>
+                                                                <?php //if ($comp->id == $payment->company_id) { ?>
+                                                                    <option value="<?php //echo $comp->id; ?>" selected><?php //echo format_number_with_digits($comp->id, COMPANY_ID_LENGTH). ' - '. $comp->display_name; ?></option>  
+                                                                <?php //} ?>
+                                                            <?php //} ?>
                                                         </select>
                                                     </div>
                                                 </div> -->
@@ -294,98 +294,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- <div class="row" hidden>
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group"> 
-                                                        <label for="exampleInputEmail1"> <?php echo lang('select'); ?></label>
-                                                        <select name="category_name[]" class="multi-selection" multiple="" id="my_multi_select31" required> -->
-                                                            <?php /*foreach ($categories as $category) {*/ ?>
-                                                                <?php /*foreach ($doctors as $doctor) {*/ ?>
-                                                                    <?php
-                                                                    /*$service_category_group = $this->finance_model->getServiceCategoryGroupById($category->service_category_group_id);
-                                                                    if (!empty($service_category_group->is_virtual)) {
-                                                                        $fee = $doctor->virtual_consultation_fee;
-                                                                    } else {
-                                                                        $fee = $doctor->physical_consultation_fee;
-                                                                    }*/
-                                                                    ?>
-                                                                    <!-- <option class="ooppttiioonn" data-doctor="<?php echo $doctor->name; ?>" data-id="<?php echo $fee; ?>" data-idd="<?php echo $category->id.'-'.$doctor->ion_user_id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->category.'-'.$doctor->ion_user_id; ?>" 
-                                                                            <?php
-                                                                            /*if (!empty($payment->category_name)) {
-                                                                                $category_name = $payment->category_name;
-                                                                                $category_name1 = explode(',', $category_name);
-                                                                                foreach ($category_name1 as $category_name2) {
-                                                                                    $category_name3 = explode('*', $category_name2);
-                                                                                    if ($category_name3[0] == $category->id.'-'.$doctor->ion_user_id) {
-                                                                                        echo 'data-qtity=' . $category_name3[3];
-                                                                                    }
-                                                                                }
-                                                                            }*/
-                                                                            ?>
-                                                                            <?php
-                                                                            /*if (!empty($payment->category_name)) {
-                                                                                $category_name = $payment->category_name;
-                                                                                $category_name1 = explode(',', $category_name);
-                                                                                foreach ($category_name1 as $category_name2) {
-                                                                                    $category_name3 = explode('*', $category_name2);
-                                                                                    $category_id = explode('-', $category_name3[0]);
-                                                                                    if ($category_name3[0] == $category->id.'-'.$doctor->ion_user_id) {
-                                                                                        echo 'selected';
-                                                                                    }
-                                                                                }
-                                                                            }*/
-                                                                            // if ($payment->category_name == $)
-                                                                            ?>><?php /*echo $category->category . ' ( ' . lang('dr') . '. ' .  $doctor->name . ' )';*/ ?></option> -->
-                                                                        <?php /*}*/ ?>
-                                                                <?php /*}*/ ?>
-
-                                                                <!-- data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id; ?>" data-cat_name="<?php echo $category->category; ?>" value="<?php echo $category->applicable_staff_id?$category->category.' ('.$this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name.')':$category->category; ?>" -->
-
-                                                                <!-- <?php foreach ($categories as $category) { ?>
-                                                                    <?php $group = $this->ion_auth->get_users_groups($category->applicable_staff_id)->row()->name; ?>
-                                                                    <?php
-                                                                        if ($group === "Doctor") {
-                                                                            $group_short = "Dr.";
-                                                                        } else {
-                                                                            $group_short = "";
-                                                                        }
-                                                                    ?>
-                                                                    <option class="ooppttiioonn" data-doctor="<?php echo $this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name; ?>" data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>" data-cat_name="<?php echo $category->category; ?>" data-dr="<?php echo $group_short; ?>" value="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>"
-                                                                            <?php
-                                                                            if (!empty($payment->category_name)) {
-                                                                                $category_name = $payment->category_name;
-                                                                                $category_name1 = explode(',', $category_name);
-                                                                                foreach ($category_name1 as $category_name2) {
-                                                                                    $category_name3 = explode('*', $category_name2);
-                                                                                    if ($category_name3[0] == $category->id.'-'.$category->applicable_staff_id) {
-                                                                                        echo 'data-qtity=' . $category_name3[3];
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            ?>
-                                                                            <?php
-                                                                            if (!empty($payment->category_name)) {
-                                                                                $category_name = $payment->category_name;
-                                                                                $category_name1 = explode(',', $category_name);
-                                                                                foreach ($category_name1 as $category_name2) {
-                                                                                    $category_name3 = explode('*', $category_name2);
-                                                                                    if ($category_name3[0] == $category->id.'-'.$category->applicable_staff_id) {
-                                                                                        echo 'selected';
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            ?>><?php echo $category->applicable_staff_id?$category->category.' ('.$group_short.' '.$this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name.')':$category->category; ?></option>
-                                                                        <?php } ?> -->
-                                                        <!-- </select>
-                                                    </div>
-                                                </div>
-                                            </div> -->
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <ul class="nav nav-pills nav-pills-circle" id="tabs_3" role="tablist">
                                                             <li class="nav-item">
-                                                                <a class="nav-link border py-3 px-5 <?php echo $invoice_item_group?'active':''; ?>" id="tab3" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected=" <?php echo $invoice_item_group?'true':'false'; ?>" onclick="withCopay();">
+                                                                <a class="nav-link border py-3 px-5 <?php if (!empty($invoice_item_group)) { echo 'active'; } else { echo ''; } ?>" id="tab3" data-toggle="tab" href="#tabs_3_1" role="tab" aria-selected=" <?php if (!empty($invoice_item_group)) { echo 'true'; } else { echo 'false'; } ?>" onclick="withCopay();">
                                                                     <span class="nav-link-icon d-block"><?php echo lang('with_copay') ?></span>
                                                                 </a>
                                                             </li>
@@ -398,58 +312,25 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- <div class="row">
-                                                <div class="col-md-12 col-sm-12">
-                                                    <div class="form-group" id="charge_form_group">
-                                                        <div id="charge_div">
-                                                            <select name="charge_name" class="charge" id="charge" placeholder="Sample Placeholder" multiple="multiple">
-                                                                <?php foreach ($categories as $category) { ?>
-                                                                    <option class="ooppttiioonn" data-doctor="<?php echo $this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name; ?>" data-id="<?php echo $category->c_price; ?>" data-idd="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>" data-cat_name="<?php echo $category->category; ?>" data-dr="<?php echo $group_short; ?>" value="<?php echo $category->id.'-'.$category->applicable_staff_id; ?>"
-                                                                        <?php
-                                                                        if (!empty($payment->category_name)) {
-                                                                            $category_name = $payment->category_name;
-                                                                            $category_name1 = explode(',', $category_name);
-                                                                            foreach ($category_name1 as $category_name2) {
-                                                                                $category_name3 = explode('*', $category_name2);
-                                                                                if ($category_name3[0] == $category->id.'-'.$category->applicable_staff_id) {
-                                                                                    echo 'data-qtity=' . $category_name3[3];
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        ?>
-                                                                        <?php
-                                                                        if (!empty($payment->category_name)) {
-                                                                            $category_name = $payment->category_name;
-                                                                            $category_name1 = explode(',', $category_name);
-                                                                            foreach ($category_name1 as $category_name2) {
-                                                                                $category_name3 = explode('*', $category_name2);
-                                                                                if ($category_name3[0] == $category->id.'-'.$category->applicable_staff_id) {
-                                                                                    echo 'selected';
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                        ?>><?php echo $category->applicable_staff_id?$category->category.' ('.$group_short.' '.$this->doctor_model->getDoctorByIonUserId($category->applicable_staff_id)->name.')':$category->category; ?>
-                                                                    </option>
-                                                                <?php } ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div> -->
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <div id="charge_div">
-                                                            <div id="charge_with_copay" <?php echo $invoice_item_group?'':'hidden'; ?>>
+                                                            <div id="charge_with_copay" <?php if (!empty($invoice_item_group)) { echo ''; } else { echo 'hidden'; } ?>>
                                                                 <select name="charge_name[]" class="charge" placeholder="Sample Placeholder" multiple="multiple">
                                                                     
                                                                     <?php foreach ($charges_with_copay as $charge_with_copay) { ?>
                                                                         <option value="<?php echo $charge_with_copay->id; ?>" <?php
-                                                                        if (in_array($charge_with_copay->id, $invoice_item_group) === true) {
-                                                                            echo "selected";
+                                                                        if (!empty($invoice_item_group)) {
+                                                                            if (in_array($charge_with_copay->id, $invoice_item_group) === true) {
+                                                                                echo "selected";
+                                                                            } else {
+                                                                                echo "";
+                                                                            }
                                                                         } else {
                                                                             echo "";
-                                                                        } ?>><?php echo $charge_with_copay->category ?></option>
+                                                                        }
+                                                                        ?>><?php echo $charge_with_copay->category ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
@@ -457,11 +338,16 @@
                                                                 <select name="charge_name[]" class="charge" placeholder="Sample Placeholder" multiple="multiple">
                                                                     <?php foreach ($charges_without_copay as $charge_without_copay) { ?>
                                                                         <option value="<?php echo $charge_without_copay->id; ?>" <?php
-                                                                        if (in_array($charge_without_copay->id, $invoice_item_group) === true) {
-                                                                            echo "selected";
+                                                                        if (!empty($invoice_item_group)) {
+                                                                            if (in_array($charge_without_copay->id, $invoice_item_group) === true) {
+                                                                                echo "selected";
+                                                                            } else {
+                                                                                echo "";
+                                                                            } 
                                                                         } else {
                                                                             echo "";
-                                                                        } ?>><?php echo $charge_without_copay->category ?></option>
+                                                                        }
+                                                                        ?>><?php echo $charge_without_copay->category ?></option>
                                                                     <?php } ?>
                                                                 </select>
                                                             </div>
@@ -1084,7 +970,7 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var group = '<?php echo $payment->invoice_group_number; ?>'
+            var group = '<?php if(!empty($payment)) echo $payment->invoice_group_number; ?>'
             if (group) {
                 $.ajax({
                     url: 'finance/editInvoicesByInvoiceGroupIdByJson?group='+group,
@@ -1396,43 +1282,43 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var setval = '<?php echo $setval ?>';
-            var group = '<?php echo $service[0]->group_id; ?>';
-            if (setval !== "") {
-                var n = sessionStorage.length;
-                while(n--) {
-                  var key = sessionStorage.key(n);
-                  if(/charges/.test(key)) {
-                    sessionStorage.removeItem(key);
-                  }  
-                }
-            } else {
-                var n = sessionStorage.length;
-                while(n--) {
-                  var key = sessionStorage.key(n);
-                  if(/charges/.test(key)) {
-                    sessionStorage.removeItem(key);
-                  }  
-                }
-            }
+            // var setval = '<?php //if($setval) echo $setval ?>';
+            //var group = '<?php //echo $service[0]->group_id; ?>';
+            // if (setval !== "") {
+            //     var n = sessionStorage.length;
+            //     while(n--) {
+            //       var key = sessionStorage.key(n);
+            //       if(/charges/.test(key)) {
+            //         sessionStorage.removeItem(key);
+            //       }  
+            //     }
+            // } else {
+            //     var n = sessionStorage.length;
+            //     while(n--) {
+            //       var key = sessionStorage.key(n);
+            //       if(/charges/.test(key)) {
+            //         sessionStorage.removeItem(key);
+            //       }  
+            //     }
+            // }
 
-            if (group != "") {
-                var n = sessionStorage.length;
-                while(n--) {
-                  var key = sessionStorage.key(n);
-                  if(/charges/.test(key)) {
-                    sessionStorage.removeItem(key);
-                  }  
-                }
-            } else {
-                var n = sessionStorage.length;
-                while(n--) {
-                  var key = sessionStorage.key(n);
-                  if(/charges/.test(key)) {
-                    sessionStorage.removeItem(key);
-                  }  
-                }
-            }
+            // if (group != "") {
+            //     var n = sessionStorage.length;
+            //     while(n--) {
+            //       var key = sessionStorage.key(n);
+            //       if(/charges/.test(key)) {
+            //         sessionStorage.removeItem(key);
+            //       }  
+            //     }
+            // } else {
+            //     var n = sessionStorage.length;
+            //     while(n--) {
+            //       var key = sessionStorage.key(n);
+            //       if(/charges/.test(key)) {
+            //         sessionStorage.removeItem(key);
+            //       }  
+            //     }
+            // }
         })
     </script>
 
@@ -1602,9 +1488,9 @@
         function computeDiscount(payer_account, invoice_item_amount, invoice_tax_amount) {
             var discount_input = $('#discount_input-'+payer_account).val();
             var discount = 0;
-            if ('<?php echo $payment->invoice_group_number; ?>') {
+            var group = '<?php if(!empty($payment)) echo $payment->invoice_group_number; ?>'
+            if (group) {
                 var data = $('#discount'+payer_account).find('option:selected');
-                var group = '<?php echo $payment->invoice_group_number; ?>'
                 
                 // var edit_invoice = '';
                 var edit_invoice;
@@ -1859,6 +1745,7 @@
         var tax = 0;
         var discount = 0;
         var company_id = [];
+        var group = '<?php if(!empty($payment)) echo $payment->invoice_group_number; ?>'
         function computeItem(invoice, selected, discount_list) {
             var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
 
@@ -2157,7 +2044,7 @@
                             </div>\n\
                         </div>');
 
-                        if ('<?php echo $payment->invoice_group_number; ?>') {
+                        if (group) {
                             $('#discount'+key).append($('<option label="Select Discount" value="0">None</option>')).end();
                             $.each(discount_list, function(discount_key, discount_value) {
                                 $('#discount'+key).append($('<option data-rate="'+discount_value.rate+'" data-amount="'+discount_value.amount+'" data-discount_type_id="'+discount_value.discount_type_id+'">').text(discount_value.name).val(discount_value.id)).end();
@@ -3101,7 +2988,8 @@
 
     <script type="text/javascript">
         function select_discount3(payer_id) {
-            if ('<?php echo $payment->invoice_group_number; ?>') {
+            var group = '<?php if(!empty($payment)) echo $payment->invoice_group_number; ?>'
+            if (group) {
                 $("#discount_type_input"+payer_id).empty();
                 var currency = '<?php echo $this->settings_model->getSettings()->currency ?>';
                 // console.log(value+' - '+payer_id);
