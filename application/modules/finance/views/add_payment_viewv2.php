@@ -1267,13 +1267,19 @@
                             $('#discount'+key).select2();
 
                         })
+
+                        all_discount = computeAllDiscount();
+
+                        $("#invoice_result_discount").empty().append('<label>'+currency+' '+parseFloat(all_discount).toFixed(2)+'</label>');
+
+                        computeTax();
         
                         var total_due = computeDue();
 
                         /*Old Total Due Formula*/
                         //summary_subtotal-$('#amount_received').val()
 
-                        $('#invoice_result_due').text(parseFloat(total_due).toFixed(2));
+                        $('#invoice_result_due').text(parseFloat(total_due-all_discount).toFixed(2));
                     }
                 });
             }
