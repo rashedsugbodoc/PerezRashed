@@ -393,7 +393,7 @@
         <script type="text/javascript">
             $(document).ready(function () {
                 var appointment = $("#appointment_id").val();
-                var appointment_date = "<?php echo date("F j, Y H:i", strtotime($appointment->appointment_date.' UTC')); ?>";
+                var appointment_date = "<?php echo $appointment?date("F j, Y H:i", strtotime($appointment->appointment_date.' UTC')):''; ?>";
                 console.log(appointment_date);
                 if (appointment === "") {
                     flatpickr(".flatpickr", {
