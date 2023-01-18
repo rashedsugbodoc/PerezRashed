@@ -988,71 +988,71 @@
             });
         });
 
-        $(document).ready(function () {
-            var iid = $('#date').val();
-            var doctorr = $('#adoctors').val();
-            var branch = $('#branch_select').val();
-            $('#aslots').find('option').remove();
-            // $('#default').trigger("reset");
-            $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var slots = response.aslots;
-                    $.each(slots, function (key, value) {
-                        $('#aslots').append($('<option>').text(value).val(value)).end();
-                    });
-                    //   $("#default-step-1 .button-next").trigger("click");
-                    if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
-                        $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
-                    }
-                    // Populate the form fields with the data returned from server
-                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
-                }
-            });
-        });
+        // $(document).ready(function () {
+        //     var iid = $('#date').val();
+        //     var doctorr = $('#adoctors').val();
+        //     var branch = $('#branch_select').val();
+        //     $('#aslots').find('option').remove();
+        //     // $('#default').trigger("reset");
+        //     $.ajax({
+        //         url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+        //         method: 'GET',
+        //         data: '',
+        //         dataType: 'json',
+        //         success: function (response) {
+        //             var slots = response.aslots;
+        //             $.each(slots, function (key, value) {
+        //                 $('#aslots').append($('<option>').text(value).val(value)).end();
+        //             });
+        //             //   $("#default-step-1 .button-next").trigger("click");
+        //             if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+        //                 $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+        //             }
+        //             // Populate the form fields with the data returned from server
+        //             //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+        //         }
+        //     });
+        // });
 
-        $(document).ready(function () {
-            $('#date').datepicker({
-                format: "dd-mm-yyyy",
-                autoclose: true,
-            })
-                    //Listen for the change even on the input
-                    .change(dateChanged)
-                    .on('changeDate', dateChanged);
-        });
+        // $(document).ready(function () {
+        //     $('#date').datepicker({
+        //         format: "dd-mm-yyyy",
+        //         autoclose: true,
+        //     })
+        //             //Listen for the change even on the input
+        //             .change(dateChanged)
+        //             .on('changeDate', dateChanged);
+        // });
 
-        function dateChanged() {
-            // Get the record's ID via attribute  
-            var iid = $('#date').val();
-            var doctorr = $('#adoctors').val();
-            var branch = $('#branch_select').val();
-            $('#aslots').find('option').remove();
-            // $('#default').trigger("reset");
-            $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var slots = response.aslots;
-                    $.each(slots, function (key, value) {
-                        $('#aslots').append($('<option>').text(value).val(value)).end();
-                    });
-                    //   $("#default-step-1 .button-next").trigger("click");
-                    if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
-                        $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
-                    }
+        // function dateChanged() {
+        //     // Get the record's ID via attribute  
+        //     var iid = $('#date').val();
+        //     var doctorr = $('#adoctors').val();
+        //     var branch = $('#branch_select').val();
+        //     $('#aslots').find('option').remove();
+        //     // $('#default').trigger("reset");
+        //     $.ajax({
+        //         url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+        //         method: 'GET',
+        //         data: '',
+        //         dataType: 'json',
+        //         success: function (response) {
+        //             var slots = response.aslots;
+        //             $.each(slots, function (key, value) {
+        //                 $('#aslots').append($('<option>').text(value).val(value)).end();
+        //             });
+        //             //   $("#default-step-1 .button-next").trigger("click");
+        //             if ($('#aslots').has('option').length == 0) {                    //if it is blank. 
+        //                 $('#aslots').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+        //             }
 
 
-                    // Populate the form fields with the data returned from server
-                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
-                }
-            });
+        //             // Populate the form fields with the data returned from server
+        //             //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+        //         }
+        //     });
 
-        }
+        // }
 
     </script>
 
@@ -1168,62 +1168,62 @@
             });
         });
 
-        $(document).ready(function () {
-            var iid = $('#date1').val();
-            var doctorr = $('#adoctors1').val();
-            var branch = $('#branch_select1').val();
-            $('#aslots1').find('option').remove();
-            // $('#default').trigger("reset");
-            $.ajax({
-                url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var slots = response.aslots;
-                    $.each(slots, function (key, value) {
-                        $('#aslots1').append($('<option>').text(value).val(value)).end();
-                    });
-                    //   $("#default-step-1 .button-next").trigger("click");
-                    if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
-                        $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
-                    }
-                    // Populate the form fields with the data returned from server
-                    //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
-                }
-            });
-        });
+        // $(document).ready(function () {
+        //     var iid = $('#date1').val();
+        //     var doctorr = $('#adoctors1').val();
+        //     var branch = $('#branch_select1').val();
+        //     $('#aslots1').find('option').remove();
+        //     // $('#default').trigger("reset");
+        //     $.ajax({
+        //         url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+        //         method: 'GET',
+        //         data: '',
+        //         dataType: 'json',
+        //         success: function (response) {
+        //             var slots = response.aslots;
+        //             $.each(slots, function (key, value) {
+        //                 $('#aslots1').append($('<option>').text(value).val(value)).end();
+        //             });
+        //             //   $("#default-step-1 .button-next").trigger("click");
+        //             if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
+        //                 $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+        //             }
+        //             // Populate the form fields with the data returned from server
+        //             //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+        //         }
+        //     });
+        // });
 
-        $(document).ready(function () {
-            $("#date1").change(function () {
-                var iid = $('#date1').val();
-                var doctorr = $('#adoctors1').val();
-                var branch = $('#branch_select1').val();
-                $('#aslots1').find('option').remove();
-                console.log(iid);
-                // $('#default').trigger("reset");
-                $.ajax({
-                    url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
-                    method: 'GET',
-                    data: '',
-                    dataType: 'json',
-                    success: function (response) {
-                        var slots = response.aslots;
-                        $.each(slots, function (key, value) {
-                            $('#aslots1').append($('<option>').text(value).val(value)).end();
-                        });
-                        //   $("#default-step-1 .button-next").trigger("click");
-                        if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
-                            $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
-                        }
+        // $(document).ready(function () {
+        //     $("#date1").change(function () {
+        //         var iid = $('#date1').val();
+        //         var doctorr = $('#adoctors1').val();
+        //         var branch = $('#branch_select1').val();
+        //         $('#aslots1').find('option').remove();
+        //         console.log(iid);
+        //         // $('#default').trigger("reset");
+        //         $.ajax({
+        //             url: 'schedule/getAvailableSlotByDoctorByDateByJason?date=' + iid + '&doctor=' + doctorr + '&location=' + branch,
+        //             method: 'GET',
+        //             data: '',
+        //             dataType: 'json',
+        //             success: function (response) {
+        //                 var slots = response.aslots;
+        //                 $.each(slots, function (key, value) {
+        //                     $('#aslots1').append($('<option>').text(value).val(value)).end();
+        //                 });
+        //                 //   $("#default-step-1 .button-next").trigger("click");
+        //                 if ($('#aslots1').has('option').length == 0) {                    //if it is blank. 
+        //                     $('#aslots1').append($('<option>').text('No Further Time Slots').val('Not Selected')).end();
+        //                 }
 
 
-                        // Populate the form fields with the data returned from server
-                        //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
-                    }
-                });
-            });
-        });
+        //                 // Populate the form fields with the data returned from server
+        //                 //  $('#default').find('[name="staff"]').val(response.appointment.staff).end()
+        //             }
+        //         });
+        //     });
+        // });
 
     </script>
 
@@ -1862,10 +1862,10 @@
 
     <script>
         $(document).ready(function () {
-            var error = "<?php echo $_SESSION['error'] ?>";
-            var success = "<?php echo $_SESSION['success'] ?>";
-            var notice = "<?php echo $_SESSION['notice'] ?>";
-            var warning = "<?php echo $_SESSION['warning'] ?>";
+            var error = "<?php if(isset($_SESSION['error'])) echo $_SESSION['error']; ?>";
+            var success = "<?php if(isset($_SESSION['success'])) echo $_SESSION['success']; ?>";
+            var notice = "<?php if(isset($_SESSION['notice'])) echo $_SESSION['notice']; ?>";
+            var warning = "<?php if(isset($_SESSION['warning'])) echo $_SESSION['warning']; ?>";
 
             if (success) {
                 return $.growl.success({
@@ -1888,10 +1888,10 @@
                 });
             }
 
-            var error = "<?php unset($_SESSION['error']); ?>";
-            var success = "<?php unset($_SESSION['success']); ?>";
-            var warning = "<?php unset($_SESSION['warning']); ?>";
-            var notice = "<?php unset($_SESSION['notice']); ?>";
+            var error = "<?php if(isset($_SESSION['error'])) unset($_SESSION['error']); ?>";
+            var success = "<?php if(isset($_SESSION['success'])) unset($_SESSION['success']); ?>";
+            var warning = "<?php if(isset($_SESSION['notice'])) unset($_SESSION['warning']); ?>";
+            var notice = "<?php if(isset($_SESSION['warning'])) unset($_SESSION['notice']); ?>";
 
         });
     </script>
