@@ -397,7 +397,6 @@ class Customform_model extends CI_model {
             $this->db->where('type_id', $type);
             $this->db->where('patient', $patient->id);
             $this->db->order_by('id', 'desc');
-            $this->db->limit($limit, $start);
             $data[] = $this->db->get('custom_form')->row();
         }
 
