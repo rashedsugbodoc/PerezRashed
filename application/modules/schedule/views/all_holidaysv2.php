@@ -485,10 +485,10 @@
 
         <script>
             $(document).ready(function () {
-                var error = "<?php echo $_SESSION['error'] ?>";
-                var success = "<?php echo $_SESSION['success'] ?>";
-                var notice = "<?php echo $_SESSION['notice'] ?>";
-                var warning = "<?php echo $_SESSION['warning'] ?>";
+                var error = "<?php if(isset($_SESSION['error'])) echo $_SESSION['error']; ?>";
+                var success = "<?php if(isset($_SESSION['success'])) echo $_SESSION['success']; ?>";
+                var notice = "<?php if(isset($_SESSION['notice'])) echo $_SESSION['notice']; ?>";
+                var warning = "<?php if(isset($_SESSION['warning'])) echo $_SESSION['warning']; ?>";
 
                 if (success) {
                     return $.growl.success({
@@ -511,10 +511,10 @@
                     });
                 }
 
-                var error = "<?php unset($_SESSION['error']); ?>";
-                var success = "<?php unset($_SESSION['success']); ?>";
-                var warning = "<?php unset($_SESSION['warning']); ?>";
-                var notice = "<?php unset($_SESSION['notice']); ?>";
+                var error = "<?php if(isset($_SESSION['error'])) unset($_SESSION['error']); ?>";
+                var success = "<?php if(isset($_SESSION['success'])) unset($_SESSION['success']); ?>";
+                var warning = "<?php if(isset($_SESSION['notice'])) unset($_SESSION['warning']); ?>";
+                var notice = "<?php if(isset($_SESSION['warning'])) unset($_SESSION['notice']); ?>";
 
             });
         </script>
