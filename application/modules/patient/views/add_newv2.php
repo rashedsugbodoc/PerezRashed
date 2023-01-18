@@ -6,7 +6,7 @@
                     <!--div class="side-app"-->
                         <!--Page header-->
                         <div class="row mt-5">
-                            <?php if (empty($patient->id)) { ?>
+                            <?php if (empty($patient?$patient->id:null)) { ?>
                                 <div class="col-md-12 col-sm-12">
                                     <div class="card">
                                         <div class="card-header">
@@ -71,18 +71,18 @@
                                                         <label class="form-label"><?php echo lang('suffix') ?></label>
                                                         <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                             <option value="" ><?php echo lang('none'); ?></option>
-                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($patient->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
-                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($patient->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
-                                                            <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($patient->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
-                                                            <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($patient->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
-                                                            <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($patient->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
-                                                            <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($patient->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
-                                                            <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($patient->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
-                                                            <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($patient->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
-                                                            <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($patient->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
-                                                            <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($patient->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
-                                                            <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($patient->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
-                                                            <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($patient->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
+                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
+                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
+                                                            <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
+                                                            <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
+                                                            <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
+                                                            <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
+                                                            <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
+                                                            <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
+                                                            <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
+                                                            <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
+                                                            <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
+                                                            <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($patient?$patient->suffix:null ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -1186,14 +1186,14 @@
         // $("#country").change(function () {
         //     var country = $("#country").val();
         //     var patient_id = $("#patient_id").val();
-        //     var patient_country = "<?php echo $patient->country_id; ?>";
+        //     var patient_country = "<?php //echo $patient->country_id; ?>";
 
         //     $("#state").find('option').remove();
         //     $("#city").find('option').remove();
         //     $("#barangay").find('option').remove();
 
         //     $('#state').attr("disabled", false);
-        //     $('#state').append($('<option value="0" disabled selected><?php echo lang('state_province_placeholder'); ?></option>')).end();
+        //     $('#state').append($('<option value="0" disabled selected><?php //echo lang('state_province_placeholder'); ?></option>')).end();
 
         //     $.ajax({
         //         url: 'patient/getStateByCountryIdByJason?country=' + country + '&patient=' + patient_id,
@@ -1213,9 +1213,9 @@
 
                     
         //             $('#city').attr("disabled", true);
-        //             $('#city').append($('<option value="0" disabled selected><?php echo lang('city_municipality_placeholder'); ?></option>')).end();
+        //             $('#city').append($('<option value="0" disabled selected><?php //echo lang('city_municipality_placeholder'); ?></option>')).end();
         //             $('#barangay').attr("disabled", true);
-        //             $('#barangay').append($('<option value="0" disabled selected><?php echo lang("barangay_placeholder"); ?></option>')).end();
+        //             $('#barangay').append($('<option value="0" disabled selected><?php //echo lang("barangay_placeholder"); ?></option>')).end();
 
         //             $.each(state, function (key, value) {
         //                 $('#state').append($('<option>').text(value.name).val(value.id)).end();

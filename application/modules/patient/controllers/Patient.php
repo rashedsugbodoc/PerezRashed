@@ -142,6 +142,8 @@ class Patient extends MX_Controller {
         $data['groups'] = $this->patient_model->getBloodGroup();
         $data['countries'] = $this->location_model->getCountry();
         $data['civil_status'] = $this->patient_model->getCivilStatus();
+        $data['patient'] = null;
+        $data['setval'] = null;
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the header file
