@@ -480,6 +480,8 @@ class Admin extends MX_Controller {
         $id = $this->input->get('id');
         $data['countries'] = $this->location_model->getCountry();
         $data['admin'] = $this->admin_model->getAdminById($id);
+        $data['redirect'] = null;
+        $data['setval'] = null;
         // $data['states'] = $this->location_model->getState();
         // $data['cities'] = $this->location_model->getCity();
         // $data['barangays'] = $this->location_model->getBarangay();
