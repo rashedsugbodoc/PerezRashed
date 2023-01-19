@@ -206,19 +206,19 @@
                     'copyHtml5',
                     {
                         extend: 'excelHtml5',
-                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                        title: '<?php echo $patient?$patient->name:'patient'; ?> <?php echo lang('vital_signs'); ?>'
                     },
                     {
                         extend: 'csvHtml5',
-                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                        title: '<?php echo $patient?$patient->name:'patient'; ?> <?php echo lang('vital_signs'); ?>'
                     },
                     {
                         extend: 'pdfHtml5',
-                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                        title: '<?php echo $patient?$patient->name:'patient'; ?> <?php echo lang('vital_signs'); ?>'
                     },
                     {
                         extend: 'print',
-                        title: '<?php echo $patient->name; ?> <?php echo lang('vital_signs'); ?>'
+                        title: '<?php echo $patient?$patient->name:'patient'; ?> <?php echo lang('vital_signs'); ?>'
                     },
                 ],
                 aLengthMenu: [

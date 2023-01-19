@@ -134,6 +134,7 @@ class Appointment extends MX_Controller {
         $data['patients'] = $this->patient_model->getPatient();
         $data['doctors'] = $this->doctor_model->getDoctor();
         $data['settings'] = $this->settings_model->getSettings();
+        $data['patient'] = null;
         $this->load->view('home/dashboardv2', $data); // just the header file
         $this->load->view('calendarv2', $data);
         // $this->load->view('home/footer'); // just the header file
