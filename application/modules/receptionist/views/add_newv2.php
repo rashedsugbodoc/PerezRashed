@@ -92,18 +92,18 @@
                                                         <label class="form-label"><?php echo lang('suffix'); ?></label>
                                                         <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                             <option value="0" ><?php echo lang('none'); ?></option>
-                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($receptionist->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
-                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($receptionist->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
-                                                            <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($receptionist->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
-                                                            <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($receptionist->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
-                                                            <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($receptionist->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
-                                                            <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($receptionist->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
-                                                            <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($receptionist->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
-                                                            <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($receptionist->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
-                                                            <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($receptionist->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
-                                                            <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($receptionist->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
-                                                            <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($receptionist->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
-                                                            <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($receptionist->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
+                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='Jr.') { echo 'selected'; } } ?>><?php echo lang('jr'); ?></option>
+                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='Sr.') { echo 'selected'; } } ?>><?php echo lang('sr'); ?></option>
+                                                            <option value="I." <?php if(set_value('suffix')=='I.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='I.') { echo 'selected'; } } ?>><?php echo lang('i'); ?></option>
+                                                            <option value="II." <?php if(set_value('suffix')=='II.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='II.') { echo 'selected'; } } ?>><?php echo lang('ii'); ?></option>
+                                                            <option value="III." <?php if(set_value('suffix')=='III.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='III.') { echo 'selected'; } } ?>><?php echo lang('iii'); ?></option>
+                                                            <option value="IV." <?php if(set_value('suffix')=='IV.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='IV.') { echo 'selected'; } } ?>><?php echo lang('iv'); ?></option>
+                                                            <option value="V." <?php if(set_value('suffix')=='V.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='V.') { echo 'selected'; } } ?>><?php echo lang('v'); ?></option>
+                                                            <option value="VI." <?php if(set_value('suffix')=='VI.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='VI.') { echo 'selected'; } } ?>><?php echo lang('vi'); ?></option>
+                                                            <option value="VII." <?php if(set_value('suffix')=='VII.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='VII.') { echo 'selected'; } } ?>><?php echo lang('vii'); ?></option>
+                                                            <option value="VIII." <?php if(set_value('suffix')=='VIII.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='VIII.') { echo 'selected'; } } ?>><?php echo lang('viii'); ?></option>
+                                                            <option value="IX." <?php if(set_value('suffix')=='IX.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='IX.') { echo 'selected'; } } ?>><?php echo lang('ix'); ?></option>
+                                                            <option value="X." <?php if(set_value('suffix')=='X.') { echo 'selected';} elseif(!empty($receptionist->suffix)) { if($receptionist->suffix ==='X.') { echo 'selected'; } } ?>><?php echo lang('x'); ?></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -382,7 +382,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var setval = "<?php echo $setval ?>";
+            var setval = "<?php echo $setval?$setval:'' ?>";
             var country = "<?php echo set_value('country_id') ?>";
             var state = "<?php echo set_value('state_id') ?>";
             var city = "<?php echo set_value('city_id') ?>";
