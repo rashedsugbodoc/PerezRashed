@@ -73,6 +73,9 @@ class Admin extends MX_Controller {
         
         $data = array();
         $data['countries'] = $this->location_model->getCountry();
+        $data['admin'] = null;
+        $data['redirect'] = null;
+        $data['setval'] = null;
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_new', $data);
         // $this->load->view('home/footer'); // just the header file
