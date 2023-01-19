@@ -215,7 +215,7 @@
                                                 echo $nurse->id;
                                             }
                                             ?>'>
-                                            <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
+                                            <input type="hidden" name="redirect" value="<?php echo $redirect?$redirect:''; ?>">
                                             <div class="row">
                                                 <div class="col-sm-12 col-md-12">
                                                     <button class="btn btn-primary pull-right" name="submit" type="submit"><?php echo lang('submit'); ?></button>
@@ -361,7 +361,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var setval = "<?php echo $setval ?>";
+            var setval = "<?php echo $setval?$setval:'' ?>";
             var country = "<?php echo set_value('country_id') ?>";
             var state = "<?php echo set_value('state_id') ?>";
             var city = "<?php echo set_value('city_id') ?>";

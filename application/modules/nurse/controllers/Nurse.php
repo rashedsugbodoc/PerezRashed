@@ -359,6 +359,8 @@ class Nurse extends MX_Controller {
         $id = $this->input->get('id');
         $data['countries'] = $this->location_model->getCountry();
         $data['nurse'] = $this->nurse_model->getNurseById($id);
+        $data['redirect'] = null;
+        $data['setval'] = null;
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
         // $this->load->view('home/footer'); // just the footer file
