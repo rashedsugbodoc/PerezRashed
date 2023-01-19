@@ -29,6 +29,8 @@ class Nurse extends MX_Controller {
         if (!$this->ion_auth->in_group('admin')) {
             redirect('home/permission');
         }
+        $data['redirect'] = null;
+        $data['setval'] = null;
         $data['countries'] = $this->location_model->getCountry();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
