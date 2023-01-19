@@ -75,163 +75,6 @@
                             </section>
                         </div>
 
-                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content modal-content-demo">
-                                    <div class="modal-header">
-                                        <h6 class="modal-title"> <?php echo lang('add_company_user'); ?> </h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-                                    </div>
-                                    <form role="form" action="companyuser/addNew" class="clearfix" method="post" enctype="multipart/form-data">
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-xl-12 col-lg-12 col-md-12">
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('name'); ?><span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="name" id="name" placeholder="Name" maxlength="100" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
-                                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('password'); ?><span class="text-red">*</span></label>
-                                                            <input type="password" class="form-control" name="password" id="password" placeholder="Password" maxlength="255" required>
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-sm-6 col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
-                                                                <form>
-                                                                    <input id="phone" class="form-control" name="phone" id="phone" value="+63" type="tel" maxlength="20" required>
-                                                                 </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('address'); ?><span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" placeholder="Address" name="address" id="address" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="exampleInputEmail1"> <?php echo lang('company'); ?></label>
-                                                                <select class="form-control m-bot15  add_payer" id="company" name="company_id" value=''>
-                                                                    <?php if (!empty($companyuser)) { ?>
-                                                                        <option value="<?php echo $company->id; ?>" selected="selected"><?php echo format_number_with_digits($company->id, COMPANY_ID_LENGTH). ' - '. $company->display_name; ?></option>  
-                                                                    <?php } ?>
-                                                                </select>        
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
-                                                            <label class="form-label"><?php echo lang('image'); ?><span class="text-red">*</span></label>
-                                                            <input type="file" name="img_url" id="image" class="dropify"/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <button class="btn btn-primary pull-right" name="submit" id="submit" type="submit"><?php echo lang('submit'); ?></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content modal-content-demo">
-                                    <div class="modal-header">
-                                        <h6 class="modal-title">  <?php echo lang('edit_company_user'); ?> </h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
-                                    </div>
-                                    <form role="form" id="editCompanyUserForm" class="clearfix" action="companyuser/addNew" method="post" enctype="multipart/form-data">
-                                        <div class="modal-body">
-                                            <div class="row">
-                                                <div class="col-xl-12 col-lg-12 col-md-12">
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('name'); ?><span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" name="name" id="nameEdit" placeholder="Name" maxlength="100" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('email'); ?><span class="text-red">*</span></label>
-                                                                <input type="email" class="form-control" name="email" id="emailEdit" placeholder="Email" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
-                                                        <div class="form-group">
-                                                            <label class="form-label"><?php echo lang('password'); ?><span class="text-red">*</span></label>
-                                                            <input type="password" class="form-control" name="password" placeholder="Password" maxlength="255">
-                                                        </div>
-                                                        </div>
-                                                        <div class="col-sm-6 col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('phone'); ?><span class="text-red">*</span></label>
-                                                                <form>
-                                                                    <input id="phone2" name="phone" value="+639163456789" class="form-control" type="tel" maxlength="20" required>
-                                                                 </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <div class="form-group">
-                                                                <label class="form-label"><?php echo lang('address'); ?><span class="text-red">*</span></label>
-                                                                <input type="text" class="form-control" placeholder="Address" name="address" id="addressEdit" required>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <div class="form-group">
-                                                                <label for="exampleInputEmail1"> <?php echo lang('company'); ?></label>
-                                                                <select class="form-control m-bot15 add_payer" id="company_select" name="company_id">
-
-                                                                </select>        
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-6 col-md-6">
-                                                            <label class="form-label"><?php echo lang('image'); ?><span class="text-red">*</span></label>
-                                                            <input type="file" name="img_url" id="img" class="dropify"/>
-                                                        </div>
-                                                    </div>
-                                                    <input type="hidden" name="id" value=''>
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-12">
-                                                            <button class="btn btn-primary pull-right" name="submit" id="submitEdit" type="submit"><?php echo lang('submit'); ?></button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -366,84 +209,6 @@
 
     <!-- INTERNAL JS INDEX END -->
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#submit").click(function () {
-                var name = $('#name').parsley();
-                var email = $('#email').parsley();
-                var password = $('#password').parsley();
-                var phone = $('#phone').parsley();
-                var address = $('#address').parsley();
-                
-
-                if (name.isValid() && email.isValid() && password.isValid() && phone.isValid() && address.isValid()) {
-                    return true;
-                } else {
-                    name.validate();
-                    email.validate();
-                    password.validate();
-                    phone.validate();
-                    address.validate();
-                }
-            });
-
-            $("#submitEdit").click(function () {
-                var name = $('#nameEdit').parsley();
-                var email = $('#emailEdit').parsley();
-                var phone = $('#phone2').parsley();
-                var address = $('#addressEdit').parsley();
-
-                if (name.isValid() && email.isValid() && phone.isValid() && address.isValid()) {
-                    return true;
-                } else {
-                    name.validate();
-                    email.validate();
-                    phone.validate();
-                    address.validate();
-                }
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(".table").on("click", ".editbutton", function () {
-            // Get the record's ID via attribute  
-            var iid = $(this).attr('data-id');
-            $('#editCompanyUserForm').trigger("reset");
-            $.ajax({
-                url: 'companyuser/editCompanyUserByJason?id=' + iid,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    // Populate the form fields with the data returned from server
-                    $('#editCompanyUserForm').find('[name="id"]').val(response.companyuser.id).end()
-                    $('#editCompanyUserForm').find('[name="name"]').val(response.companyuser.name).end()
-                    $('#editCompanyUserForm').find('[name="password"]').val(response.companyuser.password).end()
-                    $('#editCompanyUserForm').find('[name="email"]').val(response.companyuser.email).end()
-                    $('#editCompanyUserForm').find('[name="address"]').val(response.companyuser.address).end()
-                    $('#editCompanyUserForm').find('[name="phone"]').val(response.companyuser.phone).end()
-
-                    $('#editCompanyUserForm').find('[name="company_id"]').val(response.companyuser.company_id).change()
-                    $('#editCompanyUserForm').val(response.companyuser.company_id).trigger('change');
-
-                    var imagenUrl = response.companyuser.img_url;
-                    var drEvent = $('#img').dropify(
-                    {
-                      defaultFile: imagenUrl
-                    });
-                    drEvent = drEvent.data('dropify');
-                    drEvent.resetPreview();
-                    drEvent.clearElement();
-                    drEvent.settings.defaultFile = imagenUrl;
-                    drEvent.destroy();
-                    drEvent.init();
-
-                    $('#myModal2').modal('show');
-                }
-            });
-        });
-    </script>
     <script>
         $(document).ready(function () {
             var table = $('#editable-sample').DataTable({
@@ -575,10 +340,10 @@
 
     <script>
         $(document).ready(function () {
-            var error = "<?php echo $_SESSION['error'] ?>";
-            var success = "<?php echo $_SESSION['success'] ?>";
-            var notice = "<?php echo $_SESSION['notice'] ?>";
-            var warning = "<?php echo $_SESSION['warning'] ?>";
+            var error = "<?php if(isset($_SESSION['error'])) echo $_SESSION['error']; ?>";
+            var success = "<?php if(isset($_SESSION['success'])) echo $_SESSION['success']; ?>";
+            var notice = "<?php if(isset($_SESSION['notice'])) echo $_SESSION['notice']; ?>";
+            var warning = "<?php if(isset($_SESSION['warning'])) echo $_SESSION['warning']; ?>";
 
             if (success) {
                 return $.growl.success({
@@ -601,10 +366,10 @@
                 });
             }
 
-            var error = "<?php unset($_SESSION['error']); ?>";
-            var success = "<?php unset($_SESSION['success']); ?>";
-            var warning = "<?php unset($_SESSION['warning']); ?>";
-            var notice = "<?php unset($_SESSION['notice']); ?>";
+            var error = "<?php if(isset($_SESSION['error'])) unset($_SESSION['error']); ?>";
+            var success = "<?php if(isset($_SESSION['success'])) unset($_SESSION['success']); ?>";
+            var warning = "<?php if(isset($_SESSION['notice'])) unset($_SESSION['warning']); ?>";
+            var notice = "<?php if(isset($_SESSION['warning'])) unset($_SESSION['notice']); ?>";
 
         });
     </script>
