@@ -84,18 +84,18 @@
                                                         <label class="form-label"><?php echo lang('suffix'); ?></label>
                                                         <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                             <option value="0" ><?php echo lang('none'); ?></option>
-                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($companyuser->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
-                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($companyuser->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
-                                                            <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($companyuser->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
-                                                            <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($companyuser->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
-                                                            <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($companyuser->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
-                                                            <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($companyuser->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
-                                                            <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($companyuser->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
-                                                            <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($companyuser->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
-                                                            <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($companyuser->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
-                                                            <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($companyuser->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
-                                                            <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($companyuser->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
-                                                            <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($companyuser->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
+                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='Jr.') { echo 'selected'; } } ?>><?php echo lang('jr'); ?></option>
+                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='Sr.') { echo 'selected'; } } ?>><?php echo lang('sr'); ?></option>
+                                                            <option value="I." <?php if(set_value('suffix')=='I.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='I.') { echo 'selected'; } } ?>><?php echo lang('i'); ?></option>
+                                                            <option value="II." <?php if(set_value('suffix')=='II.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='II.') { echo 'selected'; } } ?>><?php echo lang('ii'); ?></option>
+                                                            <option value="III." <?php if(set_value('suffix')=='III.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='III.') { echo 'selected'; } } ?>><?php echo lang('iii'); ?></option>
+                                                            <option value="IV." <?php if(set_value('suffix')=='IV.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='IV.') { echo 'selected'; } } ?>><?php echo lang('iv'); ?></option>
+                                                            <option value="V." <?php if(set_value('suffix')=='V.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='V.') { echo 'selected'; } } ?>><?php echo lang('v'); ?></option>
+                                                            <option value="VI." <?php if(set_value('suffix')=='VI.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='VI.') { echo 'selected'; } } ?>><?php echo lang('vi'); ?></option>
+                                                            <option value="VII." <?php if(set_value('suffix')=='VII.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='VII.') { echo 'selected'; } } ?>><?php echo lang('vii'); ?></option>
+                                                            <option value="VIII." <?php if(set_value('suffix')=='VIII.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='VIII.') { echo 'selected'; } } ?>><?php echo lang('viii'); ?></option>
+                                                            <option value="IX." <?php if(set_value('suffix')=='IX.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='IX.') { echo 'selected'; } } ?>><?php echo lang('ix'); ?></option>
+                                                            <option value="X." <?php if(set_value('suffix')=='X.') { echo 'selected';} elseif(!empty($companyuser->suffix)) { if($companyuser->suffix ==='X.') { echo 'selected'; } } ?>><?php echo lang('x'); ?></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -248,9 +248,6 @@
                                                     <div class="form-group">
                                                         <label class="form-label">Scope <span class="text-red">*</span></label>
                                                         <select class="form-control select2" name="scope[]" id="<?php echo $id?'editScope':'selectScope' ?>" multiple required>
-                                                            <!-- <?php foreach($scopes as $scope) { ?>
-                                                                <option value="<?php echo $scope->id ?>" selected><?php echo $scope->statename.' ('.$scope->countryname.')'; ?></option>
-                                                            <?php } ?> -->
                                                         </select>
                                                     </div>
                                                 </div>
@@ -268,7 +265,7 @@
                                             }
                                             ?>'>
                                             <?php if(!empty($redirect)) { ?>
-                                                <input type="hidden" name="redirect" value="<?php echo $redirect; ?>">
+                                                <input type="hidden" name="redirect" value="<?php echo $redirect?$redirect:''; ?>">
                                             <?php } ?>
                                             <input type="hidden" name="holder" id="holder" value="1">
                                             <div class="row">
@@ -416,7 +413,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var setval = "<?php echo $setval ?>";
+            var setval = "<?php echo $setval?$setval:'' ?>";
             var country = "<?php echo set_value('country_id') ?>";
             var state = "<?php echo set_value('state_id') ?>";
             var city = "<?php echo set_value('city_id') ?>";

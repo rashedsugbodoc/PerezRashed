@@ -29,6 +29,9 @@ class Companyuser extends MX_Controller {
     public function addNewView() {
         $data['companies'] = $this->company_model->getCompany();
         $data['countries'] = $this->location_model->getCountry();
+        $data['redirect'] = null;
+        $data['setval'] = null;
+        $data['id'] = null;
         // $data['companyusers'] = $this->companyuser_model->getCompanyUser();
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_newv2', $data);
@@ -492,6 +495,8 @@ class Companyuser extends MX_Controller {
         $data['companies'] = $this->company_model->getCompany();
         $data['countries'] = $this->location_model->getCountry();
         $data['companyuser'] = $this->companyuser_model->getCompanyUserById($id);
+        $data['redirect'] = null;
+        $data['setval'] = null;
         // $data['scopes'] = explode(',', $data['companyuser']->scope_id);
 
         if ($data['companyuser']->scope_level === "country") {
