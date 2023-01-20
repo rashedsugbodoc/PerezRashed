@@ -271,17 +271,6 @@
                                                         <label class="form-label"><?php echo lang('payer_account'); ?> <span class="text-red">*</span></label>
                                                         <div class="row">
                                                             <select name="company[]" id="company" placeholder="Sample Placeholder" multiple="multiple">
-                                                                <!-- <?php foreach($payer_accounts as $payer_account) { ?>
-                                                                    <?php if (!empty($service->payer_account_id)) { ?>
-                                                                        <?php if ($payer_account['id'] == $service->payer_account_id ) { ?>
-                                                                            <option value="<?php echo $payer_account['id']; ?>" selected><?php echo $payer_account['text']; ?></option>
-                                                                        <?php } else { ?>
-                                                                            <option value="<?php echo $payer_account['id']; ?>"><?php echo $payer_account['text']; ?></option>
-                                                                        <?php } ?>
-                                                                    <?php } else { ?>
-                                                                        <option value="<?php echo $payer_account['id']; ?>" data-text="<?php echo $payer_account['text']; ?>"><?php echo $payer_account['text']; ?></option>
-                                                                    <?php } ?>
-                                                                <?php } ?> -->
                                                                 <?php $my_payer_account = $service; ?>
                                                                 <?php foreach($payer_accounts as $payer_account) { ?>
                                                                     <?php if (!empty($service)) { ?>
@@ -1387,7 +1376,7 @@
                 multiple: true,
                 allowClear: true,
                 ajax: {
-                    url: 'procedure/getCptCodeAndDescription',
+                    url: 'procedure/getProcedureCptCodeAndDescription',
                     type: 'post',
                     dataType: 'json',
                     delay: 250,
