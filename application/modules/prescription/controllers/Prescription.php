@@ -386,6 +386,7 @@ class Prescription extends MX_Controller {
         $id = $this->prescription_model->getPrescriptionByPrescriptionNumber($data['prescription_number'])->id;
         // $data['patients'] = $this->patient_model->getPatient();
         // $data['doctors'] = $this->doctor_model->getDoctor();
+        $data['patient_details'] = null;
         $data['encounter_id'] = $this->input->get('encounter_id');
         $data['medicines'] = $this->medicine_model->getMedicine();
         $data['prescription'] = $this->prescription_model->getPrescriptionById($id);

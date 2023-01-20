@@ -363,20 +363,22 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var patient_id = '<?php echo $patient_details->id ?>';
-            $.ajax({
-                url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var encounter = response.encounter;
-                    var encounter_type = response.encounter_type;
-                    $.each(encounter, function (key, value) {
-                        $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
-                    });
-                }
-            })
+            var patient_id = '<?php echo $patient_details?$patient_details->id:'' ?>';
+            if (patient_id != '') {
+                $.ajax({
+                    url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter = response.encounter;
+                        var encounter_type = response.encounter_type;
+                        $.each(encounter, function (key, value) {
+                            $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
+                        });
+                    }
+                })
+            }
         });
     </script>
 
