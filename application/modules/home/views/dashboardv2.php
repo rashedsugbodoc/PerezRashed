@@ -705,7 +705,7 @@ if (!$this->ion_auth->in_group(array('superadmin'))) {
                                         
                                         <?php if ($this->ion_auth->in_group(array('admin', 'Pharmacist'))) { ?>
                                             <li class="sub-slide">
-                                                <a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label"><?php echo lang(''); ?> <?php echo lang('report'); ?></span><i class="sub-angle fe fe-chevron-down"></i></a>
+                                                <a class="sub-side-menu__item" data-toggle="sub-slide" href="#"><span class="sub-side-menu__label"><?php echo lang('report'); ?></span><i class="sub-angle fe fe-chevron-down"></i></a>
                                                 <ul class="sub-slide-menu">
                                                     <li><a class="sub-slide-item" href="finance/pharmacy/financialReport"><?php echo lang('pharmacy'); ?> <?php echo lang('report'); ?></a></li>
                                                     <li><a class="sub-slide-item" href="finance/pharmacy/monthly"><?php echo lang('monthly_sales'); ?></a></li>
