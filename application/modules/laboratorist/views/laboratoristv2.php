@@ -51,7 +51,7 @@
 
                                                             <?php foreach ($laboratorists as $laboratorist) { ?>
                                                                 <tr class="">
-                                                                    <td style="width:10%;"><img style="width:95%;" src="<?php echo $laboratorist->img_url; ?>"></td>
+                                                                    <td style="width:10%;"><img style="width:95%;" src="<?php echo $laboratorist?$laboratorist->img_url?$laboratorist->img_url:base_url($this->session->userdata('profile_img_url')):base_url($this->session->userdata('profile_img_url')); ?>"></td>
                                                                     <td> <?php echo $laboratorist->name; ?></td>
                                                                     <td><?php echo $laboratorist->email; ?></td>
                                                                     <td class="center"><?php echo $laboratorist->address; ?></td>
