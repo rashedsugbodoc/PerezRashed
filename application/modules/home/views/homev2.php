@@ -9,7 +9,7 @@
                         <!--Page header-->
                         <div class="page-header">
                             <div class="page-leftheader">
-                                <h4 class="page-title"><?php echo $this->ion_auth->get_users_groups($user->id)->row()->name . ' ' . lang('dashboard'); ?></h4>
+                                <h4 class="page-title"><?php echo ucfirst($this->ion_auth->get_users_groups($user)->row()->name) . ' ' . lang('dashboard'); ?></h4>
                             </div>
                         </div>
                         <!--End Page header-->

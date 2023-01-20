@@ -22,6 +22,7 @@ class Home extends MX_Controller {
             $data['notices'] = $this->notice_model->getNotice();
             $data['this_month'] = $this->finance_model->getThisMonth();
             $data['expenses'] = $this->finance_model->getExpense();
+            $data['user'] = $this->session->userdata('user_id');
             if ($this->ion_auth->in_group(array('Doctor'))) {
                 redirect('doctor/details');
             } else {
