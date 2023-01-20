@@ -217,6 +217,7 @@
                                                         <label class="form-label"><?php echo lang('lab') . ' ' . lang('request'); ?></label>
                                                         <div class="labreq">
                                                         <?php if (!empty($labrequests)) { ?>    
+                                                            <?php $i = 0; ?>
                                                             <?php foreach($labrequests as $labrequest) { ?>
                                                                 <?php if(empty($labrequest->loinc_num)) { ?>
                                                                     <?php $i += 1; ?>
@@ -375,20 +376,22 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var patient_id = '<?php echo $patient_details->id ?>';
-            $.ajax({
-                url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var encounter = response.encounter;
-                    var encounter_type = response.encounter_type;
-                    $.each(encounter, function (key, value) {
-                        $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
-                    });
-                }
-            })
+            var patient_id = '<?php echo $patient_details?$patient_details->id:'' ?>';
+            if ($patient_id != '') {
+                $.ajax({
+                    url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter = response.encounter;
+                        var encounter_type = response.encounter_type;
+                        $.each(encounter, function (key, value) {
+                            $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
+                        });
+                    }
+                })
+            }
         });
     </script>
 
@@ -397,40 +400,42 @@
     </script>
 
     <script type="text/javascript">
-        var request_number = "<?php echo $request_number; ?>";
-        $.ajax({
-            url: 'labrequest/editLabrequestByJason?id='+request_number,
-            method: 'GET',
-            data: '',
-            dataType: 'json',
-            success: function (response) {
-                var request_patient = response.labrequests.patient_id;
-                var request_encounter = response.labrequests.encounter_id;
-                $.each(response.patients, function (key, value) {
-                    $("#pos_select").append($('<option>').text(value.name).val(value.id)).end();
-                });
+        var request_number = "<?php echo $request_number?$request_number:''; ?>";
+        if ($request_number != '') {
+            $.ajax({
+                url: 'labrequest/editLabrequestByJason?id='+request_number,
+                method: 'GET',
+                data: '',
+                dataType: 'json',
+                success: function (response) {
+                    var request_patient = response.labrequests.patient_id;
+                    var request_encounter = response.labrequests.encounter_id;
+                    $.each(response.patients, function (key, value) {
+                        $("#pos_select").append($('<option>').text(value.name).val(value.id)).end();
+                    });
 
-                $("#pos_select").val(request_patient);
+                    $("#pos_select").val(request_patient);
 
-                var patient = $("#pos_select").val();
-                $("#encounter").find('option').remove();
+                    var patient = $("#pos_select").val();
+                    $("#encounter").find('option').remove();
 
-                $.ajax({
-                    url: 'labrequest/getEncounterByPatientIdJason?id='+patient,
-                    method: 'GET',
-                    data: '',
-                    dataType: 'json',
-                    success: function (response) {
-                        var encounter = response.encounter;
-                        $.each(encounter, function (key, value) {
-                            $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
-                        });
+                    $.ajax({
+                        url: 'labrequest/getEncounterByPatientIdJason?id='+patient,
+                        method: 'GET',
+                        data: '',
+                        dataType: 'json',
+                        success: function (response) {
+                            var encounter = response.encounter;
+                            $.each(encounter, function (key, value) {
+                                $('#encounter').append($('<option>').text(value.text).val(value.id)).end();
+                            });
 
-                        $("#encounter").val(request_encounter);
-                    }
-                })
-            }
-        });
+                            $("#encounter").val(request_encounter);
+                        }
+                    })
+                }
+            });
+        }
     </script>
 
     <script type="text/javascript">
@@ -668,7 +673,7 @@
                                         <div class="row">\n\
                                             <div class="col-sm-12">\n\
                                                 <div class="form-group">\n\
-                                                    <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="'+value.instructions+'"></div>\n\
+                                                    <div class="input-group"><label class="align-self-center mb-0"><?php //echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="'+value.instructions+'"></div>\n\
                                                     <input type="text" hidden name="dataholder[]" class="form-control" value="">\n\
                                                 </div>\n\
                                             </div>\n\
@@ -701,14 +706,14 @@
                                     <div class="row">\n\
                                         <div class="col-sm-12">\n\
                                             <div class="form-group">\n\
-                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" value="<?php echo $labrequest->lab_request_text ?>" required>\n\
+                                                <input type="text" class = "form-control labreq-div" name = "labrequest_text[]" placeholder="" value="<?php //echo $labrequest->lab_request_text ?>" required>\n\
                                             </div>\n\
                                         </div>\n\
                                     </div>\n\
                                     <div class="row">\n\
                                         <div class="col-sm-12">\n\
                                             <div class="form-group">\n\
-                                                <div class="input-group"><label class="align-self-center mb-0"><?php echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="<?php echo $labrequest->instructions ?>"></div>\n\
+                                                <div class="input-group"><label class="align-self-center mb-0"><?php //echo lang("instruction")?> &nbsp</label><input type="text" class="form-control" name="instruction[]" value="<?php //echo $labrequest->instructions ?>"></div>\n\
                                                 <input type="text" hidden name="dataholder[]" class="form-control" value="' + count + '">\n\
                                             </div>\n\
                                         </div>\n\

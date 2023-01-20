@@ -26,7 +26,7 @@ class Labrequest extends MX_Controller {
             redirect('home/permission');
         }
         $this->load->view('home/dashboardv2');
-        $this->load->view('labrequest', $data);
+        $this->load->view('labrequest');
     }
 
     function addLabRequestView() {
@@ -38,6 +38,7 @@ class Labrequest extends MX_Controller {
         $patient = $this->input->get('patient_id');
         $data['patient_id'] = $this->patient_model->getPatientByPatientNumber($patient)->id;
         $data['encounter_id'] = $this->input->get('encounter_id');
+        $data['request_number'] = null;
         $root = $this->input->get('root');
         $method = $this->input->get('method');
         if (!empty($root) && !empty($method)) {
@@ -281,6 +282,7 @@ class Labrequest extends MX_Controller {
         $data['request_number'] = $this->input->get('id');
         $data['labrequests'] = $this->labrequest_model->getLabrequestByLabrequestNumber($data['request_number']);
         $data['lab_request_date'] = $data['labrequests'][0]->request_date;
+        $data['patient_details'] = null;
         $root = $this->input->get('root');
         $method = $this->input->get('method');
         if (!empty($root) && !empty($method)) {
