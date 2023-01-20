@@ -171,8 +171,8 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var expense_id = "<?php echo $expense->id ?>";
-            var expense_date = "<?php echo date("F j, Y H:i A", strtotime($expense->expense_date.' UTC')); ?>";
+            var expense_id = "<?php echo $expense?$expense->id:'' ?>";
+            var expense_date = "<?php echo $expense?date("F j, Y H:i A", strtotime($expense->expense_date.' UTC')):''; ?>";
             var timenow = "<?php echo date('Y-m-d H:i'); ?>";
             var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             if (expense_id === "") {

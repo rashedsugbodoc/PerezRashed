@@ -2838,6 +2838,7 @@ class Finance extends MX_Controller {
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->finance_model->getExpenseCategory();
+        $data['expense'] = null;
         $this->load->view('home/dashboardv2'); // just the header file
         $this->load->view('add_expense_viewv2', $data);
         // $this->load->view('home/footer'); // just the header file
