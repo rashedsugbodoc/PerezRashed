@@ -94,18 +94,18 @@
                                                         <label class="form-label"><?php echo lang('suffix'); ?></label>
                                                         <select class="form-control select2 br-0 nice-select br-tl-0 br-bl-0" name="suffix">
                                                             <option value="0" ><?php echo lang('none'); ?></option>
-                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif ($laboratorist->suffix ==='Jr.') { echo 'selected'; } ?>><?php echo lang('jr'); ?></option>
-                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif ($laboratorist->suffix ==='Sr.') { echo 'selected'; } ?>><?php echo lang('sr'); ?></option>
-                                                            <option value="I" <?php if(set_value('suffix')=='I') { echo 'selected';} elseif ($laboratorist->suffix ==='I') { echo 'selected'; } ?>><?php echo lang('i'); ?></option>
-                                                            <option value="II" <?php if(set_value('suffix')=='II') { echo 'selected';} elseif ($laboratorist->suffix ==='II') { echo 'selected'; } ?>><?php echo lang('ii'); ?></option>
-                                                            <option value="III" <?php if(set_value('suffix')=='III') { echo 'selected';} elseif ($laboratorist->suffix ==='III') { echo 'selected'; } ?>><?php echo lang('iii'); ?></option>
-                                                            <option value="IV" <?php if(set_value('suffix')=='IV') { echo 'selected';} elseif ($laboratorist->suffix ==='IV') { echo 'selected'; } ?>><?php echo lang('iv'); ?></option>
-                                                            <option value="V" <?php if(set_value('suffix')=='V') { echo 'selected';} elseif ($laboratorist->suffix ==='V') { echo 'selected'; } ?>><?php echo lang('v'); ?></option>
-                                                            <option value="VI" <?php if(set_value('suffix')=='VI') { echo 'selected';} elseif ($laboratorist->suffix ==='VI') { echo 'selected'; } ?>><?php echo lang('vi'); ?></option>
-                                                            <option value="VII" <?php if(set_value('suffix')=='VII') { echo 'selected';} elseif ($laboratorist->suffix ==='VII') { echo 'selected'; } ?>><?php echo lang('vii'); ?></option>
-                                                            <option value="VIII" <?php if(set_value('suffix')=='VIII') { echo 'selected';} elseif ($laboratorist->suffix ==='VIII') { echo 'selected'; } ?>><?php echo lang('viii'); ?></option>
-                                                            <option value="IX" <?php if(set_value('suffix')=='IX') { echo 'selected';} elseif ($laboratorist->suffix ==='IX') { echo 'selected'; } ?>><?php echo lang('ix'); ?></option>
-                                                            <option value="X" <?php if(set_value('suffix')=='X') { echo 'selected';} elseif ($laboratorist->suffix ==='X') { echo 'selected'; } ?>><?php echo lang('x'); ?></option>
+                                                            <option value="Jr." <?php if(set_value('suffix')=='Jr.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='Jr.') { echo 'selected'; } } ?>><?php echo lang('jr'); ?></option>
+                                                            <option value="Sr." <?php if(set_value('suffix')=='Sr.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='Sr.') { echo 'selected'; } } ?>><?php echo lang('sr'); ?></option>
+                                                            <option value="I." <?php if(set_value('suffix')=='I.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='I.') { echo 'selected'; } } ?>><?php echo lang('i'); ?></option>
+                                                            <option value="II." <?php if(set_value('suffix')=='II.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='II.') { echo 'selected'; } } ?>><?php echo lang('ii'); ?></option>
+                                                            <option value="III." <?php if(set_value('suffix')=='III.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='III.') { echo 'selected'; } } ?>><?php echo lang('iii'); ?></option>
+                                                            <option value="IV." <?php if(set_value('suffix')=='IV.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='IV.') { echo 'selected'; } } ?>><?php echo lang('iv'); ?></option>
+                                                            <option value="V." <?php if(set_value('suffix')=='V.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='V.') { echo 'selected'; } } ?>><?php echo lang('v'); ?></option>
+                                                            <option value="VI." <?php if(set_value('suffix')=='VI.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='VI.') { echo 'selected'; } } ?>><?php echo lang('vi'); ?></option>
+                                                            <option value="VII." <?php if(set_value('suffix')=='VII.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='VII.') { echo 'selected'; } } ?>><?php echo lang('vii'); ?></option>
+                                                            <option value="VIII." <?php if(set_value('suffix')=='VIII.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='VIII.') { echo 'selected'; } } ?>><?php echo lang('viii'); ?></option>
+                                                            <option value="IX." <?php if(set_value('suffix')=='IX.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='IX.') { echo 'selected'; } } ?>><?php echo lang('ix'); ?></option>
+                                                            <option value="X." <?php if(set_value('suffix')=='X.') { echo 'selected';} elseif(!empty($laboratorist->suffix)) { if($laboratorist->suffix ==='X.') { echo 'selected'; } } ?>><?php echo lang('x'); ?></option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -451,7 +451,7 @@
                                 success: function (response) {
                                     var city = response.city;
 
-                                    console.log('Edit Accountant - Load Cities of State');
+                                    console.log('Edit laboratorist - Load Cities of State');
 
                                     $.each(city, function (key, value) {
                                         $('#city').append($('<option>').text(value.name).val(value.id)).end();
@@ -477,7 +477,7 @@
                                         success: function (response) {
                                             var barangay = response.barangay;
 
-                                            console.log('Edit Accountant - Load Barangays of City');
+                                            console.log('Edit laboratorist - Load Barangays of City');
 
                                             $.each(barangay, function (key, value) {
                                                 $('#barangay').append($('<option>').text(value.name).val(value.id)).end();
