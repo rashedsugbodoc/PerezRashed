@@ -57,6 +57,8 @@ class Form extends MX_Controller {
             $data['form_single'] = $this->form_model->getFormById($id);
             $data['patients'] = $this->patient_model->getPatientById($data['form_single']->patient);
             $data['doctors'] = $this->doctor_model->getDoctorById($data['form_single']->doctor);
+        } else {
+            $data['form_single'] = null;
         }
 
         $data['templates'] = $this->form_model->getTemplate();

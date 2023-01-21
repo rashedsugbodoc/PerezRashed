@@ -43,7 +43,7 @@
                                                                 <label class="form-label"><?php echo lang('date'); ?> <span class="text-red">*</span></label>
                                                                 <input class="form-control flatpickr" name="date" id="date" placeholder="MM/DD/YYYY" type="text" required readonly value="<?php
                                                                 if (!empty($form_single->form_date)) {
-                                                                    echo date('m/d/Y', $form_single->form_date.' UTC');
+                                                                    echo date('m/d/Y', strtotime($form_single->form_date.' UTC'));
                                                                 } else {
                                                                     echo date('m/d/Y');
                                                                 }
@@ -72,8 +72,10 @@
                                                                 <select class="form-control select2-show-search template" id="template" name="template" data-placeholder="Choose one" style="width:100%;">
                                                                     <option label="Select ....."></option>
                                                                     <?php foreach ($templates as $template) { ?>
-                                                                        <?php if ($template->id == $form_single->form_template_id) { ?>
-                                                                            <option value="<?php echo $template->id; ?>" selected><?php echo $template->name; ?> </option>
+                                                                        <?php if (!empty($form_single)) { ?>
+                                                                            <?php if ($template->id == $form_single->form_template_id) { ?>
+                                                                                <option value="<?php echo $template->id; ?>" selected><?php echo $template->name; ?> </option>
+                                                                            <?php } ?>
                                                                         <?php } else { ?>
                                                                             <option value="<?php echo $template->id; ?>"><?php echo $template->name; ?> </option>
                                                                         <?php } ?>
@@ -209,8 +211,10 @@
                                                                 <label class="form-label"><?php echo lang('form') . ' ' . lang('category'); ?><span class="text-red"> *</span></label>
                                                                 <select class="select2-show-search form-control" name="category" id="category" data-placeholder="Choose one" style="width:100%;" required>
                                                                     <?php foreach ($categories as $category) { ?>
-                                                                        <?php if ($category->id == $form_single->category_id) { ?>
-                                                                            <option value="<?php echo $category->id; ?>" selected><?php echo $category->name; ?></option>
+                                                                        <?php if (!empty($form_single)) { ?>
+                                                                            <?php if ($category->id == $form_single->category_id) { ?>
+                                                                                <option value="<?php echo $category->id; ?>" selected><?php echo $category->name; ?></option>
+                                                                            <?php } ?>
                                                                         <?php } else { ?>
                                                                             <option value="<?php echo $category->id; ?>"><?php echo $category->name; ?></option>
                                                                         <?php } ?>
@@ -478,20 +482,22 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var patient_id = '<?php echo $patient_details->id ?>';
-            $.ajax({
-                url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var encounter = response.encounter;
-                    var encounter_type = response.encounter_type;
-                    $.each(encounter, function (key, value) {
-                        $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
-                    });
-                }
-            })
+            var patient_id = '<?php echo $patient_details?$patient_details->id:'' ?>';
+            if (patient_id != '') {
+                $.ajax({
+                    url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter = response.encounter;
+                        var encounter_type = response.encounter_type;
+                        $.each(encounter, function (key, value) {
+                            $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
+                        });
+                    }
+                })
+            }
         });
     </script>
 
@@ -574,8 +580,8 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var form_id = "<?php echo $form_single->id ?>";
-            var form_date = "<?php echo date("F j, Y H:i A", strtotime($form_single->form_date.' UTC')); ?>";
+            var form_id = "<?php echo $form_single?$form_single->id:'' ?>";
+            var form_date = "<?php echo $form_single?date("F j, Y H:i A", strtotime($form_single->form_date.' UTC')):'today'; ?>";
             var timenow = "<?php echo date('Y-m-d H:i'); ?>";
             var maxdate = "<?php echo date('Y-m-d H:i', strtotime('today midnight') + 86400); ?>";
             console.log(form_date);
