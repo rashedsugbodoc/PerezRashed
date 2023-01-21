@@ -3714,6 +3714,42 @@ class Finance extends MX_Controller {
         $data['ot_payments'] = $this->finance_model->getOtPaymentByDate($date_from, $date_to);
         $data['deposits'] = $this->finance_model->getDepositsByDate($date_from, $date_to);
         $data['expenses'] = $this->finance_model->getExpenseByDate($date_from, $date_to);
+
+        $sub_total = 0;
+        $total_discount = 0;
+        $total_tax = 0;
+        foreach($data['payments'] as $payment) {
+            if (!empty($payment->amount)) {
+                $sub_total += $payment->amount;
+            } else {
+                $sub_total += 0;
+            }
+
+            if (!empty($payment->discount)) {
+                $total_discount += $payment->discount;
+            } else {
+                $total_discount += 0;
+            }
+
+            if (!empty($payment->invoice_tax_amount)) {
+                $total_tax += $payment->invoice_tax_amount;
+            } else {
+                $total_tax += 0;
+            }
+        }
+
+        $data['sub_total'] = $sub_total;
+        $data['total_discount'] = $total_discount;
+        $data['total_tax'] = $total_tax;
+
+        $total_deposit = 0;
+        foreach($data['deposits'] as $deposit) {
+            if (!empty($deposit)) {
+                $total_deposit += $deposit->deposited_amount;
+            }
+        }
+
+        $data['total_deposit'] = $total_deposit;
 // } 
         $data['from'] = $this->input->post('date_from');
         $data['to'] = $this->input->post('date_to');

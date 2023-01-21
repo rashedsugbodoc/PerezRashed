@@ -25,8 +25,8 @@
                                                         </div>
                                                     </div>
                                                     <input class="form-control flatpickr date_from" readonly name="date_from" placeholder="<?php echo lang('date_from'); ?>" type="text" value="<?php
-                                                    if (!empty($date_from)) {
-                                                        echo date('m/d/Y', $date_from);
+                                                    if (!empty($from)) {
+                                                        echo date('Y-m-d', strtotime($from));
                                                     }
                                                     ?>">
                                                     <div class="input-group-prepend">
@@ -35,8 +35,8 @@
                                                         </div>
                                                     </div>
                                                     <input class="form-control flatpickr date_to" readonly name="date_to" placeholder="<?php echo lang('date_to'); ?>" type="text" value="<?php
-                                                    if (!empty($date_to)) {
-                                                        echo date('m/d/Y', $date_to);
+                                                    if (!empty($to)) {
+                                                        echo date('Y-m-d', strtotime($to));
                                                     }
                                                     ?>">
                                                     <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit'); ?></button>
@@ -150,8 +150,8 @@
                                                         <td>
                                                             <?php echo $settings->currency; ?>
                                                             <?php
-                                                            if (!empty($total_payment_by_category)) {
-                                                                echo number_format(array_sum($total_payment_by_category),2);
+                                                            if (!empty($payments)) {
+                                                                echo number_format($sub_total,2);
                                                             } else {
                                                                 echo '0';
                                                             }
@@ -166,14 +166,7 @@
                                                             <?php echo $settings->currency; ?>
                                                             <?php
                                                             if (!empty($payments)) {
-                                                                foreach ($payments as $payment) {
-                                                                    $discount[] = $payment->flat_discount;
-                                                                }
-                                                                if ($paid_number > 0) {
-                                                                    echo number_format(array_sum($discount),2);
-                                                                } else {
-                                                                    echo '0';
-                                                                }
+                                                                echo number_format($total_discount,2);
                                                             } else {
                                                                 echo '0';
                                                             }
@@ -209,12 +202,8 @@
                                                             <?php echo $settings->currency; ?>
                                                             <?php
                                                             if (!empty($payments)) {
-                                                                if ($paid_number > 0) {
-                                                                    $gross = array_sum($total_payment_by_category) - array_sum($discount) + array_sum($vat);
-                                                                    echo number_format($gross,2);
-                                                                } else {
-                                                                    echo '0';
-                                                                }
+                                                                $gross = $sub_total - $total_discount;
+                                                                echo number_format($gross,2);
                                                             } else {
                                                                 echo '0';
                                                             }
@@ -426,17 +415,7 @@
                                                             <?php
                                                             $deposited_amount = array();
                                                             if (!empty($deposits)) {
-                                                                foreach ($deposits as $deposit) {
-                                                                    $deposited_amount[] = $deposit->deposited_amount;
-                                                                }
-
-                                                                $deposited_amount = array_sum($deposited_amount);
-
-                                                                if ($deposited_amount > 0) {
-                                                                    echo number_format($deposited_amount,2);
-                                                                } else {
-                                                                    echo '0';
-                                                                }
+                                                                echo number_format($total_deposit,2);
                                                             } else {
                                                                 echo '0';
                                                             }
@@ -461,22 +440,7 @@
                                                         <h1 class="text-white m-0 font-weight-bold">
                                                             <?php echo $settings->currency; ?>
                                                             <?php
-                                                            $deposited_amount = array();
-                                                            if (!empty($deposits)) {
-                                                                foreach ($deposits as $deposit) {
-                                                                    if (!empty($deposit->payment_id)) {
-                                                                        $deposited_amount[] = $deposit->deposited_amount;
-                                                                    }
-                                                                }
-                                                                if ($paid_number > 0) {
-                                                                    $deposited_amount = array_sum($deposited_amount);
-                                                                    echo number_format($gross_bill - $deposited_amount,2);
-                                                                } else {
-                                                                    echo '0';
-                                                                }
-                                                            } else {
-                                                                echo '0';
-                                                            }
+                                                                echo number_format($gross_bill - $total_deposit,2);
                                                             ?>
                                                         </h1>
                                                     </div>
@@ -594,7 +558,8 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $(".flatpickr").flatpickr({
-                disableMobile: true
+                disableMobile: true,
+                maxDate: 'today'
             });
         })
     </script>
