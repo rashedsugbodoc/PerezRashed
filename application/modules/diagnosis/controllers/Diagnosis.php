@@ -24,7 +24,7 @@ class Diagnosis extends MX_Controller {
         if (!$this->ion_auth->in_group(array('admin', 'Doctor'))) {
             redirect('home/permission');
         }
-
+        $data['patient'] = null;
         $this->load->view('home/dashboardv2');
         $this->load->view('diagnosis', $data);
     }

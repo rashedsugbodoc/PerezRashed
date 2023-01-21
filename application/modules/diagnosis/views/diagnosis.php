@@ -162,28 +162,28 @@
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
-                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                                title: '<?php echo $patient?$patient->name:'Patient'; ?> - <?php echo lang('vital_signs'); ?>'
                             },
                             {
                                 extend: 'excelHtml5',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
-                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                                title: '<?php echo $patient?$patient->name:'Patient'; ?> - <?php echo lang('vital_signs'); ?>'
                             },
                             {
                                 extend: 'csvHtml5',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
-                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                                title: '<?php echo $patient?$patient->name:'Patient'; ?> - <?php echo lang('vital_signs'); ?>'
                             },
                             {
                                 extend: 'pdfHtml5',
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
-                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>',
+                                title: '<?php echo $patient?$patient->name:'Patient'; ?> - <?php echo lang('vital_signs'); ?>',
                                 orientation: 'landscape',
                                 pageSize: 'LEGAL'
                             },
@@ -192,7 +192,7 @@
                                 exportOptions: {
                                     columns: [0, 1, 2, 3, 4, 5, 6, 7],
                                 },
-                                title: '<?php echo $patient->name; ?> - <?php echo lang('vital_signs'); ?>'
+                                title: '<?php echo $patient?$patient->name:'Patient'; ?> - <?php echo lang('vital_signs'); ?>'
                             },
                         ],
                     }
