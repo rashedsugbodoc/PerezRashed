@@ -40,6 +40,7 @@ class Diagnosis extends MX_Controller {
         $data['encouter_type'] = $this->encounter_model->getEncounterTypeById($data['encounter']->encounter_type_id);
         $data['doctor'] = $this->doctor_model->getDoctorById($data['encounter']->doctor);
         $data['patient'] = $this->input->get('patient');
+        $data['diagnosis'] = null;
         if (empty($data['patient'])) {
             $data['patient'] = $this->patient_model->getPatientById($data['encounter']->patient_id);
             $data['patient_details'] = $this->patient_model->getPatientByPatientNumber($data['patient']->patient_id);

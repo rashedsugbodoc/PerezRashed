@@ -337,7 +337,7 @@
 
     <!-- <script type="text/javascript">
         $(document).ready(function() {
-            var patient_id = '<?php echo $patient_details->id ?>';
+            var patient_id = '<?php //echo $patient_details->id ?>';
             if (patient_id) {
                 $.ajax({
                     url: 'diagnosis/addDiagnosisByJason',
@@ -361,20 +361,22 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
-            var patient_id = '<?php echo $patient_details->id ?>';
-            $.ajax({
-                url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
-                method: 'GET',
-                data: '',
-                dataType: 'json',
-                success: function (response) {
-                    var encounter = response.encounter;
-                    var encounter_type = response.encounter_type;
-                    $.each(encounter, function (key, value) {
-                        $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
-                    });
-                }
-            })
+            var patient_id = '<?php echo $patient_details?$patient_details->id:'' ?>';
+            if (patient_id != '') {
+                $.ajax({
+                    url: 'encounter/getEncounterByPatientId?patient_id='+patient_id,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function (response) {
+                        var encounter = response.encounter;
+                        var encounter_type = response.encounter_type;
+                        $.each(encounter, function (key, value) {
+                            $('#encounter').append($('<option>').text(value.encounter_number+' - '+value.display_name+' - '+value.created_at).val(value.id)).end();
+                        });
+                    }
+                })
+            }
         });
     </script>
 
@@ -402,7 +404,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var date = "<?php echo date('Y-m-d H:i A', strtotime($diagnosis[0]->diagnosis_date.' UTC')); ?>";
+            var date = "<?php echo $diagnosis?date('Y-m-d H:i A', strtotime($diagnosis[0]->diagnosis_date.' UTC')):'today'?>";
             var diag = "<?php echo $diagnosis ?>";
             console.log(diag);
             if (diag === "") {
