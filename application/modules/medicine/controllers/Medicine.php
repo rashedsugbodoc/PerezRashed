@@ -119,6 +119,7 @@ class Medicine extends MX_Controller {
         $data = array();
         $data['settings'] = $this->settings_model->getSettings();
         $data['categories'] = $this->medicine_model->getMedicineCategory();
+        $data['medicine'] = null;
         $this->load->view('home/dashboardv2', $data); // just the header file
         $this->load->view('add_new_medicine_viewv2', $data);
         // $this->load->view('home/footer'); // just the header file

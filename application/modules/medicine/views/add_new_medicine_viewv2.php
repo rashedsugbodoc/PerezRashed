@@ -418,7 +418,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            var medicine_id = "<?php echo $medicine->id; ?>";
+            var medicine_id = "<?php echo $medicine?$medicine->id:''; ?>";
             if (medicine_id === "") {
                 flatpickr(".flatpickr", {
                     altInput: true,
