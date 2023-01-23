@@ -4618,10 +4618,23 @@ class Finance extends MX_Controller {
             }
         }
 
+        $data['settings'] = $this->settings_model->getSettings();
         $data['year'] = $year;
         $data['first_minute'] = $first_minute;
         $data['last_minute'] = $last_minute;
         $data['all_payments'] = $all_payments;
+        $data['jan_total'] = null;
+        $data['feb_total'] = null;
+        $data['mar_total'] = null;
+        $data['apr_total'] = null;
+        $data['may_total'] = null;
+        $data['jun_total'] = null;
+        $data['jul_total'] = null;
+        $data['aug_total'] = null;
+        $data['sep_total'] = null;
+        $data['oct_total'] = null;
+        $data['nov_total'] = null;
+        $data['dec_total'] = null;
 
         $this->load->view('home/dashboardv2', $data); // just the header file
         $this->load->view('monthlyv2', $data);
