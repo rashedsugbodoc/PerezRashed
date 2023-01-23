@@ -46,7 +46,7 @@
                                                                 <?php if ($this->ion_auth->in_group('Doctor')) { ?>
                                                                     <td class="no-print">
                                                                         <a href="report/editReport?id=<?php echo $report->id; ?>" class="btn btn-info"><i class="fa fa-edit"></i> <?php echo lang('edit'); ?></a>
-                                                                        <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang(''); ?>" href="report/delete?id=<?php echo $report->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
+                                                                        <a class="btn btn-danger btn-xs btn_width delete_button" title="<?php echo lang('delete'); ?>" href="report/delete?id=<?php echo $report->id; ?>" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash"></i> <?php echo lang('delete'); ?></a>
                                                                     </td>
                                                                 <?php } ?>
                                                             </tr>
