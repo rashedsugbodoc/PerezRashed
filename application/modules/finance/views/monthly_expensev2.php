@@ -181,23 +181,23 @@
             var income = '<?php echo lang('expense'); ?>';
             var data = google.visualization.arrayToDataTable([
                 ['Month', income],
-                ['Jan',<?php echo $jan_total; ?>],
-                ['Feb',<?php echo $feb_total; ?>],
-                ['Mar', <?php echo $mar_total; ?>],
-                ['Apr', <?php echo $apr_total; ?>],
-                ['May', <?php echo $may_total; ?>],
-                ['June', <?php echo $jun_total; ?>],
-                ['July', <?php echo $jul_total; ?>],
-                ['Aug', <?php echo $aug_total; ?>],
-                ['Sep', <?php echo $sep_total; ?>],
-                ['Oct', <?php echo $oct_total; ?>],
-                ['Nov', <?php echo $nov_total; ?>],
-                ['Dec', <?php echo $dec_total; ?>],
+                ['Jan',<?php echo $jan_total?$jan_total:''; ?>],
+                ['Feb',<?php echo $feb_total?$feb_total:''; ?>],
+                ['Mar', <?php echo $mar_total?$mar_total:''; ?>],
+                ['Apr', <?php echo $apr_total?$apr_total:''; ?>],
+                ['May', <?php echo $may_total?$may_total:''; ?>],
+                ['June', <?php echo $jun_total?$jun_total:''; ?>],
+                ['July', <?php echo $jul_total?$jul_total:''; ?>],
+                ['Aug', <?php echo $aug_total?$aug_total:''; ?>],
+                ['Sep', <?php echo $sep_total?$sep_total:''; ?>],
+                ['Oct', <?php echo $oct_total?$oct_total:''; ?>],
+                ['Nov', <?php echo $nov_total?$nov_total:''; ?>],
+                ['Dec', <?php echo $dec_total?$dec_total:''; ?>],
             ]);
 
             var options = {
                 title: new Date().getFullYear() + ' <?php echo lang('per_month_income_expense'); ?>',
-                vAxis: {title: '<?php echo $settings->currency; ?>'},
+                vAxis: {title: '<?php echo $settings?$settings->currency:''; ?>'},
                 hAxis: {title: '<?php echo lang('months'); ?>'},
                 seriesType: 'bars',
                 series: {5: {type: 'line'}}
