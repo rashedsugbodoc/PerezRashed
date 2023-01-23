@@ -507,8 +507,21 @@ class Sms extends MX_Controller {
         foreach ($data['cases'] as $case) {
             $i = $i + 1;
             if ($this->ion_auth->in_group(array('admin'))) {
-
-                $options1 = ' <a type="button" class="btn btn-info btn-xs btn_width editbutton1" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"> </i>'.' '.lang('edit').'</a>';
+                $options1 = '';
+                $options2 = '';
+                if (!empty($case->hospital_id)) {
+                    $options1 = ' <a type="button" class="btn btn-info btn-xs btn_width editbutton1" title="' . lang('edit') . '" data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"> </i>'.' '.lang('edit').'</a>';
+                    $options2 = '';
+                } else {
+                    $check_template_exist = $this->sms_model->countAutoSmsByTypeByHospital($case->type);
+                    if (empty($check_template_exist)) {
+                        $option1 = '';
+                        $options2 = '<a type="button" class="btn btn-secondary btn-xs btn_width custombutton1" title="'. lang('customize') .'" data-toggle="modal" data-id="'.$case->id.'"><i class="fa fa-add"> </i>'.' '.lang('customize').'</a>';
+                    } else {
+                        $option1 = '';
+                        $options2 = '';
+                    }
+                }
                 // $options1 = '<a type='button" class="btn btn-success btn-xs btn_width" title="" . lang('edit') . '"data-toggle = "modal" data-id="' . $case->id . '"><i class="fa fa-edit"></i></a>';
                 //    $options2 = '<a class="btn btn-danger btn-xs btn_width" title="' . lang('delete') . '" href="sms/deleteTemplate?id=' . $case->id . '&redirect=sms/smsTemplate" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash-o"></i></a>';
             }
@@ -517,7 +530,7 @@ class Sms extends MX_Controller {
                 $case->name,
                 $case->message,
                 $case->status,
-                $options1
+                $options1 . ' ' . $options2
             );
             $count = $count + 1;
         }
@@ -587,6 +600,22 @@ class Sms extends MX_Controller {
 
             redirect('sms/autoSMSTemplate');
         }
+    }
+
+    public function addNewAutoSMSTemplateWithHospitalId() {
+        $id = $this->input->post('id');
+        $sms_detail = $this->sms_model->getAutoSMSTemplateById($id);
+
+        $data = array(
+            'name' => $sms_detail->name,
+            'message' => $sms_detail->message,
+            'type' => $sms_detail->type,
+            'status' => $sms_detail->status,
+        );
+
+        $this->sms_model->addAutoSmsTemplateWithHospital($data);
+
+        redirect('sms/autoSMSTemplate');
     }
 
     public function addNewManualTemplate() {

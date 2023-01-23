@@ -54,7 +54,7 @@
                                                     <div class="form-group">
                                                         <label class="form-label"> <?php echo lang('message'); ?> <?php echo lang('template'); ?></label>
                                                         <div id="divbuttontag"></div>
-                                                        <textarea class="form-control" name="message" id="editor1" value="" cols="70" rows="10"></textarea>
+                                                        <textarea class="form-control ckeditor" name="message" id="editor1" value="" cols="70" rows="10"></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -78,6 +78,50 @@
                             </div>
                         </div>
                         <!-- Edit Event Modal-->
+
+                        <!-- Customize Event Modal -->
+                        <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content modal-content-demo">
+                                    <div class="modal-header">
+                                        <h6 class="modal-title"><?php echo lang('customize').' '.lang('auto').' '.lang('template'); ?></h6><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+                                    </div>
+                                    <form role="form" id="smscust" name="myform" action="sms/addNewAutoSMSTemplateWithHospitalId" method="post" enctype="multipart/form-data">
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('category'); ?></label>
+                                                        <span id="category"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('message'); ?> <?php echo lang('template'); ?></label>
+                                                        <div id="divbuttontag1"></div>
+                                                        <textarea class="form-control ckeditor" name="message" id="editor2" value="" cols="70" rows="10"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <div class="form-group">
+                                                        <label class="form-label"> <?php echo lang('status'); ?> </label>
+                                                        <span id="cusstatus"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <input type="hidden" name="id" value=''>
+                                                    <input type="hidden" name="type" value='sms'>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12">
+                                                    <button type="submit" name="submit" class="btn btn-primary"><?php echo lang('submit'); ?></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Customize Event Modal -->
 
                     </div>
                 </div>
@@ -201,6 +245,8 @@
         <script src="<?php echo base_url('public/assets/plugins/notify/js/sample.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/jquery.growl.js'); ?>"></script>
         <script src="<?php echo base_url('public/assets/plugins/notify/js/notifIt.js'); ?>"></script>
+
+        <script type="text/javascript" src="common/assets/ckeditor/ckeditor.js"></script>
         <!-- INTERNAL JS INDEX END -->
 
     <!-- INTERNAL JS INDEX END -->
@@ -216,7 +262,7 @@
             $(".table").on("click", ".editbutton1", function () {
                 var iid = $(this).attr('data-id');
                 $('#divbuttontag').html("");
-
+                console.log(iid);
                 $.ajax({
                     url: 'sms/editAutoSMSTemplate?id=' + iid,
                     method: 'GET',
@@ -226,12 +272,13 @@
                         // Populate the form fields with the data returned from server
                         $('#smstemp').find('[name="id"]').val(response.autotemplatename.id).end();
                         $('#smstemp').find('[name="category"]').val(response.autotemplatename.name).end();
-                        //   CKEDITOR.instances['editor1'].setData(response.autotemplatename.message);
-                        $('#smstemp').find('[name="message"]').val(response.autotemplatename.message).end();
+                          CKEDITOR.instances['editor1'].setData(response.autotemplatename.message);
+                        // $('#smstemp').find('[name="message"]').val(response.autotemplatename.message).end();
                         var option = '';
                         var count = 0;
                         $.each(response.autotag, function (index, value) {
-                            option += '<input type="button" name="myBtn" value="' + value.name + '" onClick="addtext(this);">';
+                            console.log(value);
+                            option += '<input type="button" class="btn btn-light" name="myBtn" value="' + value.name + '" onclick="addtext(this);">&nbsp';
                             count += 1;
                             if (count % 7 === 0) {
                                 option += '<br><br>';
@@ -240,6 +287,42 @@
                         $('#divbuttontag').html(option);
                            $('#status').html(response.status_options);
                         $('#myModal1').modal('show');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".table").on("click", ".custombutton1", function () {
+                var iid = $(this).attr('data-id');
+                $('#divbuttontag1').html("");
+                console.log(iid);
+                $.ajax({
+                    url: 'sms/editAutoSMSTemplate?id=' + iid,
+                    method: 'GET',
+                    data: '',
+                    dataType: 'json',
+                    success: function(response) {
+                        // Populate the form fields with the data returned from server
+                        $('#smscust').find('[name="id"]').val(response.autotemplatename.id).end();
+                        $('#category').text(response.autotemplatename.name);
+                          CKEDITOR.instances['editor2'].setData(response.autotemplatename.message);
+                        // $('#smscust').find('[name="message"]').val(response.autotemplatename.message).end();
+                        var option = '';
+                        var count = 0;
+                        $.each(response.autotag, function (index, value) {
+                            console.log(value);
+                            option += '<input type="button" class="btn btn-light" name="myBtn" value="' + value.name + '" onclick="addtext2(this);">&nbsp';
+                            count += 1;
+                            if (count % 7 === 0) {
+                                option += '<br><br>';
+                            }
+                        });
+                        $('#divbuttontag1').html(option);
+                        $('#cusstatus').html(response.autotemplatename.status);
+                        $('#myModal2').modal('show');
                     }
                 });
             });
@@ -330,8 +413,12 @@
 
     <script>
         function addtext(ele) {
-            var fired_button = ele.value;
-             document.myform.message.value += fired_button;
+            var editor = CKEDITOR.instances.editor1;
+            editor.insertText(ele.value);
+        }
+        function addtext2(ele) {
+            var editor = CKEDITOR.instances.editor2;
+            editor.insertText(ele.value);
         }
     </script>
 

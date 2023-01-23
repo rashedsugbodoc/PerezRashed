@@ -622,6 +622,7 @@ $lang['select_user'] = 'Search User';
 $lang['select_specialty'] = 'Select Specialty';
 $lang['staff'] = 'Staff';
 $lang['select_staff'] = 'Select Staff';
+$lang['customize'] = 'Customize';
 $lang['sms'] = 'SMS';
 $lang['sms_settings'] = 'SMS Settings';
 $lang['send_email'] = 'Send Email';

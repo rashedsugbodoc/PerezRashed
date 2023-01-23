@@ -51,6 +51,12 @@ class Sms_model extends CI_model {
         $this->db->insert('sms_settings', $data);
     }
 
+    function addAutoSmsTemplateWithHospital($data) {
+        $data1 = array('hospital_id' => $this->session->userdata('hospital_id'));
+        $data2 = array_merge($data, $data1);
+        $this->db->insert('autosmstemplate', $data2);
+    }
+
     function delete($id) {
         $this->db->where('id', $id);
         $this->db->delete('sms');
@@ -120,7 +126,10 @@ class Sms_model extends CI_model {
     }
 
     function getAutoSMSTemplateById($id) {
+        $this->db->group_start();
         $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->or_where('hospital_id', null);
+        $this->db->group_end();
         $this->db->where('id', $id);
         $query = $this->db->get('autosmstemplate');
         return $query->row();
@@ -247,6 +256,13 @@ class Sms_model extends CI_model {
             return $query->row();  
         }
         
+    }
+
+    function countAutoSmsByTypeByHospital($type) {
+        $this->db->where('hospital_id', $this->session->userdata('hospital_id'));
+        $this->db->where('type', $type);
+        $query = $this->db->get('autosmstemplate');
+        return $query->num_rows();
     }
 
 }
