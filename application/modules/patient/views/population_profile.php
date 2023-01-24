@@ -294,7 +294,7 @@
                                                                     <label class="custom-control custom-radio">
                                                                         <?php $menarche = 1; ?>
                                                                         <input type="radio" class="custom-control-input" name="menarche" value="1" <?php
-                                                                        if ($medical_history->is_menarche == null){
+                                                                        if ($medical_history?$medical_history->is_menarche:'' == null){
                                                                             echo "";
                                                                         } elseif ($medical_history->is_menarche == 1) {
                                                                             echo "checked";
@@ -306,7 +306,7 @@
                                                                 <div class="col-md-2 col-sm-12">
                                                                     <label class="custom-control custom-radio">
                                                                         <input type="radio" class="custom-control-input" name="menarche" value="0" <?php
-                                                                        if ($medical_history->is_menarche == null){
+                                                                        if ($medical_history?$medical_history->is_menarche:'' == null){
                                                                             echo "";
                                                                         } elseif ($medical_history->is_menarche == 0) {
                                                                             echo "checked";
@@ -316,7 +316,7 @@
                                                                     </label>
                                                                 </div>
                                                                 <div class="col-md-8 col-sm-12" id="menarche-input">
-                                                                    <div class="input-group"><label class="align-self-center mb-0">Age of Menarche &nbsp</label><input type="number" class="form-control" name="specify_menarche" placeholder="Age of Menarche" value="<?php echo $medical_history->menarche_age; ?>"></div>
+                                                                    <div class="input-group"><label class="align-self-center mb-0">Age of Menarche &nbsp</label><input type="number" class="form-control" name="specify_menarche" placeholder="Age of Menarche" value="<?php echo $medical_history?$medical_history->menarche_age:''; ?>"></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -439,7 +439,7 @@
                                                             <label class="form-label"><h4>Nutrition Status</h4></label>
                                                             <label class="custom-control custom-checkbox">
                                                                 <input type="checkbox" class="custom-control-input" name="deworming" value="1"<?php
-                                                                if ($medical_history->is_deworming_done == 1) {
+                                                                if ($medical_history?$medical_history->is_deworming_done:'' == 1) {
                                                                     echo 'checked';
                                                                 }
                                                                 ?>>
@@ -447,7 +447,7 @@
                                                             </label>
                                                             <label class="custom-control custom-checkbox">
                                                                 <input type="checkbox" class="custom-control-input" name="supplement" value="1"<?php
-                                                                if ($medical_history->is_supplement_vitamin_a_done == 1) {
+                                                                if ($medical_history?$medical_history->is_supplement_vitamin_a_done:'' == 1) {
                                                                     echo 'checked';
                                                                 }
                                                                 ?>>
@@ -465,7 +465,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="bcg" value="1" <?php
-                                                                            if ($medical_history->is_immunization_bcg_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_bcg_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -479,7 +479,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="hepb" value="1"<?php
-                                                                            if ($medical_history->is_immunization_hep_b_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_hep_b_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -493,7 +493,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="penta1" value="1"<?php
-                                                                            if ($medical_history->is_immunization_penta1_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_penta1_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -505,7 +505,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="penta2" value="1"<?php
-                                                                            if ($medical_history->is_immunization_penta2_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_penta2_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -517,7 +517,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="penta3" value="1"<?php
-                                                                            if ($medical_history->is_immunization_penta3_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_penta3_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -531,7 +531,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="opv1" value="1"<?php
-                                                                            if ($medical_history->is_immunization_opv1_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_opv1_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -543,7 +543,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="opv2" value="1"<?php
-                                                                            if ($medical_history->is_immunization_opv2_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_opv2_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -555,7 +555,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="opv3" value="1"<?php
-                                                                            if ($medical_history->is_immunization_opv3_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_opv3_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -569,7 +569,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="ipv1" value="1"<?php
-                                                                            if ($medical_history->is_immunization_ipv1_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_ipv1_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -581,7 +581,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="ipv2" value="1"<?php
-                                                                            if ($medical_history->is_immunization_ipv2_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_ipv2_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -595,7 +595,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="mmr1" value="1"<?php
-                                                                            if ($medical_history->is_immunization_mmr1_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_mmr1_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -607,7 +607,7 @@
                                                                     <div class="form-group">
                                                                         <label class="custom-control custom-checkbox">
                                                                             <input type="checkbox" class="custom-control-input" name="mmr2" value="1"<?php
-                                                                            if ($medical_history->is_immunization_mmr2_done == 1) {
+                                                                            if ($medical_history?$medical_history->is_immunization_mmr2_done:'' == 1) {
                                                                                 echo 'checked';
                                                                             }
                                                                             ?>>
@@ -1009,7 +1009,7 @@
         $(document).ready(function (){
             var family_profile_id = $("#populationForm").find('[name=family_profile]').val();
             var patient_id = '<?php echo $patient->id ?>';
-            var lmp_date = '<?php echo $medical_history->latest_pregnancy_last_menstrual_period; ?>';
+            var lmp_date = '<?php echo $medical_history?$medical_history->latest_pregnancy_last_menstrual_period:''; ?>';
             $.ajax({
                 url: 'patient/getPatientPopulationByJason?profile='+family_profile_id+'&id='+patient_id,
                 method: 'GET',
@@ -1018,8 +1018,8 @@
                 success: function (response) {
                     var patient_profile = response.patient_profile;
                     var patient_details = response.patient_details;
-                    var menarche = '<?php echo $medical_history->is_menarche; ?>';
-                    var newborn = '<?php echo $medical_history->is_newborn_screening_done; ?>';
+                    var menarche = '<?php echo $medical_history?$medical_history->is_menarche:''; ?>';
+                    var newborn = '<?php echo $medical_history?$medical_history->is_newborn_screening_done:''; ?>';
 
                     if (response.patient_age_year < <?php echo TSEKAP_KIDS_UNDER_YEARS_OLD; ?>) {
                         $("#kid_age").attr('hidden', false);
