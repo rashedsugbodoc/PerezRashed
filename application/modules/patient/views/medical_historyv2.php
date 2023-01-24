@@ -390,40 +390,60 @@
                                         <div class="tabs-menu1 px-3">
                                             <ul class="nav" id="mytab">
                                                 <?php if ($this->ion_auth->in_group(array('Doctor','Midwife','Nurse','Patient'))) { ?>
-                                                    <li><a href="#tab-6" data-toggle="tab" class="active"><?php echo lang('diagnosis'); ?></a></li>
+                                                    <?php if (in_array('diagnosis', $this->modules)) { ?>
+                                                        <li><a href="#tab-6" data-toggle="tab" class="active"><?php echo lang('diagnosis'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                                    <li><a href="#tab-7" data-toggle="tab"><?php echo lang('vital_signs'); ?></a></li>
+                                                    <?php if (in_array('vital', $this->modules)) { ?>
+                                                        <li><a href="#tab-7" data-toggle="tab"><?php echo lang('vital_signs'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                                    <li><a href="#tab-8" data-toggle="tab" class=""><?php echo lang('appointments'); ?></a></li>
+                                                    <?php if (in_array('appointment', $this->modules)) { ?>
+                                                        <li><a href="#tab-8" data-toggle="tab" class=""><?php echo lang('appointments'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
                                                 <?php if ($this->ion_auth->in_group(array('Doctor','Midwife','Nurse'))) { ?>
-                                                    <li><a href="#tab-9" data-toggle="tab" class=""><?php echo lang('case_notes'); ?></a></li>
+                                                    <?php if (in_array('casenote', $this->modules)) { ?>
+                                                        <li><a href="#tab-9" data-toggle="tab" class=""><?php echo lang('case_notes'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                                    <li><a href="#tab-10" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
+                                                    <?php if (in_array('prescription', $this->modules)) { ?>
+                                                        <li><a href="#tab-10" data-toggle="tab" class=""><?php echo lang('prescription'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                                    <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('lab').' '.lang('request'); ?></a></li>
+                                                    <?php if (in_array('labrequest', $this->modules)) { ?>
+                                                        <li><a href="#tab-11" data-toggle="tab" class=""><?php echo lang('lab').' '.lang('request'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                                    <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
+                                                    <?php if (in_array('form', $this->modules)) { ?>
+                                                        <li><a href="#tab-12" data-toggle="tab" class=""><?php echo lang('forms'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
 
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Laboratorist'))) { ?>
-                                                    <li><a href="#tab-17" data-toggle="tab" class=""><?php echo lang('procedure'); ?></a></li>
+                                                    <?php if (in_array('procedure', $this->modules)) { ?>
+                                                        <li><a href="#tab-17" data-toggle="tab" class=""><?php echo lang('procedure'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
 
                                                 <!-- <li><a href="#tab-13" data-toggle="tab" class=""><?php echo lang('lab'); ?></a></li> -->
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                                    <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
+                                                    <?php if (in_array('patient', $this->modules)) { ?>
+                                                        <li><a href="#tab-14" data-toggle="tab" class=""><?php echo lang('documents'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
                                                 <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                                    <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('encounters'); ?></a></li>
+                                                    <?php if (in_array('encounter', $this->modules)) { ?>
+                                                        <li><a href="#tab-15" data-toggle="tab" class=""><?php echo lang('encounters'); ?></a></li>
+                                                    <?php } ?>
                                                 <?php } ?>
                                                 <?php if (!$this->ion_auth->in_group('Patient')) { ?>
-                                                    <li><a href="#tab-16" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
+                                                        <li><a href="#tab-16" data-toggle="tab" class=""><?php echo lang('timeline'); ?></a></li>
                                                 <?php } ?>
                                             </ul>
                                         </div>
@@ -437,340 +457,351 @@
                                 <div class="border-0">
                                     <div class="tab-content">
                                     <?php if ($this->ion_auth->in_group(array('Doctor','Midwife','Nurse','Patient'))) { ?>
-                                        <div class="tab-pane active" id="tab-6">
-                                            <div class="mb-0">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title"><?php echo lang('diagnosis') ?></h3>
-                                                        <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?> 
-                                                                <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&patient='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
-                                                            <?php } ?>
+                                        <?php if (in_array('diagnosis', $this->modules)) { ?>
+                                            <div class="tab-pane active" id="tab-6">
+                                                <div class="mb-0">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title"><?php echo lang('diagnosis') ?></h3>
+                                                            <div class="card-options">
+                                                                <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?> 
+                                                                    <a href="diagnosis/addDiagnosisView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&patient='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new'); ?></a>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="">
+                                                                <div class="table-responsive">
+                                                                    <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-center normal-caps"><?php echo lang('diagnosis').' '.lang('date'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('onset').' '.lang('date'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('diagnosis'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('icd'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('p/s'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('encounter'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('facility'); ?></th>
+                                                                                <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
+                                                                                    <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
+                                                                                <?php } ?>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="card-body">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table id="editable-sample" class="table table-bordered text-nowrap key-buttons w-100 editable-sample">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th class="text-center normal-caps"><?php echo lang('diagnosis').' '.lang('date'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('onset').' '.lang('date'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('diagnosis'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('icd'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('p/s'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('encounter'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('facility'); ?></th>
-                                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
+
+
+                                                    <!-- <div class="row">
+                                                        
+                                                    </div>
+
+                                                    <div class="row">
+                                                        
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                        <?php if (in_array('vital', $this->modules)) { ?>
+                                            <div class="tab-pane" id="tab-7">
+                                                <div class="mb-0">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title"><?php echo lang('vital_signs') ?></h3>
+                                                            <div class="card-options">
+                                                                <?php if ($this->ion_auth->in_group('Patient')) { ?>
+                                                                    <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
+                                                                <?php } else { ?>
+                                                                    <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="">
+                                                                <div class="table-responsive">
+                                                                    <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100 editable-sample1">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="text-center normal-caps"><?php echo lang('measured_at'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('heart_rate').'<br>'.'('.lang('bpm').')'; ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('height').'<br>'.'(cm)'; ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('weight').'<br>'.'(kg)'; ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('bmi'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('bp').'<br>'.'(mmHg)'; ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('blood_sugar').'<br>'.'(mg/dL)'; ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('temperature').'<br>'.'(&#176;C)'; ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('spo2').'<br>'.'(%)'; ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('respiration_rate').'<br>'.'('.lang('bpm').')'; ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('pain_level').'<br>'.'('.lang('10_highest').')'; ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
+                                                                                <th class="text-center normal-caps"><?php echo lang('facility'); ?></th>
                                                                                 <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
-                                                                            <?php } ?>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        
-                                                                    </tbody>
-                                                                </table>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <!-- <div class="row">
+                                                        
+                                                    </div>
+
+                                                    <div class="row">
+                                                        
+                                                    </div> -->
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                        <?php if (in_array('appointment', $this->modules)) { ?>
+                                            <div class="tab-pane" id="tab-8">
+                                                <div class="mb-0">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="card-title">
+                                                                <?php echo lang('appointment'); ?>
+                                                            </div>
+                                                            <div class="card-options">
+                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Nurse'))) { ?>
+                                                                    <div class=" no-print">
+                                                                        <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
+                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                        </a> -->
+                                                                        <a class="btn btn-primary pull-right" href="appointment/addNewView?root=patient&method=medicalHistory&patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id; ?>"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
+                                                                    </div>
+                                                                <?php } ?>
+                                                                <?php if ($this->ion_auth->in_group('Patient')) { ?>
+                                                                    <div class=" no-print">
+                                                                        <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
+                                                                            <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?>
+                                                                        </a> -->
+                                                                        <a href="appointment/bookConsultation" class="btn btn-primary">
+                                                                            <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?>
+                                                                        </a>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="card-body">
+                                                            <div class="">
+                                                                <div class="table-responsive">
+                                                                    <table id="editable-sample2" class="table table-bordered text-nowrap key-buttons w-100 editable-sample2">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th><?php echo lang('date'); ?></th>
+                                                                                <th><?php echo lang('time_slot'); ?></th>
+                                                                                <th><?php echo lang('doctor'); ?></th>
+                                                                                <th><?php echo lang('status'); ?></th>
+                                                                                <th><?php echo lang('facility'); ?></th>
+                                                                                <th><?php echo lang('service_type'); ?></th>
+                                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Midwife'))) { ?>
+                                                                                    <th class="no-print"><?php echo lang('options'); ?></th>
+                                                                                <?php } ?>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>                                                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group(array('Doctor','Midwife','Nurse'))) { ?>
+                                        <?php if (in_array('casenote', $this->modules)) { ?>
+                                            <div class="tab-pane" id="tab-9">
+                                                <div class="mb-0">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="card-title">
+                                                                <?php echo lang('case_notes'); ?>
+                                                            </div>
+                                                            <div class="card-options">
+                                                                <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'admin', 'Nurse'))) { ?>
+                                                                    <div class=" no-print">
+                                                                        <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
+                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                        </a>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="">
+                                                                <div class="table-responsive">
+                                                                    <table id="editable-sample3" class="table table table-bordered text-nowrap key-buttons w-100 editable-sample3">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="w-15"><?php echo lang('date'); ?></th>
+                                                                                <th class="w-15"><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></th>
+                                                                                <th class="w-45"><?php echo lang('case'); ?> <?php echo lang('summary'); ?></th>
+                                                                                <th class="w-20"><?php echo lang('facility'); ?></th>
+                                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife','Nurse'))) { ?>
+                                                                                    <th class="no-print w-5"><?php echo lang('options'); ?></th>
+                                                                                <?php } ?>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-                                                <!-- <div class="row">
-                                                    
-                                                </div>
-
-                                                <div class="row">
-                                                    
-                                                </div> -->
                                             </div>
-                                        </div>
+                                        <?php } ?>
                                     <?php } ?>
                                     <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                        <div class="tab-pane" id="tab-7">
-                                            <div class="mb-0">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h3 class="card-title"><?php echo lang('vital_signs') ?></h3>
-                                                        <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group('Patient')) { ?>
-                                                                <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
-                                                            <?php } else { ?>
-                                                                <a data-target="#AddVital" data-toggle="modal" href="" class="btn btn-primary vitalmodal"><?php echo lang('add_new'); ?></a>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table id="editable-sample1" class="table table-bordered text-nowrap key-buttons w-100 editable-sample1">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th class="text-center normal-caps"><?php echo lang('measured_at'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('heart_rate').'<br>'.'('.lang('bpm').')'; ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('height').'<br>'.'(cm)'; ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('weight').'<br>'.'(kg)'; ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('bmi'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('bp').'<br>'.'(mmHg)'; ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('blood_sugar').'<br>'.'(mg/dL)'; ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('temperature').'<br>'.'(&#176;C)'; ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('spo2').'<br>'.'(%)'; ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('respiration_rate').'<br>'.'('.lang('bpm').')'; ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('pain_level').'<br>'.'('.lang('10_highest').')'; ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('note'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('facility'); ?></th>
-                                                                            <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
-                                                                            <!-- <?php if ($vital->recorded_user_id == $current_user) { ?>
-                                                                                <th class="text-center normal-caps"><?php echo lang('actions'); ?></th>
-                                                                            <?php } ?> -->
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        
-                                                                    </tbody>
-                                                                </table>
+                                        <?php if (in_array('prescription', $this->modules)) { ?>
+                                            <div class="tab-pane" id="tab-10">
+                                                <div class="mb-0">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="card-title">
+                                                                <?php echo lang('prescription'); ?>
+                                                            </div>
+                                                            <div class="card-options">
+                                                                <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
+                                                                    <div class=" no-print">
+                                                                        <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?<?php echo 'encounter_id='.$encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>">
+                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                        </a>
+                                                                    </div>
+                                                                <?php } ?>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <!-- <div class="row">
-                                                    
-                                                </div>
-
-                                                <div class="row">
-                                                    
-                                                </div> -->
-                                            </div>
-                                        </div>
-                                    <?php } ?>
-                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                        <div class="tab-pane" id="tab-8">
-                                            <div class="mb-0">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <div class="card-title">
-                                                            <?php echo lang('appointment'); ?>
-                                                        </div>
-                                                        <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife', 'Nurse'))) { ?>
-                                                                <div class=" no-print">
-                                                                    <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                    </a> -->
-                                                                    <a class="btn btn-primary pull-right" href="appointment/addNewView?root=patient&method=medicalHistory&patient_id=<?php echo $patient->patient_id.'&encounter_id='.$encounter_id; ?>"><i class="fe fe-plus"></i><?php echo lang('add_new'); ?> </a>
-                                                                </div>
-                                                            <?php } ?>
-                                                            <?php if ($this->ion_auth->in_group('Patient')) { ?>
-                                                                <div class=" no-print">
-                                                                    <!-- <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#addAppointmentModal">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?>
-                                                                    </a> -->
-                                                                    <a href="appointment/bookConsultation" class="btn btn-primary">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('request_a_appointment'); ?>
-                                                                    </a>
-                                                                </div>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="card-body">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table id="editable-sample2" class="table table-bordered text-nowrap key-buttons w-100 editable-sample2">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th><?php echo lang('date'); ?></th>
-                                                                            <th><?php echo lang('time_slot'); ?></th>
-                                                                            <th><?php echo lang('doctor'); ?></th>
-                                                                            <th><?php echo lang('status'); ?></th>
-                                                                            <th><?php echo lang('facility'); ?></th>
-                                                                            <th><?php echo lang('service_type'); ?></th>
-                                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Receptionist', 'Midwife'))) { ?>
+                                                        <div class="card-body">
+                                                            <div class="">
+                                                                <div class="table-responsive">
+                                                                    <table id="editable-sample4" class="table table-bordered text-nowrap key-buttons w-100 editable-sample4">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th><?php echo lang('date'); ?></th>
+                                                                                <th><?php echo lang('doctor'); ?></th>
+                                                                                <th><?php echo lang('medicine'); ?></th>
+                                                                                <th><?php echo lang('facility'); ?></th>
                                                                                 <th class="no-print"><?php echo lang('options'); ?></th>
-                                                                            <?php } ?>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        
-                                                                    </tbody>
-                                                                </table>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
-                                                        </div>                                                        
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        <?php } ?>
                                     <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('Doctor','Midwife','Nurse'))) { ?>
-                                        <div class="tab-pane" id="tab-9">
-                                            <div class="mb-0">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <div class="card-title">
-                                                            <?php echo lang('case_notes'); ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                        <?php if (in_array('labrequest', $this->modules)) { ?>
+                                            <div class="tab-pane" id="tab-11">
+                                                <div class="mb-0 border">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="card-title">
+                                                                <?php echo lang('lab').' '.lang('request')?>
+                                                            </div>
+                                                            <div class="card-options">
+                                                                <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
+                                                                    <a href="labrequest/addLabRequestView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                                <?php } ?>
+                                                            </div>
                                                         </div>
-                                                        <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'admin', 'Nurse'))) { ?>
-                                                                <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" data-toggle="modal" href="#myModal">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                    </a>
+                                                        <div class="card-body">
+                                                            <div class="">
+                                                                <div class="table-responsive">
+                                                                    <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100 editable-sample5">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th class="border-bottom-0"><?php echo lang('date'); ?></th>
+                                                                                <th class="border-bottom-0"><?php echo lang('lab').' '.lang('request').' '.lang('number'); ?></th>
+                                                                                <th class="border-bottom-0"><?php echo lang('lab').' '.lang('test'); ?></th>
+                                                                                <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
+                                                                                <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
+                                                                                <th class="border-bottom-0"><?php echo lang('facility'); ?></th>
+                                                                                <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
                                                                 </div>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table id="editable-sample3" class="table table table-bordered text-nowrap key-buttons w-100 editable-sample3">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th class="w-15"><?php echo lang('date'); ?></th>
-                                                                            <th class="w-15"><?php echo lang('clinical'); ?> <?php echo lang('impression'); ?></th>
-                                                                            <th class="w-45"><?php echo lang('case'); ?> <?php echo lang('summary'); ?></th>
-                                                                            <th class="w-20"><?php echo lang('facility'); ?></th>
-                                                                            <?php if ($this->ion_auth->in_group(array('admin', 'Doctor', 'Midwife','Nurse'))) { ?>
-                                                                                <th class="no-print w-5"><?php echo lang('options'); ?></th>
-                                                                            <?php } ?>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        
-                                                                    </tbody>
-                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                        <div class="tab-pane" id="tab-10">
-                                            <div class="mb-0">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <div class="card-title">
-                                                            <?php echo lang('prescription'); ?>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                        <?php if (in_array('form', $this->modules)) { ?>
+                                            <div class="tab-pane" id="tab-12">
+                                                <div class="mb-0 border">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="card-title">
+                                                                <?php echo lang('forms')?>
+                                                            </div>
+                                                            <div class="card-options">
+                                                                <?php if ($this->ion_auth->in_group(array('Doctor', 'admin', 'Midwife', 'Nurse'))) { ?>
+                                                                    <a href="form?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&addnew=true&patient_id='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
+                                                                <?php } ?>
+                                                            </div>
                                                         </div>
-                                                        <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
-                                                                <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" href="prescription/addPrescriptionView?<?php echo 'encounter_id='.$encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>">
-                                                                        <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                    </a>
+                                                        <div class="card-body">
+                                                            <div class="">
+                                                                <div class="table-responsive">
+                                                                    <table id="editable-sample7" class="table table-bordered text-nowrap key-buttons w-100 editable-sample7">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th><?php echo lang('date') ?></th>
+                                                                                <th><?php echo lang('form').' '.lang('number') ?></th>
+                                                                                <th><?php echo lang('name') ?></th>
+                                                                                <th><?php echo lang('patient') ?></th>
+                                                                                <th><?php echo lang('facility'); ?></th>
+                                                                                <?php if ($this->ion_auth->in_group(array('admin','Doctor', 'Midwife','Nurse'))) { ?>
+                                                                                    <th><?php echo lang('actions') ?></th>
+                                                                                <?php } ?>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            
+                                                                        </tbody>
+                                                                    </table>
                                                                 </div>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table id="editable-sample4" class="table table-bordered text-nowrap key-buttons w-100 editable-sample4">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th><?php echo lang('date'); ?></th>
-                                                                            <th><?php echo lang('doctor'); ?></th>
-                                                                            <th><?php echo lang('medicine'); ?></th>
-                                                                            <th><?php echo lang('facility'); ?></th>
-                                                                            <th class="no-print"><?php echo lang('options'); ?></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        
-                                                                    </tbody>
-                                                                </table>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                        <div class="tab-pane" id="tab-11">
-                                            <div class="mb-0 border">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <div class="card-title">
-                                                            <?php echo lang('lab').' '.lang('request')?>
-                                                        </div>
-                                                        <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife'))) { ?>
-                                                                <a href="labrequest/addLabRequestView?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&patient_id='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table id="editable-sample5" class="table table-bordered text-nowrap key-buttons w-100 editable-sample5">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th class="border-bottom-0"><?php echo lang('date'); ?></th>
-                                                                            <th class="border-bottom-0"><?php echo lang('lab').' '.lang('request').' '.lang('number'); ?></th>
-                                                                            <th class="border-bottom-0"><?php echo lang('lab').' '.lang('test'); ?></th>
-                                                                            <th class="border-bottom-0"><?php echo lang('patient'); ?></th>
-                                                                            <th class="border-bottom-0"><?php echo lang('doctors'); ?></th>
-                                                                            <th class="border-bottom-0"><?php echo lang('facility'); ?></th>
-                                                                            <th class="border-bottom-0"><?php echo lang('actions'); ?></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                        <div class="tab-pane" id="tab-12">
-                                            <div class="mb-0 border">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <div class="card-title">
-                                                            <?php echo lang('forms')?>
-                                                        </div>
-                                                        <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'admin', 'Midwife', 'Nurse'))) { ?>
-                                                                <a href="form?encounter_id=<?php echo $encounter_id.'&root=patient&method=medicalHistory&addnew=true&patient_id='.$patient->patient_id; ?>" class="btn btn-primary"><?php echo lang('add_new') ?></a>
-                                                            <?php } ?>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table id="editable-sample7" class="table table-bordered text-nowrap key-buttons w-100 editable-sample7">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th><?php echo lang('date') ?></th>
-                                                                            <th><?php echo lang('form').' '.lang('number') ?></th>
-                                                                            <th><?php echo lang('name') ?></th>
-                                                                            <th><?php echo lang('patient') ?></th>
-                                                                            <th><?php echo lang('facility'); ?></th>
-                                                                            <?php if ($this->ion_auth->in_group(array('admin','Doctor', 'Midwife','Nurse'))) { ?>
-                                                                                <th><?php echo lang('actions') ?></th>
-                                                                            <?php } ?>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        
-                                                                    </tbody>
-                                                                </table>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <?php } ?>
+                                    <?php } ?>
                                         <div class="tab-pane" id="tab-13">
                                             <div class="mb-0 border">
                                                 <div class="card">
@@ -830,186 +861,190 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                        <div class="tab-pane" id="tab-14">
-                                            <div class="card p-5">
-                                                <div class="row">
-                                                    <div class="col-md-12 col-sm-12">
-                                                        <div class="row">
-                                                            <div class="col-lg-8 col-md-8 col-sm-5 mb-4">
-                                                                <!-- <a  data-target="#AddDocument" data-toggle="modal" href="" class="btn btn-primary"><i class="fe fe-plus"></i> Upload New Document</a> -->
-                                                                <a class="btn btn-primary" data-toggle="modal" href="#myModal1">
-                                                                    <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
-                                                                </a>
-                                                            </div>
-                                                            <div class="col-lg-4 col-md-4 col-sm-7 mb-4">
-                                                                <div class="form-group">
-                                                                    <div class="input-icon">
-                                                                        <span class="input-icon-addon">
-                                                                            <i class="fe fe-search"></i>
-                                                                        </span>
-                                                                        <input type="text" class="form-control searchbox-input" placeholder="Search Files">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="mb-0">
-                                                    <div class="row myDocuments">
-                                                        <?php foreach ($patient_materials as $patient_material) { ?>
-                                                            <div class="col-xl-3 col-lg-4 col-md-6">
-                                                                <div class="card">
-                                                                    <div class="card-body p-0">
-                                                                        <div class="todo-widget-header d-flex pb-2 p-4">
-                                                                            <div class="">
-                                                                                <?php if ($patient_material->created_user_id == $current_user) { ?>
-                                                                                    <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->patient_document_number; ?>" target="_blank"><i class="fa fa-paint-brush"></i></a>
-                                                                                    <a data-target="#patientEditModal" data-toggle="modal" class="editDocumentModal btn btn-info btn-xs btn_width"  data-id="<?php echo $patient_material->id ?>" target="_blank"><i class="fa fa-edit"> </i></a>
-                                                                                    <?php } else { ?>
-                                                                                   <div></div>
-                                                                                <?php } ?>
-                                                                                <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
-                                                                                <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
-                                                                                <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
-                                                                                    <a class="btn btn-danger" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
-                                                                                <?php } ?>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="px-5 pb-5 text-center">
-                                                                            <!-- <img src="<?php echo base_url('public/assets/images/files/file2.png'); ?>" alt="img" class="w-80 mx-auto"> -->
-                                                                            <?php $ext = pathinfo($patient_material->url, PATHINFO_EXTENSION); ?>
-                                                                            <?php if ($ext === 'pdf'){ ?>
-                                                                                <div class="panel-body text-center">
-                                                                                    <a class="example-image-link" href="<?php echo $patient_material->url; ?>" target="_blank">
-                                                                                        <img class="example-image" src="uploads/PDF_DefaultImage.png" alt="image-1" max-width="120" max-height="120"/>
-                                                                                    </a>
-                                                                                </div>
-                                                                            <?php } else { ?>
-                                                                                <div class="panel-body text-center">
-                                                                                    <a class="example-image-link" href="<?php echo file_exists($patient_material->url)?$patient_material->url:base_url('public/assets/images/users/document-placeholder.jpg'); ?>" data-lightbox="example-1" target="_blank">
-                                                                                        <img class="example-image" src="<?php echo file_exists($patient_material->thumbnail_url)?$patient_material->thumbnail_url:base_url('public/assets/images/users/document-placeholder.jpg'); ?><?php if(!empty($patient_material->last_modified)) echo '?m='. $patient_material->last_modified;?>" alt="image-1" width="auto" height="auto" style="height: 120px; width: 120px;"/>
-                                                                                    </a>
-                                                                                </div>
-                                                                            <?php } ?>
-                                                                            <h6 class="mb-1 font-weight-bold mt-4">
-                                                                                <?php
-                                                                                if (!empty($patient_material->title)) {
-                                                                                    echo $patient_material->title;
-                                                                                }
-                                                                                ?>
-                                                                            </h6>
-                                                                            <p class="text-dark">
-                                                                                <?php echo lang('uploader') . ': '; ?>
-                                                                                <?php
-                                                                                if (!empty($patient_material->created_user_id)) {
-                                                                                    echo $this->hospital_model->getIonUserById($patient_material->created_user_id)->username;
-                                                                                } else {
-                                                                                    echo '';
-                                                                                }
-                                                                                ?>
-                                                                            </p>
-                                                                            <p class="text-muted">
-                                                                                <?php
-                                                                                if (!empty($patient_material->created_at)) {
-                                                                                    $utcdate = date($settings->date_format_long?$settings->date_format_long:'m-d-Y' . ' ' . $settings->time_format, strtotime($patient_material->created_at.' UTC'));
-                                                                                    echo $utcdate;
-                                                                                } else {
-                                                                                    echo '';
-                                                                                }
-                                                                                ?>
-                                                                            </p>
-                                                                            
-                                                                        </div>
-                                                                        <div class="pb-5">
-                                                                            <button class="btn btn-light brround pull-right" id="safe_water_description" data-container="body" data-content="<?php
-                                                                            $encounter_details = $this->encounter_model->getEncounterById($patient_material->encounter_id);
-                                                                            $encounter_location = $this->branch_model->getBranchById($encounter_details->location_id)->display_name;
-                                                                            if (!empty($patient_material->encounter_id)) {
-                                                                                if (!empty($encounter_location)) {
-                                                                                    $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location . ')';
-                                                                                } else {
-                                                                                    $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
-                                                                                }
-                                                                            } else {
-                                                                                $appointment_facility = $hospital->name.'<br>'.'( '.lang('online').' )';
-                                                                            }
-                                                                            echo $appointment_facility;
-                                                                            ?>" data-html="true" data-placement="top" data-popover-color="primary" title="<?php echo lang('facility') ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        <?php } ?>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <?php } ?>
-                                        <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
-                                        <div class="tab-pane" id="tab-15">
-                                            <div class="mb-0 border">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <div class="card-title">
-                                                             <?php echo lang('encounters'); ?>
-                                                        </div>
-                                                        <div class="card-options">
-                                                            <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'admin', 'Nurse','Patient'))) { ?>
-                                                                <div class=" no-print">
-                                                                    <a class="btn btn-primary btn_width btn-xs" href="encounter/addNewView?patient_id=<?php echo $patient->patient_id.'&root=patient&method=medicalHistory&encounter_request=true' ?>">
+                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                        <?php if (in_array('patient', $this->modules)) { ?>
+                                            <div class="tab-pane" id="tab-14">
+                                                <div class="card p-5">
+                                                    <div class="row">
+                                                        <div class="col-md-12 col-sm-12">
+                                                            <div class="row">
+                                                                <div class="col-lg-8 col-md-8 col-sm-5 mb-4">
+                                                                    <!-- <a  data-target="#AddDocument" data-toggle="modal" href="" class="btn btn-primary"><i class="fe fe-plus"></i> Upload New Document</a> -->
+                                                                    <a class="btn btn-primary" data-toggle="modal" href="#myModal1">
                                                                         <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
                                                                     </a>
+                                                                </div>
+                                                                <div class="col-lg-4 col-md-4 col-sm-7 mb-4">
+                                                                    <div class="form-group">
+                                                                        <div class="input-icon">
+                                                                            <span class="input-icon-addon">
+                                                                                <i class="fe fe-search"></i>
+                                                                            </span>
+                                                                            <input type="text" class="form-control searchbox-input" placeholder="Search Files">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mb-0">
+                                                        <div class="row myDocuments">
+                                                            <?php foreach ($patient_materials as $patient_material) { ?>
+                                                                <div class="col-xl-3 col-lg-4 col-md-6">
+                                                                    <div class="card">
+                                                                        <div class="card-body p-0">
+                                                                            <div class="todo-widget-header d-flex pb-2 p-4">
+                                                                                <div class="">
+                                                                                    <?php if ($patient_material->created_user_id == $current_user) { ?>
+                                                                                        <a class="btn btn-info" href="patient/editUpload?id=<?php echo $patient_material->patient_document_number; ?>" target="_blank"><i class="fa fa-paint-brush"></i></a>
+                                                                                        <a data-target="#patientEditModal" data-toggle="modal" class="editDocumentModal btn btn-info btn-xs btn_width"  data-id="<?php echo $patient_material->id ?>" target="_blank"><i class="fa fa-edit"> </i></a>
+                                                                                        <?php } else { ?>
+                                                                                       <div></div>
+                                                                                    <?php } ?>
+                                                                                    <a class="btn btn-info" href="<?php echo $patient_material->url; ?>" download><i class="fe fe-download"></i></a>
+                                                                                    <!-- <a class="btn btn-danger" data-target="#Delete" data-toggle="modal" href=""><i class="fe fe-trash-2"></i></a> -->
+                                                                                    <?php if ($this->ion_auth->in_group(array('admin', 'Patient', 'Doctor'))) { ?>
+                                                                                        <a class="btn btn-danger" data-target="#Delete" href="patient/deletePatientMaterial?id=<?php echo $patient_material->patient_document_number; ?>"onclick="return confirm('Are you sure you want to delete this item?');"><i class="fe fe-trash-2"></i></a>
+                                                                                    <?php } ?>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="px-5 pb-5 text-center">
+                                                                                <!-- <img src="<?php echo base_url('public/assets/images/files/file2.png'); ?>" alt="img" class="w-80 mx-auto"> -->
+                                                                                <?php $ext = pathinfo($patient_material->url, PATHINFO_EXTENSION); ?>
+                                                                                <?php if ($ext === 'pdf'){ ?>
+                                                                                    <div class="panel-body text-center">
+                                                                                        <a class="example-image-link" href="<?php echo $patient_material->url; ?>" target="_blank">
+                                                                                            <img class="example-image" src="uploads/PDF_DefaultImage.png" alt="image-1" max-width="120" max-height="120"/>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                <?php } else { ?>
+                                                                                    <div class="panel-body text-center">
+                                                                                        <a class="example-image-link" href="<?php echo file_exists($patient_material->url)?$patient_material->url:base_url('public/assets/images/users/document-placeholder.jpg'); ?>" data-lightbox="example-1" target="_blank">
+                                                                                            <img class="example-image" src="<?php echo file_exists($patient_material->thumbnail_url)?$patient_material->thumbnail_url:base_url('public/assets/images/users/document-placeholder.jpg'); ?><?php if(!empty($patient_material->last_modified)) echo '?m='. $patient_material->last_modified;?>" alt="image-1" width="auto" height="auto" style="height: 120px; width: 120px;"/>
+                                                                                        </a>
+                                                                                    </div>
+                                                                                <?php } ?>
+                                                                                <h6 class="mb-1 font-weight-bold mt-4">
+                                                                                    <?php
+                                                                                    if (!empty($patient_material->title)) {
+                                                                                        echo $patient_material->title;
+                                                                                    }
+                                                                                    ?>
+                                                                                </h6>
+                                                                                <p class="text-dark">
+                                                                                    <?php echo lang('uploader') . ': '; ?>
+                                                                                    <?php
+                                                                                    if (!empty($patient_material->created_user_id)) {
+                                                                                        echo $this->hospital_model->getIonUserById($patient_material->created_user_id)->username;
+                                                                                    } else {
+                                                                                        echo '';
+                                                                                    }
+                                                                                    ?>
+                                                                                </p>
+                                                                                <p class="text-muted">
+                                                                                    <?php
+                                                                                    if (!empty($patient_material->created_at)) {
+                                                                                        $utcdate = date($settings->date_format_long?$settings->date_format_long:'m-d-Y' . ' ' . $settings->time_format, strtotime($patient_material->created_at.' UTC'));
+                                                                                        echo $utcdate;
+                                                                                    } else {
+                                                                                        echo '';
+                                                                                    }
+                                                                                    ?>
+                                                                                </p>
+                                                                                
+                                                                            </div>
+                                                                            <div class="pb-5">
+                                                                                <button class="btn btn-light brround pull-right" id="safe_water_description" data-container="body" data-content="<?php
+                                                                                $encounter_details = $this->encounter_model->getEncounterById($patient_material->encounter_id);
+                                                                                $encounter_location = $encounter_details?$this->branch_model->getBranchById($encounter_details->location_id):'';
+                                                                                if (!empty($patient_material->encounter_id)) {
+                                                                                    if (!empty($encounter_location)) {
+                                                                                        $appointment_facility = $hospital->name.'<br>'.'(' . $encounter_location->display_name . ')';
+                                                                                    } else {
+                                                                                        $appointment_facility = $hospital->name.'<br>'.'(' . lang('online') . ')';
+                                                                                    }
+                                                                                } else {
+                                                                                    $appointment_facility = $hospital?$hospital->name:''.'<br>'.'( '.lang('online').' )';
+                                                                                }
+                                                                                echo $appointment_facility;
+                                                                                ?>" data-html="true" data-placement="top" data-popover-color="primary" title="<?php echo lang('facility') ?>" type="button"><i class="fa fa-question-circle-o"></i></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             <?php } ?>
                                                         </div>
                                                     </div>
-                                                    <div class="card-body">
-                                                        <div class="">
-                                                            <div class="table-responsive">
-                                                                <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100 editable-sample6">
-                                                                    <thead>
-                                                                        <tr>
-                                                                            <th><?php echo lang('date'); ?></th>
-                                                                            <th><?php echo lang('encounter') . ' ' . lang('number'); ?></th>
-                                                                            <th><?php echo lang('type'); ?></th>
-                                                                            <th><?php echo lang('facility'); ?></th>
-                                                                            <th><?php echo lang('status'); ?></th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                        <?php /*foreach ($encounters as $encounter) {*/ ?>
-                                                                            <!-- <tr class="">
-                                                                                <td><?php /*echo date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC'));*/ ?></td>            
-                                                                                <td><?php /*echo $encounter->encounter_number;*/ ?></td>
-                                                                                <td><?php /*echo $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name;*/ ?></td>
-                                                                                <td><?php
-                                                                                    /*if (!empty($encounter->location_id)) {
-                                                                                        $facility = $this->hospital_model->getHospitalById($encounter->hospital_id);
-                                                                                        echo $facility->name.'<br>'.'( '.$this->branch_model->getBranchById($encounter->location_id)->display_name.' )';
-                                                                                    } else {
-                                                                                        echo $this->hospital_model->getHospitalById($encounter->hospital_id)->name.'<br>'.'( '.lang('online').' )';
-                                                                                    }*/
-                                                                                ?></td>
-                                                                                <td><?php
-                                                                                    /*if (!empty($encounter->encounter_status)) {
-                                                                                        echo $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
-                                                                                    } else {
-                                                                                        echo "N/A";
-                                                                                    }*/
-                                                                                ?></td>
-                                                                            </tr> -->
-                                                                        <?php /*}*/ ?>
-                                                                    </tbody>
-                                                                </table>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } ?>
+                                    <?php if ($this->ion_auth->in_group(array('admin','Doctor','Midwife','Nurse','Patient'))) { ?>
+                                        <?php if (in_array('encounter', $this->modules)) { ?>
+                                            <div class="tab-pane" id="tab-15">
+                                                <div class="mb-0 border">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="card-title">
+                                                                 <?php echo lang('encounters'); ?>
+                                                            </div>
+                                                            <div class="card-options">
+                                                                <?php if ($this->ion_auth->in_group(array('Doctor', 'Midwife', 'admin', 'Nurse','Patient'))) { ?>
+                                                                    <div class=" no-print">
+                                                                        <a class="btn btn-primary btn_width btn-xs" href="encounter/addNewView?patient_id=<?php echo $patient->patient_id.'&root=patient&method=medicalHistory&encounter_request=true' ?>">
+                                                                            <i class="fa fa-plus"> </i> <?php echo lang('add_new'); ?> 
+                                                                        </a>
+                                                                    </div>
+                                                                <?php } ?>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="">
+                                                                <div class="table-responsive">
+                                                                    <table id="editable-sample6" class="table table-bordered text-nowrap key-buttons w-100 editable-sample6">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th><?php echo lang('date'); ?></th>
+                                                                                <th><?php echo lang('encounter') . ' ' . lang('number'); ?></th>
+                                                                                <th><?php echo lang('type'); ?></th>
+                                                                                <th><?php echo lang('facility'); ?></th>
+                                                                                <th><?php echo lang('status'); ?></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <?php /*foreach ($encounters as $encounter) {*/ ?>
+                                                                                <!-- <tr class="">
+                                                                                    <td><?php /*echo date('Y-m-d h:i A', strtotime($encounter->created_at.' UTC'));*/ ?></td>            
+                                                                                    <td><?php /*echo $encounter->encounter_number;*/ ?></td>
+                                                                                    <td><?php /*echo $this->encounter_model->getEncounterTypeById($encounter->encounter_type_id)->display_name;*/ ?></td>
+                                                                                    <td><?php
+                                                                                        /*if (!empty($encounter->location_id)) {
+                                                                                            $facility = $this->hospital_model->getHospitalById($encounter->hospital_id);
+                                                                                            echo $facility->name.'<br>'.'( '.$this->branch_model->getBranchById($encounter->location_id)->display_name.' )';
+                                                                                        } else {
+                                                                                            echo $this->hospital_model->getHospitalById($encounter->hospital_id)->name.'<br>'.'( '.lang('online').' )';
+                                                                                        }*/
+                                                                                    ?></td>
+                                                                                    <td><?php
+                                                                                        /*if (!empty($encounter->encounter_status)) {
+                                                                                            echo $this->encounter_model->getEncounterStatusById($encounter->encounter_status)->display_name;
+                                                                                        } else {
+                                                                                            echo "N/A";
+                                                                                        }*/
+                                                                                    ?></td>
+                                                                                </tr> -->
+                                                                            <?php /*}*/ ?>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
                                         <?php } ?>
+                                    <?php } ?>
                                         <?php if (!$this->ion_auth->in_group('Patient')) { ?>
                                         <div class="tab-pane" id="tab-16">
                                             <ul class="timelineleft pb-5">
