@@ -2562,6 +2562,7 @@ class Patient extends MX_Controller {
         $data = array();
         $patient_number = $this->input->get('id');
         $data['encounter_id'] = $this->input->get('encounter_id');
+        $data['hospital'] = $this->hospital_model->getHospitalById($this->session->userdata('hospital_id'));
         if (!empty($data['encounter_id']) && !empty($patient_number)) {
             redirect('home/permission');
         }
@@ -6243,10 +6244,10 @@ class Patient extends MX_Controller {
             }
             $option1Lab = '<a class="btn btn-info btn-xs btn_width" href="lab/invoice?id=' . $lab->id . '"><i class="fa fa-eye"></i></a>';
             if ($this->ion_auth->in_group(array('admin', 'Laboratorist'))) {
-                $option2Lab = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="lab?id=' . $lab->id . '"><i class="fa fa-edit"> </i> ' . lang('') . '</a>';
+                $option2Lab = ' <a class="btn btn-info btn-xs editbutton" title="' . lang('edit') . '" href="lab?id=' . $lab->id . '"><i class="fa fa-edit"> </i> ' . lang('edit') . '</a>';
             }
             if ($this->ion_auth->in_group(array('admin'))) {
-                $option3Lab = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="lab/delete?id=' . $lab->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>' . lang('') . '</a>';
+                $option3Lab = '<a class="btn btn-danger btn-xs delete_button" title="' . lang('delete') . '" href="lab/delete?id=' . $lab->id . '" onclick="return confirm(\'Are you sure you want to delete this item?\');"><i class="fa fa-trash"></i>' . lang('delete') . '</a>';
             }
             $lab_class = ' <tr class="">
                                                     <td>' . $lab->id . '</td>
