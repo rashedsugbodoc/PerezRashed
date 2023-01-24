@@ -935,6 +935,7 @@ $lang['sender'] = 'Sender';
 $lang['sms_gateway'] = 'SMS Gateway';
 $lang['sms_gateways'] = 'SMS Gateways';
 $lang['autoemailtemplate'] = 'Auto Email Template';
+$lang['auto'] = 'Auto';
 $lang['emailtemplate'] = 'Email Template';
 $lang['inactive'] = 'Inactive';
 $lang['templatename'] = 'Template Name';
