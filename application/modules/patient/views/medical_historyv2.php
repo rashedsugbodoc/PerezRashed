@@ -1708,7 +1708,7 @@
                                                 <?php } else { ?>
                                                     <div class="row">
                                                         <div class="col-md-12 col-sm-12">
-                                                            <input type="hidden" name="redirect" value="<?php echo 'patient/medicalHistory?id=' .$patient_id ?>">
+                                                            <input type="hidden" name="redirect" value="<?php echo 'patient/medicalHistory?id=' .$patient->patient_id ?>">
                                                         </div>
                                                     </div>
                                                 <?php } ?>
@@ -3526,8 +3526,8 @@
 
     <script>
         $(document).ready(function () {
-            var encounter_id = '<?php echo $encounter_id; ?>';
-            var patient_id = '<?php echo $patient->id; ?>';
+            var encounter_id = '<?php echo $encounter_id?$encounter_id:''; ?>';
+            var patient_id = '<?php echo $patient?$patient->id:''; ?>';
             $('#editable-sample').DataTable({
                 responsive: true,
                 //   dom: 'lfrBtip',
@@ -3594,7 +3594,7 @@
                     [10, 25, 50, 100, -1],
                     [10, 25, 50, 100, "All"]
                 ],
-                iDisplayLength: 10,
+                iDisplayLength: -1,
                 "order": [[0, "desc"]],
                 "language": {
                     "lengthMenu": "_MENU_",
