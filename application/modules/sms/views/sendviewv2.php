@@ -60,9 +60,6 @@
                                                             <label class="form-label">
                                                                 <?php echo lang('select_patient'); ?>
                                                                 <select class="form-control m-bot15" id='patientchoose' name="patient" value=''>
-                                                                    <?php //foreach ($patients as $patient) { ?>
-                                                                       <!-- <option value="<?php echo $patient->id; ?>"> <?php echo $patient->name; ?> </option>-->
-                                                                    <?php // } ?> 
                                                                 </select>
                                                             </label>
                                                         </div>
