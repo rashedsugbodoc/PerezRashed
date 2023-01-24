@@ -109,7 +109,7 @@
                                                         ?>">
                                                     </div>
                                                 </div>
-                                                <input type="text" hidden name="id" id="id" value="<?php echo $id ?>">
+                                                <input type="text" hidden name="id" id="id" value="<?php echo $id?$id:'' ?>">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <button class="btn btn-primary pull-right" name="submit"><?php echo lang('submit'); ?></button>

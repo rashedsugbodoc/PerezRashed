@@ -23,6 +23,7 @@ class Branch extends MX_Controller {
 
     public function addNewView() {
         $data['countries'] = $this->location_model->getCountry();
+        $data['id'] = null;
         $this->load->view('home/dashboardv2');
         $this->load->view('add_new', $data);
     }
