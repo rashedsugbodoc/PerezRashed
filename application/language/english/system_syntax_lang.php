@@ -1218,6 +1218,7 @@ $lang['need'] = 'Need';
 $lang['unmet'] = 'Unmet';
 $lang['nutrition'] = 'Nutrition';
 $lang['declaration'] = 'Declaration';
+$lang['substance'] = 'Substance';
 $lang['record'] = 'Record';
 $lang['past_surgery'] = 'Past Surgery';
 $lang['surgery'] = 'Surgery';
