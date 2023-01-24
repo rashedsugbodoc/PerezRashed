@@ -574,7 +574,7 @@ class Sms extends MX_Controller {
 
     public function addNewAutoSMSTemplate() {
         $message = $this->input->post('message');
-        $name = $this->input->post('category');
+        // $name = $this->input->post('category');
         $id = $this->input->post('id');
         $status = $this->input->post('status');
 
@@ -590,7 +590,6 @@ class Sms extends MX_Controller {
         } else {
             $data = array();
             $data = array(
-                'name' => $name,
                 'message' => $message,
                 'status' => $status,
             );
@@ -604,13 +603,14 @@ class Sms extends MX_Controller {
 
     public function addNewAutoSMSTemplateWithHospitalId() {
         $id = $this->input->post('id');
+        $status = $this->input->post('status');
         $sms_detail = $this->sms_model->getAutoSMSTemplateById($id);
 
         $data = array(
             'name' => $sms_detail->name,
             'message' => $sms_detail->message,
             'type' => $sms_detail->type,
-            'status' => $sms_detail->status,
+            'status' => $status,
         );
 
         $this->sms_model->addAutoSmsTemplateWithHospital($data);

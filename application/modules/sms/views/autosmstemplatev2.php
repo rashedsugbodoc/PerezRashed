@@ -46,8 +46,9 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"> <?php echo lang('category'); ?></label>
-                                                        <input type="text" class="form-control" name="category" id="exampleInputEmail1" value='' placeholder="">
+                                                        <label class="form-label"> <?php echo lang('purpose_of_sms'); ?></label>
+                                                        <span id="category" class="h4"></span>
+                                                        <!-- <input type="text" class="form-control" name="category" id="exampleInputEmail1" value='' placeholder=""> -->
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -91,8 +92,8 @@
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="form-label"> <?php echo lang('category'); ?></label>
-                                                        <span id="category"></span>
+                                                        <label class="form-label"> <?php echo lang('purpose_of_sms'); ?></label>
+                                                        <span id="categorycust" class="h4"></span>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -105,7 +106,8 @@
                                                 <div class="col-md-12 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="form-label"> <?php echo lang('status'); ?> </label>
-                                                        <span id="cusstatus"></span>
+                                                        <select class="form-control" id="cusstatus" name="status"> 
+                                                        </select> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-sm-12">
@@ -259,6 +261,12 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#cusstatus").select2({});
+        })
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
             $(".table").on("click", ".editbutton1", function () {
                 var iid = $(this).attr('data-id');
                 $('#divbuttontag').html("");
@@ -271,7 +279,7 @@
                     success: function(response) {
                         // Populate the form fields with the data returned from server
                         $('#smstemp').find('[name="id"]').val(response.autotemplatename.id).end();
-                        $('#smstemp').find('[name="category"]').val(response.autotemplatename.name).end();
+                        $('#category').text(response.autotemplatename.name);
                           CKEDITOR.instances['editor1'].setData(response.autotemplatename.message);
                         // $('#smstemp').find('[name="message"]').val(response.autotemplatename.message).end();
                         var option = '';
@@ -307,7 +315,7 @@
                     success: function(response) {
                         // Populate the form fields with the data returned from server
                         $('#smscust').find('[name="id"]').val(response.autotemplatename.id).end();
-                        $('#category').text(response.autotemplatename.name);
+                        $('#categorycust').text(response.autotemplatename.name);
                           CKEDITOR.instances['editor2'].setData(response.autotemplatename.message);
                         // $('#smscust').find('[name="message"]').val(response.autotemplatename.message).end();
                         var option = '';
@@ -321,7 +329,7 @@
                             }
                         });
                         $('#divbuttontag1').html(option);
-                        $('#cusstatus').html(response.autotemplatename.status);
+                        $('#cusstatus').html(response.status_options);
                         $('#myModal2').modal('show');
                     }
                 });
