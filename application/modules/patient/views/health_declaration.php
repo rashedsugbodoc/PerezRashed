@@ -23,7 +23,7 @@
                                         <form id="formDeclaration" action="patient/addHealthDeclaration" method="post">
                                             <div class="row">
                                                 <div class="col-md-12 col-sm-12">
-                                                    <input type="hidden" name="medical_history_number" value="<?php echo $medical_history->medical_history_number; ?>">
+                                                    <input type="hidden" name="medical_history_number" value="<?php echo $medical_history?$medical_history->medical_history_number:''; ?>">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -38,7 +38,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="cancer" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_cancer == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_cancer:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -48,9 +48,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="cancer" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_cancer == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_cancer:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_cancer == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_cancer:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -58,11 +58,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-cancer" <?php
-                                                        if ($medical_history->is_diagnosed_cancer == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_cancer:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_cancer == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_cancer:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_cancer == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_cancer:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -75,10 +75,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_cancer" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->cancer_details == "") {
+                                                                    if ($medical_history?$medical_history->cancer_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->cancer_details;
+                                                                        echo $medical_history?$medical_history->cancer_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -93,7 +93,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="hypertension" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_hypertension == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_hypertension:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -103,9 +103,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="hypertension" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_hypertension == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_hypertension:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_hypertension == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_hypertension:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -113,11 +113,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-hypertension" <?php
-                                                        if ($medical_history->is_diagnosed_hypertension == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_hypertension:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_hypertension == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_hypertension:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_hypertension == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_hypertension:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -130,10 +130,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_hypertension" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->hypertension_details == "") {
+                                                                    if ($medical_history?$medical_history->hypertension_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->hypertension_details;
+                                                                        echo $medical_history?$medical_history->hypertension_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -148,7 +148,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="diabetes" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_diabetes == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_diabetes:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -158,9 +158,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="diabetes" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_diabetes == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_diabetes:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_diabetes == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_diabetes:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -168,11 +168,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-diabetes" <?php
-                                                        if ($medical_history->is_diagnosed_diabetes == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_diabetes:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_diabetes == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_diabetes:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_diabetes == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_diabetes:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -185,10 +185,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_diabetes" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->diabetes_details == "") {
+                                                                    if ($medical_history?$medical_history->diabetes_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->diabetes_details;
+                                                                        echo $medical_history?$medical_history->diabetes_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -203,7 +203,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="heart_disease" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_heart_disease == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_heart_disease:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -213,9 +213,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="heart_disease" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_heart_disease == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_heart_disease:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_heart_disease == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_heart_disease:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -223,11 +223,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-heart-disease" <?php
-                                                        if ($medical_history->is_diagnosed_heart_disease == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_heart_disease:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_heart_disease == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_heart_disease:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_heart_disease == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_heart_disease:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -240,10 +240,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_heart_disease" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->heart_disease_details == "") {
+                                                                    if ($medical_history?$medical_history->heart_disease_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->heart_disease_details;
+                                                                        echo $medical_history?$medical_history->heart_disease_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -258,7 +258,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="stroke" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_stroke == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_stroke:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -268,9 +268,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="stroke" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_stroke == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_stroke:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_stroke == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_stroke:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -278,11 +278,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-stroke" <?php
-                                                        if ($medical_history->is_diagnosed_stroke == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_stroke:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_stroke == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_stroke:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_stroke == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_stroke:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -295,10 +295,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_stroke" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->stroke_details == "") {
+                                                                    if ($medical_history?$medical_history->stroke_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->stroke_details;
+                                                                        echo $medical_history?$medical_history->stroke_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -313,7 +313,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="kidney" value="1" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_kidney_bladder_disease == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_kidney_bladder_disease:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -323,9 +323,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="kidney" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_kidney_bladder_disease == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_kidney_bladder_disease:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_kidney_bladder_disease == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_kidney_bladder_disease:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -333,11 +333,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-kidney" <?php
-                                                        if ($medical_history->is_diagnosed_kidney_bladder_disease == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_kidney_bladder_disease:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_kidney_bladder_disease == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_kidney_bladder_disease:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_kidney_bladder_disease == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_kidney_bladder_disease:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -350,10 +350,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_kidney" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->kidney_bladder_disease_details == "") {
+                                                                    if ($medical_history?$medical_history->kidney_bladder_disease_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->kidney_bladder_disease_details;
+                                                                        echo $medical_history?$medical_history->kidney_bladder_disease_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -368,7 +368,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="liver" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_liver_gallbladder_disease == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_liver_gallbladder_disease:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -378,9 +378,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="liver" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_liver_gallbladder_disease == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_liver_gallbladder_disease:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_liver_gallbladder_disease == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_liver_gallbladder_disease:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -388,11 +388,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-liver" <?php
-                                                        if ($medical_history->is_diagnosed_liver_gallbladder_disease == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_liver_gallbladder_disease:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_liver_gallbladder_disease == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_liver_gallbladder_disease:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_liver_gallbladder_disease == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_liver_gallbladder_disease:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -405,10 +405,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_liver" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->liver_gallbladder_disease_details == "") {
+                                                                    if ($medical_history?$medical_history->liver_gallbladder_disease_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->liver_gallbladder_disease_details;
+                                                                        echo $medical_history?$medical_history->liver_gallbladder_disease_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -423,7 +423,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="hepatitis" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_hepatitis == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_hepatitis:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -433,9 +433,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="hepatitis" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_hepatitis == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_hepatitis:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_hepatitis == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_hepatitis:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -443,11 +443,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-hepatitis" <?php
-                                                        if ($medical_history->is_diagnosed_hepatitis == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_hepatitis:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_hepatitis == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_hepatitis:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_hepatitis == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_hepatitis:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -460,10 +460,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_hepatitis" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->hepatitis_details == "") {
+                                                                    if ($medical_history?$medical_history->hepatitis_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->hepatitis_details;
+                                                                        echo $medical_history?$medical_history->hepatitis_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -478,7 +478,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="high_blood_pressure" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_high_blood_pressure == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_high_blood_pressure:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -488,9 +488,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="high_blood_pressure" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_high_blood_pressure == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_high_blood_pressure:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_high_blood_pressure == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_high_blood_pressure:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -498,11 +498,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-high-blood-pressure" <?php
-                                                        if ($medical_history->is_diagnosed_high_blood_pressure == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_high_blood_pressure:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_high_blood_pressure == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_high_blood_pressure:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_high_blood_pressure == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_high_blood_pressure:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -515,10 +515,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_high_blood_pressure" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->high_blood_pressure_details == "") {
+                                                                    if ($medical_history?$medical_history->high_blood_pressure_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->high_blood_pressure_details;
+                                                                        echo $medical_history?$medical_history->high_blood_pressure_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -533,7 +533,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="hiv" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_aids_hiv == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_aids_hiv:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -543,9 +543,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="hiv" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_aids_hiv == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_aids_hiv:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_aids_hiv == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_aids_hiv:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -553,11 +553,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-hiv" <?php
-                                                        if ($medical_history->is_diagnosed_aids_hiv == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_aids_hiv:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_aids_hiv == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_aids_hiv:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_aids_hiv == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_aids_hiv:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -570,10 +570,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_hiv" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->aids_hiv_details == "") {
+                                                                    if ($medical_history?$medical_history->aids_hiv_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->aids_hiv_details;
+                                                                        echo $medical_history?$medical_history->aids_hiv_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -588,7 +588,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="tuberculosis" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_tuberculosis == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_tuberculosis:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -598,9 +598,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="tuberculosis" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_tuberculosis == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_tuberculosis:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_tuberculosis == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_tuberculosis:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -608,11 +608,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-tuberculosis" <?php
-                                                        if ($medical_history->is_diagnosed_tuberculosis == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_tuberculosis:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_tuberculosis == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_tuberculosis:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_tuberculosis == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_tuberculosis:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -625,10 +625,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_tuberculosis" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->tuberculosis_details == "") {
+                                                                    if ($medical_history?$medical_history->tuberculosis_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->tuberculosis_details;
+                                                                        echo $medical_history?$medical_history->tuberculosis_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -643,7 +643,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="asthma" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_asthma == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_asthma:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -653,9 +653,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="asthma" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_asthma == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_asthma:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_asthma == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_asthma:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -663,11 +663,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-asthma" <?php
-                                                        if ($medical_history->is_diagnosed_asthma == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_asthma:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_asthma == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_asthma:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_asthma == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_asthma:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -680,10 +680,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_asthma" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->asthma_details == "") {
+                                                                    if ($medical_history?$medical_history->asthma_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->asthma_details;
+                                                                        echo $medical_history?$medical_history->asthma_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -698,7 +698,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="autoimmune" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_autoimmune_disease == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_autoimmune_disease:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -708,9 +708,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="autoimmune" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_autoimmune_disease == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_autoimmune_disease:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_autoimmune_disease == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_autoimmune_disease:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -718,11 +718,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-autoimmune" <?php
-                                                        if ($medical_history->is_diagnosed_autoimmune_disease == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_autoimmune_disease:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_autoimmune_disease == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_autoimmune_disease:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_autoimmune_disease == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_autoimmune_disease:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -735,10 +735,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_autoimmune" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->autoimmune_disease_details == "") {
+                                                                    if ($medical_history?$medical_history->autoimmune_disease_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->autoimmune_disease_details;
+                                                                        echo $medical_history?$medical_history->autoimmune_disease_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -753,7 +753,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="epilepsy" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_epilepsy == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_epilepsy:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -763,9 +763,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="epilepsy" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_epilepsy == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_epilepsy:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_epilepsy == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_epilepsy:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -773,11 +773,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-epilepsy" <?php
-                                                        if ($medical_history->is_diagnosed_epilepsy == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_epilepsy:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_epilepsy == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_epilepsy:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_epilepsy == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_epilepsy:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -790,10 +790,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_epilepsy" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->epilepsy_details == "") {
+                                                                    if ($medical_history?$medical_history->epilepsy_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->epilepsy_details;
+                                                                        echo $medical_history?$medical_history->epilepsy_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
@@ -808,7 +808,7 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="fibromyalgia" value="1" <?php
-                                                        if ($medical_history->is_diagnosed_fibromyalgia == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_fibromyalgia:'' == 1){
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -818,9 +818,9 @@
                                                 <div class="col-md-2 col-sm-12">
                                                     <label class="custom-control custom-radio">
                                                         <input type="radio" class="custom-control-input" name="fibromyalgia" value="0" <?php
-                                                        if ($medical_history->is_diagnosed_fibromyalgia == null){
+                                                        if ($medical_history?$medical_history->is_diagnosed_fibromyalgia:'' == null){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_fibromyalgia == 0) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_fibromyalgia:'' == 0) {
                                                             echo "checked";
                                                         }
                                                         ?>>
@@ -828,11 +828,11 @@
                                                     </label>
                                                 </div>
                                                 <div class="col-md-5 col-sm-12" id="div-fibromyalgia" <?php
-                                                        if ($medical_history->is_diagnosed_fibromyalgia == 1){
+                                                        if ($medical_history?$medical_history->is_diagnosed_fibromyalgia:'' == 1){
                                                             echo "";
-                                                        } elseif ($medical_history->is_diagnosed_fibromyalgia == "0"){
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_fibromyalgia:'' == "0"){
                                                             echo "hidden";
-                                                        } elseif ($medical_history->is_diagnosed_fibromyalgia == null) {
+                                                        } elseif ($medical_history?$medical_history->is_diagnosed_fibromyalgia:'' == null) {
                                                             echo "hidden";
                                                         }
                                                         ?>>
@@ -845,10 +845,10 @@
                                                         <div class="col-md-9 col-sm-12">
                                                             <div class="form-group">
                                                                 <input type="text" name="specify_fibromyalgia" class="form-control" minlength="1" maxlength="50" value="<?php
-                                                                    if ($medical_history->fibromyalgia_details == "") {
+                                                                    if ($medical_history?$medical_history->fibromyalgia_details:'' == "") {
                                                                         echo "";
                                                                     } else {
-                                                                        echo $medical_history->fibromyalgia_details;
+                                                                        echo $medical_history?$medical_history->fibromyalgia_details:'';
                                                                     }
                                                                 ?>">
                                                             </div>
