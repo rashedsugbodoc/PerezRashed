@@ -2787,6 +2787,11 @@ class Patient extends MX_Controller {
 
         foreach ($data['prescriptions'] as $prescription) {
             $doctor_details = $this->doctor_model->getDoctorById($prescription->doctor);
+            if (file_exists($doctor_details->img_url) === true) {
+                $doctor_image = $doctor_details->img_url;
+            } else {
+                $doctor_image = DEFAULT_PLACEHOLDER_IMAGE_URL;
+            }
             $prescription_specialty = [];
             $prescription_doctor_specialty_explode = explode(',', $doctor_details->specialties);
             $hospital_details = $this->hospital_model->getHospitalById($prescription->hospital_id);
@@ -2852,7 +2857,7 @@ class Patient extends MX_Controller {
                                                             </div>
                                                             <div class="timelineleft-footer border-top bg-light">
                                                                 <div class="d-flex align-items-center mt-auto">
-                                                                    <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_details->img_url .')"></div>
+                                                                    <div class="avatar brround avatar-md mr-3" style="background-image: url('. $doctor_image .')"></div>
                                                                     <div>
                                                                         <p class="font-weight-semibold mb-1">'. $doctor_name .'</p>
                                                                         <small class="d-block text-muted">' . $prescription_spec . '</small>

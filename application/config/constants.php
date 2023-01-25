@@ -137,3 +137,6 @@ define('INVOICE_DUE_TYPE_DUE_ON_RECEIPT', 'due_on_receipt');
 define('INVOICE_DUE_TYPE_SPECIFIC_DATE', 'specific_date');
 define('INVOICE_DUE_TYPE_DUE_ON_END_OF_MONTH', 'due_on_end_of_month');
 define('INVOICE_DUE_TYPE_CUSTOM', 'custom');
+
+/*Default Images*/
+define('DEFAULT_PLACEHOLDER_IMAGE_URL', 'public/assets/images/users/placeholder.jpg');
